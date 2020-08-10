@@ -6,6 +6,7 @@ import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Dat
 import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
+var moment = require('moment');
 
 export interface FoldersFilteringState {
     status: {
@@ -26,7 +27,7 @@ export interface FoldersFilteringState {
     "content-types": {
         folder: boolean;
         channel: boolean;
-        video: boolean;
+        vod: boolean;
         playlist: boolean;
     };
 }
@@ -52,7 +53,7 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
         "content-types": {
             folder: false,
             channel: false,
-            video: false,
+            vod: false,
             playlist: false
         }
     }
@@ -123,11 +124,11 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                     </div>
                     <div className="mb3" id="folderFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterType">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>
@@ -137,8 +138,8 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                         <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].channel}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], channel: !prevState["content-types"].channel } } }) }}
                             id='folderFilterLiveStream' label="Live Stream" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].video}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], video: !prevState["content-types"].video } } }) }}
+                        <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].vod}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], vod: !prevState["content-types"].vod } } }) }}
                             id='folderFilterVideo' label="Video" labelWeight="reg" />
                         <InputCheckbox className="mb2" defaultChecked={filteringState["content-types"].playlist}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState,["content-types"]: { ...prevState["content-types"], playlist: !prevState["content-types"].playlist } } }) }}
@@ -150,7 +151,7 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                     <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { props.setSelectedFilter(null) }} typeButton="tertiary">
+                    <Button onClick={() => { props.setSelectedFilter(null); setFilteringState(filteringDefault) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

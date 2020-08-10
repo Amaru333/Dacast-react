@@ -7,7 +7,6 @@ import { DropdownListType } from '../../../../components/FormsComponents/Dropdow
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
-import { HalfSmFullXs } from '../../Analytics/AnalyticsCommun';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 
@@ -34,9 +33,10 @@ const defaultPreset: Preset = {
     }
 }
 
-export const PricePresetsModal = (props: {action: Function; toggle: Function; preset: Preset}) => {
+export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
 
-    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
+    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setPresetsList(props.preset ? props.preset : {...defaultPreset, prices: [{value: NaN, currency: 'USD'}]});
@@ -92,6 +92,16 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
         let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${presetsList.settings.timezone}`).utc().valueOf()
         setPresetsList({...presetsList, settings:{ ...presetsList.settings, startDate: startDate }})    
     }, [startDateTimeValue])
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.action(presetsList).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
+    }
 
     return (
         <div>
@@ -167,7 +177,7 @@ export const PricePresetsModal = (props: {action: Function; toggle: Function; pr
                     </div>
             }
             <div className='col col-12 mt3'>
-                <Button disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {props.action(presetsList);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

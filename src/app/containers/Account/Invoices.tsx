@@ -9,15 +9,13 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface InvoicesComponentProps {
     invoices: Invoice[];
-    getInvoices: Function;
+    getInvoices: () => Promise<void>;
 }
 
 const Invoices = (props: InvoicesComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.invoices) {
-            props.getInvoices();
-        }
+        props.getInvoices();
     }, [])
 
     return (
@@ -36,8 +34,8 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getInvoices: () => {
-            dispatch(getInvoicesAction());
+        getInvoices: async () => {
+            await dispatch(getInvoicesAction());
         },
     };
 }

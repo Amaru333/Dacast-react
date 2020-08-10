@@ -15,26 +15,18 @@ import { updateClipboard } from '../../../utils/utils';
 import { addTokenToHeader } from '../../../utils/token';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import { PlaylistGeneralProps } from '../../../containers/Playlists/General';
 
-interface PlaylistGeneralComponentProps {
-    playlistDetails: PlaylistDetails;
-    editPlaylistDetails: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
-    showToast: Function;
-}
-
-export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
+export const PlaylistGeneralPage = (props: PlaylistGeneralProps) => {
 
     const {userId} = addTokenToHeader()
 
+    const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [newPlaylistDetails, setNewPlaylistDetails] = React.useState<PlaylistDetails>(props.playlistDetails)
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
-    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -123,12 +115,12 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         <LinkBox>
                             <LinkText size={14} weight="reg">
                             { props.playlistDetails.embedType === "iframe" ? 
-                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` }
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>` }
                             </LinkText>
                             <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.playlistDetails.embedType === "iframe" ? 
-                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/playlist/${userId}/${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-playlist-${props.playlistDetails.id}" width="${props.playlistDetails.embedScaling === "responsive" ? "100%" : props.playlistDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-playlist-${props.playlistDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -157,18 +149,18 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button> : null
+                                        splashScreenEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.splashscreen.targetID, "splashscreen")}}>Delete</Button>
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => {setImageModalTitle("Change Splashscreen");setImageModalOpen(true)}}>
                                         {
-                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
+                                            splashScreenEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.playlistDetails.splashscreen.url} /></ImageSection>}  
+                                {splashScreenEnable &&<ImageSection> <SelectedImage src={props.playlistDetails.splashscreen.url} /></ImageSection>}  
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -180,17 +172,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        thumbnailEnable || uploadedImageFiles.thumbnail ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button> : null
+                                        thumbnailEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setImageModalOpen(true)}}>
                                         {
-                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
+                                            thumbnailEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>  
-                            { (thumbnailEnable || uploadedImageFiles.thumbnail) &&   <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.playlistDetails.thumbnail.url} /></ImageSection>}
+                            { thumbnailEnable && <ImageSection> <SelectedImage src={props.playlistDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -202,17 +194,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        (posterEnable || uploadedImageFiles.poster) &&
+                                        posterEnable &&
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.playlistDetails.id, props.playlistDetails.poster.targetID, "poster")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setImageModalOpen(true)}}>
                                         {
-                                            posterEnable || uploadedImageFiles.poster ?
+                                            posterEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.playlistDetails.poster.url} /></ImageSection>}
+                                {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.playlistDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -258,15 +250,17 @@ export const PlaylistGeneralPage = (props: PlaylistGeneralComponentProps) => {
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
                         title={imageModalTitle}
-                        uploadedImageFiles={uploadedImageFiles}
-                        setUploadedImageFiles={setUploadedImageFiles}
+                        getContentDetails={props.getPlaylistDetails}
                     />
                 }            
             </Card>
-            <ButtonContainer>
-                <Button className="mr2" type="button" onClick={() => props.editPlaylistDetails(newPlaylistDetails)}>Save</Button>
-                <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
-            </ButtonContainer>
+            {
+                JSON.stringify(newPlaylistDetails) !== JSON.stringify(props.playlistDetails) && 
+                    <ButtonContainer>
+                        <Button className="mr2" isLoading={saveLoading} type="button" onClick={() => {setSaveLoading(true); props.editPlaylistDetails(newPlaylistDetails, ()=>{setSaveLoading(false)}) }}>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setNewPlaylistDetails(props.playlistDetails);props.showToast("Changes have been discarded", 'flexible', "success")}}>Discard</Button>
+                    </ButtonContainer>
+            }
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }

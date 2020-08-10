@@ -21,7 +21,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
         },
         {
             label: 'Billed',
-            value: 'Recurring, when Storage reaches 0 GB'
+            value: 'Recurring, when Data reaches 0 GB'
         } 
     ]
 
@@ -57,7 +57,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
                 />
             </div>
                 <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
-                <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of storage.</Text>
+                <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of Data.</Text>
             <div className='col col-12 py1'>
                 <Button sizeButton="large" onClick={() => {props.actionButton({enabled: true, amount: playbackProtectionAmount, price: (dataPrice * playbackProtectionAmount).toFixed(2) }); props.toggle(false); props.setPlaybackProtectionEnabled(true)}} typeButton="primary" buttonColor="blue" >Enable</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>

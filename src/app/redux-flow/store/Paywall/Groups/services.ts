@@ -161,11 +161,13 @@ const createGroupPromo = async (data: GroupPromo) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     let parsedData = null
-    if(data.rateType !== 'Pay Per View') {
+    if (data.rateType !== 'Pay Per View') {
         parsedData = {
             ...data,
             assignedContentIds: [],
             discountApplied: data.discountApplied.toLowerCase(),
+            startDate: Math.floor(data.startDate / 1000),
+            endDate: Math.floor(data.endDate / 1000),
             id: null
         }
     } else {
@@ -173,8 +175,16 @@ const createGroupPromo = async (data: GroupPromo) => {
             ...data,
             assignedContentIds: [],
             discountApplied: null,
+            startDate: Math.floor(data.startDate / 1000),
+            endDate: Math.floor(data.endDate / 1000),
             id: null
         }
+    }
+    if (data.startDate === 0) {
+        delete parsedData['startDate']
+    }
+    if (data.endDate === 0) {
+        delete parsedData['endDate']
     }
     return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
         {
@@ -197,13 +207,23 @@ const saveGroupPromo = async (data: GroupPromo) => {
             ...data,
             assignedContentIds: [],
             discountApplied: data.discountApplied.toLowerCase(),
+            startDate: Math.floor(data.startDate / 1000),
+            endDate: Math.floor(data.endDate / 1000),
         }
     } else {
         parsedData = {
             ...data,
             assignedContentIds: [],
             discountApplied: null,
+            startDate: Math.floor(data.startDate / 1000),
+            endDate: Math.floor(data.endDate / 1000),
         }
+    }
+    if (data.startDate === 0) {
+        delete parsedData['startDate']
+    }
+    if (data.endDate === 0) {
+        delete parsedData['endDate']
     }
     return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
         {

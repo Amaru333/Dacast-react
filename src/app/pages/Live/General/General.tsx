@@ -31,6 +31,8 @@ var momentTZ = require('moment-timezone')
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
+        timezone=timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+        console.log(timezone)
         if(ts > 0 ) {
             return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
         } 
@@ -48,7 +50,6 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [loadingButton, setLoadingButton] = React.useState<boolean>(false)
-    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone ? props.liveDetails.countdown.timezone : momentTZ.tz.guess()})
 
@@ -146,12 +147,12 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         <LinkBox>
                             <LinkText size={14} weight="reg">
                             { props.liveDetails.embedType === "iframe" ? 
-                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                `<script id="${userId}-live-${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-live-${props.liveDetails.id}"  class="dacast-video"></script>` }
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-live-${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-live-${props.liveDetails.id}"  class="dacast-video"></script>` }
                             </LinkText>
                             <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.liveDetails.embedType === "iframe" ? 
-                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                `<script id="${userId}-live-${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-live-${props.liveDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                `<iframe src="https://${process.env.BASE_IFRAME_URL}/live/${userId}/${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                `<script id="${userId}-live-${props.liveDetails.id}" width="${props.liveDetails.embedScaling === "responsive" ? "100%" : props.liveDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-live-${props.liveDetails.id}"  class="dacast-video"></script>`, 'Embed Code Copied') } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -225,7 +226,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                     </div>
                             }
                         </div>
-                        {
+                        {/* {
                             getPrivilege('privilege-dvr') &&
                             <div className="mb2 clearfix">
                                 <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
@@ -246,7 +247,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                                         </div>
                                 }
                             </div>
-                        }
+                        } */}
 
                     </div>
                 </div>
@@ -264,18 +265,18 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        splashScreenEnable || uploadedImageFiles.splashscreen ?
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID, "splashscreen") } } >Delete</Button> : null
+                                        splashScreenEnable &&
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.splashscreen.targetID, "splashscreen") } } >Delete</Button>
                                     }
                                     <Button className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                         onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.liveDetails.splashscreen.url);setImageModalOpen(true) }}>
                                         {
-                                            splashScreenEnable || uploadedImageFiles.splashscreen ?
+                                            splashScreenEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(splashScreenEnable || uploadedImageFiles.splashscreen) && <ImageSection><SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.liveDetails.splashscreen.url} /></ImageSection>}
+                                {splashScreenEnable && <ImageSection><SelectedImage src={props.liveDetails.splashscreen.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -288,17 +289,17 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             <ImageArea className="mt2">
                                 <ButtonSection>
                                     {
-                                        (thumbnailEnable || uploadedImageFiles.thumbnail) &&
+                                        thumbnailEnable &&
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.liveDetails.id, props.liveDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button>
                                     }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.thumbnail.url);setImageModalTitle("Change Thumbnail"); setImageModalOpen(true) }}>
                                         {
-                                            thumbnailEnable || uploadedImageFiles.thumbnail ?
+                                            thumbnailEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                { (thumbnailEnable || uploadedImageFiles.thumbnail) && <ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.liveDetails.thumbnail.url} /></ImageSection>}
+                                { thumbnailEnable && <ImageSection> <SelectedImage src={ props.liveDetails.thumbnail.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -310,15 +311,15 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                             </div>
                             <ImageArea className="mt2">
                                 <ButtonSection>
-                                    { (posterEnable || uploadedImageFiles.poster) && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID, "poster") }}>Delete</Button> }
+                                    { posterEnable && <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.liveDetails.id, props.liveDetails.poster.targetID, "poster") }}>Delete</Button> }
                                     <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setSelectedImageName(props.liveDetails.poster.url); setImageModalTitle("Change Poster"); setImageModalOpen(true) }}>
                                         {
-                                            posterEnable || uploadedImageFiles.poster ?
+                                            posterEnable ?
                                                 "Change" : "Add"
                                         }
                                     </Button>
                                 </ButtonSection>
-                                {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.liveDetails.poster.url} /></ImageSection>}
+                                {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.liveDetails.poster.url} /></ImageSection>}
                             </ImageArea>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
@@ -364,8 +365,7 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                         opened={imageModalOpen === true} 
                         submit={props.uploadFile} 
                         title={imageModalTitle}
-                        uploadedImageFiles={uploadedImageFiles}
-                        setUploadedImageFiles={setUploadedImageFiles}
+                        getContentDetails={props.getLiveDetails}
                     />
                 }
 
@@ -472,10 +472,13 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 </Modal>
 
             </Card>
-            <ButtonContainer>
-                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0, timezone: startDateTimeValue.timezone}}, () => setLoadingButton(false)) }  }>Save</Button>
-                <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
-            </ButtonContainer>
+            {
+                JSON.stringify(newLiveDetails) !== JSON.stringify(props.liveDetails) && 
+                    <ButtonContainer>
+                        <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0, timezone: startDateTimeValue.timezone}}, () => setLoadingButton(false)) }  }>Save</Button>
+                        <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
+                    </ButtonContainer>
+            }
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-live-' + props.liveDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }

@@ -13,7 +13,7 @@ import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 
 
-interface GeneralProps {
+export interface PlaylistGeneralProps {
     playlistDetails: PlaylistDetails;
     playlistDetailsState: PlaylistDetailsState;
     editPlaylistDetails: Function;
@@ -24,7 +24,7 @@ interface GeneralProps {
     showToast: Function;
 }
 
-const GeneralPlaylist = (props: GeneralProps) => {
+const GeneralPlaylist = (props: PlaylistGeneralProps) => {
 
     let { playlistId } = useParams()
 
@@ -59,14 +59,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistDetails: (playlistId: string) => {
             dispatch(getPlaylistDetailsAction(playlistId));
         },
-        editPlaylistDetails: (data: PlaylistDetails) => {
-            dispatch(editPlaylistDetailsAction(data));
+        editPlaylistDetails: (data: PlaylistDetails, callback?: Function) => {
+            dispatch(editPlaylistDetailsAction(data)).then(callback);
         },
-        getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
+        getUploadUrl: (uploadType: string, playlistId: string, extension: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, playlistId, extension)).then(callback)
         },
-        uploadFile: (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
-            dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
+            await dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))
         },
         deleteFile: (liveId: string, targetId: string, uploadType: string) => {
             dispatch(deleteFileAction(liveId, targetId, uploadType))

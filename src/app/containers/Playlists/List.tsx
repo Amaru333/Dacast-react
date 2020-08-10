@@ -5,40 +5,40 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SearchResult } from '../../redux-flow/store/Playlists/List/types';
 import { getPlaylistListAction, Action, deletePlaylistAction } from '../../redux-flow/store/Playlists/List/actions';
-import { PlaylistListPage } from '../../pages/Playlist/List/PlaylistList';
 import { getThemingListAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ContentListPage } from '../../shared/List/contentList';
 
 export interface PlaylistListComponentProps {
     playlistList: SearchResult;
-    getPlaylistList: Function;
     themeList: ThemesData;
-    getThemingList: Function;
-    deletePlaylist: Function;
+    getPlaylistList: (qs: string) => Promise<void>;
+    getThemesList: () => Promise<void>;
+    deletePlaylist: (playlistId: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const PlaylistList = (props: PlaylistListComponentProps) => {
 
-   
-
     React.useEffect(() => {
-        props.getPlaylistList();
+        props.getPlaylistList(null)
     }, [])
 
-    if (!props.playlistList) {
-        return (
-            <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
-        )
-    } else {
-        return (
-            <>
-                <PlaylistListPage {...props}  />
-            </>
-        )
-    }
+    return props.playlistList ?
+        <ContentListPage
+            contentType="playlists"
+            items={props.playlistList}
+            themesList={props.themeList}
+            getContentList={props.getPlaylistList}
+            deleteContentList={props.deletePlaylist}
+            getThemesList={props.getThemesList}
+            showToast={props.showToast}
+
+        />
+        : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
+
 }
 
 export function mapStateToProps(state: ApplicationState) {
@@ -53,11 +53,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistList: async (qs: string) => {
             await dispatch(getPlaylistListAction(qs));
         },
-        getThemingList: () => {
-            dispatch(getThemingListAction());
+        getThemesList: async () => {
+            await dispatch(getThemingListAction());
         },
-        deletePlaylist: (playlistId: string, title: string) => {
-            dispatch(deletePlaylistAction(playlistId, title));
+        deletePlaylist: async (playlistId: string) => {
+            await dispatch(deletePlaylistAction(playlistId));
         },
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))

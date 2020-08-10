@@ -7,7 +7,7 @@ import { ContentEngagementComponentProps } from './ContentEngagement';
 import { dataToTimeVideo, capitalizeFirstLetter, inputTimeVideoToTs } from '../../../utils/utils';
 
 
-export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: Function; selectedAd: Ad}) => {
+export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: (b: boolean) => void; selectedAd: Ad}) => {
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -17,16 +17,22 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
     }, [props.selectedAd])
 
     const defineAdAction = () => {
-        let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads
+        let tempArray: Ad[] = props.contentEngagementSettings.engagementSettings.ads ? props.contentEngagementSettings.engagementSettings.ads : []
         setButtonLoading(true)
         if(props.selectedAd.id === '-1') {
             tempArray.push({...adData, id: adData.url + adData.timestamp + adData['ad-type'], timestamp: adData['ad-type'] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null})
-            props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
+            props.createContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId).then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            })
         } else {
             tempArray = props.contentEngagementSettings.engagementSettings.ads.map((ad) => {
                 return ad.id === adData.id ? {...adData, timestamp: adData['ad-type'] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null} : ad
             })
-            props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId, () => setButtonLoading(false))
+            props.saveContentAd(tempArray, props.contentEngagementSettings.engagementSettings.adsId, props.contentId).then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            })
         }
         
     }
@@ -44,7 +50,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
                 }
             </div>
             <div className='mt2 col col-12'>
-                <Button className='mr2' disabled={adData["ad-type"] === "" || adData.url === ""} typeButton='primary' sizeButton='large' buttonColor='blue' isLoading={buttonLoading} onClick={() => {defineAdAction();props.toggle(false)}}>Save</Button>
+                <Button isLoading={buttonLoading} className='mr2' disabled={adData["ad-type"] === "" || adData.url === "" || (adData["ad-type"] === 'mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>Save</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

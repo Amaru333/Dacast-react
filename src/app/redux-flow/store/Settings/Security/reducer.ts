@@ -52,7 +52,7 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                 } else {
                     return {
                         ...geoRestriction,
-                        isDefault: (!action.payload.isDefault && state.geoRestriction.filter(f => f.id === action.payload.id)[0].isDefault && geoRestriction.id === '-1') ? true : false
+                        isDefault: action.payload.isDefault ? false : geoRestriction.isDefault
                     }
                 }
             })

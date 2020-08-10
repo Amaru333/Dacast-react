@@ -9,8 +9,8 @@ import { useParams } from 'react-router';
 
 export interface EditStatusComponentProps {
     withdrawal: WithdrawalInfo;
-    getWithdrawals: Function;
-    saveWithdrawalStatus: Function;
+    getWithdrawals: (withdrawalId: string) => Promise<void>;
+    saveWithdrawalStatus: (withdrawalId: string, withdrawalStatus: string) => Promise<void>;
 }
 
 const EditStatus = (props: EditStatusComponentProps) => {
@@ -36,11 +36,11 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getWithdrawals: (withdrawalId: string) => {
-            dispatch(getWithdrawalInfoAction(withdrawalId));
+        getWithdrawals: async (withdrawalId: string) => {
+            await dispatch(getWithdrawalInfoAction(withdrawalId));
         },
-        saveWithdrawalStatus: (withdrawalId: string, withdrawalStatus: string) => {
-            dispatch(saveWithdrawalStatusAction(withdrawalId, withdrawalStatus));
+        saveWithdrawalStatus: async (withdrawalId: string, withdrawalStatus: string) => {
+            await dispatch(saveWithdrawalStatusAction(withdrawalId, withdrawalStatus));
         }
     };
 }

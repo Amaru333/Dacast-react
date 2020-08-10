@@ -26,7 +26,7 @@ import { logAmplitudeEvent } from '../../../utils/amplitudeService';
 import Axios from 'axios';
 
 
-export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
+export const GeneralPage = (props: GeneralComponentProps) => {
 
     const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
 
@@ -44,15 +44,11 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
-    const [unsavedChanges, setUnsavedChanges] = React.useState<boolean>(false)
-
-    const [uploadedImageFiles, setUploadedImageFiles] = React.useState<any>({splashscreen: null, thumbnail: null, poster: null})
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
         setVodDetails(props.vodDetails)
-        setUnsavedChanges(false)
     }, [props.vodDetails.title, props.vodDetails.folders, props.vodDetails.description, props.vodDetails.online]);
 
     const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
@@ -62,11 +58,6 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
             {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
         ]}
     };
-    
-    const editSubtitle = (subtitle: SubtitleInfo) => {
-        setUploadedSubtitleFile(subtitle)
-        setSubtitleModalOpen(true)
-    }
     
     const subtitlesTableBody = () => {
         return props.vodDetails.subtitles ? props.vodDetails.subtitles.map((value, key) => {
@@ -199,14 +190,14 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                         <Toggle
                             className="col col-12 mb2"
                             defaultChecked={VodDetails.online}
-                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online });setUnsavedChanges(true)}}
+                            onChange={() => {setVodDetails({ ...VodDetails, online: !VodDetails.online });}}
                             label="Video Online"
                         />
                         <Input
                             className={ClassHalfXsFullMd + "pr2 mb2"}
                             label="Title"
                             value={VodDetails.title}
-                            onChange={event => {setVodDetails({...VodDetails, title: event.currentTarget.value });setUnsavedChanges(true)}}
+                            onChange={event => {setVodDetails({...VodDetails, title: event.currentTarget.value });}}
                         />
                         <InputTags
                             className={ClassHalfXsFullMd + "mb2"}
@@ -221,7 +212,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             type="textarea"
                             label="Description"
                             value={VodDetails.description ? VodDetails.description : ''}
-                            onChange={event => {setVodDetails({ ...VodDetails, description: event.currentTarget.value });setUnsavedChanges(true)}}
+                            onChange={event => {setVodDetails({ ...VodDetails, description: event.currentTarget.value });}}
                         />
                         <div className={"col col-3 flex flex-column"}>
                             <LinkBoxLabel>
@@ -249,12 +240,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <LinkBox>
                                 <LinkText size={14} weight="reg">
                                 { props.vodDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` }
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` }
                                 </LinkText>
                                 <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.vodDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="auto" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.vodDetails.id}" width="${props.vodDetails.embedScaling === "responsive" ? "100%" : props.vodDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -286,12 +277,12 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
                                             onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(props.vodDetails.splashscreen.url);setImageModalOpen(true)}}>
                                             {
-                                                splashScreenEnable || uploadedImageFiles.splashscreen  ?
+                                                splashScreenEnable ?
                                                     "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection> 
-                                    {(splashScreenEnable || uploadedImageFiles.splashscreen) &&<ImageSection> <SelectedImage src={uploadedImageFiles.splashscreen ? uploadedImageFiles.splashscreen : props.vodDetails.splashscreen.url} /></ImageSection>   }
+                                    {splashScreenEnable &&<ImageSection> <SelectedImage src={props.vodDetails.splashscreen.url} /></ImageSection>}
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -310,7 +301,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    {(thumbnailEnable || uploadedImageFiles.thumbnail) &&<ImageSection> <SelectedImage src={uploadedImageFiles.thumbnail ? uploadedImageFiles.thumbnail : props.vodDetails.thumbnail.url} /></ImageSection> }  
+                                    {thumbnailEnable &&<ImageSection> <SelectedImage src={props.vodDetails.thumbnail.url} /></ImageSection> }  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -323,18 +314,18 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 <ImageArea className="mt2">
                                     <ButtonSection>
                                         {
-                                            (posterEnable || uploadedImageFiles.poster) && 
+                                            posterEnable && 
                                                 <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.vodDetails.id, props.vodDetails.poster.targetID, "Poster")}}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.vodDetails.poster.url);setImageModalOpen(true)}}>
                                             {
-                                                posterEnable || uploadedImageFiles.poster  ?
+                                                posterEnable ?
                                                     "Change" : "Add"
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    {(posterEnable || uploadedImageFiles.poster) && <ImageSection> <img height='auto' width="160px" src={uploadedImageFiles.poster ? uploadedImageFiles.poster : props.vodDetails.poster.url} /></ImageSection>}  
+                                    {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.vodDetails.poster.url} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
@@ -431,7 +422,7 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                             <ImageModal
                                 imageFileName={selectedImageName} 
                                 imageType={handleImageModalFunction()} 
-                                contentId={props.vodId} 
+                                contentId={props.vodDetails.id} 
                                 contentType='vod'
                                 uploadFromVideoAction={props.uploadImageFromVideo}
                                 uploadUrl={props.vodDetails.uploadurl} 
@@ -440,22 +431,21 @@ export const GeneralPage = (props: GeneralComponentProps & {vodId: string}) => {
                                 toggle={() => setImageModalOpen(false)} 
                                 opened={imageModalOpen === true} 
                                 submit={props.uploadFile}
-                                uploadedImageFiles={uploadedImageFiles}
-                                setUploadedImageFiles={setUploadedImageFiles}
+                                getContentDetails={props.getVodDetails}
                             />
                     }
 
                 </Card>
-               { unsavedChanges && 
+               {    JSON.stringify(VodDetails) !== JSON.stringify(props.vodDetails) && 
                     <ButtonContainer>
-                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => {setUnsavedChanges(false);setButtonLoading(false)}) } }>Save</Button>
-                        <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);setUnsavedChanges(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.editVodDetails(VodDetails, () => {setButtonLoading(false)}) } }>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setVodDetails(props.vodDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonContainer>
                 }
                 {
                     previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.vodDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
-                <Prompt when={unsavedChanges} message='' />
+                <Prompt when={JSON.stringify(VodDetails) !== JSON.stringify(props.vodDetails)} message='' />
             </React.Fragment>
             
     )

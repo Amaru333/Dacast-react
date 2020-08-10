@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { handleValidationForm } from '../../../utils/hooksFormSubmit';
-import {CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, LinkStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
+import { CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
@@ -18,16 +18,7 @@ import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
-
-interface CompanyComponentProps {
-    CompanyPageDetails: CompanyPageInfos;
-    getCompanyPageDetails: Function;
-    saveCompanyPageDetails: Function;
-    getLogoUrlForUploading: Function;
-    uploadCompanyLogo: Function;
-    deleteCompanyLogo: Function;
-    showToast: Function;
-}
+import { CompanyComponentProps } from '../../../containers/Account/Company';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -41,7 +32,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     let history = useHistory();
 
-    useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
+    useKeyboardSubmit( () => handleSubmit(onSubmit) )
     
     let {CompanyPageDetails} = props;
 
@@ -71,19 +62,20 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
     const onSubmit = (data: CompanyPageInfos) => { 
-        setSubmitLoading(true);
-        props.saveCompanyPageDetails(data, () => {
-            setSubmitLoading(false);
-        });
+        setSubmitLoading(true)
+        props.saveCompanyPageDetails(data).then(() => {
+            setSubmitLoading(false)
+            reset(data)
+        })
     }
     
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
         if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
-            const reader = new FileReader();
+            const reader = new FileReader()
             reader.onload = () => {
                 let acceptedRatio = true;
-                const img = new Image();
+                const img = new Image()
                 img.onload = () => {
                     //acceptedRatio = (img.width / img.height) / 4 === 1 && img.width <= 240 ? true : false;
                 }
@@ -92,7 +84,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getLogoUrlForUploading();
+                    props.getLogoUrlForUploading()
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -124,7 +116,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
-            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl, () => setUploadButtonLoading(false) );
+            props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl).then(() => {
+                setUploadButtonLoading(false)
+            })
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
 
@@ -139,9 +133,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         { uploadedFileUrl ? 
                         <>
                             <div className="flex flex-column">
-                                {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
+                                {props.CompanyPageDetails.isUploading && <SpinnerContainer style={{zIndex: 1000}}>
                                     <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
-                                </SpinnerContainer>: null}
+                                </SpinnerContainer>}
                                 <div style={{width:'100%'}} className=''>
                                     <input type='file' ref={changeCompanyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
@@ -321,12 +315,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 </form>
             </Card>            
             { 
-                dirty ? 
+                dirty &&
                     <ButtonsArea> 
                         <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
                             onClick={() => {reset(props.CompanyPageDetails, {errors: true});props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
-                    </ButtonsArea> : null
+                    </ButtonsArea>
             }     
             <Prompt when={dirty} message='' />     
         </CompanyPageContainer>

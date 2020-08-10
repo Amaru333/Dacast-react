@@ -40,6 +40,11 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
+        console.log(selectedEncodedRendition)
+        console.log(selectedNotEncodedRendition)
+    }, [])
+
+    React.useEffect(() => {
         if(!replaceSourceModalOpen) {
             setUploadError(null)
             setNewSourceFileUpload(null)
@@ -69,10 +74,17 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                     indeterminate={selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length} 
                     defaultChecked={selectedNotEncodedRendition.length > 0 && selectedNotEncodedRendition.length === notEncodedRenditions.length}
                     onChange={(event) => {
-                        if (event.currentTarget.checked) {
-                            const editedSelectedRenditions = notEncodedRenditions.map(item => { return item.name })
+                        if (event.currentTarget.checked && !(selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length)) {
+                            const editedSelectedRenditions = notEncodedRenditions.filter(item => { 
+                                const disabledRendition = item.size > props.renditions.videoInfo.width;
+                                if(!disabledRendition) {
+                                    return true
+                                } else {
+                                    return false;
+                                }
+                            }).map( (renditions) => {return renditions.name} )
                             setSelectedNotEncodedRendition(editedSelectedRenditions);
-                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                        } else {
                             setSelectedNotEncodedRendition([])
                         }
                     }} 
@@ -163,7 +175,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
         let ids: string[] = []
         props.renditions.encodedRenditions.map(rendition => {
             if(selectedEncodedRendition.includes(rendition.name)) {
-                console.log(rendition.renditionID)
                 ids.push(rendition.renditionID)
             }
         })
@@ -269,10 +280,10 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                      
                 </div>
                 <ButtonContainer className="col">
-                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length > 0} 
+                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length === 0} 
                         onClick={() => setEncodeRenditionsModalOpen(true)}
                     >Encode &gt;</Button>
-                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length > 0} 
+                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length === 0} 
                         onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>
                 </ButtonContainer>

@@ -49,7 +49,7 @@ export const getPlaylistEngagementSettingsAction = (playlistId: string): ThunkDi
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetPlaylistEngagementSettings> ) => {
         await playlistEngagementServices.getPlaylistEngagementSettings(playlistId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS, payload: {contentId: playlistId, engagementSettings: response.data.data}} );
+                dispatch( {type: ActionTypes.GET_PLAYLIST_ENGAGEMENT_SETTINGS, payload: {contentId: playlistId, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -108,7 +108,7 @@ export const getUploadUrlAction = (uploadType: string, playlistId: string): Thun
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await playlistEngagementServices.getUploadUrl(uploadType, playlistId)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, playlistID: playlistId} })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, playlistId: playlistId} })
             })
             .catch((error) => {
                 console.log(error)

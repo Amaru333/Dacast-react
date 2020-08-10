@@ -5,7 +5,9 @@ import { PlansServices } from './service';
 
 export interface GetPlan {
     type: ActionTypes.GET_ACCOUNT_PLAN;
-    payload: PlanInfo;
+    payload: {
+        data: PlanInfo;
+    };
 }
 
 export interface SavePlan {

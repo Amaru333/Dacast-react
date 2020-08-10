@@ -12,15 +12,15 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PaywallSettingsComponentProps {
     paywallSettingsInfos: PaywallSettingsInfos;
-    getPaywallSettingsInfos: Function;
-    savePaywallSettingsInfos: Function;
-    showDiscardToast: Function;
+    getPaywallSettingsInfos: () => Promise<void>;
+    savePaywallSettingsInfos: (data: PaywallSettingsInfos) => Promise<void>;
+    showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
     React.useEffect(() => {
         if(!props.paywallSettingsInfos) {
-            props.getPaywallSettingsInfos();
+            props.getPaywallSettingsInfos()
         }
     }, [])
 
@@ -34,19 +34,19 @@ const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         paywallSettingsInfos: state.paywall.paywallSettings
-    };
+    }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPaywallSettingsInfos: () => {
-            dispatch(getPaywallSettingsInfosAction());
+        getPaywallSettingsInfos: async () => {
+            await dispatch(getPaywallSettingsInfosAction())
         },
-        savePaywallSettingsInfos: (data: PaywallSettingsInfos) => {
-            dispatch(savePaywallSettingsInfosAction(data));
+        savePaywallSettingsInfos: async (data: PaywallSettingsInfos) => {
+            await dispatch(savePaywallSettingsInfosAction(data))
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType));
+            dispatch(showToastNotification(text, size, notificationType))
         }
     }
 }

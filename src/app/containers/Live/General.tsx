@@ -26,9 +26,7 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 
 
     React.useEffect(() => {
-        if (!props.liveDetailsState[liveId]) {
-            props.getLiveDetails(liveId);
-        }
+        props.getLiveDetails(liveId);
     }, [])
 
     return (
@@ -62,11 +60,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveLiveDetails: (data: LiveDetails, callback?: Function) => {
             dispatch(saveLiveDetailsAction(data)).then(callback);
         },
-        getUploadUrl: (uploadType: string, liveId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, liveId)).then(callback)
+        getUploadUrl: (uploadType: string, liveId: string, extension: string, callback: Function) => {
+            dispatch(getUploadUrlAction(uploadType, liveId, extension)).then(callback)
         },
-        uploadFile: (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
-            dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
+            await dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
         },
         deleteFile: (liveId: string, targetId: string, uploadType: string) => {
             dispatch(deleteFileAction(liveId, targetId, uploadType))

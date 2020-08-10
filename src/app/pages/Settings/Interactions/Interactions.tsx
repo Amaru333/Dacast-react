@@ -9,7 +9,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MailCatcherModal } from './MailCatcherModal';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { TextStyle } from '../../../shared/Engagement/EngagementStyle';
+import { TextStyle, AdTableURLContainer } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
@@ -25,6 +25,8 @@ import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -70,6 +72,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [errorMessage, setErrorMessage] = React.useState<string>('')
 
     let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    let brandImageChangeButtonRef = React.useRef<HTMLInputElement>(null)
+
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -86,7 +90,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark');
+                    props.getUploadUrl('player-watermark')
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -109,13 +113,22 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(interactionInfos.brandImageID);
+        props.deleteFile(interactionInfos.brandImageID).then(() => {
+            setTimeout(() => {
+                props.getInteractionsInfos()
+            }, 3000)
+        })
     }
 
 
     React.useEffect(() => {
         if(props.interactionsInfos.uploadurl) {
-            props.uploadFile(logoFile, props.interactionsInfos.uploadurl, () => setUploadButtonLoading(false) );
+            props.uploadFile(logoFile, props.interactionsInfos.uploadurl).then(() => {
+                setUploadButtonLoading(false)
+                setTimeout(() => {
+                    props.getInteractionsInfos()
+                }, 3000)
+            })
         }
     }, [props.interactionsInfos.uploadurl])
 
@@ -168,7 +181,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
-                    <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>,
+                    <AdTableURLContainer>
+                        <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
+                    </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
                             <IconStyle id={'adTableCopy' + i} onClick={() => { console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item)); props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId) }} >delete</IconStyle>
@@ -273,12 +288,16 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <div className="lg-col lg-col-12 mb1 flex">
                     <div className="lg-col lg-col-6 mr2">
                         <DragAndDrop className="flex flex-column" hasError={false} handleDrop={handleDrop}>
+
                             {uploadedFileUrl ?
                                 <>
-                                    {/* {props.CompanyPageDetails.isUploading ? <SpinnerContainer style={{zIndex: 1000}}><LoadingSpinner className='mx-auto' color='violet' size='small' /> </SpinnerContainer>: null} */}
+                                    {uploadButtonLoading && <SpinnerContainer style={{zIndex: 1000}}>
+                                        <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                    </SpinnerContainer>}
                                     <ImageStyle src={uploadedFileUrl}></ImageStyle>
+                                    <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageChangeButtonRef} style={{display:'none'}} id='changeButton' />
                                     <Button sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '8px', top: '8px' }} buttonColor='blue' onClick={(e) => handleDelete(e)}>Delete</Button>
-                                    <Button sizeButton='xs' typeButton='primary' style={{ position: 'absolute', right: '8px', top: '40px' }} buttonColor='blue' >Upload</Button>
+                                    <Button onClick={() => {brandImageChangeButtonRef.current.click()} }  sizeButton='xs' typeButton='secondary' style={{ position: 'absolute', right: '70px', top: '8px' }} buttonColor='blue' >Change</Button>
                                 </>
                                 :
                         <>
@@ -361,9 +380,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Modal>
             <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
-                    newAdModalOpened ?
+                    newAdModalOpened &&
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
-                        : null
                 }
             </Modal>
             {

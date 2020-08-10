@@ -167,14 +167,14 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const planDetailsTableBodyElement = () => {
         if(props.billingInfos.currentPlan) {
             const {state, displayName, currency, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
-            const color = state === 'active' ? 'green' : state === 'expired' ? 'yellow' : 'red';
+            const color = (state === 'active' || state === "") ? 'green' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
-                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName}</Text>,
+                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "Free" ? "Trial" : displayName}</Text>,
                 <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{paymentTerm === 12 ? "Yearly" : "Monthly"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : ''}</Text>,
-                <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state} />,
+                <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]
         }
@@ -183,47 +183,46 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     
     return (
         <div>
-            <GeneralDashboard profile={props.profile} plan={props.plan} overage={props.plan.displayName !== "Free" ? props.overage : false} />
+            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} />
             <Card>
                 <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
-                <BorderStyle className="py1" />
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
-                <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
-                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
-               
-                {
-                    (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
-                        <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody((props.billingInfos.paymentMethod ? 'Enable Playback Protection to ensure your content never stops playing': 'Add Payment Method before Enablind Playback Protection'))} />
-                        :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
-                    
-
+               { 
+                   (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.state === "active") &&
+                    <>
+                        <BorderStyle className="py1" />
+                        <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
+                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
+                            <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
+                            {
+                                (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
+                                    <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody((props.billingInfos.paymentMethod ? 'Enable Playback Protection to ensure your content never stops playing': 'Add Payment Method before Enablind Playback Protection'))} />
+                                    :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
+                            }
+                        
+                            <BorderStyle className="py1" />
+                            <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
+                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
+                            <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
+                            <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
+                            <div className="col col-2 mb2">
+                                <DataPricingTable >
+                                    {
+                                        props.billingInfos.products && 
+                                        Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  parseFloat(a.minQuantity) - parseFloat(b.minQuantity)).map((item) => {
+                                            return (
+                                                <DataPricingTableRow key={item.code}>
+                                                    <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
+                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{'$' + item.unitPrice + '/GB'}</Text></PriceCell>
+                                                </DataPricingTableRow>
+                                            )
+                                        })
+                                    }  
+                                </DataPricingTable>
+                            </div>
+                            <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
+                    </>
                 }
-                
-                <BorderStyle className="py1" />
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
-                <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
-                <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
-                <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
-                <div className="col col-2 mb2">
-                    <DataPricingTable >
-                        {
-                            props.billingInfos.products && 
-                            Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  parseFloat(a.minQuantity) - parseFloat(b.minQuantity)).map((item) => {
-                                return (
-                                    <DataPricingTableRow key={item.code}>
-                                        <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
-                                        <PriceCell><Text size={14}  weight="reg" color="gray-1">{'$' + item.unitPrice + '/GB'}</Text></PriceCell>
-                                    </DataPricingTableRow>
-                                )
-                            })
-                        }
-                        
-                        
-                    </DataPricingTable>
-                </div>
-                <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
-                
             </Card>
             <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
                 <Elements>    
@@ -234,42 +233,32 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         </Modal>
                     }            
 
-            {/* <CustomStepper 
-                opened={extrasModalOpened}
-                stepperHeader='Purchase Extras'
-                stepList={stepList}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                stepTitles={['Cart', 'Payment']}
-                lastStepButton="Purchase"
-                functionCancel={() => {setExtrasModalOpened(false)}}
-                stepperData={stepperExtraItem}
-                finalFunction={() => {submitExtra()}}
-                updateStepperData={(value: Extras) => {setStepperExtraItem(value)}}
-            /> */}
-            <CustomStepper 
-                opened={purchaseDataOpen}
-                stepperHeader="Purchase Data"
-                stepTitles={["Cart", "Payment"]}
-                stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                lastStepButton="Purchase"
-                finalFunction={threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}
-                stepperData={purchaseDataStepperData}
-                updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
-                functionCancel={setPurchaseDataOpen}
-                usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
-                isLoading={isLoading}
-            />
+            {
+                purchaseDataOpen && 
+                <CustomStepper 
+                    opened={purchaseDataOpen}
+                    stepperHeader="Purchase Data"
+                    stepTitles={["Cart", "Payment"]}
+                    stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
+                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
+                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
+                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    lastStepButton="Purchase"
+                    finalFunction={() => {}}
+                    stepperData={purchaseDataStepperData}
+                    updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
+                    functionCancel={setPurchaseDataOpen}
+                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                    isLoading={isLoading}
+                />
+            }
+            
             </Elements>
             </RecurlyProvider>
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <ModalContent>
                     <div className="mt1">
-                        <Text size={14} weight="reg">This means you won’t have any protection if you run out of data or stuff</Text>
+                        <Text size={14} weight="reg">If you disable Playback Protection then your content will no longer be viewable if you run out of data.</Text>
                     </div>
                     
                 </ModalContent>

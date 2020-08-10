@@ -6,7 +6,7 @@ import './datepicker_override.css';
 import { Text } from '../../Typography/Text'
 import moment from 'moment';
 
-export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOustsideDate?: boolean; className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
+export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?: moment.Moment; allowOustsideDate?: boolean; className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
 
     const [date, setDate] = React.useState<any>(props.date)
     const [focusedInput, setFocusedInput] = React.useState<boolean>(false)
@@ -15,11 +15,30 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
         setDate(props.date)
     }, [props.date])
 
+    React.useEffect(() => {
+        if(props.minDate && props.minDate.diff(props.date) > 0) {
+            setDate(props.minDate)
+        }
+    }, [props.minDate])
+
     const handleDateChange = (date: any) => {
         if (props.callback && date) {
             props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
         }
         setDate(date)
+    }
+
+    const handleOutsideRange = (day: any): boolean => {
+        let isDateOutOfRange: boolean = false
+        if(props.allowOustsideDate) {
+            return isDateOutOfRange
+        }
+        if(props.minDate) {
+            isDateOutOfRange = props.minDate.diff(day) > 0
+            return isDateOutOfRange
+        }
+        isDateOutOfRange = moment().diff(day) > 0
+        return isDateOutOfRange
     }
     
     return (
@@ -32,18 +51,15 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; allowOust
                         </div>
                 }
                 <SingleDatePicker
-                    placeholder='Select date'
+                    id={props.id + 'SingleDatePicker'}
                     showDefaultInputIcon
                     inputIconPosition='after'
-                    {...(props.allowOustsideDate ? {isOutsideRange: ()=> false} : {})}
                     date={date}
                     onDateChange={(date: any) => handleDateChange(date)}
                     focused={focusedInput}
                     onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
-                    id={props.id + "singleDatePicker"}
                     numberOfMonths={1}
-                    keepOpenOnDateSelect={false}
-                    openDirection={props.openDirection ? props.openDirection : 'down'}
+                    isOutsideRange={handleOutsideRange}
                 />
             </div>
         </div>

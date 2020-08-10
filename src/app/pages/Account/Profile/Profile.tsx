@@ -10,30 +10,20 @@ import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/M
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
-import { ProfilePageInfos } from '../../../redux-flow/store/Account/Profile/types';
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Bubble } from '../../../../components/Bubble/Bubble';
-import { initUserInfo } from '../../../utils/token';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
+import { ProfileComponentProps } from '../../../containers/Account/Profile';
 
 var moment = require('moment-timezone');
 
-interface ProfileComponentProps {
-    ProfilePageDetails: ProfilePageInfos;
-    getProfilePageDetails: Function;
-    saveProfilePageDetails: Function;
-    saveProfilePassword: Function;
-    showDiscardToast: Function;
-}
-
 export const ProfilePage = (props: ProfileComponentProps) => {
 
-
-    const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false);
-    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
+    const [passwordModalToggle, setPasswordModalToggle] = React.useState<boolean>(false)
+    const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     const [passwordModalErrorHidden, setPasswordModalErrorHidden] = React.useState<boolean>(true)
     const [currentPasswordVisible, setCurrentPasswordVisible] = React.useState<boolean>(false)
     const [newPasswordVisible, setNewPasswordVisible] = React.useState<boolean>(false)
@@ -50,10 +40,11 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const { dirty } = formState;
 
     const onSubmit = (data: any) => {
-        setSubmitLoading(true);
-        props.saveProfilePageDetails(data,() => {
-            setSubmitLoading(false);
-        });
+        setSubmitLoading(true)
+        props.saveProfilePageDetails(data).then(() => {
+            setSubmitLoading(false)
+            reset(data)
+        })
     }
 
     const handlePasswordSuccess = () => {
@@ -68,7 +59,12 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     }
 
     const onPasswordSubmit = () => {
-        props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword, handlePasswordSuccess, handlePasswordError)  
+        props.saveProfilePassword(getPasswordValues().currentPassword, getPasswordValues().newPassword)
+        .then(() => {
+            handlePasswordSuccess()
+        }).catch(() => {
+            handlePasswordError()
+        })  
     };
         
     const { register: registerPassword, handleSubmit: handleSubmitPassword, errors: errorsPassword, getValues: getPasswordValues } = useForm({
@@ -113,6 +109,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                         />
                         <Input
+                            disabled
                             type="email"
                             className="md-col md-col-6 p1"
                             id="newEmail"
@@ -168,16 +165,15 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
             </Card>
             {
-                dirty ?
+                dirty &&
                     <div>
                         <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'flexible', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
-                    : null
             }
 
             <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" modalTitle="Change Password">
-                {passwordModalToggle ?
+                {passwordModalToggle &&
                     <>
                         <ModalContent>
                             <form onSubmit={handleSubmitPassword(onPasswordSubmit)}>
@@ -232,7 +228,6 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             <Button sizeButton="large" onClick={() => {setPasswordModalToggle(false);setPasswordModalErrorHidden(true)}} typeButton="tertiary">Cancel</Button>
                         </ModalFooter>
                     </>
-                    : null
                 }
             </Modal>
             {/* Will do real prompt when connected to endpoint */}

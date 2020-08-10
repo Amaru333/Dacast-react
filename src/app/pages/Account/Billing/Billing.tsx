@@ -50,6 +50,7 @@ export const BillingPage = (props: BillingContainerProps) => {
     const creditCardTableHeaderElement = () => {
         return props.billingInfos.paymentMethod.type === "card" ? {data: [
             {cell: <Text  key={"creditCardTablePaymentType"} size={14}  weight="med" color="gray-1">Payment Type</Text>},
+            {cell: <Text  key={"creditCardTableCardType"} size={14}  weight="med" color="gray-1">Card Type</Text>},
             {cell: <Text  key={"creditCardTableCardHolder"} size={14}  weight="med" color="gray-1">Card Holder</Text>},
             {cell: <Text  key={"creditCardTableCardNumber"} size={14}  weight="med" color="gray-1">Card Number</Text>},
             {cell: <Text  key={"creditCardTableExpiry"} size={14}  weight="med" color="gray-1">Expiry</Text>},
@@ -66,9 +67,10 @@ export const BillingPage = (props: BillingContainerProps) => {
         if(props.billingInfos.paymentMethod.type === "card") {
             return [{data:[
                 <Text key={'creditCardTableCreditCard'} size={14}  weight="reg" color="gray-1">Credit Card</Text>,
+                <Text key={'creditCardTableCreditCard' + props.billingInfos.paymentMethod.cardType} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.cardType}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.paymentMethod.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.firstName} {props.billingInfos.paymentMethod.lastName}</Text>,
-                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.lastFour} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.lastFour}</Text>,
-                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.expiryMonth} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.expiryMonth + '/' + props.billingInfos.paymentMethod.expiryYear}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.lastFour} size={14}  weight="reg" color="gray-1">xxxx-xxxx-xxxx-{props.billingInfos.paymentMethod.lastFour}</Text>,
+                <Text key={'creditCardTable' + props.billingInfos.paymentMethod.expiryMonth} size={14}  weight="reg" color="gray-1">{("0" + props.billingInfos.paymentMethod.expiryMonth).slice(-2) + '/' + props.billingInfos.paymentMethod.expiryYear}</Text>,
                 <IconStyle key={'creditCardTableActive'} coloricon='green'>checked</IconStyle>,
                 <span key={'creditCardTableBodyEmptyCell'}></span>
             ]}

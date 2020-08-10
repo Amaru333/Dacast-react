@@ -89,9 +89,9 @@ export const deleteLiveChannelAction = (data: string): ThunkDispatch<Promise<voi
     };
 }
 
-export const getUploadUrlAction = (uploadType: string, liveId: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
+export const getUploadUrlAction = (uploadType: string, liveId: string, extension: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await LiveGeneralServices.getUploadUrl(uploadType, liveId)
+        await LiveGeneralServices.getUploadUrl(uploadType, liveId, extension)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: { id: liveId, data: response.data.data} })
             })

@@ -24,13 +24,20 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfo>(props.accountPlan)
     const [selectedPlan, setSelectedPlan] = React.useState<string>(props.accountPlan.name)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         setPlanData(props.accountPlan)
         console.log(planData)
     }, [props.accountPlan])
 
     const handleSubmit = () => {
-        props.saveAccountPlan(props.accountId, planData)
+        setButtonLoading(true)
+        props.saveAccountPlan(props.accountId, planData).then(() => {
+            setButtonLoading(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
         setOpenConfirmationModal(false)
     }
 
@@ -43,23 +50,23 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text size={14} weight="med">Annual Scale</Text>
                     <Button className='mb1' onClick={() => setShowSwitchPlan(true)} sizeButton='large' typeButton='primary' buttonColor='blue'>Switch</Button>
                 </div>
-                <Input className='my1 col col-2' id='uploadSizeInput' placeholder='100' label='Upload Size (GB)' defaultValue={props.accountPlan.uploadSize.toString()} onChange={(event) => setPlanData({...planData, uploadSize: parseInt(event.currentTarget.value)})} />
-                <Input className='my1 col col-2' id='itemLimitInput' placeholder='100' label='Item Limit' defaultValue={props.accountPlan.itemLimit.toString()} onChange={(event) => setPlanData({...planData, itemLimit: parseInt(event.currentTarget.value)})}  />
-                <Input className='my1 col col-2' id='folderDepthInput' placeholder='5' label='Folder Depth' defaultValue={props.accountPlan.folderDepth.toString()} onChange={(event) => setPlanData({...planData, folderDepth: parseInt(event.currentTarget.value)})}  />
-                <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditions.toString()} onChange={(event) => setPlanData({...planData, renditions: parseInt(event.currentTarget.value)})}  />
+                <Input className='my1 col col-2' id='uploadSizeInput' placeholder='100' label='Upload Size (GB)' defaultValue={props.accountPlan.uploadSize ? props.accountPlan.uploadSize.toString() : '0'} onChange={(event) => setPlanData({...planData, uploadSize: parseInt(event.currentTarget.value)})} />
+                <Input className='my1 col col-2' id='itemLimitInput' placeholder='100' label='Item Limit' defaultValue={props.accountPlan.itemLimit ? props.accountPlan.itemLimit.toString() : '0'} onChange={(event) => setPlanData({...planData, itemLimit: parseInt(event.currentTarget.value)})}  />
+                <Input className='my1 col col-2' id='folderDepthInput' placeholder='5' label='Folder Depth' defaultValue={props.accountPlan.folderDepth ? props.accountPlan.folderDepth.toString(): '0'} onChange={(event) => setPlanData({...planData, folderDepth: parseInt(event.currentTarget.value)})}  />
+                <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditions ? props.accountPlan.renditions.toString() : '0'} onChange={(event) => setPlanData({...planData, renditions: parseInt(event.currentTarget.value)})}  />
                 
                 <Text className='py1' size={14} weight='med'>Live Streams</Text>
                 <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.liveStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, liveStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.liveStreams})}} />
                 <Text className='py1' size={14} weight='med'>Compatible Streams</Text>
                 <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.compatibleStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, compatibleStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.compatibleStreams})}}  />
                 <Text className='py1' size={14} weight='med'>China Streams</Text>
-                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.chinaStremas ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, chinaStremas: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.chinaStremas})}}  />
+                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.chinaStreams ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, chinaStreams: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.chinaStreams})}}  />
                 <Text className='py1' size={14} weight='med'>DVR</Text>
                 <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.dvr ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, dvr: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.dvr})}}  />
                 <Text className='py1' size={14} weight='med'>Recording</Text>
                 <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
                 <Text className='py1' size={14} weight='med'>VOD</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.recording ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, recording: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.recording})}}  />
+                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.vod ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, vod: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.vod})}}  />
                 <Text className='py1' size={14} weight='med'>Folders</Text>
                 <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.folders ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => {setPlanData({...planData, folders: value === 'On' ? true : value === 'Off' ? false : props.accountPlan.folders})}}  />
                 <Text className='py1' size={14} weight='med'>Playlists</Text>
@@ -117,7 +124,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 SwitchPlanContent()
                 : EditPlanContent()
             }
-            <ConfirmationModal submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
+            <ConfirmationModal modalButtonLoading={buttonLoading} submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     ) 
 }

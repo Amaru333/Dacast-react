@@ -24,7 +24,7 @@ const defaultPromo: Promo = {
     assignedContentIds: []
 }
 
-export const PromoPresetsModal = (props: {action: Function; toggle: Function; promo: Promo}) => {
+export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; toggle: (b: boolean) => void; promo: Promo}) => {
 
     const initTimestampValues = (ts: number): {date: any; time: string} => {
         if(ts > 0 ) {
@@ -36,6 +36,10 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).date, time: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).time})
     const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).date, time: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).time})
+    const [startDateTime, setStartDateTime] = React.useState<string>(promoPreset.startDate > 0 ? 'Set Date and Time' : 'Always')
+    const [endDateTime, setEndDateTime] = React.useState<string>(promoPreset.endDate > 0 ? 'Set Date and Time' : 'Forever')
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    
     React.useEffect(() => {
         setPromoPreset(props.promo ? props.promo : defaultPromo);
     }, [props.promo])
@@ -51,6 +55,16 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
         setPromoPreset({...promoPreset, startDate: startDate, endDate: endDate})
     }, [promoPreset.timezone])
 
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.action(promoPreset).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
+    }
+
     return (
         <div>
             <div className='col col-12 mb2 clearfix'>
@@ -62,37 +76,49 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                 <Input className='col sm-col-3 col-6 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
                 <DropdownSingle id='promoPresetRateTypeDropdown' dropdownDefaultSelect={promoPreset.rateType}  className='col sm-col-6 col-12 sm-pl1' dropdownTitle='Rate Type' callback={(value: string) => setPromoPreset({...promoPreset, rateType: value})} list={{'Pay Per View': false, 'Subscription': false}} />
             </div>
-            <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper 
-                    date={moment(startDateTimeValue.date)} 
-                    callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
-                    className='col sm-col-6 col-8 pr1' 
-                    datepickerTitle='Promo Code Start Date' 
-                    id='promoCodeStartDate'
-                />
-                <Input 
-                    type='time' 
-                    label='Start Time' 
-                    value={startDateTimeValue.time} 
-                    className='col sm-col-3 col-4 pl1' 
-                    onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                />
+            <div className='col col-12 mb2 flex items-end'>
+                <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
+                    {startDateTime === "Set Date and Time" &&
+                        <>
+                            <DateSinglePickerWrapper
+                                date={moment(startDateTimeValue.date)}
+                                callback={(date: string) => { setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                                className='col col-6 md-col-4 mr2' />
+                            <Input
+                                type='time'
+                                defaultValue={startDateTimeValue.time}
+                                onChange={(event) =>{ setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                                className='col col-6 md-col-3'
+                                disabled={false}
+                                id='endTime'
+                                pattern="[0-9]{2}:[0-9]{2}"
+                                
+                            />
+                        </>
+                    }
             </div>
-            <div className='col col-12 mb2'>
-                <DateSinglePickerWrapper 
-                    date={moment(endDateTimeValue.date)}    
-                    callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
-                    className='col sm-col-6 col-8 pr1' 
-                    datepickerTitle='Promo Code End Date' 
-                    id='promoCodeEndDate'
-                />
-                <Input 
-                    type='time' 
-                    label='End Time' 
-                    value={endDateTimeValue.time} 
-                    className='col sm-col-3 col-4 pl1' 
-                    onChange={(event) =>{setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})} }
-                />
+            <div className='col col-12 mb2 flex items-end'>
+                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => {setEndDateTime(value)}} />
+
+                {
+                    endDateTime === "Set Date and Time" &&
+                    <>
+                        <DateSinglePickerWrapper
+                            date={moment(endDateTimeValue.date)}
+                            callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
+                            className='col col-4 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            defaultValue={endDateTimeValue.time}
+                            onChange={(event) => {setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
+                            className='col col-3 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
+                        />
+                    </>
+                }
             </div>
             <div className=' col col-12 mb25'>
                 <DropdownSingle 
@@ -109,7 +135,7 @@ export const PromoPresetsModal = (props: {action: Function; toggle: Function; pr
                 }
             </div>
             <div className='col col-12 mt1'>
-                <Button disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || Number.isNaN(promoPreset.limit)} onClick={() => {props.action(promoPreset);props.toggle(false)}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button isLoading={buttonLoading} disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || Number.isNaN(promoPreset.limit)} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

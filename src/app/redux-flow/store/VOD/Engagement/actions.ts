@@ -49,7 +49,7 @@ export const getVodEngagementSettingsAction = (vodId: string): ThunkDispatch<Pro
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetVodEngagementSettings> ) => {
         await vodEngagementServices.getVodEngagementSettings(vodId)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS, payload: {contentId: vodId, engagementSettings: response.data.data}} );
+                dispatch( {type: ActionTypes.GET_VOD_ENGAGEMENT_SETTINGS, payload: {contentId: vodId, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

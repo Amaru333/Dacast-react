@@ -32,7 +32,13 @@ const saveLiveDetailsService = async (data: LiveDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.put(process.env.API_BASE_URL + '/channels/' + data.id, 
-        {...data},
+        {
+            ...data,
+            countdown: {
+                ...data.countdown,
+                startTime: Math.floor(data.countdown.startTime / 1000)
+            }
+        },
         {
             headers: {
                 Authorization: token
@@ -53,12 +59,13 @@ const deleteLiveChannelService = async (data: string) => {
     )
 }
 
-const getUploadUrl = async (data: string, liveId: string) => {
+const getUploadUrl = async (data: string, liveId: string, extension: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
         {
-            liveID: liveId
+            liveID: liveId,
+            extension: extension
         },
         {
             headers: {

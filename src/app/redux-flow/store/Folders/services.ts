@@ -4,14 +4,11 @@ import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
 import { VodGeneralServices } from '../VOD/General/services';
 import { LiveGeneralServices } from '../Live/General/services';
 import { PlaylistListServices } from '../Playlists/List/services';
-import { bulkActionsService } from '../Common/bulkService';
-
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getFolderContent = async (qs: string) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/search/content' + (qs ? '?' + qs :'?status=online,offline,processing&page=1&per-page=10&content-types=channel,vod'), 
+    return await axios.get(process.env.API_BASE_URL + '/search/content' + (qs ? '?' + qs :'?status=online,offline,processing&page=1&per-page=10&content-types=channel,vod,playlist&sort-by=created-at-desc'), 
         {
             headers: {
                 Authorization: token

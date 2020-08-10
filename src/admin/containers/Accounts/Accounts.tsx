@@ -7,10 +7,12 @@ import { Action } from 'redux';
 import { getAccountsAction} from '../../redux-flow/store/Accounts/List/actions';
 import { Account } from '../../redux-flow/store/Accounts/List/types'
 import { useQuery } from '../../../utils/utils';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AccountsComponentProps {
     accounts: Account[] | false;
-    getAccounts: (accountId: string) => void;
+    getAccounts: (accountId: string) => Promise<void>;
 }
 
 const Accounts = (props: AccountsComponentProps) => {
@@ -26,7 +28,10 @@ const Accounts = (props: AccountsComponentProps) => {
     }, [])
 
     return (
+        props.accounts ? 
         <AccountsPage {...props} />
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+
     )
 }
 
@@ -38,8 +43,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccounts: (accountId: string) => {
-            dispatch(getAccountsAction(accountId));
+        getAccounts: async (accountId: string) => {
+            await dispatch(getAccountsAction(accountId));
         }
     };
 }

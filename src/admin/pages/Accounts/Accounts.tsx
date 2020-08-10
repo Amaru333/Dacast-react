@@ -15,6 +15,7 @@ import { DateTime } from 'luxon'
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     const [accountId, setAccountId] = React.useState<string>('')
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     let query = useHistory()
     let {url} = useRouteMatch()
 
@@ -66,6 +67,11 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         }
     }
 
+    const handleSubmit = () => {
+        query.push(location.pathname + '?accountId=' + accountId)
+        setContentLoading(true)
+        props.getAccounts(accountId).then(() => setContentLoading(false))
+    }
     return (
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
@@ -74,9 +80,9 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                     <div className={ accountId.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
                 </div>
-                <Button disabled={!accountId ? true : false} onClick={() => {props.getAccounts(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
-            <Table className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
+            <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
         </div>
     )

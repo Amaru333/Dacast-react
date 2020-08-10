@@ -12,7 +12,7 @@ export interface PlanInfo {
     renditions: number;
     liveStreams: boolean;
     compatibleStreams: boolean;
-    chinaStremas: boolean;
+    chinaStreams: boolean;
     dvr: boolean;
     recording: boolean;
     vod: boolean;

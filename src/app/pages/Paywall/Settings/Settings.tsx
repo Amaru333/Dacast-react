@@ -11,11 +11,22 @@ import { Prompt } from 'react-router';
 import { BorderStyle } from '../../Account/Company/CompanyStyle';
 
 export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
-    const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos);
+    const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos)
+    const [loadingSave, setLoadingSave] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setSettingsInfos(props.paywallSettingsInfos);
+        setSettingsInfos(props.paywallSettingsInfos)
     }, [props.paywallSettingsInfos])
+
+    const handleSubmit = () => {
+        setLoadingSave(true)
+        props.savePaywallSettingsInfos(settingsInfos)
+        .then(() => {
+            setLoadingSave(false)
+        }).catch(() => {
+            setLoadingSave(false)
+        })
+    }
 
     return (
         <div>
@@ -54,7 +65,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className="mt3 mb1">
                     <Text size={16} weight='med'>Custom Terms of Services</Text>
                 </div>
-                <Text size={14} weight='reg'>If you need viewers to accept your TOS, enter the URL here.</Text>
+                <Text size={14} weight='reg'>If you need viewers to accept your TOS, enter the URL (starting with https://) here.</Text>
                 <Input  className='col col-2 py1' id='CustomTOSUrl' placeholder='URL' label='Custom T.O.S URL' defaultValue={props.paywallSettingsInfos.customUrl} onChange={(event) => setSettingsInfos({...settingsInfos, customUrl: event.currentTarget.value})} />
                 
                 <BorderStyle className='mt2' />
@@ -62,16 +73,16 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
                 <div className="mt3 mb1">
                     <Text size={16} weight='med'>Card Statement</Text>
                 </div>
-                <Text size={14} weight='reg'>This is displayed on your viewers' bank statements</Text>
+                <Text size={14} weight='reg'>This is displayed on your viewers' bank statements.</Text>
                 <Input  className='col col-2 py1' id='banckStatement' placeholder='' label='Seller Name / Description' defaultValue={props.paywallSettingsInfos.bankStatement} onChange={(event) => setSettingsInfos({...settingsInfos, bankStatement: event.currentTarget.value})} />
             </Card>
-            { settingsInfos !== props.paywallSettingsInfos &&
+            { JSON.stringify(settingsInfos) !== JSON.stringify(props.paywallSettingsInfos) &&
                 <div>
-                    <Button disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {props.savePaywallSettingsInfos(settingsInfos)}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button isLoading={loadingSave} disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {handleSubmit()}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }
-            <Prompt when={settingsInfos !== props.paywallSettingsInfos} message='' />
+            <Prompt when={JSON.stringify(settingsInfos) !== JSON.stringify(props.paywallSettingsInfos) } message='' />
         </div>
     )
 }

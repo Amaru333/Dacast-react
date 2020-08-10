@@ -33,16 +33,28 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         return 'North America'
     }
 
+    const defaultStreamSetup: StreamSetupOptions = {
+        rewind: false, 
+        title: '', 
+        streamType: 'standard', 
+        region: handleLocaleCountry()
+    }
+
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
-    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>({rewind: false, title: '', streamType: null, region: handleLocaleCountry()})
+    const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
     }, [selectedStreamType])
 
+    React.useEffect(() => {
+        console.log(streamSetupOptions)
+    }, [streamSetupOptions])
+
     const handleCancel = () => {
-        setSelectedStreamType(null)
+        setStreamSetupOptions(defaultStreamSetup)
+        setSelectedStreamType('standard')
         props.toggle()
     }
 
@@ -83,6 +95,8 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             logAmplitudeEvent('create live stream');
             history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
+            setStreamSetupOptions(defaultStreamSetup)
+            setSelectedStreamType('standard')
         }).catch((error) => {
             setButtonLoading(false)
             showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
@@ -96,14 +110,14 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
                     <div className='col col-12 flex mb2 relative'> 
-                        <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' defaultValue={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
+                        <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' value={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
                         <div className='col col-6 pl1 flex' >
                             <DropdownSingle 
                                 dropdownTitle='Source Region' 
                                 className='col col-12' 
                                 id='channelRegionTypeDropdown' 
-                                dropdownDefaultSelect={handleLocaleCountry()}
+                                dropdownDefaultSelect={streamSetupOptions.region}
                                 list={{'Australia': false, 'Europe': false, 'North America': false}} 
                                 callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
                             />
@@ -152,14 +166,14 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                 </StreamTypeSelectorContainer>
 
-                {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
+                {/* {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
-                            <Toggle defaultChecked={streamSetupOptions.rewind ? true : false} onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
+                            <Toggle defaultChecked={streamSetupOptions.rewind ? true : false} checked={streamSetupOptions.rewind} onChange={() => { setStreamSetupOptions({ ...streamSetupOptions, rewind: !streamSetupOptions.rewind }) }} label="30 Minute Rewind" />
                         </div>
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
-                    </div>}
+                    </div>} */}
 
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>

@@ -25,34 +25,47 @@ const defaultPromo: GroupPromo = {
 }
 
 export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
-    const initTimestampValues = (ts: number): {date: any; time: string} => {
+    const initTimestampValues = (ts: number, timezone: string): {date: any; time: string} => {
+        console.log(ts)
         if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
+            return {date: moment(ts * 1000).tz(timezone).utc().format('YYYY-MM-DD'), time: moment(ts * 1000).tz(timezone).utc().format('HH:mm')}
         } 
-        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+        return {date: moment().format('YYYY-MM-DD'), time: '00:00'}
     }
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? props.groupPromo : defaultPromo);
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.groupPromo ? props.groupPromo.startDate : defaultPromo.startDate).date, time: initTimestampValues(props.groupPromo ? props.groupPromo.startDate : defaultPromo.startDate).time})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.groupPromo ? props.groupPromo.endDate : defaultPromo.endDate).date, time: initTimestampValues(props.groupPromo ? props.groupPromo.endDate : defaultPromo.endDate).time})
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'Etc/UTC'} : defaultPromo);
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({...initTimestampValues(props.groupPromo ? props.groupPromo.startDate : defaultPromo.startDate, 'Etc/UTC')})
+    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({...initTimestampValues(props.groupPromo ? props.groupPromo.endDate : defaultPromo.endDate, 'Etc/UTC')})
+    const [startDateTime, setStartDateTime] = React.useState<string>(groupPromo.startDate > 0 ? 'Set Date and Time' : 'Always')
+    const [endDateTime, setEndDateTime] = React.useState<string>(groupPromo.endDate > 0 ? 'Set Date and Time' : 'Forever')
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    
     React.useEffect(() => {
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
     }, [props.groupPromo])
-
+    const [modalValid, setModalValid] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${groupPromo.timezone}`).utc().valueOf()
-        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${groupPromo.timezone}`).utc().valueOf()
-        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
-        setEndDateTimeValue({date: initTimestampValues(endDate).date, time: initTimestampValues(endDate).time})
+        setModalValid((groupPromo.alphanumericCode && groupPromo.alphanumericCode.length > 4) && (groupPromo.discount && groupPromo.discount !== null) && (groupPromo.limit && groupPromo.limit !== null) && (groupPromo.assignedGroupIds.length > 0)) 
+    }, [groupPromo])
+    
+    React.useEffect(() => {
+        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${groupPromo.timezone}`).valueOf()
+        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${groupPromo.timezone}`).valueOf()
+        setStartDateTimeValue({...initTimestampValues(startDate, groupPromo.timezone ? groupPromo.timezone : 'Etc/UTC')})
+        setEndDateTimeValue({...initTimestampValues(endDate, groupPromo.timezone ? groupPromo.timezone : 'Etc/UTC')})
         setGroupPromo({...groupPromo, startDate: startDate, endDate: endDate})
+        debugger
     }, [groupPromo.timezone])
 
     const handleSubmit = () => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${groupPromo.timezone}`).valueOf()
-        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${groupPromo.timezone}`).valueOf()
-        props.action({...groupPromo, startDate: startDate, endDate: endDate})
-        props.toggle(false)
+        setButtonLoading(true)
+        let startDate = startDateTime === 'Set Date and Time' ? moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `Etc/UTC`).valueOf() : 0
+        let endDate = endDateTime === 'Set Date and Time' ? moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `Etc/UTC`).valueOf() : 0
+        props.action({...groupPromo, startDate: startDate, endDate: endDate}).then(() => {
+            props.toggle(false)
+            setButtonLoading(false)
+        })
     }
 
     return (
@@ -77,38 +90,48 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateSinglePickerWrapper 
-                    date={moment(startDateTimeValue.date)} 
-                    callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
-                    openDirection="up" 
-                    className='col col-6 pr2' 
-                    datepickerTitle='Promo Code Start Date' 
-                    id='promoCodeStartDate'
-                />
-                <Input 
-                    type='time' 
-                    label='Start Time' 
-                    value={startDateTimeValue.time} 
-                    className='col sm-col-3 col-6' 
-                    onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                />
+                <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
+                {startDateTime === "Set Date and Time" &&
+                    <>
+                        <DateSinglePickerWrapper
+                            date={moment(startDateTimeValue.date)}
+                            callback={(date: string) => { setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                            className='col col-6 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            value={startDateTimeValue.time}
+                            onChange={(event) =>{ setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                            className='col col-6 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
+                        />
+                    </>
+                }
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateSinglePickerWrapper 
-                    date={moment(endDateTimeValue.date)}    
-                    callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
-                    openDirection="up" 
-                    className='col col-6 pr2' 
-                    datepickerTitle='Promo Code End Date'
-                    id='promoCodeEndDate'
-                />
-                <Input 
-                    type='time' 
-                    label='End Time' 
-                    value={endDateTimeValue.time} 
-                    className='col sm-col-3 col-6' 
-                    onChange={(event) =>{setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})} }
-                />
+                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => {setEndDateTime(value)}} />
+
+                {
+                    endDateTime === "Set Date and Time" &&
+                    <>
+                        <DateSinglePickerWrapper
+                            date={moment(endDateTimeValue.date)}
+                            callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
+                            className='col col-4 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            value={endDateTimeValue.time}
+                            onChange={(event) => {setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
+                            className='col col-3 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
+                        />
+                    </>
+                }
             </GroupPromoDateContainer>
             <div className=' col col-12 mb2'>
                 <DropdownSingle 
@@ -126,7 +149,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 }
             </div>
             <div className='col col-12 py2'>
-                <Button onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

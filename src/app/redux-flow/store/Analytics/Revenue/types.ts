@@ -1,4 +1,5 @@
 export enum ActionTypes {
+    GET_ANALYTICS_REVENUE = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE",
     GET_ANALYTICS_REVENUE_SALES_BY_TIME = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_SALES_BY_TIME",
     GET_ANALYTICS_REVENUE_REVENUE_BY_TIME = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_REVENUE_BY_TIME",
     GET_ANALYTICS_REVENUE_SALES_PER_COUNTRY = "@@ANALYTICSREVENUE/GET_ANALYTICS_REVENUE_SALES_PER_COUNTRY",
@@ -32,15 +33,16 @@ export interface AnalyticsRevenueSalesPerCountry {
 };
 
 export const AnalyticsRevenueInitialState: AnalyticsRevenueState = {
-    data: {
-        salesByTime: false,
-        revenueByTime: false,
-        salesPerCountry: false
-    },
+    data: false
+    // data: {
+    //     salesByTime: false,
+    //     revenueByTime: false,
+    //     salesPerCountry: false
+    // },
 };
 
 export interface AnalyticsRevenueState {
-    readonly data: AnalyticsRevenueInfos;
+    readonly data: AnalyticsRevenueInfos | false;
 }
 
 export interface GetAnalyticsRevenueOptions {

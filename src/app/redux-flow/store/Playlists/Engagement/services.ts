@@ -65,7 +65,7 @@ const uploadFile = (data: File, uploadUrl: string) => {
 const deletePlaylistAd = async (data: Ad[], adsId: string, playlistId: string) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/engagement/brand-image',
+    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/engagement/ads',
         {
             headers: {
                 Authorization: token

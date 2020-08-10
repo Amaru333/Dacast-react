@@ -4,25 +4,28 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getPlaylistEngagementSettingsAction, Action, savePlaylistEngagementSettingsAction, savePlaylistAdAction, createPlaylistAdAction, deletePlaylistAdAction, getUploadUrlAction, uploadPlaylistImageAction, deletePlaylistImageAction } from '../../redux-flow/store/Playlists/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
+import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
 
 export interface PlaylistEngagementComponentProps {
     playlistEngagementSettingsState: ContentEngagementSettingsState;
-    getPlaylistEngagementSettings: Function;
-    savePlaylistEngagementSettings: Function;
-    savePlaylistAd: Function;
-    createPlaylistAd: Function;
-    deletePlaylistAd: Function;
-    showToast: Function;
-    getUploadUrl: Function;
-    uploadPlaylistImage: Function;
-    deletePlaylistImage: Function;
+    getPlaylistEngagementSettings: (playlistId: string) => Promise<void>;
+    savePlaylistEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
+    savePlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    createPlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    deletePlaylistAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    uploadPlaylistImage: (data: File, uploadUrl: string) => Promise<void>;
+    deletePlaylistImage: (targetId: string) => Promise<void>;
+    globalEngagementSettings: InteractionsInfos;
+    getGlobalEngagementSettings: () => Promise<void>;
 }
 
 export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
@@ -33,13 +36,16 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
         if (!props.playlistEngagementSettingsState) {
             props.getPlaylistEngagementSettings(playlistId);
         }
+        if (!props.globalEngagementSettings){
+            props.getGlobalEngagementSettings()
+        }
     }, []);
 
     return (
 
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            {props.playlistEngagementSettingsState ?
+            {props.playlistEngagementSettingsState  && props.globalEngagementSettings ?
                 <div className='flex flex-column'>
                     <ContentEngagementPage 
                         contentEngagementSettings={props.playlistEngagementSettingsState[playlistId]}
@@ -53,6 +59,7 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
                         deleteContentImage={props.deletePlaylistImage}
                         contentType='playlist'
                         contentId={playlistId}
+                        globalEngagementSettings={props.globalEngagementSettings}
                     />            
                 </div>
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
@@ -63,38 +70,42 @@ export const PlaylistEngagement = (props: PlaylistEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistEngagementSettingsState: state.playlist.engagement
+        playlistEngagementSettingsState: state.playlist.engagement,
+        globalEngagementSettings: state.settings.interactions
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistEngagementSettings: (playlistId: string) => {
-            dispatch(getPlaylistEngagementSettingsAction(playlistId));
+        getGlobalEngagementSettings: async () => {
+            await dispatch(getSettingsInteractionsInfosAction());
         },
-        savePlaylistEngagementSettings: (data: ContentEngagementSettings, callback?: Function) => {
-            dispatch(savePlaylistEngagementSettingsAction(data)).then(callback)
+        getPlaylistEngagementSettings: async (playlistId: string) => {
+            await dispatch(getPlaylistEngagementSettingsAction(playlistId));
         },
-        savePlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
-            dispatch(savePlaylistAdAction(data, adsId, playlistId)).then(callback)
+        savePlaylistEngagementSettings: async (data: ContentEngagementSettings) => {
+            await dispatch(savePlaylistEngagementSettingsAction(data))
         },
-        createPlaylistAd: (data: Ad[], adsId: string, playlistId: string, callback?: Function) => {
-            dispatch(createPlaylistAdAction(data, adsId, playlistId)).then(callback)
+        savePlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(savePlaylistAdAction(data, adsId, playlistId))
         },
-        deletePlaylistAd: (data: Ad[], adsId: string, playlistId: string) => {
-            dispatch(deletePlaylistAdAction(data, adsId, playlistId))
+        createPlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(createPlaylistAdAction(data, adsId, playlistId))
+        },
+        deletePlaylistAd: async (data: Ad[], adsId: string, playlistId: string) => {
+            await dispatch(deletePlaylistAdAction(data, adsId, playlistId))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        getUploadUrl: (uploadType: string, playlistId: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, playlistId)).then(callback)
+        getUploadUrl: async (uploadType: string, playlistId: string) => {
+            await dispatch(getUploadUrlAction(uploadType, playlistId))
         },
-        uploadPlaylistImage: (data: File, uploadUrl: string) => {
-            dispatch(uploadPlaylistImageAction(data, uploadUrl))
+        uploadPlaylistImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadPlaylistImageAction(data, uploadUrl))
         },
-        deletePlaylistImage: (targetId: string) => {
-            dispatch(deletePlaylistImageAction(targetId))
+        deletePlaylistImage: async (targetId: string) => {
+            await dispatch(deletePlaylistImageAction(targetId))
         }
     };
 }

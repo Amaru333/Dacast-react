@@ -13,13 +13,13 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface PayoutComponentProps {
     payoutInfos: PayoutInfos;
-    getPaymentMethods: Function;
-    getWithdrawalRequests: Function;
-    addPaymentMethod: Function;
-    updatePaymentMethod: Function;
-    deletePaymentMethod: Function;
-    addWithdrawalRequest: Function;
-    showToast: Function;
+    getPaymentMethods: () => Promise<void>;
+    getWithdrawalRequests: () => Promise<void>;
+    addPaymentMethod: (data: PaymentMethod) => Promise<void>;
+    updatePaymentMethod: (data: PaymentMethod) => Promise<void>;
+    deletePaymentMethod: (data: PaymentMethod) => Promise<void>;
+    addWithdrawalRequest: (data: WithdrawalRequest) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 
@@ -47,23 +47,23 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPaymentMethods: () => {
-            dispatch(getPaymentMethodsAction());
+        getPaymentMethods: async () => {
+            await dispatch(getPaymentMethodsAction())
         },
-        getWithdrawalRequests: () => {
-            dispatch(getWithdrawalRequestsAction())
+        getWithdrawalRequests: async () => {
+            await dispatch(getWithdrawalRequestsAction())
         },
-        addPaymentMethod: (data: PaymentMethod) => {
-            dispatch(addPaymentMethodAction(data));
+        addPaymentMethod: async (data: PaymentMethod) => {
+            await dispatch(addPaymentMethodAction(data));
         },
-        updatePaymentMethod: (data: PaymentMethod) => {
-            dispatch(updatePaymentMethodAction(data));
+        updatePaymentMethod: async (data: PaymentMethod) => {
+            await dispatch(updatePaymentMethodAction(data));
         },
-        deletePaymentMethod: (data: PaymentMethod) => {
-            dispatch(deletePaymentMethodAction(data));
+        deletePaymentMethod: async (data: PaymentMethod) => {
+            await dispatch(deletePaymentMethodAction(data));
         },
-        addWithdrawalRequest: (data: WithdrawalRequest) => {
-            dispatch(addWithdrawalRequestAction(data));
+        addWithdrawalRequest: async (data: WithdrawalRequest) => {
+            await dispatch(addWithdrawalRequestAction(data));
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

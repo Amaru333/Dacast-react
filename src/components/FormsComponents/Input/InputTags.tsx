@@ -50,13 +50,13 @@ export const InputTags = (props: TagProps) => {
 
     return (
         <ContainerStyle style={style} className={className} >
-            {label ? <LabelStyle disabled={props.disabled ? true : false} > <Text color={props.disabled && !props.greyBackground ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle> : null}
+            {label && <LabelStyle disabled={props.disabled ? true : false} > <Text color={props.disabled && !props.greyBackground ? "gray-4" : "gray-1" } size={14} weight="med" > {props.label} </Text> </LabelStyle>}
             <TagsContainer greyBackground={props.greyBackground} noBorder={noBorder}>
                 <TagsWrapper>
                     <TagListStyle>
                         { tags.map((tag, i) => (
                             <TagStyle id={tag} key={tag}>
-                                <Text size={14} weight="reg">
+                                <Text style={{maxWidth: "90%"}} size={14} weight="reg">
                                     <TagTextStyle>{tag}</TagTextStyle>
                                 </Text>
                                 <Tooltip target={tag}>
@@ -75,7 +75,7 @@ export const InputTags = (props: TagProps) => {
                             props.oneTag && tags.length === 1 ?
                                 null
                                 :
-                                <li>
+                                <li style={{width: "100%"}}>
                                     <TagsInputStyle isError={isError} onKeyDown={inputKeyDown} ref={inputRef } {...other} />
                                 </li>
                         }

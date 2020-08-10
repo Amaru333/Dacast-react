@@ -76,6 +76,10 @@ export const SetupPage = (props: SetupComponentProps) => {
 
     }
 
+    React.useEffect(() => {
+        console.log('checked content', checkedContents)
+    }, [checkedContents])
+
     React.useEffect(() => { 
         setDropdownIsOpened(false); 
         props.getFolderContent(parseFiltersToQueryString())
@@ -166,17 +170,22 @@ export const SetupPage = (props: SetupComponentProps) => {
     }
 
     const handleRemoveFromSelected = () => {
-        var newSelectedItems = selectedItems.filter(el => {
-            return !checkedSelectedItems.find(elChecked => {
-                if( (el as FolderAsset).type) {
-                    return el.objectID === elChecked.objectID;
-                } else {
-                    return el.id === el.id;
-                }
-            })
-        });
-        setSelectedItems(newSelectedItems);
-        setCheckedSelectedItems([]);
+        if(selectedTab === 'folder') {
+            setCheckedSelectedItems([]);
+            setSelectedItems([]);
+        } else {
+            var newSelectedItems = selectedItems.filter(el => {
+                return !checkedSelectedItems.find(elChecked => {
+                    if( (el as FolderAsset).type) {
+                        return el.objectID === elChecked.objectID;
+                    } else {
+                        return el.id === el.id;
+                    }
+                })
+            });
+            setSelectedItems(newSelectedItems);
+            setCheckedSelectedItems([]);
+        }   
     }
 
     /** LOADING FOLDERS USING FOLDER SERVICE */
@@ -232,30 +241,31 @@ export const SetupPage = (props: SetupComponentProps) => {
     /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
+        console.log(props.folderData.requestedContent.results)
         return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
             if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    selected={checkedContents.includes(row)}
+                    selected={checkedContents.some(item => item.objectID ===row.objectID)}
                     onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
-                    {row.type !== "folder" ?
+                    {row.type !== "folder" &&
                         <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckboxTab'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
-                            defaultChecked={checkedContents.includes(row)}
+                            checked={checkedContents.some(item => item.objectID ===row.objectID)}
+                            defaultChecked={checkedContents.some(item => item.objectID ===row.objectID)}
 
                         />
-                        : null}
+                    }
                     {handleRowIconType(row)}
                     <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
-                        row.type === "folder" ?
+                        row.type === "folder" &&
                             <div className="flex-auto justify-end">
                                 <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
-                            : null
                     }
                 </ItemSetupRow>
             )
@@ -283,10 +293,14 @@ export const SetupPage = (props: SetupComponentProps) => {
         return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
-                        defaultChecked={checkedSelectedItems.includes(element)}
-                        onChange={() => handleCheckboxSelected(element)}
-                    />
+                    {
+                        selectedTab !== 'folder' && 
+                        <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
+                            defaultChecked={checkedSelectedItems.includes(element)}
+                            onChange={() => handleCheckboxSelected(element)}
+                        />
+                    }
+                    
                     {handleRowIconType(element)}
                     <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                     {
@@ -322,7 +336,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
         newData.playlistType = selectedTab;
-        newData.sortType = sortSettings.value
+        newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
         props.savePlaylistSetup(newData, props.playlistData.id, () => {
             setSaveLoading(false)
         })
@@ -333,6 +347,7 @@ export const SetupPage = (props: SetupComponentProps) => {
         setSelectedTab(selectedTab === "content" ? 'folder' : 'content');
         props.getFolderContent(null) 
         setSelectedItems([]);
+        setSearchString(null)
     }
 
     const bulkActions = [
@@ -368,7 +383,7 @@ export const SetupPage = (props: SetupComponentProps) => {
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
                 </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div>
@@ -420,7 +435,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
             <div>
-                <Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>
+                {/**<Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>**/}
                 <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
             {

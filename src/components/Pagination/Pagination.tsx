@@ -17,13 +17,22 @@ export const Pagination = (props: PaginationProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [displayedOptions, setDisplayedOptions] = React.useState<number>(props.defaultDisplayedOption ? props.defaultDisplayedOption : props.displayedItemsOptions[0]);
+    const [flag, setFlag] = React.useState<boolean>(false)
 
     const lastPage = Math.ceil(props.totalResults / displayedOptions)
     
     let smallScreen = useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
-        props.callback(currentPage, displayedOptions)
+        if(!flag) {
+            setFlag(true)
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if(flag) {
+            props.callback(currentPage, displayedOptions)
+        }
     }, [currentPage, displayedOptions])
 
     const renderPaginationButtons = () => {

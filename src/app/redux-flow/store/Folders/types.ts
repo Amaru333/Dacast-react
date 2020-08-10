@@ -14,7 +14,8 @@ export enum ActionTypes {
 export interface ContentType {
     id: string;
     type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition';
-    fullPath?: string
+    fullPath?: string;
+    name?: string;
 }
 export interface SubFolder {
     [childPath: string]: FolderTreeNode;

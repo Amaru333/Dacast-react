@@ -10,19 +10,19 @@ import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/
 
 export interface PaywallThemingComponentProps {
     paywallThemes: PaywallThemingData;
-    getPaywallThemes: Function;
-    savePaywallTheme: Function;
-    createPaywallTheme: Function;
-    deletePaywallTheme: Function;
     companyState: CompanyPageInfos;
-    getCompanyState: Function;
+    getPaywallThemes: () => Promise<void>;
+    savePaywallTheme: (data: PaywallTheme) => Promise<void>;
+    createPaywallTheme: (data: PaywallTheme) => Promise<void>;
+    deletePaywallTheme: (data: PaywallTheme) => Promise<void>;
+    getCompanyState: () => Promise<void>;
 }
 
 const PaywallTheming = (props: PaywallThemingComponentProps) => {
 
     React.useEffect(() => {
         if(!props.paywallThemes) {
-            props.getPaywallThemes();
+            props.getPaywallThemes()
         }
         if(!props.companyState) {
             props.getCompanyState()
@@ -30,7 +30,7 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
     }, [])
 
     return (
-        props.paywallThemes && props.companyState?
+        props.paywallThemes && props.companyState ?
             <PaywallThemingPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -45,20 +45,20 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPaywallThemes: () => {
-            dispatch(getPaywallThemesAction());
+        getPaywallThemes: async () => {
+            await dispatch(getPaywallThemesAction())
         },
-        savePaywallTheme: (data: PaywallTheme) => {
-            dispatch(savePaywallThemeAction(data));
+        savePaywallTheme: async (data: PaywallTheme) => {
+            await dispatch(savePaywallThemeAction(data))
         },
-        createPaywallTheme: (data: PaywallTheme) => {
-            dispatch(createPaywallThemeAction(data));
+        createPaywallTheme: async (data: PaywallTheme) => {
+            await dispatch(createPaywallThemeAction(data))
         },
-        deletePaywallTheme: (data: PaywallTheme) => {
-            dispatch(deletePaywallThemeAction(data));
+        deletePaywallTheme: async (data: PaywallTheme) => {
+            await dispatch(deletePaywallThemeAction(data))
         },
-        getCompanyState: () => {
-            dispatch(getCompanyPageDetailsAction());
+        getCompanyState: async () => {
+            await dispatch(getCompanyPageDetailsAction())
         },
     }
 }

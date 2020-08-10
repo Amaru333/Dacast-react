@@ -8,7 +8,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
 import { addTokenToHeader } from '../../utils/token';
 
-export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; uploadedImageFiles: any; setUploadedImageFiles: Function; uploadFromVideoAction?: Function}) => {
+export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
     
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
@@ -17,7 +17,6 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
-    const [tempUploadedFiles, setTempUploadedFiles] = React.useState<any>(props.uploadedImageFiles)
     const [uploadType, setUploadType] = React.useState<string>(null)
 
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -65,35 +64,30 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     const handleSubmit = async () => {
         if(!saveButtonLoading && !isSaveDisabled) {
-            props.setUploadedImageFiles(tempUploadedFiles)
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                props.getUploadUrl(props.imageType, props.contentId, () => {setSaveButtonLoading(false)})
+                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], () => {})
             } else {
-                props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType, () => {setSaveButtonLoading(false);props.toggle()})
+                props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType).then(() => {
+                    props.getContentDetails(props.contentId)
+                    setSaveButtonLoading(false)
+                    props.toggle()
+                }, 3000)
             }    
         }
     }
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType)
-            props.toggle()
+            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType).then(() => {
+                setTimeout(() => {
+                    props.getContentDetails(props.contentId)
+                    setSaveButtonLoading(false)
+                    props.toggle()
+                }, 3000)
+            })
         }
     }, [props.uploadUrl, saveButtonLoading])
-
-    const handleTempImage = (modalTitle: string, reader: FileReader) => {
-        switch (modalTitle) {
-            case 'Change Splashscreen':
-                setTempUploadedFiles({...tempUploadedFiles, splashscreen: reader.result})
-                break;
-            case 'Change Thumbnail':
-                setTempUploadedFiles({...tempUploadedFiles, thumbnail: reader.result})
-                break;
-            case 'Change Poster':
-                setTempUploadedFiles({...tempUploadedFiles, poster: reader.result});
-        }
-    }
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -108,7 +102,6 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                 if(acceptedRatio) {
                     setLogoFile(file[0])
                     setFileName(file[0].name)
-                    handleTempImage(props.title, reader)
                 }
             }
             reader.readAsDataURL(file[0])          
@@ -141,8 +134,8 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 Upload File
                             </Button>
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                            { !logoFile ? null : 
-                                <ThumbnailFile className="col col-6 mt1">
+                            { logoFile &&
+                                <ThumbnailFile className="col mt1">
                                     <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
@@ -157,7 +150,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
                         <div className="col col-12">
                             <PlayerSection className='col col-12 mr2 mb1'>
-                                <PlayerContainer className="col col-12 mx2 my2">
+                                <PlayerContainer>
                                     <div ref={playerRef}>
                                     </div>
                                 </PlayerContainer>
@@ -179,8 +172,8 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                             Upload File
                         </Button>
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
-                        { !logoFile ? null : 
-                            <ThumbnailFile className="col col-6 mt1">
+                        { logoFile &&
+                            <ThumbnailFile className="col mt1">
                                 <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
@@ -232,9 +225,11 @@ export const PlayerSection = styled.div`
 `
 
 export const PlayerContainer = styled.div`
-    width: 94%;
-    height: 341px;
+    width: 95%;
+    height: 100%;
+    min-height: 341px;
     position: relative;
+    margin: 16px auto;
 `
 
 export const ButtonsArea = styled.div`
