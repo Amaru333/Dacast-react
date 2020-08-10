@@ -14,7 +14,6 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { PaywallBulkForm, DeleteBulkForm, OnlineBulkForm, ThemeBulkForm } from '../../Playlist/List/BulkModals';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { ThemesData } from '../../../redux-flow/store/Settings/Theming';
 import { handleFeatures } from '../../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
@@ -22,20 +21,10 @@ import { emptyContentListHeader, emptyContentListBody } from '../../../shared/Li
 import { Modal } from '../../../../components/Modal/Modal';
 import { MoveItemModal } from '../../Folders/MoveItemsModal';
 import { FolderTree, rootNode } from '../../../utils/folderService';
-import { FolderTreeNode, ContentType } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode } from '../../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../Folders/NewFolderModal';
-import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
-import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
 import { DeleteContentModal } from '../../../shared/List/DeleteContentModal';
-
-export interface VideosListProps {
-    items: SearchResult;
-    themesList: ThemesData;
-    getVodList: Function;
-    deleteVodList: Function;
-    getThemesList: Function;
-    showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => void;
-}
+import { VideosListProps } from '../../../containers/Videos/VideosList';
 
 export const VideosListPage = (props: VideosListProps) => {
 
@@ -58,12 +47,41 @@ export const VideosListPage = (props: VideosListProps) => {
     const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
     const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [fetchContent, setFetchContent] = React.useState<boolean>(false)
+    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
+    const [vodList, setVodList] = React.useState<SearchResult>(props.items)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
     React.useEffect(() => {
         foldersTree.initTree()
     }, [])
+
+    React.useEffect(() => {
+        setVodList(props.items)
+    }, [props.items])
+
+    React.useEffect(() => {
+        if(selectedVod.length > 0) {
+            setVodList({
+                ...vodList, 
+                results: vodList.results.map((item) => {
+                    if(selectedVod.indexOf(item.objectID) > -1) {
+                        return {
+                            ...item,
+                            status: updateList !== 'paywall' ? updateList : item.status,
+                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? {...item.featuresList, paywall: false} : item.featuresList
+                        }
+                    }
+                    return {
+                        ...item
+                    }
+
+                })
+            })
+        }
+        setSelectedVod([])
+    }, [updateList])
 
 
     const parseFiltersToQueryString = (filters: FilteringVodState) => {
@@ -99,23 +117,26 @@ export const VideosListPage = (props: VideosListProps) => {
         if(returnedString.indexOf('status') === -1) {
             returnedString += 'status=online,offline,processing'
         }
+        if(!fetchContent) {
+            setFetchContent(true)
+        }
         return returnedString
 
     }
 
     React.useEffect(() => {
-        if(!deleteContentModalOpened && !bulkOnlineOpen && !bulkDeleteOpen && !bulkPaywallOpen && !contentLoading) {
+        if(fetchContent) {
             setContentLoading(true)
-            setTimeout(() => {
-                props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
-                    setContentLoading(false)
-                }).catch(() => {
-                    setContentLoading(false)
-                })  
-            }, 5000)
+            props.getVodList(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+                setFetchContent(false)
 
+            }).catch(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            })  
         }
-    }, [selectedFilters, searchString, paginationInfo, sort, deleteContentModalOpened, bulkOnlineOpen, bulkDeleteOpen, bulkPaywallOpen])
+    }, [fetchContent])
 
     useOutsideAlerter(bulkDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
@@ -144,10 +165,10 @@ export const VideosListPage = (props: VideosListProps) => {
     const vodListHeaderElement = () => {
         return {
             data: [
-                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < props.items.results.length} defaultChecked={selectedVod.length === props.items.results.length} id="globalCheckboxVodList"
+                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxVodListBulkAction" indeterminate={selectedVod.length >= 1 && selectedVod.length < vodList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedVod.length === vodList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxVodList"
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
-                            const editedSelectedVod = props.items.results.map(item => { return item.objectID })
+                            const editedSelectedVod = vodList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
                             setSelectedVod(editedSelectedVod);
                         } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                             setSelectedVod([])
@@ -163,52 +184,55 @@ export const VideosListPage = (props: VideosListProps) => {
                 {cell: <div style={{ width: "80px" }} ></div>},
             ], 
             defaultSort: 'created-at',
-            sortCallback: (value: string) => setSort(value)
+            sortCallback: (value: string) => {setSort(value); if(!fetchContent) { setFetchContent(true)}}
         }
     }
 
     const vodListBodyElement = () => {
-        if (props.items) {
-            return props.items.results.map((value) => {
-                return {data: [
-                    <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'>
-                        <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedVod.includes(value.objectID)} id={"checkboxVod" + value.objectID.toString()} onChange={(event) => {
-                            if (event.currentTarget.checked && selectedVod.length < props.items.totalResults) {
-                                setSelectedVod([...selectedVod, value.objectID])
-                            } else {
-                                const editedSelectedVod = selectedVod.filter(item => item !== value.objectID)
-                                setSelectedVod(editedSelectedVod);
+        if (vodList) {
+            return vodList.results.map((value) => {
+                return {
+                    data: [
+                        <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
+                            <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedVod.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                                if (event.currentTarget.checked && selectedVod.length < vodList.results.length) {
+                                    setSelectedVod([...selectedVod, value.objectID])
+                                } else {
+                                    const editedselectedLive = selectedVod.filter(item => item !== value.objectID)
+                                    setSelectedVod(editedselectedLive);
+                                }
                             }
-                        }
-                        } />
-                        {
-                            value.thumbnail ? 
-                                <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
-                                :
-                                <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
-                                    <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                                </div>
-                        }                    
-                    </div>,
-                    <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                    <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                    // NOT V1 <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views}</Text>,
-                    <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{renderStatusLabel(value.status)}</Text>,
-                    <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID.toString()) : null}</div>,
-                    <div key={"more" + value.objectID} className="iconAction right mr2" >
-                        <ActionIcon id={"deleteTooltip" + value.objectID}>
-                            <IconStyle onClick={() => { setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true) }} className="right mr1" >delete</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
-                        <ActionIcon id={"editTooltip" + value.objectID}>
-                            <IconStyle onClick={() => {history.push('/videos/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>  
-                    </div>,
-                ], 
-                callback: (value: VodItem) => { },
-                callbackData: value
+                            } />
+                            {
+                                value.thumbnail ? 
+                                    <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                    :
+                                    <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
+                                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                    </div>
+                            }
+                        </div>,
+                        <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
+                        <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        value.status !== 'deleted' ?
+                            <div key={"more" + value.objectID} className="iconAction right mr2" >
+                            <ActionIcon id={"editTooltip" + value.objectID}>
+                                <IconStyle onClick={() => {history.push('/livestreams/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
+                            <ActionIcon id={"deleteTooltip" + value.objectID}>
+                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
+                            </div>
+                        : <span></span>
+
+                    ],
+                    isSelected: selectedVod.includes(value.objectID),
+                    isDisabled: value.status === 'deleted'
                 }
             })
         }
@@ -229,37 +253,12 @@ export const VideosListPage = (props: VideosListProps) => {
         })
     }
 
-    const handleBulkAction = async (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        return await bulkActionsService(contentList, action, targetValue).then((response) => {
-            switch(action) {
-                case 'online':
-                    setBulkOnlineOpen(false)
-                    break
-                case 'delete':
-                    setBulkDeleteOpen(false)
-                    break
-                case 'theme': 
-                    setBulkThemeOpen(false)
-                    break
-                case 'paywall': 
-                    setBulkPaywallOpen(false)
-                    break
-                default:
-                    break
-            }
-            setSelectedVod([])
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
-
-
     return (
         <>
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log(value[0])}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log('search');setFetchContent(true)}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedVod.length > 0 &&
@@ -276,15 +275,15 @@ export const VideosListPage = (props: VideosListProps) => {
                     <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                 </div>
             </div>        
-            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={props.items.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={props.items.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={props.items.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
-            <OnlineBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm showToast={props.showVodDeletedToast} actionFunction={handleBulkAction} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={vodList.results.length > 0 ? vodListHeaderElement() : emptyContentListHeader()} body={vodList.results.length > 0 ?vodListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Pagination totalResults={vodList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});console.log('pagination');if(!fetchContent) { setFetchContent(true)}}} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showVodDeletedToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedVod.map((vod) => {return {id:vod, type: 'vod'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedVod.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedVod.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
@@ -300,7 +299,7 @@ export const VideosListPage = (props: VideosListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showVodDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteVodList(contentToDelete.id)}} />
+                    <DeleteContentModal showToast={props.showVodDeletedToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteVodList(contentToDelete.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
         </>

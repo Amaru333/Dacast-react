@@ -24,7 +24,6 @@ import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/folderService'
 import { useHistory } from 'react-router'
-import { bulkActionsService } from '../../redux-flow/store/Common/bulkService'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
@@ -56,9 +55,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [selectedFilters, setSelectedFilter] = React.useState<FoldersFilteringState>(null)
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>(null)
+    const [sort, setSort] = React.useState<string>('created-at-desc')
     const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [fetchContent, setFetchContent] = React.useState<boolean>(false)
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -113,18 +113,26 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         if(selectedFolder === 'Unsorted') {
             returnedString += 'tags=no_folder&'
         }
+        if(!fetchContent) {
+            setFetchContent(true)
+        }
         return returnedString.charAt(returnedString.length - 1) === '&' ? returnedString.slice(0, returnedString.length - 1) : returnedString
 
     }
 
     React.useEffect(() => {
-        setContentLoading(true)
-        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
-            setContentLoading(false)
-        }).catch(() => {
-            setContentLoading(false)
-        })
-    }, [selectedFilters, searchString, paginationInfo, sort])
+        if(fetchContent) {
+            setContentLoading(true)
+            props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            }).catch(() => {
+                setContentLoading(false)
+                setFetchContent(false)
+            })
+        }
+
+    }, [fetchContent])
 
     React.useEffect(() => {
         const wait = async () => {
@@ -137,16 +145,18 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         if(currentFolder) {
             setSelectedFolder(currentFolder.id)
         }
-        console.log(currentFolder)
     }, [currentFolder])
 
     React.useEffect(() => {
         setCheckedItems([])
         setContentLoading(true)
+        setFetchContent(true)
         props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
             setContentLoading(false)
+            setFetchContent(false)
         }).catch(() => {
             setContentLoading(false)
+            setFetchContent(false)
         })
     }, [selectedFolder])
 
@@ -212,7 +222,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 { cell: <span key='tableHeaderEmptyCell2'></span> }
             ], 
             defaultSort: 'created-at',
-            sortCallback: (value: string) => setSort(value)
+            sortCallback: (value: string) => {setSort(value);if(!fetchContent) { setFetchContent(true)}}
         }
     }
 
@@ -302,10 +312,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     setCheckedItems([])
                     setContentLoading(true)
                     setTimeout(() => {
+                        setFetchContent(true)
                         props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
                             setContentLoading(false)
+                            setFetchContent(false)
                         }).catch(() => {
                             setContentLoading(false)
+                            setFetchContent(false)
                         })
                     }, 4000)
 
@@ -342,29 +355,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             default:
                 break
         }
-    }
-
-    const handleBulkAction = (contentList: ContentType[], action: string, targetValue?: string | boolean) => {
-        bulkActionsService(contentList, action, targetValue).then((response) => {
-            switch(action) {
-                case 'online':
-                    setBulkOnlineOpen(false)
-                    break
-                case 'delete':
-                    setBulkDeleteOpen(false)
-                    break
-                case 'theme': 
-                    setBulkThemeOpen(false)
-                    break
-                case 'paywall': 
-                    setBulkPaywallOpen(false)
-                    break
-                default:
-                    break
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
     }
 
     const foldersContentTableBody = () => {
@@ -450,7 +440,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             />
                             <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
                         </div>
                     </div>
 
@@ -465,7 +455,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 <div className='relative'>
                                     <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
 
-                                    <DropdownList  hasSearch={false} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                    <DropdownList  hasSearch={false} style={{ width: 167, left: 16 }} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                         {renderList()}
                                     </DropdownList>
                                 </div>
@@ -482,7 +472,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}}  />
+                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}}  />
                 </div>
                 <div className='col-12 col mb2 clearfix'>
                     <div className='col-3 col pr1'>
@@ -531,8 +521,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table contentLoading={contentLoading} className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent !== null ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent !== null ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
-                    <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults})}} />
+                    <Table contentLoading={contentLoading} className='col col-12' id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
@@ -544,7 +534,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={setMoveModalSelectedFolder}  submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null)}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={setMoveModalSelectedFolder}  submit={async (folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, checkedItems, FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null).then(() => {if(!fetchContent) { setFetchContent(true)}})}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
@@ -553,21 +543,21 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
                     deleteFolderModalOpened &&
-                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath)}} />
+                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await props.deleteContent([assetToDelete])}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
+                    <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await foldersTree.moveToFolder([], [assetToDelete], currentFolder.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
                 }
             </Modal>
-            <OnlineBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm showToast={props.showToast} actionFunction={handleBulkAction} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm refreshContent={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm showToast={props.showToast} getThemesList={() => props.getThemesList()} actionFunction={handleBulkAction} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm refreshContent={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             
         </div>

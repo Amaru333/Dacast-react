@@ -9,25 +9,25 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 
-interface ProfileComponentProps {
-    ProfileInfos: ProfilePageInfos;
-    getProfilePageDetails: Function;
-    saveProfilePageDetails: Function;
-    saveProfilePassword: Function;
-    showDiscardToast: Function;
+export interface ProfileComponentProps {
+    ProfilePageDetails: ProfilePageInfos;
+    getProfilePageDetails: () => Promise<void>;
+    saveProfilePageDetails: (data: ProfilePageInfos) => Promise<void>;
+    saveProfilePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+    showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const Profile = (props: ProfileComponentProps) => {
 
     React.useEffect(() => {
-        if(!props.ProfileInfos) {
-            props.getProfilePageDetails();
+        if(!props.ProfilePageDetails) {
+            props.getProfilePageDetails()
         }
     }, [])
 
     return (
-        props.ProfileInfos ? 
-            <ProfilePage ProfilePageDetails={props.ProfileInfos} {...props} />
+        props.ProfilePageDetails ? 
+            <ProfilePage {...props} />
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -36,20 +36,20 @@ const Profile = (props: ProfileComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        ProfileInfos: state.account.profile
+        ProfilePageDetails: state.account.profile
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, ProfileAction>) {
     return {
-        getProfilePageDetails: () => {
-            dispatch(getProfilePageDetailsAction());
+        getProfilePageDetails: async () => {
+            await dispatch(getProfilePageDetailsAction());
         },
-        saveProfilePageDetails: (data: ProfilePageInfos, callback?: Function) => {
-            dispatch(saveProfilePageDetailsAction(data)).then(callback);
+        saveProfilePageDetails: async (data: ProfilePageInfos) => {
+            await dispatch(saveProfilePageDetailsAction(data))
         },
-        saveProfilePassword: (currentPassword: string, newPassword: string, handleSuccess?: Function, handleError?: Function) => {
-            dispatch(saveProfilePasswordAction(currentPassword, newPassword, handleSuccess, handleError))
+        saveProfilePassword: async (currentPassword: string, newPassword: string) => {
+            await dispatch(saveProfilePasswordAction(currentPassword, newPassword))
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

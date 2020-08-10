@@ -10,7 +10,7 @@ import { AccountBalanceInfo } from '../../redux-flow/store/Paywall/Balances/type
 
 export interface BalancesComponentProps {
     balanceInfo: AccountBalanceInfo | false;
-    getBalances: (accountId: string) => void;
+    getBalances: (accountId: string) => Promise<void>;
 }
 
 const Balances = (props: BalancesComponentProps) => {
@@ -38,8 +38,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getBalances: (accountId: string) => {
-            dispatch(getBalancesAction(accountId));
+        getBalances: async (accountId: string) => {
+            await dispatch(getBalancesAction(accountId));
         }
     };
 }

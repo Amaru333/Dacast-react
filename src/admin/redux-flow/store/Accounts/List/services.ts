@@ -5,8 +5,8 @@ const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
 
 const getAccounts = async (accountId: string) => { 
     await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return await axios.get(adminApiUrlBase + (accountId ? ('list-accounts?accountId=' + accountId) : 'list-accounts'),
+    let {token} = addTokenToHeader()
+    return await axios.get(adminApiUrlBase + (accountId ? ('accounts?accountId=' + accountId) : 'accounts'),
         {
             headers: {
                 Authorization: token
@@ -17,10 +17,10 @@ const getAccounts = async (accountId: string) => {
 
 const impersonate = async (accountId: string) => { 
     await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return await axios.post(adminApiUrlBase + (accountId ? ('list-accounts?accountId=' + accountId) : 'list-accounts'),
+    let {token} = addTokenToHeader()
+    return await axios.post(adminApiUrlBase + `impersonate/${accountId}`,
         {
-            userEmail: accountId
+            
         },
         {
             headers: {

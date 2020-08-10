@@ -58,7 +58,7 @@ export const Table = (props: TableProps) => {
         return props.body ?
             props.body.map((bodyRow, i) => {
                 return (
-                    <TableBodyRow contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
+                    <TableBodyRow isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                         {
                             bodyRow.data.map((bodyCell: any, item) => {
                                 return (

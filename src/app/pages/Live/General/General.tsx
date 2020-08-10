@@ -31,6 +31,8 @@ var momentTZ = require('moment-timezone')
 export const LiveGeneralPage = (props: LiveGeneralProps) => {
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
+        timezone=timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+        console.log(timezone)
         if(ts > 0 ) {
             return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
         } 
@@ -470,10 +472,13 @@ export const LiveGeneralPage = (props: LiveGeneralProps) => {
                 </Modal>
 
             </Card>
-            <ButtonContainer>
-                <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0, timezone: startDateTimeValue.timezone}}, () => setLoadingButton(false)) }  }>Save</Button>
-                <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
-            </ButtonContainer>
+            {
+                JSON.stringify(newLiveDetails) !== JSON.stringify(props.liveDetails) && 
+                    <ButtonContainer>
+                        <Button className="mr2" isLoading={loadingButton} type="button" onClick={() =>  {setLoadingButton(true); props.saveLiveDetails({...newLiveDetails, countdown: {...newLiveDetails.countdown, startTime: liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0, timezone: startDateTimeValue.timezone}}, () => setLoadingButton(false)) }  }>Save</Button>
+                        <Button typeButton="secondary" onClick={() => {setNewLiveDetails(props.liveDetails);setStartDateTimeValue({...initTimestampValues(props.liveDetails.countdown.startTime, props.liveDetails.countdown.timezone), timezone: props.liveDetails.countdown.timezone})}}>Discard</Button>
+                    </ButtonContainer>
+            }
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-live-' + props.liveDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }

@@ -14,6 +14,7 @@ import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Setti
 export interface LiveEngagementComponentProps {
     liveEngagementSettings: ContentEngagementSettings;
     liveEngagementSettingsState: ContentEngagementSettingsState;
+    globalEngagementSettings: InteractionsInfos;
     getLiveEngagementSettings: (liveId: string) => Promise<void>;
     saveLiveEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
     saveLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
@@ -22,7 +23,6 @@ export interface LiveEngagementComponentProps {
     getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
     uploadLiveImage: (data: File, uploadUrl: string) => Promise<void>;
     deleteLiveImage: (targetId: string) => Promise<void>;
-    globalEngagementSettings: InteractionsInfos;
     getGlobalEngagementSettings: () => Promise<void>;
 }
 

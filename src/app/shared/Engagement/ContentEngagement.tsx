@@ -26,14 +26,14 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
-    globalEngagementSettings: InteractionsInfos
+    globalEngagementSettings: InteractionsInfos;
+    contentType?: string;
+    contentId: string;
     getContentEngagementSettings: (contentId: string) => Promise<void>;
     saveContentEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
     saveContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
     createContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
     deleteContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    contentType?: string;
-    contentId: string;
     getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
     uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
     deleteContentImage: (targetId: string) => Promise<void>;

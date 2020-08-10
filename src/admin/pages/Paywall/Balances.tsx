@@ -42,9 +42,9 @@ export const BalancesPage = (props: BalancesComponentProps) => {
     return (
         <div>
             <Text className='py1' size={14}>Paywall balances - select an Account to view their transactions and current balance</Text>
-            <div className='flex my1'>
-                <Input className='mr2' id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
-                <Button disabled={!accountId ? true : false} onClick={() => {props.getBalances(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+            <div className='flex my1 items-center'>
+                <Input id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                <Button className='mx2' disabled={!accountId ? true : false} onClick={() => {props.getBalances(accountId);query.push(location.pathname + '?accountId=' + accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                 <Text size={14} weight='med'>{props.balanceInfo ? 'Balance: $' + props.balanceInfo.accountBalance : ''}</Text>
             </div>
             <Table className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />

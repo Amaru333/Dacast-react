@@ -11,8 +11,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface EditAccountComponentProps {
     accountInfo: AccountInfo;
-    getAccountInfo: Function;
-    saveAccountInfo: Function;
+    getAccountInfo: (accountId: string) => Promise<void>;
+    saveAccountInfo: (accountInfo: AccountInfo) => Promise<void>;
 }
 
 const EditAccount = (props: EditAccountComponentProps ) => {
@@ -23,7 +23,7 @@ const EditAccount = (props: EditAccountComponentProps ) => {
         if(!props.accountInfo) {
             props.getAccountInfo(accountId)
         }
-    })
+    }, [])
     return props.accountInfo ?
         <EditAccountPage {...props} />
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
@@ -37,11 +37,11 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccountInfo: (accountId: string) => {
-            dispatch(getAccountInfoAction(accountId));
+        getAccountInfo: async (accountId: string) => {
+            await dispatch(getAccountInfoAction(accountId));
         },
-        saveAccountInfo: (accountInfo: AccountInfo) => {
-            dispatch(saveAccountInfoAction(accountInfo))
+        saveAccountInfo: async (accountInfo: AccountInfo) => {
+            await dispatch(saveAccountInfoAction(accountInfo))
         }
     };
 }
