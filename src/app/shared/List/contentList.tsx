@@ -27,6 +27,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
+import { ContentFiltering, FilteringContentState } from './ContentFiltering';
 
 interface ContentListProps {
     contentType: string
@@ -99,7 +100,7 @@ export const ContentListPage = (props: ContentListProps) => {
     }, [updateList])
 
 
-    const parseFiltersToQueryString = (filters: FilteringVodState) => {
+    const parseFiltersToQueryString = (filters: FilteringContentState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
         if(filters) {
             
@@ -297,7 +298,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         </DropdownList>
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
-                    {/* <VideosFiltering setSelectedFilter={setSelectedFilter} />                 */}
+                    <ContentFiltering setSelectedFilter={(filters) => {setSelectedFilter(filters);setFetchContent(true)}} contentType={props.contentType} />                
                     {
                         props.contentType === "videos" &&
                             <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
