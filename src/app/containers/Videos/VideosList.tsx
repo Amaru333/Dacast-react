@@ -12,6 +12,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { SearchResult } from '../../redux-flow/store/VOD/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
+import {ContentListPage} from '../../shared/List/contentList'
 
 export interface VideosListProps {
     items: SearchResult;
@@ -29,7 +30,15 @@ const VideosList = (props: VideosListProps) => {
     }, [])
 
     return props.items ? 
-        <VideosListPage {...props} />
+        <ContentListPage
+            contentType="videos" 
+            items={props.items}
+            themesList={props.themesList}
+            getContentList={props.getVodList}
+            deleteContentList={props.deleteVodList}
+            getThemesList={props.getThemesList}
+            showContentDeletedToast={props.showVodDeletedToast}
+         />
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 

@@ -10,13 +10,14 @@ import { getThemingListAction, ThemesData } from '../../redux-flow/store/Setting
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ContentListPage } from '../../shared/List/contentList';
 
 export interface PlaylistListComponentProps {
     playlistList: SearchResult;
     themeList: ThemesData;
     getPlaylistList: (qs: string) => Promise<void>;
     getThemesList: () => Promise<void>;
-    deletePlaylist: (playlistId: string, title: string) => Promise<void>;
+    deletePlaylist: (playlistId: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -27,7 +28,16 @@ const PlaylistList = (props: PlaylistListComponentProps) => {
     }, [])
 
     return props.playlistList ?
-        <PlaylistListPage {...props}  />
+        <ContentListPage
+            contentType="playlists"
+            items={props.playlistList}
+            themesList={props.themeList}
+            getContentList={props.getPlaylistList}
+            deleteContentList={props.deletePlaylist}
+            getThemesList={props.getThemesList}
+            showContentDeletedToast={props.showToast}
+
+        />
         : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
 
 }
@@ -47,8 +57,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getThemesList: async () => {
             await dispatch(getThemingListAction());
         },
-        deletePlaylist: async (playlistId: string, title: string) => {
-            await dispatch(deletePlaylistAction(playlistId, title));
+        deletePlaylist: async (playlistId: string) => {
+            await dispatch(deletePlaylistAction(playlistId));
         },
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))
