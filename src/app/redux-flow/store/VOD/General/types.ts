@@ -39,6 +39,24 @@ export interface ContentDetails {
     embedType?: string;
     embedScaling?: string;
     embedSize?: number;
+    username?: string;
+    password?: string;
+    streamKeys?: string[];
+    primaryPublishURL?: string;
+    backupPublishURL?: string;
+    playbackURLs?: PLaybackURLs;
+    recording?: boolean;
+    countdown?: LiveStreamCountdown;
+    rewind?: boolean;
+}
+
+interface PLaybackURLs {
+    hls: string;
+}
+
+interface LiveStreamCountdown {
+    startTime: number;
+    timezone?: string;
 }
 
 export interface VodItem {
@@ -70,3 +88,7 @@ export interface SubtitleInfo {
     url?: string;
     convertToUTF8?: boolean;
 }
+
+export const initialContentGeneralState: ContentDetailsState = {};
+
+export const initialContentList: SearchResult | false = false

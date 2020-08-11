@@ -11,11 +11,13 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
+import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
+import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
 
 
 export interface PlaylistGeneralProps {
-    playlistDetails: PlaylistDetails;
-    playlistDetailsState: PlaylistDetailsState;
+    playlistDetails: ContentDetails;
+    playlistDetailsState: ContentDetailsState;
     editPlaylistDetails: Function;
     getPlaylistDetails: Function;
     getUploadUrl: Function;
@@ -38,7 +40,16 @@ const GeneralPlaylist = (props: PlaylistGeneralProps) => {
             { props.playlistDetailsState[playlistId] ?
                 (
                     <div className='flex flex-column'>
-                        <PlaylistGeneralPage playlistDetails={props.playlistDetailsState[playlistId]} {...props} />
+                        <ContentGeneralPage
+                            contentType="playlist" 
+                            contentDetails={props.playlistDetailsState[playlistId]}
+                            getContentDetails={props.getPlaylistDetails}
+                            saveContentDetails={props.editPlaylistDetails}
+                            getUploadUrl={props.getUploadUrl}
+                            uploadFile={props.uploadFile}
+                            deleteFile={props.deleteFile}
+                            showToast={props.showToast}
+                        />
                     </div>            
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

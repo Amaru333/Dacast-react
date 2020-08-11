@@ -9,15 +9,20 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router-dom';
+import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
+import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 export interface LiveGeneralProps {
-    liveDetails: LiveDetails;
-    liveDetailsState: LiveDetailsState;
+    liveDetails: ContentDetails;
+    liveDetailsState: ContentDetailsState;
     getLiveDetails: Function;
     saveLiveDetails: Function;
     getUploadUrl: Function;
     uploadFile: Function;
     deleteFile: Function;
+    showToast: Function;
 }
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
@@ -36,7 +41,16 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
                 props.liveDetailsState[liveId] ?
                     (
                         <div className='flex flex-column'>
-                            <LiveGeneralPage {...props} liveDetails={props.liveDetailsState[liveId]} />
+                            <ContentGeneralPage
+                                contentType="live" 
+                                contentDetails={props.liveDetailsState[liveId]}
+                                getContentDetails={props.getLiveDetails}
+                                saveContentDetails={props.saveLiveDetails}
+                                getUploadUrl={props.getUploadUrl}
+                                uploadFile={props.uploadFile}
+                                deleteFile={props.deleteFile}
+                                showToast={props.showToast}
+                            />
                         </div>
                     )
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -68,7 +82,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteFile: (liveId: string, targetId: string, uploadType: string) => {
             dispatch(deleteFileAction(liveId, targetId, uploadType))
-        }
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        },
 
     }
 }
