@@ -1,0 +1,483 @@
+import React from 'react';
+import { Card } from '../../../components/Card/Card';
+import { Text } from "../../../components/Typography/Text"
+import { Toggle } from '../../../components/Toggle/toggle';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import styled from 'styled-components';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Table } from '../../../components/Table/Table';
+import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Icon';
+import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { ImageModal } from '../../shared/General/ImageModal';
+import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
+import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { Prompt } from 'react-router';
+import { getPrivilege } from '../../../utils/utils';
+import { updateClipboard } from '../../utils/utils';
+import { addTokenToHeader } from '../../utils/token';
+import { languages } from 'countries-list';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
+import { PreviewModal } from '../../shared/Common/PreviewModal';
+import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import Axios from 'axios';
+import { SubtitleInfo, ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
+
+interface ContentGeneralProps {
+    contentType: string;
+    contentDetails: ContentDetails;
+    getContentDetails: Function;
+    saveContentDetails: Function;
+    getUploadUrl: Function;
+    uploadFile: Function;
+    deleteFile: Function;
+    showToast: Function;
+    uploadImageFromVideo?: Function
+    deleteSubtitle?: Function;
+    addSubtitle?: Function;
+}
+
+export const ContentGeneralPage = (props: ContentGeneralProps) => {
+
+    const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
+
+    const {userId} = addTokenToHeader()
+
+    const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
+    const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
+    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
+    const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
+    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(props.contentDetails)
+    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
+    const [subtitleFile, setSubtitleFile] = React.useState<File>(null)
+    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
+
+    let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+    React.useEffect(() => {
+        setContentDetails(props.contentDetails)
+    }, [props.contentDetails.title, props.contentDetails.folders, props.contentDetails.description, props.contentDetails.online]);
+
+    const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+        return {data: [
+            {cell: <Text size={14} weight="med">Subtitles</Text>},
+            {cell: <Text size={14} weight="med">Language</Text>},
+            {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+        ]}
+    };
+    
+    const subtitlesTableBody = () => {
+        return props.contentDetails.subtitles ? props.contentDetails.subtitles.map((value, key) => {
+            return {data: [
+                <div className='flex'>
+                    <Text key={"generalPage_subtitles_" + value.name + key} size={14} weight="reg">{value.name}</Text>
+                    {
+                        !value. url && 
+                            <div className='pl2 relative'>
+                                <IconStyle coloricon='orange' id={'failedUploadedFileSubtitle' + key}>warning_outlined</IconStyle>
+                                <Tooltip style={{width: 330}} target={"failedUploadedFileSubtitle" + key}>Your file wasn't uploaded properly! Please upload a new one.</Tooltip>
+                            </div>
+                    }
+                    
+                </div>
+                ,
+                <Text key={"generalPage_subtitles_" + value.languageLongName + key} size={14} weight="reg">{value.languageLongName}</Text>,
+                <IconContainer key={"generalPage_subtitles_actionIcons" + value.name + key} className="iconAction">
+                    <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
+                    <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
+                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, value.name)}>delete</IconStyle></ActionIcon>
+                    <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
+                    {/* <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
+                    <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip> */}
+                </IconContainer>
+            ]}
+        })
+        : null
+    };
+    
+    const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+        return {data: [
+            {cell: <span key={'disabledTableHeader'}></span>},
+            {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
+        ]}
+    }
+    
+    const disabledSubtitlesTableBody = (text: string) => {
+        return [{data: [
+            <span key={'disabledTableBody'}></span>,
+            <div className='left'><Text key={text}  size={14} weight='reg' color='gray-3' >{text}</Text></div>
+        ]}]
+    }
+
+    React.useEffect(() => {
+        if(props.contentDetails.uploadurl && subtitleModalOpen) {
+            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID}, props.contentDetails.id, () => {setSubtitleButtonLoading(false)})
+            setUploadedSubtitleFile(emptySubtitle)
+            setSubtitleModalOpen(false);
+        }
+    }, [props.contentDetails.uploadurl])
+    
+    const handleSubtitleSubmit = () => {
+        setSubtitleButtonLoading(true)
+        props.getUploadUrl('subtitle', props.contentDetails.id, null, uploadedSubtitleFile)
+    }
+
+    const handleImageModalFunction = () => {
+        if (imageModalTitle === "Change Splashscreen") {
+            return  'vod-splashscreen'
+        } else if (imageModalTitle === "Change Thumbnail") {
+            return 'vod-thumbnail'
+        } else if(imageModalTitle === 'Change Poster') {
+            return 'vod-poster'
+        } else {
+            return ''
+        }
+    }
+
+    const handleDrop = (file: FileList) => {
+        const acceptedImageTypes = ['.srt', '.vtt'];
+        if(file.length > 0) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setSubtitleFile(file[0])
+                setUploadedSubtitleFile({...uploadedSubtitleFile, name: file[0].name})
+            }
+            reader.readAsDataURL(file[0])
+        }
+    }
+    
+    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        if(e.target.files && e.target.files.length > 0) {
+            handleDrop(e.target.files);
+        }
+    }
+
+    let posterEnable = Object.keys(props.contentDetails.poster).length !== 0;
+
+    const vodAdvancedLinksOptions = [
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
+        { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
+        // { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
+        // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
+        // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
+        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
+    ]
+
+    let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
+    let thumbnailEnable = Object.keys(props.contentDetails.thumbnail).length !== 0;
+
+    function saveFile(url: string, filename: string) {
+        let { token } = addTokenToHeader()
+        Axios.get(`${process.env.API_BASE_URL}/vods/${contentDetails.id}/download-url`,
+        {
+            headers: {
+                Authorization: token
+            }
+        }).then((response) => {
+            var a = document.createElement("a")
+            a.target = '_blank'
+            a.href = response.data.data.url
+            a.setAttribute("download", filename)
+            a.click()
+        })
+
+        }
+    
+    return (
+        contentDetails &&
+            <React.Fragment>
+                <Card className="col-12 clearfix">
+                    <div className="details col col-12">
+                        <header className="flex justify-between mb2">
+                            <Text size={20} weight="med">Details</Text>
+                            { getPrivilege('privilege-web-download') && <Button onClick={() => saveFile(null, contentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>}
+                        </header>
+                        <Toggle
+                            className="col col-12 mb2"
+                            defaultChecked={contentDetails.online}
+                            onChange={() => {setContentDetails({ ...contentDetails, online: !contentDetails.online });}}
+                            label="Video Online"
+                        />
+                        <Input
+                            className={ClassHalfXsFullMd + "pr2 mb2"}
+                            label="Title"
+                            value={contentDetails.title}
+                            onChange={event => {setContentDetails({...contentDetails, title: event.currentTarget.value });}}
+                        />
+                        <InputTags
+                            className={ClassHalfXsFullMd + "mb2"}
+                            label="Folders"
+                            disabled
+                            greyBackground
+                            defaultTags={props.contentDetails.folders} 
+                        />
+
+                        <Input
+                            className={ClassHalfXsFullMd + "pr2 mb2"}
+                            type="textarea"
+                            label="Description"
+                            value={contentDetails.description ? contentDetails.description : ''}
+                            onChange={event => {setContentDetails({ ...contentDetails, description: event.currentTarget.value });}}
+                        />
+                        <div className={"col col-3 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Content ID</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{userId + '-vod-' + props.contentDetails.id}</LinkText>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-vod-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                    </div>
+                    <Divider className="col col-12" />
+                    <div className='col col-12'>
+                        <header className="flex justify-between">
+                            <Text className='col col-12' size={20} weight='med'>Sharing</Text>
+                            <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+                        </header>
+                        <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
+
+                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Embed Code</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">
+                                { props.contentDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.contentDetails.id}"  class="dacast-video"></script>` }
+                                </LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.contentDetails.embedType === "iframe" ? 
+                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
+                                    `<script id="${userId}-vod-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.contentDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Share Link</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.contentDetails.id}`}</LinkText>
+                                <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/vod/${userId}/${props.contentDetails.id}`, 'Share Link Copied')} }>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <Divider className="col col-12" />
+                    </div>
+                    <div className="thumbnail col col-12">
+                        <Text className="col col-12" size={20} weight="med">Images</Text>
+                        <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
+                        <ImagesContainer className="col col-12 pt2">
+                            <ImageContainer className="mr2 xs-mr0 xs-mb25">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                                    <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ButtonSection>
+                                        <Button 
+                                            className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
+                                            onClick={() => {setImageModalTitle("Change Splashscreen");setSelectedImageName(props.contentDetails.splashscreen.url);setImageModalOpen(true)}}>
+                                            {
+                                                splashScreenEnable ?
+                                                    "Change" : "Add"
+                                            }
+                                        </Button>
+                                    </ButtonSection> 
+                                    {splashScreenEnable &&<ImageSection> <SelectedImage src={props.contentDetails.splashscreen.url} /></ImageSection>}
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="mr2 xs-mb25 xs-mr0">
+                                <div className="flex flex-center">
+                                    <Text size={16} weight="med" className="mr1">Thumbnail</Text>
+                                    <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ButtonSection>
+                                        <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(props.contentDetails.thumbnail.url);setImageModalOpen(true)}}>
+                                            {
+                                                thumbnailEnable  ?
+                                                    "Change" : "Add"
+                                            }
+                                        </Button>
+                                    </ButtonSection>
+                                    {thumbnailEnable &&<ImageSection> <SelectedImage src={props.contentDetails.thumbnail.url} /></ImageSection> }  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                            <ImageContainer className="">
+                                <div className="flex flex-center">
+                                    <Text className="mr1" size={16} weight="med">Poster</Text>  
+                                    <IconStyle id="posterTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
+                                </div>
+                                <ImageArea className="mt2">
+                                    <ButtonSection>
+                                        {
+                                            posterEnable && 
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.contentDetails.id, props.contentDetails.poster.targetID, "Poster")}}>Delete</Button>
+                                        }
+                                        
+                                        <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.contentDetails.poster.url);setImageModalOpen(true)}}>
+                                            {
+                                                posterEnable ?
+                                                    "Change" : "Add"
+                                            }
+                                        </Button>
+                                    </ButtonSection>
+                                    {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.contentDetails.poster.url} /></ImageSection>}  
+                                </ImageArea>
+                                <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                            </ImageContainer>
+                        </ImagesContainer>
+                    </div>
+                    <Divider className="col col-12" />
+                    <div className="subtitles col col-12">
+                        <Text className="col col-12" size={20} weight="med">Subtitles</Text>
+                        <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
+                    </div>
+                    {(!props.contentDetails.subtitles || props.contentDetails.subtitles.length === 0) ?
+                        <Table className="col col-12" headerBackgroundColor="gray-10" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
+                        : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable" />
+                    }
+                    <Divider className="col col-12" />
+                    <div className="col col-12 advancedVideoLinks">
+                        <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
+                            <IconStyle  className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
+                            <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
+                        </div>                  
+                        <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                            {vodAdvancedLinksOptions.filter(item => item.enabled).map((item) => {
+                                {
+                                    if(item.link && item.link !== ''){
+                                        return (
+                                            <LinkBoxContainer key={item.id} className="col col-6 mt2">
+                                                <LinkBoxLabel>
+                                                    <Text size={14} weight="med">{item.label}</Text>
+                                                </LinkBoxLabel>
+                                                <LinkBox>
+                                                    <LinkText size={14}>
+                                                        <Text size={14} weight="reg">{item.link}</Text>
+                                                    </LinkText>
+                                                    <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                    <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                                </LinkBox>
+                                            </LinkBoxContainer>
+                                        )
+                                    }
+                                }
+                            })}
+                        </ExpandableContainer>
+                    </div>
+
+                   { subtitleModalOpen && 
+                    <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
+                            <ModalContent>
+                                <DropdownSingle
+                                    hasSearch
+                                    className="col col-12"
+                                    id="subtitleLanguage"
+                                    dropdownTitle="Subtitle Language"
+                                    list={Object.keys(languages).reduce((reduced, language) => {return {...reduced, [languages[language].name]: false}}, {})}
+                                    dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
+                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value)})}
+                                />                                       
+                                <input type='file' ref={subtitleBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
+                                <Button onClick={() => {subtitleBrowseButtonRef.current.click()} } className="mt25" typeButton="secondary" sizeButton="xs">                                    
+                                    Select Files
+                                </Button>
+                                <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
+                                {uploadedSubtitleFile.name === "" ? null :
+                                    <SubtitleFile className="col mt1">
+                                        <SubtitleTextContainer>
+                                            <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
+                                        </SubtitleTextContainer>
+                                        <button style={{ border: "none", backgroundColor: "inherit" }}>
+                                            <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
+                                        </button>
+                                    </SubtitleFile>
+                                }
+                                <div className="col col-12">
+                                    <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
+                                        <IconStyle  className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
+                                        <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
+                                    </div>
+                                    <ExpandableContainer className="flex my2" isExpanded={advancedSubtitleSectionExpanded}>
+                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? uploadedSubtitleFile.convertToUTF8 : true} onChange={() => {setUploadedSubtitleFile({...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8})}} />
+                                        <IconStyle className="ml1" style={{marginTop: 5}} fontSize="small" id="utfTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="utfTooltip">Uncheck if you have already converted your file to UTF-8.</Tooltip>
+                                    </ExpandableContainer>
+                                </div>
+                                
+                                
+                            </ModalContent>
+                            <ModalFooter>
+                                <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                                <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                    }
+                    {
+                        imageModalOpen &&
+                            <ImageModal
+                                imageFileName={selectedImageName} 
+                                imageType={handleImageModalFunction()} 
+                                contentId={props.contentDetails.id} 
+                                contentType='vod'
+                                uploadFromVideoAction={props.uploadImageFromVideo}
+                                uploadUrl={props.contentDetails.uploadurl} 
+                                getUploadUrl={props.getUploadUrl} 
+                                title={imageModalTitle} 
+                                toggle={() => setImageModalOpen(false)} 
+                                opened={imageModalOpen === true} 
+                                submit={props.uploadFile}
+                                getContentDetails={props.getContentDetails}
+                            />
+                    }
+
+                </Card>
+               {    JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails) && 
+                    <ButtonContainer>
+                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.saveContentDetails(contentDetails, () => {setButtonLoading(false)}) } }>Save</Button>
+                        <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                    </ButtonContainer>
+                }
+                {
+                    previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                }
+                <Prompt when={JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails)} message='' />
+            </React.Fragment>
+            
+    )
+
+}
+
+const SubtitleFile = styled.div`
+    display: flex;
+    background-color: ${props => props.theme.colors["gray-10"]};
+    height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 352px;
+    
+`
+
+const SubtitleTextContainer = styled.div`
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 352px;
+`

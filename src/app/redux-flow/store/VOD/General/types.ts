@@ -22,19 +22,19 @@ export interface AssetType {
     url: string;
 }
 
-export interface VodDetailsState { [key: string]: VodDetails }
+export interface ContentDetailsState { [key: string]: ContentDetails }
 
-export interface VodDetails {
+export interface ContentDetails {
     id: string;
     online: boolean;
     title: string;
     downloadURL?: string;
     description: string;
     folders: string[];
-    thumbnail: AssetType;
-    splashscreen: AssetType;
+    thumbnail?: AssetType;
+    splashscreen?: AssetType;
     poster?: AssetType;
-    subtitles: SubtitleInfo[];
+    subtitles?: SubtitleInfo[];
     uploadurl: string;
     embedType?: string;
     embedScaling?: string;

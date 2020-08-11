@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 
 
 export interface GeneralComponentProps {
@@ -42,7 +43,20 @@ const General = (props: GeneralComponentProps) => {
                 props.vodDetailsState[vodId] ?
                     (
                         <div className='flex flex-column'>
-                            <GeneralPage {...props} vodDetails={props.vodDetailsState[vodId]} />
+                            <ContentGeneralPage
+                                contentType="vod" 
+                                contentDetails={props.vodDetailsState[vodId]}
+                                getContentDetails={props.getVodDetails}
+                                saveContentDetails={props.editVodDetails}
+                                getUploadUrl={props.getUploadUrl}
+                                uploadFile={props.uploadFile}
+                                deleteFile={props.deleteFile}
+                                showToast={props.showToast}
+                                uploadImageFromVideo={props.uploadImageFromVideo}
+                                deleteSubtitle={props.deleteSubtitle}
+                                addSubtitle={props.addSubtitle}
+
+                            />
                         </div>
                     )
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
