@@ -110,7 +110,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
 
         //let options = { ...dates, selectedContents: selectedItems.map(e => e.objectID) };
         let options = { end: Math.round(dates.endDate / 1000), start: Math.round(dates.startDate / 1000 ) };
-        props.getAnalyticsViewershipJobIds(options)
+        props.getAnalyticsViewership(options)
     }
 
     const renderContentsList = () => {

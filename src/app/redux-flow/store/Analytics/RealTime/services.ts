@@ -6,11 +6,11 @@ import { loopUntilCompleted } from '../../../../../utils/LoopHttpServices';
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 var qs = require('qs');
 
-const getAnalyticsRealTimeJobIds = async (options?: any) => {
+const getAnalyticsRealTime = async (options?: any) => {
     await isTokenExpired()
     let {token, userId} = addTokenToHeader()
     var stringOption = qs.stringify(options);
-    return axios.get(process.env.API_BASE_URL + '/analytics/real-time?contentIDs=~' + userId+'&'+stringOption, 
+    return axios.get(process.env.API_BASE_URL + '/analytics/real-time?'+stringOption, 
         {
             headers: {
                 Authorization: token
@@ -19,38 +19,6 @@ const getAnalyticsRealTimeJobIds = async (options?: any) => {
     )
 }
 
-const getAnalyticsRealTimeViewersTimeService = async (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/concurrent-viewers/time/fetch?jobID=${jobId}`, token)
-    return data;
-}
-
-const getAnalyticsRealTimePlaybackTimeService = async (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/new-playback-sessions/time/fetch?jobID=${jobId}`, token)
-    return data;
-}
-
-const getAnalyticsRealTimeGbTimeService = async (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/consumption/time/fetch?jobID=${jobId}`, token)
-    return data;
-}
-
-const getAnalyticsRealTimeConsumptionLocationService = async (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    var data = await loopUntilCompleted(process.env.API_BASE_URL+`/analytics/consumption/location/fetch?jobID=${jobId}`, token)
-    return data;
-}
-
 export const AnalyticsRealTimeServices = {
-    getAnalyticsRealTimeJobIds,
-    getAnalyticsRealTimeViewersTimeService,
-    getAnalyticsRealTimePlaybackTimeService,
-    getAnalyticsRealTimeGbTimeService,
-    getAnalyticsRealTimeConsumptionLocationService
+    getAnalyticsRealTime
 } 

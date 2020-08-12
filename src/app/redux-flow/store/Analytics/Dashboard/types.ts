@@ -1,10 +1,5 @@
 export enum ActionTypes {
-    GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME",
-    GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME",
-    GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE",
-    GET_ANALYTICS_DASHBOARD_TOP_CONTENTS = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_TOP_CONTENTS",
-    GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION",
-    GET_ANALYTICS_DASHBOARD_JOB_IDS = "@@analytics_dashboard/GET_ANALYTICS_DASHBOARD_JOB_IDS"
+    GET_ANALYTICS_DASHBOARD = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD"
 }
 
 export interface GetAnalyticsDashboardOptions {
@@ -71,36 +66,6 @@ interface TopContentData {
     revenueEur: number;
 }
 
-export interface DashboardJobIDs {
-    consumptionPerTime: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    playsViewersPerTime: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerDevice: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerLocation: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    topContents: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    errors?: boolean;
-}
-
-
 export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
     data: {
         consumptionPerTime: false,
@@ -109,10 +74,8 @@ export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
         topContents: false,
         consumptionPerLocation: false
     },
-    jobIds: null
 };
 
 export interface AnalyticsDashboardState {
     readonly data: AnalyticsDashboardInfos;
-    jobIds: DashboardJobIDs;
 }
