@@ -19,12 +19,12 @@ export interface GeneralComponentProps {
     editVodDetails: (data: ContentDetails) => Promise<void>;
     getVodDetails: (vodId: string) => Promise<void>;
     getUploadUrl: (uploadType: string, vodId: string, extension: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string, vodId: string, uploadType: string) => Promise<void>
-    uploadImageFromVideo: (vodId: string, time: number, imageType: string) => Promise<void>
-    deleteFile: (vodId: string, targetId: string, fileName: string) => Promise<void>
-    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
-    deleteSubtitle: (targetId: string, vodId: string, fileName: string) => Promise<void>
-    addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => Promise<void>
+    uploadFile: (data: File, uploadUrl: string, vodId: string, uploadType: string) => Promise<void>;
+    uploadImageFromVideo: (vodId: string, time: number, imageType: string) => Promise<void>;
+    deleteFile: (vodId: string, targetId: string, fileName: string) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    deleteSubtitle: (targetId: string, vodId: string, fileName: string) => Promise<void>;
+    addSubtitle: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => Promise<void>;
 }
 
 const General = (props: GeneralComponentProps) => {
@@ -91,8 +91,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteFile: async (vodId: string, targetId: string) => {
             await dispatch(deleteFileAction(vodId, targetId))
         },
-        showToast: async (text: string, size: Size, notificationType: NotificationType) => {
-            await dispatch(showToastNotification(text, size, notificationType));
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         },
         addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, vodId: string) => {
             await dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, vodId))

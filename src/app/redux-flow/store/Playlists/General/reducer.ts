@@ -1,10 +1,11 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, PlaylistDetailsState, initialPlaylistGeneralState } from './types';
+import { ActionTypes } from './types';
+import { ContentDetailsState, initialContentGeneralState } from '../../VOD/General/types';
 
 
 
-const reducer: Reducer<PlaylistDetailsState> = (state = initialPlaylistGeneralState, action: Action) => {
+const reducer: Reducer<ContentDetailsState> = (state = initialContentGeneralState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_PLAYLIST_DETAILS:
             return {

@@ -33,15 +33,15 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 interface ContentGeneralProps {
     contentType: string;
     contentDetails: ContentDetails;
-    getContentDetails: (contentId: string) => Promise<void>
+    getContentDetails: (contentId: string) => Promise<void>;
     saveContentDetails: (data: ContentDetails) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string) => Promise<void>;
     deleteFile: (contentId: string, targetId: string, uploadType: string) => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
-    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>;
     deleteSubtitle?: (targetId: string, contentId: string, fileName: string) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string) => Promise<void>
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string) => Promise<void>;
 }
 
 var momentTZ = require('moment-timezone')

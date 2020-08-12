@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload } from './types';
 import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
+import { ContentDetails } from '../../VOD/General/types';
 
 const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
@@ -28,7 +28,7 @@ const getLiveList = async (qs: string) => {
     )
 }
 
-const saveLiveDetailsService = async (data: LiveDetails) => {
+const saveLiveDetailsService = async (data: ContentDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader()
     return axios.put(process.env.API_BASE_URL + '/channels/' + data.id, 
