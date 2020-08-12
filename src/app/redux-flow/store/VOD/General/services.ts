@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { SubtitleInfo, VodDetails } from './types'
+import { SubtitleInfo, ContentDetails } from './types'
 import { addTokenToHeader, isTokenExpired } from '../../../../utils/token'
 
 const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/'
@@ -52,7 +52,7 @@ const restoreVodService = async (vodId: string) => {
     )
 }
 
-const editVodDetailsService = async (data: VodDetails) => {
+const editVodDetailsService = async (data: ContentDetails) => {
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return axios.put(process.env.API_BASE_URL + '/vods/' + data.id,

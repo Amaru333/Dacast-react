@@ -3,9 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action, getPlaylistDetailsAction, editPlaylistDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Playlists/General/actions';
 import { connect } from 'react-redux';
-import { PlaylistDetails, PlaylistDetailsState } from '../../redux-flow/store/Playlists/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { PlaylistGeneralPage } from '../../pages/Playlist/General/General';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
@@ -70,7 +68,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getPlaylistDetails: async (playlistId: string) => {
             await dispatch(getPlaylistDetailsAction(playlistId))
         },
-        editPlaylistDetails: async (data: PlaylistDetails) => {
+        editPlaylistDetails: async (data: ContentDetails) => {
             await dispatch(editPlaylistDetailsAction(data))
         },
         getUploadUrl: async (uploadType: string, playlistId: string, extension: string) => {
