@@ -4,35 +4,15 @@ import { ActionTypes, AnalyticsDashboardInitialState, AnalyticsDashboardState } 
 
 const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardInitialState, action: Action) => {
     switch (action.type) {
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_JOB_IDS: 
-            return {
-                data: {...AnalyticsDashboardInitialState.data},
-                jobIds: action.payload.data
+        case ActionTypes.GET_ANALYTICS_DASHBOARD: 
+            if(!action.payload) {
+                return state;
             }
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_DEVICE :
             return {
-                ...state,
-                data: { ...state.data, consumptionPerDevice:  action.payload}
-            }
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_TIME :
-            return {
-                ...state,
-                data: { ...state.data, consumptionPerTime:  action.payload}
-            }
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_CONSUMPTION_LOCATION :
-            return {
-                ...state,
-                data: { ...state.data, consumptionPerLocation: { failed: action.payload && action.payload.data.failed ? true : false, data:  action.payload ? action.payload.data.map.filter(element => element.consumedMB !== undefined) : false } }
-            }
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_PLAYS_VIEWERS_TIME :
-            return {
-                ...state,
-                data: { ...state.data, playsViewersPerTime:  action.payload}
-            }
-        case ActionTypes.GET_ANALYTICS_DASHBOARD_TOP_CONTENTS :
-            return {
-                ...state,
-                data: { ...state.data, topContents:  action.payload}
+                data: {
+                    ...AnalyticsDashboardInitialState.data,
+                    consumptionPerTime: {data: action.payload.data.playsAndViewersTimeSeries, time: []} 
+                }
             }
         default:
             return state;

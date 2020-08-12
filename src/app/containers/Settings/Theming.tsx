@@ -9,17 +9,17 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface ThemingComponentProps {
     themingList: ThemesData;
-    getThemingList: Function;
-    saveTheme: Function;
-    createTheme: Function;
-    deleteTheme: Function;
+    getThemingList: () => Promise<void>;
+    saveTheme: (theme: ThemeOptions, contentId: string) => Promise<void>;
+    createTheme: (theme: ThemeOptions) => Promise<void>;
+    deleteTheme: (theme: ThemeOptions) => Promise<void>;
 }
 
 export const Theming = (props: ThemingComponentProps) => {
 
     React.useEffect(() => {
         if(!props.themingList) {
-            props.getThemingList();
+            props.getThemingList()
         }
     }, [])
     return (
@@ -37,17 +37,17 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getThemingList: () => {
-            dispatch(getThemingListAction());
+        getThemingList: async () => {
+            await dispatch(getThemingListAction())
         },
-        saveTheme: (theme: ThemeOptions, callback?: Function) => {
-            dispatch(saveThemeAction(theme)).then(callback);
+        saveTheme: async (theme: ThemeOptions, contentId: string) => {
+            await dispatch(saveThemeAction(theme))
         },
-        createTheme: (theme: ThemeOptions, callback?: Function) => {
-            dispatch(createThemeAction(theme)).then(callback);
+        createTheme: async (theme: ThemeOptions) => {
+            await dispatch(createThemeAction(theme))
         },
-        deleteTheme: (theme: ThemeOptions) => {
-            dispatch(deleteThemeAction(theme));
+        deleteTheme: async (theme: ThemeOptions) => {
+            await dispatch(deleteThemeAction(theme))
         },
     };
 }

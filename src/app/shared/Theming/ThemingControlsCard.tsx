@@ -20,12 +20,12 @@ import { addTokenToHeader } from '../../utils/token';
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
-    saveTheme: Function;
-    createTheme?: Function;
-    cancelFunction?: Function;
     contentType: 'vod' | 'live' | 'playlist' | 'settings';
     actionType: 'Create' | 'Save';
     contentId?: string;
+    saveTheme: (theme: ThemeOptions, contendId: string) => Promise<void>;
+    createTheme?: (theme: ThemeOptions) => Promise<void>;
+    cancelFunction?: () => void;
 }
 
 export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => {
@@ -58,15 +58,19 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleThemeSave = () => {
         setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme, () => setButtonLoading(false))
+            props.createTheme(selectedTheme).then(() => {
+                setButtonLoading(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
         } else {
-            props.saveTheme(selectedTheme, props.contentId, () => setButtonLoading(false))
+            props.saveTheme(selectedTheme, props.contentId).then(() => {
+                setButtonLoading(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
         }
     }
-
-    React.useEffect(() => {
-        setButtonLoading(false)
-    }, [props.theme])
 
     const handleCancel = () => {
         switch(props.contentType) {
@@ -101,7 +105,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
     
-    console.log(props);
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>

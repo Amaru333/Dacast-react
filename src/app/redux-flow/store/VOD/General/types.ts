@@ -22,23 +22,41 @@ export interface AssetType {
     url: string;
 }
 
-export interface VodDetailsState { [key: string]: VodDetails }
+export interface ContentDetailsState { [key: string]: ContentDetails }
 
-export interface VodDetails {
+export interface ContentDetails {
     id: string;
     online: boolean;
     title: string;
     downloadURL?: string;
     description: string;
     folders: string[];
-    thumbnail: AssetType;
-    splashscreen: AssetType;
+    thumbnail?: AssetType;
+    splashscreen?: AssetType;
     poster?: AssetType;
-    subtitles: SubtitleInfo[];
+    subtitles?: SubtitleInfo[];
     uploadurl: string;
     embedType?: string;
     embedScaling?: string;
     embedSize?: number;
+    username?: string;
+    password?: string;
+    streamKeys?: string[];
+    primaryPublishURL?: string;
+    backupPublishURL?: string;
+    playbackURLs?: PLaybackURLs;
+    recording?: boolean;
+    countdown?: LiveStreamCountdown;
+    rewind?: boolean;
+}
+
+interface PLaybackURLs {
+    hls: string;
+}
+
+interface LiveStreamCountdown {
+    startTime: number;
+    timezone?: string;
 }
 
 export interface VodItem {
@@ -70,3 +88,7 @@ export interface SubtitleInfo {
     url?: string;
     convertToUTF8?: boolean;
 }
+
+export const initialContentGeneralState: ContentDetailsState = {};
+
+export const initialContentList: SearchResult | false = false

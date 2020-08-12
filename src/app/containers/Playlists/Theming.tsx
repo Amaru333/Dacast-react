@@ -12,8 +12,8 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 
 export interface PlaylistThemingComponentProps {
     themeState: ContentThemeState;
-    getPlaylistTheme: Function;
-    savePlaylistTheme: Function;
+    getPlaylistTheme: (playlistId: string) => Promise<void>;
+    savePlaylistTheme: (theme: ThemeOptions, playlistId: string) => Promise<void>;
 }
 
 const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
@@ -22,7 +22,7 @@ const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
 
     React.useEffect(() => {
         if (!props.themeState[playlistId]) {
-            props.getPlaylistTheme(playlistId);
+            props.getPlaylistTheme(playlistId)
         }
     }, [])
 
@@ -53,11 +53,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistTheme: (playlistId: string) => {
-            dispatch(getPlaylistThemeAction(playlistId));
+        getPlaylistTheme: async (playlistId: string) => {
+            await dispatch(getPlaylistThemeAction(playlistId))
         },
-        savePlaylistTheme: (theme: ThemeOptions, playlistId: string, callback: () => void) => {
-            dispatch(savePlaylistThemeAction(theme, playlistId)).then(callback);
+        savePlaylistTheme: async (theme: ThemeOptions, playlistId: string) => {
+            await dispatch(savePlaylistThemeAction(theme, playlistId))
         },
     }
 }

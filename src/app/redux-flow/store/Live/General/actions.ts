@@ -3,11 +3,12 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts/actions';
 import { LiveGeneralServices } from './services';
 import { ActionTypes, LiveDetails, ThumbnailUpload, SplashscreenUpload, PosterUpload, LiveItem, SearchResult } from './types';
+import { ContentDetails } from '../../VOD/General/types';
 
 
 export interface GetLiveDetails {
     type: ActionTypes.GET_LIVE_DETAILS;
-    payload: {data: LiveDetails};
+    payload: {data: ContentDetails};
 }
 
 export interface GetLiveList {
@@ -17,7 +18,7 @@ export interface GetLiveList {
 
 export interface SaveLiveDetails {
     type: ActionTypes.SAVE_LIVE_DETAILS;
-    payload: LiveDetails;
+    payload: ContentDetails;
 }
 
 export interface GetUploadUrl {
@@ -64,7 +65,7 @@ export const getLiveListAction = (qs: string): ThunkDispatch<Promise<void>, {}, 
     };
 }
 
-export const saveLiveDetailsAction = (data: LiveDetails): ThunkDispatch<Promise<void>, {}, SaveLiveDetails> => {
+export const saveLiveDetailsAction = (data: ContentDetails): ThunkDispatch<Promise<void>, {}, SaveLiveDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveLiveDetails>) => {
         await LiveGeneralServices.saveLiveDetailsService(data)
             .then(response => {
