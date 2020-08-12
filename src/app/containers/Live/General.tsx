@@ -17,12 +17,12 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 export interface LiveGeneralProps {
     liveDetails: ContentDetails;
     liveDetailsState: ContentDetailsState;
-    getLiveDetails: Function;
-    saveLiveDetails: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
-    showToast: Function;
+    getLiveDetails: (liveId: string) => Promise<void>
+    saveLiveDetails: (data: LiveDetails) => Promise<void>
+    getUploadUrl: (uploadType: string, liveId: string, extension: string) => Promise<void>
+    uploadFile: (data: File, uploadUrl: string, liveId: string, uploadType: string) => Promise<void>
+    deleteFile: (liveId: string, targetId: string, uploadType: string) => Promise<void>
+    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
 }
 
 export const LiveGeneral = (props: LiveGeneralProps) => {
@@ -68,23 +68,23 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveDetails: (liveId: string) => {
-            dispatch(getLiveDetailsAction(liveId));
+        getLiveDetails: async (liveId: string) => {
+            await dispatch(getLiveDetailsAction(liveId));
         },
-        saveLiveDetails: (data: LiveDetails, callback?: Function) => {
-            dispatch(saveLiveDetailsAction(data)).then(callback);
+        saveLiveDetails: async (data: LiveDetails) => {
+            await dispatch(saveLiveDetailsAction(data))
         },
-        getUploadUrl: (uploadType: string, liveId: string, extension: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, liveId, extension)).then(callback)
+        getUploadUrl: async (uploadType: string, liveId: string, extension: string) => {
+            await dispatch(getUploadUrlAction(uploadType, liveId, extension))
         },
         uploadFile: async (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
             await dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
         },
-        deleteFile: (liveId: string, targetId: string, uploadType: string) => {
-            dispatch(deleteFileAction(liveId, targetId, uploadType))
+        deleteFile: async (liveId: string, targetId: string, uploadType: string) => {
+            await dispatch(deleteFileAction(liveId, targetId, uploadType))
         },
-        showToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType));
+        showToast: async (text: string, size: Size, notificationType: NotificationType) => {
+            await dispatch(showToastNotification(text, size, notificationType));
         },
 
     }

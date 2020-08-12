@@ -18,12 +18,12 @@ import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/
 export interface PlaylistGeneralProps {
     playlistDetails: ContentDetails;
     playlistDetailsState: ContentDetailsState;
-    editPlaylistDetails: Function;
-    getPlaylistDetails: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
-    showToast: Function;
+    editPlaylistDetails: (data: ContentDetails) => Promise<void>
+    getPlaylistDetails: (playlistId: string) => Promise<void>
+    getUploadUrl: (uploadType: string, playlistId: string, extension: string) => Promise<void>
+    uploadFile: (data: File, uploadUrl: string, playlistId: string, uploadType: string) => Promise<void>
+    deleteFile: (playlistId: string, targetId: string, uploadType: string) => Promise<void>
+    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
 }
 
 const GeneralPlaylist = (props: PlaylistGeneralProps) => {
@@ -67,14 +67,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistDetails: (playlistId: string) => {
-            dispatch(getPlaylistDetailsAction(playlistId));
+        getPlaylistDetails: async (playlistId: string) => {
+            await dispatch(getPlaylistDetailsAction(playlistId));
         },
-        editPlaylistDetails: (data: PlaylistDetails, callback?: Function) => {
-            dispatch(editPlaylistDetailsAction(data)).then(callback);
+        editPlaylistDetails: async (data: PlaylistDetails) => {
+            await dispatch(editPlaylistDetailsAction(data));
         },
-        getUploadUrl: (uploadType: string, playlistId: string, extension: string, callback: Function) => {
-            dispatch(getUploadUrlAction(uploadType, playlistId, extension)).then(callback)
+        getUploadUrl: async (uploadType: string, playlistId: string, extension: string) => {
+            dispatch(getUploadUrlAction(uploadType, playlistId, extension))
         },
         uploadFile: async (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
             await dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))

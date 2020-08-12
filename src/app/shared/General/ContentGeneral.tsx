@@ -22,25 +22,26 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
 import Axios from 'axios';
-import { SubtitleInfo, ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
+import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/VOD/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 
 interface ContentGeneralProps {
     contentType: string;
     contentDetails: ContentDetails;
-    getContentDetails: Function;
-    saveContentDetails: Function;
-    getUploadUrl: Function;
-    uploadFile: Function;
-    deleteFile: Function;
-    showToast: Function;
-    uploadImageFromVideo?: Function
-    deleteSubtitle?: Function;
-    addSubtitle?: Function;
+    getContentDetails: (contentId: string) => Promise<void>
+    saveContentDetails: (data: ContentDetails) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, uploadType: string) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
+    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
+    deleteSubtitle?: (targetId: string, contentId: string, fileName: string) => Promise<void>;
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string) => Promise<void>
 }
 
 var momentTZ = require('moment-timezone')
@@ -85,7 +86,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         setContentDetails(props.contentDetails)
     }, [props.contentDetails.title, props.contentDetails.folders, props.contentDetails.description, props.contentDetails.online]);
 
-    const subtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+    const subtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
         return {data: [
             {cell: <Text size={14} weight="med">Subtitles</Text>},
             {cell: <Text size={14} weight="med">Language</Text>},
@@ -122,7 +123,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         : null
     };
     
-    const disabledSubtitlesTableHeader = (setSubtitleModalOpen: Function) => {
+    const disabledSubtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
         return {data: [
             {cell: <span key={'disabledTableHeader'}></span>},
             {cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button>}
@@ -138,7 +139,11 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     React.useEffect(() => {
         if(props.contentDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID}, props.contentDetails.id, () => {setSubtitleButtonLoading(false)})
+            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID}, props.contentDetails.id).then(() =>
+                 setSubtitleButtonLoading(false)
+            ).catch(() =>
+                 setSubtitleButtonLoading(false)
+            )
             setUploadedSubtitleFile(emptySubtitle)
             setSubtitleModalOpen(false);
         }
@@ -155,7 +160,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         } else if (imageModalTitle === "Change Thumbnail") {
             return `${props.contentType}-thumbnail`
         } else if(imageModalTitle === 'Change Poster') {
-            return `${props.contentType}-splashscreen`
+            return `${props.contentType}-poster`
         } else {
             return ''
         }
@@ -186,9 +191,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        // { id: "embed", label: "Embed Code", enabled: true, link: `<script id="${userId}-vod-${props.vodDetails.id}" width="590" height="431" src="https://player.dacast.com/js/player.js?contentId=${userId}-vod-${props.vodDetails.id}"  class="dacast-video"></script>` },
-        // { id: "video", label: "Video", enabled: true, link: 'https://prod-nplayer.dacast.com/index.html?contentId=vod-' + props.vodId },
-        // { id: "download", label: "Download", enabled: getPrivilege('privilege-web-download'), link: 'todo' },
         { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
     ]
 
@@ -221,6 +223,19 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
             case "playlist":
                 return "Playlist"
         }
+    }
+
+    const handleSave = () => {
+        setButtonLoading(true)
+        props.saveContentDetails(contentDetails).then(() =>
+             setButtonLoading(false)
+        ).catch(() =>
+             setButtonLoading(false)
+        )
+    }
+
+    const handleImageDelete = (imageType: string) => {
+        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, `${imageType}`)
     }
     
     return (
@@ -373,7 +388,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     </div>
                             }
                         </div>
-                        {/* {
+                        {/* MAYBE V2? 
+                            {
                             getPrivilege('privilege-dvr') &&
                             <div className="mb2 clearfix">
                                 <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
@@ -414,7 +430,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <ButtonSection>
                                     {
                                         (splashScreenEnable && props.contentType !== "vod") &&
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.contentDetails.id, props.contentDetails.splashscreen.targetID, "splashscreen") } } >Delete</Button>
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("splashscreen") } >Delete</Button>
                                     }
                                         <Button 
                                             className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
@@ -439,7 +455,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <ButtonSection>
                                     {
                                         (thumbnailEnable && props.contentType !== "vod") &&
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.deleteFile(props.contentDetails.id, props.contentDetails.thumbnail.targetID, "thumbnail")}}>Delete</Button>
+                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("thumbnail")}>Delete</Button>
                                     }
                                         <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Thumbnail");setSelectedImageName(props.contentDetails.thumbnail.url);setImageModalOpen(true)}}>
                                             {
@@ -462,7 +478,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <ButtonSection>
                                         {
                                             posterEnable && 
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {props.deleteFile(props.contentDetails.id, props.contentDetails.poster.targetID, "Poster")}}>Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("poster")}>Delete</Button>
                                         }
                                         
                                         <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {setImageModalTitle("Change Poster");setSelectedImageName(props.contentDetails.poster.url);setImageModalOpen(true)}}>
@@ -693,7 +709,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                 </Card>
                {    JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails) && 
                     <ButtonContainer>
-                        <Button isLoading={buttonLoading} className="mr2" onClick={() => {setButtonLoading(true); props.saveContentDetails(contentDetails, () => {setButtonLoading(false)}) } }>Save</Button>
+                        <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave() }>Save</Button>
                         <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonContainer>
                 }
