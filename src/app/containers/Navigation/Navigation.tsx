@@ -94,7 +94,8 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     });
 
     const handleClick = (name: string) => {
-        setSelectedAddDropdownItem(name);
+        setSelectedAddDropdownItem(name)
+        setAddDropdownIsOpened(false)
         switch (name) {
             case "Video":
                 history.push('/uploader')

@@ -46,9 +46,11 @@ const saveCompanyPageDetailsService = async (data: CompanyPageInfos) => {
 
 const getUploadLogoUrlService = async () => {
     await isTokenExpired()
-    let {token} = addTokenToHeader();
+    let {token, userId} = addTokenToHeader();
     return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/company-logo',
-        {},
+        {
+            userID: userId
+        },
         {
             headers: {
                 Authorization: token
