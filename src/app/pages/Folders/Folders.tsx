@@ -59,6 +59,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
+    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
 
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -132,7 +133,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             })
         }
 
-    }, [fetchContent])
+    }, [updateList])
+
+    React.useEffect(() => {
+        setFetchContent(true)
+    }, [updateList])
 
     React.useEffect(() => {
         const wait = async () => {
@@ -489,7 +494,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         </DropdownList>
                     </div>
                     <div className='col-3 col pr1'>
-                        <FoldersFiltering className="col-12" setSelectedFilter={setSelectedFilter} />
+                        <FoldersFiltering className="col-12" setSelectedFilter={(filters: FoldersFilteringState) => {setSelectedFilter(filters);setFetchContent(true)}} />
                     </div>
                     <div className='col-3 col '>
                         <Button className="col-12" onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>
@@ -552,12 +557,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await foldersTree.moveToFolder([], [assetToDelete], currentFolder.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
                 }
             </Modal>
-            <OnlineBulkForm updateList={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm updateList={setFetchContent} showToast={props.showToast} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setFetchContent} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             
         </div>
