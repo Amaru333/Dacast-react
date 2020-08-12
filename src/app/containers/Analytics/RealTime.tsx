@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeViewersTimesAction, getAnalyticsRealTimePlaybackTimeAction, getAnalyticsRealTimeGbTimeAction, getAnalyticsRealTimeConsumptionLocationAction, getAnalyticsRealTimeJobIdsAction } from '../../redux-flow/store/Analytics/RealTime';
+import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getLiveListAction } from '../../redux-flow/store/Live/General/actions';
@@ -12,11 +12,7 @@ import { SearchResult } from '../../redux-flow/store/Live/General/types';
 
 export interface RealTimePageProps {
     realTimeAnalytics: AnalyticsRealTimeState;
-    getAnalyticsRealTimeViewersTimes: Function;
-    getAnalyticsRealTimePlaybackTime: Function;
-    getAnalyticsRealTimeGbTime: Function;
-    getAnalyticsRealTimeConsumptionLocation: Function;
-    getAnalyticsRealTimeJobIds: Function;
+    getAnalyticsRealTime: Function;
     liveList: false | SearchResult;
     getLiveList: Function;
 }
@@ -31,24 +27,9 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             if(props.liveList.results.length === 0) {
                 // HANDLE NO CHANNEL
             }
-            props.getAnalyticsRealTimeJobIds({ period: 5, channel: props.liveList.results[0].objectID })
+            props.getAnalyticsRealTime({ period: 5, channel: props.liveList.results[0].objectID })
         }
     }, [props.liveList])
-
-    React.useEffect(() => {
-        if (!props.realTimeAnalytics.data.concurentViewersPerTime && props.realTimeAnalytics.jobIds) {
-            props.getAnalyticsRealTimeViewersTimes(props.realTimeAnalytics.jobIds.concurentViewersPerTime.jobID);
-        }
-        if (!props.realTimeAnalytics.data.consumptionPerLocation && props.realTimeAnalytics.jobIds) {
-            props.getAnalyticsRealTimeConsumptionLocation(props.realTimeAnalytics.jobIds.consumptionPerLocation.jobID);
-        }
-        if (!props.realTimeAnalytics.data.gbPerTime && props.realTimeAnalytics.jobIds) {
-            props.getAnalyticsRealTimeGbTime(props.realTimeAnalytics.jobIds.gbPerTime.jobID);
-        }
-        if (!props.realTimeAnalytics.data.newPlaybackSessionsPerTime && props.realTimeAnalytics.jobIds) {
-            props.getAnalyticsRealTimePlaybackTime(props.realTimeAnalytics.jobIds.newPlaybackSessionsPerTime.jobID);
-        }
-    }, [props.realTimeAnalytics.jobIds])
 
 
     if(!props.liveList) {
@@ -67,20 +48,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTimeJobIds: (options?: any) => {
-            dispatch(getAnalyticsRealTimeJobIdsAction(options));
-        },
-        getAnalyticsRealTimeViewersTimes: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeViewersTimesAction(jobId, options));
-        },
-        getAnalyticsRealTimePlaybackTime: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimePlaybackTimeAction(jobId, options));
-        },
-        getAnalyticsRealTimeGbTime: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeGbTimeAction(jobId, options));
-        },
-        getAnalyticsRealTimeConsumptionLocation: (jobId: string, options?: GetAnalyticsRealtimeOptions) => {
-            dispatch(getAnalyticsRealTimeConsumptionLocationAction(jobId, options));
+        getAnalyticsRealTime: (options?: any) => {
+            dispatch(getAnalyticsRealTimeAction(options));
         },
         getLiveList: (qs: string) => {
             dispatch(getLiveListAction(qs));

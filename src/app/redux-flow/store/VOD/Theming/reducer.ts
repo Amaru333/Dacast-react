@@ -7,7 +7,6 @@ import { defaultStateContentTheme, ContentThemeState } from '../../Settings/Them
 const reducer: Reducer<ContentThemeState> = (state = defaultStateContentTheme, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_VOD_THEME :
-            console.log(action);
             return {
                 ...state,
                 [action.payload.contentId] : {

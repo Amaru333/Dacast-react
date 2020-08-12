@@ -6,7 +6,6 @@ import { resetUserInfo } from '../../../../utils/token';
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {
         case ActionTypes.LOGIN : 
-            console.log(action);
             let returnedState = action.payload ? {...state, ...action.payload.data} : {...state}
             return {
                 ...returnedState

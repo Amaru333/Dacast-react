@@ -49,7 +49,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
     const refreshData = (dates: any) => {
         setDates(dates);
-        props.getAnalyticsDashboardJobIds({ end: Math.round(dates.endDate / 1000), start: Math.round(dates.startDate / 1000) });
+        props.getAnalyticsDashboard({ end: Math.round(dates.endDate / 1000), start: Math.round(dates.startDate / 1000) });
     }
 
     
