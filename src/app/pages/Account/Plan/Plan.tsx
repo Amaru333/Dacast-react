@@ -68,6 +68,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             }
         }, () => {
             setIsLoading(false);
+            setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
     }
@@ -81,6 +82,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setThreeDSecureActive(false)
         }, () => {
             setIsLoading(false);
+            setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
 

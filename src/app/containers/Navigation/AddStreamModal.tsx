@@ -15,6 +15,7 @@ import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { isMobile } from 'react-device-detect';
 
 const moment = require('moment-timezone')
 
@@ -105,7 +106,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
 
     return (
-        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className='x-visible' opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 

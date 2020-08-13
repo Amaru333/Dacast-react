@@ -8,6 +8,7 @@ import { useKeyboardSubmit, useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 import { Bubble } from '../../../../components/Bubble/Bubble';
+import { isMobile } from 'react-device-detect';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -42,7 +43,7 @@ export const LoginPage = (props: LoginComponentProps) => {
     return (
         <LoginContainer>
                 <ImageStyle className="mx-auto" src={logo} />
-                <ModalCard className="mx-auto" size="small" title="User Login" >
+                <ModalCard className={"mx-auto"+ (isMobile ? " col-12-important" : "") } size="small" title="User Login" >
                     <ModalContent className="clearfix">
                         <Input type="email" className="col col-12 pt1" label="Email Address" placeholder="Email Address" value={username} onChange={event => setUsername(event.currentTarget.value)} />
                         <div className=" relative col col-12 flex pt1">

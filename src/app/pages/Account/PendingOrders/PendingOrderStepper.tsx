@@ -72,7 +72,7 @@ export const PaymentStep = (props: {stepperData: PendingOrder; updateStepperData
             <Text size={14} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
             <div className='py2 col col-12'>
                 <InputCheckbox className='col col-1' id={'chekboxTC'} key={'chekboxTC'} onChange={() => setTermsAndConditionsChecked(!termsAndConditionsChecked)} />
-                <Text className='col col-11' size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>
+                <Text className='col col-11' size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/">Terms and Conditions.</a></Text>
             </div>
         </div>
     )

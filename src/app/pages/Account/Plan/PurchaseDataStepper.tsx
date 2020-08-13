@@ -9,8 +9,10 @@ import { handleDataPrice } from '../../../../utils/utils';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
 
-    const [dataPrice, setDataPrice] = React.useState<number>(null)
-    const [dataAmount, setDataAmount] = React.useState<number>(null)
+    const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData? props.stepperData.dataPrice : null)
+    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData? props.stepperData.quantity : null)
+
+    console.log(props.stepperData, dataAmount)
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -18,11 +20,11 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     React.useEffect(() => {
         if(dataAmount <= 4999 ){
-            props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", totalPrice: (dataPrice * dataAmount)})
+            props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
         } else if(dataAmount >= 5000 && dataAmount <= 9999){
-            props.updateStepperData({...props.stepperData, code: "eventBw5to10TB", totalPrice: (dataPrice * dataAmount)})
+            props.updateStepperData({...props.stepperData, code: "eventBw5to10TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
         } else {
-            props.updateStepperData({...props.stepperData, code: "eventBw10to100TB", totalPrice: (dataPrice * dataAmount)})
+            props.updateStepperData({...props.stepperData, code: "eventBw10to100TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
         }
     }, [dataAmount])
 
@@ -60,7 +62,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
+            <Input defaultValue={dataAmount} type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>
@@ -95,7 +97,7 @@ export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunction
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={true}  onChange={() => {}} />
                 <div className='col col-11 flex'>
-                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>                   
+                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a >Terms and Conditions.</a></Text>                   
                 </div>
             </div>
         </div>
