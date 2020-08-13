@@ -14,7 +14,7 @@ import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentPaywallState } from '../Paywall/Presets/types'
-import { GeneralReducer } from '../Shared/General/reducer';
+import { GeneralReducer } from '../Content/General/reducer';
 
 
 export const vodInitialState: VodState = {

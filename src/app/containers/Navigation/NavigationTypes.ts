@@ -29,6 +29,7 @@ export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<H
 export interface Routes {
     path: string;
     name: string;
+    contentType?: string;
     iconName?: string;
     arrowIcon?: string;
     component?: any;

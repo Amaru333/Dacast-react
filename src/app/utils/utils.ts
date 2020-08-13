@@ -13,3 +13,7 @@ export function updateClipboard(copiedValue: string, toastMessage: string): void
 export function updateTitleApp(title: string): void {
     store.dispatch(updateTitle(title))
 }
+
+export const parseContentType = (contentType: string) => {
+    return contentType === 'live' ? 'channels' : contentType + 's'
+}

@@ -2,23 +2,15 @@ import { SubtitleInfo, ContentDetails } from './types'
 import { axiosClient } from '../../../../utils/axiosClient'
 
 const getContentDetailsService = async (contentId: string, contentType: string) => {
-    return await axiosClient.get('/vods/' + contentId)
-}
-
-const getContentList = async (qs: string, contentType: string) => {
-    return await axiosClient.get('/vods' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'))
-}
-
-const deleteContentService = async (contentId: string, contentType: string) => {
-    return await axiosClient.delete('/vods/' + contentId)
+    return await axiosClient.get(`/${contentType}/${contentId}`)
 }
 
 const restoreContentService = async (contentId: string, contentType: string) => {
-    return await axiosClient.get('/vods/' + contentId + '/restore')
+    return await axiosClient.get(`/${contentType}/${contentId}/restore`)
 }
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
-    return await axiosClient.put('/vods/' + data.id,
+    return await axiosClient.put(`/${contentType}/data.id`,
         {
             ...data
         } 
@@ -59,7 +51,7 @@ const uploadFile = async (data: File, uploadUrl: string) => {
 }
 
 const deleteFile = async (contentId: string, targetId: string, contentType: string) => {
-    return await axiosClient.delete('/vods/' + contentId + '/targets/' + targetId)
+    return await axiosClient.delete(`/${contentType}/ ${contentId}/targets/${targetId}`)
 }
 
 
@@ -70,7 +62,5 @@ export const ContentGeneralServices = {
     uploadFile,
     uploadImageFromVideo,
     deleteFile,
-    getContentList,
-    deleteContentService,
     restoreContentService
 }

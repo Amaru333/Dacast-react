@@ -1,7 +1,6 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getPlaylistDetailsAction, editPlaylistDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Playlists/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -11,38 +10,28 @@ import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
+import { GeneralComponentProps } from '../Videos/General';
+import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
 
-
-export interface PlaylistGeneralProps {
-    playlistDetails: ContentDetails;
-    playlistDetailsState: ContentDetailsState;
-    editPlaylistDetails: (data: ContentDetails) => Promise<void>;
-    getPlaylistDetails: (playlistId: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, playlistId: string, extension: string) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string, playlistId: string, uploadType: string) => Promise<void>;
-    deleteFile: (playlistId: string, targetId: string, uploadType: string) => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-}
-
-const GeneralPlaylist = (props: PlaylistGeneralProps) => {
+const GeneralPlaylist = (props: GeneralComponentProps) => {
 
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        props.getPlaylistDetails(playlistId);
+        props.getContentDetails(playlistId, 'playlists');
     }, [])
 
     return (
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            { props.playlistDetailsState[playlistId] ?
+            { props.contentDetailsState['playlists'] && props.contentDetailsState['playlists'][playlistId] ?
                 (
                     <div className='flex flex-column'>
                         <ContentGeneralPage
                             contentType="playlist" 
-                            contentDetails={props.playlistDetailsState[playlistId]}
-                            getContentDetails={props.getPlaylistDetails}
-                            saveContentDetails={props.editPlaylistDetails}
+                            contentDetails={props.contentDetailsState['playlists'][playlistId]}
+                            getContentDetails={props.getContentDetails}
+                            saveContentDetails={props.saveContentDetails}
                             getUploadUrl={props.getUploadUrl}
                             uploadFile={props.uploadFile}
                             deleteFile={props.deleteFile}
@@ -59,30 +48,30 @@ const GeneralPlaylist = (props: PlaylistGeneralProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistDetailsState: state.playlist.general
+        contentDetailsState: state.content.general
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistDetails: async (playlistId: string) => {
-            await dispatch(getPlaylistDetailsAction(playlistId))
+        getContentDetails: async (contentId: string, contentType: string) => {
+            await dispatch(getContentDetailsAction(contentId, contentType));
         },
-        editPlaylistDetails: async (data: ContentDetails) => {
-            await dispatch(editPlaylistDetailsAction(data))
+        saveContentDetails: async (data: ContentDetails, contentType: string) => {
+            await dispatch(editContentDetailsAction(data, contentType))
         },
-        getUploadUrl: async (uploadType: string, playlistId: string, extension: string) => {
-            await dispatch(getUploadUrlAction(uploadType, playlistId, extension))
+        getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string) => {
+            await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType))
         },
-        uploadFile: async (data: File, uploadUrl: string, playlistId: string, uploadType: string) => {
-            await dispatch(uploadFileAction(data, uploadUrl, playlistId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => {
+           await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
         },
-        deleteFile: async (liveId: string, targetId: string, uploadType: string) => {
-            await dispatch(deleteFileAction(liveId, targetId, uploadType))
+        deleteFile: async (contentId: string, targetId: string, contentType: string) => {
+            await dispatch(deleteFileAction(contentId, targetId, contentType))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType))
-        }
+            dispatch(showToastNotification(text, size, notificationType));
+        },
     };
 }
 

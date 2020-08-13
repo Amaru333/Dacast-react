@@ -81,7 +81,6 @@ class AxiosClient {
     }
 
     public async put<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
-        debugger
         return await this.getInstance().put(url, data, this.setConfig(config))
     }
 
@@ -98,9 +97,7 @@ class AxiosClient {
 
     private checkRefresh = async () => {
         if(!this.refreshingToken) {
-            debugger
             return await this.refreshToken().then(() => {
-                debugger
                 this.refreshingToken = null
             })
         }
