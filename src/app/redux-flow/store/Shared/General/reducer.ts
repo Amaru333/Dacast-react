@@ -10,13 +10,15 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
 
     switch (action.type) {
         case ActionTypes.GET_CONTENT_DETAILS:
+            console.log('content type', state[action.payload.contentType])
+            
             return {
                 ...state,
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
-                    [action.payload.data.id] : {
-                        ...state[action.payload.contentType][action.payload.data.id],
-                        ...action.payload.data
+                    [action.payload.data.data.id] : {
+                        ...state[action.payload.data.data.id],
+                        ...action.payload.data.data
                     }
                 }
             }

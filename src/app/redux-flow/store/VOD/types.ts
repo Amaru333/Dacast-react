@@ -4,7 +4,7 @@ import { ChapterMarkerInfosState } from './Chapters/types';
 import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecurityReducer } from './Security';
 import { SearchResult, VodDetailsState, ContentDetailsState } from './General/types';
-import { GeneralReducer, reducerList } from './General/reducer';
+import {reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsListState } from './Renditions/types';
 import { VodThemingReducer } from './Theming/reducer';
@@ -14,6 +14,7 @@ import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentPaywallState } from '../Paywall/Presets/types'
+import { GeneralReducer } from '../Shared/General/reducer';
 
 
 export const vodInitialState: VodState = {

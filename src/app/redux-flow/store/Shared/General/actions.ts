@@ -77,7 +77,8 @@ export const getContentDetailsAction = (contentId: string, contentType: string):
             .then(response => {
                 dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: response.data, contentType: contentType} })
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     };
