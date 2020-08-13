@@ -1,31 +1,13 @@
-import axios from 'axios'
 import { SecuritySettings } from '../../Settings/Security/types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getLiveSecuritySettingsService = async (liveId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/security', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/channels/' + liveId + '/settings/security')
 }
 
 const saveLiveSecuritySettingsService = async (data: SecuritySettings, liveId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/channels/' + liveId + '/settings/security', 
-        {...data},
-        {
-            headers: {
-                Authorization: token
-            }
-        }
+    return await axiosClient.put('/channels/' + liveId + '/settings/security', 
+        {...data}
     )
 }
 

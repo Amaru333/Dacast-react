@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { Text } from '../../../../components/Typography/Text';
-import { Toggle } from '../../../../components/Toggle/toggle';
-import { Modal } from '../../../../components/Modal/Modal';
-import { ThemeOptions } from '../../../redux-flow/store/Settings/Theming';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentType, SearchResult } from '../../../redux-flow/store/Folders/types';
-import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { NotificationType, Size } from '../../../../components/Toast/ToastTypes';
-import { bulkActionsService } from '../../../redux-flow/store/Common/bulkService';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { Text } from '../../../components/Typography/Text';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { Modal } from '../../../components/Modal/Modal';
+import { ThemeOptions } from '../../redux-flow/store/Settings/Theming';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ContentType, SearchResult } from '../../redux-flow/store/Folders/types';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { bulkActionsService } from '../../redux-flow/store/Common/bulkService';
 
 interface PropsBulkModal {
     items?: ContentType[]; 

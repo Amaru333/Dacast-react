@@ -9,6 +9,7 @@ import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentPaywallState } from '../Paywall/Presets';
+import { ContentDetailsState } from '../VOD/General/types';
 
 export const liveInitialState: LiveState = {
     general: {},
@@ -20,7 +21,7 @@ export const liveInitialState: LiveState = {
 };
 
 export interface LiveState {
-    general: LiveDetailsState;
+    general: ContentDetailsState;
     list: false | SearchResult;
     security: ContentSecuritySettingsState;
     theming: ContentThemeState;

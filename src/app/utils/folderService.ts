@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { FolderTreeNode, SubFolder, ContentType } from '../redux-flow/store/Folders/types';
-import { addTokenToHeader, isTokenExpired } from './token';
+import { axiosClient } from './axiosClient';
 
 export const rootNode: FolderTreeNode = {
     isExpanded: true,
@@ -44,14 +44,7 @@ export class FolderTree {
 
     private async fetchChildren(parentNodeId: string) {
         let fetchedNode: SubFolder
-        await isTokenExpired()
-        let {token} = addTokenToHeader()
-        return await axios.get(process.env.API_BASE_URL + '/folders?parentID=' + parentNodeId, 
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
+        return await axiosClient.get('/folders?parentID=' + parentNodeId
         ).then((response) => {
             fetchedNode = response.data.data.folders.reduce((reduced: any, item: FolderTreeNode) => {
                 return {
@@ -133,16 +126,9 @@ export class FolderTree {
 
     public async addFolder(folderName: string, fullpath: string) {
         let node = await this.getNode(this.tree, fullpath)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        return await axios.post(process.env.API_BASE_URL + '/folders', 
+        return await axiosClient.post('/folders', 
             {
                 fullPath: fullpath + folderName
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then(response => {
             let newChild: SubFolder = {
@@ -181,18 +167,11 @@ export class FolderTree {
 
     public async renameFolder(newName: string, fullPath: string) {
         let node = await this.getNode(this.tree, fullPath)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        return await axios.put(process.env.API_BASE_URL + '/folders/rename', 
+        return await axiosClient.put('/folders/rename', 
             {
                 newName: newName,
                 id: node.id
 
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then(() => {
             node.name = newName
@@ -218,17 +197,10 @@ export class FolderTree {
 
     public async deleteFolders(foldersToDelete: string[], fullPath: string) {
         let node = await this.getNode(this.tree, fullPath)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        await axios.put(process.env.API_BASE_URL + '/folders/delete', 
+        await axiosClient.put('/folders/delete', 
             {
                 folderIds: foldersToDelete
 
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then( async () => {
             if(foldersToDelete.indexOf(node.id) > -1) {
@@ -252,18 +224,11 @@ export class FolderTree {
     }
 
     public async moveToFolder(folderIds: string[], movedContent: ContentType[], oldFolderId?: string) {
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
-        return await axios.put(process.env.API_BASE_URL + '/folders/move', 
+        return await axiosClient.put('/folders/move', 
             {
                 destinationFolderIds: folderIds.length == 0 ? null : folderIds,
                 movedContent: movedContent,
                 oldFolderId: oldFolderId
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then(response => {
             console.log(response)

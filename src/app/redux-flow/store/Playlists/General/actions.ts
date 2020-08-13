@@ -3,15 +3,16 @@ import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, PlaylistDetails } from './types';
 import { PlaylistGeneralServices } from './services';
+import { ContentDetails } from '../../VOD/General/types';
 
 export interface GetPlaylistDetails {
     type: ActionTypes.GET_PLAYLIST_DETAILS;
-    payload: {data: PlaylistDetails};
+    payload: {data: ContentDetails};
 }
 
 export interface EditPlaylistDetails {
     type: ActionTypes.EDIT_PLAYLIST_DETAILS;
-    payload: PlaylistDetails;
+    payload: ContentDetails;
 }
 
 export interface GetUploadUrl {
@@ -41,7 +42,7 @@ export const getPlaylistDetailsAction = (playlistId: string): ThunkDispatch<Prom
     };
 }
 
-export const editPlaylistDetailsAction = (data: PlaylistDetails): ThunkDispatch<Promise<void>, {}, EditPlaylistDetails> => {
+export const editPlaylistDetailsAction = (data: ContentDetails): ThunkDispatch<Promise<void>, {}, EditPlaylistDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, EditPlaylistDetails>) => {
         await PlaylistGeneralServices.editPlaylistDetailsService(data)
             .then(response => {

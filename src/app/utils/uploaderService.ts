@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { isTokenExpired, addTokenToHeader } from './token'
+import { axiosClient } from './axiosClient'
 
 export class UploadObject {
 
@@ -96,14 +96,12 @@ export class UploadObject {
 
     private async initUpload() {
         console.log('init upload for file ', this.file.name)
-        await isTokenExpired()
-        let { token } = addTokenToHeader();
         let bodyRequest = null
         bodyRequest = {
             fileName: this.file.name,
             recipeID: this.recipeId
         }
-        let requestUrl = `${process.env.API_BASE_URL}/uploads/init-multipart/vod`
+        let requestUrl = `/uploads/init-multipart/vod`
         if(this.vodId) {
             bodyRequest = {
                 vodID: this.vodId
@@ -111,14 +109,9 @@ export class UploadObject {
             requestUrl += '-replace'
         }
 
-        let res = await axios.post(requestUrl,
+        let res = await axiosClient.post(requestUrl,
             {
                 ...bodyRequest
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             })
             .catch((error: any) => {
                 this.onError('init')
@@ -146,28 +139,21 @@ export class UploadObject {
 
     }
     private retrieveSinglePartURL = async () => {
-        await isTokenExpired()
-        let { token } = addTokenToHeader();
         let bodyRequest = null
         bodyRequest = {
             fileName: this.file.name,
             recipeID: this.recipeId
         }
-        let requestUrl = `${process.env.API_BASE_URL}/uploads/signatures/singlepart/vod`
+        let requestUrl = `/uploads/signatures/singlepart/vod`
         if(this.vodId) {
             bodyRequest = {
                 vodID: this.vodId
             }
             requestUrl += '-replace'
         }
-        let response = await axios.post(requestUrl,
+        let response = await axiosClient.post(requestUrl,
             {
                 ...bodyRequest
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             }).catch((error: any) => {
             this.onError('single')
             throw new Error(error)})
@@ -197,19 +183,12 @@ export class UploadObject {
     }
 
     private retrieveChunkPresignedURL = async (fromPart: number, toPart: number): Promise<string[]> => {
-        await isTokenExpired()
-        let { token } = addTokenToHeader();
-        let res = await axios.post(`${process.env.API_BASE_URL}/uploads/signatures/multipart`,
+        let res = await axiosClient.post(`/uploads/signatures/multipart`,
             {
                 s3Path: this.urlS3,
                 uploaderID: this.uploadId,
                 fromPartNumber: fromPart + 1,
                 toPartNumber: toPart
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             })
             .catch(function (error) {
                 this.onError('multipart')
@@ -267,18 +246,11 @@ export class UploadObject {
     }
 
     private async completeUpload() {
-        await isTokenExpired()
-        let { token } = addTokenToHeader();
-        await axios.post(`${process.env.API_BASE_URL}/uploads/complete-multipart`,
+        await axiosClient.post(`/uploads/complete-multipart`,
             {
                 orderedETags: this.ETags.sort((a, b) => a.partNumber - b.partNumber).map(ETag => ETag.etag),
                 s3Path: this.urlS3,
                 uploaderID: this.uploadId,
-            },
-            {
-                headers: {
-                    Authorization: token
-                }
             })
             .catch((error: any) => {
                 this.onError('complete')

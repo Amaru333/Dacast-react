@@ -1,5 +1,4 @@
 import React from 'react';
-import { LiveListPage } from '../../pages/Live/LiveList/List';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -11,6 +10,7 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ContentListPage } from '../../shared/List/contentList';
 
 export interface LiveListComponentProps {
     liveList: SearchResult;
@@ -28,7 +28,15 @@ export const LiveList = (props: LiveListComponentProps) => {
     }, [])
 
     return props.liveList ? 
-        <LiveListPage {...props}/>
+        <ContentListPage
+            contentType="livestreams" 
+            items={props.liveList}
+            themesList={props.themesList}
+            getContentList={props.getLiveList}
+            deleteContentList={props.deleteLiveChannel}
+            getThemesList={props.getThemesList}
+            showToast={props.showToast}
+        />
 
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }

@@ -1,84 +1,38 @@
-import axios from 'axios';
 import { PaymentMethod, WithdrawalRequest } from './types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getPaymentMethods = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/paywall/payment-methods', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/payment-methods')
 }
 
 const getWithdrawalRequests = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/paywall/payment-requests', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/payment-requests')
 }
 
 const addPaymentMethod = async (data: PaymentMethod) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.post(process.env.API_BASE_URL + '/paywall/payment-methods', 
+    return await axiosClient.post('/paywall/payment-methods', 
         {
             ...data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const updatePaymentMethod = async (data: PaymentMethod) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.put(process.env.API_BASE_URL + '/paywall/payment-methods/' + data.id, 
+    return await axiosClient.put('/paywall/payment-methods/' + data.id, 
         {
             ...data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deletePaymentMethod = async (data: PaymentMethod) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/paywall/payment-requests/' + data.id, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/payment-requests/' + data.id)
 }
 
 const addWithdrawalRequest = async (data: WithdrawalRequest) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.post(process.env.API_BASE_URL + '/paywall/payment-requests', 
+    return await axiosClient.post('/paywall/payment-requests', 
         {
             ...data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }

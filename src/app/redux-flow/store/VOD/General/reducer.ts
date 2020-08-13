@@ -1,6 +1,6 @@
 import { Reducer } from "redux"
 import { Action } from "./actions"
-import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState, SubtitleInfo } from './types'
+import { ActionTypes, VodItem, SearchResult, ContentDetailsState, SubtitleInfo, initialContentGeneralState } from './types'
 
 // const initialVodGeneralState: VodDetails = {
 //     id: null,
@@ -16,7 +16,7 @@ import { ActionTypes, VodDetails, VodItem, SearchResult, VodDetailsState, Subtit
 const initialVodList: SearchResult | false = false
 
 
-const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
+const reducer: Reducer<ContentDetailsState> = (state = initialContentGeneralState, action: Action) => {
     let newArray: SubtitleInfo[] = []
     switch (action.type) {
         case ActionTypes.GET_VOD_DETAILS:
@@ -95,7 +95,7 @@ const reducer: Reducer<VodDetailsState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.vodId]: {
                     ...state[action.payload.vodId],
-                    poster: {}
+                    poster: null
                 }
             }
         default:

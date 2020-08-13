@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes  } from "./types";
 import { ContentPaywallState } from '../../Paywall/Presets/types'
-import { addTokenToHeader } from '../../../../utils/token';
+import { userToken } from '../../../../utils/token';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
@@ -92,8 +92,8 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.GET_VOD_PAYWALL_PROMOS :
-            let {userId} = addTokenToHeader()
-            return {
+        const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        return {
                 ...state,
                 [action.payload.contentId]: {
                     ...state[action.payload.contentId],

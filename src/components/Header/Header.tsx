@@ -14,7 +14,7 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
-import { getUserInfoItem, isLoggedIn } from '../../app/utils/token';
+import { userToken } from '../../app/utils/token';
 import { LiveDetailsState } from '../../app/redux-flow/store/Live/General/types';
 import { VodDetailsState } from '../../app/redux-flow/store/VOD/General/types';
 import { getVodDetailsAction } from '../../app/redux-flow/store/VOD/General/actions';
@@ -90,12 +90,12 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(isLoggedIn()) {
-            setAvatarFirstName(getUserInfoItem('custom:first_name'))
-            setAvatarLastName(getUserInfoItem('custom:last_name'))
+        if(userToken.isLoggedIn()) {
+            setAvatarFirstName(userToken.getUserInfoItem('custom:first_name'))
+            setAvatarLastName(userToken.getUserInfoItem('custom:last_name'))
         }
 
-    }, [isLoggedIn()])
+    }, [userToken.isLoggedIn()])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 

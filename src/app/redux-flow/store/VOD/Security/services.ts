@@ -1,30 +1,14 @@
-import axios from 'axios'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
 import { SecuritySettings } from '../../Settings/Security/types';
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getVodSecuritySettingsService = async (vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/security', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods/' + vodId + '/settings/security')
 }
 
 const saveVodSecuritySettingsService = async (data: SecuritySettings, vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/security', 
-        {...data},
+    return await axiosClient.put('/vods/' + vodId + '/settings/security', 
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }

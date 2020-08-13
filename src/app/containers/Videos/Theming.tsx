@@ -13,8 +13,8 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 export interface VodThemingComponentProps {
     theme: ContentTheme;
     themeState: ContentThemeState;
-    getVodTheme: Function;
-    saveVodTheme: Function;
+    getVodTheme: (vodId: string) => Promise<void>;
+    saveVodTheme: (theme: ThemeOptions, vodId: string) => Promise<void>;
 }
 
 export const VodTheming = (props: VodThemingComponentProps) => {
@@ -23,7 +23,7 @@ export const VodTheming = (props: VodThemingComponentProps) => {
 
     React.useEffect(() => {
         if (!props.themeState[vodId]) {
-            props.getVodTheme(vodId);
+            props.getVodTheme(vodId)
         }
     }, [])
 
@@ -55,11 +55,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodTheme: (vodId: string) => {
-            dispatch(getVodThemeAction(vodId));
+        getVodTheme: async (vodId: string) => {
+            await dispatch(getVodThemeAction(vodId))
         },
-        saveVodTheme: (theme: ThemeOptions, vodId: string, callback: () => void) => {
-            dispatch(saveVodThemeAction(theme, vodId)).then(callback);
+        saveVodTheme: async (theme: ThemeOptions, vodId: string) => {
+            await dispatch(saveVodThemeAction(theme, vodId))
         },
     }
 }

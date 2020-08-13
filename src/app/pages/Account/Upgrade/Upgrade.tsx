@@ -18,8 +18,6 @@ import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
-import { isTokenExpired, addTokenToHeader } from '../../../utils/token';
-import axios from 'axios'
 import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';

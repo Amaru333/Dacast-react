@@ -15,9 +15,8 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 export interface LiveThemingComponentProps {
     theme: ContentTheme;
     themeState: ContentThemeState;
-    getLiveTheme: Function;
-    saveLiveTheme: Function;
-    showDiscardToast: Function;
+    getLiveTheme: (liveId: string) => Promise<void>;
+    saveLiveTheme: (theme: ThemeOptions, liveId: string) => Promise<void>;
 }
 
 export const LiveTheming = (props: LiveThemingComponentProps) => {
@@ -26,7 +25,7 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
 
     React.useEffect(() => {
         if (!props.themeState[liveId])
-            props.getLiveTheme(liveId);
+            props.getLiveTheme(liveId)
     }, [])
 
     return (
@@ -58,14 +57,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveTheme: (liveId: string) => {
-            dispatch(getLiveThemeAction(liveId));
+        getLiveTheme: async (liveId: string) => {
+            await dispatch(getLiveThemeAction(liveId))
         },
-        saveLiveTheme: (theme: ThemeOptions, liveId: string, callback: () => void) => {
-            dispatch(saveLiveThemeAction(theme, liveId)).then(callback);
-        },
-        showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
-            dispatch(showToastNotification(text, size, notificationType));
+        saveLiveTheme: async (theme: ThemeOptions, liveId: string) => {
+            await dispatch(saveLiveThemeAction(theme, liveId))
         }
     }
 }

@@ -5,13 +5,13 @@ import { ApplicationState } from "../../redux-flow/store";
 import { Action } from '../../redux-flow/store/VOD/General/actions';
 import { getVodListAction, deleteVodAction } from '../../redux-flow/store/VOD/General/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { VideosListPage } from '../../pages/Videos/VideosList/VideosList';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { SearchResult } from '../../redux-flow/store/VOD/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
+import {ContentListPage} from '../../shared/List/contentList'
 
 export interface VideosListProps {
     items: SearchResult;
@@ -19,7 +19,7 @@ export interface VideosListProps {
     getVodList: (qs: string) => Promise<void>;
     deleteVodList: (voidId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
-    showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const VideosList = (props: VideosListProps) => {
@@ -29,7 +29,15 @@ const VideosList = (props: VideosListProps) => {
     }, [])
 
     return props.items ? 
-        <VideosListPage {...props} />
+        <ContentListPage
+            contentType="videos" 
+            items={props.items}
+            themesList={props.themesList}
+            getContentList={props.getVodList}
+            deleteContentList={props.deleteVodList}
+            getThemesList={props.getThemesList}
+            showToast={props.showToast}
+         />
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 
@@ -51,7 +59,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getThemesList: async () => {
             await dispatch(getThemingListAction())
         },
-        showVodDeletedToast: (text: string, size: Size, notificationType: NotificationType) => {
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))
         }
     };
