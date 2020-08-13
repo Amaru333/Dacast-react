@@ -15,7 +15,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
-import { addTokenToHeader } from '../../../utils/token';
+import { userToken } from '../../../utils/token';
 
 var moment = require('moment-timezone');
 
@@ -142,7 +142,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
         props.setStepValidated(selectedItems.length > 0)
     }, [selectedItems])
 
-    let { userId } = addTokenToHeader()
+    let userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
 

@@ -1,18 +1,17 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, TokenInfos, defaultStateLogin } from './types'
-import { resetUserInfo } from '../../../../utils/token';
+import { userToken } from '../../../../utils/token';
 
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {
         case ActionTypes.LOGIN : 
-            console.log(action);
             let returnedState = action.payload ? {...state, ...action.payload.data} : {...state}
             return {
                 ...returnedState
             }
         case ActionTypes.LOGOUT :
-            resetUserInfo()
+            userToken.resetUserInfo()
             return action.payload
         case ActionTypes.LOGIN_ERROR : 
             return {...state, error: true}

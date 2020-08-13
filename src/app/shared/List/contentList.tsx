@@ -65,7 +65,6 @@ export const ContentListPage = (props: ContentListProps) => {
     const [contentList, setContentList] = React.useState<SearchResult>(props.items)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
-    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
@@ -297,7 +296,7 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "playlists" && 
-                            <Button isLoading={buttonLoading} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
+                            <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
                     }
                 </div>
             </div>        

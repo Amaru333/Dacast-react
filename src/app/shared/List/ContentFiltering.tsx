@@ -7,7 +7,7 @@ import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { getPrivilege } from '../../../utils/utils';
+import { userToken } from '../../utils/token';
 var moment = require('moment');
 
 export interface FilteringContentState {
@@ -108,13 +108,13 @@ export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringC
                     </div>
                     <div className="mb3" id="contentFilterFeatures">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                        {getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                        {userToken.getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
                             id='contentFilterPaywall' label="Paywall" labelWeight="reg" />}
-                        {getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                        {userToken.getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
                             id='contentFilterAdvertising' label="Advertising" labelWeight="reg" />}
-                        {(getPrivilege('privilege-playlists') && props.contentType !== "playlists") &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                        {(userToken.getPrivilege('privilege-playlists') && props.contentType !== "playlists") &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
                             id='contentFilterPlaylists' label="Playlists" labelWeight="reg" />}
                         {
@@ -123,7 +123,7 @@ export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringC
                                     onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
                                     id='contentFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
                         }
-                        {(getPrivilege('privilege-recording') && props.contentType === "livestreams") && <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
+                        {(userToken.getPrivilege('privilege-recording') && props.contentType === "livestreams") && <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
                             id='contentFilterRecording' label="Recording" labelWeight="reg" />}   
                     </div>

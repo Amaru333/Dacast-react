@@ -3,11 +3,10 @@ import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Moda
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
-import { addTokenToHeader, isTokenExpired } from '../../utils/token';
-import axios from 'axios'
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
+import { axiosClient } from '../../utils/axiosClient';
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -19,17 +18,10 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
     const handleCreatePlaylist = async () => {
     
         setButtonLoading(true)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
         
-        return await axios.post(process.env.API_BASE_URL + '/playlists',
+        return await axiosClient.post('/playlists',
             {
                 title:playlistTitle
-            }, 
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then((response) => {
             setButtonLoading(false)

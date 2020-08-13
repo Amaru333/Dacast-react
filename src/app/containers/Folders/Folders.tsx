@@ -18,7 +18,7 @@ export interface FoldersComponentProps {
     deleteContent: (content: ContentType[]) => Promise<void>;
     restoreContent: (content: ContentType[]) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    getThemesList: () => void;
+    getThemesList: () => Promise<void>;
 }
 
 const Folders = (props: FoldersComponentProps) => {
@@ -57,8 +57,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         showToast: (text: string, size: Size, type: NotificationType) => {
             dispatch(showToastNotification(text, size, type))
         },
-        getThemesList: () => {
-            dispatch(getThemingListAction())
+        getThemesList: async () => {
+            await dispatch(getThemingListAction())
         }
     };
 }

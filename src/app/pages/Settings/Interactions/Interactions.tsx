@@ -16,7 +16,7 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
-import { getPrivilege, dataToTimeVideo } from '../../../../utils/utils';
+import { dataToTimeVideo } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
@@ -27,6 +27,7 @@ import { emptyContentListBody } from '../../../shared/List/emptyContentListState
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { userToken } from '../../../utils/token';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -247,7 +248,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     return (
         <div>
             <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
-            {getPrivilege('privilege-advertising') &&
+            {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Text className="pb2" size={20} weight='med'>Advertising</Text>
                     <DisabledSection settingsEditable={props.interactionsInfos.ads.length > 0}>

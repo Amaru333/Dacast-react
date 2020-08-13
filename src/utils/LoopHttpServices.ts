@@ -1,5 +1,5 @@
 
-import axios from 'axios'
+import { axiosClient } from '../app/utils/axiosClient';
 
 const resolveAfter2Seconds = () => {
     return new Promise(resolve => {
@@ -9,16 +9,11 @@ const resolveAfter2Seconds = () => {
     });
 }
 
-export const loopUntilCompleted = async (url: string, token: string) => {
+export const loopUntilCompleted = async (url: string) => {
     var keepLooping = true;
 
     while (keepLooping) {
-        var response = await axios.get(url,
-            {
-                headers: {
-                    Authorization: token
-                }
-            }
+        var response = await axiosClient.get(url,
         ).catch(error => {
             keepLooping = false
         })

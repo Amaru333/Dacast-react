@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { LiveDetailsState,  initialLiveGeneralState, ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
+import { ActionTypes, LiveItem, initialLiveList, SearchResult } from './types';
 import { Action } from './actions';
 import { ContentDetailsState, initialContentGeneralState } from '../../VOD/General/types';
 
@@ -32,7 +32,7 @@ const reducer: Reducer<ContentDetailsState> = (state = initialContentGeneralStat
                     ...state,
                     [action.payload.liveId]: {
                         ...state[action.payload.liveId],
-                        [action.payload.uploadType]: {}
+                        [action.payload.uploadType]: null
                     }
                 };
         default:

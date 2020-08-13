@@ -7,14 +7,13 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { getPrivilege } from '../../../utils/utils';
-import { addTokenToHeader, isTokenExpired } from '../../utils/token';
-import axios from 'axios'
+import { userToken } from '../../utils/token';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { axiosClient } from '../../utils/axiosClient';
 
 const moment = require('moment-timezone')
 
@@ -73,21 +72,14 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
         
-        return axios.post(process.env.API_BASE_URL + '/channels',
+        return await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
                 streamOnline: true,
                 streamType: streamSetupOptions.streamType,
                 rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
-            }, 
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then((response) => {
             setButtonLoading(false)
@@ -127,7 +119,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                     </div>
 
-                    {getPrivilege('privilege-live') &&
+                    {userToken.getPrivilege('privilege-live') &&
                         <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
                                 <StreamTypeSelectorContents>
@@ -141,7 +133,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                     }
 
-                    {getPrivilege('privilege-unsecure-m3u8') &&
+                    {userToken.getPrivilege('privilege-unsecure-m3u8') &&
                         <div className="col-12 sm-col-4 col sm-pr1 sm-pl1 xs-mb2">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
                                 <StreamTypeSelectorContents>
@@ -153,7 +145,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         </div>
                     }
 
-                    {getPrivilege('privilege-china') &&
+                    {userToken.getPrivilege('privilege-china') &&
                         <div className="col-12 sm-col-4 col sm-pl1">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
                                 <StreamTypeSelectorContents>

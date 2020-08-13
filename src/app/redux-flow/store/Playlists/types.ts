@@ -2,7 +2,6 @@
 import { combineReducers, Reducer } from 'redux';
 import { SearchResult } from './List/types';
 import { reducerPlaylistList } from './List/reducer';
-import { PlaylistDetailsState } from './General/types';
 import { GeneralReducerPlaylist } from './General/reducer';
 import { PlaylistSecurityReducer } from './Security';
 import { PlaylistThemingReducer } from './Theming/reducer';
@@ -14,6 +13,7 @@ import { PLaylistSetupReducer } from './Setup/reducer';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentEngagementSettingsState } from '../Settings/Interactions/types';
 import { ContentPaywallState } from '../Paywall/Presets';
+import { ContentDetailsState } from '../VOD/General/types';
 
 
 export const playlistInitialState: PlaylistState = {
@@ -29,7 +29,7 @@ export const playlistInitialState: PlaylistState = {
 
 export interface  PlaylistState {
     list: false | SearchResult;
-    general: PlaylistDetailsState;
+    general: ContentDetailsState;
     setup: PlaylistSetupState;
     security: ContentSecuritySettingsState;
     theming: false | ContentThemeState;

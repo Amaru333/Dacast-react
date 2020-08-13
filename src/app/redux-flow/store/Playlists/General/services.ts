@@ -1,63 +1,33 @@
-import axios from 'axios'
-import { PlaylistDetails} from './types';
-import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+import { ContentDetails } from '../../VOD/General/types';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getPlaylistDetailsService = async (playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/playlists/' + playlistId)
 }
 
-const editPlaylistDetailsService = async (data: PlaylistDetails) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/playlists/' + data.id,
-        {...data}, 
+const editPlaylistDetailsService = async (data: ContentDetails) => {
+    return await axiosClient.put('/playlists/' + data.id,
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const getUploadUrl = async (data: string, playlistId: string, extension: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    return await axiosClient.post('/uploads/signatures/singlepart/' + data,
         {
             playlistID: playlistId,
             extension: extension
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        })
+        }
+    )
 }
 
-const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, data)
+const uploadFile = async (data: File, uploadUrl: string) => {
+    return await axiosClient.put(uploadUrl, data, {authRequired: false})
 }
 
 const deleteFile = async (playlistId: string, targetId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/playlists/' + playlistId + '/targets/' + targetId,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/playlists/' + playlistId + '/targets/' + targetId)
 }
 
 export const PlaylistGeneralServices = {

@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { ApplicationState } from "../../../redux-flow/store";
 import { LoginPage } from '../../../pages/Register/Login/Login';
 import { loginAction, Action } from '../../../redux-flow/store/Register/Login/actions';
-import { addToken } from '../../../utils/token';
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
+import { userToken } from '../../../utils/token';
 
 export interface LoginComponentProps {
     login: Function;
@@ -21,7 +21,7 @@ const Login = (props: LoginComponentProps) => {
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             
-            addToken(props.loginInfos);
+            userToken.addTokenInfo(props.loginInfos);
             history.push('/dashboard');
         }
     }, [props.loginInfos])

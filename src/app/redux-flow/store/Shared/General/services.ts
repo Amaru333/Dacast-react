@@ -1,65 +1,27 @@
-import axios from 'axios'
 import { SubtitleInfo, ContentDetails } from './types'
-import { addTokenToHeader, isTokenExpired } from '../../../../utils/token'
+import { axiosClient } from '../../../../utils/axiosClient'
 
 const getContentDetailsService = async (contentId: string, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/vods/' + contentId, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods/' + contentId)
 }
 
 const getContentList = async (qs: string, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/vods' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'), 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods' + (qs ? '?' + qs : '?status=online,offline,processing&page=1&per-page=10'))
 }
 
 const deleteContentService = async (contentId: string, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.delete(process.env.API_BASE_URL + '/vods/' + contentId, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/vods/' + contentId)
 }
 
 const restoreContentService = async (contentId: string, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.API_BASE_URL + '/vods/' + contentId + '/restore', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods/' + contentId + '/restore')
 }
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/vods/' + data.id,
-        {...data}, 
+    return await axiosClient.put('/vods/' + data.id,
         {
-            headers: {
-                Authorization: token
-            }
-        }
+            ...data
+        } 
     )
 }
 
@@ -77,50 +39,27 @@ const getUploadUrl = async (data: string, contentId: string, extension: string, 
             convertToUTF8: subtitleInfo.convertToUTF8
         }
     }
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    return await axiosClient.post('/uploads/signatures/singlepart/' + data,
         {
             ...requestData
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const uploadImageFromVideo = async (contentId: string, time: number, imageType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    console.log('data', contentId, time, imageType)
-    return axios.post(process.env.API_BASE_URL + `/vods/${contentId}/targets/${imageType.split('-')[1]}`, 
+    return await axiosClient.post(`/vods/${contentId}/targets/${imageType.split('-')[1]}`, 
         {
             time: time
-        },
-        {
-          headers: {
-              Authorization: token
-            }  
         }
     )
 }
 
-const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, data)
+const uploadFile = async (data: File, uploadUrl: string) => {
+    return await axiosClient.put(uploadUrl, data, {authRequired: false})
 }
 
 const deleteFile = async (contentId: string, targetId: string, contentType: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/vods/' + contentId + '/targets/' + targetId,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/vods/' + contentId + '/targets/' + targetId)
 }
 
 

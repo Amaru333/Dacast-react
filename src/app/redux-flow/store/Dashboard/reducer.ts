@@ -107,7 +107,6 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
                 }
             }
         case ActionTypes.GET_DASHBOARD_VOD_PLAY :
-            console.log(action);
             return {
                 ...state,
                 data: {

@@ -1,55 +1,34 @@
-import axios from 'axios'
 import { ThemeOptions } from '../../Settings/Theming';
-import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
-
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getPlaylistThemeService = async (playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes',
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/playlists/' + playlistId + '/settings/themes')
 }
 
 const savePlaylistThemeService = async (data: ThemeOptions, playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
     if(!data.isCustom) {
-        return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes/' + data.id + '/set',
-            {...data}, 
+        return await axiosClient.put('/playlists/' + playlistId + '/settings/themes/' + data.id + '/set',
             {
-                headers: {
-                    Authorization: token
-                }
+                ...data
             }
         )
     } else {
         if(data.id === '-1') {
-            return axios.post(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes/',
-                {...data}, 
+            return await axiosClient.post('/playlists/' + playlistId + '/settings/themes/',
                 {
-                    headers: {
-                        Authorization: token
-                    }
+                    ...data
                 }
             )
         } else {
-            return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/settings/themes/' + data.id,
-                {...data}, 
+            return await axiosClient.put('/playlists/' + playlistId + '/settings/themes/' + data.id,
                 {
-                    headers: {
-                        Authorization: token
-                    }
+                    ...data
                 }
             )
         }
 
-    }}
+    }
+}
 
 export const PlaylistThemingServices = {
     getPlaylistThemeService,

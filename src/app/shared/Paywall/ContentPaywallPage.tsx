@@ -18,7 +18,7 @@ import { Preset, Promo, ContentPaywallPageInfos, PresetsPageInfos } from '../../
 import { GroupsPageInfos } from '../../redux-flow/store/Paywall/Groups/types'
 import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types'
 import { emptyContentListBody } from '../List/emptyContentListState';
-import { addTokenToHeader } from '../../utils/token'
+import { userToken } from '../../utils/token'
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -45,7 +45,7 @@ export interface ContentPaywallComponentProps {
 
 export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
-    let {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const [priceModalOpened, setPriceModalOpened] = React.useState<boolean>(false);
     const [promoModalOpened, setPromoModalOpened] = React.useState<boolean>(false);

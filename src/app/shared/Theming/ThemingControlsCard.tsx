@@ -13,19 +13,18 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { getPrivilege } from '../../../utils/utils';
 import { usePlayer } from '../../utils/player';
 import { Prompt, useHistory } from 'react-router';
-import { addTokenToHeader } from '../../utils/token';
+import { userToken } from '../../utils/token';
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
-    saveTheme: Function;
-    createTheme?: Function;
-    cancelFunction?: Function;
     contentType: 'vod' | 'live' | 'playlist' | 'settings';
     actionType: 'Create' | 'Save';
     contentId?: string;
+    saveTheme: (theme: ThemeOptions, contendId: string) => Promise<void>;
+    createTheme?: (theme: ThemeOptions) => Promise<void>;
+    cancelFunction?: () => void;
 }
 
 export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => {
@@ -50,7 +49,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
-    const {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     let player = usePlayer(playerRef, props.contentType !== 'settings' ? userId + '-' + props.contentType + '-' + props.contentId : '1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -58,15 +57,19 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleThemeSave = () => {
         setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme, () => setButtonLoading(false))
+            props.createTheme(selectedTheme).then(() => {
+                setButtonLoading(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
         } else {
-            props.saveTheme(selectedTheme, props.contentId, () => setButtonLoading(false))
+            props.saveTheme(selectedTheme, props.contentId).then(() => {
+                setButtonLoading(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
         }
     }
-
-    React.useEffect(() => {
-        setButtonLoading(false)
-    }, [props.theme])
 
     const handleCancel = () => {
         switch(props.contentType) {
@@ -101,7 +104,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
     
-    console.log(props);
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
@@ -150,7 +152,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         <BorderStyle className="p1" />
 
 
-                        <DisabledSection enabled={customEnabled && getPrivilege('privilege-aes')}>
+                        <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-aes')}>
                             <TextStyle className="my2" ><Text size={20} weight='med'>Delivery Method</Text></TextStyle>
                             <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
                             <RadioButtonContainer className="mt2">
@@ -173,7 +175,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             
                         <BorderStyle className="p1" />
 
-                        <DisabledSection enabled={customEnabled && getPrivilege('privilege-china')}>
+                        <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-china')}>
                             <TitleSection className="my2">
                                 <Text size={20} weight='med'>Region Settings</Text>
                                 <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href="/help"}>
@@ -259,7 +261,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => {setSelectedTheme({...selectedTheme, downloadButton: !selectedTheme.downloadButton});}} />
                                 <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                { getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>}
+                                { userToken.getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>}
                             </ControlToggleContainer>
 
                             <ControlToggleContainer>

@@ -22,10 +22,10 @@ import "../scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/hooksReponsiveNav';
-import { isLoggedIn, getUserInfoItem } from './utils/token';
+import { userToken } from './utils/token';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia, getPrivilege } from '../utils/utils'
+import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -35,8 +35,6 @@ import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
 import { AddStreamModal } from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
-import { boolean } from '@storybook/addon-knobs';
-import { string } from 'prop-types';
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 
 // Any additional component props go here.
@@ -47,8 +45,8 @@ interface MainProps {
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
     let mobileWidth = useMedia('(max-width:780px');
 
-    if (isLoggedIn()) {
-        if (props.associatePrivilege && !getPrivilege(props.associatePrivilege)) {
+    if (userToken.isLoggedIn()) {
+        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
             return <NotFound />
         }
         return (
@@ -160,7 +158,7 @@ const AppContent = (props: { routes: any }) => {
     return (
         <>
             <Toasts />
-            {isLoggedIn() ?
+            { userToken.isLoggedIn() ?
                 <>
                     <MainMenu openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
@@ -218,18 +216,18 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
     }, [])
 
-    if (isLoggedIn()) {
+    if (userToken.isLoggedIn()) {
         let tagManagerArgs = {
             gtmId: 'GTM-PHZ3Z7F',
             dataLayer: {
-                'accountId': getUserInfoItem('custom:dacast_user_id'),
-                'companyName': getUserInfoItem('custom:website'),
+                'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                'companyName': userToken.getUserInfoItem('custom:website'),
                 'plan': 'Unknown yet',
                 'signedUp': 'Unknown yet',
-                'userId': getUserInfoItem('custom:dacast_user_id'),
-                'userFirstName': getUserInfoItem('custom:first_name'),
-                'userLastName': getUserInfoItem('custom:last_name'),
-                'userEmail': getUserInfoItem('email'),
+                'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                'userEmail': userToken.getUserInfoItem('email'),
             }
         }
         TagManager.initialize(tagManagerArgs);
@@ -256,7 +254,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
                 if (route.isPublic) {
-                    if (isLoggedIn()) {
+                    if (userToken.isLoggedIn()) {
                         if(route.path !== '*') {
                             return (<Route key={route.path} path={route.path}>
                                 <Redirect

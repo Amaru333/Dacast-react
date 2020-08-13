@@ -1,90 +1,45 @@
-import axios from 'axios';
 import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getVodEngagementSettings = async (vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement',
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods/' + vodId + '/settings/engagement')
 }
 
 const saveVodEngagementSettings = async (data: ContentEngagementSettings) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/vods/' + data.contentId + '/settings/engagement',
-        {...data.engagementSettings}, 
+    return await axiosClient.put('/vods/' + data.contentId + '/settings/engagement',
         {
-            headers: {
-                Authorization: token
-            }
+            ...data.engagementSettings
         }
     )
 }
 
 const saveVodAd = async (data: Ad[], adsId: string, vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement/ads',
+    return await axiosClient.put('/vods/' + vodId + '/settings/engagement/ads',
         {
             ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
             adsId: adsId
-        }, 
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const getUploadUrl = async (data: string, vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    return await axiosClient.post('/uploads/signatures/singlepart/' + data,
         {
             vodID: vodId
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        })
+        }
+    )
 }
 
-const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, data)
+const uploadFile = async (data: File, uploadUrl: string) => {
+    return await axiosClient.put(uploadUrl, data, {authRequired: false})
 }
 
 const deleteVodAd = async (vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement/ads',
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/vods/' + vodId + '/settings/engagement/ads')
 }
 
 const deleteFile = async (vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/vods/' + vodId + '/settings/engagement/brand-image',
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/vods/' + vodId + '/settings/engagement/brand-image')
 }
 
 export const vodEngagementServices = {

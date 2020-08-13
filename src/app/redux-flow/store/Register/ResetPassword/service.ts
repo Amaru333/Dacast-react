@@ -1,5 +1,5 @@
-import axios from 'axios'
+import { axiosClient } from '../../../../utils/axiosClient'
 
-export const resetPassword = (email: string) => {
-    return axios.post(process.env.API_BASE_URL + '/reset-password/send-token', {email: email})
+export const resetPassword = async (email: string) => {
+    return await axiosClient.post('/reset-password/send-token', {email: email}, {authRequired: false})
 }

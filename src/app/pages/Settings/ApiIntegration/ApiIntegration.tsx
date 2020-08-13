@@ -6,7 +6,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
-import { tsToLocaleDate, useMedia, getPrivilege } from '../../../../utils/utils';
+import { tsToLocaleDate, useMedia } from '../../../../utils/utils';
 import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
@@ -17,7 +17,8 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
-import { LinkBoxContainer, LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
+import { LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
+import { userToken } from '../../../utils/token';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -27,9 +28,9 @@ export interface ApiIntegrationProps {
 
 export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 
-    const privilegeApi = getPrivilege('privilege-api');
-    const privilegeLive = getPrivilege('privilege-live');
-    const privilegeVod = getPrivilege('privilege-vod');
+    const privilegeApi = userToken.getPrivilege('privilege-api');
+    const privilegeLive = userToken.getPrivilege('privilege-live');
+    const privilegeVod = userToken.getPrivilege('privilege-vod');
     
     //** Api Keys states */
     const [postApiKeyModalOpened, setPostApiKeyModalOpened] = React.useState<boolean>(false);
