@@ -15,8 +15,8 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { getPrivilege, dataToTimeVideo } from '../../../utils/utils';
-import { addTokenToHeader } from '../../utils/token';
+import { dataToTimeVideo } from '../../../utils/utils';
+import { userToken } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
 import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
@@ -184,7 +184,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         }
     }
 
-    const { userId } = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
 
@@ -453,7 +453,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     return (
         <div>
             <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
-            {getPrivilege('privilege-advertising') &&
+            {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Header className="mb2">
                         <TextStyle>

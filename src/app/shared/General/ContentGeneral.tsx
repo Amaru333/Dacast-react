@@ -14,14 +14,12 @@ import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonConta
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { getPrivilege } from '../../../utils/utils';
 import { updateClipboard } from '../../utils/utils';
-import { addTokenToHeader } from '../../utils/token';
+import { userToken } from '../../utils/token';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
-import Axios from 'axios';
 import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/VOD/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -29,6 +27,7 @@ import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { axiosClient } from '../../utils/axiosClient';
 
 interface ContentGeneralProps {
     contentType: string;
@@ -59,7 +58,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
 
-    const {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
@@ -191,20 +190,15 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: getPrivilege('privilege-unsecure-m3u8'), link: null }
+        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8'), link: null }
     ]
 
     let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.contentDetails.thumbnail).length !== 0;
 
     function saveFile(url: string, filename: string) {
-        let { token } = addTokenToHeader()
-        Axios.get(`${process.env.API_BASE_URL}/vods/${contentDetails.id}/download-url`,
-        {
-            headers: {
-                Authorization: token
-            }
-        }).then((response) => {
+        axiosClient.get(`/vods/${contentDetails.id}/download-url`
+        ).then((response) => {
             var a = document.createElement("a")
             a.target = '_blank'
             a.href = response.data.data.url
@@ -246,7 +240,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         <header className="flex justify-between mb2">
                             <Text size={20} weight="med">Details</Text>
                             { 
-                                (getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
+                                (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
                                     <Button onClick={() => saveFile(null, contentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
                             }
                             {
@@ -334,7 +328,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
                         {
-                            getPrivilege('privilege-recording') &&
+                            userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
                                 <Toggle label="Live Stream Recording" defaultChecked={newContentDetails.recording} onChange={() => setNewContentDetails({ ...newContentDetails, recording: !newContentDetails.recording })}></Toggle>
                                 <ToggleTextInfo className="mt1">

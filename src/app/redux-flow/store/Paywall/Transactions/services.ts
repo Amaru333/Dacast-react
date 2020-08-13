@@ -1,16 +1,7 @@
-import axios from 'axios';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient'
 
 const getTransactions = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/transactions/' , 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/transactions/')
 }
 
 export const TransactionsServices = {

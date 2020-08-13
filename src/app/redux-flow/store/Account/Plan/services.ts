@@ -1,104 +1,63 @@
-import axios from 'axios'
-import { CreditCardPayment, PaypalPayment, PlaybackProtection, Extras } from './types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
-
+import { PlaybackProtection, Extras } from './types';
+import { userToken } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getBillingPagePaymentMethodService = async () => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/billing', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get('/accounts/' + userId + '/billing')
 }
 
 const saveBillingPagePaymentMethodService = async (data: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/payment-method', 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.post('/accounts/' + userId + '/billing/payment-method', 
         {
             token: data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const addBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/billing/playback-protection', 
         {
-            'enabled': enabled,
-            'amount': amount
-        },
-        {
-            headers: {
-                Authorization: token
-            }
+            enabled: enabled,
+            amount: amount
         }
     )
 }
 
 const editBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, amount: number) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/billing/playback-protection', 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/billing/playback-protection', 
         {
-            'enabled': enabled,
-            'amount': amount
-        },
-        {
-            headers: {
-                Authorization: token
-            }
+            enabled: enabled,
+            amount: amount
         }
     )
 }
 
-const deleteBillingPagePaymenPlaybackProtectionService = (data: PlaybackProtection) => {
-    return axios.delete(urlBase + 'billing-playback-protection', {data:{...data}})
+const deleteBillingPagePaymenPlaybackProtectionService = async (data: PlaybackProtection) => {
+    return await axiosClient.delete('billing-playback-protection', {data:{...data}})
 }
 
-const addBillingPageExtrasService = (data: Extras) => {
-    return axios.post(urlBase + 'billing-extras', {...data})
+const addBillingPageExtrasService = async (data: Extras) => {
+    return await axiosClient.post('billing-extras', {...data})
 }
 
 const getProductDetailsService = async () => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/products', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get('/accounts/' + userId + '/products')
 }
 
 const purchaseProductsService = async (data: Extras, recurlyToken: string, token3Ds?: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/products/purchase',
-    {
-        code: data.code,
-        quantity: data.quantity,
-        token: recurlyToken,
-        threeDSecureToken: token3Ds ? token3Ds : undefined
-    },
-    {
-        headers: {
-            Authorization: token
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.post('/accounts/' + userId + '/products/purchase',
+        {
+            code: data.code,
+            quantity: data.quantity,
+            token: recurlyToken,
+            threeDSecureToken: token3Ds ? token3Ds : undefined
         }
-    }
     ) 
 }
 

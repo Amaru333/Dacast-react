@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Text } from "../../components/Typography/Text"
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { useHistory } from 'react-router-dom'
-import { isLoggedIn } from '../utils/token';
+import { userToken } from '../utils/token';
 
 export const NotFound = () => {
     let history = useHistory()
@@ -15,7 +15,7 @@ export const NotFound = () => {
             <BottomHalf>
                 <BottomText size={40} weight="med">Page Not Found</BottomText>
                 <BottomText size={14} weight="reg">The page you are looking for might have been removed, had it’s name changed or is temporarily unavailable.</BottomText>
-                <DashboardButton onClick={() => history.push('/dashboard')}>{isLoggedIn() ?  'Go To Dashboard' : 'Log in'}</DashboardButton>
+                <DashboardButton onClick={() => history.push('/dashboard')}>{userToken.isLoggedIn() ?  'Go To Dashboard' : 'Log in'}</DashboardButton>
             </BottomHalf>
         </React.Fragment>
         

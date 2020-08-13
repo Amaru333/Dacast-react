@@ -1,33 +1,15 @@
-import axios from 'axios'
-import { addTokenToHeader, isTokenExpired } from '../../../../utils/token';
-import { PlaylistSetupState, PlaylistSetupObject } from './types';
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+import { PlaylistSetupObject } from './types';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getPlaylistSetupAction = async (playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId + '/setup', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/playlists/' + playlistId + '/setup')
 }
 
 const postPlaylistSetupAction = async (playlistData: PlaylistSetupObject, playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/setup', 
+    return await axiosClient.put('/playlists/' + playlistId + '/setup', 
         {
             ...playlistData,
             title: null
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }

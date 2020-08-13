@@ -1,50 +1,27 @@
-import axios from 'axios';
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
+import { userToken } from '../../../../utils/token';
 
 const getPlaylistPaywallInfos = async (playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/playlists/' + playlistId + '/paywall', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/playlists/' + playlistId + '/paywall')
 }
 
 const savePlaylistPaywallInfos = async (data: ContentPaywallPageInfos, playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/playlists/' + playlistId + '/paywall', 
+    return await axiosClient.put('/playlists/' + playlistId + '/paywall', 
         {
             ...data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const getPlaylistPaywallPrices = async (playlistId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id='${userId}-playlist-${playlistId}`, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get(`/paywall/prices?content-id='${userId}-playlist-${playlistId}`)
 }
 
 
 const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.type === 'Subscription') {
         parsedPrice = {
@@ -83,21 +60,15 @@ const createPlaylistPricePreset = async (data: Preset, playlistId: string) => {
             }
         }
     } 
-    return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
+    return await axiosClient.post('/paywall/prices', 
         {
             ...parsedPrice
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.type === 'Subscription') {
         parsedPrice = {
@@ -133,87 +104,45 @@ const savePlaylistPricePreset = async (data: Preset, playlistId: string) => {
             }
         }
     } 
-    return axios.put(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    return await axiosClient.put('/paywall/prices/' + data.id, 
         {
             id: data.id,
             contentId: `${userId}-playlist-${playlistId}`,
             name: data.name,
             ...parsedPrice
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deletePlaylistPricePreset = async (data: Preset, playlistId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-playlist-${playlistId}`, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.delete(`/paywall/prices/${data.id}?content-id=${userId}-playlist-${playlistId}`)
 }
 
 const getPlaylistPaywallPromos = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/promos?page=1&per-page=100', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/promos?page=1&per-page=100')
 }
 
 const createPlaylistPromoPreset = async (data: Promo, playlistId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
+    return await axiosClient.post('/paywall/promos' , 
         {
             promo: {
                 ...data
             }  
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const savePlaylistPromoPreset = async (data: Promo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
+    return await axiosClient.put('/paywall/promos/' + data.id , 
         {
             promo: data  
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deletePlaylistPromoPreset = async (data: Promo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/paywall/promos/' + data.id)
 }
 
 export const PlaylistPaywallServices = {

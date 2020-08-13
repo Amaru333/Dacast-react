@@ -1,22 +1,14 @@
 import axios from 'axios';
 import { GroupPrice, GroupPromo } from './types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
+import { userToken } from '../../../../utils/token';
 
 const getGroupPrices = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/prices/groups?page=1&per-page=100', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/prices/groups?page=1&per-page=100')
 }
 
 const createGroupPrice = async (data: GroupPrice) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {
@@ -60,21 +52,15 @@ const createGroupPrice = async (data: GroupPrice) => {
             }
         }
     } 
-    return axios.post(process.env.API_BASE_URL + '/paywall/prices/groups' , 
+    return await axiosClient.post('/paywall/prices/groups' , 
         {
             ...parsedPrice 
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const saveGroupPrice = async (data: GroupPrice) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {
@@ -121,45 +107,22 @@ const saveGroupPrice = async (data: GroupPrice) => {
             }
         }
     } 
-    return axios.put(process.env.API_BASE_URL + '/paywall/prices/groups/' + data.id , 
+    return await axiosClient.put('/paywall/prices/groups/' + data.id , 
         {
             package: parsedPrice 
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deleteGroupPrice = async (data: GroupPrice) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/prices/groups/' + data.id , 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/paywall/prices/groups/' + data.id)
 }
 
 const getGroupPromos = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/promos?page=1&per-page=100', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/promos?page=1&per-page=100')
 }
 
 const createGroupPromo = async (data: GroupPromo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
     let parsedData = null
     if (data.rateType !== 'Pay Per View') {
         parsedData = {
@@ -186,21 +149,14 @@ const createGroupPromo = async (data: GroupPromo) => {
     if (data.endDate === 0) {
         delete parsedData['endDate']
     }
-    return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
+    return await axiosClient.post('/paywall/promos' , 
         {
             promo: parsedData
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const saveGroupPromo = async (data: GroupPromo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
     let parsedData = null
     if(data.rateType !== 'Pay Per View') {
         parsedData = {
@@ -225,28 +181,15 @@ const saveGroupPromo = async (data: GroupPromo) => {
     if (data.endDate === 0) {
         delete parsedData['endDate']
     }
-    return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
+    return await axiosClient.put('/paywall/promos/' + data.id , 
         {
             promo: parsedData  
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deleteGroupPromo = async (data: GroupPromo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/paywall/promos/' + data.id)
 }
 
 export const GroupsServices = {

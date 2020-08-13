@@ -14,6 +14,7 @@ import { Action } from '../../../redux-flow/store/Register/ResetPassword/actions
 import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../../redux-flow/store/Toasts/actions';
 import { connect } from 'react-redux';
+import { axiosClient } from '../../../utils/axiosClient'
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -29,10 +30,15 @@ const ChangePassword = (props: ChangePasswordProps) => {
     const [newPassword, setNewPassword] = React.useState<string>('')
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
 
-    const handleChangePassword = (passwordText: string) => {
-        axios.post(process.env.API_BASE_URL + '/reset-password', {newPassword: passwordText, email: query.get('email'), verificationToken: query.get('reset_code')})
-        history.push('/login')
-        props.showToast("Your password has been reset", 'flexible', "success")
+    const handleChangePassword = async (passwordText: string) => {
+        await axiosClient.post('/reset-password', 
+            {newPassword: passwordText, email: query.get('email'), verificationToken: query.get('reset_code')}, 
+            {authRequired: false}
+        ).then(() => {
+            history.push('/login')
+            props.showToast("Your password has been reset", 'flexible', "success")
+        })
+
     }
     return (
         <LoginContainer>

@@ -14,13 +14,13 @@ import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { FolderTree, rootNode } from '../../../utils/folderService';
 import { Badge } from '../../../../components/Badge/Badge';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { addTokenToHeader } from '../../../utils/token';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
+import { userToken } from '../../../utils/token';
 
 
 export const SetupPage = (props: SetupComponentProps) => {
 
-    const {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const formateData: FolderAsset[] = props.playlistData.contentList ? props.playlistData.contentList.map(item =>{
         return {

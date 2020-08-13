@@ -1,16 +1,13 @@
-import axios from 'axios'
 import { ApiIntegrationPageInfos } from './types';
+import { axiosClient } from '../../../../utils/axiosClient';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
-
-const getSettingsIntegrationService = () => {
-    return axios.get(urlBase + 'settings-integration-page');
+const getSettingsIntegrationService = async () => {
+    return await axiosClient.get('/settings-integration-page');
 }
 
-const saveSettingsIntegrationService = (data: ApiIntegrationPageInfos) => {
-    return axios.post(urlBase + 'save-settings-integration', {...data})
+const saveSettingsIntegrationService = async (data: ApiIntegrationPageInfos) => {
+    return await axiosClient.post('/save-settings-integration', {...data})
 }
-
 
 export const SettingsIntegrationServices = {
     getSettingsIntegrationService,

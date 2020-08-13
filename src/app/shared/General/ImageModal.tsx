@@ -6,7 +6,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
-import { addTokenToHeader } from '../../utils/token';
+import { userToken } from '../../utils/token';
 
 export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
     
@@ -22,7 +22,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
 
-    const {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 

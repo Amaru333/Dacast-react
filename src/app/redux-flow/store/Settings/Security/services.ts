@@ -1,109 +1,65 @@
-import axios from 'axios'
 import { SecuritySettings, GeoRestriction, DomainControl } from './types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-
-const urlBase = 'https://0fb1360f-e2aa-4ae5-a820-c58a4e80bda0.mock.pstmn.io/';
+import { userToken } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getSettingsSecurityOptionsService = async () => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security',
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get('/accounts/' + userId + '/settings/security')
 }
 
 const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security',
-        {...data}, 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/settings/security',
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const createGeoRestrictionGroupService = async (data: GeoRestriction) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions',
-        {...data}, 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.post('/accounts/' + userId + '/settings/security/restrictions',
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const saveGeoRestrictionGroupService = async (data: GeoRestriction) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {...data}, 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const deleteGeoRestrictionGroupService = async (data: GeoRestriction) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.delete('/accounts/' + userId + '/settings/security/restrictions/' + data.id)
 }
 
 const createDomainControlGroupService = async (data: DomainControl) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.post(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions',
-        {...data}, 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.post('/accounts/' + userId + '/settings/security/restrictions',
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const saveDomainControlGroupService = async (data: DomainControl) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {...data}, 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/settings/security/restrictions/' + data.id,
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
 const deleteDomainControlGroupService = async (data: DomainControl) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/security/restrictions/' + data.id,
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.delete('/accounts/' + userId + '/settings/security/restrictions/' + data.id)
 }
 
 export const SettingsServices = {

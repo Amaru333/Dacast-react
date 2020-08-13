@@ -7,9 +7,9 @@ import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
-import { useOutsideAlerter, getPrivilege } from '../../../utils/utils';
+import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
-import { initUserInfo } from '../../utils/token';
+import { userToken } from '../../utils/token';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 
@@ -59,7 +59,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     React.useEffect(() => {
-        initUserInfo();
+        // userToken.getUserInfoItem();
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
@@ -83,7 +83,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     }
 
-    const AddItemsList = [{name: "Video", enabled: getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: getPrivilege('privilege-live')}, {name: "Playlist", enabled: getPrivilege('privilege-playlists')}]
+    const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')}]
 
     
 
@@ -102,7 +102,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 break
             case "Live Stream":
                 setAddDropdownIsOpened(false)
-                if (!getPrivilege('privilege-china') && !getPrivilege('privilege-unsecure-m3u8') && !getPrivilege('privilege-dvr') ) {
+                if (!userToken.getPrivilege('privilege-china') && !userToken.getPrivilege('privilege-unsecure-m3u8') && !userToken.getPrivilege('privilege-dvr') ) {
                     history.push("/livestreams")
                 } else {
                     props.openAddStream()
@@ -144,7 +144,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const renderMenu = () => {
 
-        return props.routes.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((element, i) => {
+        return props.routes.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((element, i) => {
             if(!element.notDisplayedInNavigation) {
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
@@ -169,7 +169,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
+                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>

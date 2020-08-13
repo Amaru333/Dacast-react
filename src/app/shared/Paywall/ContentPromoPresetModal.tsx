@@ -9,7 +9,7 @@ import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
-import { addTokenToHeader } from '../../utils/token';
+import { userToken } from '../../utils/token';
 var moment = require('moment-timezone');
 
 const defaultPromo: Promo = {
@@ -57,7 +57,7 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
         if (savePreset) { 
             props.savePresetGlobally(newPromoPreset) 
         } 
-        let {userId} = addTokenToHeader()
+        const userId = userToken.getUserInfoItem('custom:dacast_user_id')
         let startDate = startDateTime === 'Set Date and Time' ? moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
         let endDate = endDateTime === 'Set Date and Time' ? moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
         props.action(

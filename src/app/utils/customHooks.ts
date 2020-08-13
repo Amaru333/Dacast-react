@@ -1,6 +1,6 @@
 import React from 'react'
-import { addTokenToHeader } from "./token"
-import axios from 'axios'
+import { axiosClient } from './axiosClient'
+import { userToken } from './token'
 
 export const useWebSocket = () => {
 
@@ -9,14 +9,9 @@ export const useWebSocket = () => {
 
     React.useEffect(() => {
         const setWebSocketConnection = async () => {
-            const { token } = addTokenToHeader()
-            axios.get(process.env.API_BASE_URL + '/websocket-endpoint',
-                {
-                    headers: {
-                        Authorization: token
-                    }
-                }
+            axiosClient.get('/websocket-endpoint'
             ).then(response => {
+                const token = userToken.getTokenInfo().token
                 let url: string = response.data.data.endpoint
                 let editedUrl: string = 'wss' + url.substring(5)
                 ws.current = new WebSocket(`${editedUrl}?token=${token}`)
