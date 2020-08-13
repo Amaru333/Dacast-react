@@ -3,21 +3,21 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { Action } from '../../redux-flow/store/VOD/General/actions';
-import { getVodListAction, deleteVodAction } from '../../redux-flow/store/VOD/General/actions';
+import { getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
-import { SearchResult } from '../../redux-flow/store/VOD/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
+import { ContentListState } from '../../redux-flow/store/Content/List/types';
 
 export interface VideosListProps {
-    items: SearchResult;
+    contentListState: ContentListState;
     themesList: ThemesData;
-    getVodList: (qs: string) => Promise<void>;
-    deleteVodList: (voidId: string) => Promise<void>;
+    getContentList: (qs: string, contentType: string) => Promise<void>;
+    deleteContentList: (voidId: string, contentType: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
@@ -25,16 +25,16 @@ export interface VideosListProps {
 const VideosList = (props: VideosListProps) => {
 
     React.useEffect(() => {     
-        props.getVodList(null)
+        props.getContentList(null, 'vod')
     }, [])
 
-    return props.items ? 
+    return props.contentListState['vod'] ? 
         <ContentListPage
-            contentType="videos" 
-            items={props.items}
+            contentType="vod" 
+            items={props.contentListState['vod']}
             themesList={props.themesList}
-            getContentList={props.getVodList}
-            deleteContentList={props.deleteVodList}
+            getContentList={props.getContentList}
+            deleteContentList={props.deleteContentList}
             getThemesList={props.getThemesList}
             showToast={props.showToast}
          />
@@ -43,18 +43,18 @@ const VideosList = (props: VideosListProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        items: state.vod.list,
+        contentListState: state.content.list,
         themesList: state.settings.theming
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodList: async (qs: string) => {
-            await dispatch(getVodListAction(qs))
+        getContentList: async (qs: string, contentType: string) => {
+            await dispatch(getContentListAction(qs, contentType))
         },
-        deleteVodList: async (vodId: string) => {
-            await dispatch(deleteVodAction(vodId))
+        deleteContentList: async (contentId: string, contentType: string) => {
+            await dispatch(deleteContentAction(contentId, contentType))
         },
         getThemesList: async () => {
             await dispatch(getThemingListAction())

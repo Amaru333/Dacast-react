@@ -33,8 +33,8 @@ interface ContentListProps {
     contentType: string
     items: SearchResult;
     themesList: ThemesData;
-    getContentList: (qs: string) => Promise<void>;
-    deleteContentList: (voidId: string) => Promise<void>;
+    getContentList: (qs: string, contentType: string) => Promise<void>;
+    deleteContentList: (voidId: string, contentType: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
@@ -142,7 +142,7 @@ export const ContentListPage = (props: ContentListProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            props.getContentList(parseFiltersToQueryString(selectedFilters)).then(() => {
+            props.getContentList(parseFiltersToQueryString(selectedFilters), props.contentType).then(() => {
                 setContentLoading(false)
                 setFetchContent(false)
 
@@ -165,14 +165,14 @@ export const ContentListPage = (props: ContentListProps) => {
         { name: 'Delete', function: setBulkDeleteOpen },
     ]
 
-    const handleBulkActionType = (contentType: string) => {
+    const handleURLName = (contentType: string) => {
         switch (contentType) {
-            case 'videos':
-                return 'vod'
-            case 'livestreams':
-                return 'channel'
-            case 'playlists':
-                return 'playlist'
+            case 'vod':
+                return 'videos'
+            case 'live':
+                return 'livestreams'
+            case 'playlist':
+                return 'playlists'
         }
     }
 
@@ -234,7 +234,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         value.status !== 'deleted' ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                             <ActionIcon id={"editTooltip" + value.objectID}>
-                                <IconStyle onClick={() => {history.push(`/${props.contentType}/` + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -302,18 +302,18 @@ export const ContentListPage = (props: ContentListProps) => {
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={contentList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});if(!fetchContent) { setFetchContent(true)}}} />
-            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => {return {id:vod, type: handleBulkActionType(props.contentType)}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened && 
-                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => {}} submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => {return {id: vodId, type: handleBulkActionType(props.contentType)}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => {}} submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => {return {id: vodId, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
@@ -324,7 +324,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
                 }
             </Modal>
             <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />

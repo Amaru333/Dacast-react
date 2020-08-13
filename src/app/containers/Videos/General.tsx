@@ -30,19 +30,19 @@ const General = (props: GeneralComponentProps) => {
     let { vodId } = useParams();
 
     React.useEffect(() => {
-            props.getContentDetails(vodId, "vods");
+            props.getContentDetails(vodId, "vod");
     }, [])
 
     return (
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.contentDetailsState['vods'] && props.contentDetailsState['vods'][vodId] ?
+                props.contentDetailsState['vod'] && props.contentDetailsState['vod'][vodId] ?
                     (
                         <div className='flex flex-column'>
                             <ContentGeneralPage
                                 contentType="vod" 
-                                contentDetails={props.contentDetailsState['vods'][vodId]}
+                                contentDetails={props.contentDetailsState['vod'][vodId]}
                                 getContentDetails={props.getContentDetails}
                                 saveContentDetails={props.saveContentDetails}
                                 getUploadUrl={props.getUploadUrl}

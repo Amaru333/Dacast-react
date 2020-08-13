@@ -1,7 +1,7 @@
 import { FeaturesList } from '../../../../shared/Common/Features';
 
 export enum ActionTypes {
-    DELETE_CONTENT = "@@content_general/DELETE_CONTENT",
+    DELETE_CONTENT = "@@content_list/DELETE_CONTENT",
     GET_CONTENT_LIST = "@@content_list/GET_CONTENT_LIST",
 }
 
@@ -36,4 +36,8 @@ export interface SubtitleInfo {
     convertToUTF8?: boolean;
 }
 
-export const initialContentList: SearchResult | false = false
+export interface ContentListState { 
+    [contentType: string]: SearchResult
+}
+
+export const initialContentList: ContentListState =  {}

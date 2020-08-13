@@ -2,66 +2,56 @@ import React from 'react';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveListAction, deleteLiveChannelAction } from '../../redux-flow/store/Live/General/actions';
-import { SearchResult } from '../../redux-flow/store/Live/General/types';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
-import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
+import { ContentListProps } from '../Videos/VideosList';
+import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
 
-export interface LiveListComponentProps {
-    liveList: SearchResult;
-    themesList: ThemesData;
-    getLiveList: (qs: string) => Promise<void>;
-    deleteLiveChannel: (id: string) => Promise<void>;
-    getThemesList: () => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void
-}
+export const LiveList = (props: ContentListProps) => {
 
-export const LiveList = (props: LiveListComponentProps) => {
-
-    React.useEffect(() => {
-        props.getLiveList(null)
+    React.useEffect(() => {     
+        props.getContentList(null, 'live')
     }, [])
 
-    return props.liveList ? 
+    return props.contentListState['live'] ? 
         <ContentListPage
-            contentType="livestreams" 
-            items={props.liveList}
+            contentType="live" 
+            items={props.contentListState['live']}
             themesList={props.themesList}
-            getContentList={props.getLiveList}
-            deleteContentList={props.deleteLiveChannel}
+            getContentList={props.getContentList}
+            deleteContentList={props.deleteContentList}
             getThemesList={props.getThemesList}
             showToast={props.showToast}
-        />
+         />
 
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveList: state.live.list,
+        contentListState: state.content.list,
         themesList: state.settings.theming
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveList: async (qs: string) => {
-            await dispatch(getLiveListAction(qs));
+        getContentList: async (qs: string, contentType: string) => {
+            await dispatch(getContentListAction(qs, contentType))
         },
-        deleteLiveChannel: async (id: string) => {
-            await dispatch(deleteLiveChannelAction(id));
+        deleteContentList: async (contentId: string, contentType: string) => {
+            await dispatch(deleteContentAction(contentId, contentType))
         },
         getThemesList: async () => {
             await dispatch(getThemingListAction())
         },
-        showToast: (text: string, size: Size, type: NotificationType) => {
-            dispatch(showToastNotification(text, size, type))
-        },
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType))
+        }
     };
 }
 

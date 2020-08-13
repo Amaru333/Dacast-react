@@ -18,18 +18,18 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        props.getContentDetails(playlistId, 'playlists');
+        props.getContentDetails(playlistId, 'playlist');
     }, [])
 
     return (
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            { props.contentDetailsState['playlists'] && props.contentDetailsState['playlists'][playlistId] ?
+            { props.contentDetailsState['playlist'] && props.contentDetailsState['playlist'][playlistId] ?
                 (
                     <div className='flex flex-column'>
                         <ContentGeneralPage
                             contentType="playlist" 
-                            contentDetails={props.contentDetailsState['playlists'][playlistId]}
+                            contentDetails={props.contentDetailsState['playlist'][playlistId]}
                             getContentDetails={props.getContentDetails}
                             saveContentDetails={props.saveContentDetails}
                             getUploadUrl={props.getUploadUrl}
