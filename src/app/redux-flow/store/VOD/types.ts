@@ -3,7 +3,7 @@ import { combineReducers, Reducer } from 'redux';
 import { ChapterMarkerInfosState } from './Chapters/types';
 import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecurityReducer } from './Security';
-import { SearchResult, VodDetailsState } from './General/types';
+import { SearchResult, VodDetailsState, ContentDetailsState } from './General/types';
 import { GeneralReducer, reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsListState } from './Renditions/types';
@@ -31,7 +31,7 @@ export const vodInitialState: VodState = {
 export interface  VodState {
     chapters: ChapterMarkerInfosState;
     security: ContentSecuritySettingsState;
-    general: VodDetailsState;
+    general: ContentDetailsState;
     list: false | SearchResult;
     renditions: RenditionsListState;
     theming: ContentThemeState;
