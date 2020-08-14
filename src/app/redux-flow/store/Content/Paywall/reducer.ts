@@ -155,8 +155,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType][action.payload.contentId],
                     promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${action.payload.contentType}-${action.payload.contentId}`) !== -1).map((promo) => {
                         return {
-                            ...promo,
-                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                            ...promo
                         }
                     })
                 }
@@ -168,8 +167,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     selectedTheme: null,
                     promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${action.payload.contentType}-${action.payload.contentId}`) !== -1).map((promo) => {
                         return {
-                            ...promo,
-                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
+                            ...promo
                         }
                     })
                 }

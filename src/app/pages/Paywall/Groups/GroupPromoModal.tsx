@@ -15,7 +15,6 @@ const defaultPromo: GroupPromo = {
     alphanumericCode: '',
     discount: 0,
     limit: 0,
-    rateType: 'Pay Per View',
     startDate: 0,
     endDate: 0,
     timezone: 'Etc/UTC',
@@ -83,7 +82,6 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     list={props.groupList.reduce((reduced: DropdownListType, item: GroupPrice)=> {return {...reduced, [item.name]: false }},{})  } 
                     callback={(value:string) => setGroupPromo({...groupPromo, assignedGroupIds: [props.groupList.filter(n => n.name === value)[0].id]})}
                 />
-                <DropdownSingle id='groupPromoRateTypeDropdown' className={ ClassHalfXsFullMd + ''} dropdownDefaultSelect={groupPromo.rateType}  dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             <div className='col col-12 mb2 clearfix'>
                 <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount ? groupPromo.discount.toString() : ''} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
@@ -143,10 +141,8 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 
                     list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
                 />
-                {
-                    groupPromo.rateType === 'Subscription' &&
-                        <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
-                }
+
+                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
             </div>
             <div className='col col-12 py2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>

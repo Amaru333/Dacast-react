@@ -75,7 +75,6 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const promoPresetsTableHeader = () => {
         return {data: [
             {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='promoPresetsTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
             {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
@@ -88,7 +87,6 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             return props.presetsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
-                    <Text key={'promoPresetsTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>

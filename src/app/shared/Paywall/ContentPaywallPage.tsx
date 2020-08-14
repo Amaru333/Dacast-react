@@ -97,7 +97,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promosTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promosTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promosTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promosTableHeaderLimit' size={14} weight='med'>Limit</Text>},
@@ -110,7 +109,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.promos) {
             return props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).map((promo, key) => {
                 return {data: [
-                    <Text key={'promosTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promosTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promosTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,

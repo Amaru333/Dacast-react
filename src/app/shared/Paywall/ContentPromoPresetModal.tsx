@@ -18,7 +18,6 @@ const defaultPromo: Promo = {
     alphanumericCode: '',
     discount: NaN,
     limit: NaN,
-    rateType: 'Pay Per View',
     startDate: 0,
     endDate: 0,
     timezone: 'Etc/UTC',
@@ -65,7 +64,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
             {...newPromoPreset, 
                 startDate: startDate, 
                 endDate: endDate,
-                discountApplied: newPromoPreset.discountApplied ? newPromoPreset.discountApplied.toLowerCase() : 'once',
+                discountApplied: newPromoPreset.discountApplied.toLowerCase(),
                 assignedContentIds:[`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
@@ -106,7 +105,6 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
             <div className='col col-12 mb2'>
                 <Input className='col sm-col-3 col-6 pr1 xs-mb2' value={newPromoPreset.discount ? newPromoPreset.discount.toString() : ''} label='Discount' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, discount: parseInt(event.currentTarget.value) })} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                 <Input className='col sm-col-3 col-6 px1' value={newPromoPreset.limit ? newPromoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, limit: parseInt(event.currentTarget.value) })} />
-                <DropdownSingle id='newPromoPresetRateTypeDropdown' dropdownDefaultSelect={newPromoPreset.rateType} className='col sm-col-6 col-12 sm-pl1' dropdownTitle='Rate Type' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, rateType: value })} list={{ 'Pay Per View': false, 'Subscription': false }} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
             <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
@@ -159,10 +157,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     className={ClassHalfXsFullMd + ' pr1'} 
                     dropdownTitle='Timezone' 
                     callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
-                {
-                    newPromoPreset.rateType === 'Subscription' &&
-                        <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, discountApplied: value })} list={{ 'Once': false, 'Forever': false }} />
-                }
+                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, discountApplied: value })} list={{ 'Once': false, 'Forever': false }} />
             </div>
             <div className='col col-12 mb2'>
                 <Button

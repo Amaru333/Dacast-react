@@ -124,24 +124,13 @@ const getGroupPromos = async () => {
 
 const createGroupPromo = async (data: GroupPromo) => {
     let parsedData = null
-    if (data.rateType !== 'Pay Per View') {
-        parsedData = {
-            ...data,
-            assignedContentIds: [],
-            discountApplied: data.discountApplied.toLowerCase(),
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
-            id: null
-        }
-    } else {
-        parsedData = {
-            ...data,
-            assignedContentIds: [],
-            discountApplied: null,
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
-            id: null
-        }
+    parsedData = {
+        ...data,
+        assignedContentIds: [],
+        discountApplied: data.discountApplied.toLowerCase(),
+        startDate: Math.floor(data.startDate / 1000),
+        endDate: Math.floor(data.endDate / 1000),
+        id: null
     }
     if (data.startDate === 0) {
         delete parsedData['startDate']
@@ -158,22 +147,12 @@ const createGroupPromo = async (data: GroupPromo) => {
 
 const saveGroupPromo = async (data: GroupPromo) => {
     let parsedData = null
-    if(data.rateType !== 'Pay Per View') {
-        parsedData = {
-            ...data,
-            assignedContentIds: [],
-            discountApplied: data.discountApplied.toLowerCase(),
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
-        }
-    } else {
-        parsedData = {
-            ...data,
-            assignedContentIds: [],
-            discountApplied: null,
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
-        }
+    parsedData = {
+        ...data,
+        assignedContentIds: [],
+        discountApplied: data.discountApplied.toLowerCase(),
+        startDate: Math.floor(data.startDate / 1000),
+        endDate: Math.floor(data.endDate / 1000),
     }
     if (data.startDate === 0) {
         delete parsedData['startDate']

@@ -94,7 +94,6 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                     promos: action.payload.data.promos.map((promo) => {
                         return {
                             ...promo,
-                            rateType: promo.discountApplied ? 'Subscription' : 'Pay Per View'
                         }
                     })
                 }
