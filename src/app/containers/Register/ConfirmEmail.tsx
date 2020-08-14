@@ -16,16 +16,16 @@ export interface ConfirmEmailComponentProps {
 }
 
 const ConfirmEmail = (props: ConfirmEmailComponentProps) => {
-    let email: string = null
+    const  [email, setEmail] = React.useState<string>(null)
 
     let qs = useQuery()
     React.useEffect(() => {
-        if(props.userInfos) {
+        if(props.userInfos && props.userInfos.email) {
             console.log('user info', props.userInfos)
-            email = props.userInfos.email
+            setEmail(props.userInfos.email)
         }
         if (qs.get('email')) {
-            email = qs.get('email')
+            setEmail(qs.get('email'))
         }
     }, [props.userInfos])
     return email ?
