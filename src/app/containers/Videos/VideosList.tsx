@@ -13,7 +13,7 @@ import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
 
-export interface VideosListProps {
+export interface ContentListProps {
     contentListState: ContentListState;
     themesList: ThemesData;
     getContentList: (qs: string, contentType: string) => Promise<void>;
@@ -22,7 +22,7 @@ export interface VideosListProps {
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
-const VideosList = (props: VideosListProps) => {
+const VideosList = (props: ContentListProps) => {
 
     React.useEffect(() => {     
         props.getContentList(null, 'vod')

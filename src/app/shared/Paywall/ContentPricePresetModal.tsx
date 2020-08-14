@@ -35,10 +35,11 @@ const defaultPreset: Preset = {
     }
 }
 
-export const ContentPricePresetsModal = (props: {contentId: string; action: Function; toggle: Function; preset: Preset; presetList: Preset[]; savePresetGlobally: Function }) => {
+export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void> }) => {
 
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = newPricePreset.prices;
@@ -101,6 +102,20 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
         let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPricePreset.settings.timezone}`).utc().valueOf()
         setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startDate: startDate }})    
     }, [startDateTimeValue])
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        if (savePreset) { 
+            props.savePresetGlobally(newPricePreset) 
+        }
+        props.action(newPricePreset, props.contentId, props.contentType)
+        .then(() => {
+            props.toggle(false)
+            setButtonLoading(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
+    }
 
     return (
         <div>
@@ -213,11 +228,13 @@ export const ContentPricePresetsModal = (props: {contentId: string; action: Func
             }
             <div className='col col-12 mt3'>
                 <Button
+                    isLoading={buttonLoading}
                     disabled={(!newPricePreset.name && newPricePreset.id === 'custom' && savePreset) || (newPricePreset.type === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || (!props.preset && newPricePreset.prices.some(price => Number.isNaN(price.value)&& Number.isNaN(newPricePreset.price)))}
-                    onClick={() => { if (savePreset) { props.savePresetGlobally(newPricePreset) }; props.action(newPricePreset, props.contentId); props.toggle(false) }} className='mr2'
+                    onClick={() => handleSubmit()} className='mr2'
                     typeButton='primary'
                     sizeButton='large'
-                    buttonColor='blue'>
+                    buttonColor='blue'
+                >
                     Create
                 </Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>

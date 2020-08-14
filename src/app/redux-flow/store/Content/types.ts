@@ -2,26 +2,32 @@
 import { combineReducers, Reducer } from 'redux';
 import { ContentDetailsState } from './General/types';
 import {reducerList } from './List/reducer';
-import { ContentThemeState } from '../Settings/Theming/types';
-import { ContentEngagementSettingsState } from '../Settings/Interactions';
-import { ContentSecuritySettingsState } from '../Settings/Security';
-import { ContentPaywallState } from '../Paywall/Presets/types'
+import { ContentPaywallState } from './Paywall/types'
 import { GeneralReducer } from './General/reducer';
 import { ContentListState } from './List/types';
+import { ContentPaywallReducer } from './Paywall/reducer';
+import { ContentEngagementState } from './Engagement/types';
+import { ContentEngagementReducer } from './Engagement/reducer';
 
 
 export const contentInitialState: ContentState = {
     general: {},
     list: {},
+    paywall: {},
+    engagement: {}
 };
 
 
 export interface  ContentState {
     general: ContentDetailsState;
     list: ContentListState;
+    paywall: ContentPaywallState;
+    engagement: ContentEngagementState
 }
 
 export const ContentReducer: Reducer<ContentState> = combineReducers({
     general: GeneralReducer,
     list: reducerList,
+    paywall: ContentPaywallReducer,
+    engagement: ContentEngagementReducer
 })

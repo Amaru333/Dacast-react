@@ -3,30 +3,18 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getVodEngagementSettingsAction, Action, saveVodEngagementSettingsAction, saveVodAdAction, createVodAdAction, deleteVodAdAction, getUploadUrlAction, uploadVodImageAction, deleteVodImageAction } from '../../redux-flow/store/VOD/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions/actions';
+import { ContentEngagementComponentProps } from '../Playlists/Engagement';
+import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 
-export interface VodEngagementComponentProps {
-    globalEngagementSettings: InteractionsInfos;
-    getGlobalEngagementSettings: () => Promise<void>;
-    vodEngagementSettings: ContentEngagementSettings;
-    vodEngagementSettingsState: ContentEngagementSettingsState;
-    getVodEngagementSettings: (vodId: string) => Promise<void>;
-    saveVodEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
-    saveVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    createVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    deleteVodAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
-    uploadVodImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteVodImage: (targetId: string) => Promise<void>;
-}
-
-export const VodEngagement = (props: VodEngagementComponentProps) => {
+export const VodEngagement = (props: ContentEngagementComponentProps) => {
 
     let { vodId } = useParams()
 
@@ -34,26 +22,26 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
         if (!props.globalEngagementSettings){
             props.getGlobalEngagementSettings()
         }
-        if (!props.vodEngagementSettingsState[vodId])
-            props.getVodEngagementSettings(vodId);
+        props.getContentEngagementSettings(vodId, 'vod');
+
     }, []);
 
     return (
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.vodEngagementSettingsState[vodId] && props.globalEngagementSettings?
+                props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId] && props.globalEngagementSettings?
                     <div className='flex flex-column'>
                         <ContentEngagementPage
-                            contentEngagementSettings={props.vodEngagementSettingsState[vodId]}
-                            getContentEngagementSettings={props.getVodEngagementSettings}
-                            saveContentEngagementSettings={props.saveVodEngagementSettings}
-                            saveContentAd={props.saveVodAd}
-                            createContentAd={props.createVodAd}
-                            deleteContentAd={props.deleteVodAd}
+                            contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
+                            getContentEngagementSettings={props.getContentEngagementSettings}
+                            saveContentEngagementSettings={props.saveContentEngagementSettings}
+                            saveContentAd={props.saveContentAd}
+                            createContentAd={props.createContentAd}
+                            deleteContentAd={props.deleteContentAd}
                             getUploadUrl={props.getUploadUrl}
-                            uploadContentImage={props.uploadVodImage}
-                            deleteContentImage={props.deleteVodImage}
+                            uploadContentImage={props.uploadContentImage}
+                            deleteContentImage={props.deleteContentImage}
                             contentType='vod'
                             contentId={vodId}
                             globalEngagementSettings={props.globalEngagementSettings}
@@ -67,39 +55,42 @@ export const VodEngagement = (props: VodEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        vodEngagementSettingsState: state.vod.engagement,
+        contentEngagementState: state.content.engagement,
         globalEngagementSettings: state.settings.interactions
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodEngagementSettings: async (vodId: string) => {
-            await dispatch(getVodEngagementSettingsAction(vodId));
-        },
         getGlobalEngagementSettings: async () => {
             await dispatch(getSettingsInteractionsInfosAction());
         },
-        saveVodEngagementSettings: async (data: ContentEngagementSettings) => {
-            await dispatch(saveVodEngagementSettingsAction(data))
+        getContentEngagementSettings: async (contentId: string, contentType: string) => {
+            await dispatch(getContentEngagementSettingsAction(contentId, contentType));
         },
-        saveVodAd: async (data: Ad[], adsId: string, vodId: string) => {
-            await dispatch(saveVodAdAction(data, adsId, vodId))
+        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
+            await dispatch(saveContentEngagementSettingsAction(data, contentType))
         },
-        createVodAd: async (data: Ad[], adsId: string, vodId: string) => {
-            await dispatch(createVodAdAction(data, adsId, vodId))
+        saveContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
+            await dispatch(saveContentAdAction(data, adsId, contentId, contentType))
         },
-        deleteVodAd: async (data: Ad[], adsId: string, vodId: string) => {
-            await dispatch(deleteVodAdAction(data, adsId, vodId))
+        createContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
+            await dispatch(createContentAdAction(data, adsId, contentId, contentType))
         },
-        getUploadUrl: async (uploadType: string, vodId: string) => {
-            await dispatch(getUploadUrlAction(uploadType, vodId))
+        deleteContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
+            await dispatch(deleteContentAdAction(data, adsId, contentId, contentType))
         },
-        uploadVodImage: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadVodImageAction(data, uploadUrl))
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         },
-        deleteVodImage: async (targetId: string) => {
-            await dispatch(deleteVodImageAction(targetId))
+        getUploadUrl: async (uploadType: string, contentId: string, contentType: string) => {
+            await dispatch(getUploadUrlAction(uploadType, contentId, contentType))
+        },
+        uploadContentImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadContentImageAction(data, uploadUrl))
+        },
+        deleteContentImage: async (targetId: string, contentType: string) => {
+            await dispatch(deleteContentImageAction(targetId, contentType))
         }
     };
 }

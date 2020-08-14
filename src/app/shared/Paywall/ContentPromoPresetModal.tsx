@@ -27,7 +27,7 @@ const defaultPromo: Promo = {
     assignedGroupIds: []
 }
 
-export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 'playlist'; contentId: string; actionButton: 'Create' | 'Save'; action: Function; toggle: Function; promo: Promo; presetList: Promo[]; savePresetGlobally: Function }) => {
+export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
     const initTimestampValues = (ts: number): {date: any; time: string} => {
         if(ts > 0 ) {
@@ -54,6 +54,7 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
     }, [newPromoPreset.timezone])
 
     const handleSubmit = () => {
+        setButtonLoading(true)
         if (savePreset) { 
             props.savePresetGlobally(newPromoPreset) 
         } 
@@ -69,8 +70,13 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
                 assignedGroupIds: [],
                 name: null,
                 id: props.actionButton === 'Create' ? null : newPromoPreset.id
-            }, props.contentId)
-        props.toggle(false)
+            }, props.contentId, props.contentType)
+            .then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            }).catch(() => {
+                setButtonLoading(false)
+            })
     }
 
     return (
@@ -160,6 +166,7 @@ export const ContentPromoPresetsModal = (props: { contentType: 'vod' | 'live' | 
             </div>
             <div className='col col-12 mb2'>
                 <Button
+                    isLoading={buttonLoading}
                     disabled={(!newPromoPreset.name && newPromoPreset.id !== 'custom' && !props.promo) || Number.isNaN(newPromoPreset.discount) || newPromoPreset.alphanumericCode.length < 5 || Number.isNaN(newPromoPreset.limit)}
                     onClick={() =>  handleSubmit()}
                     className='mr2'

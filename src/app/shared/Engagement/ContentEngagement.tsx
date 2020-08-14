@@ -29,14 +29,14 @@ export interface ContentEngagementComponentProps {
     globalEngagementSettings: InteractionsInfos;
     contentType?: string;
     contentId: string;
-    getContentEngagementSettings: (contentId: string) => Promise<void>;
-    saveContentEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
-    saveContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    createContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    deleteContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    getContentEngagementSettings: (contentId: string, contentType: string) => Promise<void>;
+    saveContentEngagementSettings: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
+    saveContentAd: (data: Ad[], adsId: string, contentId: string, contentType: string) => Promise<void>;
+    createContentAd: (data: Ad[], adsId: string, contentId: string, contentType: string) => Promise<void>;
+    deleteContentAd: (data: Ad[], adsId: string, contentId: string, contentType: string) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>;
     uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteContentImage: (targetId: string) => Promise<void>;
+    deleteContentImage: (targetId: string, contentType: string) => Promise<void>;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -81,7 +81,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark', props.contentId);
+                    props.getUploadUrl('player-watermark', props.contentId, props.contentType);
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -104,7 +104,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteContentImage(props.contentId);
+        props.deleteContentImage(props.contentId, props.contentType);
     }
 
     React.useEffect(() => {
@@ -112,7 +112,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
                 setUploadButtonLoading(false)
                 setTimeout(() => {
-                    props.getContentEngagementSettings(props.contentId)
+                    props.getContentEngagementSettings(props.contentId, props.contentType)
                 }, 3000)
             })    
         }
@@ -229,7 +229,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <ActionIcon id={"deleteTooltip" + item.id}>
                             {adSectionEditable && 
                             <IconStyle
-                            onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                            onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId, props.contentType) }}
                             >delete
                         </IconStyle>
                             
@@ -276,7 +276,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
                         endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
                         endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                    }}, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
                         adsEnabled: props.globalEngagementSettings.adsEnabled, 
@@ -287,10 +287,11 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 break
             case 'brandImage':
                 if (engagementSettings.brandImageID) {
-                    props.deleteContentImage(engagementSettings.brandImageID)
+                    props.deleteContentImage(engagementSettings.brandImageID, props.contentType)
                 }
                 props.saveContentEngagementSettings({
                     contentId: props.contentId, 
+                
                     engagementSettings: {
                         ads: adSectionEditable ? engagementSettings.ads : null,
                         adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
@@ -307,7 +308,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
                         endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
                         endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                    }}, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
                         brandImageID: props.globalEngagementSettings.brandImageID, 
@@ -339,7 +340,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         isBrandTextAsTitle: false,
                         endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
                         endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                    }}, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
                         brandText: props.globalEngagementSettings.brandText, 
@@ -368,7 +369,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
                         endScreenText: null,
                         endScreenTextLink: null
-                    }}).then(() => {
+                    }}, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
                         endScreenText: props.globalEngagementSettings.endScreenText, 
@@ -444,7 +445,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
                 endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
             } 
-        }).then(() => {
+        }, props.contentType).then(() => {
             setSettingsEdited(false)
             setSaveAllButtonLoading(false)
         })

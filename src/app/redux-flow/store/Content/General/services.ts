@@ -19,9 +19,22 @@ const editContentDetailsService = async (data: ContentDetails, contentType: stri
 
 const getUploadUrl = async (data: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
     let requestData: any = {
-        vodID: contentId,
         extension: extension
     }
+    switch(contentType) {
+        case 'vod':
+            requestData = {...requestData, vodID: contentId}
+            break
+        case 'live':
+            requestData = {...requestData, liveID: contentId}
+            break
+        case 'playlist':
+            requestData = {...requestData, playlistID: contentId}
+            break
+        default:
+            break
+    }
+    
     if(data === 'subtitle') {
         requestData = {
             vodID: contentId,
