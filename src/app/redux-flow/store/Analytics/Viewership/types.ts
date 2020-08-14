@@ -9,77 +9,13 @@ export interface AnalyticsViewershipConsumptionDomain {
     failed?: boolean;
 }
 
-export interface ViewershipJobIDs {
-    consumptionPerContent: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerLocation: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerTime: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    concurrentPlaybackPerDevice: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    concurrentPlaybackPerLocation: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    concurrentPlaybackPerContent: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    viewingTimePerDevice: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    viewingTimePerContent: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    viewingTimePerLocation: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    playsViewersPerTime: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerDevice: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    consumptionPerDomain: {
-        jobID: string;
-        error?: string;
-        status?: string;
-    };
-    errors?: boolean;
-}
-
 export interface AnalyticsViewershipConsumptionDevices {
     labels: string[];
     data: number[];
     failed?: boolean;
 }
 
-export interface AnalyticsViewershipConsumptionBreakdown {
+export interface AnalyticsViewershipPlaytimePerLocation {
     time: false | {
         time: number[];
         data: number[];
@@ -90,7 +26,7 @@ export interface AnalyticsViewershipConsumptionBreakdown {
         data: number[];
         failed?: boolean;
     };
-    map: false | {
+    data: false | {
         city: string;
         position: {
             latitude: number;
@@ -154,9 +90,9 @@ export interface AnalyticsViewershipConcurrentPlayback {
 
 export interface AnalyticsViewershipInfos {
     consumptionPerDomain: AnalyticsViewershipConsumptionDomain | false;
-    consumptionPerDevices: AnalyticsViewershipConsumptionDevices | false;
+    playtimePerDevices: AnalyticsViewershipConsumptionDevices | false;
     playsViewersPerTime: AnalyticsViewershipPlaysViewersTime | false;
-    consumptionBreakdown: AnalyticsViewershipConsumptionBreakdown;
+    playtimePerLocation: AnalyticsViewershipPlaytimePerLocation;
     viewingTimeBreakdown: AnalyticsViewershipViewingTimeBreakdown;
     concurrentPlayback: AnalyticsViewershipConcurrentPlayback;
 }

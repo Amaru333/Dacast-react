@@ -22,9 +22,9 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
         if(selectedChannelFilter) {
             console.log(selectedChannelFilter)
             let selectedChannelId = '~'+selectedChannelFilter[0].objectID;
-            props.getAnalyticsRealTimeJobIds({period: timePeriod, contentIDs:  selectedChannelId ? selectedChannelId : null })
+            props.getAnalyticsRealTime({period: timePeriod, contentIDs:  selectedChannelId ? selectedChannelId : null })
         } else {
-            props.getAnalyticsRealTimeJobIds({period: timePeriod})
+            props.getAnalyticsRealTime({period: timePeriod})
         }
     }
     const handleTimePeriodsUpdate = (name: string) => {
@@ -76,10 +76,10 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="The number of viewers consuming your content at the same time" title="Concurent Viewers by Time (UTC)">
+                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="The number of viewers consuming your content at the same time" title="Concurent Viewers by Time">
                         {
                             props.realTimeAnalytics.data.concurentViewersPerTime ?
-                                props.realTimeAnalytics.data.concurentViewersPerTime.data.failed ?
+                                props.realTimeAnalytics.data.concurentViewersPerTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
@@ -93,36 +93,35 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime} infoText="The number of new viewers who haven't consumed your content before" title="New Playback Sessions by Time (UTC)">
-                        {console.log(props.realTimeAnalytics.data.newPlaybackSessionsPerTime)}
+                    <AnalyticsCard realTime dataName="playsPerRealTime" data={props.realTimeAnalytics.data.playsPerRealTime} infoText="The number of new viewers who haven't consumed your content before" title="Plays by Time">
+                        {console.log(props.realTimeAnalytics.data.playsPerRealTime)}
                         {
-                            props.realTimeAnalytics.data.newPlaybackSessionsPerTime ?
-                                props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data.failed ?
+                            props.realTimeAnalytics.data.playsPerRealTime ?
+                                props.realTimeAnalytics.data.playsPerRealTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data}
-                                        datasetName="New Playback Sessions"
-                                        yAxesName="New Playback Sessions"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.newPlaybackSessionsPerTime.time)} />
+                                        data={props.realTimeAnalytics.data.playsPerRealTime.data}
+                                        datasetName="Plays"
+                                        yAxesName="Plays"
+                                        labels={labelsFormate(props.realTimeAnalytics.data.playsPerRealTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="gbPerTime" data={props.realTimeAnalytics.data.gbPerTime} infoText="Data consumption over time" title="GBytes by Time (UTC)">
+                    <AnalyticsCard realTime dataName="playtimePerTime" data={props.realTimeAnalytics.data.playtimePerTime} infoText="Data consumption over time" title="Play time per Time">
                         {
-                            props.realTimeAnalytics.data.gbPerTime && props.realTimeAnalytics.data.gbPerTime.data ?
-                                props.realTimeAnalytics.data.gbPerTime.data.failed ?
+                            props.realTimeAnalytics.data.playtimePerTime && props.realTimeAnalytics.data.playtimePerTime.data ?
+                                props.realTimeAnalytics.data.playtimePerTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
-                                        datasetName="GBytes"
-                                        displayFromMb
+                                        datasetName="Seconds"
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.gbPerTime.data}
-                                        yAxesName="GB"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.gbPerTime.time)} />
+                                        data={props.realTimeAnalytics.data.playtimePerTime.data}
+                                        yAxesName="sec"
+                                        labels={labelsFormate(props.realTimeAnalytics.data.playtimePerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
@@ -130,12 +129,12 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="Where viewers are consuming your data" title="Consumption by Location">
+                    <AnalyticsCard realTime dataName="playsPerLocation" data={props.realTimeAnalytics.data.playsPerLocation} infoText="Where viewers are consuming your data" title="Plays by Location">
                         {
-                            props.realTimeAnalytics.data.consumptionPerLocation ?
-                                props.realTimeAnalytics.data.consumptionPerLocation.failed ?
+                            props.realTimeAnalytics.data.playsPerLocation ?
+                                props.realTimeAnalytics.data.playsPerLocation.failed ?
                                     <FailedCardAnalytics /> :
-                                    renderMap(props.realTimeAnalytics.data.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')
+                                    renderMap(props.realTimeAnalytics.data.playsPerLocation.data, 'realTimeAnalyticsplaysPerLocation', false)
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

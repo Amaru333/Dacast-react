@@ -9,9 +9,9 @@ export interface GetAnalyticsRealtimeOptions {
 
 export interface AnalyticsRealTimeInfos {
     concurentViewersPerTime: AnalyticsRealTimeViewersTime | false;
-    newPlaybackSessionsPerTime: AnalyticsRealTimePlaybackTime | false;
-    gbPerTime: AnalyticsRealTimePlaybackTime | false;
-    consumptionPerLocation: AnalyticsRealTimeConsumptionLocation | false;
+    playsPerRealTime: AnalyticsRealTimePlayTime | false;
+    playtimePerTime: AnalyticsRealTimePlayTime | false;
+    playsPerLocation: AnalyticsRealTimeConsumptionLocation | false;
 }
 
 export interface AnalyticsRealTimeConsumptionLocation {
@@ -32,7 +32,7 @@ export interface AnalyticsRealTimeViewersTime {
     failed? : boolean;
 }
 
-export interface AnalyticsRealTimePlaybackTime {
+export interface AnalyticsRealTimePlayTime {
     time: number[];
     data: number[];
     failed?: boolean;
@@ -44,14 +44,7 @@ export interface AnalyticsRealTimeGbTime {
     failed?: boolean;
 }
 
-export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = {
-    data: {
-        concurentViewersPerTime: false,
-        newPlaybackSessionsPerTime: false,
-        gbPerTime: false,
-        consumptionPerLocation: false,
-    },
-};
+export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = false;
 
 export interface AnalyticsRealTimeState {
     readonly data:  AnalyticsRealTimeInfos;
