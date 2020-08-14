@@ -65,7 +65,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
 }
 
 export const mergeForTable = (data: any, dates: any) => {
-    if(data.length) {
+    if(data && data.length) {
         var result = []
         for (var i = 0; i < data.length; i++) {
             result.push({ mb: data[i], date: dates[i]})
@@ -86,16 +86,16 @@ export const AnalyticsCardHeader = styled.div<{}>`
     justify-content: space-between;
 `
 
-export const renderMap = (dataRepo: any, id: string) => {
+export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
     let mapMin: any = Math.min(...dataRepo.map(m => m.consumedMB));
     if (isFinite(mapMin)) {
-        mapMin = displayBytesForHumans(mapMin, true);
+        mapMin = isGb ? displayBytesForHumans(mapMin, true) : mapMin;
     } else {
         mapMin = 'No Data';
     }
     let mapMax: any = Math.max(...dataRepo.map(m => m.consumedMB));
     if (isFinite(mapMax)) {
-        mapMax = displayBytesForHumans(mapMax, true);
+        mapMax = isGb ? displayBytesForHumans(mapMax, true) : mapMax;
     } else {
         mapMax = 'No Data';
     }
@@ -104,7 +104,7 @@ export const renderMap = (dataRepo: any, id: string) => {
         <div>
             <LeafletMap
                 height="400px"
-                markerNameTranform={mapMarkerNameTranformBytesFromGB}
+                markerNameTranform={isGb ? mapMarkerNameTranformBytesFromGB : (name: string, value: string) => { return name+" : "+value }}
                 markers={dataRepo}
                 idMap={id} />
             <div className="flex mt2 justify-center">

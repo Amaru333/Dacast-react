@@ -1,4 +1,4 @@
-import { ActionTypes, GetAnalyticsViewershipOptions, AnalyticsViewershipConcurrentPlayback, AnalyticsViewershipConsumptionDomain, AnalyticsViewershipConsumptionDevices, AnalyticsViewershipPlaysViewersTime, AnalyticsViewershipConsumptionBreakdown, AnalyticsViewershipViewingTimeBreakdown, ViewershipJobIDs } from "./types";
+import { ActionTypes, GetAnalyticsViewershipOptions } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { AnalyticsViewershipServices } from './services';
@@ -6,7 +6,7 @@ import { showToastNotification } from '../../Toasts';
 
 export interface GetAnalyticsViewership {
     type: ActionTypes.GET_ANALYTICS_VIEWERSHIP;
-    payload:  {data: any};
+    payload: any;
 }
 
 export const getAnalyticsViewershipAction = (options?: GetAnalyticsViewershipOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsViewership> => {
@@ -15,6 +15,7 @@ export const getAnalyticsViewershipAction = (options?: GetAnalyticsViewershipOpt
             .then( response => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP, payload: response.data} );
             }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP, payload: {failed: true} } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
