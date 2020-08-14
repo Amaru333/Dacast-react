@@ -9,7 +9,6 @@ const reducer: Reducer<ContentSecuritySettingsState> = (state = defaultStateCont
     let domainControlsList: DomainControl[] = []
     switch (action.type) {
         case ActionTypes.GET_CONTENT_SECURITY_SETTINGS :
-                debugger;
             geoRestrictionsList.push(defaultGeoRestriction)
             if(action.payload.securitySettings.geoRestriction) {
                 geoRestrictionsList.push(...action.payload.securitySettings.geoRestriction)
