@@ -6,6 +6,7 @@ export enum ActionTypes {
 export interface Allowances {
     data: number;
     storage: number;
+    encoding: number;
 }
 
 export const accountAllowancesDefaultState: Allowances | false = false

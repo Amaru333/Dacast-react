@@ -7,6 +7,7 @@ export interface Withdrawal {
     id: string;
     accountId: string;
     amount: number;
+    totalBalance: number;
     requestedDate: number;
     previous: number;
     completedDate: number;
