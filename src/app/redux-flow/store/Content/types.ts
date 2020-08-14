@@ -8,13 +8,16 @@ import { ContentListState } from './List/types';
 import { ContentPaywallReducer } from './Paywall/reducer';
 import { ContentEngagementState } from './Engagement/types';
 import { ContentEngagementReducer } from './Engagement/reducer';
+import { ContentThemeState } from '../Settings/Theming';
+import { ContentThemingReducer } from './Theming/reducer';
 
 
 export const contentInitialState: ContentState = {
     general: {},
     list: {},
     paywall: {},
-    engagement: {}
+    engagement: {},
+    theming: {}
 };
 
 
@@ -23,11 +26,13 @@ export interface  ContentState {
     list: ContentListState;
     paywall: ContentPaywallState;
     engagement: ContentEngagementState
+    theming: ContentThemeState
 }
 
 export const ContentReducer: Reducer<ContentState> = combineReducers({
     general: GeneralReducer,
     list: reducerList,
     paywall: ContentPaywallReducer,
-    engagement: ContentEngagementReducer
+    engagement: ContentEngagementReducer,
+    theming: ContentThemingReducer
 })

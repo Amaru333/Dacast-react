@@ -1,42 +1,34 @@
 import React from 'react';
-import { Action, ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming';
+import { Action, ThemeOptions } from '../../redux-flow/store/Settings/Theming';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { getLiveThemeAction, saveLiveThemeAction } from '../../redux-flow/store/Live/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
+import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
+import { ContentThemingComponentProps } from '../Videos/Theming';
 
-export interface LiveThemingComponentProps {
-    theme: ContentTheme;
-    themeState: ContentThemeState;
-    getLiveTheme: (liveId: string) => Promise<void>;
-    saveLiveTheme: (theme: ThemeOptions, liveId: string) => Promise<void>;
-}
-
-export const LiveTheming = (props: LiveThemingComponentProps) => {
+export const LiveTheming = (props: ContentThemingComponentProps) => {
 
     let { liveId } = useParams()
 
     React.useEffect(() => {
         if (!props.themeState[liveId])
-            props.getLiveTheme(liveId)
+            props.getContentTheme(liveId, 'live')
     }, [])
 
     return (
         <>
             <LiveTabs liveId={liveId} />
             {
-                props.themeState[liveId] ?
+                props.themeState['live'] && props.themeState['live'][liveId] ?
                     <div className='flex flex-column'>
                         <ThemingControlsCard
-                            theme={props.themeState[liveId]}
-                            saveTheme={props.saveLiveTheme}
+                            theme={props.themeState['live'][liveId]}
+                            saveTheme={props.saveContentTheme}
                             contentType='live'
                             actionType='Save'
                             contentId={liveId}
@@ -51,17 +43,17 @@ export const LiveTheming = (props: LiveThemingComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        themeState: state.live.theming,
+        themeState: state.content.theming,
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveTheme: async (liveId: string) => {
-            await dispatch(getLiveThemeAction(liveId))
+        getContentTheme: async (contentId: string, contentType: string) => {
+            await dispatch(getContentThemeAction(contentId, contentType))
         },
-        saveLiveTheme: async (theme: ThemeOptions, liveId: string) => {
-            await dispatch(saveLiveThemeAction(theme, liveId))
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
+            await dispatch(saveContentThemeAction(theme, contentId, contentType))
         }
     }
 }

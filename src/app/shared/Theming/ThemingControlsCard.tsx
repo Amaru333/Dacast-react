@@ -22,8 +22,8 @@ export interface ControlCardThemingComponentProps {
     contentType: 'vod' | 'live' | 'playlist' | 'settings';
     actionType: 'Create' | 'Save';
     contentId?: string;
-    saveTheme: (theme: ThemeOptions, contendId: string) => Promise<void>;
-    createTheme?: (theme: ThemeOptions) => Promise<void>;
+    saveTheme: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
+    createTheme?: (theme: ThemeOptions, contentType: string) => Promise<void>;
     cancelFunction?: () => void;
 }
 
@@ -57,13 +57,13 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleThemeSave = () => {
         setButtonLoading(true);
         if(props.actionType === 'Create') {
-            props.createTheme(selectedTheme).then(() => {
+            props.createTheme(selectedTheme, props.contentType).then(() => {
                 setButtonLoading(false)
             }).catch(() => {
                 setButtonLoading(false)
             })
         } else {
-            props.saveTheme(selectedTheme, props.contentId).then(() => {
+            props.saveTheme(selectedTheme, props.contentId, props.contentType).then(() => {
                 setButtonLoading(false)
             }).catch(() => {
                 setButtonLoading(false)

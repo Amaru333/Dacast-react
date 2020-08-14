@@ -2,28 +2,29 @@ import React from 'react';
 import { ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action, getVodThemeAction, saveVodThemeAction } from '../../redux-flow/store/VOD/Theming/actions';
+import { Action } from '../../redux-flow/store/VOD/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
+import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 
-export interface VodThemingComponentProps {
+export interface ContentThemingComponentProps {
     theme: ContentTheme;
     themeState: ContentThemeState;
-    getVodTheme: (vodId: string) => Promise<void>;
-    saveVodTheme: (theme: ThemeOptions, vodId: string) => Promise<void>;
+    getContentTheme: (contentId: string, contentType: string) => Promise<void>;
+    saveContentTheme: (theme: ThemeOptions, contentId: string, contentType: string) => Promise<void>;
 }
 
-export const VodTheming = (props: VodThemingComponentProps) => {
+export const VodTheming = (props: ContentThemingComponentProps) => {
 
     let { vodId } = useParams()
 
     React.useEffect(() => {
         if (!props.themeState[vodId]) {
-            props.getVodTheme(vodId)
+            props.getContentTheme(vodId, 'vod')
         }
     }, [])
 
@@ -31,11 +32,11 @@ export const VodTheming = (props: VodThemingComponentProps) => {
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.themeState[vodId] ?
+                props.themeState['vod'] && props.themeState['vod'][vodId] ?
                     <div className='flex flex-column'>
                         <ThemingControlsCard
-                            theme={props.themeState[vodId]}
-                            saveTheme={props.saveVodTheme}
+                            theme={props.themeState['vod'][vodId]}
+                            saveTheme={props.saveContentTheme}
                             contentType='vod'
                             actionType='Save'
                             contentId={vodId}
@@ -49,17 +50,17 @@ export const VodTheming = (props: VodThemingComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        themeState: state.vod.theming,
+        themeState: state.content.theming,
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodTheme: async (vodId: string) => {
-            await dispatch(getVodThemeAction(vodId))
+        getContentTheme: async (contentId: string, contentType: string) => {
+            await dispatch(getContentThemeAction(contentId, contentType))
         },
-        saveVodTheme: async (theme: ThemeOptions, vodId: string) => {
-            await dispatch(saveVodThemeAction(theme, vodId))
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
+            await dispatch(saveContentThemeAction(theme, contentId, contentType))
         },
     }
 }
