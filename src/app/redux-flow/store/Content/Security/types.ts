@@ -1,0 +1,4 @@
+export enum ActionTypes {
+    GET_CONTENT_SECURITY_SETTINGS = "@@content_security/GET_CONTENT_SECURITY_SETTINGS",
+    SAVE_CONTENT_SECURITY_SETTINGS = "@@content_security/SAVE_CONTENT_SECURITY_SETTINGS"
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getPlaylistSecuritySettingsAction, savePlaylistSecuritySettingsAction } from '../../redux-flow/store/Playlists/Security/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getSettingsSecurityOptionsAction } from '../../redux-flow/store/Settings/Security/actions';
@@ -10,41 +9,36 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
-import { SecuritySettings, ContentSecuritySettingsState, ContentSecuritySettings } from '../../redux-flow/store/Settings/Security/types';
+import { SecuritySettings} from '../../redux-flow/store/Settings/Security/types';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
+import { ContentSecurityProps } from '../Videos/Security';
+import { getContentSecuritySettingsAction, saveContentSecuritySettingsAction, Action } from '../../redux-flow/store/Content/Security/actions';
 
-export interface PlaylistSecurityContainerProps {
-    playlistSecuritySettings: ContentSecuritySettingsState;
-    playlistSecurity: ContentSecuritySettings;
-    globalSecuritySettings: SecuritySettings;
-    getPlaylistSecuritySettings: (playlistId: string) => Promise<void>;
-    savePlaylistSecuritySettings: (data: SecuritySettings, playlistId: string) => Promise<void>;
-    getSettingsSecurityOptions: () => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-}
-
-const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
+const PlaylistSecurity = (props: ContentSecurityProps) => {
 
     let { playlistId } = useParams()
 
     React.useEffect(() => {
-        if (!props.playlistSecuritySettings[playlistId] || (!props.playlistSecuritySettings[playlistId] && !props.globalSecuritySettings)) {
-            props.getPlaylistSecuritySettings(playlistId);
+        if (!props.globalSecuritySettings) {
             props.getSettingsSecurityOptions();
         }
+            props.getContentSecuritySettings(playlistId, 'playlist');
     }, [])
 
 
     return (
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            {props.playlistSecuritySettings[playlistId] && props.globalSecuritySettings ?
+
+            {
+                props.contentSecuritySettingsState['playlist'] &&props.contentSecuritySettingsState['playlist'][playlistId] && props.globalSecuritySettings ?
                 <div className='flex flex-column'>
                     <ContentSecurityPage
-                        contentSecuritySettings={props.playlistSecuritySettings[playlistId]}
+                        contentType="playlist"
+                        contentSecuritySettings={props.contentSecuritySettingsState['playlist'][playlistId]}
                         contentId={playlistId}
                         globalSecuritySettings={props.globalSecuritySettings}
-                        saveContentSecuritySettings={props.savePlaylistSecuritySettings}
+                        saveContentSecuritySettings={props.saveContentSecuritySettings}
                         getSettingsSecurityOptions={props.getSettingsSecurityOptions}
                         showToast={props.showToast}
                     />
@@ -57,18 +51,18 @@ const PlaylistSecurity = (props: PlaylistSecurityContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        playlistSecuritySettings: state.playlist.security,
+        contentSecuritySettingsState: state.content.security,
         globalSecuritySettings: state.settings.security
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistSecuritySettings: async (playlistId: string) => {
-            await dispatch(getPlaylistSecuritySettingsAction(playlistId));
+        getContentSecuritySettings: async (contentId: string, contentType: string) => {
+            await dispatch(getContentSecuritySettingsAction(contentId, contentType));
         },
-        savePlaylistSecuritySettings: async (data: SecuritySettings, playlistId: string) => {
-            await dispatch(savePlaylistSecuritySettingsAction(data, playlistId));
+        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
+            await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction());

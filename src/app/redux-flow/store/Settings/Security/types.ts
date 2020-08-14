@@ -85,7 +85,11 @@ export interface ContentSecuritySettings {
     securitySettings: SecuritySettings;
 }
 
-export interface ContentSecuritySettingsState {[key: string]: ContentSecuritySettings};
+export interface ContentSecuritySettingsState {
+    [contentType: string]: {
+        [key: string]: ContentSecuritySettings
+    }
+};
 
 const defaultStateSecuritySettings: SecuritySettings = {
     passwordProtection: {

@@ -20,11 +20,12 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 var momentTZ = require('moment-timezone')
 
 interface ContentSecurityComponentProps {
+    contentType: string
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     contentId: string;
     getSettingsSecurityOptions: (contentId: string) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -116,7 +117,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl
             }, 
-            props.contentId
+            props.contentId, props.contentType
             ).then(() => {
                 setButtonLoading(false)
                 setHasToggleChanged(false)
@@ -138,7 +139,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 selectedDomainControl: null, 
                 selectedGeoRestriction: null
             }, 
-            props.contentId).then(() => {
+            props.contentId, props.contentType).then(() => {
                 setSettingsEditable(!settingsEditable)
                 setSelectedSettings(props.globalSecuritySettings)
                 setRevertSettingsModalOpen(false)
