@@ -26,11 +26,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleLocaleCountry = (): string => {
         if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
-            return 'Australia'
+            return 'Australia & Asia Pacific'
         } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
-            return 'Europe'
+            return 'Europe, Middle East & Africa'
         } 
-        return 'North America'
+        return 'Americas'
     }
 
     const defaultStreamSetup: StreamSetupOptions = {
@@ -60,11 +60,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleRegionParse =(region: string): string => {
         switch(region) {
-            case 'North America':
+            case 'Americas':
                 return 'north-america'
-            case 'Australia':
+            case 'Australia & Asia Pacific':
                 return 'asia-pacific'
-            case 'Europe':
+            case 'Europe, Middle East & Africa':
                 return 'europe'
             default: 
                 return ''
@@ -111,7 +111,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                                 className='col col-12' 
                                 id='channelRegionTypeDropdown' 
                                 dropdownDefaultSelect={streamSetupOptions.region}
-                                list={{'Australia': false, 'Europe': false, 'North America': false}} 
+                                list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
                                 callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
                             />
                             <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
