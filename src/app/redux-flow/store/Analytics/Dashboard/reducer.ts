@@ -8,8 +8,24 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
             if(!action.payload) {
                 return state;
             }
+            if(action.payload.data.failed) {
+                return {
+                    data: {
+                        ...AnalyticsDashboardInitialState.data,
+                        playtimePerTime: {
+                            failed: true
+                        },
+                        playsViewersPerTime: {
+                            failed: true
+                        }
+                    }
+                }
+            }
             var formateTime = action.payload.data.playtimeTimeSeries.map( (e: {playtime: number, timestamp: number }) => {return e.timestamp} )
             var formateDataPlaytime = action.payload.data.playtimeTimeSeries.map( (e: {playtime: number, timestamp: number }) => {return e.playtime} )
+            var formateDataPlays = action.payload.data.playsAndViewersTimeSeries.map( (e: {playtime: number, timestamp: number }) => {return e.plays} )
+            var formateDataViewers = action.payload.data.playsAndViewersTimeSeries.map( (e: {playtime: number, timestamp: number }) => {return e.viewers} )
+
             return {
                 data: {
                     ...AnalyticsDashboardInitialState.data,
@@ -18,12 +34,12 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
                     },
                     playsViewersPerTime: {
                         plays: {
-                            time: [],
-                            data: [],
+                            time: formateTime,
+                            data: formateDataPlays,
                         },
                         viewers: {
-                            time: [],
-                            data: [],
+                            time: formateTime,
+                            data: formateDataViewers,
                         },
                         failed: false
                     }
