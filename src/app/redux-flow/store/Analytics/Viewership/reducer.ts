@@ -28,14 +28,14 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
                         //data: Object.entries(country).map(item => {
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === item[0]);
 
-                            return assosiatedCountry ? {
-                                city: assosiatedCountry["\"Country\""],
+                            return {
+                                city: assosiatedCountry ? assosiatedCountry["\"Country\""] : "Unknown",
                                 position:{
-                                    latitude: assosiatedCountry["\"Latitude(average)\""],
-                                    longitude: assosiatedCountry["\"Longitude(average)\""]
+                                    latitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Latitude(average)\""]) : 0,
+                                    longitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Longitude(average)\""]) : 0
                                 },
                                 consumedMB: item[1]
-                            } : {}
+                            }
                         })
                     }    
                 },

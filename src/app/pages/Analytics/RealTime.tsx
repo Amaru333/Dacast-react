@@ -16,13 +16,13 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
     React.useEffect(() => {
     }, [props.liveList])
 
-    const [selectedContent, setSelectedContent] = React.useState<string>("")
+    const [selectedContent, setSelectedContent] = React.useState<string>(props.liveList.results.length ? props.liveList.results[0].objectID : '')
     const handleReload = () => {
-        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
+        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.objectID == selectedContent) : false;
         if(selectedChannelFilter) {
             console.log(selectedChannelFilter)
-            let selectedChannelId = '~'+selectedChannelFilter[0].objectID;
-            props.getAnalyticsRealTime({period: timePeriod, contentIDs:  selectedChannelId ? selectedChannelId : null })
+            let selectedChannelId = selectedChannelFilter[0].objectID;
+            props.getAnalyticsRealTime({period: timePeriod, channelId:  selectedChannelId ? selectedChannelId : null })
         } else {
             props.getAnalyticsRealTime({period: timePeriod})
         }
@@ -31,18 +31,26 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
         switch (name) {
             case '5 Minutes':
                 setTimePeriod(5);
+                break;
             case '15 Minutes':
                 setTimePeriod(15);
+                break;
             case '30 Minutes':
                 setTimePeriod(30);
+                break;
             case '45 Minutes':
+                console.log("test");
                 setTimePeriod(45);
+                break;
             case '1 Hour':
                 setTimePeriod(60);
+                break;
             case '1.5 Hour':
                 setTimePeriod(90);
+                break;
             case '2 Hours':
                 setTimePeriod(120);
+                break;
         }
 
     }
@@ -51,7 +59,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             <div className="flex items-end col col-12 mb25">
                 <DropdownSingle
                     id='timeRefreshDropdown'
-                    callback={(name: string) => { handleTimePeriodsUpdate(name) }}
+                    callback={(name: string) => { console.log(name); handleTimePeriodsUpdate(name) }}
                     isInModal={false}
                     isWhiteBackground
                     defaultSelected="5 Minutes"
@@ -67,7 +75,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         className='col sm-col-3 col-5 px1'
                         dropdownTitle='Live Channel'
                         defaultSelected={props.liveList.results[0].title}
-                        callback={(name: string) => {setSelectedContent(name)}}
+                        callback={(name: string) => {;setSelectedContent(name)}}
                         list={props.liveList.results.reduce((reduced: DropdownListType, item: LiveItem) => { return { ...reduced, [item.title]: false } }, {})}
                     /> : null
                 }

@@ -23,7 +23,7 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
             var formateDataPlaytime = action.payload.data.playtimeTimeSeries.map( (e: {playtime: number, timestamp: number }) => {return e.playtime} )
             var formateDataPlay = action.payload.data.playsTimeSeries.map( (e: {plays: number, timestamp: number }) => {return e.plays} )
             var formateDataViewers = action.payload.data.viewersTimeSeries.map( (e: {viewers: number, timestamp: number }) => {return e.viewers} )
-            //var country = { 'US' : 90, 'FR': 912 };
+            //var country = { 'US' : 90, 'UNknwoef': 912 };
             return {
                 data: {
                     ...AnalyticsRealTimeInitialState.data,
@@ -39,14 +39,14 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
                         data: Object.entries(action.payload.data.playtimePerCountry).map(item => {
                         //data: Object.entries(country).map(item => {
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === item[0]);
-                            return assosiatedCountry ? {
-                                city: assosiatedCountry["\"Country\""],
+                            return {
+                                city: assosiatedCountry ? assosiatedCountry["\"Country\""] : "Unknown",
                                 position:{
-                                    latitude: assosiatedCountry["\"Latitude(average)\""],
-                                    longitude: assosiatedCountry["\"Longitude(average)\""]
+                                    latitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Latitude(average)\""]) : 0,
+                                    longitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Longitude(average)\""]) : 0
                                 },
                                 consumedMB: item[1]
-                            } : {}
+                            }
                         })
                     },
                     concurentViewersPerTime: {

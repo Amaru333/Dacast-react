@@ -28,7 +28,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
                 // HANDLE NO CHANNEL
             }
             if(!props.realTimeAnalytics) {
-                props.getAnalyticsRealTime({ period: 5, channel: props.liveList.results[0].objectID })
+                props.getAnalyticsRealTime({ period: 5, channelId: props.liveList.results[0].objectID })
             }
         }
         
