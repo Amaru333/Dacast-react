@@ -166,8 +166,8 @@ const createGroupPromo = async (data: GroupPromo) => {
             ...data,
             assignedContentIds: [],
             discountApplied: data.discountApplied.toLowerCase(),
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
+            startDate: Math.floor(data.startDate),
+            endDate: Math.floor(data.endDate),
             id: null
         }
     } else {
@@ -175,8 +175,8 @@ const createGroupPromo = async (data: GroupPromo) => {
             ...data,
             assignedContentIds: [],
             discountApplied: null,
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
+            startDate: Math.floor(data.startDate),
+            endDate: Math.floor(data.endDate),
             id: null
         }
     }
@@ -207,16 +207,16 @@ const saveGroupPromo = async (data: GroupPromo) => {
             ...data,
             assignedContentIds: [],
             discountApplied: data.discountApplied.toLowerCase(),
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
+            startDate: Math.floor(data.startDate),
+            endDate: Math.floor(data.endDate),
         }
     } else {
         parsedData = {
             ...data,
             assignedContentIds: [],
             discountApplied: null,
-            startDate: Math.floor(data.startDate / 1000),
-            endDate: Math.floor(data.endDate / 1000),
+            startDate: Math.floor(data.startDate),
+            endDate: Math.floor(data.endDate),
         }
     }
     if (data.startDate === 0) {
