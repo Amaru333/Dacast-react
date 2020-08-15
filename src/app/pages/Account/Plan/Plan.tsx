@@ -226,7 +226,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     </>
                 }
             </Card>
-            <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T"> 
+            <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}> 
                 <Elements>    
                     {
                         protectionModalOpened &&

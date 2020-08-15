@@ -91,7 +91,7 @@ export const PurchaseStepperPaymentStep = (props: {stepperData: string; callback
             
             {
                 props.stepperData === "none" ? 
-                    <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
+                    <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
                         <Elements>
                             <NewPaymentMethodForm callback={props.callback} actionButton={props.finalFunction} />
                         </Elements>
