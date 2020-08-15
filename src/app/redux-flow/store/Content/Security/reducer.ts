@@ -48,6 +48,8 @@ const reducer: Reducer<ContentSecuritySettingsState> = (state = defaultStateCont
                     ...action.payload
                 }}
             }
+        case ActionTypes.LOCK_CONTENT:
+            return state
         default:
             return state;
     }

@@ -12,7 +12,7 @@ import { PlaylistsTabs } from './PlaylistTabs';
 import { SecuritySettings} from '../../redux-flow/store/Settings/Security/types';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
-import { getContentSecuritySettingsAction, saveContentSecuritySettingsAction, Action } from '../../redux-flow/store/Content/Security/actions';
+import { getContentSecuritySettingsAction, saveContentSecuritySettingsAction, Action, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
 
 const PlaylistSecurity = (props: ContentSecurityProps) => {
 
@@ -40,6 +40,7 @@ const PlaylistSecurity = (props: ContentSecurityProps) => {
                         globalSecuritySettings={props.globalSecuritySettings}
                         saveContentSecuritySettings={props.saveContentSecuritySettings}
                         getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                        lockContent={props.lockContent}
                         showToast={props.showToast}
                     />
                 </div>
@@ -63,6 +64,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
             await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        },
+        lockContent: async (contentId: string, contentType: string) => {
+            await dispatch(lockContentAction(contentId, contentType));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction());

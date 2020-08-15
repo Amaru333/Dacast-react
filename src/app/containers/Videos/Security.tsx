@@ -11,7 +11,7 @@ import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecuritySettings, SecuritySettings, ContentSecuritySettingsState } from '../../redux-flow/store/Settings/Security/types';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction } from '../../redux-flow/store/Content/Security/actions';
+import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
 
 export interface ContentSecurityProps {
     contentType: string
@@ -21,6 +21,7 @@ export interface ContentSecurityProps {
     getContentSecuritySettings: (contentId: string, contentType: string) => Promise<void>;
     saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
     getSettingsSecurityOptions: () => Promise<void>;
+    lockContent: (contentId: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -48,6 +49,7 @@ export const VodSecurity = (props: ContentSecurityProps) => {
                             globalSecuritySettings={props.globalSecuritySettings}
                             saveContentSecuritySettings={props.saveContentSecuritySettings}
                             getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                            lockContent={props.lockContent}
                             showToast={props.showToast}
                         />
                     </div>
@@ -71,6 +73,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
             await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        },
+        lockContent: async (contentId: string, contentType: string) => {
+            await dispatch(lockContentAction(contentId, contentType));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction());

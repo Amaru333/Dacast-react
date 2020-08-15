@@ -13,7 +13,12 @@ const saveContentSecuritySettingsService = async (data: SecuritySettings, conten
     )
 }
 
+const lockContentService = async (contentId: string, contentType: string) => {
+    return await axiosClient.put(`${contentType}/${contentId}/settings/security/lock`)
+}
+
 export const ContentSecurityServices = {
     getContentSecuritySettingsService,
-    saveContentSecuritySettingsService
+    saveContentSecuritySettingsService,
+    lockContentService
 }

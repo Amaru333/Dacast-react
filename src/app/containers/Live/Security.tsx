@@ -11,7 +11,7 @@ import { useParams } from 'react-router';
 import { LiveTabs } from './LiveTabs';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
-import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction } from '../../redux-flow/store/Content/Security/actions';
+import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
 
 
 
@@ -42,6 +42,7 @@ const LiveSecurity = (props: ContentSecurityProps) => {
                             globalSecuritySettings={props.globalSecuritySettings}
                             saveContentSecuritySettings={props.saveContentSecuritySettings}
                             getSettingsSecurityOptions={props.getSettingsSecurityOptions}
+                            lockContent={props.lockContent}
                             showToast={props.showToast}
                         />
                     </div>
@@ -66,6 +67,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
             await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        },
+        lockContent: async (contentId: string, contentType: string) => {
+            await dispatch(lockContentAction(contentId, contentType));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction());

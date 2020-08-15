@@ -16,6 +16,11 @@ export interface SaveContentSecuritySettings {
     payload: ContentSecuritySettings & {contentType: string}
 }
 
+export interface LockContent {
+    type: ActionTypes.LOCK_CONTENT;
+    payload: null
+}
+
 export const getContentSecuritySettingsAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentSecuritySettings> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentSecuritySettings> ) => {
         await ContentSecurityServices.getContentSecuritySettingsService(contentId, parseContentType(contentType))
@@ -41,4 +46,16 @@ export const saveContentSecuritySettingsAction = (data: SecuritySettings, conten
     };
 }
 
-export type Action = GetContentSecuritySettings | SaveContentSecuritySettings
+export const lockContentAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, LockContent> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, LockContent> ) => {
+        await ContentSecurityServices.lockContentService(contentId, parseContentType(contentType))
+            .then( response => {
+                dispatch( {type: ActionTypes.LOCK_CONTENT, payload: null } );
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+export type Action = GetContentSecuritySettings | SaveContentSecuritySettings | LockContent

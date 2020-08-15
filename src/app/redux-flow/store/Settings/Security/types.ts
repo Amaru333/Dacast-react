@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 
 export enum ActionTypes {
     GET_SETTINGS_SECURITY_OPTIONS = "@@settings_security/GET_SETTINGS_SECURITY_OPTIONS",
@@ -63,6 +62,7 @@ export interface SecuritySettings {
     selectedGeoRestriction?: string;
     domainControl?: DomainControl[];
     selectedDomainControl?: string;
+    locked?: boolean;
 }
 
 export const defaultStateSettingsSecurity: SecuritySettings = {
