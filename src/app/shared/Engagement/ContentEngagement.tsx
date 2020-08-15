@@ -299,8 +299,35 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         if (!engagementSettings.brandImageSettings.locked) {
             handleSectionRevert('brandImage')
         } else {
-            setSettingsEdited(true)
-            setUploadedFileUrl(null)
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    brandImageSettings: {
+                        locked:false,
+                        brandImageLink: '',
+                        brandImagePadding: '',
+                        brandImagePosition: '',
+                        brandImageSize: '',
+                        brandImageURL: ''
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    brandImageSettings: {
+                        locked:false,
+                        brandImageLink: '',
+                        brandImagePadding: '',
+                        brandImagePosition: '',
+                        brandImageSize: '',
+                        brandImageURL: ''
+                    }
+                })
+                setUploadedFileUrl(null)
+
+            })            
         }
     }
 
@@ -308,15 +335,57 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         if (!engagementSettings.brandTextSettings.locked) {
             handleSectionRevert('brandText')
         } else {
-            setSettingsEdited(true)
-        }
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    brandTextSettings: {
+                        locked:false,
+                        brandText: '',
+                        brandTextLink: '',
+                        isBrandTextAsTitle: false
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    brandTextSettings: {
+                        locked:false,
+                        brandText: '',
+                        brandTextLink: '',
+                        isBrandTextAsTitle: false
+                    }
+                })
+            })        
+            }
     }
 
     const handleEndScreenTextLockChange = () => {
         if (!engagementSettings.endScreenSettings.locked) {
             handleSectionRevert('endScreenText')
         } else {
-            setSettingsEdited(true)
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    endScreenSettings: {
+                        locked:false,
+                        endScreenText: '',
+                        endScreenTextLink: ''
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    endScreenSettings: {
+                        locked:false,
+                        endScreenText: '',
+                        endScreenTextLink: ''
+                    }
+                })
+            })
         }
     }
 
@@ -534,7 +603,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             {
                 playerModalOpened && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId} toggle={setPlayerModalOpened} isOpened={playerModalOpened} />
             }
-            <Prompt when={engagementSettings !== props.contentEngagementSettings.engagementSettings} message='' />
+            <Prompt when={settingsEdited} message='' />
         </div>
     )
 }
