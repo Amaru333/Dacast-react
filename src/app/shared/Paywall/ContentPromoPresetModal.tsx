@@ -28,38 +28,48 @@ const defaultPromo: Promo = {
 
 export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
-    const initTimestampValues = (ts: number): {date: any; time: string} => {
-        if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
-        } 
-        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    const inputTimeToTs = (value: string, timezoneName: string) => {
+        let offset = moment.tz(timezoneName).utcOffset()*60
+        let splitValue = value.split(':')
+        let hours = parseInt(splitValue[0]) * 3600
+        if(isNaN(hours)){
+            hours = 0
+        }
+        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
+        if(isNaN(min)){
+            min = 0
+        }
+        let total = hours + min - offset
+        return total
     }
+
+    let startTimestamp = moment.tz((props.promo.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let endTimestamp = moment.tz((props.promo.endDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+
 
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).date, time: initTimestampValues(props.promo ? props.promo.startDate : defaultPromo.startDate).time})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).date, time: initTimestampValues(props.promo ? props.promo.endDate : defaultPromo.endDate).time})
+    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
+    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [endTime, setEndTime] = React.useState<number>(endTimestamp.clone().valueOf()/1000 - endTimestamp.clone().startOf('day').valueOf()/1000)
     const [startDateTime, setStartDateTime] = React.useState<string>(newPromoPreset.startDate > 0 ? 'Set Date and Time' : 'Always')
     const [endDateTime, setEndDateTime] = React.useState<string>(newPromoPreset.endDate > 0 ? 'Set Date and Time' : 'Forever')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
-    React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).utc().valueOf()
-        let endDate = moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).utc().valueOf()
-        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
-        setEndDateTimeValue({date: initTimestampValues(endDate).date, time: initTimestampValues(endDate).time})
-        setNewPromoPreset({...newPromoPreset, startDate: startDate, endDate: endDate})
-    }, [newPromoPreset.timezone])
+
 
     const handleSubmit = () => {
+
+        let startDate = startDateTime === 'Set Date and Time' ? moment.utc((startDay + startTime)*1000).valueOf()/1000 : 0
+        let endDate = endDateTime === 'Set Date and Time' ? moment.utc((endDay + endTime)*1000).valueOf()/1000 : 0
+        
         setButtonLoading(true)
         if (savePreset) { 
-            props.savePresetGlobally(newPromoPreset) 
+            props.savePresetGlobally({...newPromoPreset, startDate: startDate, endDate: endDate}) 
         } 
         const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-        let startDate = startDateTime === 'Set Date and Time' ? moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
-        let endDate = endDateTime === 'Set Date and Time' ? moment.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${newPromoPreset.timezone}`).valueOf() : 0
         props.action(
             {...newPromoPreset, 
                 startDate: startDate, 
@@ -111,13 +121,13 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 {startDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment(startDateTimeValue.date)}
-                            callback={(date: string) => { setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                            date={moment.utc((startDay + startTime)*1000).tz(newPromoPreset.timezone || 'UTC')}
+                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            defaultValue={startDateTimeValue.time}
-                            onChange={(event) =>{ setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                            value={moment.utc((startDay + startTime)*1000).tz(newPromoPreset.timezone || 'UTC').format('HH:mm')}
+                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, newPromoPreset.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
                             id='endTime'
@@ -133,13 +143,13 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     endDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment(endDateTimeValue.date)}
-                            callback={(date: string) => {setEndDateTimeValue({...endDateTimeValue, date: date}) }}
+                            date={moment.utc((endDay + endTime)*1000).tz(newPromoPreset.timezone || 'UTC')}
+                            callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-4 md-col-4 mr2' />
                         <Input
                             type='time'
-                            defaultValue={endDateTimeValue.time}
-                            onChange={(event) => {setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
+                            value={moment.utc((endDay + endTime)*1000).tz(newPromoPreset.timezone || 'UTC').format('HH:mm')}
+                            onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, newPromoPreset.timezone || 'UTC'))}
                             className='col col-3 md-col-3'
                             disabled={false}
                             id='endTime'

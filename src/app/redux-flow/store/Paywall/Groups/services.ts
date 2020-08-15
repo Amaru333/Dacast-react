@@ -128,8 +128,8 @@ const createGroupPromo = async (data: GroupPromo) => {
         ...data,
         assignedContentIds: [],
         discountApplied: data.discountApplied.toLowerCase(),
-        startDate: Math.floor(data.startDate / 1000),
-        endDate: Math.floor(data.endDate / 1000),
+        startDate: Math.floor(data.startDate),
+        endDate: Math.floor(data.endDate),
         id: null
     }
     if (data.startDate === 0) {
@@ -151,8 +151,8 @@ const saveGroupPromo = async (data: GroupPromo) => {
         ...data,
         assignedContentIds: [],
         discountApplied: data.discountApplied.toLowerCase(),
-        startDate: Math.floor(data.startDate / 1000),
-        endDate: Math.floor(data.endDate / 1000),
+        startDate: Math.floor(data.startDate),
+        endDate: Math.floor(data.endDate),
     }
     if (data.startDate === 0) {
         delete parsedData['startDate']

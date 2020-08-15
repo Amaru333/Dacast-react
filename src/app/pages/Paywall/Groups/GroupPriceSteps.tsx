@@ -56,20 +56,25 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         })
     }
 
-    const initTimestampValues = (ts: number): {date: any; time: string;} => {
-        if(ts > 0 ) {
-            return {date: moment.tz(ts * 1000 , 'UTC').format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment.tz(ts * 1000, 'UTC').format('YYYY-MM-DD hh:mm').split(' ')[1]}
-        } 
-        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
+    const inputTimeToTs = (value: string, timezoneName: string) => {
+        let offset = moment.tz(timezoneName).utcOffset()*60
+        let splitValue = value.split(':')
+        let hours = parseInt(splitValue[0]) * 3600
+        if(isNaN(hours)){
+            hours = 0
+        }
+        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
+        if(isNaN(min)){
+            min = 0
+        }
+        let total = hours + min - offset
+        return total
     }
 
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).date, time: initTimestampValues(props.stepperData.firststep.groupSettings.startDate).time, timezone: "Etc/UTC"})
+    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
 
-    React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone.split(' ')[0]}`).utc().valueOf() / 1000
-        props.updateStepperData({...props.stepperData, firststep:{ ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: startDate}}})
-        console.log('start date: ',props.stepperData.firststep.groupSettings.startDate)
-    }, [startDateTimeValue])
 
     return (
         <div>
@@ -103,26 +108,26 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                             dropdownTitle='Timezone' 
                             dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
-                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
+                            callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})}
                         />
                 }
             </div>
             {
                 props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper 
-                            date={moment(startDateTimeValue.date)} 
-                            callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
-                            openDirection="up" 
-                            className='col col-6 pr1' 
-                            datepickerTitle='Start Date' 
-                        />
-                        <Input 
-                            value={startDateTimeValue.time} 
-                            className='col col-3 pl1' 
-                            type='time' 
-                            label='Start Time' 
-                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                        <DateSinglePickerWrapper
+                            date={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || 'UTC')}
+                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
+                            className='col col-6 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            value={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || 'UTC').format('HH:mm')}
+                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, props.stepperData.firststep.groupSettings.timezone || 'UTC'))}
+                            className='col col-6 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
                         />
                     </div>
             }

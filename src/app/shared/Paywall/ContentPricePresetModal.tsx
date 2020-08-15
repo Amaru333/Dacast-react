@@ -37,6 +37,21 @@ const defaultPreset: Preset = {
 
 export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void> }) => {
 
+    const inputTimeToTs = (value: string, timezoneName: string) => {
+        let offset = moment.tz(timezoneName).utcOffset()*60
+        let splitValue = value.split(':')
+        let hours = parseInt(splitValue[0]) * 3600
+        if(isNaN(hours)){
+            hours = 0
+        }
+        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
+        if(isNaN(min)){
+            min = 0
+        }
+        let total = hours + min - offset
+        return total
+    }
+
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -82,33 +97,22 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
 
     }
 
-    const initTimestampValues = (ts: number): {date: any; time: string} => {
-        if(ts > 0 ) {
-            return {date: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[0], time: moment(ts).format('YYYY-MM-DD hh:mm').split(' ')[1]}
-        } 
-        return {date: moment().format('YYYY-MM-DD hh:mm').split(' ')[0], time: '00:00'}
-    }
+    let startTimestamp = moment.tz((props.preset.settings.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
 
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string;}>({date: initTimestampValues(newPricePreset.settings.startDate).date, time: initTimestampValues(newPricePreset.settings.startDate).time})
+    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
 
-
-    React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPricePreset.settings.timezone}`).utc().valueOf()
-        setStartDateTimeValue({date: initTimestampValues(startDate).date, time: initTimestampValues(startDate).time})
-        setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startDate: startDate }})    
-    }, [newPricePreset.settings.timezone])
-
-    React.useEffect(() => {
-        let startDate = moment.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${newPricePreset.settings.timezone}`).utc().valueOf()
-        setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startDate: startDate }})    
-    }, [startDateTimeValue])
 
     const handleSubmit = () => {
         setButtonLoading(true)
+
+        let startDate = moment.utc((startDay + startTime)*1000).valueOf()/1000
+        let savedPrice = {...newPricePreset, settings: {...newPricePreset.settings, startDate: startDate}}
+
         if (savePreset) { 
-            props.savePresetGlobally(newPricePreset) 
+            props.savePresetGlobally(savedPrice) 
         }
-        props.action(newPricePreset, props.contentId, props.contentType)
+        props.action(savedPrice, props.contentId, props.contentType)
         .then(() => {
             props.toggle(false)
             setButtonLoading(false)
@@ -210,19 +214,19 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             {
                 (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
-                        <DateSinglePickerWrapper 
-                            date={moment(startDateTimeValue.date)} 
-                            openDirection="up" 
-                            className='col col-8 pr1' 
-                            datepickerTitle='Start Date' 
-                            callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}                            
-                        />
-                        <Input 
-                            className='col col-4 pl1' 
-                            type='time' 
-                            value={startDateTimeValue.time} 
-                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                            label='Start Time' 
+                        <DateSinglePickerWrapper
+                            date={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || 'UTC')}
+                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
+                            className='col col-6 md-col-4 mr2' />
+                        <Input
+                            type='time'
+                            value={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || 'UTC').format('HH:mm')}
+                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, newPricePreset.settings.timezone || 'UTC'))}
+                            className='col col-6 md-col-3'
+                            disabled={false}
+                            id='endTime'
+                            pattern="[0-9]{2}:[0-9]{2}"
+                            
                         />
                     </div>
             }
