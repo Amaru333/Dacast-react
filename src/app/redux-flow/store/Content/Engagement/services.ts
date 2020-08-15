@@ -11,11 +11,15 @@ const saveContentEngagementSettings = async (data: ContentEngagementSettings, co
     )
 }
 
-const saveContentAd = async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
+const lockSection = async (lockedSection: string, contentId: string, contentType: string, unlock?: boolean) => {
+    let action = unlock ? 'unlock' : 'lock'
+    return await axiosClient.put(`${contentType}/${contentId}/settings/engagement/${lockedSection}/${action}`)
+}
+
+const saveContentAd = async (data: Ad[], contentId: string, contentType: string) => {
     return await axiosClient.put(`${contentType}/${contentId}/settings/engagement/ads`,
         {
             ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
-            adsId: adsId
         }
     )
 }
@@ -44,6 +48,7 @@ const deleteFile = async (contentId: string, contentType: string) => {
 export const contentEngagementServices = {
     getContentEngagementSettings,
     saveContentEngagementSettings,
+    lockSection,
     saveContentAd,
     getUploadUrl,
     uploadFile,

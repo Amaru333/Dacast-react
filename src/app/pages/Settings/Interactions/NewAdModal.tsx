@@ -16,20 +16,20 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         url: ""
     }
 
-    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
+    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     React.useEffect(() => {
-        setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.ads[props.selectedAd])
+        setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
 
     const defineAdAction = () => {
         setButtonLoading(true)
-        let tempArray: Ad[] = props.interactionsInfos.ads
+        let tempArray: Ad[] = props.interactionsInfos.adsSettings.ads
         var newAdData: Ad = {...adData};
         newAdData.timestamp = adData["ad-type"] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
             tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData['ad-type']})
-            props.createAd(tempArray, props.interactionsInfos.adsId).then(() => {
+            props.createAd(tempArray).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             })
@@ -37,7 +37,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
             tempArray = tempArray.map(ad => {
                 return ad.id === adData.id ? newAdData : ad
             })
-            props.saveAd(tempArray, props.interactionsInfos.adsId).then(() => {
+            props.saveAd(tempArray).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             })

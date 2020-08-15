@@ -16,6 +16,11 @@ export interface SaveContentEngagementSettings {
     payload: ContentEngagementSettings & {contentType: string};
 }
 
+export interface LockSection {
+    type: ActionTypes.LOCK_SECTION;
+    payload: ContentEngagementSettings & {contentType: string};
+}
+
 export interface SaveContentAd {
     type: ActionTypes.SAVE_CONTENT_AD;
     payload: {ads: Ad[]; contentId: string; contentType: string;};
@@ -69,9 +74,22 @@ export const saveContentEngagementSettingsAction = (data: ContentEngagementSetti
     };
 }
 
-export const saveContentAdAction = (data: Ad[], adsId: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentAd> => {
+export const lockSectionAction = (section: string, contentId: string, contentType: string, unlock?: boolean): ThunkDispatch<Promise<void>, {}, LockSection> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, LockSection> ) => {
+        await contentEngagementServices.lockSection(section, contentId,  parseContentType(contentType), unlock)
+            .then( response => {
+                dispatch( {type: ActionTypes.LOCK_SECTION, payload: null});
+                dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+            })
+    };
+}
+
+
+export const saveContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, adsId, contentId, parseContentType(contentType))
+        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_CONTENT_AD, payload: {ads: data, contentId: contentId, contentType: contentType}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
@@ -81,9 +99,9 @@ export const saveContentAdAction = (data: Ad[], adsId: string, contentId: string
     };
 }
 
-export const createContentAdAction = (data: Ad[], adsId: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, CreateContentAd> => {
+export const createContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, CreateContentAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, adsId, contentId, parseContentType(contentType))
+        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_CONTENT_AD, payload: {ads: data, adsId: response.data.data.adsId, contentId: contentId, contentType: contentType}} );
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
@@ -93,9 +111,9 @@ export const createContentAdAction = (data: Ad[], adsId: string, contentId: stri
     };
 }
 
-export const deleteContentAdAction = (data: Ad[], adsId: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContentAd> => {
+export const deleteContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContentAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, adsId, contentId, parseContentType(contentType))
+        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_CONTENT_AD, payload: {ads: data, contentId: contentId, contentType: contentType}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
@@ -147,4 +165,4 @@ export const deleteContentImageAction = (targetId: string, contentType: string):
     }
 }
 
-export type Action = GetContentEngagementSettings | SaveContentEngagementSettings | SaveContentAd | CreateContentAd | DeleteContentAd | GetUploadUrl | UploadContentImage | DeleteContentImage
+export type Action = GetContentEngagementSettings | SaveContentEngagementSettings | LockSection | SaveContentAd | CreateContentAd | DeleteContentAd | GetUploadUrl | UploadContentImage | DeleteContentImage

@@ -13,9 +13,11 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                         contentId: action.payload.contentId,
                         engagementSettings: {
                             ...action.payload.engagementSettings,
-                            ads: action.payload.engagementSettings.ads ? action.payload.engagementSettings.ads.map((ad) => { return { ...ad, id: ad.url + ad.timestamp + ad["ad-type"] } }) : [],
-                            adsEnabled: action.payload.engagementSettings.adsEnabled ? action.payload.engagementSettings.adsEnabled : false,
-                            mailCatcher: []
+                            adsSettings: {
+                                ...action.payload.engagementSettings.adsSettings,
+                                ads: action.payload.engagementSettings.adsSettings.ads.map((ad) => { return { ...ad, id: ad.url + ad.timestamp + ad["ad-type"] } }) || [],
+                            },
+                            mailCatcher: null
                         }
                     }
                 }
@@ -27,7 +29,10 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: { 
                         contentId: action.payload.contentId,
-                        engagementSettings: action.payload.engagementSettings
+                        engagementSettings: {
+                            ...state[action.payload.contentType][action.payload.contentId].engagementSettings,
+                            ...action.payload.engagementSettings
+                        }
                     }
                 }
                 
@@ -42,7 +47,10 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                         contentId: action.payload.contentId,
                         engagementSettings: { 
                             ...state[action.payload.contentType][action.payload.contentId].engagementSettings, 
-                            ads: action.payload.ads, adsId: action.payload.adsId 
+                            adsSettings: {
+                                ...state[action.payload.contentType][action.payload.contentId].engagementSettings.adsSettings, 
+                                ads: action.payload.ads
+                            }
                         }
                     }
                 }
@@ -57,7 +65,11 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                         ...state[action.payload.contentType][action.payload.contentId],
                         engagementSettings: { 
                             ...state[action.payload.contentType][action.payload.contentId].engagementSettings, 
-                            ads: action.payload.ads
+                            adsSettings: {
+                                ...state[action.payload.contentType][action.payload.contentId].engagementSettings.adsSettings, 
+                                ads: action.payload.ads
+
+                            }
                         } 
                     }
                 }
@@ -77,8 +89,8 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                         }
                     }
                 case ActionTypes.UPLOAD_IMAGE:
-                    return state
                 case ActionTypes.DELETE_IMAGE:
+                case ActionTypes.LOCK_SECTION:
                     return state
         default:
             return state;

@@ -3,6 +3,7 @@ import { ContentEngagementSettings } from '../../Settings/Interactions/types';
 export enum ActionTypes {
     GET_CONTENT_ENGAGEMENT_SETTINGS = "@@content_engagement/GET_CONTENT_ENGAGEMENT_SETTINGS",
     SAVE_CONTENT_ENGAGEMENT_SETTINGS = "@@content_engagement/SAVE_CONTENT_ENGAGEMENT_SETTINGS",
+    LOCK_SECTION = "@@content_engagement/LOCK_SECTION",
     SAVE_CONTENT_AD = "@@content_engagement/SAVE_CONTENT_AD",
     CREATE_CONTENT_AD = "@@content_engagement/CREATE_CONTENT_AD",
     DELETE_CONTENT_AD = "@@content_engagement/DELETE_CONTENT_AD",

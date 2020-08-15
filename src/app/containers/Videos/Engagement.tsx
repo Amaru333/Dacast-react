@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions/actions';
 import { ContentEngagementComponentProps } from '../Playlists/Engagement';
-import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
+import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 
@@ -36,6 +36,7 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
                             contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
                             getContentEngagementSettings={props.getContentEngagementSettings}
                             saveContentEngagementSettings={props.saveContentEngagementSettings}
+                            lockSection={props.lockSection}
                             saveContentAd={props.saveContentAd}
                             createContentAd={props.createContentAd}
                             deleteContentAd={props.deleteContentAd}
@@ -71,14 +72,17 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
             await dispatch(saveContentEngagementSettingsAction(data, contentType))
         },
-        saveContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
-            await dispatch(saveContentAdAction(data, adsId, contentId, contentType))
+        lockSection: async (section: string, contentId: string, contentType: string, unlock?: boolean) => {
+            await dispatch(lockSectionAction(section, contentId, contentType, unlock))
         },
-        createContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
-            await dispatch(createContentAdAction(data, adsId, contentId, contentType))
+        saveContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(saveContentAdAction(data, contentId, contentType))
         },
-        deleteContentAd: async (data: Ad[], adsId: string, contentId: string, contentType: string) => {
-            await dispatch(deleteContentAdAction(data, adsId, contentId, contentType))
+        createContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(createContentAdAction(data, contentId, contentType))
+        },
+        deleteContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(deleteContentAdAction(data, contentId, contentType))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
