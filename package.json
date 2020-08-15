@@ -76,6 +76,7 @@
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.4.3",
     "@recurly/react-recurly": "^1.1.1",
+    "@sentry/react": "^5.21.1",
     "@storybook/addon-a11y": "^5.2.3",
     "@storybook/addon-knobs": "^5.3.18",
     "@storybook/addon-storysource": "^5.2.3",
