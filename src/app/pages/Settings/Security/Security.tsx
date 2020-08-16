@@ -69,11 +69,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     endTime: endTimeTs,
                     endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
                 } 
-            }, () => {
+            }).then(() => {
                 setSubmitLoading(false);
                 setDisplayformActionButtons(false);
-            }
-        )
+            }).catch(() => setSubmitLoading(false))
     }
 
     const domainControlEmptyValues: DomainControl = {

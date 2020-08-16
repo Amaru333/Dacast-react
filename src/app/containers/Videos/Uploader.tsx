@@ -11,8 +11,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface UploaderProps {
     encodingRecipe: EncodingRecipesData;
-    getEncodingRecipe: Function;
-    postVodDemo: Function;
+    getEncodingRecipe: () => Promise<void>;
 }
 
 const Uploader = (props: UploaderProps) => {
@@ -44,11 +43,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
     return {
-        postVodDemo: () => {
-            dispatch(postVodDemo());
-        },
-        getEncodingRecipe: () => {
-            dispatch(getEncodingRecipesAction());
+        getEncodingRecipe: async () => {
+            await dispatch(getEncodingRecipesAction());
         },
     };
 }

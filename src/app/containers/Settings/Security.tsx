@@ -10,14 +10,14 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface SecurityComponentProps {
     securityDetails: SecuritySettings;
-    getSettingsSecurityOptions: Function;
-    saveSettingsSecurityOptions: Function;
-    createGeoRestrictionGroup: Function;
-    saveGeoRestrictionGroup: Function;
-    deleteGeoRestrictionGroup: Function;
-    createDomainControlGroup: Function;
-    saveDomainControlGroup: Function;
-    deleteDomainControlGroup: Function;
+    getSettingsSecurityOptions: () => Promise<void>;
+    saveSettingsSecurityOptions: (data: SecuritySettings) => Promise<void>;
+    createGeoRestrictionGroup: (data: GeoRestriction) => Promise<void>;
+    saveGeoRestrictionGroup: (data: GeoRestriction) => Promise<void>;
+    deleteGeoRestrictionGroup: (data: GeoRestriction) => Promise<void>;
+    createDomainControlGroup: (data: DomainControl) => Promise<void>;
+    saveDomainControlGroup: (data: DomainControl) => Promise<void>;
+    deleteDomainControlGroup: (data: DomainControl) => Promise<void>;
 }
 
 const Security = (props: SecurityComponentProps) => {
@@ -42,29 +42,29 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getSettingsSecurityOptions: () => {
-            dispatch(getSettingsSecurityOptionsAction());
+        getSettingsSecurityOptions: async () => {
+            await dispatch(getSettingsSecurityOptionsAction());
         },
-        saveSettingsSecurityOptions: (data: SecuritySettings, callback?: Function) => {
-            dispatch(saveSettingsSecurityOptionsAction(data)).then(callback);
+        saveSettingsSecurityOptions: async (data: SecuritySettings) => {
+            await dispatch(saveSettingsSecurityOptionsAction(data));
         },
-        createGeoRestrictionGroup: (data: GeoRestriction) => {
-            dispatch(createGeoRestrictionGroupAction(data));
+        createGeoRestrictionGroup: async (data: GeoRestriction) => {
+           await  dispatch(createGeoRestrictionGroupAction(data));
         },
-        saveGeoRestrictionGroup: (data: GeoRestriction) => {
-            dispatch(saveGeoRestrictionGroupAction(data));
+        saveGeoRestrictionGroup: async (data: GeoRestriction) => {
+            await dispatch(saveGeoRestrictionGroupAction(data));
         },
-        deleteGeoRestrictionGroup: (data: GeoRestriction) => {
-            dispatch(deleteGeoRestrictionGroupAction(data));
+        deleteGeoRestrictionGroup: async (data: GeoRestriction) => {
+            await dispatch(deleteGeoRestrictionGroupAction(data));
         },
-        createDomainControlGroup: (data: DomainControl) => {
-            dispatch(createDomainControlGroupAction(data));
+        createDomainControlGroup: async (data: DomainControl) => {
+            await dispatch(createDomainControlGroupAction(data));
         },
-        saveDomainControlGroup: (data: DomainControl) => {
-            dispatch(saveDomainControlGroupAction(data));
+        saveDomainControlGroup: async (data: DomainControl) => {
+            await dispatch(saveDomainControlGroupAction(data));
         },
-        deleteDomainControlGroup: (data: DomainControl) => {
-            dispatch(deleteDomainControlGroupAction(data));
+        deleteDomainControlGroup: async (data: DomainControl) => {
+            await dispatch(deleteDomainControlGroupAction(data));
         },
     };
 }

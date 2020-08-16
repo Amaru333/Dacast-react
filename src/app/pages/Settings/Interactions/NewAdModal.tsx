@@ -32,7 +32,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
             props.createAd(tempArray).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
-            })
+            }).catch(() => setButtonLoading(false))
         } else {
             tempArray = tempArray.map(ad => {
                 return ad.id === adData.id ? newAdData : ad
@@ -40,7 +40,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
             props.saveAd(tempArray).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
-            })
+            }).catch(() => setButtonLoading(false))
         }
     }
 

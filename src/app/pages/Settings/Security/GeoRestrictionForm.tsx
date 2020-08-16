@@ -6,10 +6,11 @@ import { InputCheckbox } from '../../../../components/FormsComponents/Input/Inpu
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
 
-export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Function; submit: Function}) => {
+export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: (b: boolean) => void; submit: (geoRestriction: GeoRestriction) => Promise<void>}) => {
 
     const [geoRestrictionItem, setGeoRestrictionItem] = React.useState<GeoRestriction>(null);
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>((props.item.name.length > 0 && props.item.values.length > 0));
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setGeoRestrictionItem(props.item)
@@ -22,12 +23,15 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
     }, [geoRestrictionItem])
 
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        props.submit(geoRestrictionItem);
-        props.toggle(false);
+        event.preventDefault()
+        setButtonLoading(true)
+        props.submit(geoRestrictionItem).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        }).catch(() => setButtonLoading(false))
     }
     return (
-        geoRestrictionItem ?
+        geoRestrictionItem &&
 
             <form onSubmit={event => submitForm(event)}>
                 <Input 
@@ -60,10 +64,9 @@ export const GeoRestrictionForm = (props: {item: GeoRestriction; toggle: Functio
                 </div>
                
                 <div className='col col-12 py1'>
-                    <Button sizeButton="large" type='submit' disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
+                    <Button isLoading={buttonLoading} sizeButton="large" type='submit' disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>
-            : null
     )
 }

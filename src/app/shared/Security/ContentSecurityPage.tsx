@@ -103,7 +103,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             ).then(() => {
                 setButtonLoading(false)
                 setHasToggleChanged(false)
-            })
+            }).catch(() => setButtonLoading(false))
     }
 
     const handleRevert = () => {
