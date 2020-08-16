@@ -4,7 +4,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/VOD/Chapters/types'
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/utils'
 
-export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: Function; submit: Function; chapterState: ChapterMarkerInfosState}) => {
+export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: (b: boolean) => void; submit: (contentId: string, chapterMarkers: ChapterMarker[]) => Promise<void>;}) => {
 
     const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null)
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0)
@@ -24,8 +24,6 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
         let submittedChapterMarkers: ChapterMarker[] = props.chapters
         var newChapterMarker = {...chapterMarker};
 
-        console.log(newChapterMarker.start);
-
         newChapterMarker.start = typeof newChapterMarker.start !== 'string' ? Math.floor(newChapterMarker.start) :  inputTimeVideoToTs(newChapterMarker.start.toString()) ;
         if(props.item.text.length === 0) {
             submittedChapterMarkers.push({...newChapterMarker, id: newChapterMarker.text + newChapterMarker.start})
@@ -40,15 +38,11 @@ export const ChapterMarkerForm = (props: {vodId: string; item: ChapterMarker; ch
         }
         setCreateButtonLoading(true)
         event.preventDefault()
-        props.submit(props.vodId, submittedChapterMarkers)   
-    }
-
-    React.useEffect(() => {
-        if(createButtonLoading){
+        props.submit(props.vodId, submittedChapterMarkers).then(() => {
             setCreateButtonLoading(false)
             props.toggle(false)
-        }
-    }, [props.chapterState])
+        }).catch(() => setCreateButtonLoading(false))  
+    }
 
     return (
         chapterMarker &&

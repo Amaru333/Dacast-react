@@ -15,7 +15,6 @@ const defaultPromo: GroupPromo = {
     alphanumericCode: '',
     discount: 0,
     limit: 0,
-    rateType: 'Pay Per View',
     startDate: 0,
     endDate: 0,
     timezone: 'Etc/UTC',
@@ -40,8 +39,8 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
         return total
     }
 
-    let startTimestamp = moment.tz((props.groupPromo ? props.groupPromo.startDate : defaultPromo.startDate)*1000, 'UTC')
-    let endTimestamp = moment.tz((props.groupPromo ? props.groupPromo.endDate : defaultPromo.endDate)*1000, 'UTC')
+    let startTimestamp = moment.tz((props.groupPromo.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let endTimestamp = moment.tz((props.groupPromo.endDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
 
     const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'UTC'} : defaultPromo);
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
@@ -86,7 +85,6 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     list={props.groupList.reduce((reduced: DropdownListType, item: GroupPrice)=> {return {...reduced, [item.name]: false }},{})  } 
                     callback={(value: string) => setGroupPromo({...groupPromo, assignedGroupIds: [props.groupList.filter(n => n.name === value)[0].id]})}
                 />
-                <DropdownSingle id='groupPromoRateTypeDropdown' className={ ClassHalfXsFullMd + ''} dropdownDefaultSelect={groupPromo.rateType}  dropdownTitle='Rate Type' callback={(value: string) => setGroupPromo({...groupPromo, rateType: value})} list={{'Subscription': false, 'Pay Per View': false}} />
             </div>
             <div className='col col-12 mb2 clearfix'>
                 <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount ? groupPromo.discount.toString() : ''} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
@@ -98,7 +96,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     <>
                         <DateSinglePickerWrapper
                             date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || 'UTC')}
-                            callback={(_, timestamp: string) => setStartDay(moment.tz(timestamp*1000, 'UTC').startOf('day').valueOf()/1000)}
+                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
@@ -121,7 +119,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     <>
                         <DateSinglePickerWrapper
                             date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || 'UTC')}
-                            callback={(_, timestamp: string) => setEndDay(moment.tz(timestamp*1000, 'UTC').startOf('day').valueOf()/1000)}
+                            callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-4 md-col-4 mr2' />
                         <Input
                             type='time'
@@ -146,10 +144,8 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 
                     list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
                 />
-                {
-                    groupPromo.rateType === 'Subscription' &&
-                        <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
-                }
+
+                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
             </div>
             <div className='col col-12 py2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>

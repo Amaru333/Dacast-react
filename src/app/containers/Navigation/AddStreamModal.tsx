@@ -7,14 +7,14 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { getPrivilege } from '../../../utils/utils';
-import { addTokenToHeader, isTokenExpired } from '../../utils/token';
-import axios from 'axios'
+import { userToken } from '../../utils/token';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { isMobile } from 'react-device-detect';
+import { axiosClient } from '../../utils/axiosClient';
 
 const moment = require('moment-timezone')
 
@@ -26,11 +26,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleLocaleCountry = (): string => {
         if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
-            return 'Australia'
+            return 'Australia & Asia Pacific'
         } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
-            return 'Europe'
+            return 'Europe, Middle East & Africa'
         } 
-        return 'North America'
+        return 'Americas'
     }
 
     const defaultStreamSetup: StreamSetupOptions = {
@@ -60,11 +60,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleRegionParse =(region: string): string => {
         switch(region) {
-            case 'North America':
+            case 'Americas':
                 return 'north-america'
-            case 'Australia':
+            case 'Australia & Asia Pacific':
                 return 'asia-pacific'
-            case 'Europe':
+            case 'Europe, Middle East & Africa':
                 return 'europe'
             default: 
                 return ''
@@ -73,21 +73,14 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
-        await isTokenExpired()
-        let {token} = addTokenToHeader();
         
-        return axios.post(process.env.API_BASE_URL + '/channels',
+        return await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
                 streamOnline: true,
                 streamType: streamSetupOptions.streamType,
                 rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
-            }, 
-            {
-                headers: {
-                    Authorization: token
-                }
             }
         ).then((response) => {
             setButtonLoading(false)
@@ -105,7 +98,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
 
     return (
-        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className='x-visible' opened={props.opened} hasClose={false}>
+        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <StreamTypeSelectorContainer className="col col-12 mt25 ">
 
@@ -118,7 +111,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                                 className='col col-12' 
                                 id='channelRegionTypeDropdown' 
                                 dropdownDefaultSelect={streamSetupOptions.region}
-                                list={{'Australia': false, 'Europe': false, 'North America': false}} 
+                                list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
                                 callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
                             />
                             <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
@@ -127,7 +120,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                     </div>
 
-                    {getPrivilege('privilege-live') &&
+                    {userToken.getPrivilege('privilege-live') &&
                         <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
                                 <StreamTypeSelectorContents>
@@ -141,7 +134,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                     }
 
-                    {getPrivilege('privilege-unsecure-m3u8') &&
+                    {userToken.getPrivilege('privilege-unsecure-m3u8') &&
                         <div className="col-12 sm-col-4 col sm-pr1 sm-pl1 xs-mb2">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
                                 <StreamTypeSelectorContents>
@@ -153,7 +146,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         </div>
                     }
 
-                    {getPrivilege('privilege-china') &&
+                    {userToken.getPrivilege('privilege-china') &&
                         <div className="col-12 sm-col-4 col sm-pl1">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
                                 <StreamTypeSelectorContents>

@@ -27,13 +27,16 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             if(props.liveList.results.length === 0) {
                 // HANDLE NO CHANNEL
             }
-            props.getAnalyticsRealTime({ period: 5, channel: props.liveList.results[0].objectID })
+            if(!props.realTimeAnalytics) {
+                props.getAnalyticsRealTime({ period: 5, channelId: props.liveList.results[0].objectID })
+            }
         }
+        
     }, [props.liveList])
 
 
-    if(!props.liveList) {
-        return <LoadingSpinner center size='medium' color='violet' />
+    if(!props.liveList || !props.realTimeAnalytics) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     } else {
         return <RealTimeAnalyticsPage {...props} />  
     }

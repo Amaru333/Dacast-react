@@ -1,5 +1,5 @@
-import axios from 'axios'
+import { axiosClient } from '../../../../utils/axiosClient'
 
 export const confirmEmail = (email: string) => {
-    return axios.post(process.env.API_BASE_URL + '/confirm-email', {email: email})
+    return axiosClient.post('/confirm-email', {email: email}, {authRequired: false})
 }

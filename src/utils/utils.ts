@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
-import { Privilege } from '../app/constants/PrivilegesName';
-import { getUserInfoItem } from '../app/utils/token';
 import { useLocation } from "react-router-dom";
 
 export default function ScrollToTop(): void {
@@ -51,11 +49,6 @@ export function numberFormatter(num: number, format: 'k' | 'comma' | 'twoDecimal
             break;
     }
     return numeral(num).format(formatNumeral);
-}
-
-export const getPrivilege = (privilege: Privilege) => {
-    //Remove this by updating type on backend
-    return getUserInfoItem(privilege) === 'true';
 }
 
 export const compareValues = (key: string, order: 'asc' | 'desc' = 'asc') => {

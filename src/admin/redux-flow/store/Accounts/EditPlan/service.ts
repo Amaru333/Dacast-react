@@ -2,12 +2,10 @@ import axios from 'axios'
 import { PlanInfo } from './types'
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
 
-const adminApiUrlBase = 'https://singularity-api-admin.dacast.com/'
-
 const getAccountPlan = async (accountId: string) => {  
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return await axios.get(adminApiUrlBase   + 'privileges/' + accountId, 
+    return await axios.get(process.env.ADMIN_API_BASE_URL   + '/privileges/' + accountId, 
     {
         headers: {
             Authorization: token
@@ -18,7 +16,7 @@ const getAccountPlan = async (accountId: string) => {
 const saveAccountPlan = async (accountId: string, planInfo: PlanInfo) => {  
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return await axios.post(adminApiUrlBase + 'privileges/' + accountId, 
+    return await axios.post(process.env.ADMIN_API_BASE_URL + '/privileges/' + accountId, 
     {
         ...planInfo,
         privilegeLevel: 'plan'
@@ -31,7 +29,7 @@ const saveAccountPlan = async (accountId: string, planInfo: PlanInfo) => {
 }
 
 const switchAccountPlan = (accountId: string, newPlan: string) => {  
-    return axios.put(adminApiUrlBase   + 'admin/accounts/' + accountId + '/plan/switch', {data: newPlan})
+    return axios.put(process.env.ADMIN_API_BASE_URL   + 'admin/accounts/' + accountId + '/plan/switch', {data: newPlan})
 }
 
 export const PlansServices = {

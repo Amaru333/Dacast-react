@@ -13,9 +13,9 @@ import { useParams } from 'react-router-dom';
 interface VodRenditionsContainerProps {
     renditions: RenditionsList;
     renditionsState: RenditionsListState;
-    getVodRenditions: Function;
-    addVodRenditions: Function;
-    deleteVodRenditions: Function;
+    getVodRenditions: (vodId: string) => Promise<void>;
+    addVodRenditions: (data: string[], vodId: string) => Promise<void>;
+    deleteVodRenditions: (data: string[], vodId: string) => Promise<void>;
 }
 
 export const VodRenditions = (props: VodRenditionsContainerProps) => {
@@ -52,14 +52,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodRenditions: (vodId: string) => {
-            dispatch(getVodRenditionsAction(vodId));
+        getVodRenditions: async (vodId: string) => {
+            await dispatch(getVodRenditionsAction(vodId));
         },
-        addVodRenditions: (data: string[], vodId: string) => {
-            dispatch(addVodRenditionsAction(data, vodId));
+        addVodRenditions: async (data: string[], vodId: string) => {
+            await dispatch(addVodRenditionsAction(data, vodId));
         },
-        deleteVodRenditions: (data: string[], vodId: string) => {
-            dispatch(deleteVodRenditionsAction(data, vodId));
+        deleteVodRenditions: async (data: string[], vodId: string) => {
+            await dispatch(deleteVodRenditionsAction(data, vodId));
         }
     }
 }

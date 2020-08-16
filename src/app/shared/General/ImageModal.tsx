@@ -6,7 +6,7 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/player';
-import { addTokenToHeader } from '../../utils/token';
+import { userToken } from '../../utils/token';
 
 export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
     
@@ -22,9 +22,14 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
 
-    const {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
+
+    React.useEffect(() => {
+        console.log('upload url', props.uploadUrl)
+        console.log('logo', logoFile)
+    }, [props.uploadUrl, logoFile])
 
     React.useEffect(() => {
         if (selectedOption === "frame") {
@@ -66,22 +71,22 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
         if(!saveButtonLoading && !isSaveDisabled) {
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], () => {})
+                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], props.contentType)
             } else {
                 props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType).then(() => {
-                    props.getContentDetails(props.contentId)
+                    props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
                     props.toggle()
-                }, 3000)
+                }, 4000)
             }    
         }
     }
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType).then(() => {
+            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType, props.contentType).then(() => {
                 setTimeout(() => {
-                    props.getContentDetails(props.contentId)
+                    props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
                     props.toggle()
                 }, 3000)

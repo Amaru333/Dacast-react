@@ -1,91 +1,59 @@
-import axios from 'axios';
-import { InteractionsInfos, Ad, MailCatcher } from './types';
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
-
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
+import { EngagementInfo, Ad, MailCatcher } from './types';
+import { userToken } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
 
 const getInteractionsInfos = async () => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.get(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement',
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get('/accounts/' + userId + '/settings/engagement')
+}
+
+const saveInteractionsInfos = async (data: EngagementInfo) => {
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/settings/engagement',
         {
-            headers: {
-                Authorization: token
-            }
+            ...data
         }
     )
 }
 
-const saveInteractionsInfos = async (data: InteractionsInfos) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement',
-        {...data}, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
-}
-
-const saveAd = async (data: Ad[], adsId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.put(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement/ads/',
+const saveAd = async (data: Ad[]) => {
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.put('/accounts/' + userId + '/settings/engagement/ads/',
         {
             ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
-            adsId: adsId
-        }, 
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const getUploadUrl = async (data: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/uploads/signatures/singlepart/' + data,
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.post('/uploads/signatures/singlepart/' + data,
         {
             userID: userId
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        })
-}
-
-const uploadFile = (data: File, uploadUrl: string) => {
-    return axios.put(uploadUrl, data)
-}
-
-const deleteFile = async () => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader();
-    return axios.delete(process.env.API_BASE_URL + '/accounts/' + userId + '/settings/engagement/brand-image',
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
-
-const saveMailCatcher = (data: MailCatcher) => {
-    return axios.put(urlBase + 'settings-interactions-mail-catcher', {data: data})
+const uploadFile = async (data: File, uploadUrl: string) => {
+    return await axiosClient.put(uploadUrl, data, {authRequired: false})
 }
 
-const createMailCatcher = (data: MailCatcher) => {
-    return axios.post(urlBase + 'settings-interactions-mail-catcher', {data: data})
+const deleteFile = async () => {
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await  axiosClient.delete('/accounts/' + userId + '/settings/engagement/brand-image')
 }
 
-const deleteMailCatcher = (data: MailCatcher) => {
-    return axios.delete(urlBase + 'settings-interactions-mail-catcher', {data: data})
+
+const saveMailCatcher = async (data: MailCatcher) => {
+    return await axiosClient.put('settings-interactions-mail-catcher', {data: data})
+}
+
+const createMailCatcher = async (data: MailCatcher) => {
+    return await axiosClient.post('settings-interactions-mail-catcher', {data: data})
+}
+
+const deleteMailCatcher = async (data: MailCatcher) => {
+    return await axiosClient.delete('settings-interactions-mail-catcher', {data: data})
 }
 
 export const interactionsServices = {

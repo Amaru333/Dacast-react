@@ -186,28 +186,28 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Consumption by Device">
+                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Play time by Device">
                             {
-                                viewershipAnalytics.consumptionPerDevices ?
-                                    viewershipAnalytics.consumptionPerDevices.failed ?
+                                viewershipAnalytics.playtimePerDevices ?
+                                    viewershipAnalytics.playtimePerDevices.failed ?
                                         <FailedCardAnalytics /> :
                                         <CheeseChart
                                             displayBytesFromGB={true}
-                                            data={viewershipAnalytics.consumptionPerDevices.data}
-                                            labels={viewershipAnalytics.consumptionPerDevices.labels} />
+                                            data={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.data : [0]}
+                                            labels={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.labels : ["No Data"]} />
                                     :
                                     <LoadingSpinner center size='medium' color='violet' />
                             }
                         </AnalyticsCard>
                     </div>
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard infoText="Reports on your data consumption" title="Consumption by location">
+                        <AnalyticsCard infoText="Reports on your data consumption" title="Play time by location">
                             {
-                                viewershipAnalytics.consumptionBreakdown.map ?
-                                    viewershipAnalytics.consumptionBreakdown.map.failed ?
+                                viewershipAnalytics.playtimePerLocation.data ?
+                                    viewershipAnalytics.playtimePerLocation.failed ?
                                         <FailedCardAnalytics  /> :
                                         <div >
-                                            {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
+                                            {renderMap(viewershipAnalytics.playtimePerLocation.data, "idMapConsumption", false)}
                                         </div>
                                     :
                                     <LoadingSpinner  center size='medium' color='violet' />
@@ -270,41 +270,41 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                 </TabSetupStyles>
                             </TabSetupContainer>
                             {
-                                viewershipAnalytics.consumptionBreakdown.time ?
-                                    viewershipAnalytics.consumptionBreakdown.time.failed ?
+                                viewershipAnalytics.playtimePerLocation.time ?
+                                    viewershipAnalytics.playtimePerLocation.time.failed ?
                                         <FailedCardAnalytics hidden={selectedTabConsumption !== "time"} /> :
                                         <BarChart
                                             hidden={selectedTabConsumption !== "time"}
                                             datasetName="GBytes"
                                             displayFromMb
                                             beginAtZero={true}
-                                            data={viewershipAnalytics.consumptionBreakdown.time.data}
+                                            data={viewershipAnalytics.playtimePerLocation.time.data}
                                             yAxesName="GB"
-                                            labels={formateDates(viewershipAnalytics.consumptionBreakdown.time.time)} />
+                                            labels={formateDates(viewershipAnalytics.playtimePerLocation.time.time)} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "time"} center size='medium' color='violet' />
                             }
                             {
-                                viewershipAnalytics.consumptionBreakdown.content ?
-                                    viewershipAnalytics.consumptionBreakdown.content.failed ?
+                                viewershipAnalytics.playtimePerLocation.content ?
+                                    viewershipAnalytics.playtimePerLocation.content.failed ?
                                         <FailedCardAnalytics hidden={selectedTabConsumption !== "content"} /> :
                                         <BarChart
                                             hidden={selectedTabConsumption !== "content"}
                                             datasetName="GBytes"
                                             displayFromMb
                                             beginAtZero={true}
-                                            data={viewershipAnalytics.consumptionBreakdown.content.data}
+                                            data={viewershipAnalytics.playtimePerLocation.content.data}
                                             yAxesName="GB"
-                                            labels={viewershipAnalytics.consumptionBreakdown.content.content} />
+                                            labels={viewershipAnalytics.playtimePerLocation.content.content} />
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "content"} center size='medium' color='violet' />
                             }
                             {
-                                viewershipAnalytics.consumptionBreakdown.map ?
-                                    viewershipAnalytics.consumptionBreakdown.map.failed ?
+                                viewershipAnalytics.playtimePerLocation.data ?
+                                    viewershipAnalytics.playtimePerLocation.data.failed ?
                                         <FailedCardAnalytics hidden={selectedTabConsumption !== "map"} /> :
                                         <div hidden={selectedTabConsumption !== "map"}>
-                                            {renderMap(viewershipAnalytics.consumptionBreakdown.map, "idMapConsumption")}
+                                            {renderMap(viewershipAnalytics.playtimePerLocation.data, "idMapConsumption")}
                                         </div>
                                     :
                                     <LoadingSpinner hidden={selectedTabConsumption !== "map"} center size='medium' color='violet' />

@@ -1,39 +1,35 @@
 import React from 'react';
-import { ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming/types';
+import { ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action, getPlaylistThemeAction, savePlaylistThemeAction } from '../../redux-flow/store/Playlists/Theming/actions';
+import { Action } from '../../redux-flow/store/Playlists/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
+import { ContentThemingComponentProps } from '../Videos/Theming';
+import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 
-export interface PlaylistThemingComponentProps {
-    themeState: ContentThemeState;
-    getPlaylistTheme: (playlistId: string) => Promise<void>;
-    savePlaylistTheme: (theme: ThemeOptions, playlistId: string) => Promise<void>;
-}
-
-const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
+const PlaylistTheming = (props: ContentThemingComponentProps) => {
 
     let { playlistId } = useParams()
 
     React.useEffect(() => {
         if (!props.themeState[playlistId]) {
-            props.getPlaylistTheme(playlistId)
+            props.getContentTheme(playlistId, 'playlist')
         }
     }, [])
 
     return (
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            {props.themeState[playlistId] ?
+            {props.themeState['playlist'] && props.themeState['playlist'][playlistId] ?
                 <div className='flex flex-column'>
                     <ThemingControlsCard
-                        theme={props.themeState[playlistId]}
-                        saveTheme={props.savePlaylistTheme}
+                        theme={props.themeState['playlist'][playlistId]}
+                        saveTheme={props.saveContentTheme}
                         contentType='playlist'
                         actionType='Save'
                         contentId={playlistId}
@@ -47,17 +43,17 @@ const PlaylistTheming = (props: PlaylistThemingComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        themeState: state.playlist.theming,
+        themeState: state.content.theming,
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPlaylistTheme: async (playlistId: string) => {
-            await dispatch(getPlaylistThemeAction(playlistId))
+        getContentTheme: async (contentId: string, contentType: string) => {
+            await dispatch(getContentThemeAction(contentId, contentType))
         },
-        savePlaylistTheme: async (theme: ThemeOptions, playlistId: string) => {
-            await dispatch(savePlaylistThemeAction(theme, playlistId))
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
+            await dispatch(saveContentThemeAction(theme, contentId, contentType))
         },
     }
 }

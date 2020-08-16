@@ -91,7 +91,7 @@ export const PurchaseStepperPaymentStep = (props: {stepperData: string; callback
             
             {
                 props.stepperData === "none" ? 
-                    <RecurlyProvider publicKey="ewr1-hgy8aq1eSuf8LEKIOzQk6T">
+                    <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
                         <Elements>
                             <NewPaymentMethodForm callback={props.callback} actionButton={props.finalFunction} />
                         </Elements>
@@ -106,7 +106,7 @@ export const PurchaseStepperPaymentStep = (props: {stepperData: string; callback
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} />
                 <div className='col col-11 flex'>
-                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a>Terms and Conditions.</a></Text>                   
+                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/" >Terms and Conditions.</a></Text>                   
                 </div>
             </div>
         </div>

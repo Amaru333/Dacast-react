@@ -1,51 +1,27 @@
-import axios from 'axios';
 import { Preset, Promo, ContentPaywallPageInfos } from '../../Paywall/Presets/types'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/axiosClient';
+import { userToken } from '../../../../utils/token';
 
-const urlBase = 'https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/';
 
 const getVodPaywallInfos = async (vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/vods/' + vodId + '/paywall', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/vods/' + vodId + '/paywall')
 }
 
 const saveVodPaywallInfos = async (data: ContentPaywallPageInfos, vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/vods/' + vodId + '/paywall', 
+    return await axiosClient.put('/vods/' + vodId + '/paywall', 
         {
             ...data
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const getVodPaywallPrices = async (vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + `/paywall/prices?content-id=${userId}-vod-${vodId}`, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.get(`/paywall/prices?content-id=${userId}-vod-${vodId}`)
 }
 
 const createVodPricePreset = async (data: Preset, vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.type === 'Subscription') {
         parsedPrice = {
@@ -85,21 +61,15 @@ const createVodPricePreset = async (data: Preset, vodId: string) => {
         }
     } 
 
-    return axios.post(process.env.API_BASE_URL + '/paywall/prices', 
+    return await axiosClient.post('/paywall/prices', 
         {
            ...parsedPrice
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const saveVodPricePreset = async (data: Preset, vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.type === 'Subscription') {
         parsedPrice = {
@@ -135,87 +105,45 @@ const saveVodPricePreset = async (data: Preset, vodId: string) => {
             }
         }
     } 
-    return axios.put(process.env.API_BASE_URL + '/paywall/prices/' + data.id, 
+    return await axiosClient.put('/paywall/prices/' + data.id, 
         {
             id: data.id,
             contentId: `${userId}-vod-${vodId}`,
             name: data.name,
             ...parsedPrice
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deleteVodPricePreset = async (data: Preset, vodId: string) => {
-    await isTokenExpired()
-    let {token, userId} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + `/paywall/prices/${data.id}?content-id=${userId}-vod-${vodId}`, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    return await axiosClient.delete(`/paywall/prices/${data.id}?content-id=${userId}-vod-${vodId}`)
 }
 
 const getVodPaywallPromos = async () => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.get(process.env.API_BASE_URL + '/paywall/promos?page=1&per-page=100', 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/paywall/promos?page=1&per-page=100')
 }
 
 const createVodPromoPreset = async (data: Promo, vodId: string) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.post(process.env.API_BASE_URL + '/paywall/promos' , 
+    return await axiosClient.post('/paywall/promos' , 
         {
             promo: {
                 ...data
             }  
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const saveVodPromoPreset = async (data: Promo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.put(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
+    return await axiosClient.put('/paywall/promos/' + data.id , 
         {
             promo: data  
-        },
-        {
-            headers: {
-                Authorization: token
-            }
         }
     )
 }
 
 const deleteVodPromoPreset = async (data: Promo) => {
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return axios.delete(process.env.API_BASE_URL + '/paywall/promos/' + data.id , 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.delete('/paywall/promos/' + data.id)
 }
 
 export const VodPaywallServices = {

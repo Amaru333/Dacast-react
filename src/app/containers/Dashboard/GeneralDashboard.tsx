@@ -4,7 +4,7 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes, getPrivilege } from '../../../utils/utils';
+import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes } from '../../../utils/utils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
@@ -94,7 +94,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{bandwidth.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
                     </div>
                     <ProgressBarDashboard openOverage={props.openOverage} overage={props.overage} percentage={bandwidth.percentage} widget="bandwidth" plan={props.plan} />
                 </WidgetElement>
@@ -119,7 +119,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         {handleButtonToPurchase(storage.percentage, "Storage", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
-                        <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{storage.percentage}%</Text>
+                        <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>
                     </div>
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>

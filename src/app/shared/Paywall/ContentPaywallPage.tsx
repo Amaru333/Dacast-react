@@ -18,40 +18,42 @@ import { Preset, Promo, ContentPaywallPageInfos, PresetsPageInfos } from '../../
 import { GroupsPageInfos } from '../../redux-flow/store/Paywall/Groups/types'
 import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types'
 import { emptyContentListBody } from '../List/emptyContentListState';
-import { addTokenToHeader } from '../../utils/token'
+import { userToken } from '../../utils/token'
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
 
 export interface ContentPaywallComponentProps {
     contentId: string;
     contentType: 'vod' | 'live' | 'playlist';
     contentPaywallInfos: ContentPaywallPageInfos;
-    getContentPrices: Function;
-    saveContentPaywallInfos: Function;
-    createContentPricePreset: Function;
-    saveContentPricePreset: Function;
-    deleteContentPricePreset: Function;
-    getContentPromos: Function;
-    createContentPromoPreset: Function;
-    saveContentPromoPreset: Function;
-    deleteContentPromoPreset: Function;
     groupsInfos: GroupsPageInfos;
     theming: PaywallThemingData;
     globalPresets: PresetsPageInfos;
     customPricePresetList: Preset[];
     customPromoPresetList: Promo[];
-    createPromoPreset: Function;
-    createPricePreset: Function;
-    showToast: Function;
+    saveContentPaywallInfos: (data: ContentPaywallPageInfos, contentId: string, contentType: string) => Promise<void>;
+    getContentPrices: (contentId: string, contentType: string) => Promise<void>;
+    createContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
+    saveContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
+    deleteContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
+    getContentPromos: (contentId: string, contentType: string) => Promise<void>;
+    createContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
+    saveContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
+    deleteContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
+    createPromoPreset: (data: Promo) => Promise<void>;
+    createPricePreset: (data: Preset) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
-    let {userId} = addTokenToHeader()
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const [priceModalOpened, setPriceModalOpened] = React.useState<boolean>(false);
     const [promoModalOpened, setPromoModalOpened] = React.useState<boolean>(false);
     const [selectedPrice, setSelectedPrice] = React.useState<Preset>(null);
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
     const [contentPaywallSettings, setContentPaywallSettings] = React.useState<ContentPaywallPageInfos>(props.contentPaywallInfos);
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setContentPaywallSettings(props.contentPaywallInfos)
@@ -80,7 +82,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     <Text key={'pricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
                     <IconContainer className="iconAction" key={'pricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(price, props.contentId)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(price, props.contentId, props.contentType)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + price.id}>
@@ -95,7 +97,6 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promosTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='promosTableHeaderCode' size={14} weight='med'>Code</Text>},
             {cell: <Text key='promosTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
             {cell: <Text key='promosTableHeaderLimit' size={14} weight='med'>Limit</Text>},
@@ -108,13 +109,12 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         if(props.contentPaywallInfos.promos) {
             return props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).map((promo, key) => {
                 return {data: [
-                    <Text key={'promosTableBodyType' + key} size={14} weight='reg'>{promo.rateType}</Text>,
                     <Text key={'promosTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
                     <Text key={'promosTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promosTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId, props.contentType)}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -179,6 +179,16 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         ]}
     }
 
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.saveContentPaywallInfos(contentPaywallSettings, props.contentId, props.contentType)
+        .then(() => {
+            setButtonLoading(false)
+        }).catch(() => {
+            setButtonLoading(false)
+        })
+    }
+
     return (
         <div>
             <Card>
@@ -231,12 +241,12 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                    
             </Card>
             <div className={'mt2' + (props.contentPaywallInfos === contentPaywallSettings ? ' hide' : '')}>
-                <Button onClick={() => props.saveContentPaywallInfos(contentPaywallSettings, props.contentId)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
             <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit' : 'Create') + ' Price'} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
                 {
-                    priceModalOpened && <ContentPricePresetsModal contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
+                    priceModalOpened && <ContentPricePresetsModal contentType={props.contentType} contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit' : 'Create') + ' Promo'} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>

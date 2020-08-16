@@ -1,80 +1,100 @@
-import { TokenInfos } from '../redux-flow/store/Register/Login';
-import { DateTime } from 'luxon';
-import axios from 'axios'
 import { Privilege } from '../constants/PrivilegesName';
 
-var userInfo: any = false;
+type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website'
 
-export const initUserInfo = () => {
-    if(userInfo) {
-        return userInfo;
-    } else {
-        if(localStorage.getItem('userToken')) {
-            var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
-            let userInfos = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
-            userInfo = userInfos;
-            return userInfos;
-        }
+interface UserInfo {
+    "privilege-advertising": string;
+    "privilege-aes": string;
+    "privilege-api": string;
+    "privilege-china": string;
+    "privilege-dvr": string;
+    "privilege-email-catcher": string;
+    "privilege-folders": string;
+    "privilege-group-id": string;
+    "privilege-live": string;
+    "privilege-paywall": string;
+    "privilege-player-download": string;
+    "privilege-playlists": string;
+    "privilege-recording": string;
+    "privilege-signed-keys": string;
+    "privilege-unsecure-m3u8": string;
+    "privilege-vod": string;
+    "privilege-web-download": string;
+    "privilege-analytics": string;
+    'custom:dacast_user_id': string;
+    'custom:first_name': string;
+    'custom:last_name': string;
+    'email': string;
+    'custom:website': string;
+}
+
+interface TokenInfo {
+    token: string;
+    accessToken?: string;
+    refresh: string;
+    expires: number;
+    userInfo?: UserInfo
+}
+
+class userTokenService {
+    constructor() {
+        this.getUserInfoItem = this.getUserInfoItem.bind(this)
     }
-}
 
-export const resetUserInfo = () => {
-    localStorage.removeItem('userToken')
-    userInfo = false;
-}
+    private tokenInfo: TokenInfo = null
 
-export function addToken(data: TokenInfos) {
-    if(data) {
-        localStorage.setItem('userToken', JSON.stringify(data));
-        initUserInfo();
-    }
-}
-
-export const getUserInfoItem = (item: string | Privilege) => {
-    if(userInfo) {
-        return userInfo[item];
-    } else {
-        initUserInfo()[item];
-    }
-    //throw new Error('User not defined')
-}
-
-export function addTokenToHeader() {
-    if(localStorage.getItem('userToken')) {
-        if(userInfo) {
-            var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
-            console.log(userInfo);
-            return {
-                token: userInfo.token, 
-                userId: userInfo['custom:dacast_user_id'], 
-                accessToken: tokenObject.accessToken, 
-                vodStorageId: userInfo['vod-storage-id']
+    private setTokenInfo = () => {
+        if(this.tokenInfo) {
+            return this.tokenInfo
+        } else {
+            if(localStorage.getItem('userToken')) {
+                this.tokenInfo =  JSON.parse(localStorage.getItem('userToken'));
+                let userInfo = JSON.parse(window.atob(decodeURIComponent(this.tokenInfo.token.split('.')[1]))) as UserInfo
+                this.tokenInfo.userInfo = userInfo
+                return this.tokenInfo
             }
         }
-        var tokenObject =  JSON.parse(localStorage.getItem('userToken'));
-        let userInfo = JSON.parse(window.atob(decodeURIComponent(tokenObject.token.split('.')[1])))
-
-        return {token: tokenObject.token, userId: userInfo['custom:dacast_user_id'], accessToken: tokenObject.accessToken, vodStorageId: userInfo['vod-storage-id']}
     }
-    throw new Error('No user token found')
-}
 
-export function isLoggedIn() {
-    if(localStorage.getItem('userToken')) {
-        initUserInfo();
-        return true;
-    } else {
+    public getTokenInfo = () => {
+        return this.setTokenInfo() 
+    }
+
+    public getUserInfoItem = (item: Privilege | ExtraUserInfo) => {
+        if(this.tokenInfo && this.tokenInfo.userInfo) {
+            return this.tokenInfo.userInfo[item]
+        } 
+        return this.setTokenInfo().userInfo[item]
+    
+        //throw new Error('User not defined')
+    }
+
+    public getPrivilege = (privilege: Privilege) => {
+        //Remove this by updating type on backend
+        return this.getUserInfoItem(privilege) === 'true';
+    }
+
+    public resetUserInfo = () => {
+        localStorage.removeItem('userToken')
+        this.tokenInfo = null
+    }
+
+    public addTokenInfo = (data: TokenInfo) => {
+        if(data) {
+            localStorage.setItem('userToken', JSON.stringify(data))
+            this.setTokenInfo()
+        } else {
+            throw new Error('no token provided')
+        }
+    }
+
+    public isLoggedIn = () => {
+        if(localStorage.getItem('userToken')) {
+            this.setTokenInfo()
+            return true
+        } 
         return false
     }
 }
 
-export async function isTokenExpired() {
-    let token: TokenInfos = JSON.parse(localStorage.getItem('userToken'))
-    if(DateTime.fromSeconds(parseInt(token.expires)).diff(DateTime.local()).milliseconds / 60000 <= 5) {
-        let response = await axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh})
-        token.token = response.data.data.token
-        token.expires = response.data.data.expires
-        localStorage.removeItem('userToken')
-        localStorage.setItem('userToken', JSON.stringify(token))
-    }
-}
+export const userToken = new userTokenService()

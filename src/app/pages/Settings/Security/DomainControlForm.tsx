@@ -5,10 +5,11 @@ import { InputCheckbox } from '../../../../components/FormsComponents/Input/Inpu
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 
-export const DomainControlForm = (props: {item: DomainControl; toggle: Function; submit: Function}) => {
+export const DomainControlForm = (props: {item: DomainControl; toggle: (b: boolean) => void; submit: (domain: DomainControl) => Promise<void>}) => {
 
     const [domainControlItem, setDomainControlItem] = React.useState<DomainControl>(null);
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>((props.item.name.length > 0 && props.item.values.length > 0));
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     console.log(domainControlItem)
 
@@ -23,8 +24,11 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
     }, [domainControlItem])
     const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        props.submit(domainControlItem);
-        props.toggle(false);
+        setButtonLoading(true)
+        props.submit(domainControlItem).then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        }).catch(() => setButtonLoading(false))
     }
     return (
         domainControlItem ? 
@@ -56,7 +60,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: Function;
                     defaultChecked={domainControlItem.isDefault}
                 />
                 <div className='col col-12 py1'>
-                    <Button sizeButton="large" type="submit" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
+                    <Button isLoading={buttonLoading} sizeButton="large" type="submit" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.name.length > 0 ? "Save" : "Create"}</Button>
                     <Button sizeButton="large" onClick={() => props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
                 </div>
             </form>

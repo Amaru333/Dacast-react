@@ -1,6 +1,6 @@
 import { ApiIntegrationPageInfos, ApiIntegrationReducer } from "./ApiIntegration/"
 import { EmbedSettingsOptionType, EmbedSettingsReducer } from './EmbedSettings';
-import { SettingsSecurityDetails, SettingsSecurityReducer } from './Security'
+import { SettingsSecurityReducer, SecuritySettings } from './Security'
 import { combineReducers, Reducer } from 'redux';
 import { EncodingRecipesData } from './EncodingRecipes/EncodingRecipesTypes';
 import { EncodingRecipesReducer } from './EncodingRecipes';
@@ -21,7 +21,7 @@ export const SettingsInitialState: SettingsState = {
 export interface  SettingsState {
     apiIntegration: false | ApiIntegrationPageInfos;
     embedSettings: false | EmbedSettingsOptionType;
-    security: false | SettingsSecurityDetails;
+    security: false | SecuritySettings;
     encodingRecipes: false | EncodingRecipesData;
     interactions: false | InteractionsInfos;
     theming: false | ThemesData;

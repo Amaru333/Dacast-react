@@ -14,29 +14,21 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
-import { getUserInfoItem, isLoggedIn } from '../../app/utils/token';
-import { LiveDetailsState } from '../../app/redux-flow/store/Live/General/types';
-import { VodDetailsState } from '../../app/redux-flow/store/VOD/General/types';
-import { getVodDetailsAction } from '../../app/redux-flow/store/VOD/General/actions';
-import { getLiveDetailsAction } from '../../app/redux-flow/store/Live/General/actions';
-import { PlaylistDetailsState } from '../../app/redux-flow/store/Playlists/General/types';
-import { getPlaylistDetailsAction } from '../../app/redux-flow/store/Playlists/General/actions';
+import { userToken } from '../../app/utils/token';
+import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
+import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
 import { store } from '../../app';
 
 export interface HeaderProps {
     isOpen: boolean;
-    setOpen: Function;
     isMobile: boolean;
     title: string;
-    logout: Function;
     ProfileInfo: ProfilePageInfos;
-    getProfilePageDetails: Function;
-    LiveGeneralState: LiveDetailsState;
-    VodGeneralState: VodDetailsState;
-    getVodDetails: Function;
-    getLiveGeneralDetails: Function;
-    getPlaylistGeneralDetails: Function;
-    PlaylisyGeneralState: PlaylistDetailsState;
+    contentGeneralState: ContentDetailsState;
+    setOpen: (b: boolean) => void;
+    logout: () => Promise<void>;
+    getProfilePageDetails: () => Promise<void>;
+    getContentDetails: (contentId: string, contentType: string) => Promise<void>;
 }
 
 const Header = (props: HeaderProps) => {
@@ -51,24 +43,24 @@ const Header = (props: HeaderProps) => {
         var realUid = uid.replace(/\s/g , "-");
         switch (path) {
             case 'videos':
-                if (props.VodGeneralState[realUid]) {
-                    return [props.VodGeneralState[realUid].title];
+                if (props.contentGeneralState['vod'] && props.contentGeneralState['vod'][realUid]) {
+                    return [props.contentGeneralState['vod'][realUid].title];
                 } else {
-                    props.getVodDetails(realUid);
+                    props.getContentDetails(realUid, 'vod');
                     return [realUid]
                 }
             case 'livestreams':
-                if (props.LiveGeneralState[realUid]) {
-                    return [props.LiveGeneralState[realUid].title];
+                if (props.contentGeneralState['live'] && props.contentGeneralState['live'][realUid]) {
+                    return [props.contentGeneralState['live'][realUid].title];
                 } else {
-                    props.getLiveGeneralDetails(realUid);
+                    props.getContentDetails(realUid, 'live');
                     return [realUid]
                 }
             case 'playlists':
-                if (props.PlaylisyGeneralState[realUid]) {
-                    return [props.PlaylisyGeneralState[realUid].title];
+                if (props.contentGeneralState['playlist'] && props.contentGeneralState['playlist'][realUid]) {
+                    return [props.contentGeneralState['playlist'][realUid].title];
                 } else {
-                    props.getPlaylistGeneralDetails(realUid);
+                    props.getContentDetails(realUid, 'playlist');
                     return [realUid]
                 }
             default: return ["Unknown Asset Type"]
@@ -81,7 +73,7 @@ const Header = (props: HeaderProps) => {
         let breadcrumbNames = breadCrumbString.map(path => path.join(' '))
         let removedSpace = breadcrumbNames.shift()
         setBreadcrumbItems(breadcrumbNames)
-    }, [location, props.VodGeneralState, props.LiveGeneralState, props.PlaylisyGeneralState])
+    }, [location, props.contentGeneralState])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
     const userOptionsDropdownListRef = React.useRef<HTMLUListElement>(null);
@@ -90,12 +82,12 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(isLoggedIn()) {
-            setAvatarFirstName(getUserInfoItem('custom:first_name'))
-            setAvatarLastName(getUserInfoItem('custom:last_name'))
+        if(userToken.isLoggedIn()) {
+            setAvatarFirstName(userToken.getUserInfoItem('custom:first_name'))
+            setAvatarLastName(userToken.getUserInfoItem('custom:last_name'))
         }
 
-    }, [isLoggedIn()])
+    }, [userToken.isLoggedIn()])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 
@@ -187,9 +179,7 @@ export function mapStateToProps(state: ApplicationState) {
     return {
         title: state.title,
         ProfileInfo: state.account.profile,
-        VodGeneralState: state.vod.general,
-        LiveGeneralState: state.live.general,
-        PlaylisyGeneralState: state.playlist.general
+        contentGeneralState: state.content.general,
     };
 }
 
@@ -202,14 +192,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getProfilePageDetails: () => {
             dispatch(getProfilePageDetailsAction());
         },
-        getVodDetails: (vodId: string) => {
-            dispatch(getVodDetailsAction(vodId));
-        },
-        getLiveGeneralDetails: (liveId: string) => {
-            dispatch(getLiveDetailsAction(liveId));
-        },
-        getPlaylistGeneralDetails: (playlistId: string) => {
-            dispatch(getPlaylistDetailsAction(playlistId));
+        getContentDetails: (contentId: string, contentType: string) => {
+            dispatch(getContentDetailsAction(contentId, contentType));
         },
     }
 

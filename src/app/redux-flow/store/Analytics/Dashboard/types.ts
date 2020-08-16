@@ -51,7 +51,7 @@ export interface AnalyticsDashboardConsumptionPerLocation {
 
 
 export interface AnalyticsDashboardInfos {
-    consumptionPerTime: AnalyticsDashboardConsumptionPerTime | false;
+    playtimePerTime: AnalyticsDashboardConsumptionPerTime | false;
     playsViewersPerTime: AnalyticsDashboardPlaysViewersPerTime | false;
     consumptionPerDevice: AnalyticsDashboardConsumptionPerDevice | false;
     topContents: AnalyticsDashboardConsumptionPerDevice | false;
@@ -68,7 +68,7 @@ interface TopContentData {
 
 export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
     data: {
-        consumptionPerTime: false,
+        playtimePerTime: false,
         playsViewersPerTime: false,
         consumptionPerDevice: false,
         topContents: false,

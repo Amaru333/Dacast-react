@@ -13,10 +13,10 @@ import { useParams } from 'react-router-dom';
 export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
     chapterPageDetailsState: ChapterMarkerInfosState;
-    getVodChapterMarkers: Function;
-    saveVodChapterMarker: Function;
-    addVodChapterMarker: Function;
-    deleteVodChapterMarker: Function;
+    getVodChapterMarkers: (contentId: string) => Promise<void>;
+    saveVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
+    addVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
+    deleteVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
 }
 
 const Chapters = (props: ChapterComponentProps) => {
@@ -51,17 +51,17 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodChapterMarkers: (vodId: string) => {
-            dispatch(getVodChapterMarkersAction(vodId));
+        getVodChapterMarkers: async (vodId: string) => {
+            await dispatch(getVodChapterMarkersAction(vodId));
         },
-        saveVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
-            dispatch(saveVodChapterMarkerAction(vodId, data));
+        saveVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
+            await dispatch(saveVodChapterMarkerAction(vodId, data));
         },
-        addVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
-            dispatch(addVodChapterMarkerAction(vodId, data));
+        addVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
+            await dispatch(addVodChapterMarkerAction(vodId, data));
         },
-        deleteVodChapterMarker: (vodId: string, data: ChapterMarker[]) => {
-            dispatch(deleteVodChapterMarkerAction(vodId, data));
+        deleteVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
+            await dispatch(deleteVodChapterMarkerAction(vodId, data));
         },
     };
 }
