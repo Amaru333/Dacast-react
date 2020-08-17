@@ -88,8 +88,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         if(liveStreamCountdownToggle){
             let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
             setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: countdownTs}})
+        } else {
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: 0}})
         }
-    }, [liveStreamCountdownToggle])
+    }, [liveStreamCountdownToggle, startDateTimeValue])
 
     const subtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
         return {data: [
@@ -227,8 +229,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        props.saveContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: countdownTs}}, props.contentType).then(() =>
+        props.saveContentDetails(contentDetails, props.contentType).then(() =>  
              setButtonLoading(false)
         ).catch(() =>
              setButtonLoading(false)
@@ -348,7 +349,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             <Toggle
                                 label="Live Stream Start Countdown"
                                 onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle) }}
-                                defaultChecked={contentDetails.countdown.startTime !== 0}
+                                defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
