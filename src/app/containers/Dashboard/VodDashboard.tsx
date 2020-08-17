@@ -14,7 +14,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
     var itemClass = props.fullWidth ? classItemFullWidthContainer : classItemHalfWidthContainer;
 
     var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
-    var videoPlays = numberFormatter(props.profile.videoPlays.data ? props.profile.videoPlays.data : 0, 'comma');
+    var videoPlays = numberFormatter(props.profile.videoPlays ? props.profile.videoPlays : 0, 'comma');
     
     var { rightSide, fullWidth, ...other } = props;
 
@@ -39,18 +39,18 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement loading={props.profile.playRate.loading} failed={props.profile.playRate.failed}  className={itemClass}>
+                <WidgetElement failed={!props.profile.impressions}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{props.profile.playRate.data && props.profile.playRate.data.impressions ? props.profile.playRate.data.impressions : 0}</Text>
+                        <Text size={48} weight="reg" color="gray-1">{props.profile.impressions ? props.profile.impressions : 0}</Text>
                     </div>
                 </WidgetElement>
 
-                <WidgetElement  loading={props.profile.videoPlays.loading} failed={props.profile.videoPlays.failed} className={itemClass}>
+                <WidgetElement  failed={!props.profile.videoPlays} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
                     </WidgetHeader>
@@ -59,17 +59,17 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement loading={props.profile.playRate.loading} failed={props.profile.playRate.failed}  className={itemClass}>
+                <WidgetElement failed={!props.profile.impressions || !props.profile.videoPlays}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <DoughnutChart value={props.profile.playRate.data ? getPercentage(props.profile.playRate.data.playRate, props.profile.playRate.data.impressions) : 0}/>
+                        <DoughnutChart value={props.profile.impressions? getPercentage(props.profile.videoPlays, props.profile.impressions) : 0}/>
                     </div>
                 </WidgetElement>
-                <WidgetElement loading={props.profile.topVideos.loading} failed={props.profile.topVideos.failed} className={classItemFullWidth}>
+                <WidgetElement failed={!props.profile.topVideos} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
                     </WidgetHeader>
@@ -84,7 +84,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                             </thead>
                             <tbody>
                                 {
-                                    props.profile.topVideos.data && props.profile.topVideos.data.map((value, key) => {
+                                    props.profile.topVideos && props.profile.topVideos.map((value, key) => {
                                         return (
                                             <tr key={value.viewers+"-"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>
