@@ -3,37 +3,24 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { getLiveEngagementSettingsAction, Action, saveLiveEngagementSettingsAction, saveLiveAdAction, createLiveAdAction, deleteLiveAdAction, getUploadUrlAction, uploadLiveImageAction, deleteLiveImageAction } from '../../redux-flow/store/Live/Engagement/actions';
-import { Ad, ContentEngagementSettings, ContentEngagementSettingsState, InteractionsInfos } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
+import { ContentEngagementComponentProps } from '../Playlists/Engagement';
+import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 
-export interface LiveEngagementComponentProps {
-    liveEngagementSettings: ContentEngagementSettings;
-    liveEngagementSettingsState: ContentEngagementSettingsState;
-    globalEngagementSettings: InteractionsInfos;
-    getLiveEngagementSettings: (liveId: string) => Promise<void>;
-    saveLiveEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
-    saveLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    createLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    deleteLiveAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
-    uploadLiveImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteLiveImage: (targetId: string) => Promise<void>;
-    getGlobalEngagementSettings: () => Promise<void>;
-}
 
-export const LiveEngagement = (props: LiveEngagementComponentProps) => {
+export const LiveEngagement = (props: ContentEngagementComponentProps) => {
 
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if (!props.liveEngagementSettingsState[liveId]) {
-            props.getLiveEngagementSettings(liveId);
-        }
+        props.getContentEngagementSettings(liveId, 'live');
         if (!props.globalEngagementSettings){
             props.getGlobalEngagementSettings()
         }
@@ -43,18 +30,19 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
         <>
             <LiveTabs liveId={liveId} />
             {
-                props.liveEngagementSettingsState[liveId] && props.globalEngagementSettings ?
+                props.contentEngagementState['live'] && props.contentEngagementState['live'][liveId] && props.globalEngagementSettings ?
                     <div className='flex flex-column'>
                         <ContentEngagementPage
-                            contentEngagementSettings={props.liveEngagementSettingsState[liveId]}
-                            getContentEngagementSettings={props.getLiveEngagementSettings}
-                            saveContentEngagementSettings={props.saveLiveEngagementSettings}
-                            saveContentAd={props.saveLiveAd}
-                            createContentAd={props.createLiveAd}
-                            deleteContentAd={props.deleteLiveAd}
+                            contentEngagementSettings={props.contentEngagementState['live'][liveId]}
+                            getContentEngagementSettings={props.getContentEngagementSettings}
+                            saveContentEngagementSettings={props.saveContentEngagementSettings}
+                            lockSection={props.lockSection}
+                            saveContentAd={props.saveContentAd}
+                            createContentAd={props.createContentAd}
+                            deleteContentAd={props.deleteContentAd}
                             getUploadUrl={props.getUploadUrl}
-                            uploadContentImage={props.uploadLiveImage}
-                            deleteContentImage={props.deleteLiveImage}
+                            uploadContentImage={props.uploadContentImage}
+                            deleteContentImage={props.deleteContentImage}
                             contentType='live'
                             contentId={liveId}
                             globalEngagementSettings={props.globalEngagementSettings}
@@ -68,39 +56,45 @@ export const LiveEngagement = (props: LiveEngagementComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        liveEngagementSettingsState: state.live.engagement,
+        contentEngagementState: state.content.engagement,
         globalEngagementSettings: state.settings.interactions
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveEngagementSettings: async (liveId: string) => {
-            await dispatch(getLiveEngagementSettingsAction(liveId));
-        },
-        getGlobalEngagementSettings: async  () => {
+        getGlobalEngagementSettings: async () => {
             await dispatch(getSettingsInteractionsInfosAction());
         },
-        saveLiveEngagementSettings: async (data: ContentEngagementSettings) => {
-            await dispatch(saveLiveEngagementSettingsAction(data))
+        getContentEngagementSettings: async (contentId: string, contentType: string) => {
+            await dispatch(getContentEngagementSettingsAction(contentId, contentType));
         },
-        saveLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
-            await dispatch(saveLiveAdAction(data, adsId, liveId))
+        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
+            await dispatch(saveContentEngagementSettingsAction(data, contentType))
         },
-        createLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
-            await dispatch(createLiveAdAction(data, adsId, liveId))
+        lockSection: async (section: string, contentId: string, contentType: string, unlock?: boolean) => {
+            await dispatch(lockSectionAction(section, contentId, contentType, unlock))
         },
-        deleteLiveAd: async (data: Ad[], adsId: string, liveId: string) => {
-            await dispatch(deleteLiveAdAction(data, adsId, liveId))
+        saveContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(saveContentAdAction(data, contentId, contentType))
         },
-        getUploadUrl: async (uploadType: string, liveId: string) => {
-            await dispatch(getUploadUrlAction(uploadType, liveId))
+        createContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(createContentAdAction(data, contentId, contentType))
         },
-        uploadLiveImage: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadLiveImageAction(data, uploadUrl))
+        deleteContentAd: async (data: Ad[], contentId: string, contentType: string) => {
+            await dispatch(deleteContentAdAction(data, contentId, contentType))
         },
-        deleteLiveImage: async (targetId: string) => {
-            await dispatch(deleteLiveImageAction(targetId))
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
+        },
+        getUploadUrl: async (uploadType: string, contentId: string, contentType: string) => {
+            await dispatch(getUploadUrlAction(uploadType, contentId, contentType))
+        },
+        uploadContentImage: async (data: File, uploadUrl: string) => {
+            await dispatch(uploadContentImageAction(data, uploadUrl))
+        },
+        deleteContentImage: async (targetId: string, contentType: string) => {
+            await dispatch(deleteContentImageAction(targetId, contentType))
         }
     };
 };

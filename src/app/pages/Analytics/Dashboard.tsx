@@ -59,19 +59,18 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
             <DateFilteringAnalytics defaultDates={dates} refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="consumptionPerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.consumptionPerTime? props.dashboardAnalytics.data.consumptionPerTime.data: [], props.dashboardAnalytics.data.consumptionPerTime && props.dashboardAnalytics.data.consumptionPerTime.time  ? labelsFormate(props.dashboardAnalytics.data.consumptionPerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.consumptionPerTime} infoText="How much data is consumed over time" title="Consumption by Time">
+                    <AnalyticsCard dataName="playtimePerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.playtimePerTime? props.dashboardAnalytics.data.playtimePerTime.data: [], props.dashboardAnalytics.data.playtimePerTime && props.dashboardAnalytics.data.playtimePerTime.time  ? labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.playtimePerTime} infoText="How much data is consumed over time" title="Play time by Time">
                         {
-                            props.dashboardAnalytics.data.consumptionPerTime ?
-                                props.dashboardAnalytics.data.consumptionPerTime.data.failed ?
+                            props.dashboardAnalytics.data.playtimePerTime ?
+                                props.dashboardAnalytics.data.playtimePerTime.failed ?
                                     <FailedCardAnalytics />
                                     :
                                     <BarChart
-                                        datasetName="GBytes"
+                                        datasetName="Seconds"
                                         beginAtZero={true}
-                                        data={props.dashboardAnalytics.data.consumptionPerTime.data}
-                                        yAxesName="GB"
-                                        displayFromMb
-                                        labels={labelsFormate(props.dashboardAnalytics.data.consumptionPerTime.time)} />
+                                        data={props.dashboardAnalytics.data.playtimePerTime.data}
+                                        yAxesName="sec"
+                                        labels={labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
@@ -81,7 +80,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
                         {
                             props.dashboardAnalytics.data.playsViewersPerTime ?
-                                props.dashboardAnalytics.data.playsViewersPerTime.data.failed ?
+                                props.dashboardAnalytics.data.playsViewersPerTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <DoubleLineChart
                                         datasetName="Hits"
@@ -90,9 +89,9 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                                         yAxesName="Plays and viewers"
                                         datasetName1="plays"
                                         datasetName2="viewers"
-                                        data1={props.dashboardAnalytics.data.playsViewersPerTime.data.plays.data}
-                                        data2={props.dashboardAnalytics.data.playsViewersPerTime.data.viewers.data}
-                                        labels={labelsFormate(props.dashboardAnalytics.data.playsViewersPerTime.data.plays.time)} /> :
+                                        data1={props.dashboardAnalytics.data.playsViewersPerTime.plays.data}
+                                        data2={props.dashboardAnalytics.data.playsViewersPerTime.viewers.data}
+                                        labels={labelsFormate(props.dashboardAnalytics.data.playsViewersPerTime.plays.time)} /> :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
                     </AnalyticsCard>

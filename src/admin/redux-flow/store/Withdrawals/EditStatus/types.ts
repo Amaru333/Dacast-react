@@ -6,7 +6,7 @@ export enum ActionTypes {
 
 export interface WithdrawalData {
     id: string;
-    rtn: string;
+    routingNumber: string;
     accountNumber: number;
     ownerLastName: string;
     ownerFirstName: string;
@@ -23,7 +23,6 @@ export interface WithdrawalInfo {
     accountId: string;
     amount: number;
     requestedDate: number;
-    previous: number;
     completed: boolean;
     method: string;
     recurlyId: string;

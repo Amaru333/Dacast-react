@@ -16,33 +16,41 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
     React.useEffect(() => {
     }, [props.liveList])
 
-    const [selectedContent, setSelectedContent] = React.useState<string>("")
+    const [selectedContent, setSelectedContent] = React.useState<string>(props.liveList.results.length ? props.liveList.results[0].objectID : '')
     const handleReload = () => {
-        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
+        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.objectID == selectedContent) : false;
         if(selectedChannelFilter) {
             console.log(selectedChannelFilter)
-            let selectedChannelId = '~'+selectedChannelFilter[0].objectID;
-            props.getAnalyticsRealTimeJobIds({period: timePeriod, contentIDs:  selectedChannelId ? selectedChannelId : null })
+            let selectedChannelId = selectedChannelFilter[0].objectID;
+            props.getAnalyticsRealTime({period: timePeriod, channelId:  selectedChannelId ? selectedChannelId : null })
         } else {
-            props.getAnalyticsRealTimeJobIds({period: timePeriod})
+            props.getAnalyticsRealTime({period: timePeriod})
         }
     }
     const handleTimePeriodsUpdate = (name: string) => {
         switch (name) {
             case '5 Minutes':
                 setTimePeriod(5);
+                break;
             case '15 Minutes':
                 setTimePeriod(15);
+                break;
             case '30 Minutes':
                 setTimePeriod(30);
+                break;
             case '45 Minutes':
+                console.log("test");
                 setTimePeriod(45);
+                break;
             case '1 Hour':
                 setTimePeriod(60);
+                break;
             case '1.5 Hour':
                 setTimePeriod(90);
+                break;
             case '2 Hours':
                 setTimePeriod(120);
+                break;
         }
 
     }
@@ -51,7 +59,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             <div className="flex items-end col col-12 mb25">
                 <DropdownSingle
                     id='timeRefreshDropdown'
-                    callback={(name: string) => { handleTimePeriodsUpdate(name) }}
+                    callback={(name: string) => { console.log(name); handleTimePeriodsUpdate(name) }}
                     isInModal={false}
                     isWhiteBackground
                     defaultSelected="5 Minutes"
@@ -67,7 +75,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         className='col sm-col-3 col-5 px1'
                         dropdownTitle='Live Channel'
                         defaultSelected={props.liveList.results[0].title}
-                        callback={(name: string) => {setSelectedContent(name)}}
+                        callback={(name: string) => {;setSelectedContent(name)}}
                         list={props.liveList.results.reduce((reduced: DropdownListType, item: LiveItem) => { return { ...reduced, [item.title]: false } }, {})}
                     /> : null
                 }
@@ -76,10 +84,10 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="The number of viewers consuming your content at the same time" title="Concurent Viewers by Time (UTC)">
+                    <AnalyticsCard realTime dataName="concurentViewersPerTime" data={props.realTimeAnalytics.data.concurentViewersPerTime} infoText="The number of viewers consuming your content at the same time" title="Concurent Viewers by Time">
                         {
                             props.realTimeAnalytics.data.concurentViewersPerTime ?
-                                props.realTimeAnalytics.data.concurentViewersPerTime.data.failed ?
+                                props.realTimeAnalytics.data.concurentViewersPerTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
@@ -93,36 +101,35 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="newPlaybackSessionsPerTime" data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime} infoText="The number of new viewers who haven't consumed your content before" title="New Playback Sessions by Time (UTC)">
-                        {console.log(props.realTimeAnalytics.data.newPlaybackSessionsPerTime)}
+                    <AnalyticsCard realTime dataName="playsPerRealTime" data={props.realTimeAnalytics.data.playsPerRealTime} infoText="The number of new viewers who haven't consumed your content before" title="Plays by Time">
+                        {console.log(props.realTimeAnalytics.data.playsPerRealTime)}
                         {
-                            props.realTimeAnalytics.data.newPlaybackSessionsPerTime ?
-                                props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data.failed ?
+                            props.realTimeAnalytics.data.playsPerRealTime ?
+                                props.realTimeAnalytics.data.playsPerRealTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.newPlaybackSessionsPerTime.data}
-                                        datasetName="New Playback Sessions"
-                                        yAxesName="New Playback Sessions"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.newPlaybackSessionsPerTime.time)} />
+                                        data={props.realTimeAnalytics.data.playsPerRealTime.data}
+                                        datasetName="Plays"
+                                        yAxesName="Plays"
+                                        labels={labelsFormate(props.realTimeAnalytics.data.playsPerRealTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="gbPerTime" data={props.realTimeAnalytics.data.gbPerTime} infoText="Data consumption over time" title="GBytes by Time (UTC)">
+                    <AnalyticsCard realTime dataName="playtimePerTime" data={props.realTimeAnalytics.data.playtimePerTime} infoText="Data consumption over time" title="Play time per Time">
                         {
-                            props.realTimeAnalytics.data.gbPerTime && props.realTimeAnalytics.data.gbPerTime.data ?
-                                props.realTimeAnalytics.data.gbPerTime.data.failed ?
+                            props.realTimeAnalytics.data.playtimePerTime && props.realTimeAnalytics.data.playtimePerTime.data ?
+                                props.realTimeAnalytics.data.playtimePerTime.failed ?
                                     <FailedCardAnalytics /> :
                                     <BarChart
-                                        datasetName="GBytes"
-                                        displayFromMb
+                                        datasetName="Seconds"
                                         beginAtZero={true}
-                                        data={props.realTimeAnalytics.data.gbPerTime.data}
-                                        yAxesName="GB"
-                                        labels={labelsFormate(props.realTimeAnalytics.data.gbPerTime.time)} />
+                                        data={props.realTimeAnalytics.data.playtimePerTime.data}
+                                        yAxesName="sec"
+                                        labels={labelsFormate(props.realTimeAnalytics.data.playtimePerTime.time)} />
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
@@ -130,12 +137,12 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard realTime dataName="consumptionPerLocation" data={props.realTimeAnalytics.data.consumptionPerLocation} infoText="Where viewers are consuming your data" title="Consumption by Location">
+                    <AnalyticsCard realTime dataName="playsPerLocation" data={props.realTimeAnalytics.data.playsPerLocation} infoText="Where viewers are consuming your data" title="Plays by Location">
                         {
-                            props.realTimeAnalytics.data.consumptionPerLocation ?
-                                props.realTimeAnalytics.data.consumptionPerLocation.failed ?
+                            props.realTimeAnalytics.data.playsPerLocation ?
+                                props.realTimeAnalytics.data.playsPerLocation.failed ?
                                     <FailedCardAnalytics /> :
-                                    renderMap(props.realTimeAnalytics.data.consumptionPerLocation.data, 'realTimeAnalyticsConsumptionPerLocation')
+                                    renderMap(props.realTimeAnalytics.data.playsPerLocation.data, 'realTimeAnalyticsplaysPerLocation', false)
                                 :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }

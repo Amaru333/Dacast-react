@@ -58,6 +58,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setSubmitLoading(true);
         let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
         let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        debugger
         props.saveSettingsSecurityOptions(
             {
                 ...securityDetails, 
@@ -68,11 +69,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     endTime: endTimeTs,
                     endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
                 } 
-            }, () => {
+            }).then(() => {
                 setSubmitLoading(false);
                 setDisplayformActionButtons(false);
-            }
-        )
+            }).catch(() => setSubmitLoading(false))
     }
 
     const domainControlEmptyValues: DomainControl = {

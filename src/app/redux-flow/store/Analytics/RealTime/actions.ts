@@ -1,4 +1,4 @@
-import { ActionTypes, AnalyticsRealTimeInfos, AnalyticsRealTimePlaybackTime, AnalyticsRealTimeViewersTime, AnalyticsRealTimeGbTime, AnalyticsRealTimeConsumptionLocation, GetAnalyticsRealtimeOptions } from "./types";
+import { ActionTypes } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { AnalyticsRealTimeServices } from './services';
@@ -13,8 +13,8 @@ export const getAnalyticsRealTimeAction = (options?: any): ThunkDispatch<Promise
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRealtime> ) => {
         await AnalyticsRealTimeServices.getAnalyticsRealTime(options)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME, payload: response.data} );
-            }).catch(() => {
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME, payload: { data: response.data } } );
+            }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME, payload: {data: {failed: true}}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

@@ -11,7 +11,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { TextStyle, AdTableURLContainer } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { InteractionsInfos, Ad } from '../../../redux-flow/store/Settings/Interactions';
+import { EngagementInfo, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
@@ -39,7 +39,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
-    const [interactionInfos, setInteractionsInfos] = React.useState<InteractionsInfos>(props.interactionsInfos);
+    const [interactionInfos, setInteractionsInfos] = React.useState<EngagementInfo>(props.interactionsInfos);
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [selectedMailCatcher, setSelectedMailCatcher] = React.useState<MailCatcher>(emptyMailCatcher)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
@@ -68,7 +68,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false);
 
 
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.interactionsInfos.brandImageURL);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.interactionsInfos.brandImageSettings.brandImageURL || '');
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
 
@@ -114,7 +114,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(interactionInfos.brandImageID).then(() => {
+        props.deleteFile(interactionInfos.brandImageSettings.brandImageURL).then(() => {
             setTimeout(() => {
                 props.getInteractionsInfos()
             }, 3000)
@@ -149,7 +149,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
 
     const advertisingTableHeader = () => {
-        if (props.interactionsInfos.ads.length > 0) {
+        if (props.interactionsInfos.adsSettings.ads.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -177,7 +177,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }
 
     const advertisingTableBody = () => {
-        return props.interactionsInfos.ads.map((item, i) => {
+        return props.interactionsInfos.adsSettings.ads.map((item, i) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
@@ -187,7 +187,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
-                            <IconStyle id={'adTableCopy' + i} onClick={() => { console.log('filter', props.interactionsInfos.ads.filter(ad => ad !== item)); props.deleteAd(props.interactionsInfos.ads.filter(ad => ad !== item), props.interactionsInfos.adsId) }} >delete</IconStyle>
+                            <IconStyle id={'adTableCopy' + i} onClick={() => { console.log('filter', props.interactionsInfos.adsSettings.ads.filter(ad => ad !== item)); props.deleteAd(props.interactionsInfos.adsSettings.ads.filter(ad => ad !== item)) }} >delete</IconStyle>
                             <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -200,50 +200,47 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         })
     }
 
-    const mailCatcherTableHeader = () => {
-        if (props.interactionsInfos.mailCatcher.length > 0) {
-            return {
-                data: [
-                    { cell: <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text> },
-                    { cell: <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text> },
-                    { cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newMailCatcher() }}>Add Email Catcher</Button> }
-                ]
-            }
-        } else {
-            return {
-                data: [
-                    { cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newMailCatcher() }}>Add Email Catcher</Button> }
-                ]
-            }
-        }
-    }
+    // const mailCatcherTableHeader = () => {
+    //     if (props.interactionsInfos.mailCatcher) {
+    //         return {
+    //             data: [
+    //                 { cell: <Text key='MailCatcherTableHeaderTypeCell' size={14} weight='med'>Type</Text> },
+    //                 { cell: <Text key='MailCatcherTableHeaderDefaultCell' size={14} weight='med'>Default</Text> },
+    //                 { cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newMailCatcher() }}>Add Email Catcher</Button> }
+    //             ]
+    //         }
+    //     } else {
+    //         return {
+    //             data: [
+    //                 { cell: <Button key='MailCatcherTableHeaderActionButtonCell' className='right sm-show mr2' typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newMailCatcher() }}>Add Email Catcher</Button> }
+    //             ]
+    //         }
+    //     }
+    // }
 
-    const mailCatcherTableBody = () => {
-        return props.interactionsInfos.mailCatcher.map((row, i) => {
-            return {
-                data: [
-                    <Text key={row.type + i.toString()} size={14} weight="reg" color="gray-1">{row.type}</Text>,
-                    row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
-                    <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}>
-                        <ActionIcon>
-                            <IconStyle id={'mailTableCopy' + i} onClick={() => { props.deleteMailCatcher(row) }} >delete</IconStyle>
-                            <Tooltip target={'mailTableCopy' + i}>Delete</Tooltip>
-                        </ActionIcon>
-                        <ActionIcon>
-                            <IconStyle id={'mailTableEdit' + i} onClick={() => editMailCatcher(row)}>edit</IconStyle>
-                            <Tooltip target={'mailTableEdit' + i}>Edit</Tooltip>
-                        </ActionIcon>
+    // const mailCatcherTableBody = () => {
+    //     return props.interactionsInfos.mailCatcher.map((row, i) => {
+    //         return {
+    //             data: [
+    //                 <Text key={row.type + i.toString()} size={14} weight="reg" color="gray-1">{row.type}</Text>,
+    //                 row.isDefault ? <IconStyle coloricon='green' key={'mailCatcherTableBodyIsDefaultCell' + i.toString()}>checked</IconStyle> : <></>,
+    //                 <IconContainer className="iconAction" key={'mailCatcherTableActionButtons' + i.toString()}>
+    //                     <ActionIcon>
+    //                         <IconStyle id={'mailTableCopy' + i} onClick={() => { props.deleteMailCatcher(row) }} >delete</IconStyle>
+    //                         <Tooltip target={'mailTableCopy' + i}>Delete</Tooltip>
+    //                     </ActionIcon>
+    //                     <ActionIcon>
+    //                         <IconStyle id={'mailTableEdit' + i} onClick={() => editMailCatcher(row)}>edit</IconStyle>
+    //                         <Tooltip target={'mailTableEdit' + i}>Edit</Tooltip>
+    //                     </ActionIcon>
 
 
-                    </IconContainer>
+    //                 </IconContainer>
 
-                ]
-            }
-        })
-    }
-
-    React.useEffect(() => console.log("component props", props.interactionsInfos), [props.interactionsInfos])
-
+    //             ]
+    //         }
+    //     })
+    // }
 
     return (
         <div>
@@ -251,8 +248,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Text className="pb2" size={20} weight='med'>Advertising</Text>
-                    <DisabledSection settingsEditable={props.interactionsInfos.ads.length > 0}>
-                        <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adsEnabled} onChange={() => { setInteractionsInfos({ ...interactionInfos, adsEnabled: !interactionInfos.adsEnabled }); setSettingsEdited(true) }} label='Advertising enabled' />
+                    <DisabledSection settingsEditable={props.interactionsInfos.adsSettings.ads.length > 0}>
+                        <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adsSettings.adsEnabled} onChange={() => { setInteractionsInfos({ ...interactionInfos, adsSettings: {...interactionInfos.adsSettings, adsEnabled: !interactionInfos.adsSettings.adsEnabled }}); setSettingsEdited(true) }} label='Advertising enabled' />
                     </DisabledSection>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex mb2'>
@@ -263,7 +260,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPreviewModalOpen(true) }}>Preview</Button>
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                     </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                 </Card>}
             {/* TODO: MAIL CATCHER
@@ -317,11 +314,11 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                     </div>
                     <div className="col col-6">
-                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={props.interactionsInfos.brandImagePosition ? props.interactionsInfos.brandImagePosition : 'Top Right'}
-                        callback={(value: string) => {setInteractionsInfos({...interactionInfos, brandImagePosition: value});setSettingsEdited(true)}}></DropdownSingle>
-                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSize && props.interactionsInfos.brandImageSize.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImagePadding && props.interactionsInfos.brandImagePadding.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageLink && props.interactionsInfos.brandImageLink} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
+                        <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={props.interactionsInfos.brandImageSettings.brandImagePosition || 'Top Right'}
+                        callback={(value: string) => {setInteractionsInfos({...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImagePosition: value}});setSettingsEdited(true)}}></DropdownSingle>
+                        <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSettings.brandImageSize && props.interactionsInfos.brandImageSettings.brandImageSize.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImageSize: event.currentTarget.value} });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                        <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImageSettings.brandImagePadding && props.interactionsInfos.brandImageSettings.brandImagePadding.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImagePadding: event.currentTarget.value} });setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageSettings.brandImageLink && props.interactionsInfos.brandImageSettings.brandImageLink} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImageLink: event.currentTarget.value }});setSettingsEdited(true)}} />
                     </div>
                 </div>
 
@@ -332,18 +329,18 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                 <div className='clearfix mb2'>
                     <Input
-                        disabled={interactionInfos.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
+                        disabled={interactionInfos.brandTextSettings.isBrandTextAsTitle} className='xs-mb2 pr1 col xs-no-gutter col-12 md-col-8'
                         label='Brand Text'
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
-                        value={interactionInfos.brandText ? interactionInfos.brandText : ""}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandTextSettings: {...interactionInfos.brandTextSettings, brandText: event.currentTarget.value }}); setSettingsEdited(true) }}
+                        value={ interactionInfos.brandTextSettings.brandText || ""}
                     />
                     <Input
                         className='pl1 col col-12 md-col-4 xs-no-gutter'
                         label='Brand Text Link'
-                        value={interactionInfos.brandTextLink ? interactionInfos.brandTextLink : ""}
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
+                        value={interactionInfos.brandTextSettings.brandTextLink || ""}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandTextSettings: {...interactionInfos.brandTextSettings, brandTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                 </div>
-                <Toggle className='' label='Use content title as Brand Text' defaultChecked={interactionInfos.isBrandTextAsTitle} onChange={() => { setInteractionsInfos({ ...interactionInfos, isBrandTextAsTitle: !interactionInfos.isBrandTextAsTitle }); setSettingsEdited(true) }} />
+                <Toggle className='' label='Use content title as Brand Text' defaultChecked={interactionInfos.brandTextSettings.isBrandTextAsTitle} onChange={() => { setInteractionsInfos({ ...interactionInfos, brandTextSettings: {...interactionInfos.brandTextSettings, isBrandTextAsTitle: !interactionInfos.brandTextSettings.isBrandTextAsTitle }}); setSettingsEdited(true) }} />
             </Card>
 
             <Card className='my2'>
@@ -353,14 +350,14 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         className='xs-no-gutter pr1 col col-12 md-col-8'
                         label='End Screen Text'
-                        value={interactionInfos.endScreenText ? interactionInfos.endScreenText : ""}
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, endScreenText: event.currentTarget.value }); setSettingsEdited(true) }}
+                        value={interactionInfos.endScreenSettings.endScreenText || ""}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, endScreenSettings: {...interactionInfos.endScreenSettings, endScreenText: event.currentTarget.value }}); setSettingsEdited(true) }}
                     />
                     <Input
                         className='xs-no-gutter pl1 col col-12 md-col-4'
                         label='End Screen Text Link'
-                        value={interactionInfos.endScreenTextLink ? interactionInfos.endScreenTextLink : ""}
-                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, endScreenTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
+                        value={interactionInfos.endScreenSettings.endScreenTextLink || ""}
+                        onChange={(event) => { setInteractionsInfos({ ...interactionInfos, endScreenSettings: {...interactionInfos.endScreenSettings, endScreenTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                 </div>
             </Card>
 
@@ -388,7 +385,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             {
                 previewModalOpen && <PreviewModal contentId='1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22' toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }
-            <Prompt when={interactionInfos !== props.interactionsInfos} message='' />
+            <Prompt when={settingsEdited} message='' />
         </div>
     )
 }

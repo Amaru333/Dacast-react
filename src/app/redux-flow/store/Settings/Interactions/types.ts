@@ -26,48 +26,54 @@ export interface Ad {
     url: string;
 }
 
-export interface InteractionsInfos {
-    adsId?: string;
-    adsEnabled: boolean;
-    ads: Ad[];
-    mailCatcher?: MailCatcher[];
-    selectedMailCatcher?: string;
-    brandImageURL: string;
-    brandText: string;
-    brandTextLink: string;
-    isBrandTextAsTitle: boolean;
-    endScreenText: string;
-    endScreenTextLink: string;
-    brandImagePosition: string;
-    brandImagePadding: number;
-    brandImageText: string;
-    brandImageLink?: string;
-    brandImageID?: string;
-    brandImageSize: number;
-    uploadurl?: string;
+export const interactionsDefaultState: EngagementInfo = {
+    brandTextSettings: null,
+    endScreenSettings: null,
+    brandImageSettings: null,
+    adsSettings: null,
+    uploadurl: null,
 }
 
-export const interactionsDefaultState: InteractionsInfos = {
-    adsEnabled: false,
-    ads: [],
-    mailCatcher: [],
-    brandImageURL: null,
-    brandText: null,
-    brandTextLink: null,
-    isBrandTextAsTitle: false,
-    endScreenText: null,
-    endScreenTextLink: null,
-    brandImagePosition: null,
-    brandImagePadding: 0,
-    brandImageText: null,
-    brandImageLink: null,
-    brandImageSize: 0,
-    uploadurl: null
+interface BrandTextSettings {
+    brandText: string;
+    brandTextLink: string;
+    isBrandTextAsTitle?: boolean;
+    locked: boolean;
+}
+
+interface EndScreenSettings {
+    endScreenText: string;
+    endScreenTextLink: string;
+    locked: boolean;
+}
+
+interface BrandImageSettings {
+    brandImagePadding: string;
+    brandImageSize: string;
+    brandImagePosition: string;
+    brandImageLink: string;
+    locked: boolean;
+    brandImageURL: string;
+}
+
+interface AdsSettings {
+    adsEnabled: boolean;
+    ads: Ad[];
+    locked: boolean;
+}
+
+export interface EngagementInfo {
+    brandTextSettings?: BrandTextSettings;
+    endScreenSettings?: EndScreenSettings;
+    brandImageSettings?: BrandImageSettings;
+    adsSettings?: AdsSettings;
+    mailCatcher?: MailCatcher;
+    uploadurl?: string;
 }
 
 export interface ContentEngagementSettings {
     contentId: string;
-    engagementSettings: InteractionsInfos;
+    engagementSettings: EngagementInfo;
 }
 
 export interface ContentEngagementSettingsState {[key: string]: ContentEngagementSettings};

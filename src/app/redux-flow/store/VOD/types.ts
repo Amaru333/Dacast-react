@@ -3,8 +3,8 @@ import { combineReducers, Reducer } from 'redux';
 import { ChapterMarkerInfosState } from './Chapters/types';
 import { ChaptersReducer } from './Chapters/reducer';
 import { VodSecurityReducer } from './Security';
-import { SearchResult, VodDetailsState } from './General/types';
-import { GeneralReducer, reducerList } from './General/reducer';
+import { SearchResult, VodDetailsState, ContentDetailsState } from './General/types';
+import {reducerList } from './General/reducer';
 import { RenditionsReducer } from './Renditions/reducer';
 import { RenditionsListState } from './Renditions/types';
 import { VodThemingReducer } from './Theming/reducer';
@@ -14,6 +14,7 @@ import { ContentThemeState } from '../Settings/Theming/types';
 import { ContentEngagementSettingsState } from '../Settings/Interactions';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentPaywallState } from '../Paywall/Presets/types'
+import { GeneralReducer } from '../Content/General/reducer';
 
 
 export const vodInitialState: VodState = {
@@ -31,7 +32,7 @@ export const vodInitialState: VodState = {
 export interface  VodState {
     chapters: ChapterMarkerInfosState;
     security: ContentSecuritySettingsState;
-    general: VodDetailsState;
+    general: ContentDetailsState;
     list: false | SearchResult;
     renditions: RenditionsListState;
     theming: ContentThemeState;

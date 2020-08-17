@@ -27,6 +27,11 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
+        console.log('upload url', props.uploadUrl)
+        console.log('logo', logoFile)
+    }, [props.uploadUrl, logoFile])
+
+    React.useEffect(() => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
         } else { 
@@ -66,22 +71,22 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
         if(!saveButtonLoading && !isSaveDisabled) {
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], () => {})
+                props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], props.contentType)
             } else {
                 props.uploadFromVideoAction(props.contentId, player.getPlayerInstance().currentTime, props.imageType).then(() => {
-                    props.getContentDetails(props.contentId)
+                    props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
                     props.toggle()
-                }, 3000)
+                }, 4000)
             }    
         }
     }
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType).then(() => {
+            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType, props.contentType).then(() => {
                 setTimeout(() => {
-                    props.getContentDetails(props.contentId)
+                    props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
                     props.toggle()
                 }, 3000)

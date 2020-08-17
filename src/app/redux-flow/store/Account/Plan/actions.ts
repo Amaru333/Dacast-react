@@ -135,8 +135,6 @@ export const purchaseProductsAction = (data: Extras, recurlyToken: string, token
                 callback(response);
             }).catch((error) => {
                 fallback(error);
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                console.log('error', error)
             })
     };
 }

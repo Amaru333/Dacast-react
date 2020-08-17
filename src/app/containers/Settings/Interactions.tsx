@@ -4,16 +4,16 @@ import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions';
-import { getSettingsInteractionsInfosAction, Action, InteractionsInfos, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
+import { getSettingsInteractionsInfosAction, Action, EngagementInfo, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface SettingsInteractionComponentProps {
-    interactionsInfos: InteractionsInfos;
+    interactionsInfos: EngagementInfo;
     getInteractionsInfos: () => Promise<void>;
-    saveInteractionsInfos: (data: InteractionsInfos) => Promise<void>;
-    saveAd: (data: Ad[], adsId: string) => Promise<void>;
-    createAd: (data: Ad[], adsId: string) => Promise<void>;
-    deleteAd: (data: Ad[], adsId: string) => Promise<void>;
+    saveInteractionsInfos: (data: EngagementInfo) => Promise<void>;
+    saveAd: (data: Ad[]) => Promise<void>;
+    createAd: (data: Ad[]) => Promise<void>;
+    deleteAd: (data: Ad[]) => Promise<void>;
     saveMailCatcher: Function;
     createMailCatcher: Function;
     deleteMailCatcher: Function;
@@ -49,17 +49,17 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getInteractionsInfos: () => {
             dispatch(getSettingsInteractionsInfosAction());
         },
-        saveInteractionsInfos: async (data: InteractionsInfos) => {
+        saveInteractionsInfos: async (data: EngagementInfo) => {
             await dispatch(saveSettingsInteractionsInfosAction(data))
         },
-        saveAd: async (data: Ad[], adsId: string) => {
-           await dispatch(saveAdAction(data, adsId))
+        saveAd: async (data: Ad[]) => {
+           await dispatch(saveAdAction(data))
         },
-        createAd: async (data: Ad[], adsId: string) => {
-            await dispatch(createAdAction(data, adsId))
+        createAd: async (data: Ad[]) => {
+            await dispatch(createAdAction(data))
         },
-        deleteAd: async (data: Ad[], adsId: string) => {
-            await dispatch(deleteAdAction(data, adsId))
+        deleteAd: async (data: Ad[]) => {
+            await dispatch(deleteAdAction(data))
         },
         getUploadUrl: async (uploadType: string) => {
             await dispatch(getUploadUrlAction(uploadType))

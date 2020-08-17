@@ -9,7 +9,7 @@ import { TextStyle, Header, DisabledSection, AdTableURLContainer } from './Engag
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
-import { Ad, MailCatcher, InteractionsInfos, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, MailCatcher, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentNewAdModal } from './ContentNewAdModal';
@@ -26,17 +26,18 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
-    globalEngagementSettings: InteractionsInfos;
+    globalEngagementSettings: EngagementInfo;
     contentType?: string;
     contentId: string;
-    getContentEngagementSettings: (contentId: string) => Promise<void>;
-    saveContentEngagementSettings: (data: ContentEngagementSettings) => Promise<void>;
-    saveContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    createContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    deleteContentAd: (data: Ad[], adsId: string, contentId: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string) => Promise<void>;
+    getContentEngagementSettings: (contentId: string, contentType: string) => Promise<void>;
+    saveContentEngagementSettings: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
+    lockSection: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>;
+    saveContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
+    createContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
+    deleteContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>;
     uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteContentImage: (targetId: string) => Promise<void>;
+    deleteContentImage: (contentId: string, contentType: string) => Promise<void>;
 }
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
@@ -49,19 +50,14 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }
 
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
-    const [engagementSettings, setEngagementSettings] = React.useState<InteractionsInfos>(props.contentEngagementSettings.engagementSettings);
+    const [engagementSettings, setEngagementSettings] = React.useState<EngagementInfo>(props.contentEngagementSettings.engagementSettings);
     const [selectedAd, setSelectedAd] = React.useState<Ad>(emptyAd)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false);
-    const [adSectionEditable, setAdSectionEditable] = React.useState<boolean>(false);
-    const [mailSectionEditable, setMailSectionEditable] = React.useState<boolean>(false);
-    const [brandSectionEditable, setBrandSectionEditable] = React.useState<boolean>(false);
-    const [endScreenSectionEditable, setEndScreenSectionEditable] = React.useState<boolean>(false);
     const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
-    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.contentEngagementSettings.engagementSettings.brandImageURL);
+    const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.contentEngagementSettings.engagementSettings.brandImageSettings.brandImageURL || null);
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [logoFile, setLogoFile] = React.useState<File>(null);
-    const [brandImageSectionEditable, setBrandImageSectionEditable] = React.useState<boolean>(false)
 
     let brandImageBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let brandImageChangeButtonRef = React.useRef<HTMLInputElement>(null)
@@ -81,7 +77,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark', props.contentId);
+                    props.getUploadUrl('player-watermark', props.contentId, props.contentType);
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
@@ -104,7 +100,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteContentImage(props.contentId);
+        props.deleteContentImage(props.contentId, props.contentType);
     }
 
     React.useEffect(() => {
@@ -112,7 +108,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
                 setUploadButtonLoading(false)
                 setTimeout(() => {
-                    props.getContentEngagementSettings(props.contentId)
+                    props.getContentEngagementSettings(props.contentId, props.contentType)
                 }, 3000)
             })    
         }
@@ -131,38 +127,6 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         }
         return a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]))
     }
-        
-  
-    React.useEffect(() => {
-        const {brandImageURL, brandImagePadding, brandImagePosition, brandImageText, brandImageSize, brandText, brandTextLink, isBrandTextAsTitle, endScreenText, endScreenTextLink} = props.contentEngagementSettings.engagementSettings
-       let tempSettings: InteractionsInfos = engagementSettings
-        if(props.contentEngagementSettings.engagementSettings.adsId){
-            setAdSectionEditable(true)
-            tempSettings = {...tempSettings, adsEnabled: props.contentEngagementSettings.engagementSettings.adsEnabled, ads: props.contentEngagementSettings.engagementSettings.ads, adsId: props.contentEngagementSettings.engagementSettings.adsId}
-        } else {
-            tempSettings = {...tempSettings, adsEnabled: props.globalEngagementSettings.adsEnabled, ads: props.globalEngagementSettings.ads}
-        }
-        if(brandImageURL || brandImagePadding || brandImagePosition || brandImageText || brandImageSize ){
-            setBrandImageSectionEditable(true)
-            tempSettings = {...tempSettings, brandImageID: props.contentEngagementSettings.engagementSettings.brandImageID, brandImageLink: props.contentEngagementSettings.engagementSettings.brandImageLink, brandImagePadding: props.contentEngagementSettings.engagementSettings.brandImagePadding, brandImagePosition: props.contentEngagementSettings.engagementSettings.brandImagePosition, brandImageSize: props.contentEngagementSettings.engagementSettings.brandImageSize, brandImageURL: props.contentEngagementSettings.engagementSettings.brandImageURL}
-        } else {
-            setUploadedFileUrl(props.globalEngagementSettings.brandImageURL)
-            tempSettings = {...tempSettings, brandImageID: props.globalEngagementSettings.brandImageID, brandImageLink: props.globalEngagementSettings.brandImageLink, brandImagePadding: props.globalEngagementSettings.brandImagePadding, brandImagePosition: props.globalEngagementSettings.brandImagePosition, brandImageSize: props.globalEngagementSettings.brandImageSize, brandImageURL: props.globalEngagementSettings.brandImageURL}
-        }
-        if(brandText || brandTextLink || isBrandTextAsTitle ){
-            setBrandSectionEditable(true)
-            tempSettings = {...tempSettings, brandText: props.contentEngagementSettings.engagementSettings.brandText, brandTextLink: props.contentEngagementSettings.engagementSettings.brandTextLink, isBrandTextAsTitle: props.contentEngagementSettings.engagementSettings.isBrandTextAsTitle}
-        } else {
-            tempSettings = {...tempSettings, brandText: props.globalEngagementSettings.brandText, brandTextLink: props.globalEngagementSettings.brandTextLink, isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle}
-        }
-        if(endScreenText || endScreenTextLink ){
-            setEndScreenSectionEditable(true)
-            tempSettings = {...tempSettings, endScreenText: props.contentEngagementSettings.engagementSettings.endScreenText, endScreenTextLink: props.contentEngagementSettings.engagementSettings.endScreenTextLink}
-        } else {
-            tempSettings = {...tempSettings, endScreenText: props.globalEngagementSettings.endScreenText, endScreenTextLink: props.globalEngagementSettings.endScreenTextLink}
-        }
-        setEngagementSettings({...tempSettings})
-    }, [props.contentEngagementSettings])
 
     const newAd = () => {
         setSelectedAd(emptyAd);
@@ -189,7 +153,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     const [playerModalOpened, setPlayerModalOpened] = React.useState<boolean>(false);
 
     const advertisingTableHeader = () => {
-        if (engagementSettings.ads && engagementSettings.ads.length > 0) {
+        if (engagementSettings.adsSettings.ads && engagementSettings.adsSettings.ads.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -227,9 +191,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon id={"deleteTooltip" + item.id}>
-                            {adSectionEditable && 
+                            {!engagementSettings.adsSettings.locked && 
                             <IconStyle
-                            onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.engagementSettings.adsId, props.contentEngagementSettings.contentId) }}
+                            onClick={() => { props.deleteContentAd(props.contentEngagementSettings.engagementSettings.adsSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.contentId, props.contentType) }}
                             >delete
                         </IconStyle>
                             
@@ -249,132 +213,63 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     const revertSettings = () => {
         setEngagementSettings(props.contentEngagementSettings.engagementSettings);
-        setSettingsEdited(false)
-        setAdSectionEditable(false);
-        setMailSectionEditable(false);
-        setEndScreenSectionEditable(false);
     }
 
     const handleSectionRevert = (section: string) => {
         switch (section) {
             case 'ads':
-                props.saveContentEngagementSettings({
-                    contentId: props.contentId, 
-                    engagementSettings: {
-                        ads: null,
-                        adsEnabled: false,
-                        adsId: null,
-                        brandImageID: brandImageSectionEditable ? engagementSettings.brandImageID : null,
-                        brandImageLink: brandImageSectionEditable ? engagementSettings.brandImageLink : null,
-                        brandImagePadding: brandImageSectionEditable ? engagementSettings.brandImagePadding : null,
-                        brandImagePosition: brandImageSectionEditable ? engagementSettings.brandImagePosition : null,
-                        brandImageSize: brandImageSectionEditable ? engagementSettings.brandImageSize : null,
-                        brandImageText: brandImageSectionEditable ? engagementSettings.brandImageText : null,
-                        brandImageURL: brandImageSectionEditable ? engagementSettings.brandImageURL : null,
-                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
-                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
-                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
-                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
-                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                props.lockSection('ads', props.contentId, props.contentType).then(() => {
                     setEngagementSettings({
-                        ...engagementSettings, 
-                        adsEnabled: props.globalEngagementSettings.adsEnabled, 
-                        ads: props.globalEngagementSettings.ads
+                        ...engagementSettings,
+                        adsSettings: {
+                            locked: true,
+                            adsEnabled: props.globalEngagementSettings.adsSettings.adsEnabled, 
+                            ads: props.globalEngagementSettings.adsSettings.ads
+                        }
                     })
-                    setAdSectionEditable(false)
                 })
                 break
             case 'brandImage':
-                if (engagementSettings.brandImageID) {
-                    props.deleteContentImage(engagementSettings.brandImageID)
+                if (engagementSettings.brandImageSettings.brandImageURL) {
+                    props.deleteContentImage(props.contentId, props.contentType)
                 }
-                props.saveContentEngagementSettings({
-                    contentId: props.contentId, 
-                    engagementSettings: {
-                        ads: adSectionEditable ? engagementSettings.ads : null,
-                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
-                        adsId: adSectionEditable ? engagementSettings.adsId : null,
-                        brandImageID: null,
-                        brandImageLink: null,
-                        brandImagePadding: null,
-                        brandImagePosition: null,
-                        brandImageSize: null,
-                        brandImageText: null,
-                        brandImageURL: null,
-                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
-                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
-                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
-                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
-                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                props.lockSection('brand-image', props.contentId, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
-                        brandImageID: props.globalEngagementSettings.brandImageID, 
-                        brandImageLink: props.globalEngagementSettings.brandImageLink, 
-                        brandImagePadding: props.globalEngagementSettings.brandImagePadding, 
-                        brandImagePosition: props.globalEngagementSettings.brandImagePosition, 
-                        brandImageSize: props.globalEngagementSettings.brandImageSize, 
-                        brandImageURL: props.globalEngagementSettings.brandImageURL
+                        brandImageSettings: {
+                            locked: true,
+                            brandImageLink: props.globalEngagementSettings.brandImageSettings.brandImageLink, 
+                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding.toString(), 
+                            brandImagePosition: props.globalEngagementSettings.brandImageSettings.brandImagePosition, 
+                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize.toString(), 
+                            brandImageURL: props.globalEngagementSettings.brandImageSettings.brandImageURL
+                        }
                     })
-                    setBrandImageSectionEditable(false)
                 })
                 break
             case 'brandText': 
-                props.saveContentEngagementSettings({
-                    contentId: props.contentId, 
-                    engagementSettings: {
-                        ads: adSectionEditable ? engagementSettings.ads : null,
-                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
-                        adsId: adSectionEditable ? engagementSettings.adsId : null,
-                        brandImageID: null,
-                        brandImageLink: null,
-                        brandImagePadding: null,
-                        brandImagePosition: null,
-                        brandImageSize: null,
-                        brandImageText: null,
-                        brandImageURL: null,
-                        brandText: null,
-                        brandTextLink: null,
-                        isBrandTextAsTitle: false,
-                        endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
-                        endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-                    }}).then(() => {
+                props.lockSection('brand-text', props.contentId, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
-                        brandText: props.globalEngagementSettings.brandText, 
-                        brandTextLink: props.globalEngagementSettings.brandTextLink, 
-                        isBrandTextAsTitle: props.globalEngagementSettings.isBrandTextAsTitle
+                        brandTextSettings: {
+                            locked: true,
+                            brandText: props.globalEngagementSettings.brandTextSettings.brandText, 
+                            brandTextLink: props.globalEngagementSettings.brandTextSettings.brandTextLink, 
+                            isBrandTextAsTitle: props.globalEngagementSettings.brandTextSettings.isBrandTextAsTitle
+                        }
                     })
-                    setBrandSectionEditable(false)
                 })
                 break
             case 'endScreenText': 
-                props.saveContentEngagementSettings({
-                    contentId: props.contentId, 
-                    engagementSettings: {
-                        ads: adSectionEditable ? engagementSettings.ads : null,
-                        adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
-                        adsId: adSectionEditable ? engagementSettings.adsId : null,
-                        brandImageID: null,
-                        brandImageLink: null,
-                        brandImagePadding: null,
-                        brandImagePosition: null,
-                        brandImageSize: null,
-                        brandImageText: null,
-                        brandImageURL: null,
-                        brandText: brandSectionEditable ? engagementSettings.brandText : null,
-                        brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
-                        isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
-                        endScreenText: null,
-                        endScreenTextLink: null
-                    }}).then(() => {
+                props.lockSection('end-screen-text', props.contentId, props.contentType).then(() => {
                     setEngagementSettings({
                         ...engagementSettings, 
-                        endScreenText: props.globalEngagementSettings.endScreenText, 
-                        endScreenTextLink: props.globalEngagementSettings.endScreenTextLink
+                        endScreenSettings: {
+                            locked: true,
+                            endScreenText: props.globalEngagementSettings.endScreenSettings.endScreenText, 
+                            endScreenTextLink: props.globalEngagementSettings.endScreenSettings.endScreenTextLink
+                        }
                     })
-                    setEndScreenSectionEditable(false)
                 })
                 break
             default:
@@ -383,68 +278,123 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }
 
     const handleAdsLockChange = () => {
-        if (adSectionEditable) {
+        if (!engagementSettings.adsSettings.locked) {
             handleSectionRevert('ads')
         } else {
             setSettingsEdited(true)
-            setEngagementSettings({...engagementSettings, adsEnabled: false, ads: null})
+            props.lockSection('ads', props.contentId, props.contentType, true).then(() => {
+                setEngagementSettings({
+                    ...engagementSettings,
+                    adsSettings:{
+                        locked: false,
+                        ads: [],
+                        adsEnabled: false
+                    }
+                })
+            })
         }
-        setAdSectionEditable(!adSectionEditable)
     }
 
     const handleBrandImageLockChange = () => {
-        if (brandImageSectionEditable) {
+        if (!engagementSettings.brandImageSettings.locked) {
             handleSectionRevert('brandImage')
         } else {
-            setSettingsEdited(true)
-            setUploadedFileUrl(null)
-            setEngagementSettings({...engagementSettings, brandImageID: null, brandImageLink: null, brandImagePadding: null, brandImagePosition: null, brandImageSize: null, brandImageURL: null})
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    brandImageSettings: {
+                        locked:false,
+                        brandImageLink: '',
+                        brandImagePadding: '',
+                        brandImagePosition: '',
+                        brandImageSize: '',
+                        brandImageURL: ''
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    brandImageSettings: {
+                        locked:false,
+                        brandImageLink: '',
+                        brandImagePadding: '',
+                        brandImagePosition: '',
+                        brandImageSize: '',
+                        brandImageURL: ''
+                    }
+                })
+                setUploadedFileUrl(null)
+
+            })            
         }
-        setBrandImageSectionEditable(!brandImageSectionEditable)
     }
 
     const handleBrandTextLockChange = () => {
-        if (brandSectionEditable) {
+        if (!engagementSettings.brandTextSettings.locked) {
             handleSectionRevert('brandText')
         } else {
-            setSettingsEdited(true)
-            setEngagementSettings({...engagementSettings, brandText: null, brandTextLink: null, isBrandTextAsTitle: false})
-        }
-        setBrandSectionEditable(!brandSectionEditable)
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    brandTextSettings: {
+                        locked:false,
+                        brandText: '',
+                        brandTextLink: '',
+                        isBrandTextAsTitle: false
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    brandTextSettings: {
+                        locked:false,
+                        brandText: '',
+                        brandTextLink: '',
+                        isBrandTextAsTitle: false
+                    }
+                })
+            })        
+            }
     }
 
     const handleEndScreenTextLockChange = () => {
-        if (endScreenSectionEditable) {
+        if (!engagementSettings.endScreenSettings.locked) {
             handleSectionRevert('endScreenText')
         } else {
-            setSettingsEdited(true)
-            setEngagementSettings({...engagementSettings, endScreenText: null, endScreenTextLink: null})
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {}),
+                    endScreenSettings: {
+                        locked:false,
+                        endScreenText: '',
+                        endScreenTextLink: ''
+                    }
+                }          
+            }, props.contentType).then(() => {
+                setSettingsEdited(false)
+                setEngagementSettings({
+                    ...engagementSettings,
+                    endScreenSettings: {
+                        locked:false,
+                        endScreenText: '',
+                        endScreenTextLink: ''
+                    }
+                })
+            })
         }
-        setEndScreenSectionEditable(!endScreenSectionEditable)
     }
 
     const handleSubmit = () => {
         setSaveAllButtonLoading(true)
         props.saveContentEngagementSettings({ 
             contentId: props.contentId, 
-            engagementSettings: {
-                ads: adSectionEditable ? engagementSettings.ads : null,
-                adsEnabled: adSectionEditable ? engagementSettings.adsEnabled : false,
-                adsId: adSectionEditable ? engagementSettings.adsId : null,
-                brandImageID: brandImageSectionEditable ? engagementSettings.brandImageID : null,
-                brandImageLink: brandImageSectionEditable ? engagementSettings.brandImageLink : null,
-                brandImagePadding: brandImageSectionEditable ? engagementSettings.brandImagePadding : null,
-                brandImagePosition: brandImageSectionEditable ? engagementSettings.brandImagePosition : null,
-                brandImageSize: brandImageSectionEditable ? engagementSettings.brandImageSize : null,
-                brandImageText: brandImageSectionEditable ? engagementSettings.brandImageText : null,
-                brandImageURL: brandImageSectionEditable ? engagementSettings.brandImageURL : null,
-                brandText: brandSectionEditable ? engagementSettings.brandText : null,
-                brandTextLink: brandSectionEditable ? engagementSettings.brandTextLink : null,
-                isBrandTextAsTitle: brandSectionEditable ? engagementSettings.isBrandTextAsTitle : null,
-                endScreenText: endScreenSectionEditable ? engagementSettings.endScreenText : null,
-                endScreenTextLink: endScreenSectionEditable ? engagementSettings.endScreenTextLink : null
-            } 
-        }).then(() => {
+            engagementSettings: Object.keys(engagementSettings).filter(f => {return engagementSettings[f] && !engagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: engagementSettings[next]}}, {})
+        }, props.contentType).then(() => {
             setSettingsEdited(false)
             setSaveAllButtonLoading(false)
         })
@@ -460,17 +410,17 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Text size={20} weight='med'>Advertising</Text>
                         </TextStyle>
                         <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
-                            {adSectionEditable ? "lock_open" : "lock"}
+                            {!engagementSettings.adsSettings.locked ? "lock_open" : "lock"}
                         </IconStyle>
-                        <Tooltip target="unlockAdSectionTooltip">{adSectionEditable ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                        <Tooltip target="unlockAdSectionTooltip">{!engagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                     </Header>
-                    <DisabledSection settingsEditable={adSectionEditable}>
+                    <DisabledSection settingsEditable={!engagementSettings.adsSettings.locked}>
                         <Toggle
                             className="mb2"
                             id='advertisingEnabled'
-                            checked={engagementSettings.adsEnabled}
-                            defaultChecked={engagementSettings.adsEnabled}
-                            onChange={() => { setEngagementSettings({ ...engagementSettings, adsEnabled: !engagementSettings.adsEnabled }); setSettingsEdited(true) }} label='Advertising enabled'
+                            checked={engagementSettings.adsSettings.adsEnabled}
+                            defaultChecked={engagementSettings.adsSettings.adsEnabled}
+                            onChange={() => { setEngagementSettings({ ...engagementSettings, adsSettings: {...engagementSettings.adsSettings, adsEnabled: !engagementSettings.adsSettings.adsEnabled }}); setSettingsEdited(true) }} label='Advertising enabled'
                         />
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>
@@ -481,7 +431,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
                             <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                         </div>
-                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={engagementSettings.ads && engagementSettings.ads.length > 0 ? advertisingTableBody(engagementSettings.ads) : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                        <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={engagementSettings.adsSettings.ads && engagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody(engagementSettings.adsSettings.ads) : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                     </DisabledSection>
                 </Card>
@@ -527,11 +477,11 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text size={20} weight='med'>Brand Image</Text>
                     </TextStyle>
                     <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {handleBrandImageLockChange()}}>
-                        {brandImageSectionEditable ? "lock_open" : "lock"}
+                        {!engagementSettings.brandImageSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>
                 </Header>
                 
-                <DisabledSection settingsEditable={brandImageSectionEditable}>
+                <DisabledSection settingsEditable={!engagementSettings.brandImageSettings.locked}>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className="lg-col lg-col-12 mb1 mt25 flex">
                         <div className="lg-col lg-col-6 mr2">
@@ -563,12 +513,12 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                         </div>
                         <div className="col col-6">
-                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImagePosition ? engagementSettings.brandImagePosition : 'Top Right'}
-                            callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImagePosition: value});setSettingsEdited(true)}}
-                            ></DropdownSingle>
-                            <Input className="col col-4 pr2" value={engagementSettings.brandImageSize ? engagementSettings.brandImageSize.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSize: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                            <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImagePadding ? engagementSettings.brandImagePadding.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImagePadding: parseInt(event.currentTarget.value) });setSettingsEdited(true)}} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={engagementSettings.brandImageLink ? engagementSettings.brandImageLink : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageLink: event.currentTarget.value });setSettingsEdited(true)}} />
+                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
+                            callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePosition: value }});setSettingsEdited(true)}}
+                            />
+                            <Input className="col col-4 pr2" value={engagementSettings.brandImageSettings.brandImageSize.toString() || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageSize: event.currentTarget.value}});setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImageSettings.brandImagePadding.toString() || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePadding: event.currentTarget.value}});setSettingsEdited(true)}} />
+                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={engagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});setSettingsEdited(true)}} />
                         </div>
                     </div>
                 </DisabledSection>
@@ -580,26 +530,26 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </TextStyle>
                     <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {handleBrandTextLockChange()}}>
-                        {brandSectionEditable ? "lock_open" : "lock"}
+                        {!engagementSettings.brandTextSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>
-                    <Tooltip target="unlockBrandSectionTooltip">{brandSectionEditable ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
+                    <Tooltip target="unlockBrandSectionTooltip">{!engagementSettings.brandTextSettings.locked ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
                 </Header>
-                <DisabledSection settingsEditable={brandSectionEditable}>
+                <DisabledSection settingsEditable={!engagementSettings.brandTextSettings.locked}>
                     <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className='flex'>
                         <Input
-                            disabled={engagementSettings.isBrandTextAsTitle} className='my2 pr1 col col-8'
+                            disabled={engagementSettings.brandTextSettings.isBrandTextAsTitle} className='my2 pr1 col col-8'
                             label='Brand Text'
-                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandText: event.currentTarget.value }); setSettingsEdited(true) }}
-                            value={engagementSettings.brandText ? engagementSettings.brandText : ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, brandText: event.currentTarget.value }}); setSettingsEdited(true) }}
+                            value={engagementSettings.brandTextSettings.brandText || ""}
                         />
                         <Input
                             className='my2 pl1 col col-4'
                             label='Brand Text Link'
-                            value={engagementSettings.brandTextLink ? engagementSettings.brandTextLink : ""}
-                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
+                            value={engagementSettings.brandTextSettings.brandTextLink || ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, brandTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                     </div>
-                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.isBrandTextAsTitle} onChange={() => { setEngagementSettings({ ...engagementSettings, isBrandTextAsTitle: !engagementSettings.isBrandTextAsTitle }); setSettingsEdited(true) }} />
+                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.brandTextSettings.isBrandTextAsTitle} onChange={() => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, isBrandTextAsTitle: !engagementSettings.brandTextSettings.isBrandTextAsTitle }}); setSettingsEdited(true) }} />
                 </DisabledSection>
             </Card>
 
@@ -609,24 +559,24 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </TextStyle>
                     <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {handleEndScreenTextLockChange()}}>
-                        {endScreenSectionEditable ? "lock_open" : "lock"}
+                        {!engagementSettings.endScreenSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>
-                    <Tooltip target="unlockEndScreenSectionTooltip">{endScreenSectionEditable ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
+                    <Tooltip target="unlockEndScreenSectionTooltip">{!engagementSettings.endScreenSettings.locked ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
                 </Header>
-                <DisabledSection settingsEditable={endScreenSectionEditable}>
+                <DisabledSection settingsEditable={!engagementSettings.endScreenSettings.locked}>
                     <Text size={14} weight='reg' color='gray-3'>This will be displayed when the content ends.</Text>
                     <div className='flex'>
                         <Input
                             className='my2 pr1 col col-8'
                             label='End Screen Text'
-                            value={engagementSettings.endScreenText ? engagementSettings.endScreenText : ""}
-                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenText: event.currentTarget.value }); setSettingsEdited(true) }}
+                            value={engagementSettings.endScreenSettings.endScreenText || ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenSettings: {...engagementSettings.endScreenSettings, endScreenText: event.currentTarget.value }}); setSettingsEdited(true) }}
                         />
                         <Input
                             className='my2 pl1 col col-4'
                             label='End Screen Text Link'
-                            value={engagementSettings.endScreenTextLink ? engagementSettings.endScreenTextLink : ""}
-                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenTextLink: event.currentTarget.value }); setSettingsEdited(true) }} />
+                            value={engagementSettings.endScreenSettings.endScreenTextLink || ""}
+                            onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenSettings: {...engagementSettings.endScreenSettings, endScreenTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                     </div>
                 </DisabledSection>
             </Card>
@@ -653,7 +603,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             {
                 playerModalOpened && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentEngagementSettings.contentId} toggle={setPlayerModalOpened} isOpened={playerModalOpened} />
             }
-            <Prompt when={engagementSettings !== props.contentEngagementSettings.engagementSettings} message='' />
+            <Prompt when={settingsEdited} message='' />
         </div>
     )
 }
