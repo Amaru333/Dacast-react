@@ -10,7 +10,7 @@ const restoreContentService = async (contentId: string, contentType: string) => 
 }
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
-    return await axiosClient.put(`/${contentType}/data.id`,
+    return await axiosClient.put(`/${contentType}/${data.id}`,
         {
             ...data
         } 
