@@ -287,15 +287,15 @@ export const ContentListPage = (props: ContentListProps) => {
                     <SeparatorHeader className="mx2 inline-block" />
                     <ContentFiltering setSelectedFilter={(filters) => {setSelectedFilter(filters);setFetchContent(true)}} contentType={props.contentType} />                
                     {
-                        props.contentType === "videos" &&
+                        props.contentType === "vod" &&
                             <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                     }
                     {
-                        props.contentType === "livestreams" &&
+                        props.contentType === "live" &&
                             <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
                     }
                     {
-                        props.contentType === "playlists" && 
+                        props.contentType === "playlist" && 
                             <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
                     }
                 </div>
