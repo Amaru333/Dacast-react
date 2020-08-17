@@ -50,7 +50,7 @@ const Dashboard = (props: DashboardProps) => {
     }, [props.infos, props.billingInfos])
 
     const renderDashboard = () => {
-        if (props.billingInfos.currentPlan.displayName !== "Free") {
+        if (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.displayName !== "30 Day Trial") {
             return (
                 <>
                     <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.billingInfos.playbackProtection} plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
