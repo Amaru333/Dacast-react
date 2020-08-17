@@ -12,7 +12,7 @@ export interface DashboardInfos {
     vod: false | DashboardVod;
     isTrial: false | DashboardTrial;
     isPayingPlan: false | DashboardPayingPlan;
-    isPaywall: false | DashboardPaywall;
+    paywall: false | DashboardPaywall;
     live: false | DashboardLive;
     generalInfos: DashboardGeneral;
 }
@@ -50,17 +50,17 @@ interface TopContent { name: string; viewers: number }
 
 export interface DashboardVod {
     totalVideos: number;
-    videoPlays: {jobID: string; data: number; loading?: boolean; failed?: boolean};
-    impressions: {jobID: string; data: number; loading?: boolean; failed?: boolean};
-    topVideos: { jobID: string; data: TopContent[]; loading?: boolean; failed?: boolean};
+    videoPlays: number;
+    impressions: number;
+    topVideos: TopContent[];
     playRate: {jobID: string; data: any; loading?: boolean; failed?: boolean};
 }
 
 export interface DashboardLive {
     activeChannels: number;
     totalChannels: number;
-    liveViewers: {jobID: string; data: number; loading?: boolean; failed?: boolean };
-    topChannels: {jobID: string; data: TopContent[]; loading?: boolean; failed?: boolean };
+    liveViewers: number;
+    topChannels: {name: string; viewers: number; }[];
 }
 
 export interface DashboardPaywall {
