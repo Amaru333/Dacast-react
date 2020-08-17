@@ -1,7 +1,7 @@
 import { userToken } from './token';
 
 const amplitude = require('amplitude-js');
-amplitude.getInstance().init(userToken.getUserInfoItem('custom:dacast_user_id'));
+amplitude.getInstance().init("91c66b0e632ea39b21b7ed408b571b26", userToken.getUserInfoItem('custom:dacast_user_id') || '');
 
 type EventType = 
     'create account' |
