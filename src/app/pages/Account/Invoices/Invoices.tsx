@@ -10,8 +10,33 @@ import { InvoicesFiltering } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
+import { axiosClient } from '../../../utils/axiosClient';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {
+
+    function saveFile(url: string, filename: string) {
+        axiosClient.get(url, {authRequired: false}
+        ).then((response) => {
+            debugger
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            if (navigator.msSaveBlob) {
+                //This is to support fucking IE 
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                const link = document.createElement('a');
+                if (link.download !== undefined) {
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
+        })
+
+        }
 
     const invoicesTableHeader = () => {
         return {data: [
@@ -32,7 +57,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
                 <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)}  />,
-                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><IconStyle onClick={(event) => {event.preventDefault()}} >print</IconStyle><a className="noTransition" href={item.downloadLink} target='_blank' download={item.id + '.pdf'}><IconStyle>get_app</IconStyle></a> </IconContainer>
+                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><a className="noTransition" href={item.downloadLink} target='_blank'><IconStyle>print</IconStyle></a><IconStyle onClick={() => saveFile(item.downloadLink, item.id + '.pdf')}>get_app</IconStyle></IconContainer>
 
             ]}
         })

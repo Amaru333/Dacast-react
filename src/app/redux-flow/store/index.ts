@@ -5,7 +5,6 @@ import { toastsInitialState, ToastsState, ToastReducer } from './Toasts'
 import { accountInitialState, AccountState, AccountReducer } from './Account'
 import { vodInitialState, VodState, VodReducer } from './VOD'
 import { RegisterInitialState, RegisterState, RegisterReducer } from './Register'
-import { LiveReducer, LiveState, liveInitialState } from '../store/Live/types'
 import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/types';
 import { TitleReducer } from './Title/logic';
 import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlists';
@@ -22,7 +21,6 @@ export interface ApplicationState {
     account: AccountState;
     vod: VodState;
     register: RegisterState;
-    live: LiveState;
     playlist: PlaylistState;
     paywall: PaywallState;
     folders: FoldersState;
@@ -39,7 +37,6 @@ export const globalDefaultState: ApplicationState = {
     account: accountInitialState,
     vod: vodInitialState,
     playlist: playlistInitialState,
-    live: liveInitialState,
     paywall: paywallInitialState,
     folders: foldersInitialState,
     title: "",
@@ -55,7 +52,6 @@ export const appReducer =
         account: AccountReducer,
         vod: VodReducer,
         register: RegisterReducer,
-        live: LiveReducer,
         title: TitleReducer,
         playlist: PlaylistReducer,
         paywall: PaywallReducer,
