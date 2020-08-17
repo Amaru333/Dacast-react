@@ -76,7 +76,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [newContentDetails, setNewContentDetails] = React.useState<ContentDetails>({...props.contentDetails, rewind: false})
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ?props.contentDetails.countdown.startTime !== 0 : null)
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -84,6 +83,15 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     React.useEffect(() => {
         setContentDetails(props.contentDetails)
     }, [props.contentDetails.title, props.contentDetails.folders, props.contentDetails.description, props.contentDetails.online]);
+
+    React.useEffect(() => {
+        if(liveStreamCountdownToggle){
+            let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: countdownTs}})
+        } else {
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: 0}})
+        }
+    }, [liveStreamCountdownToggle, startDateTimeValue])
 
     const subtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
         return {data: [
@@ -221,7 +229,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        props.saveContentDetails(contentDetails, props.contentType).then(() =>
+        props.saveContentDetails(contentDetails, props.contentType).then(() =>  
              setButtonLoading(false)
         ).catch(() =>
              setButtonLoading(false)
@@ -330,7 +338,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         {
                             userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={newContentDetails.recording} onChange={() => setNewContentDetails({ ...newContentDetails, recording: !newContentDetails.recording })}></Toggle>
+                                <Toggle label="Live Stream Recording" defaultChecked={contentDetails.recording} onChange={() => setContentDetails({ ...contentDetails, recording: !contentDetails.recording })}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                                 </ToggleTextInfo>
@@ -341,7 +349,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             <Toggle
                                 label="Live Stream Start Countdown"
                                 onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle) }}
-                                defaultChecked={newContentDetails.countdown.startTime !== 0}
+                                defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
@@ -692,7 +700,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </Text>
                                     </ModalContent>
                                     <ModalFooter className="mt1" >
-                                        <Button onClick={() => { setNewContentDetails({ ...newContentDetails, rewind: !newContentDetails.rewind }); setConfirmRewindModal(false); setStepModalRewind(1) }}>Confirm</Button>
+                                        <Button onClick={() => { setContentDetails({ ...contentDetails, rewind: !contentDetails.rewind }); setConfirmRewindModal(false); setStepModalRewind(1) }}>Confirm</Button>
                                     </ModalFooter>
                                 </>
                             }
