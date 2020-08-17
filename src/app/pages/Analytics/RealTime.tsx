@@ -7,7 +7,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { LiveItem } from '../../redux-flow/store/Live/General/types';
+import { ContentItem } from '../../redux-flow/store/Content/General/types';
 
 export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
@@ -76,7 +76,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         dropdownTitle='Live Channel'
                         defaultSelected={props.liveList.results[0].title}
                         callback={(name: string) => {;setSelectedContent(name)}}
-                        list={props.liveList.results.reduce((reduced: DropdownListType, item: LiveItem) => { return { ...reduced, [item.title]: false } }, {})}
+                        list={props.liveList.results.reduce((reduced: DropdownListType, item: ContentItem) => { return { ...reduced, [item.title]: false } }, {})}
                     /> : null
                 }
 

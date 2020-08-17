@@ -17,7 +17,6 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     function saveFile(url: string, filename: string) {
         axiosClient.get(url, {authRequired: false}
         ).then((response) => {
-            debugger
             const blob = new Blob([response.data], { type: 'application/pdf' });
             if (navigator.msSaveBlob) {
                 //This is to support fucking IE 
