@@ -32,6 +32,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     let history = useHistory();
 
+    React.useEffect(() => {
+        console.log('dirty state value', formState)
+    })
+
     useKeyboardSubmit( () => handleSubmit(onSubmit) )
     
     let {CompanyPageDetails} = props;
@@ -41,6 +45,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [errorMessage, setErrorMessage] = React.useState<string>('')
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
+    const [edited, setEdited] = React.useState<boolean>(false)
 
     let companyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -65,8 +70,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         setSubmitLoading(true)
         props.saveCompanyPageDetails(data).then(() => {
             setSubmitLoading(false)
+            setEdited(false)
             reset(data)
-        })
+        }).catch(() => setSubmitLoading(false))
     }
     
     const handleDrop = (file: FileList) => {
@@ -187,6 +193,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Contact Name" 
                             placeholder="Account Name"
                             {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
+                            onChange={(event) => {setEdited(true); setValue('accountName', event.currentTarget.value)}}
                             help="The name of the primary contact for the account"
                         />
                         <Input 
@@ -198,6 +205,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Company Name" 
                             placeholder="Company Name"
                             {...handleValidationForm('companyName', errors)}
+                            onChange={(event) => {setEdited(true); setValue('companyName', event.currentTarget.value)}}
                             name="companyName" ref={register({required: "This field can’t be left empty"})}
                             help="The legal business name for use on invoices, etc."
                         />
@@ -212,6 +220,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Phone Number" 
                             placeholder="(00) 0000 0000 00" 
                             {...handleValidationForm('contactNumber', errors, 'tel', register)}
+                            onChange={(event) => {setEdited(true); setValue('contactNumber', event.currentTarget.value)}}
                         />
                         <Input 
                             disabled={false} 
@@ -222,6 +231,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Email Address" 
                             placeholder="Email Address"
                             {...handleValidationForm('companyEmail', errors, 'email', register)}
+                            onChange={(event) => {setEdited(true); setValue('companyEmail', event.currentTarget.value)}}
+
                         />
                     </div>
 
@@ -234,6 +245,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Company Website" 
                             placeholder="Company Website"
                             {...handleValidationForm('companyWebsite', errors, 'url', register)}
+                            onChange={(event) => {setEdited(true); setValue('companyWebsite', event.currentTarget.value)}}
+
                         />
                         <Input 
                             disabled={false} 
@@ -244,6 +257,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             placeholder="VAT Number"
                             indicationLabel='Optional'
                             name="vatNumber" ref={register()}
+                            onChange={(event) => {setEdited(true); setValue('vatNumber', event.currentTarget.value)}}
                         />
                     </div>
 
@@ -262,6 +276,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Address line 1" 
                             placeholder="Address line 1"
                             name="addressLine1" ref={register()}
+                            onChange={(event) => {setEdited(true); setValue('addressLine1', event.currentTarget.value)}}
                         />
 
                         <Input  
@@ -271,7 +286,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="addressLine2" 
                             label="Address line 2" 
                             placeholder="Address line 2"
-                            name="addressLine2" ref={register()}
+                            name="addressLine2" ref={register()}                            
+                            onChange={(event) => {setEdited(true); setValue('addressLine2', event.currentTarget.value)}}
+
                         />
                     </div>
                     <div className="md-col md-col-12">
@@ -283,7 +300,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="State/Province" 
                             placeholder="State/Province"
                             name="state" ref={register()}
-                        />
+                            onChange={(event) => {setEdited(true); setValue('state', event.currentTarget.value)}}
+                            />
 
                         <Input 
                             disabled={false} 
@@ -293,7 +311,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Town/City" 
                             placeholder="Town/City"
                             name="town" ref={register()}
-                        />
+                            onChange={(event) => {setEdited(true); setValue('town', event.currentTarget.value)}}
+                            />
 
                         <Input  
                             disabled={false} 
@@ -303,26 +322,27 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             label="Zip/Postal Code" 
                             placeholder="Zip/Postal Code"
                             name="zipCode" ref={register()}
-                        />
-                        <input type="hidden" name="country" ref={register()} />
+                            onChange={(event) => {setEdited(true); setValue('zipCode', event.currentTarget.value)}}
+                            />
+                        {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
                         <DropdownSingle hasSearch 
                             direction='up'
-                            callback={(value: string) => setValue('country', value)}
+                            callback={(value: string) => {setEdited(true);setValue('country', value)}}
                             dropdownDefaultSelect={!props.CompanyPageDetails.country ? "United States" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
-                            id='country' dropdownTitle='Country' 
+                            id='countryDropdown' dropdownTitle='Country' 
                             list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
                     </div>
                 </form>
             </Card>            
             { 
-                dirty &&
+                edited &&
                     <ButtonsArea> 
                         <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
-                            onClick={() => {reset(props.CompanyPageDetails, {errors: true});props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                            onClick={() => {reset(props.CompanyPageDetails, {errors: true});setEdited(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonsArea>
             }     
-            <Prompt when={dirty} message='' />     
+            <Prompt when={edited} message='' />     
         </CompanyPageContainer>
     )
 }
