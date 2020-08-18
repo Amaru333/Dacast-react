@@ -17,7 +17,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
         ['embed-scaling']:  'responsive',
         'embed-size': 0
     }
-    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption);
+    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys((props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object) ? defaultEmbedSettings : props.embedSettingsOption);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
     let inputRef = React.useRef<HTMLInputElement>(null)
@@ -25,9 +25,11 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
         setSubmitLoading(true);
-        props.saveEmbedSettingsOptions(inputOptions, () => {
+        props.saveEmbedSettingsOptions(inputOptions).then(() => {
             setSubmitLoading(false);
-        })
+        }).catch(() => {
+            setSubmitLoading(false);
+        }) 
     }
 
     const checkInputError = () => {
@@ -57,13 +59,13 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                         <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "iframe" })} defaultChecked={props.embedSettingsOption["embed-type"] === "iframe"} />
                         <RadioText>
                             <Text size={14} weight="reg">
-                                The embed code includes all Dacast features such as security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
+                                Our fully-functional player, embedded in an Iframe element.
                             </Text>
                         </RadioText>
                         <InputRadio name="embed-settings" value="script" label="Script" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "script" })} defaultChecked={props.embedSettingsOption["embed-type"] === "script"} />
                         <RadioText>
                             <Text size={14} weight="reg">
-                                Script embed codes include all features including security, analytics & customization. Your embedded videos dynamically update whenever you change your settings.
+                                Our fully-functional player, embedded dynamically with JavaScript.
                             </Text>
                         </RadioText>
                     </div>
