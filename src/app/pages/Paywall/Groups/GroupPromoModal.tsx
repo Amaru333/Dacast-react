@@ -39,10 +39,13 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
         return total
     }
 
-    let startTimestamp = moment.tz((props.groupPromo.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((props.groupPromo.endDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'UTC'} : defaultPromo);
+
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'UTC'} : defaultPromo)
+
+    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)

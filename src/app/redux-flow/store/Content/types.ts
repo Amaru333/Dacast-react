@@ -12,6 +12,12 @@ import { ContentThemeState } from '../Settings/Theming';
 import { ContentThemingReducer } from './Theming/reducer';
 import { ContentSecuritySettingsState } from '../Settings/Security';
 import { ContentSecurityReducer } from './Security/reducer';
+import { ChapterMarkerInfosState } from './Chapters/types';
+import { ChaptersReducer } from './Chapters/reducer';
+import { RenditionsListState } from './Renditions/types';
+import { RenditionsReducer } from './Renditions/reducer';
+import { ContentSetupState } from './Setup/types';
+import { ContentSetupReducer } from './Setup/reducer';
 
 
 export const contentInitialState: ContentState = {
@@ -20,9 +26,11 @@ export const contentInitialState: ContentState = {
     paywall: {},
     engagement: {},
     theming: {},
-    security: {}
+    security: {},
+    chapters: {},
+    renditions: {},
+    setup: {}
 };
-
 
 export interface  ContentState {
     general: ContentDetailsState;
@@ -30,7 +38,10 @@ export interface  ContentState {
     paywall: ContentPaywallState;
     engagement: ContentEngagementState
     theming: ContentThemeState,
-    security: ContentSecuritySettingsState
+    security: ContentSecuritySettingsState,
+    chapters: ChapterMarkerInfosState,
+    renditions: RenditionsListState,
+    setup: ContentSetupState
 }
 
 export const ContentReducer: Reducer<ContentState> = combineReducers({
@@ -39,5 +50,9 @@ export const ContentReducer: Reducer<ContentState> = combineReducers({
     paywall: ContentPaywallReducer,
     engagement: ContentEngagementReducer,
     theming: ContentThemingReducer,
-    security: ContentSecurityReducer
+    security: ContentSecurityReducer,
+    chapters: ChaptersReducer, 
+    renditions: RenditionsReducer,
+    setup: ContentSetupReducer
+
 })

@@ -6,8 +6,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyticsRealTimeAction } from '../../redux-flow/store/Analytics/RealTime';
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getLiveListAction } from '../../redux-flow/store/Live/General/actions';
-import { SearchResult } from '../../redux-flow/store/Live/General/types';
+import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
+import { SearchResult } from '../../redux-flow/store/Content/General/types';
 
 
 export interface RealTimePageProps {
@@ -45,7 +45,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         realTimeAnalytics: state.analytics.realTime,
-        liveList: state.live.list,
+        liveList: state.content.list,
     };
 }
 
@@ -55,7 +55,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getAnalyticsRealTimeAction(options));
         },
         getLiveList: (qs: string) => {
-            dispatch(getLiveListAction(qs));
+            dispatch(getContentListAction(qs, 'live'));
         },
     };
 }

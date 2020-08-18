@@ -71,9 +71,13 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         return total
     }
 
-    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
+
+    React.useEffect(() => {
+        props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startDate: moment.utc((startDay + startTime)*1000).valueOf()/1000}}})
+    }, [startDay, startTime, props.stepperData.firststep.groupSettings.timezone])
 
 
     return (

@@ -21,7 +21,7 @@ import { FolderTree, rootNode } from '../../utils/folderService';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../../app/pages/Folders/NewFolderModal';
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal';
-import { SearchResult } from '../../redux-flow/store/VOD/General/types';
+import { SearchResult } from '../../redux-flow/store/Content/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
@@ -287,15 +287,15 @@ export const ContentListPage = (props: ContentListProps) => {
                     <SeparatorHeader className="mx2 inline-block" />
                     <ContentFiltering setSelectedFilter={(filters) => {setSelectedFilter(filters);setFetchContent(true)}} contentType={props.contentType} />                
                     {
-                        props.contentType === "videos" &&
+                        props.contentType === "vod" &&
                             <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                     }
                     {
-                        props.contentType === "livestreams" &&
+                        props.contentType === "live" &&
                             <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
                     }
                     {
-                        props.contentType === "playlists" && 
+                        props.contentType === "playlist" && 
                             <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
                     }
                 </div>

@@ -1,4 +1,0 @@
-export enum ActionTypes {
-    GET_LIVE_SECURITY_SETTINGS = "@@live_security/GET_LIVE_SECURITY_SETTINGS",
-    SAVE_LIVE_SECURITY_SETTINGS = "@@live_security/SAVE_LIVE_SECURITY_SETTINGS"
-}

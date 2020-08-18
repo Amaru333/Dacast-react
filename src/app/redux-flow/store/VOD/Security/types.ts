@@ -1,4 +1,0 @@
-export enum ActionTypes {
-    GET_VOD_SECURITY_SETTINGS = "@@vod_security/GET_VOD_SECURITY_SETTINGS",
-    SAVE_VOD_SECURITY_SETTINGS = "@@vod_security/SAVE_VOD_SECURITY_SETTINGS"
-}
