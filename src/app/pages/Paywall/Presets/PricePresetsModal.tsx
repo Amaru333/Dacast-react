@@ -87,7 +87,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
         })
     }
 
-    let startTimestamp = moment.tz((props.preset.settings.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((presetsList.settings.startDate && presetsList.settings.startDate > 0 ? presetsList.settings.startDate :  Math.floor(Date.now() / 1000))*1000, 'UTC')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)

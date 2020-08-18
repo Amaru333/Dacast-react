@@ -39,10 +39,13 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
         return total
     }
 
-    let startTimestamp = moment.tz((props.promo.startDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((props.promo.endDate || Math.floor(Date.now() / 1000))*1000, 'UTC')
 
-    const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
+
+    const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo)
+
+    let startTimestamp = moment.tz((promoPreset.startDate && promoPreset.startDate > 0 ? promoPreset.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let endTimestamp = moment.tz((promoPreset.endDate && promoPreset.endDate> 0 ? promoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
@@ -60,10 +63,11 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
         setButtonLoading(true)
         let startDate = startDateTime === 'Set Date and Time' ? moment.utc((startDay + startTime)*1000).valueOf()/1000 : 0
         let endDate = endDateTime === 'Set Date and Time' ? moment.utc((endDay + endTime)*1000).valueOf()/1000 : 0
-        props.action({...promoPreset, startDate: startDate, endDate: endDate}).then(() => {
+        props.action({...promoPreset, startDate: startDate, endDate: endDate})
+        .then(() => {
             props.toggle(false)
             setButtonLoading(false)
-        })
+        }).catch(() => setButtonLoading(false))
     }
 
     return (
