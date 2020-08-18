@@ -3,8 +3,8 @@ import { ThunkDispatch } from "redux-thunk";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../redux-flow/store";
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { ChapterMarkerInfos, ChapterMarker, ChapterMarkerInfosState } from '../../redux-flow/store/VOD/Chapters/types';
-import { Action, getVodChapterMarkersAction, saveVodChapterMarkerAction, addVodChapterMarkerAction, deleteVodChapterMarkerAction } from '../../redux-flow/store/VOD/Chapters/actions';
+import { ChapterMarkerInfos, ChapterMarker, ChapterMarkerInfosState } from '../../redux-flow/store/Content/Chapters/types';
+import { Action, getContentChapterMarkersAction, saveContentChapterMarkerAction, addContentChapterMarkerAction, deleteContentChapterMarkerAction } from '../../redux-flow/store/Content/Chapters/actions';
 import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
@@ -13,10 +13,10 @@ import { useParams } from 'react-router-dom';
 export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
     chapterPageDetailsState: ChapterMarkerInfosState;
-    getVodChapterMarkers: (contentId: string) => Promise<void>;
-    saveVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
-    addVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
-    deleteVodChapterMarker: (vodId: string, data: ChapterMarker[]) => Promise<void>;
+    getContentChapterMarkers: (contentId: string, contentType: string) => Promise<void>;
+    saveContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
+    addContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
+    deleteContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
 }
 
 const Chapters = (props: ChapterComponentProps) => {
@@ -24,18 +24,16 @@ const Chapters = (props: ChapterComponentProps) => {
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if (!props.chapterPageDetailsState[vodId]) {
-            props.getVodChapterMarkers(vodId);
-        }
+        props.getContentChapterMarkers(vodId, 'vod');
     }, [])
 
     return (
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.chapterPageDetailsState[vodId] ?
+                props.chapterPageDetailsState['vod'] && props.chapterPageDetailsState['vod'][vodId] ?
                     <div className='flex flex-column'>
-                        <ChaptersPage {...props} chapterPageDetails={props.chapterPageDetailsState[vodId]} vodId={vodId} />
+                        <ChaptersPage {...props} chapterPageDetails={props.chapterPageDetailsState['vod'][vodId]} contentId={vodId} contentType='vod' />
                     </div>
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
@@ -45,23 +43,23 @@ const Chapters = (props: ChapterComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        chapterPageDetailsState: state.vod.chapters
+        chapterPageDetailsState: state.content.chapters
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodChapterMarkers: async (vodId: string) => {
-            await dispatch(getVodChapterMarkersAction(vodId));
+        getContentChapterMarkers: async (contentId: string, contentType: string) => {
+            await dispatch(getContentChapterMarkersAction(contentId, contentType));
         },
-        saveVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
-            await dispatch(saveVodChapterMarkerAction(vodId, data));
+        saveContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
+            await dispatch(saveContentChapterMarkerAction(contentId, contentType, data));
         },
-        addVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
-            await dispatch(addVodChapterMarkerAction(vodId, data));
+        addContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
+            await dispatch(addContentChapterMarkerAction(contentId, contentType, data));
         },
-        deleteVodChapterMarker: async (vodId: string, data: ChapterMarker[]) => {
-            await dispatch(deleteVodChapterMarkerAction(vodId, data));
+        deleteContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
+            await dispatch(deleteContentChapterMarkerAction(contentId, contentType, data));
         },
     };
 }

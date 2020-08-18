@@ -1,10 +1,7 @@
 import React from 'react';
 import { Tab } from '../../../components/Tab/Tab';
 import { useHistory } from "react-router-dom";
-import { Button } from '../../../components/FormsComponents/Button/Button';
-import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
-import { VodItem } from '../../redux-flow/store/VOD/General/types';
 import { AppRoutes } from '../../constants/AppRoutes';
 import { userToken } from '../../utils/token';
 

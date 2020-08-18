@@ -9,9 +9,9 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
-import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { GeneralComponentProps } from '../Videos/General';
 import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
+import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 
 const GeneralPlaylist = (props: GeneralComponentProps) => {
 

@@ -20,7 +20,7 @@ import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
-import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/VOD/General/types';
+import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/Content/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';

@@ -21,7 +21,7 @@ import { FolderTree, rootNode } from '../../utils/folderService';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../../app/pages/Folders/NewFolderModal';
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal';
-import { SearchResult } from '../../redux-flow/store/VOD/General/types';
+import { SearchResult } from '../../redux-flow/store/Content/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';

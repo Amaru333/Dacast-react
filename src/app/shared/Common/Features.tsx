@@ -3,8 +3,6 @@ import { FolderAsset } from '../../redux-flow/store/Folders/types'
 import { IconStyle, IconGreyContainer } from '../../../shared/Common/Icon'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
 import { ContentItem } from '../../redux-flow/store/Content/General/types'
-import { PlaylistItem } from '../../redux-flow/store/Playlists/List/types'
-import { VodItem } from '../../redux-flow/store/VOD/General/types'
 import { Text } from '../../../components/Typography/Text'
 
 export interface FeaturesList {
@@ -16,7 +14,7 @@ export interface FeaturesList {
     folder?: boolean;
 }
 
-export const handleFeatures = (item: FolderAsset | VodItem | ContentItem | PlaylistItem, id: string): JSX.Element[] => {
+export const handleFeatures = (item: FolderAsset | ContentItem , id: string): JSX.Element[] => {
     var element = []
     if (item.featuresList.paywall) {
         element.push(

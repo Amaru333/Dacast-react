@@ -98,7 +98,6 @@ const VodPaywall = (props: ContentPaywallComponentProps) => {
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
-                rateType: 'Pay Per View',
                 startDate: null,
                 endDate: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',

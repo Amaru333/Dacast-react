@@ -2,14 +2,13 @@ import React from 'react';
 import { ContentTheme, ThemeOptions, ContentThemeState } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action } from '../../redux-flow/store/VOD/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
-import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
+import { Action, getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 
 export interface ContentThemingComponentProps {
     theme: ContentTheme;

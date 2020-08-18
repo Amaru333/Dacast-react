@@ -2,8 +2,7 @@ import { connect } from "react-redux";
 import * as Redux from 'redux'
 
 import { ApplicationState } from "../../redux-flow/store";
-import React, { useEffect } from 'react';
-import { postVodDemo } from '../../redux-flow/store/VOD/General/actions';
+import React from 'react';
 import { UploaderPage } from '../../pages/Videos/Uploader/Uploader';
 import { EncodingRecipesData, getEncodingRecipesAction } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
