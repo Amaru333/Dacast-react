@@ -95,7 +95,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                         <TodoList items={todoItems} />
                     </div>
                 </WidgetElement>
-                <div className={classItemFullWidthContainer}>
+                {/* <div className={classItemFullWidthContainer}>
                     <Card className="dashboardCard mb1">
                         <WidgetHeader className="flex">
                             <Text size={16} weight="med" color="gray-1"> Profile Completion </Text>
@@ -108,7 +108,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     </Card>
                     <Button className="col-12 mb1" sizeButton="large" typeButton='secondary'> Upload a Video </Button>
                     <Button className="col-12" sizeButton="large" typeButton='secondary'> Create a Live Stream </Button>
-                </div>
+                </div> */}
                 { supportWidgetOpen &&
                     <div className={classItemFullWidthContainer}>
                         <SupportCard className="dashboardCard col col-12">
