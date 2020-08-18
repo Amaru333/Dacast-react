@@ -288,8 +288,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{userId + '-vod-' + props.contentDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-vod-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                                <LinkText size={14} weight="reg">{userId + + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
+                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
@@ -716,7 +716,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </ButtonContainer>
                 }
                 {
-                    previewModalOpen && <PreviewModal contentId={userId + '-vod-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                    previewModalOpen && <PreviewModal contentId={userId + + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
                 <Prompt when={JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails)} message='' />
             </React.Fragment>
