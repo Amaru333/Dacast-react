@@ -4,7 +4,7 @@ import { Action, getAccountInfoAction, saveAccountInfoAction } from '../../redux
 import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { AccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types';
+import { PutAccountInfo, AccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types';
 import { useParams } from 'react-router-dom';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 export interface EditAccountComponentProps {
     accountInfo: AccountInfo;
     getAccountInfo: (accountId: string) => Promise<void>;
-    saveAccountInfo: (accountInfo: AccountInfo) => Promise<void>;
+    saveAccountInfo: (accountInfo: PutAccountInfo) => Promise<void>;
 }
 
 const EditAccount = (props: EditAccountComponentProps ) => {
@@ -20,9 +20,7 @@ const EditAccount = (props: EditAccountComponentProps ) => {
     let { accountId } = useParams()
 
     React.useEffect(() => {
-        if(!props.accountInfo) {
-            props.getAccountInfo(accountId)
-        }
+        props.getAccountInfo(accountId)
     }, [])
     return props.accountInfo ?
         <EditAccountPage {...props} />
@@ -40,7 +38,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getAccountInfo: async (accountId: string) => {
             await dispatch(getAccountInfoAction(accountId));
         },
-        saveAccountInfo: async (accountInfo: AccountInfo) => {
+        saveAccountInfo: async (accountInfo: PutAccountInfo) => {
             await dispatch(saveAccountInfoAction(accountInfo))
         }
     };

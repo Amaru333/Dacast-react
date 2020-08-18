@@ -24,13 +24,11 @@ export interface RevenueComponentProps {
 
 const Revenue = (props: RevenueComponentProps) => {
     React.useEffect(() => {
-        if(!props.folderData) {
             const wait = async () => {
-                await props.getFolderContent('/')
+                await props.getFolderContent(null)
                 //await props.getFolders('/');
             }
             wait()
-        }
         if(!props.analyticsRevenueData.data) {
             props.getAnalyticsRevenue();
         }

@@ -5,7 +5,9 @@ import { axiosClient } from '../../../../utils/axiosClient';
 var qs = require('qs');
 
 const getAnalyticsRevenueService = async (options?: GetAnalyticsRevenueOptions) => {
-    return await axiosClient.get('/analytics/revenue')
+    debugger
+    console.log('revenue options', options)
+    return await axiosClient.get('/analytics/revenue?' + qs.stringify(options))
 }
 
 

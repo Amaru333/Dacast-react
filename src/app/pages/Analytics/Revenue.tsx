@@ -8,7 +8,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, handleRowIconType, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
@@ -23,7 +23,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
-    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
+    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: Math.floor(Date.now()/1000), start: Math.floor(Date.now()/1000) })
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
@@ -43,11 +43,35 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const handleRemoveFromSelected = () => {
         var newSelectedItems = selectedItems.filter(el => {
             return !checkedSelectedItems.find(elChecked => {
-                return el.id === elChecked.id;
+                return el.objectID === elChecked.objectID;
             })
         });
         setSelectedItems(newSelectedItems);
         setCheckedSelectedItems([]);
+    }
+
+    const handleRowIconType = (item: FolderAsset) => {
+        switch (item.type) {
+            case 'playlist':
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
+            case 'folder':
+                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
+            case 'channel':
+            case 'live':
+            case 'vod':
+                return item.thumbnail ? 
+                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
+                    :                                  
+                        <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                        </div>
+            default:
+                return (                                    
+                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    </div>
+                )
+        }
     }
 
 
@@ -67,70 +91,51 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
         }
     }
 
-    const handleDecreaseOrder = (element: FolderAsset) => {
-        var currentIndex = selectedItems.findIndex(el => el === element);
-        var newArray = [...selectedItems];
-        newArray.splice(currentIndex, 1);
-        newArray.splice(currentIndex + 1, 0, element);
-        setSelectedItems(newArray);
-    }
-
-    const handleIncreaseOrder = (element: FolderAsset) => {
-        var currentIndex = selectedItems.findIndex(el => el === element);
-        var newArray = [...selectedItems];
-        newArray.splice(currentIndex, 1);
-        newArray.splice(currentIndex - 1, 0, element);
-        setSelectedItems(newArray);
-    }
-
     const renderSelectedItems = () => {
-        return selectedItems.map((element, i) => {
+        return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
-                    <InputCheckbox className='mr2' id={element.id + element.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + element.id}
-                        defaultChecked={checkedSelectedItems.includes(element)}
-                        onChange={() => handleCheckboxSelected(element)}
-                    />
+                        <InputCheckbox className='mr2' id={(element.objectID) + element.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + (element.objectID)}
+                            defaultChecked={checkedSelectedItems.includes(element)}
+                            onChange={() => handleCheckboxSelected(element)}
+                        />
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.name}</Text>
-                    <div className="iconAction flex-auto justify-end">
-                        <IconStyle className="right mr1" coloricon='gray-1' onClick={() => handleDecreaseOrder(element)}  >arrow_downward</IconStyle>
-                        <IconStyle className="right" coloricon='gray-1' onClick={() => handleIncreaseOrder(element)} >arrow_upward</IconStyle>
-                    </div>
+                    <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
                 </ItemSetupRow>
             )
         })
     }
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent.results.map((row) => {
-            if (row.contentType === "playlist" || selectedItems.includes(row)) {
+        return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
+            if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer'
-                    selected={checkedContents.includes(row)}
-                    onDoubleClick={() => { row.contentType === "folder" ? handleNavigateToFolder(row.name) : null }}
+                    selected={checkedContents.some(item => item.objectID ===row.objectID)}
+                    onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
                 >
-                    {row.contentType !== "folder" ?
-                        <InputCheckbox className='mr2' id={row.id + row.contentType + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.id}
+                    {row.type !== "folder" &&
+                        <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckboxTab'} key={'foldersTableInputCheckbox' + row.objectID}
                             onChange={() => handleCheckboxContents(row)}
-                            defaultChecked={checkedContents.includes(row)}
+                            checked={checkedContents.some(item => item.objectID ===row.objectID)}
+                            defaultChecked={checkedContents.some(item => item.objectID ===row.objectID)}
 
                         />
-                        : null}
+                    }
                     {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+                    <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                     {
-                        row.contentType === "folder" ?
+                        row.type === "folder" &&
                             <div className="flex-auto justify-end">
-                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                             </div>
-                            : null
                     }
                 </ItemSetupRow>
             )
         })
+            : null
     }
 
     const updateData = (dates: any) => {
@@ -165,6 +170,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                         <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
+                    <Button buttonColor='blue' typeButton='primary' sizeButton='small' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => e.objectID)})}>Update Charts</Button>
                 </AnalyticsContainerHalfSelector>
                 <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
