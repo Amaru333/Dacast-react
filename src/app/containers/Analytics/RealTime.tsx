@@ -24,9 +24,6 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
             props.getLiveList();
         }
         if(props.liveList) {
-            if(props.liveList.results.length === 0) {
-                // HANDLE NO CHANNEL
-            }
             if(!props.realTimeAnalytics) {
                 props.getAnalyticsRealTime({ period: 5, channelId: props.liveList.results[0].objectID })
             }
@@ -45,7 +42,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         realTimeAnalytics: state.analytics.realTime,
-        liveList: state.content.list,
+        liveList: state.content.list.live,
     };
 }
 
