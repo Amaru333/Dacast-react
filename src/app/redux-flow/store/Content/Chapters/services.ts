@@ -1,12 +1,12 @@
 import { ChapterMarker } from './types'
 import { axiosClient } from '../../../../utils/axiosClient'
 
-const getContentChapterMarkersService = async (vodId: string) => {
-    return await axiosClient.get('/vods/' + vodId + '/chapter-markers')
+const getContentChapterMarkersService = async (contentId: string, contentType: string) => {
+    return await axiosClient.get(`${contentType}/${contentId}/chapter-markers`)
 }
 
-const saveContentChapterMarkerService = async (vodId: string, data: ChapterMarker[]) => {
-    return await axiosClient.put('/vods/' + vodId + '/chapter-markers',
+const saveContentChapterMarkerService = async (contentId: string, contentType: string, data: ChapterMarker[]) => {
+    return await axiosClient.put(`${contentType}/${contentId}/chapter-markers`,
         {
             chapterMarkers: data
         } 
