@@ -11,7 +11,6 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
-                        ...state[action.payload.contentType][action.payload.contentId],
                         ...action.payload.data
                     }
                 }

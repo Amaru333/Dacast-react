@@ -24,9 +24,10 @@ export const getContentRenditionsAction = (contentId: string, contentType: strin
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentRenditions>) => {
         await ContentRenditionsServices.getContentRenditionsService(contentId, parseContentType(contentType))
             .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_RENDITIONS, payload: {contentId: contentId, contentType: contentType, data: response.data }});
+                dispatch({ type: ActionTypes.GET_CONTENT_RENDITIONS, payload: {contentId: contentId, contentType: contentType, data: response.data.data }});
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
