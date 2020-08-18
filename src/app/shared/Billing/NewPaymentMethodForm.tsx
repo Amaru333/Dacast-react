@@ -58,7 +58,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
         }
     }, [])
 
-    recurly.configure('ewr1-hgy8aq1eSuf8LEKIOzQk6T');
+    recurly.configure(process.env.RECURLY_TOKEN);
 
     useStepperFinalStepAction('stepperNextButton', () => {
         if (((props.billingInfo.paymentMethod.type === "" || props.billingInfo.paymentMethod.type === "card") && selectedOption === 'paypal') || (props.billingInfo.paymentMethod.type === "paypal" && !props.isUpdate) ) {
