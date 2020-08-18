@@ -4,28 +4,33 @@ export enum ActionTypes  {
     SWITCH_ACCOUNT_PLAN = "@@admin_accounts/SWITCH_ACCOUNT_PLAN"
 }
 
+interface PlanSetting {
+    planValue: boolean;
+    currentValue: boolean | null;
+}
+
 export interface PlanInfo {
     name: string;
     uploadSize: number;
     itemLimit: number;
     folderDepth: number;
     renditions: number;
-    liveStreams: boolean;
-    compatibleStreams: boolean;
-    chinaStreams: boolean;
-    dvr: boolean;
-    recording: boolean;
-    vod: boolean;
-    folders: boolean;
-    playlists: boolean;
-    aes: boolean;
-    signedKeys: boolean;
-    api: boolean;
-    webDownload: boolean;
-    playerDownload: boolean;
-    paywall: boolean;
-    advertising: boolean;
-    emailCatcher: boolean;
+    liveStreams: PlanSetting;
+    compatibleStreams: PlanSetting;
+    chinaStreams: PlanSetting;
+    dvr: PlanSetting;
+    recording: PlanSetting;
+    vod: PlanSetting;
+    folders: PlanSetting;
+    playlists: PlanSetting;
+    aes: PlanSetting;
+    signedKeys: PlanSetting;
+    api: PlanSetting;
+    webDownload: PlanSetting;
+    playerDownload: PlanSetting;
+    paywall: PlanSetting;
+    advertising: PlanSetting;
+    emailCatcher: PlanSetting;
 }
 
 export const editPlanDefaultState: PlanInfo = null

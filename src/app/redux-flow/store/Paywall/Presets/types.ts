@@ -42,7 +42,6 @@ export interface Promo {
     alphanumericCode: string;
     discount: number;
     limit: number;
-    rateType: string;
     startDate?: number;
     endDate?: number;
     timezone?: string;

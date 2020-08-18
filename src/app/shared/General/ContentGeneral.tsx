@@ -29,18 +29,18 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { axiosClient } from '../../utils/axiosClient';
 
-interface ContentGeneralProps {
+export interface ContentGeneralProps {
     contentType: string;
     contentDetails: ContentDetails;
-    getContentDetails: (contentId: string) => Promise<void>;
-    saveContentDetails: (data: ContentDetails) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string) => Promise<void>;
-    deleteFile: (contentId: string, targetId: string, uploadType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: string) => Promise<void>
+    saveContentDetails: (data: ContentDetails, contentType: string) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>;
-    deleteSubtitle?: (targetId: string, contentId: string, fileName: string) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string) => Promise<void>;
+    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
+    deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>;
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>
 }
 
 var momentTZ = require('moment-timezone')
@@ -76,7 +76,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [newContentDetails, setNewContentDetails] = React.useState<ContentDetails>({...props.contentDetails, rewind: false})
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ?props.contentDetails.countdown.startTime !== 0 : null)
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -84,6 +83,15 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     React.useEffect(() => {
         setContentDetails(props.contentDetails)
     }, [props.contentDetails.title, props.contentDetails.folders, props.contentDetails.description, props.contentDetails.online]);
+
+    React.useEffect(() => {
+        if(liveStreamCountdownToggle){
+            let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: countdownTs}})
+        } else {
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: 0}})
+        }
+    }, [liveStreamCountdownToggle, startDateTimeValue])
 
     const subtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
         return {data: [
@@ -112,7 +120,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                 <IconContainer key={"generalPage_subtitles_actionIcons" + value.name + key} className="iconAction">
                     <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
                     <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
-                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, value.name)}>delete</IconStyle></ActionIcon>
+                    <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, value.name, props.contentType)}>delete</IconStyle></ActionIcon>
                     <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
                     {/* <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
                     <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip> */}
@@ -138,7 +146,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     React.useEffect(() => {
         if(props.contentDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID}, props.contentDetails.id).then(() =>
+            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, {...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID}, props.contentDetails.id, props.contentType).then(() =>
                  setSubtitleButtonLoading(false)
             ).catch(() =>
                  setSubtitleButtonLoading(false)
@@ -150,7 +158,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     
     const handleSubtitleSubmit = () => {
         setSubtitleButtonLoading(true)
-        props.getUploadUrl('subtitle', props.contentDetails.id, null, uploadedSubtitleFile)
+        props.getUploadUrl('subtitle', props.contentDetails.id, null, props.contentType, uploadedSubtitleFile)
     }
 
     const handleImageModalFunction = () => {
@@ -221,7 +229,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        props.saveContentDetails(contentDetails).then(() =>
+        props.saveContentDetails(contentDetails, props.contentType).then(() =>  
              setButtonLoading(false)
         ).catch(() =>
              setButtonLoading(false)
@@ -229,7 +237,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     }
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, `${imageType}`)
+        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, imageType, props.contentType)
     }
     
     return (
@@ -330,7 +338,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         {
                             userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={newContentDetails.recording} onChange={() => setNewContentDetails({ ...newContentDetails, recording: !newContentDetails.recording })}></Toggle>
+                                <Toggle label="Live Stream Recording" defaultChecked={contentDetails.recording} onChange={() => setContentDetails({ ...contentDetails, recording: !contentDetails.recording })}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                                 </ToggleTextInfo>
@@ -341,7 +349,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             <Toggle
                                 label="Live Stream Start Countdown"
                                 onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle) }}
-                                defaultChecked={newContentDetails.countdown.startTime !== 0}
+                                defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
@@ -692,7 +700,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </Text>
                                     </ModalContent>
                                     <ModalFooter className="mt1" >
-                                        <Button onClick={() => { setNewContentDetails({ ...newContentDetails, rewind: !newContentDetails.rewind }); setConfirmRewindModal(false); setStepModalRewind(1) }}>Confirm</Button>
+                                        <Button onClick={() => { setContentDetails({ ...contentDetails, rewind: !contentDetails.rewind }); setConfirmRewindModal(false); setStepModalRewind(1) }}>Confirm</Button>
                                     </ModalFooter>
                                 </>
                             }

@@ -112,7 +112,6 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
                             item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: marker}} 
                             toggle={setChapterMarkerModalOpened} 
                             submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker}
-                            chapterState={props.chapterPageDetailsState}
                         />
                 }
             </Modal>

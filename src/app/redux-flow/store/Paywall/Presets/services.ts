@@ -112,7 +112,7 @@ const createPromoPreset = async (data: Promo) => {
                 ...data,
                 assignedContentIds: [],
                 assignedGroupIds: [],
-                discountApplied: data.rateType === 'Pay Per View' ? null : 'once',
+                discountApplied: data.discountApplied.toLowerCase(),
                 id: null
             }  
         }
@@ -128,7 +128,7 @@ const savePromoPreset = async (data: Promo) => {
                 ...data,
                 assignedContentIds: [],
                 assignedGroupIds: [],
-                discountApplied: data.rateType === 'Pay Per View' ? null : 'once',
+                discountApplied: data.discountApplied.toLowerCase(),
             }
         }
     )

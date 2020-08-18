@@ -20,34 +20,17 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 var momentTZ = require('moment-timezone')
 
 interface ContentSecurityComponentProps {
+    contentType: string
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     contentId: string;
-    getSettingsSecurityOptions: (contentId: string) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string) => Promise<void>;
+    getSettingsSecurityOptions: (contentId: string, contentType: string) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
+    lockContent: (contentId: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
-
-    //Initial state depending on custom settings for the content
-    const initvalues = () => {
-        let defaultValues: {
-            editableSettings: boolean;
-            selectedSettings: SecuritySettings;
-            passwordProtectionToggle: boolean;
-            startDateTime: 'Always' | 'Set Date and Time';
-            endDateTime: 'Forever' | 'Set Date and Time';
-        } = {editableSettings: false, selectedSettings: null, passwordProtectionToggle: false, startDateTime: "Always", endDateTime: "Forever"}
-        if(props.contentSecuritySettings.securitySettings && props.globalSecuritySettings) {
-            defaultValues.editableSettings = JSON.stringify(props.globalSecuritySettings) === JSON.stringify(props.contentSecuritySettings.securitySettings) ? false : true
-            defaultValues.selectedSettings = props.contentSecuritySettings.securitySettings
-            defaultValues.passwordProtectionToggle = props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false
-            defaultValues.startDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time'
-            defaultValues.endDateTime = props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time'
-        }
-        return defaultValues
-    }
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         if(ts > 0 ) {
@@ -57,12 +40,12 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     }
 
     
-    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(initvalues().passwordProtectionToggle)
+    const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.passwordProtection && props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
-    const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(initvalues().startDateTime)
-    const [endDateTime, setEndDateTime] = React.useState<'Forever' | 'Set Date and Time'>(initvalues().endDateTime)
-    const [settingsEditable, setSettingsEditable] = React.useState<boolean>(initvalues().editableSettings)
-    const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(initvalues().selectedSettings)
+    const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime ? 'Always' : 'Set Date and Time')
+    const [endDateTime, setEndDateTime] = React.useState<'Forever' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime ? 'Forever' : 'Set Date and Time')
+    const [settingsEditable, setSettingsEditable] = React.useState<boolean>(!props.contentSecuritySettings.securitySettings.locked )
+    const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.contentSecuritySettings.securitySettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -116,14 +99,24 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl
             }, 
-            props.contentId
+            props.contentId, props.contentType
             ).then(() => {
                 setButtonLoading(false)
                 setHasToggleChanged(false)
-            })
+            }).catch(() => setButtonLoading(false))
     }
 
     const handleRevert = () => {
+        props.lockContent(props.contentId, props.contentType).then(() => {
+            setSettingsEditable(!settingsEditable)
+            setSelectedSettings(props.globalSecuritySettings)
+            setRevertSettingsModalOpen(false)
+            setHasToggleChanged(false)
+        })
+
+    }
+
+    const handleUnlockingSettings = () => {
         props.saveContentSecuritySettings(
             {
                 passwordProtection: {
@@ -136,14 +129,14 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     endTimezone: null
                 }, 
                 selectedDomainControl: null, 
-                selectedGeoRestriction: null
+                selectedGeoRestriction: null,
+                locked: false
             }, 
-            props.contentId).then(() => {
-                setSettingsEditable(!settingsEditable)
-                setSelectedSettings(props.globalSecuritySettings)
-                setRevertSettingsModalOpen(false)
-                setHasToggleChanged(false)
-            })
+            props.contentId, props.contentType
+        ).then(() => {
+            setSettingsEditable(!settingsEditable)
+            setEditSettingsModalOpen(false)
+        })
     }
 
     return (
@@ -197,7 +190,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                     id='password' 
                                     label='Password' 
                                     placeholder='Password'
-                                    onChange={(event) => setSelectedSettings({...selectedSettings, passwordProtection: {password: event.currentTarget.value }})}
+                                    onChange={(event) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, passwordProtection: {password: event.currentTarget.value }})}}
                                     required
                                 />
                             </div>}
@@ -348,7 +341,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                 </DisabledSection>
             </Card>
           
-            { (JSON.stringify(selectedSettings) !== JSON.stringify(props.contentSecuritySettings.securitySettings) || hasToggleChanged) &&
+            { hasToggleChanged &&
                 <div>
                     <Button 
                         type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { handleSave()}}>Save</Button>
@@ -360,7 +353,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Text size={14} weight="reg">After unlocking these settings your global settings will no longer apply to this content.</Text>
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {setSettingsEditable(!settingsEditable);setEditSettingsModalOpen(false)}}>Edit</Button>
+                    <Button onClick={() => handleUnlockingSettings()}>Edit</Button>
                     <Button typeButton="tertiary" onClick={() => setEditSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
@@ -373,7 +366,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Button typeButton="tertiary" onClick={() => setRevertSettingsModalOpen(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>
-            <Prompt when={JSON.stringify(selectedSettings) !== JSON.stringify(props.contentSecuritySettings.securitySettings) || hasToggleChanged} message='' />
+            <Prompt when={hasToggleChanged} message='' />
         </div>
                     
     )

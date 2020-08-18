@@ -90,7 +90,6 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                             discount: promo.preset.discount,
                             discountApplied: promo.preset.discountApplied,
                             limit: promo.preset.limit,
-                            rateType: promo.preset.discountApplied ? 'Subscription' : 'Pay Per View'
                         }
                     })
                 }

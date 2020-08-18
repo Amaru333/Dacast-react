@@ -12,6 +12,7 @@ import { PlaylistState, playlistInitialState, PlaylistReducer } from './Playlist
 import { FoldersState, foldersInitialState } from './Folders/types';
 import { FoldersReducer } from './Folders/reducer';
 import { AnalyticsState, analyticsInitialState, AnalyticsReducer } from './Analytics';
+import { ContentState, contentInitialState, ContentReducer } from './Content/types';
 
 
 export interface ApplicationState {
@@ -27,6 +28,7 @@ export interface ApplicationState {
     folders: FoldersState;
     title: string;
     analytics: AnalyticsState;
+    content: ContentState   
 }
 
 export const globalDefaultState: ApplicationState = {
@@ -41,7 +43,8 @@ export const globalDefaultState: ApplicationState = {
     paywall: paywallInitialState,
     folders: foldersInitialState,
     title: "",
-    analytics: analyticsInitialState
+    analytics: analyticsInitialState,
+    content: contentInitialState
 };
 
 export const appReducer = 
@@ -57,7 +60,8 @@ export const appReducer =
         playlist: PlaylistReducer,
         paywall: PaywallReducer,
         folders: FoldersReducer,
-        analytics: AnalyticsReducer
+        analytics: AnalyticsReducer,
+        content: ContentReducer
     })
 
 

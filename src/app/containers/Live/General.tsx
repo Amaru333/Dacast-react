@@ -1,51 +1,39 @@
 import React from 'react';
-import { LiveGeneralPage } from '../../pages/Live/General/General'
-import { LiveDetails, LiveDetailsState } from '../../redux-flow/store/Live/General/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getLiveDetailsAction, saveLiveDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Live/General/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router-dom';
 import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
-import { ContentDetails, ContentDetailsState } from '../../redux-flow/store/VOD/General/types';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { GeneralComponentProps } from '../Videos/General';
+import { ContentDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
+import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
 
-export interface LiveGeneralProps {
-    liveDetails: ContentDetails;
-    liveDetailsState: ContentDetailsState;
-    getLiveDetails: (liveId: string) => Promise<void>
-    saveLiveDetails: (data: LiveDetails) => Promise<void>
-    getUploadUrl: (uploadType: string, liveId: string, extension: string) => Promise<void>
-    uploadFile: (data: File, uploadUrl: string, liveId: string, uploadType: string) => Promise<void>
-    deleteFile: (liveId: string, targetId: string, uploadType: string) => Promise<void>
-    showToast: (text: string, size: Size, notificationType: NotificationType) => Promise<void>
-}
-
-export const LiveGeneral = (props: LiveGeneralProps) => {
+export const LiveGeneral = (props: GeneralComponentProps) => {
 
     let { liveId } = useParams()
 
 
     React.useEffect(() => {
-        props.getLiveDetails(liveId);
+        props.getContentDetails(liveId, 'live');
     }, [])
 
     return (
         <>
             <LiveTabs liveId={liveId} />
             {
-                props.liveDetailsState[liveId] ?
+                props.contentDetailsState['live'] && props.contentDetailsState['live'][liveId] ?
                     (
                         <div className='flex flex-column'>
                             <ContentGeneralPage
                                 contentType="live" 
-                                contentDetails={props.liveDetailsState[liveId]}
-                                getContentDetails={props.getLiveDetails}
-                                saveContentDetails={props.saveLiveDetails}
+                                contentDetails={props.contentDetailsState['live'][liveId]}
+                                getContentDetails={props.getContentDetails}
+                                saveContentDetails={props.saveContentDetails}
                                 getUploadUrl={props.getUploadUrl}
                                 uploadFile={props.uploadFile}
                                 deleteFile={props.deleteFile}
@@ -60,31 +48,30 @@ export const LiveGeneral = (props: LiveGeneralProps) => {
 }
 
 export function mapStateToProps(state: ApplicationState) {
-    //let {liveId} = useParams()
     return {
-        liveDetailsState: state.live.general
+        contentDetailsState: state.content.general
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLiveDetails: async (liveId: string) => {
-            await dispatch(getLiveDetailsAction(liveId));
+        getContentDetails: async (liveId: string, contentType: string) => {
+            await dispatch(getContentDetailsAction(liveId, contentType));
         },
-        saveLiveDetails: async (data: LiveDetails) => {
-            await dispatch(saveLiveDetailsAction(data))
+        saveContentDetails: async (data: ContentDetails, contentType: string) => {
+            await dispatch(editContentDetailsAction(data, contentType))
         },
-        getUploadUrl: async (uploadType: string, liveId: string, extension: string) => {
-            await dispatch(getUploadUrlAction(uploadType, liveId, extension))
+        getUploadUrl: async (uploadType: string, vodId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
+            await dispatch(getUploadUrlAction(uploadType, vodId, extension, contentType, subtitleInfo))
         },
-        uploadFile: async (data: File, uploadUrl: string, liveId: string, uploadType: string) => {
-            await dispatch(uploadFileAction(data, uploadUrl, liveId, uploadType))
+        uploadFile: async (data: File, uploadUrl: string, vodId: string, uploadType: string, contentType: string) => {
+           await dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType, contentType))
         },
-        deleteFile: async (liveId: string, targetId: string, uploadType: string) => {
-            await dispatch(deleteFileAction(liveId, targetId, uploadType))
+        deleteFile: async (vodId: string, targetId: string, contentType: string) => {
+            await dispatch(deleteFileAction(vodId, targetId, contentType))
         },
-        showToast: async (text: string, size: Size, notificationType: NotificationType) => {
-            await dispatch(showToastNotification(text, size, notificationType));
+        showToast: (text: string, size: Size, notificationType: NotificationType) => {
+            dispatch(showToastNotification(text, size, notificationType));
         },
 
     }

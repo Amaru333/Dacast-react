@@ -1,4 +1,4 @@
-import { InteractionsInfos, Ad, MailCatcher } from './types';
+import { EngagementInfo, Ad, MailCatcher } from './types';
 import { userToken } from '../../../../utils/token';
 import { axiosClient } from '../../../../utils/axiosClient';
 
@@ -7,7 +7,7 @@ const getInteractionsInfos = async () => {
     return await axiosClient.get('/accounts/' + userId + '/settings/engagement')
 }
 
-const saveInteractionsInfos = async (data: InteractionsInfos) => {
+const saveInteractionsInfos = async (data: EngagementInfo) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     return await axiosClient.put('/accounts/' + userId + '/settings/engagement',
         {
@@ -16,12 +16,11 @@ const saveInteractionsInfos = async (data: InteractionsInfos) => {
     )
 }
 
-const saveAd = async (data: Ad[], adsId: string) => {
+const saveAd = async (data: Ad[]) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     return await axiosClient.put('/accounts/' + userId + '/settings/engagement/ads/',
         {
             ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
-            adsId: adsId
         }
     )
 }

@@ -1,4 +1,4 @@
-import { ActionTypes, InteractionsInfos, Ad, MailCatcher } from "./types";
+import { ActionTypes, EngagementInfo, Ad, MailCatcher } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
@@ -6,12 +6,12 @@ import { interactionsServices } from './services';
 
 export interface GetSettingsInteractionsInfos {
     type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS;
-    payload: {data: InteractionsInfos};
+    payload: {data: EngagementInfo};
 }
 
 export interface SaveSettingsInteractionsInfos {
     type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS;
-    payload: InteractionsInfos;
+    payload: EngagementInfo;
 }
 
 export interface SaveAd {
@@ -21,7 +21,7 @@ export interface SaveAd {
 
 export interface CreateAd {
     type: ActionTypes.CREATE_AD;
-    payload: {ads: Ad[]; adsId: string};
+    payload: Ad[];
 }
 
 export interface DeleteAd {
@@ -71,7 +71,7 @@ export const getSettingsInteractionsInfosAction = (): ThunkDispatch<Promise<void
     };
 }
 
-export const saveSettingsInteractionsInfosAction = (data: InteractionsInfos): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {
+export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveSettingsInteractionsInfos> ) => {
         await interactionsServices.saveInteractionsInfos(data)
             .then( response => {
@@ -83,9 +83,9 @@ export const saveSettingsInteractionsInfosAction = (data: InteractionsInfos): Th
     };
 }
 
-export const saveAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<void>, {}, SaveAd> => {
+export const saveAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, SaveAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveAd> ) => {
-        await interactionsServices.saveAd(data, adsId)
+        await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_AD, payload: data} );
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
@@ -95,11 +95,11 @@ export const saveAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<v
     };
 }
 
-export const createAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<void>, {}, CreateAd> => {
+export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, CreateAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateAd> ) => {
-        await interactionsServices.saveAd(data, adsId)
+        await interactionsServices.saveAd(data)
             .then( response => {
-                dispatch( {type: ActionTypes.CREATE_AD, payload: {ads: data, adsId: response.data.data.adsId}} );
+                dispatch( {type: ActionTypes.CREATE_AD, payload: data} );
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -107,9 +107,9 @@ export const createAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise
     };
 }
 
-export const deleteAdAction = (data: Ad[], adsId: string): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
+export const deleteAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteAd> ) => {
-        await interactionsServices.saveAd(data, adsId)
+        await interactionsServices.saveAd(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_AD, payload: data} );
                 dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
@@ -184,7 +184,7 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
 
 export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
-        await interactionsServices.deleteFile(targetId)
+        await interactionsServices.deleteFile()
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
                 dispatch(showToastNotification("Brand Image has been successfully deleted", 'fixed', "success"))

@@ -98,8 +98,14 @@ export const SetupPage = (props: SetupComponentProps) => {
             case 'folder':
                 return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
             case 'channel':
+            case 'live':
             case 'vod':
-                return <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
+                return item.thumbnail ? 
+                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
+                    :                                  
+                        <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                        </div>
             default:
                 return (                                    
                     <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>

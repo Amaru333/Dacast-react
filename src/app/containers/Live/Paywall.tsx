@@ -2,55 +2,28 @@ import React from 'react'
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, createLivePricePresetAction, saveLivePricePresetAction, deleteLivePricePresetAction, createLivePromoPresetAction, saveLivePromoPresetAction, deleteLivePromoPresetAction, getLivePaywallInfosAction, saveLivePaywallInfosAction, getLivePaywallPromosAction, getLivePaywallPricesAction } from '../../redux-flow/store/Live/Paywall';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { GroupsPageInfos, getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
-import { getPaywallThemesAction, PaywallThemingData } from '../../redux-flow/store/Paywall/Theming';
+import { getGroupPricesAction } from '../../redux-flow/store/Paywall/Groups';
+import { getPaywallThemesAction } from '../../redux-flow/store/Paywall/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getPricePresetsInfosAction, createPricePresetAction, createPromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets/actions';
-import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
-import { ContentPaywallPageInfos, Preset, Promo, PresetsPageInfos, ContentPaywallState } from '../../redux-flow/store/Paywall/Presets/types';
+import { ContentPaywallPageInfos, Preset, Promo } from '../../redux-flow/store/Paywall/Presets/types';
+import { ContentPaywallComponentProps } from '../Videos/Paywall';
+import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { Action, createContentPricePresetAction, saveContentPricePresetAction, deleteContentPricePresetAction, createContentPromoPresetAction, saveContentPromoPresetAction, deleteContentPromoPresetAction, getContentPaywallInfosAction, saveContentPaywallInfosAction, getContentPaywallPricesAction, getContentPaywallPromosAction } from '../../redux-flow/store/Content/Paywall/actions';
+import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 
 var moment = require('moment-timezone');
 
-export interface LivePaywallComponentProps {
-    livePaywallInfos: ContentPaywallState;
-    getLivePaywallInfos: Function;
-    saveLivePaywallInfos: Function;
-    getLivePaywallPrices: Function;
-    createLivePricePreset: Function;
-    saveLivePricePreset: Function;
-    deleteLivePricePreset: Function;
-    getLivePaywallPromos: Function;
-    createLivePromoPreset: Function;
-    saveLivePromoPreset: Function;
-    deleteLivePromoPreset: Function;
-    groupsInfos: GroupsPageInfos;
-    getGroupsInfos: Function;
-    theming: PaywallThemingData;
-    getPaywallThemes: Function;
-    globalPresets: PresetsPageInfos;
-    getPresetsInfo: Function;
-    getPromoPresetsInfo: Function;
-    customPricePresetList: Preset[];
-    createPricePreset: Function;
-    customPromoPresetList: Promo[];
-    createPromoPreset: Function;
-    showToast: Function;
-}
-
-const LivePaywall = (props: LivePaywallComponentProps) => {
+const LivePaywall = (props: ContentPaywallComponentProps) => {
 
     let { liveId } = useParams()
 
     React.useEffect(() => {
-        if(!props.livePaywallInfos[liveId]) {
-            props.getLivePaywallInfos(liveId)
-        }
+        props.getContentPaywallInfos(liveId, 'live')
         if(!props.groupsInfos) {
             props.getGroupsInfos()
         }
@@ -63,8 +36,8 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
         if(!props.globalPresets || !props.globalPresets.promos) {
             props.getPromoPresetsInfo('page=1&per-page=100')
         }
-        props.getLivePaywallPrices(liveId)
-        props.getLivePaywallPromos(liveId)
+        props.getContentPaywallPrices(liveId, 'live')
+        props.getContentPaywallPromos(liveId, 'live')
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -72,7 +45,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
     const [customPromoPresetList, setCustomPromoPresetList] = React.useState<Promo[]>(null)
 
     React.useEffect(() => {
-        if (props.livePaywallInfos[liveId] && props.globalPresets) {
+        if (props.contentPaywallInfo['live'] && props.contentPaywallInfo['live'][liveId] && props.globalPresets) {
             let customPricePreset: Preset = {
                 id: 'custom',
                 name: 'Custom Price',
@@ -113,24 +86,24 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
             setCustomPricePresetList([...globalPricePresets, customPricePreset])
             setCustomPromoPresetList([...globalPromoPresets, customPromoPreset])
         }
-    }, [props.globalPresets.presets, props.livePaywallInfos])
+    }, [props.globalPresets.presets, props.contentPaywallInfo['live']])
 
-    return props.livePaywallInfos[liveId] && props.groupsInfos && props.theming && customPricePresetList? 
+    return props.contentPaywallInfo['live'] && props.contentPaywallInfo['live'][liveId] && props.groupsInfos && props.theming && customPricePresetList? 
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
             <ContentPaywallPage
                 contentId={liveId}
                 contentType='live'
-                contentPaywallInfos={props.livePaywallInfos[liveId]}
-                saveContentPaywallInfos={props.saveLivePaywallInfos}
-                getContentPrices={props.getLivePaywallPrices}
-                createContentPricePreset={props.createLivePricePreset}
-                saveContentPricePreset={props.saveLivePricePreset}
-                deleteContentPricePreset={props.deleteLivePricePreset}
-                getContentPromos={props.getLivePaywallPromos}
-                createContentPromoPreset={props.createLivePromoPreset}
-                saveContentPromoPreset={props.saveLivePromoPreset}
-                deleteContentPromoPreset={props.deleteLivePromoPreset}
+                contentPaywallInfos={props.contentPaywallInfo['live'][liveId]}
+                getContentPrices={props.getContentPaywallPrices}
+                saveContentPaywallInfos={props.saveContentPaywallInfos}
+                createContentPricePreset={props.createContentPricePreset}
+                saveContentPricePreset={props.saveContentPricePreset}
+                deleteContentPricePreset={props.deleteContentPricePreset}
+                getContentPromos={props.getContentPaywallPromos}
+                createContentPromoPreset={props.createContentPromoPreset}
+                saveContentPromoPreset={props.saveContentPromoPreset}
+                deleteContentPromoPreset={props.deleteContentPromoPreset}
                 groupsInfos={props.groupsInfos}
                 theming={props.theming}
                 globalPresets={props.globalPresets}
@@ -146,7 +119,7 @@ const LivePaywall = (props: LivePaywallComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        livePaywallInfos: state.live.paywall,
+        contentPaywallInfo: state.content.paywall,
         groupsInfos: state.paywall.groups,
         theming: state.paywall.theming,
         globalPresets: state.paywall.presets
@@ -155,53 +128,53 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getLivePaywallInfos: (liveId: string) => {
-            dispatch(getLivePaywallInfosAction(liveId));
+        getContentPaywallInfos: async (liveId: string, contentType: string) => {
+            await dispatch(getContentPaywallInfosAction(liveId, contentType));
         },
-        saveLivePaywallInfos: (data: ContentPaywallPageInfos, liveId: string) => {
-            dispatch(saveLivePaywallInfosAction(data, liveId));
+        getContentPaywallPrices: async (liveId: string, contentType: string) => {
+            await dispatch(getContentPaywallPricesAction(liveId, contentType));
         },
-        getLivePaywallPrices: (liveId: string) => {
-            dispatch(getLivePaywallPricesAction(liveId));
+        saveContentPaywallInfos: async (data: ContentPaywallPageInfos, liveId: string, contentType: string) => {
+            await dispatch(saveContentPaywallInfosAction(data, liveId, contentType));
         },
-        createLivePricePreset: (data: Preset, liveId: string) => {
-            dispatch(createLivePricePresetAction(data, liveId));
+        createContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
+            await dispatch(createContentPricePresetAction(data, liveId, contentType));
         },
-        saveLivePricePreset: (data: Preset, liveId: string) => {
-            dispatch(saveLivePricePresetAction(data, liveId));
+        saveContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
+            await dispatch(saveContentPricePresetAction(data, liveId, contentType));
         },
-        deleteLivePricePreset: (data: Preset, liveId: string) => {
-            dispatch(deleteLivePricePresetAction(data, liveId));
+        deleteContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
+            await dispatch(deleteContentPricePresetAction(data, liveId, contentType));
         },
-        getLivePaywallPromos: (liveId: string) => {
-            dispatch(getLivePaywallPromosAction(liveId));
+        getContentPaywallPromos: async (liveId: string, contentType: string) => {
+            await dispatch(getContentPaywallPromosAction(liveId, contentType));
         },
-        createLivePromoPreset: (data: Promo, liveId: string) => {
-            dispatch(createLivePromoPresetAction(data, liveId));
+        createContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
+            await dispatch(createContentPromoPresetAction(data, liveId, contentType));
         },
-        saveLivePromoPreset: (data: Promo, liveId: string) => {
-            dispatch(saveLivePromoPresetAction(data, liveId));
+        saveContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
+            await dispatch(saveContentPromoPresetAction(data, liveId, contentType));
         },
-        deleteLivePromoPreset: (data: Promo, liveId: string) => {
-            dispatch(deleteLivePromoPresetAction(data, liveId));
+        deleteContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
+            await dispatch(deleteContentPromoPresetAction(data, liveId, contentType));
         },
-        getGroupsInfos: () => {
-            dispatch(getGroupPricesAction());
+        getGroupsInfos: async () => {
+            await dispatch(getGroupPricesAction());
         },
-        getPaywallThemes: () => {
-            dispatch(getPaywallThemesAction())
+        getPaywallThemes: async () => {
+            await dispatch(getPaywallThemesAction())
         },
-        getPresetsInfo: (qs: string) => {
-            dispatch(getPricePresetsInfosAction(qs))
+        getPresetsInfo: async (qs: string) => {
+            await dispatch(getPricePresetsInfosAction(qs))
         },
-        getPromoPresetsInfo: (qs: string) => {
-            dispatch(getPromoPresetsInfosAction(qs))
+        getPromoPresetsInfo: async (qs: string) => {
+            await dispatch(getPromoPresetsInfosAction(qs))
         },
-        createPricePreset: (data: Preset) => {
-            dispatch(createPricePresetAction(data));
+        createPricePreset: async (data: Preset) => {
+            await dispatch(createPricePresetAction(data));
         },
-        createPromoPreset: (data: Promo) => {
-            dispatch(createPromoPresetAction(data));
+        createPromoPreset: async (data: Promo) => {
+            await dispatch(createPromoPresetAction(data));
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

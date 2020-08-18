@@ -57,7 +57,11 @@ export interface ContentTheme {
 }
 
 
-export interface ContentThemeState { [key: string]: ContentTheme }
+export interface ContentThemeState { 
+    [contentType: string]: {
+        [key: string]: ContentTheme
+    } 
+}
 
 export const defaultStateThemesType: ThemesData = {
     themes: []

@@ -2,17 +2,6 @@ import { Reducer } from "redux"
 import { Action } from "./actions"
 import { ActionTypes, VodItem, SearchResult, ContentDetailsState, SubtitleInfo, initialContentGeneralState } from './types'
 
-// const initialVodGeneralState: VodDetails = {
-//     id: null,
-//     title: null,
-//     description: null,
-//     online: null,
-//     thumbnail: null,
-//     splashscreen: null,
-//     subtitles: [],
-//     uploadurl: null
-//}
-
 const initialVodList: SearchResult | false = false
 
 
@@ -49,18 +38,6 @@ const reducer: Reducer<ContentDetailsState> = (state = initialContentGeneralStat
                     subtitles: newArray
                 }
             }
-        // case ActionTypes.EDIT_VOD_SUBTITLE:
-        //     return {
-        //         ...state, subtitles: state.subtitles.map((item) => {
-        //             if (item.id !== action.payload.id) {
-        //                 return item
-        //             }
-        //             return {
-        //                 ...item,
-        //                 ...action.payload
-        //             }
-        //         })
-        //     }
         case ActionTypes.DELETE_VOD_SUBTITLE:
             return {
                 ...state,
