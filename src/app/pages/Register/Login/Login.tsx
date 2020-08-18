@@ -54,7 +54,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                         <Input {...handleValidationForm('email', errors, 'email', register)} type="email" className="col col-12 pt1" label="Email Address" placeholder="Email Address" />
                         <div className=" relative col col-12 flex pt1">
                             <div className='relative flex col col-12'>
-                                <Input {...handleValidationForm('password', errors, 'password', register)} type={passwordVisible ? "text" : "password"} className='col col-12' label="Password" placeholder="Password"  />
+                                <Input {...handleValidationForm('password', errors, 'password', register)} type={passwordVisible ? "text" : "password"} className='col col-12' label="Password" placeholder="Password" />
                                 <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
                             </div>
                             <Text color="gray-1" className='absolute right-0 pt1' size={12} weight="reg"><a href="/forgot-password">Forgot your password?</a></Text>
