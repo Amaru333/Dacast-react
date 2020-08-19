@@ -26,6 +26,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
     const [planData, setPlanData] = React.useState<PlanInfoPut>({privileges: []})
     const [selectedPlan, setSelectedPlan] = React.useState<string>(props.accountPlan.name)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [changes, setChanges] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
         setButtonLoading(true)

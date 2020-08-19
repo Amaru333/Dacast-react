@@ -29,19 +29,19 @@ export const Tab = (props: TabProps) => {
 
 
     let dropdownRef = React.useRef<HTMLDivElement>(null)
-    const [selectedTab, setSelectedTab] = React.useState<string>(firstSelectedItem());
+    const [selectedTab, setSelectedTab] = React.useState<string>(firstSelectedItem())
 
     React.useEffect(() => {
-        setSelectedTab(firstSelectedItem())
+        if(!props.callback) {
+            setSelectedTab(firstSelectedItem())
+        }
     }, [location])
 
     React.useEffect(()=> {
-        if(mobile && dropdownRef.current !== null) {
+        if(mobile && dropdownRef.current !== null && !props.callback) {
             setSelectedTab(dropdownRef.current.innerText)
         }
-        if(props.callback) {
-            props.callback(selectedTab)
-        }
+
         if(location.pathname.indexOf(selectedTab) === -1 && !props.callback) {
             setSelectedTab(firstSelectedItem())
         }
@@ -59,7 +59,7 @@ export const Tab = (props: TabProps) => {
                             <TabStyle                               
                                 orientation={orientation} 
                                 selected={selectedTab === tab.path} 
-                                onClick={() => setSelectedTab(tab.path)}
+                                onClick={() => setSelectedTab(tab.name)}
                             >
                                 <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.path ? 'med' : 'reg'}  color={selectedTab === tab.path ? "dark-violet" : "gray-1"}>{tab.name}</Text>
                             </TabStyle>
@@ -74,7 +74,7 @@ export const Tab = (props: TabProps) => {
                             key={tab.name}                              
                             orientation={orientation} 
                             selected={selectedTab === tab.name} 
-                            onClick={() => setSelectedTab(tab.name)}
+                            onClick={() => {; setSelectedTab(tab.name);props.callback(tab.name)}}
                         >
                             <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.name ? 'med' : 'reg'}  color={selectedTab === tab.name ? "dark-violet" : "gray-1"}>{tab.name}</Text>
                         </TabStyle>
