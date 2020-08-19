@@ -24,7 +24,6 @@ export function isLoggedIn() {
 
 export function isTokenExpired() {
     let token: TokenInfos = JSON.parse(localStorage.getItem('adminToken'))
-    console.log(token);
     if(Math.abs(DateTime.fromSeconds(parseInt(token.expires)).diffNow('minutes').minutes) <= 5) {
         axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh})
             .then(response => {

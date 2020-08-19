@@ -19,9 +19,8 @@ const AccountAllowances = (props: AccountAllowancesComponentProps) => {
     let { accountId } = useParams()
 
     React.useEffect(() => {
-        if(!props.accountAllowances) {
-            props.getAccountAllowances(accountId)
-        }
+        props.getAccountAllowances(accountId)
+
     }, [])
 
     return (
@@ -31,7 +30,7 @@ const AccountAllowances = (props: AccountAllowancesComponentProps) => {
 
 export function mapStateToProps(state: AdminState) {
     return {
-        accountInfo: state.accounts.account
+        accountAllowances: state.accounts.allowances
     };
 }
 

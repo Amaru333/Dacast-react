@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery } from '../../../utils/utils'
 import { useHistory } from 'react-router'
+import { userToken } from '../../utils/token'
 
 export const Impersonate = () => {
 
@@ -18,6 +19,13 @@ export const Impersonate = () => {
                     expires: 9999999999999
                 }
             ))
+            userToken.resetUserInfo()
+            userToken.addTokenInfo({
+                token: query.get('token'),
+                accessToken: null,
+                refresh: null,
+                expires: 9999999999999
+            })
             history.push('/dashboard')
         }
     }, [])
