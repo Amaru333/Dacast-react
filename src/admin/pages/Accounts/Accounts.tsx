@@ -60,7 +60,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         AccountsServices.impersonate(userIdentifier)
         .then((response) => {
-            window.open(`${process.env.API_BASE_URL}/impersonate?token=${response.data.data.token}`, '_newtab')
+            Object.assign(document.createElement('a'), { target: '_blank', href: `https://app.dacast.com/impersonate?token=${response.data.token}`}).click();
         })
     }
 

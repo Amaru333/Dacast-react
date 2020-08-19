@@ -22,7 +22,11 @@ const Header = (props: {logout: () => void}) => {
         AccountsServices.impersonate(userIdentifier)
         .then((response) => {
             setIsLoading(false)
-            window.open(`${process.env.API_BASE_URL}/impersonate?token=${response.data.data.token}`, '_newtab')
+            // let url = `${process.env.API_BASE_URL}/impersonate?token=${response.data.data.token}`
+            // console.log(url)
+            // debugger
+            Object.assign(document.createElement('a'), { target: '_blank', href: `https://app.dacast.com/impersonate?token=${response.data.token}`}).click()
+
         })
         .catch(() => setIsLoading(false))
     }
