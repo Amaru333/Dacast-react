@@ -23,7 +23,7 @@ const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, acti
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                 [action.payload.contentId] : {
-                    ...state[action.payload.contentId],
+                    ...state[action.payload.contentType][action.payload.contentId],
                     themes: state[action.payload.contentType][action.payload.contentId].themes.map((theme) => {
                         if(theme.id === action.payload.data.id || (theme.isCustom && action.payload.data.isCustom)) {
                             return action.payload.data

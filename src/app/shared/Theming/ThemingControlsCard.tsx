@@ -103,10 +103,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
 
-    React.useEffect(() => {
-        console.log('set edited settings value to ', editedSettings)
-    }, [editedSettings])
-
     let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
@@ -166,7 +162,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => {setEditedSettings(true);setSelectedTheme({...selectedTheme, deliveryMethod:'compatible'});}}/>
                                 <div>
                                     <IconStyle id="compatibleDeliveryTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="compatibleDeliveryTooltip">Whether the content will start again when it reaches the end</Tooltip>
+                                    <Tooltip target="compatibleDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatibility</Tooltip>
                                 </div>
                             </RadioButtonContainer>
                             
@@ -174,7 +170,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => {setEditedSettings(true);setSelectedTheme({...selectedTheme, deliveryMethod: 'secure'});}} />
                                 <div>
                                     <IconStyle id="secureDeliveryTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="secureDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatability</Tooltip>
+                                    <Tooltip target="secureDeliveryTooltip">Encrypts playback with AES, which increases security at the cost of compatibility with older devices/browsers/OSs</Tooltip>
                                 </div>
                             </RadioButtonContainer>
                             
