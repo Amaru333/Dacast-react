@@ -6,7 +6,7 @@ export enum ActionTypes  {
 
 interface PlanSetting {
     planValue: boolean;
-    currentValue: boolean | null;
+    userValue: boolean | null;
 }
 
 export interface PlanInfo {

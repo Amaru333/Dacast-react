@@ -9,6 +9,7 @@ import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
 import { makeRoute } from '../../utils/utils'
+import { handleFeatures } from '../../../app/shared/Common/Features'
 
 const Plans = [
     'Developer',
@@ -38,6 +39,17 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
         })
     }
 
+    const handleKeyChange = (key:string, value: boolean | number) => {
+        let tempPlanData = planData
+        debugger
+        if(tempPlanData.privileges.findIndex(obj => obj.key === key) > -1) {
+            tempPlanData.privileges[tempPlanData.privileges.findIndex(obj => obj.key === key)] = {key: key, value: value}
+        } else {
+            tempPlanData.privileges = [...tempPlanData.privileges, {key: key, value: value}]
+        }
+        setPlanData(tempPlanData)
+    }
+
     const EditPlanContent = () => {
         return (
             <div className='flex flex-column'>
@@ -47,43 +59,93 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text size={14} weight="med">{props.accountPlan.name}</Text>
                     <Button className='mb1 mx2' onClick={() => setShowSwitchPlan(true)} sizeButton='large' typeButton='primary' buttonColor='blue'>Switch</Button>
                 </div>
-                <Input className='my1 col col-2' id='uploadSizeInput' placeholder='100' label='Upload Size (GB)' defaultValue={props.accountPlan.uploadSize ? props.accountPlan.uploadSize.toString() : '0'} onChange={(event) => setPlanData({privileges: [...planData.privileges, {key: 'uploadSize', value: parseInt(event.currentTarget.value)}]})} />
-                <Input className='my1 col col-2' id='itemLimitInput' placeholder='100' label='Item Limit' defaultValue={props.accountPlan.itemLimit ? props.accountPlan.itemLimit.toString() : '0'} onChange={(event) => setPlanData({privileges: [...planData.privileges, {key: 'itemLimit', value: parseInt(event.currentTarget.value)}]})}  />
-                <Input className='my1 col col-2' id='folderDepthInput' placeholder='5' label='Folder Depth' defaultValue={props.accountPlan.folderDepth ? props.accountPlan.folderDepth.toString(): '0'} onChange={(event) => setPlanData({privileges: [...planData.privileges, {key: 'folderDepth', value: parseInt(event.currentTarget.value)}]})}  />
-                <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditionsPerRecipe ? props.accountPlan.renditionsPerRecipe.toString() : '0'} onChange={(event) => setPlanData({privileges: [...planData.privileges, {key: 'renditionsPerRecipe', value: parseInt(event.currentTarget.value)}]})}  />
+                <Input className='my1 col col-2' id='uploadSizeInput' placeholder='100' label='Upload Size (GB)' defaultValue={props.accountPlan.uploadSize ? props.accountPlan.uploadSize.toString() : '0'} onChange={(event) => handleKeyChange('uploadSize', parseInt(event.currentTarget.value))} />
+                <Input className='my1 col col-2' id='itemLimitInput' placeholder='100' label='Item Limit' defaultValue={props.accountPlan.itemLimit ? props.accountPlan.itemLimit.toString() : '0'} onChange={(event) => handleKeyChange('itemLimit', parseInt(event.currentTarget.value))}  />
+                <Input className='my1 col col-2' id='folderDepthInput' placeholder='5' label='Folder Depth' defaultValue={props.accountPlan.folderDepth ? props.accountPlan.folderDepth.toString(): '0'} onChange={(event) => handleKeyChange('folderDepth', parseInt(event.currentTarget.value))}  />
+                <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditionsPerRecipe ? props.accountPlan.renditionsPerRecipe.toString() : '0'} onChange={(event) => handleKeyChange('renditionsPerRecipe', parseInt(event.currentTarget.value))}  />
                 
                 <Text className='py1' size={14} weight='med'>Live Streams</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.liveStream.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'liveStream', value: value === 'On' ? true : false}]})} />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.liveStream.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.liveStream.planValue || props.accountPlan.liveStream.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('liveStream', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Compatible Streams</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'compatibleStreams', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.compatibleStreams.planValue || props.accountPlan.compatibleStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('compatibleStreams', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>China Streams</Text>
-                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.chinaStreams.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'chinaStreams', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.chinaStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.chinaStreams.planValue || props.accountPlan.chinaStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('chinaStreams', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>DVR</Text>
-                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.dvr.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'dvr', value: value === 'On' ? true : false}]})} />
+
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.dvr.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.dvr.planValue || props.accountPlan.dvr.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('dvr', value === 'On' ? true : false)} />
+                </div>                
                 <Text className='py1' size={14} weight='med'>Recording</Text>
-                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.recording.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'recording', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.recording.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.recording.planValue || props.accountPlan.recording.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('recording', value === 'On' ? true : false)} />
+                </div>
+
                 <Text className='py1' size={14} weight='med'>VOD</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.vod.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'vod', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.vod.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.vod.planValue || props.accountPlan.vod.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('vod', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Folders</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.folders.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'folders', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.folders.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.folders.planValue || props.accountPlan.folders.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('folders', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Playlists</Text>
-                <Tab className='my1 col col-2'  orientation='horizontal' list={[makeRoute(props.accountPlan.playlists.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'playlists', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.playlists.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.playlists.planValue || props.accountPlan.playlists.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('playlists', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>AES</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.aes.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'aes', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.aes.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.aes.planValue || props.accountPlan.aes.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aes', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Signed Keys</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.signedKeys.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'signedKeys', value: value === 'On' ? true : false}]})} />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.signedKeys.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.signedKeys.planValue || props.accountPlan.signedKeys.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('signedKeys', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>API</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'api', value: value === 'On' ? true : false}]})} />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.api.planValue || props.accountPlan.api.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('api', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Web Download</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.webDownload.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'webDownload', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.webDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.webDownload.planValue || props.accountPlan.webDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('webDownload', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Player Download</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.playerDownload.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'playerDownload', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.playerDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.playerDownload.planValue || props.accountPlan.playerDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('playerDownload', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Paywall</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.paywall.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'paywall', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.paywall.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.paywall.planValue || props.accountPlan.paywall.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('paywall', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Advertising</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.advertising.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'advertising', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.advertising.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.advertising.planValue || props.accountPlan.advertising.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('advertising', value === 'On' ? true : false)} />
+                </div>
                 <Text className='py1' size={14} weight='med'>Email Catcher</Text>
-                <Tab className='my1 col col-2' orientation='horizontal' list={[makeRoute(props.accountPlan.emailCatcher.planValue ? 'Plan: On' : 'Plan: Off'), makeRoute('On'), makeRoute('Off')]} callback={(value: string) => setPlanData({privileges: [...planData.privileges, {key: 'emailCatcher', value: value === 'On' ? true : false}]})}  />
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.emailCatcher.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.emailCatcher.planValue || props.accountPlan.emailCatcher.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('emailCatcher', value === 'On' ? true : false)} />
+                </div>
                 <div className='my1 flex'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
@@ -91,6 +153,8 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
             </div>
         )
     }
+
+    React.useEffect(() => console.log(planData), [planData])
 
     const handleSwitchPlan = () => {
         props.switchAccountPlan(selectedPlan)

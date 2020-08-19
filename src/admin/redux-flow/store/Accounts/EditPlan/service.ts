@@ -16,10 +16,9 @@ const getAccountPlan = async (accountId: string) => {
 const saveAccountPlan = async (accountId: string, planInfo: PlanInfoPut) => {  
     await isTokenExpired()
     let {token} = addTokenToHeader();
-    return await axios.post(process.env.ADMIN_API_BASE_URL + '/privileges/' + accountId, 
+    return await axios.put(process.env.ADMIN_API_BASE_URL + '/privileges/' + accountId, 
     {
-        ...planInfo,
-        privilegeLevel: 'plan'
+        ...planInfo
     },
     {
         headers: {

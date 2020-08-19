@@ -22,7 +22,7 @@ export const Tab = (props: TabProps) => {
             })
             return matchingRoute;
         } else {
-            return props.list[0].name
+            return props.tabDefaultValue ? props.list[props.tabDefaultValue].name : props.list[0].name
         }
 
     };
