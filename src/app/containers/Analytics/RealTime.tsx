@@ -33,6 +33,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
         }
     }, [props.liveList])
 
+    
 
     if(!props.liveList || !props.realTimeAnalytics) {
         return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
