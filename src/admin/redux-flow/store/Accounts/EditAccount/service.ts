@@ -14,12 +14,12 @@ const getAccountInfo = async (accountId: string) => {
     )
 }
 
-const saveAccountInfo = async (accountInfo: PutAccountInfo) => { 
+const saveAccountInfo = async (accountInfo: PutAccountInfo, accountId: string) => { 
     await isTokenExpired()
     let {token} = addTokenToHeader() 
-    return await axios.put(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountInfo.id, 
+    return await axios.put(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountId, 
         {
-            data: accountInfo
+            ...accountInfo
         },
         {
             headers: {

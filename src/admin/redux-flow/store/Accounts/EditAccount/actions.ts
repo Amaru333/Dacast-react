@@ -24,9 +24,9 @@ export const getAccountInfoAction = (accountId: string): ThunkDispatch<Promise<v
     }
 }
 
-export const saveAccountInfoAction = (accountInfo: PutAccountInfo): ThunkDispatch<Promise<void>, {}, SaveAccountInfo> => {
+export const saveAccountInfoAction = (accountInfo: PutAccountInfo, accountId: string): ThunkDispatch<Promise<void>, {}, SaveAccountInfo> => {
     return async (dispatch: ThunkDispatch<AdminState, {}, SaveAccountInfo>) => {
-        await AccountServices.saveAccountInfo(accountInfo)
+        await AccountServices.saveAccountInfo(accountInfo, accountId)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_ACCOUNT_INFO, payload: response.data});
             }).catch(() => {

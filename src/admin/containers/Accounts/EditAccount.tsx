@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 export interface EditAccountComponentProps {
     accountInfo: AccountInfo;
     getAccountInfo: (accountId: string) => Promise<void>;
-    saveAccountInfo: (accountInfo: PutAccountInfo) => Promise<void>;
+    saveAccountInfo: (accountInfo: PutAccountInfo, accountId: string) => Promise<void>;
 }
 
 const EditAccount = (props: EditAccountComponentProps ) => {
@@ -38,8 +38,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getAccountInfo: async (accountId: string) => {
             await dispatch(getAccountInfoAction(accountId));
         },
-        saveAccountInfo: async (accountInfo: PutAccountInfo) => {
-            await dispatch(saveAccountInfoAction(accountInfo))
+        saveAccountInfo: async (accountInfo: PutAccountInfo, accountId: string) => {
+            await dispatch(saveAccountInfoAction(accountInfo, accountId))
         }
     };
 }

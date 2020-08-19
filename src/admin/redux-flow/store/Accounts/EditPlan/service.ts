@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { PlanInfo } from './types'
+import { PlanInfoPut } from './types'
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
 
 const getAccountPlan = async (accountId: string) => {  
@@ -13,7 +13,7 @@ const getAccountPlan = async (accountId: string) => {
     })
 }
 
-const saveAccountPlan = async (accountId: string, planInfo: PlanInfo) => {  
+const saveAccountPlan = async (accountId: string, planInfo: PlanInfoPut) => {  
     await isTokenExpired()
     let {token} = addTokenToHeader();
     return await axios.post(process.env.ADMIN_API_BASE_URL + '/privileges/' + accountId, 

@@ -20,7 +20,8 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
-        props.saveAccountInfo(accountInfo).then(() => {
+        props.saveAccountInfo(accountInfo, props.accountInfo.accountId)
+        .then(() => {
             setButtonLoading(false)
             setOpenConfirmationModal(false)
         }).catch(() => {
@@ -28,9 +29,9 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
         })
     }
 
-    React.useEffect(() => {
-        setAccountInfo(props.accountInfo)
-    }, [props])
+    // React.useEffect(() => {
+    //     setAccountInfo(props.accountInfo)
+    // }, [props])
 
     const handleCheckboxChange = (flag: Flag) => {
         if(accountInfo.accountFlags.indexOf(flag) > -1) {

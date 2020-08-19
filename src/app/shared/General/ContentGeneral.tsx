@@ -716,7 +716,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </ButtonContainer>
                 }
                 {
-                    previewModalOpen && <PreviewModal contentId={userId + + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                    previewModalOpen && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
                 <Prompt when={JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails)} message='' />
             </React.Fragment>

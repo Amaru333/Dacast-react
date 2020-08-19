@@ -9,9 +9,7 @@ const reducer: Reducer<AccountInfo> = (state = editAccountDefaultState, action: 
                 ...action.payload
             }
         case ActionTypes.SAVE_ACCOUNT_INFO: 
-            return {
-                ...action.payload
-            }
+            return state
         default:
             return state
     }

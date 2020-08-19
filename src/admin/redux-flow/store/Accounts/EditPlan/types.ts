@@ -14,8 +14,8 @@ export interface PlanInfo {
     uploadSize: number;
     itemLimit: number;
     folderDepth: number;
-    renditions: number;
-    liveStreams: PlanSetting;
+    renditionsPerRecipe: number;
+    liveStream: PlanSetting;
     compatibleStreams: PlanSetting;
     chinaStreams: PlanSetting;
     dvr: PlanSetting;
@@ -31,6 +31,13 @@ export interface PlanInfo {
     paywall: PlanSetting;
     advertising: PlanSetting;
     emailCatcher: PlanSetting;
+}
+
+export interface PlanInfoPut {
+    privileges: {
+        key: string;
+        value: number | boolean;
+    }[];
 }
 
 export const editPlanDefaultState: PlanInfo = null
