@@ -6,7 +6,7 @@ const getAccountAllowances = (accountId: string) => {
 }
 
 const saveAccountAllowances = (accountInfo: PutAllowances, accountId: string) => {  
-    return axios.post(process.env.ADMIN_API_BASE_URL   + '/credits/' + accountId + '/add'  , {data: accountInfo})
+    return axios.post(process.env.ADMIN_API_BASE_URL   + '/credits/' + accountId + '/add'  , {...accountInfo})
 }
 
 export const AccountAllowancesServices = {
