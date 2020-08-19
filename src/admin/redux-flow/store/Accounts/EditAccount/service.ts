@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { AccountInfo } from './types'
+import { PutAccountInfo } from './types'
 import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
 
 const getAccountInfo = async (accountId: string) => {  
     await isTokenExpired()
     let {token} = addTokenToHeader()
-    return await axios.get(process.env.ADMIN_API_BASE_URL   + '/accounts' + accountId, 
+    return await axios.get(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountId, 
         {
             headers: {
                 Authorization: token
@@ -14,12 +14,12 @@ const getAccountInfo = async (accountId: string) => {
     )
 }
 
-const saveAccountInfo = async (accountInfo: AccountInfo) => { 
+const saveAccountInfo = async (accountInfo: PutAccountInfo, accountId: string) => { 
     await isTokenExpired()
     let {token} = addTokenToHeader() 
-    return await axios.put(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountInfo.id, 
+    return await axios.put(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountId, 
         {
-            data: accountInfo
+            ...accountInfo
         },
         {
             headers: {

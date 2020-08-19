@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { ActionTypes } from './types';
 import { Action } from './actions';
-import { ContentThemeState } from '../../Settings/Theming';
+import { ContentThemeState, defaultTheme } from '../../Settings/Theming';
 
 
 const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, action: Action) => {
@@ -12,7 +12,8 @@ const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, acti
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
-                        ...action.payload
+                        ...action.payload,
+                        themes: action.payload.themes.length === 0 ?[defaultTheme] : action.payload.themes
                     }
                 }
             }

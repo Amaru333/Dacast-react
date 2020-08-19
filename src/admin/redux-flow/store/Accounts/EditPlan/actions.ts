@@ -1,13 +1,11 @@
-import { ActionTypes, PlanInfo } from './types';
+import { ActionTypes, PlanInfo, PlanInfoPut } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { PlansServices } from './service';
 
 export interface GetPlan {
     type: ActionTypes.GET_ACCOUNT_PLAN;
-    payload: {
-        data: PlanInfo;
-    };
+    payload: PlanInfo;
 }
 
 export interface SavePlan {
@@ -31,7 +29,7 @@ export const getAccountPlanAction = (accountId: string): ThunkDispatch<Promise<v
     }
 }
 
-export const saveAccountPlanAction = (accountId: string, planInfo: PlanInfo): ThunkDispatch<Promise<void>, {}, SavePlan> => {
+export const saveAccountPlanAction = (accountId: string, planInfo: PlanInfoPut): ThunkDispatch<Promise<void>, {}, SavePlan> => {
     return async (dispatch: ThunkDispatch<AdminState, {}, SavePlan>) => {
         await PlansServices.saveAccountPlan(accountId, planInfo)
             .then( response => {

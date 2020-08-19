@@ -9,8 +9,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 
 export interface EmbedSettingsComponentProps {
     embedSettingsOption: EmbedSettingsOptionType;
-    getEmbedSettingsOptions: Function;
-    saveEmbedSettingsOptions: Function;
+    getEmbedSettingsOptions: () => Promise<void>
+    saveEmbedSettingsOptions: (data: EmbedSettingsOptionType) => Promise<void>
 }
 
 const EmbedSettings = (props: EmbedSettingsComponentProps) => {
@@ -37,11 +37,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getEmbedSettingsOptions: () => {
-            dispatch(getEmbedSettingsOptionsAction());
+        getEmbedSettingsOptions: async () => {
+            await dispatch(getEmbedSettingsOptionsAction());
         },
-        saveEmbedSettingsOptions: (data: EmbedSettingsOptionType, callback?: Function) => {
-            dispatch(saveEmbedSettingsOptionsAction(data)).then(callback)
+        saveEmbedSettingsOptions: async (data: EmbedSettingsOptionType) => {
+            await dispatch(saveEmbedSettingsOptionsAction(data))
         }
     };
 }

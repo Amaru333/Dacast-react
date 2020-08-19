@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface AccountsComponentProps {
     accounts: Account[] | false;
-    getAccounts: (accountId: string) => Promise<void>;
+    getAccounts: (accountId: string, qs: string) => Promise<void>;
 }
 
 const Accounts = (props: AccountsComponentProps) => {
@@ -21,9 +21,9 @@ const Accounts = (props: AccountsComponentProps) => {
 
     React.useEffect(() => {
         if (query.get('accountId')) {
-            props.getAccounts(query.get('accountId'))
+            props.getAccounts(query.get('accountId'), null)
         }else if(!props.accounts) {
-            props.getAccounts(null)
+            props.getAccounts(null, null)
         }
     }, [])
 
@@ -43,8 +43,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccounts: async (accountId: string) => {
-            await dispatch(getAccountsAction(accountId));
+        getAccounts: async (accountId: string, qs: string) => {
+            await dispatch(getAccountsAction(accountId, qs));
         }
     };
 }

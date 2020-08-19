@@ -69,7 +69,7 @@ export const defaultStateThemesType: ThemesData = {
 
 export const defaultTheme: ThemeOptions = {
     id: "-1",
-    themeName: '',
+    themeName: 'default',
     isDefault: false,
     createdDate: 980989080,
     themeType: 'vod',

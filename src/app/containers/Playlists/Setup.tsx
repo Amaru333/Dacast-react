@@ -54,7 +54,7 @@ const Setup = (props: SetupComponentProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         folderData: state.folders.data,
-        ContentDataState: state.content.setup
+        contentDataState: state.content.setup
     };
 }
 
