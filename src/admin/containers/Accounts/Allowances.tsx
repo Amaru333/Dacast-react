@@ -4,13 +4,14 @@ import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, getAccountAllowancesAction, saveAccountAllowancesAction } from '../../redux-flow/store/Accounts/Allowances/actions';
-import { Allowances } from '../../redux-flow/store/Accounts/Allowances/types';
+import { Allowances, PutAllowances } from '../../redux-flow/store/Accounts/Allowances/types';
 import { useParams } from 'react-router-dom';
+import { PutAccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types';
 
 export interface AccountAllowancesComponentProps {
     accountAllowances: Allowances;
-    getAccountAllowances: Function;
-    saveAccountAllowances: Function;
+    getAccountAllowances: (accountId: string) => Promise<void>;
+    saveAccountAllowances: (accountInfo: PutAllowances, accountId: string) => Promise<void>;
 }
 
 const AccountAllowances = (props: AccountAllowancesComponentProps) => {
@@ -36,11 +37,11 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccountAllowances: (accountId: string) => {
-            dispatch(getAccountAllowancesAction(accountId));
+        getAccountAllowances: async (accountId: string) => {
+            await dispatch(getAccountAllowancesAction(accountId));
         },
-        saveAccountAllowances: (accountInfo: {[key: string]: string}, accountId: string) => {
-            dispatch(saveAccountAllowancesAction(accountInfo, accountId))
+        saveAccountAllowances: async (accountInfo: PutAllowances, accountId: string) => {
+            await dispatch(saveAccountAllowancesAction(accountInfo, accountId))
         }
     };
 }

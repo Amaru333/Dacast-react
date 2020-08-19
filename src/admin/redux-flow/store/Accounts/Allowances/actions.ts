@@ -1,4 +1,4 @@
-import { ActionTypes, Allowances } from './types';
+import { ActionTypes, Allowances, PutAllowances } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { AccountAllowancesServices } from './service';
@@ -24,7 +24,7 @@ export const getAccountAllowancesAction = (accountId: string): ThunkDispatch<Pro
     }
 }
 
-export const saveAccountAllowancesAction = (accountAllocances: {[key: string]: string}, accountId: string): ThunkDispatch<Promise<void>, {}, SaveAccountAllowances> => {
+export const saveAccountAllowancesAction = (accountAllocances: PutAllowances, accountId: string): ThunkDispatch<Promise<void>, {}, SaveAccountAllowances> => {
     return async (dispatch: ThunkDispatch<AdminState, {}, SaveAccountAllowances>) => {
         await AccountAllowancesServices.saveAccountAllowances(accountAllocances, accountId)
             .then( response => {
