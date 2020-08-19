@@ -147,6 +147,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.emailCatcher.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                     <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.emailCatcher.planValue || props.accountPlan.emailCatcher.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('emailCatcher', value === 'On' ? true : false)} />
                 </div>
+                <Text className='py1' size={14} weight='med'>Admin</Text>
+                <div className='flex items-center my1'>
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.admin.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.admin.planValue || props.accountPlan.admin.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('admin', value === 'On' ? true : false)} />
+                </div>
                 <div className='my1 flex'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>

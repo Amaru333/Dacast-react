@@ -31,6 +31,7 @@ export interface PlanInfo {
     paywall: PlanSetting;
     advertising: PlanSetting;
     emailCatcher: PlanSetting;
+    admin: PlanSetting;
 }
 
 export interface PlanInfoPut {
