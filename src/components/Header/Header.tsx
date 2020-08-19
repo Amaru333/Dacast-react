@@ -163,7 +163,7 @@ const Header = (props: HeaderProps) => {
 
                         <HeaderAvatar onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} className="" size='small' name={avatarFirstName + ' ' + avatarLastName} />
                         :
-                        <HeaderIconStyle ><Icon>account_circle</Icon></HeaderIconStyle>}
+                        <HeaderIconStyle onClick={() => setUserOptionsDropdownOpen(!userOptionsDropdownOpen)} ><Icon>account_circle</Icon></HeaderIconStyle>}
                     <UserOptionsDropdownList hasSearch={false} isSingle isInModal={false} isNavigation={false} displayDropdown={userOptionsDropdownOpen} ref={userOptionsDropdownListRef}>
                         {renderAddList()}
                     </UserOptionsDropdownList>
