@@ -18,7 +18,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
     const [selectedContent, setSelectedContent] = React.useState<string>(props.liveList.results.length ? props.liveList.results[0].objectID : '')
     const handleReload = () => {
-        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.objectID == selectedContent) : false;
+        let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
         if(selectedChannelFilter) {
             console.log(selectedChannelFilter)
             let selectedChannelId = selectedChannelFilter[0].objectID;
