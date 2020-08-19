@@ -580,7 +580,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 
                             </ModalContent>
                             <ModalFooter>
-                                <Button isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
+                                <Button disabled={uploadedSubtitleFile.name === "" || !uploadedSubtitleFile.languageLongName} isLoading={subtitleButtonLoading} onClick={() => {handleSubtitleSubmit()}}  >Add</Button>
                                 <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
                             </ModalFooter>
                         </Modal>
@@ -640,7 +640,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
-                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard!")}>file_copy</IconStyle>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
                                         </LinkBox>
                                     </LinkBoxContainer>
                                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -649,7 +649,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </LinkBoxLabel>
                                         <LinkBox>
                                             <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
-                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard!")}>file_copy</IconStyle>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
                                         </LinkBox>
                                     </LinkBoxContainer>
                                     <LinkBoxContainer className={ClassHalfXsFullMd}>

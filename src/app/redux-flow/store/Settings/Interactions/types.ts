@@ -48,8 +48,8 @@ interface EndScreenSettings {
 }
 
 interface BrandImageSettings {
-    brandImagePadding: string;
-    brandImageSize: string;
+    brandImagePadding: number;
+    brandImageSize: number;
     brandImagePosition: string;
     brandImageLink: string;
     locked: boolean;

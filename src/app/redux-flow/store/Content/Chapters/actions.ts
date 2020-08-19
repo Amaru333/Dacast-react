@@ -66,7 +66,7 @@ export const addContentChapterMarkerAction = (contentId: string, contentType: st
 
 export const deleteContentChapterMarkerAction = (contentId: string, contentType: string, data: ChapterMarker[]): ThunkDispatch<Promise<void>, {}, DeleteContentChapterMarker> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteContentChapterMarker> ) => {
-        await ContentChaptersServices.saveContentChapterMarkerService(contentId, contentType, data)
+        await ContentChaptersServices.saveContentChapterMarkerService(contentId, parseContentType(contentType), data)
             .then( () => {
                 dispatch( {type: ActionTypes.DELETE_CONTENT_CHAPTER_MARKER, payload:{contentId: contentId, contentType: contentType, data: data} } )
                 dispatch(showToastNotification(`Chapter has been deleted`, 'fixed', "success"))
