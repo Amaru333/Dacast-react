@@ -238,7 +238,7 @@ export const ContentListPage = (props: ContentListProps) => {
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
+                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setSelectedContent([value.objectID]);setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
                             </div>
@@ -324,7 +324,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('deleted'))}} />
                 }
             </Modal>
             <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
