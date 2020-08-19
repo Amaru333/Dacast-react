@@ -11,7 +11,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AccountsComponentProps {
-    accounts: Account[] | false;
+    accounts: {users: Account[]; total: number} | false;
     getAccounts: (accountId: string, qs: string) => Promise<void>;
 }
 

@@ -66,7 +66,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
     const accountsTableBody = () => {
         if(props.accounts) {
-            return props.accounts.map((account, key) => {
+            return props.accounts.users.map((account, key) => {
                 return {data: [
                     <a key={'accountsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(account.salesforceId)}>{account.salesforceId}</a>,
                     <Text key={'accountsTableBodyCompanyNameCell' + key } size={14}>{account.companyName}</Text>,
@@ -105,7 +105,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
-            <Pagination totalResults={290} displayedItemsOptions={[10, 50, 100]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />
+            <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />
         </div>
     )
 }

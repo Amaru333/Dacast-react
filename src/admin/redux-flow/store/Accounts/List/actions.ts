@@ -5,7 +5,7 @@ import { AccountsServices } from './services';
 
 export interface GetAccounts {
     type: ActionTypes.GET_ACCOUNTS;
-    payload: { users: Account[]}
+    payload: { users: Account[]; total: number}
 }
 
 export interface Impersonate {

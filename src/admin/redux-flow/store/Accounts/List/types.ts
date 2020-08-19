@@ -30,4 +30,4 @@ export interface Account {
     flags: Flag[];
 }
 
-export const accountsListInitialState: Account[] | false = false
+export const accountsListInitialState: {users: Account[]; total: number} | false = false
