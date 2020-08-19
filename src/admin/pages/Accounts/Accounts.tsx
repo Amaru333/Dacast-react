@@ -73,15 +73,15 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
                     <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    <Link key={'accountsTableBodyPlanCell' + key } to={`${url}/${account.userId}/plan`}>{account.plan ? account.plan.charAt(0).toUpperCase() + account.plan.slice(1) : ''}</Link>,
+                    <Link key={'accountsTableBodyPlanCell' + key } to={`/${account.userId}/plan`}>{account.plan ? account.plan.charAt(0).toUpperCase() + account.plan.slice(1) : ''}</Link>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
                     <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate)}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 10000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 10000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags ? renderFlags(account.flags) : null}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
-                    <Link key={'accountsTableBodyLogCell' + key }to={`${url}/${account.userId}/logs`}>Logs</Link>,
-                    <Link key={'accountsTableBodyAllowancesCell' + key }to={`${url}/${account.userId}/allowances`}>Allowances</Link>, 
+                    <Link key={'accountsTableBodyLogCell' + key }to={`/accounts/${account.userId}/logs`}>Logs</Link>,
+                    <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
                 ]}
             })
         }
