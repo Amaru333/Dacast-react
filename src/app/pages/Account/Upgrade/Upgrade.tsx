@@ -134,7 +134,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         </div>
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth / 10} GB&nbsp;</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth} GB&nbsp;</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'> every month</Text>
                                         </div>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
