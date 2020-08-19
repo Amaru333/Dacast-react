@@ -92,13 +92,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepList(developerPlanSteps);
                 setStepTitles(['Cart', 'Payment'])
                 break;
-            case 'event':
+            default :
                 setStepList(eventPlanSteps);
                 setStepTitles(['Features', 'Cart', 'Payment'])
                 break;
-            case 'scale':
-                setStepList(fullSteps);
-                setStepTitles(['Allowances', 'Features', 'Cart', 'Payment'])
         }
         setStepperPlanOpened(true)
     }
@@ -178,13 +175,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[1].bandwidth} GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2000 GB</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;every month</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[2].storage} GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1000 GB</Text>
                                         </div>
 
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -321,13 +316,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[1].bandwidth} GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2000 GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>up to&nbsp;</Text>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[2].storage} GB Storage</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1000 GB Storage</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>24/7 Phone Support</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
