@@ -46,14 +46,14 @@ async function main(){
             envRecurlyToken = 'ewr1-Q41rGVpgRgI2uLRM9kgivS'
             envAmplitudeApiKey = '64efab409adefee52210ae5f7b439186'
             envAdminApiBaseUrl = 'https://universe-api-admin.dacast.com'
-            appDomain = 'https://staging-app.dacast.com'
+            appDomain = 'https://app.dacast.com'
             break
         case StagingEnvName: 
             envApiBaseUrl = 'https://singularity-api-app.dacast.com'
             envRecurlyToken = 'ewr1-hgy8aq1eSuf8LEKIOzQk6T'
             envAmplitudeApiKey = '91c66b0e632ea39b21b7ed408b571b26'
             envAdminApiBaseUrl = 'https://singularity-api-admin.dacast.com'
-            appDomain = 'https://app.dacast.com'
+            appDomain = 'https://staging-app.dacast.com'
             break
         default:
             console.log('unknown env name, using staging api base url ', envApiBaseUrl)
