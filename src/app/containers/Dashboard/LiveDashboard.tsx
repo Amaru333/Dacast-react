@@ -31,7 +31,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={!props.profile.liveViewers} className={classItemHalfWidthContainer}>
+                <WidgetElement failed={typeof props.profile.liveViewers === "undefined"} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Live Viewers </Text>
                     </WidgetHeader>
@@ -40,7 +40,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={!props.profile.topChannels} className={classItemFullWidth}>
+                <WidgetElement failed={typeof props.profile.topChannels === "undefined"} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Live Channels </Text>
                     </WidgetHeader>

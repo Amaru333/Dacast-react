@@ -39,7 +39,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={!props.profile.impressions}  className={itemClass}>
+                <WidgetElement failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
@@ -50,7 +50,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement  failed={!props.profile.videoPlays} className={itemClass}>
+                <WidgetElement  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
                     </WidgetHeader>
@@ -59,7 +59,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={!props.profile.impressions || !props.profile.videoPlays}  className={itemClass}>
+                <WidgetElement failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>

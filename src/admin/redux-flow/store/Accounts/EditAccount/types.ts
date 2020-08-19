@@ -6,16 +6,36 @@ export enum ActionTypes {
 }
 
 export interface AccountInfo {
-    id: string;
+    accountId: string;
     companyName: string;
-    userName: string;
+    firstName: string;
+    lastName: string;
     website: string;
-    newPassword: string;
     phone: string;
     email: string;
-    playbackProtection: string;
+    playbackProtection: {
+        enabled: boolean;
+        amountGb: number;
+    };
     emailVerified: boolean;
     accountFlags: Flag[];
+}
+
+export interface PutAccountInfo {
+    companyName?: string;
+    firstName?: string;
+    lastName?: string;
+    website?: string;
+    newPassword?: string;
+    phone?: string;
+    email?: string;
+    playbackProtection?: {
+        enabled: boolean;
+        amountGb: number;
+    };
+    forceVerifyEmail?: boolean;
+    
+    accountFlags?: Flag[];
 }
 
 export const editAccountDefaultState: AccountInfo = null;

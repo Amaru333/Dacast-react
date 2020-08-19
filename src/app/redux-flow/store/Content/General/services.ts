@@ -64,7 +64,7 @@ const uploadFile = async (data: File, uploadUrl: string) => {
 }
 
 const deleteFile = async (contentId: string, targetId: string, contentType: string) => {
-    return await axiosClient.delete(`/${contentType}/ ${contentId}/targets/${targetId}`)
+    return await axiosClient.delete(`/${contentType}/${contentId}/targets/${targetId}`)
 }
 
 

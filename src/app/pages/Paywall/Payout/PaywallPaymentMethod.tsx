@@ -21,8 +21,8 @@ const BankAccountUS = (updatePaymentMethod: (data: PaymentMethod) => void, payme
         <div className='flex flex-column'>
             <Text size={20} weight='reg'>Account Details</Text>
              <div className='col col-12 sm-col-9 my2'>
-             <Input className='col col-12 sm-col-7 pr1 xs-no-gutter' id='accountNumber' label='Account Number' placeholder='Account Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, accountNumber: parseInt(event.currentTarget.value)})} />
-             <Input className='col col-12 sm-col-5 pl1 xs-no-gutter' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, routingNumber: parseInt(event.currentTarget.value)})} />
+             <Input className='col col-12 sm-col-7 pr1 xs-no-gutter' id='accountNumber' label='Account Number' placeholder='Account Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, accountNumber: event.currentTarget.value})} />
+             <Input className='col col-12 sm-col-5 pl1 xs-no-gutter' id='routingNumber' label='Routing Number' placeholder='Routing Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, routingNumber: event.currentTarget.value})} />
              </div>
             
             <div className='col sm-col-9 col-12 mb2'>

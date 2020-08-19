@@ -9,6 +9,8 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { isMobile } from 'react-device-detect';
+import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { useForm } from 'react-hook-form';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -16,39 +18,43 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     let query = useQuery()
 
-    const [username, setUsername] = React.useState<string>('');
-    const [password, setPassword] = React.useState<string>('');
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if(query.get('email')){
+        if (query.get('email')) {
             props.confirmEmail(query.get('email'))
         }
     }, [])
 
+    const { register, handleSubmit, errors } = useForm({
+        reValidateMode: 'onChange',
+        mode: 'onBlur'
+    })
+
     const enableSubmit = () => {
-        return username.length > 0 && password.length > 0
+        return true;
     }
 
-    const submitLogin = (username: string, password: string) => {     
-        if(enableSubmit() && !buttonLoading) {
-            setButtonLoading(true);
-            props.login(username, password,() =>  setButtonLoading(false))
-        }
+    const submitLogin = (data: any) => {
+        setButtonLoading(true);
+        props.login(data.email, data.password, () => {
+            setButtonLoading(false);
+        });
     }
 
-    useKeyboardSubmit(() => {submitLogin(username, password)})
+    useKeyboardSubmit( ()=> handleSubmit(submitLogin) )
 
     return (
         <LoginContainer>
-                <ImageStyle className="mx-auto" src={logo} />
-                <ModalCard className={"mx-auto"+ (isMobile ? " col-12-important" : "") } size="small" title="User Login" >
+            <ImageStyle className="mx-auto" src={logo} />
+            <ModalCard className={"mx-auto" + (isMobile ? " col-12-important" : "")} size="small" title="User Login" >
+                <form id="formSignUp" onSubmit={handleSubmit(submitLogin)}>
                     <ModalContent className="clearfix">
-                        <Input type="email" className="col col-12 pt1" label="Email Address" placeholder="Email Address" value={username} onChange={event => setUsername(event.currentTarget.value)} />
+                        <Input {...handleValidationForm('email', errors, 'email', register)} type="email" className="col col-12 pt1" label="Email Address" placeholder="Email Address" />
                         <div className=" relative col col-12 flex pt1">
                             <div className='relative flex col col-12'>
-                                <Input type={passwordVisible ? "text" : "password"} className='col col-12'  label="Password" placeholder="Password" value={password} onChange={event => setPassword(event.currentTarget.value)}/>
+                                <Input {...handleValidationForm('password', errors, 'password', register)} type={passwordVisible ? "text" : "password"} className='col col-12' label="Password" placeholder="Password" />
                                 <IconStyle onClick={() => setPasswordVisible(!passwordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{passwordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
                             </div>
                             <Text color="gray-1" className='absolute right-0 pt1' size={12} weight="reg"><a href="/forgot-password">Forgot your password?</a></Text>
@@ -60,9 +66,10 @@ export const LoginPage = (props: LoginComponentProps) => {
                         Unable to sign in. Please check your details and try again.
                     </Bubble>
                     <ModalFooter>
-                        <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large" onClick={() => submitLogin(username, password)} typeButton="primary">Log In</Button>
+                        <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large"  type="submit" typeButton="primary">Log In</Button>
                     </ModalFooter>
-                </ModalCard>
+                </form>
+            </ModalCard>
         </LoginContainer>
     )
 }

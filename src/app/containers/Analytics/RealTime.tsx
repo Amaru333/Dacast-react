@@ -20,18 +20,17 @@ export interface RealTimePageProps {
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
     React.useEffect(() => {
-        if(!props.liveList) {
-            props.getLiveList();
-        }
+        props.getLiveList(null)
+    }, [])
+
+    React.useEffect(() => {
         if(props.liveList) {
-            if(props.liveList.results.length === 0) {
+            if(!props.liveList.results || props.liveList.results.length === 0) {
                 // HANDLE NO CHANNEL
-            }
-            if(!props.realTimeAnalytics) {
+            } else if(!props.realTimeAnalytics ) {
                 props.getAnalyticsRealTime({ period: 5, channelId: props.liveList.results[0].objectID })
             }
         }
-        
     }, [props.liveList])
 
 
@@ -45,7 +44,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         realTimeAnalytics: state.analytics.realTime,
-        liveList: state.content.list,
+        liveList: state.content.list['live'],
     };
 }
 

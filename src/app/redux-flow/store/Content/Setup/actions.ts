@@ -3,6 +3,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ContentSetupServices } from './services';
+import { parseContentType } from '../../../../utils/utils';
 
 export interface GetContentSetup {
     type: ActionTypes.GET_CONTENT_SETUP;
@@ -16,7 +17,7 @@ export interface PostContentSetup {
 
 export const getContentSetupAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentSetup> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentSetup>) => {
-        await ContentSetupServices.getContentSetupAction(contentId, contentType)
+        await ContentSetupServices.getContentSetupAction(contentId, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.GET_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: response.data.data} });
             })
@@ -28,7 +29,7 @@ export const getContentSetupAction = (contentId: string, contentType: string): T
 
 export const postContentSetupAction = (data: ContentSetupObject, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, PostContentSetup> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, PostContentSetup>) => {
-        await ContentSetupServices.postContentSetupAction(data, contentId, contentType)
+        await ContentSetupServices.postContentSetupAction(data, contentId, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.POST_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: data} });
                 dispatch(showToastNotification("Content saved", 'fixed', "success"));

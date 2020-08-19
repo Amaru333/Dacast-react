@@ -101,7 +101,7 @@ export const HelpPage = () => {
                         <Text size={16} weight="med">Web Chat</Text>
                         <Text className="mt2" size={12}>Talk to one of our Support Agents using our Web Chat</Text>
                         <ButtonContainer className="col col-12 mt2 flex">
-                            <Button typeButton="secondary" sizeButton="xs">Start a Chat</Button>
+                            <Button typeButton="secondary" onClick={()=>{zE('webWidget', 'open');}} sizeButton="xs">Start a Chat</Button>
                         </ButtonContainer>   
                     </HelpCardContent>
                     <CardPlaceholder className="flex col col-1 items-center">

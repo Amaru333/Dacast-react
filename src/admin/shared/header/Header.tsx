@@ -15,11 +15,16 @@ const Header = (props: {logout: () => void}) => {
 
     let history = useHistory()
     const [userIdentifier, setUserIdentifier] = React.useState<string>('')
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     const handleImpersonate = () => {
-        AccountsServices.impersonate(userIdentifier).then((response) => {
-            window.open(`https://app.dacast.com/impersonate?token=${response.data.data.token}`, '_newtab')
+        setIsLoading(true)
+        AccountsServices.impersonate(userIdentifier)
+        .then((response) => {
+            setIsLoading(false)
+            window.open(`${process.env.API_BASE_URL}/impersonate?token=${response.data.data.token}`, '_newtab')
         })
+        .catch(() => setIsLoading(false))
     }
     
     return (
@@ -29,7 +34,7 @@ const Header = (props: {logout: () => void}) => {
                 <div className='flex ml2 items-end'>
                     <Input type='text' id='impersonateInput' label='Impersonate' placeholder='Impersonate...' value={userIdentifier} onChange={(event) => setUserIdentifier(event.currentTarget.value)} />
                     <div className='ml2'>
-                        <Button  onClick={() => handleImpersonate()} sizeButton='large' typeButton='primary' buttonColor='blue'>Impersonate</Button>
+                        <Button isLoading={isLoading} onClick={() => handleImpersonate()} sizeButton='large' typeButton='primary' buttonColor='blue'>Impersonate</Button>
                     </div>
                 </div>
 

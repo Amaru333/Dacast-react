@@ -4,7 +4,7 @@ import { ApplicationState } from "../.."
 import { ContentChaptersServices } from './services'
 import { showToastNotification } from '../../Toasts'
 import { ChapterMarker } from './types'
-import { parseContentType } from '../../../../utils/utils';
+import { parseContentType } from '../../../../utils/utils'
 
 export interface GetContentChapterMarkers {
     type: ActionTypes.GET_CONTENT_CHAPTER_MARKERS;

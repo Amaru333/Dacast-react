@@ -50,7 +50,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
     let startTimestamp = moment.tz((newPromoPreset.startDate && newPromoPreset.startDate > 0 ? newPromoPreset.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((props.promo.endDate && newPromoPreset.endDate > 0 ? newPromoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let endTimestamp = moment.tz((newPromoPreset.endDate && newPromoPreset.endDate > 0 ? newPromoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)

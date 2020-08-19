@@ -77,7 +77,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         return await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
-                streamOnline: true,
+                online: true,
                 streamType: streamSetupOptions.streamType,
                 rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
