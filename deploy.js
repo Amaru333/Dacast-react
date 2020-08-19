@@ -34,6 +34,7 @@ async function main(){
     let envAdminApiBaseUrl = 'https://singularity-api-admin.dacast.com'
     let envRecurlyToken = 'ewr1-hgy8aq1eSuf8LEKIOzQk6T'
     let envAmplitudeApiKey = '91c66b0e632ea39b21b7ed408b571b26'
+    let appDomain = 'https://staging-app.dacast.com'
     if(ProdEnvName === env) {
         envNameClient = DomainPrefixClient
         envNameAdmin = DomainPrefixAdmin
@@ -45,12 +46,14 @@ async function main(){
             envRecurlyToken = 'ewr1-Q41rGVpgRgI2uLRM9kgivS'
             envAmplitudeApiKey = '64efab409adefee52210ae5f7b439186'
             envAdminApiBaseUrl = 'https://universe-api-admin.dacast.com'
+            appDomain = 'https://staging-app.dacast.com'
             break
         case StagingEnvName: 
             envApiBaseUrl = 'https://singularity-api-app.dacast.com'
             envRecurlyToken = 'ewr1-hgy8aq1eSuf8LEKIOzQk6T'
             envAmplitudeApiKey = '91c66b0e632ea39b21b7ed408b571b26'
             envAdminApiBaseUrl = 'https://singularity-api-admin.dacast.com'
+            appDomain = 'https://app.dacast.com'
             break
         default:
             console.log('unknown env name, using staging api base url ', envApiBaseUrl)
@@ -68,7 +71,7 @@ async function main(){
         stateBucketName = await retrieveStateBucketName(new AWS.CloudFormation())
     }
 
-    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envNameClient, envNameAdmin, DomainName, branch, GithubAccessKey, envApiBaseUrl, envAdminApiBaseUrl, envRecurlyToken, envAmplitudeApiKey)
+    await startCodebuildBuild(CodebuildProjectName, stateBucketName, envNameClient, envNameAdmin, DomainName, branch, GithubAccessKey, envApiBaseUrl, envAdminApiBaseUrl, envRecurlyToken, envAmplitudeApiKey, appDomain)
 }
 
 main()
@@ -159,7 +162,7 @@ async function deployTerraform(stateBucketName) {
     }
 }
 
-async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNameClient, envNameAdmin, domainName, branch, githubToken, apiBaseUrl, adminApiBaseUrl, recurlyToken, amplitudeApiKey) {
+async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNameClient, envNameAdmin, domainName, branch, githubToken, apiBaseUrl, adminApiBaseUrl, recurlyToken, amplitudeApiKey, appDomain) {
     console.log('[Build] starting build on codebuild project ' + codebuildProjectName)
     let codebuild = new AWS.CodeBuild()
     let buildInfo = await codebuild.startBuild({
@@ -213,6 +216,11 @@ async function startCodebuildBuild(codebuildProjectName, stateBucketName, envNam
             {
                 name: 'AMPLITUDE_API_KEY',
                 value: amplitudeApiKey,
+                type: 'PLAINTEXT'
+            },
+            {
+                name: 'APP_DOMAIN',
+                value: appDomain,
                 type: 'PLAINTEXT'
             },
         ]
