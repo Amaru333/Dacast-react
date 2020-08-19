@@ -84,6 +84,7 @@ class userTokenService {
 
     public addTokenInfo = (data: TokenInfo) => {
         if(data) {
+            this.tokenInfo = null
             localStorage.setItem('userToken', JSON.stringify(data))
             this.setTokenInfo()
         } else {
