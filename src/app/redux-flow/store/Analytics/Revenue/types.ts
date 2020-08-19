@@ -6,9 +6,9 @@ export enum ActionTypes {
 }
 
 export interface AnalyticsRevenueInfos {
-    salesByTime: AnalyticsRevenueSalesByTime | false;
-    revenueByTime: AnalyticsRevenueRevenueByTime | false;
-    salesPerCountry: AnalyticsRevenueSalesPerCountry | false;
+    salesTime?: AnalyticsRevenueSalesByTime & {failed?: boolean | null};
+    revenueTime?: AnalyticsRevenueRevenueByTime & {failed?: boolean | null};
+    salesCountries?: AnalyticsRevenueSalesPerCountry & {failed?: boolean | null};
 }
 
 export interface AnalyticsRevenueSalesByTime {
@@ -17,33 +17,17 @@ export interface AnalyticsRevenueSalesByTime {
 };
 
 export interface AnalyticsRevenueRevenueByTime {
+    currency: string;
     data: number[];
     time: number[];
 };
 
 export interface AnalyticsRevenueSalesPerCountry {
-    data: {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[];
+    countries: string[];
+    data: number[];
 };
 
-export const AnalyticsRevenueInitialState: AnalyticsRevenueState = {
-    data: false
-    // data: {
-    //     salesByTime: false,
-    //     revenueByTime: false,
-    //     salesPerCountry: false
-    // },
-};
-
-export interface AnalyticsRevenueState {
-    readonly data: AnalyticsRevenueInfos | false;
-}
+export const AnalyticsRevenueInitialState: AnalyticsRevenueInfos = null
 
 export interface GetAnalyticsRevenueOptions {
     startDate: number;

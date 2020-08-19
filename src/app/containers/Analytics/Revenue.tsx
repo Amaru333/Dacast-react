@@ -7,7 +7,7 @@ import { Action, restoreContentAction, getFolderContentAction } from '../../redu
 import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsRevenueState, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
+import { AnalyticsRevenueInfos, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -18,7 +18,7 @@ export interface RevenueComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
-    analyticsRevenueData: AnalyticsRevenueState;
+    analyticsRevenueData: AnalyticsRevenueInfos;
     getAnalyticsRevenue: Function;
 }
 
@@ -29,12 +29,12 @@ const Revenue = (props: RevenueComponentProps) => {
                 //await props.getFolders('/');
             }
             wait()
-        if(!props.analyticsRevenueData.data) {
+        if(!props.analyticsRevenueData) {
             props.getAnalyticsRevenue();
         }
     }, [])
     return (
-        props.folderData && props.analyticsRevenueData.data ? 
+        props.folderData && props.analyticsRevenueData ? 
             <RevenueAnalytics {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

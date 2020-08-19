@@ -25,6 +25,10 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
     const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: Math.floor(Date.now()/1000), start: Math.floor(Date.now()/1000) })
 
+    React.useEffect(() => {
+        console.log('data', props.analyticsRevenueData)
+    }, [props.analyticsRevenueData])
+
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
         setCheckedContents([]);
@@ -140,7 +144,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
     const updateData = (dates: any) => {
         setDates(dates);
-        let options = { ...dates, selectedContents: selectedItems.map(e => e.id) };
+        let options = { ...dates, selectedContents: selectedItems.map(e => {return (e.type + '-' + e.objectID)}) };
         props.getAnalyticsRevenue(options);
     }
 
@@ -170,7 +174,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                         <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
-                    <Button buttonColor='blue' typeButton='primary' sizeButton='small' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => e.objectID)})}>Update Charts</Button>
+                    <Button buttonColor='blue' typeButton='primary' sizeButton='small' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => {return (e.type + '-' + e.objectID)})})}>Update Charts</Button>
                 </AnalyticsContainerHalfSelector>
                 <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
@@ -178,16 +182,16 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                 <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="Number of sales over time" title="Sales by Time">
                         {
-                            props.analyticsRevenueData.data.salesByTime ?
-                            props.analyticsRevenueData.data.salesByTime.failed ?
+                            props.analyticsRevenueData.salesTime ?
+                            props.analyticsRevenueData.salesTime.failed ?
                                     <FailedCardAnalytics />
                                     :
                                 <BarChart
                                     datasetName="Sales"
                                     beginAtZero={true}
-                                    data={props.analyticsRevenueData.data.salesByTime.data}
+                                    data={props.analyticsRevenueData.salesTime.data}
                                     yAxesName="Sales"
-                                    labels={props.analyticsRevenueData.data.salesByTime.time.map(number => tsToLocaleDate(number))} /> :
+                                    labels={props.analyticsRevenueData.salesTime.time.map(number => tsToLocaleDate(number / 1000))} /> :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
 
@@ -196,16 +200,16 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                 <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="Revenue generation over time" title="Revenue by Time">
                         {
-                            props.analyticsRevenueData.data.revenueByTime ?
-                            props.analyticsRevenueData.data.revenueByTime.failed ?
+                            props.analyticsRevenueData.revenueTime ?
+                            props.analyticsRevenueData.revenueTime.failed ?
                             <FailedCardAnalytics />
                             :
                                 <BarChart
                                     datasetName="Revenue ($)"
                                     beginAtZero={true}
-                                    data={props.analyticsRevenueData.data.revenueByTime.data}
+                                    data={props.analyticsRevenueData.revenueTime.data}
                                     yAxesName="Revenue"
-                                    labels={props.analyticsRevenueData.data.revenueByTime.time.map(number => tsToLocaleDate(number))} /> :
+                                    labels={props.analyticsRevenueData.revenueTime.time.map(number => tsToLocaleDate(number / 1000))} /> :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
 
@@ -214,11 +218,16 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                 <div className={ThirdLgHalfXmFullXs}>
                     <AnalyticsCard infoText="What devices are your viewers using? Data collected starting 07/29/2018. Data is tracked on the default player only." title="Sales by Country">
                         {
-                            props.analyticsRevenueData.data.salesPerCountry ?
-                            props.analyticsRevenueData.data.salesPerCountry.failed ?
+                            props.analyticsRevenueData.salesCountries ?
+                            props.analyticsRevenueData.salesCountries.failed ?
                             <FailedCardAnalytics />
                             :
-                                renderMap(props.analyticsRevenueData.data.salesPerCountry, 'revenueAnalyticsDevices') :
+                            <BarChart
+                                datasetName="Countrie"
+                                beginAtZero={true}
+                                data={props.analyticsRevenueData.salesCountries.data}
+                                yAxesName="Countries"
+                                labels={props.analyticsRevenueData.salesCountries.countries} />  :
                                 <LoadingSpinner center size='medium' color='violet' />
                         }
                     </AnalyticsCard>
