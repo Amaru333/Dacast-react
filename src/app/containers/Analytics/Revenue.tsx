@@ -8,6 +8,8 @@ import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types'
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { AnalyticsRevenueInfos, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
+import moment from 'moment';
+
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -24,13 +26,13 @@ export interface RevenueComponentProps {
 
 const Revenue = (props: RevenueComponentProps) => {
     React.useEffect(() => {
-            const wait = async () => {
-                await props.getFolderContent(null)
-                //await props.getFolders('/');
-            }
-            wait()
+        const wait = async () => {
+            await props.getFolderContent(null)
+            //await props.getFolders('/');
+        }
+        wait()
         if(!props.analyticsRevenueData) {
-            props.getAnalyticsRevenue();
+            props.getAnalyticsRevenue({ endDate: Math.round(moment() / 1000), startDate: Math.round(moment().startOf('day') / 1000) });
         }
     }, [])
     return (

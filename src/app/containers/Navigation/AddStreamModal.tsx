@@ -74,7 +74,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
         
-        return await axiosClient.post('/channels',
+        await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
                 online: true,

@@ -23,7 +23,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
-    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: Math.floor(Date.now()/1000), start: Math.floor(Date.now()/1000) })
+    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
 
     React.useEffect(() => {
         console.log('data', props.analyticsRevenueData)
@@ -144,7 +144,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
     const updateData = (dates: any) => {
         setDates(dates);
-        let options = { ...dates, selectedContents: selectedItems.map(e => {return (e.type + '-' + e.objectID)}) };
+        let options = { ...dates, selectedContents: selectedItems.map(e => {return ( e.objectID)}) };
         props.getAnalyticsRevenue(options);
     }
 
@@ -172,9 +172,9 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                 <AnalyticsContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
                         <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
+                        <Button className="right" buttonColor='blue' typeButton='primary' sizeButton='xs' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => {return (e.objectID)})})}>Update Charts</Button>
                     </HeaderBorder>
                     {renderSelectedItems()}
-                    <Button buttonColor='blue' typeButton='primary' sizeButton='small' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => {return (e.type + '-' + e.objectID)})})}>Update Charts</Button>
                 </AnalyticsContainerHalfSelector>
                 <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
