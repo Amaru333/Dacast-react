@@ -151,7 +151,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                                 <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
                                 <img src={faqIcon} />
                             </div>
-                            <Button className="col col-4" sizeButton="xs" typeButton="secondary">Visit FAQ</Button>
+                            <Button className="col col-4" sizeButton="xs" typeButton="secondary" onClick={() => window.open("https://www.dacast.com/support/faq/")} >Visit FAQ</Button>
                         </WidgetElement>
                 }
                 
