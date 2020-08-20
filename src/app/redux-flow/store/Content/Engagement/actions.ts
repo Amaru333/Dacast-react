@@ -126,7 +126,7 @@ export const deleteContentAdAction = (data: Ad[], contentId: string, contentType
 
 export const getUploadUrlAction = (uploadType: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await contentEngagementServices.getUploadUrl(uploadType, contentId)
+        await contentEngagementServices.getUploadUrl(uploadType, contentId, contentType)
             .then(response => {
                 dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, contentId: contentId, contentType: contentType} })
             })
