@@ -1,34 +1,16 @@
-import axios from 'axios'
 import { PlanInfoPut } from './types'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
 const getAccountPlan = async (accountId: string) => {  
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return await axios.get(process.env.ADMIN_API_BASE_URL   + '/privileges/' + accountId, 
-    {
-        headers: {
-            Authorization: token
-        }
-    })
+    return await axiosClient.get('/privileges/' + accountId)
 }
 
 const saveAccountPlan = async (accountId: string, planInfo: PlanInfoPut) => {  
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return await axios.put(process.env.ADMIN_API_BASE_URL + '/privileges/' + accountId, 
-    {
-        ...planInfo
-    },
-    {
-        headers: {
-            Authorization: token
-        }
-    })
+    return await axiosClient.put('/privileges/' + accountId, {...planInfo})
 }
 
 const switchAccountPlan = (accountId: string, newPlan: string) => {  
-    return axios.put(process.env.ADMIN_API_BASE_URL   + 'admin/accounts/' + accountId + '/plan/switch', {data: newPlan})
+    return axiosClient.put('admin/accounts/' + accountId + '/plan/switch', {data: newPlan})
 }
 
 export const PlansServices = {

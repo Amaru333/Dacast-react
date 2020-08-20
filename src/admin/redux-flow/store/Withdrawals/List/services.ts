@@ -1,16 +1,8 @@
 import axios from 'axios'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
 const getWithdrawals = async (accountId: string) => {  
-    await isTokenExpired()
-    let {token} = addTokenToHeader();
-    return await axios.get(process.env.ADMIN_API_BASE_URL + '/' + (accountId ? ('paywall?accountId=' + accountId) : 'paywall'), 
-    {
-        headers: {
-            Authorization: token
-        }
-    }
-    )
+    return await axiosClient.get('/' + (accountId ? ('paywall?accountId=' + accountId) : 'paywall'))
 }
 
 export const WithdrawalsServices = {

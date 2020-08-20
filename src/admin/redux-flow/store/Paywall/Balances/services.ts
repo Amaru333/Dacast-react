@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
 const getBalances = (accountId: string) => {  
-    return axios.get(process.env.ADMIN_API_BASE_URL   + '/admin/paywall/balances?accountId=' + accountId)
+    return axiosClient.get('/admin/paywall/balances?accountId=' + accountId)
 }
 
 export const BalancesServices = {

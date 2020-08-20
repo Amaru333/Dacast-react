@@ -1,32 +1,13 @@
 import axios from 'axios'
 import { PutAccountInfo } from './types'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token'
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
 const getAccountInfo = async (accountId: string) => {  
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountId, 
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.get('/accounts/' + accountId)
 }
 
 const saveAccountInfo = async (accountInfo: PutAccountInfo, accountId: string) => { 
-    await isTokenExpired()
-    let {token} = addTokenToHeader() 
-    return await axios.put(process.env.ADMIN_API_BASE_URL   + '/accounts/' + accountId, 
-        {
-            ...accountInfo
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.put('/accounts/' + accountId, {...accountInfo})
 }
 
 export const AccountServices = {

@@ -22,11 +22,7 @@ const Header = (props: {logout: () => void}) => {
         AccountsServices.impersonate(userIdentifier)
         .then((response) => {
             setIsLoading(false)
-            // let url = `${process.env.API_BASE_URL}/impersonate?token=${response.data.data.token}`
-            // console.log(url)
-            // debugger
             Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}`}).click()
-
         })
         .catch(() => setIsLoading(false))
     }
