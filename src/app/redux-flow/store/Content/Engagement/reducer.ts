@@ -43,7 +43,7 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: { 
-                        ...state[action.payload.contentId],
+                        ...state[action.payload.contentType][action.payload.contentId],
                         contentId: action.payload.contentId,
                         engagementSettings: { 
                             ...state[action.payload.contentType][action.payload.contentId].engagementSettings, 
@@ -77,13 +77,13 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
             case ActionTypes.GET_UPLOAD_URL:
                     return {
                         ...state,
-                        [action.payload.data.contentType]: {
-                            ...state[action.payload.data.contentType],
-                            [action.payload.data.contentId]: {
-                                ...state[action.payload.data.contentType][action.payload.data.contentId],
+                        [action.payload.contentType]: {
+                            ...state[action.payload.contentType],
+                            [action.payload.contentId]: {
+                                ...state[action.payload.contentType][action.payload.contentId],
                                 engagementSettings: {
-                                    ...state[action.payload.data.contentType][action.payload.data.contentId].engagementSettings,
-                                    uploadurl: action.payload.data.presignedURL
+                                    ...state[action.payload.contentType][action.payload.contentId].engagementSettings,
+                                    uploadurl: action.payload.presignedURL
                                 }
                             }  
                         }

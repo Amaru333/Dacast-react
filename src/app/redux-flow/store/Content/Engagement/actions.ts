@@ -38,7 +38,7 @@ export interface DeleteContentAd {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string, contentId: string; contentType: string }};
+    payload: {presignedURL: string, contentId: string; contentType: string };
 }
 
 export interface UploadContentImage {
@@ -128,7 +128,7 @@ export const getUploadUrlAction = (uploadType: string, contentId: string, conten
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
         await contentEngagementServices.getUploadUrl(uploadType, contentId, contentType)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, contentId: contentId, contentType: contentType} })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {presignedURL: response.data.data.presignedURL, contentId: contentId, contentType: contentType} })
             })
             .catch((error) => {
                 console.log(error)
