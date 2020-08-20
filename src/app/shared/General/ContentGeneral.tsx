@@ -226,9 +226,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        props.saveContentDetails(contentDetails, props.contentType).then(() =>  
-             setButtonLoading(false)
-        ).catch(() =>
+        props.saveContentDetails(contentDetails, props.contentType).then(() => {
+            setButtonLoading(false)
+            setHasChanged(false)
+        }).catch(() =>
              setButtonLoading(false)
         )
     }
@@ -709,7 +710,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                {    hasChanged && 
                     <ButtonContainer>
                         <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave() }>Save</Button>
-                        <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                        <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success");setHasChanged(false)}}>Discard</Button>
                     </ButtonContainer>
                 }
                 {

@@ -54,6 +54,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
     const [contentPaywallSettings, setContentPaywallSettings] = React.useState<ContentPaywallPageInfos>(props.contentPaywallInfos);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [hasChanged, setHasChanged] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setContentPaywallSettings(props.contentPaywallInfos)
@@ -184,6 +185,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         props.saveContentPaywallInfos(contentPaywallSettings, props.contentId, props.contentType)
         .then(() => {
             setButtonLoading(false)
+            setHasChanged(false)
         }).catch(() => {
             setButtonLoading(false)
         })
@@ -193,7 +195,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         <div>
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled})} className='mt2' label='Paywall Enabled' />
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => {setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled});setHasChanged(true)}} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
                 
                 <DropdownSingle 
@@ -202,11 +204,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     dropdownTitle='Paywall Theme'
                     dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
                     list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})}
-                    callback={(value: string) => setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id})}
+                    callback={(value: string) => {setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id});setHasChanged(true)}}
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value})}} />
+                <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value});setHasChanged(true)}} />
                         
                 <BorderStyle className='my2' />
 
@@ -240,9 +242,9 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 }
                    
             </Card>
-            <div className={'mt2' + (props.contentPaywallInfos === contentPaywallSettings ? ' hide' : '')}>
+            <div className={'mt2' + (hasChanged ? ' hide' : '')}>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success")}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
+                <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
             <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit' : 'Create') + ' Price'} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
                 {
@@ -254,7 +256,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? 'Save' : 'Create'} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
                 }
             </Modal>
-            <Prompt when={contentPaywallSettings !== props.contentPaywallInfos} message='' />
+            <Prompt when={hasChanged} message='' />
         </div>
     )
 }
