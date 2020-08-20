@@ -410,10 +410,10 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             <div className="clearfix">
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <TabSetupContainer className="clearfix">
-                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess() }}>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { selectedTab === 'content' && (selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess()) }}>
                             <Text color={selectedTab === "folder" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
                         </TabSetupStyle>
-                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess() }}>
+                        <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { selectedTab === 'folder' && (selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess()) }}>
                             <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
                         </TabSetupStyle>
                     </TabSetupContainer>
@@ -442,7 +442,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             </div>
             <div>
                 {/**<Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>**/}
-                <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className="mt25 mr1 left" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.contentData.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
