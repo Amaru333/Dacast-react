@@ -231,13 +231,13 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
             {
                 data: [
                     <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">Data</Text>,
-                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">{props.stepperData.selectedScalePlan.bandwidth / 1000}Tb/Mo</Text>
+                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">2Tb/Mo</Text>
                 ]
             },
             {
                 data: [
                     <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">Storage</Text>,
-                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">{props.stepperData.selectedScalePlan.storage}Gb</Text>
+                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">1000 Gb</Text>
                 ]
             }
         ]

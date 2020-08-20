@@ -1,31 +1,12 @@
-import axios from 'axios'
-import { isTokenExpired, addTokenToHeader } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
-const getAccounts = async (accountId: string) => { 
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.get(process.env.ADMIN_API_BASE_URL + '/' + (accountId ? ('accounts?accountId=' + accountId) : 'accounts'),
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+const getAccounts = async (accountId: string, qs: string) => { 
+    let url = accountId ? '/accounts/' +  accountId : '/accounts'
+    return await axiosClient.get(url + (qs ? '?' + qs :  '?perPage=10&page=0'))
 }
 
 const impersonate = async (accountId: string) => { 
-    await isTokenExpired()
-    let {token} = addTokenToHeader()
-    return await axios.post(process.env.ADMIN_API_BASE_URL + `/impersonate/${accountId}`,
-        {
-            
-        },
-        {
-            headers: {
-                Authorization: token
-            }
-        }
-    )
+    return await axiosClient.post('/impersonate',{userIdentifier: accountId})
 }
 
 export const AccountsServices = {

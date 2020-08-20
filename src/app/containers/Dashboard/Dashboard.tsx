@@ -45,31 +45,12 @@ const Dashboard = (props: DashboardProps) => {
 
     React.useEffect(() => {
         if (props.infos && props.billingInfos) {
-            if(props.infos.live.liveViewers.jobID && !props.infos.live.liveViewers.data && !props.infos.live.liveViewers.loading  && !props.infos.live.liveViewers.failed) {
-                props.getDashboardLiveViewers(props.infos.live.liveViewers.jobID);
-            }
-            if(props.infos.live.topChannels.jobID && !props.infos.live.topChannels.data && !props.infos.live.topChannels.loading  && !props.infos.live.topChannels.failed) {
-                props.getDashboardLiveTopChannels(props.infos.live.topChannels.jobID);
-            }
-            if(props.infos.vod.videoPlays.jobID && !props.infos.vod.videoPlays.data && !props.infos.vod.videoPlays.loading  && !props.infos.vod.videoPlays.failed) {
-                console.log(props.infos.vod.videoPlays)
-                props.getDashboardVodPlay(props.infos.vod.videoPlays.jobID);
-            }
-            if(props.infos.vod.playRate.jobID && !props.infos.vod.playRate.data && !props.infos.vod.playRate.loading  && !props.infos.vod.playRate.failed) {
-                props.getDashboardVodPlayRate(props.infos.vod.playRate.jobID);
-            }
-            if(props.infos.vod.impressions.jobID && !props.infos.vod.impressions.data && !props.infos.vod.impressions.loading  && !props.infos.vod.impressions.failed) {
-                // Useless and doesnt work, we got the answer in playrate vs impressions
-                //props.getDashboardVodImpressions(props.infos.vod.impressions.jobID);
-            }
-            if(props.infos.vod.topVideos.jobID && !props.infos.vod.topVideos.data && !props.infos.vod.topVideos.loading  && !props.infos.vod.topVideos.failed) {
-                props.getDashboardVodTopVideos(props.infos.vod.topVideos.jobID);
-            }
+           
         }
     }, [props.infos, props.billingInfos])
 
     const renderDashboard = () => {
-        if (props.billingInfos.currentPlan.displayName !== "Free") {
+        if (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.displayName !== "30 Day Trial") {
             return (
                 <>
                     <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.billingInfos.playbackProtection} plan={props.billingInfos.currentPlan} profile={props.infos.generalInfos} />
@@ -81,7 +62,7 @@ const Dashboard = (props: DashboardProps) => {
                             <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.billingInfos.playbackProtection} billingInfos={props.billingInfos}/>
                         </Modal>
                     } 
-                    {/* <PaywallDashboard profile={props.infos.isPaywall} rightSide={false} /> */}
+                    <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
                 </>
             )
 
@@ -127,21 +108,6 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getDashboardVodPlayRate: (jobID: string) => {
             dispatch(getDashboardVodPlayRateAction(jobID));
-        },
-        getDashboardVodPlay: (jobID: string) => {
-            dispatch(getDashboardVodPlayAction(jobID));
-        },
-        getDashboardVodTopVideos: (jobID: string) => {
-            dispatch(getDashboardVodTopVideosAction(jobID));
-        },
-        getDashboardVodImpressions: (jobID: string) => {
-            dispatch(getDashboardVodImpressionsAction(jobID));
-        },
-        getDashboardLiveViewers: (jobID: string) => {
-            dispatch(getDashboardLiveViewers(jobID))
-        },
-        getDashboardLiveTopChannels: (jobID: string) => {
-            dispatch(getDashboardLiveTopChannels(jobID))
         },
         editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
             dispatch(editBillingPagePaymenPlaybackProtectionAction(data));

@@ -1,17 +1,20 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, AnalyticsRevenueInitialState, AnalyticsRevenueState } from "./types";
+import { ActionTypes, AnalyticsRevenueInitialState, AnalyticsRevenueInfos } from "./types";
 
-const reducer: Reducer<AnalyticsRevenueState> = (state = AnalyticsRevenueInitialState, action: Action) => {
+const reducer: Reducer<AnalyticsRevenueInfos> = (state = AnalyticsRevenueInitialState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_ANALYTICS_REVENUE :
             console.log(action)
+            const salesTimeData =  action.payload.errors === true ? {failed: true} : ( action.payload.salesTime.data ? {...action.payload.salesTime }  : {data: [], time: []}  )
+            const salesCountriesData =  action.payload.errors === true ? {failed: true} : ( action.payload.salesTime.data ? {...action.payload.salesCountries }  : {data: [], countries: []}  )
+            const revenueTimeData =  action.payload.errors === true ? {failed: true} : ( action.payload.revenueTime ? {...action.payload.revenueTime[0] }  : { currency: '', data: [], time: []}  )
+
             return {
-                data: { ...state.data, 
-                    salesByTime:  {...action.payload.data.salesTime.data, failed: action.payload.data.salesTime.data == null} , 
-                    salesPerCountry: {...action.payload.data.salesCountries.data, failed: action.payload.data.salesCountries.data == null}, 
-                    revenueByTime: {...action.payload.data.revenueTime, failed: action.payload.data.revenueByTime == null}
-                }
+                ...state,
+                salesTime: salesTimeData, 
+                salesCountries: salesCountriesData, 
+                revenueTime: revenueTimeData
             }
         default:
             return state;

@@ -7,15 +7,16 @@ import { showToastNotification } from '../../Toasts';
 
 export interface GetAnalyticsRevenue {
     type: ActionTypes.GET_ANALYTICS_REVENUE;
-    payload: AnalyticsRevenueInfos | false;
+    payload: AnalyticsRevenueInfos;
 }
 
 export const getAnalyticsRevenueAction = (options?:  GetAnalyticsRevenueOptions): ThunkDispatch<Promise<void>, {}, GetAnalyticsRevenue> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetAnalyticsRevenue> ) => {
         await AnalyticsRevenueServices.getAnalyticsRevenueService(options)
             .then( response => {
-                dispatch( {type: ActionTypes.GET_ANALYTICS_REVENUE, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_ANALYTICS_REVENUE, payload: response.data.data} );
             }).catch((e) => {
+                console.log(e);
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

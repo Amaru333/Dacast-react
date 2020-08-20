@@ -39,6 +39,7 @@ interface TokenInfo {
 class userTokenService {
     constructor() {
         this.getUserInfoItem = this.getUserInfoItem.bind(this)
+        this.setTokenInfo = this.setTokenInfo.bind(this)
     }
 
     private tokenInfo: TokenInfo = null
@@ -61,12 +62,14 @@ class userTokenService {
     }
 
     public getUserInfoItem = (item: Privilege | ExtraUserInfo) => {
-        if(this.tokenInfo && this.tokenInfo.userInfo) {
-            return this.tokenInfo.userInfo[item]
+        if(!this.tokenInfo  || !this.tokenInfo.userInfo) {
+            this.setTokenInfo()
         } 
-        return this.setTokenInfo().userInfo[item]
+        if(!this.tokenInfo) {
+            return        
+        }
+        return this.tokenInfo.userInfo[item] || ''
     
-        //throw new Error('User not defined')
     }
 
     public getPrivilege = (privilege: Privilege) => {
@@ -81,6 +84,7 @@ class userTokenService {
 
     public addTokenInfo = (data: TokenInfo) => {
         if(data) {
+            this.tokenInfo = null
             localStorage.setItem('userToken', JSON.stringify(data))
             this.setTokenInfo()
         } else {

@@ -17,7 +17,7 @@ export const signupAction = (data: UserInfo): ThunkDispatch<Promise<void>, {}, S
         await signupService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SIGNUP, payload: {...data}});
-                logAmplitudeEvent('create account');
+                // logAmplitudeEvent('create account');
             }).catch((error: AxiosError) => {
                 if(error.response.data.error.indexOf('An account with the given email already exists') > -1){
                     dispatch( {type: ActionTypes.SIGNUP, payload: {...data, email: "", signupError: "This email address is already linked to an account"}});

@@ -2,6 +2,7 @@ import { ActionTypes, LoginInfos, TokenInfos } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { AdminState } from "../../index";
 import { loginService } from './services';
+import { adminToken } from '../../../../utils/token';
 
 export interface Login {
     type: ActionTypes.LOGIN;
@@ -27,6 +28,7 @@ export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, 
 export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
     return (dispatch: ThunkDispatch<AdminState , {}, Logout>) => {
         dispatch({type: ActionTypes.LOGOUT, payload: null})
+        adminToken.resetUserInfo()
     }
 }
 

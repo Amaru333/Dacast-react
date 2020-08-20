@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { LoginInfos } from './types';
+import { axiosClient } from '../../../../utils/adminAxiosClient';
 
-export const loginService = (data: LoginInfos) => {
-    return axios.post(process.env.API_BASE_URL + '/sessions/login', {...data});
+export const loginService = async (data: LoginInfos) => {
+   return await axiosClient.post(process.env.API_BASE_URL + '/sessions/login', {...data}, {authRequired: false})
 }

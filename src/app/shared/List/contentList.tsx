@@ -21,7 +21,7 @@ import { FolderTree, rootNode } from '../../utils/folderService';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../../app/pages/Folders/NewFolderModal';
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal';
-import { SearchResult } from '../../redux-flow/store/VOD/General/types';
+import { SearchResult } from '../../redux-flow/store/Content/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
@@ -238,7 +238,7 @@ export const ContentListPage = (props: ContentListProps) => {
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             <ActionIcon id={"deleteTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
+                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setSelectedContent([value.objectID]);setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
                             </div>
@@ -287,15 +287,15 @@ export const ContentListPage = (props: ContentListProps) => {
                     <SeparatorHeader className="mx2 inline-block" />
                     <ContentFiltering setSelectedFilter={(filters) => {setSelectedFilter(filters);setFetchContent(true)}} contentType={props.contentType} />                
                     {
-                        props.contentType === "videos" &&
+                        props.contentType === "vod" &&
                             <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
                     }
                     {
-                        props.contentType === "livestreams" &&
+                        props.contentType === "live" &&
                             <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
                     }
                     {
-                        props.contentType === "playlists" && 
+                        props.contentType === "playlist" && 
                             <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
                     }
                 </div>
@@ -324,7 +324,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('deleted'))}} />
                 }
             </Modal>
             <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />

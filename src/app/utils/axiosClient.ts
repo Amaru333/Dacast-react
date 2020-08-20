@@ -20,7 +20,7 @@ class AxiosClient {
         if(!this.axiosInstance) {
             this.axiosInstance = Axios.create({
                 baseURL: process.env.API_BASE_URL,
-                timeout: 10000,
+                timeout: 30000,
                 headers: {Authorization: null}
             })
             this.axiosInstance.interceptors.response.use(null, this.responseInterceptor)

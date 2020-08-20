@@ -5,11 +5,7 @@ import { AccountsServices } from './services';
 
 export interface GetAccounts {
     type: ActionTypes.GET_ACCOUNTS;
-    payload: {
-        data: {
-            accounts: Account[]
-        }
-    };
+    payload: { users: Account[]; total: number}
 }
 
 export interface Impersonate {
@@ -21,9 +17,9 @@ export interface Impersonate {
     }
 }
 
-export const getAccountsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetAccounts> => {
+export const getAccountsAction = (accountId: string, qs: string): ThunkDispatch<Promise<void>, {}, GetAccounts> => {
     return async (dispatch: ThunkDispatch<AdminState, {}, GetAccounts>) => {
-        await AccountsServices.getAccounts(accountId)
+        await AccountsServices.getAccounts(accountId, qs)
             .then( response => {
                 dispatch({type: ActionTypes.GET_ACCOUNTS, payload: response.data});
             }).catch(() => {

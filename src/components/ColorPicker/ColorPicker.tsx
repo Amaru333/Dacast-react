@@ -19,7 +19,9 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
     });
 
     React.useEffect(() => {
-        props.callback(selectedColor.toString());
+        if(isOpened) {
+            props.callback(selectedColor.toString())
+        }
     }, [selectedColor])
 
     React.useEffect(() => {

@@ -9,7 +9,6 @@ const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action)
                 ... state, ...action.payload
             }
         case ActionTypes.LOGOUT :
-            localStorage.removeItem('adminToken')
             return action.payload
         default :
             return {...state}

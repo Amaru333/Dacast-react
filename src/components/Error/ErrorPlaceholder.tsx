@@ -12,7 +12,7 @@ export const ErrorPlaceholder = (props: {}) => {
                 <Text className='py2' size={40} weight='med'>Something went wrong</Text>
                 <Text className='my1' size={14} weight='reg'>The page you are looking for is currently experiencing an error.</Text>
                 <Text className='my1' size={14} weight='reg'>Please refresh the page or come back later.</Text>
-                <Button className='my2' buttonColor='blue' typeButton='primary' sizeButton='large'>Refresh</Button>
+                <Button onClick={() => {location.reload()}} className='my2' buttonColor='blue' typeButton='primary' sizeButton='large'>Refresh</Button>
             </div>
         </div>
 

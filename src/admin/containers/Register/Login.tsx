@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AdminState } from "../../redux-flow/store";
 import { LoginPage } from '../../pages/Register/Login';
 import { loginAction, Action } from '../../redux-flow/store/Register/Login/actions';
-import { addToken } from '../../utils/token';
+import { adminToken } from '../../utils/token';
 import { LoginInfos, TokenInfos } from '../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 
@@ -18,8 +18,7 @@ const Login = (props: LoginContainerProps) => {
 
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
-            
-            addToken(props.loginInfos);
+            adminToken.addTokenInfo(props.loginInfos)
             history.push('/accounts');
         }
     }, [props.loginInfos])

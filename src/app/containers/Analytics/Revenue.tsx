@@ -7,7 +7,9 @@ import { Action, restoreContentAction, getFolderContentAction } from '../../redu
 import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsRevenueState, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
+import { AnalyticsRevenueInfos, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';
+import moment from 'moment';
+
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
     getFolders: Function;
@@ -18,25 +20,23 @@ export interface RevenueComponentProps {
     deleteContent: Function;
     restoreContent: Function;
     renameFolder: Function;
-    analyticsRevenueData: AnalyticsRevenueState;
+    analyticsRevenueData: AnalyticsRevenueInfos;
     getAnalyticsRevenue: Function;
 }
 
 const Revenue = (props: RevenueComponentProps) => {
     React.useEffect(() => {
-        if(!props.folderData) {
-            const wait = async () => {
-                await props.getFolderContent('/')
-                //await props.getFolders('/');
-            }
-            wait()
+        const wait = async () => {
+            await props.getFolderContent(null)
+            //await props.getFolders('/');
         }
-        if(!props.analyticsRevenueData.data) {
-            props.getAnalyticsRevenue();
+        wait()
+        if(!props.analyticsRevenueData) {
+            props.getAnalyticsRevenue({ endDate: Math.round(moment() / 1000), startDate: Math.round(moment().startOf('day') / 1000) });
         }
     }, [])
     return (
-        props.folderData && props.analyticsRevenueData.data ? 
+        props.folderData && props.analyticsRevenueData ? 
             <RevenueAnalytics {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

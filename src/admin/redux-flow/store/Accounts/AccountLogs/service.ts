@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { axiosClient } from '../../../../utils/adminAxiosClient'
 
 const getAccountLogs = (accountId: string) => {  
-    return axios.get(process.env.ADMIN_API_BASE_URL   + 'admin/accounts/' + accountId + '/logs')
+    return axiosClient.get('admin/accounts/' + accountId + '/logs')
 }
 
 export const AccountLogsService = {

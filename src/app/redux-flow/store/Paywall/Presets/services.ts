@@ -104,31 +104,55 @@ const getPromoPresetsList = async (qs: string) => {
 }
 
 const createPromoPreset = async (data: Promo) => {
+    let parsedData = null
+    parsedData = {
+        ...data,
+        assignedContentIds: [],
+        assignedGroupIds: [],
+        discountApplied: data.discountApplied.toLowerCase(),
+        startDate: Math.floor(data.startDate),
+        endDate: Math.floor(data.endDate),
+        id: null
+    }
+    if (data.startDate === 0) {
+        delete parsedData['startDate']
+    }
+    if (data.endDate === 0) {
+        delete parsedData['endDate']
+    }
     return await axiosClient.post('/paywall/promos/presets' , 
         {
             name: data.name,
             type: 'voucher',
             preset: {
-                ...data,
-                assignedContentIds: [],
-                assignedGroupIds: [],
-                discountApplied: data.discountApplied.toLowerCase(),
-                id: null
-            }  
+                ...parsedData
+            }
         }
     )
 }
 
 const savePromoPreset = async (data: Promo) => {
+    let parsedData = null
+    parsedData = {
+        ...data,
+        assignedContentIds: [],
+        assignedGroupIds: [],
+        discountApplied: data.discountApplied.toLowerCase(),
+        startDate: Math.floor(data.startDate),
+        endDate: Math.floor(data.endDate),
+    }
+    if (data.startDate === 0) {
+        delete parsedData['startDate']
+    }
+    if (data.endDate === 0) {
+        delete parsedData['endDate']
+    }
     return await axiosClient.put('/paywall/promos/presets/' + data.id , 
         {
             name: data.name,
             id: data.id,
             preset: {
-                ...data,
-                assignedContentIds: [],
-                assignedGroupIds: [],
-                discountApplied: data.discountApplied.toLowerCase(),
+                ...parsedData
             }
         }
     )

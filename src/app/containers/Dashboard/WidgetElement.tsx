@@ -4,6 +4,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { FailedCardAnalytics } from '../../pages/Analytics/AnalyticsCommun';
 
 export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement> & {loading? : boolean; failed?: boolean} ) => {
+    
     return (
         <div className={props.className}>
 

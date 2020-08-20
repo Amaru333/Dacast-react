@@ -1,7 +1,7 @@
 import React from 'react'
 import { EditPlanPage } from '../../pages/Accounts/EditPlan'
 import { saveAccountPlanAction, getAccountPlanAction, Action } from '../../redux-flow/store/Accounts/EditPlan';
-import { PlanInfo } from '../../redux-flow/store/Accounts/EditPlan/types';
+import { PlanInfo, PlanInfoPut } from '../../redux-flow/store/Accounts/EditPlan/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../../redux-flow/store';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 export interface EditPlanComponentProps {
     accountPlan: PlanInfo;
     getAccountPlan: (accountId: string) => Promise<void>;
-    saveAccountPlan: (accountId: string, planDetails: PlanInfo) => Promise<void>;
+    saveAccountPlan: (accountId: string, planDetails: PlanInfoPut) => Promise<void>;
     switchAccountPlan: Function;
 }
 const EditPlan = (props: EditPlanComponentProps) => {
@@ -40,7 +40,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getAccountPlan: async (accountId: string) => {
             await dispatch(getAccountPlanAction(accountId));
         },
-        saveAccountPlan: async (accountInfo: string, planInfo: PlanInfo) => {
+        saveAccountPlan: async (accountInfo: string, planInfo: PlanInfoPut) => {
             await dispatch(saveAccountPlanAction(accountInfo, planInfo))
         }
     };

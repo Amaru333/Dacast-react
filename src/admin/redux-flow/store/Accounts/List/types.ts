@@ -5,18 +5,29 @@ export enum ActionTypes {
 export type Flag = 'admin' | 'adult' | 'chipped' | 'platinium' | 'partner' | 'banned' | 'paused' | 'suspended' | 'cancelled' | 'test'
 
 export interface Account {
-    id: string;
+    userId: string;
+    salesforceId: string;
     companyName: string;
-    userName: string;
+    firstName: string;
+    lastName: string;
     phone: string;
     email: string;
     plan: string;
-    annualAmount: number;
+    // annualAmount: number;
     registeredDate: number;
-    data: string;
-    storage: string;
-    encoding: string;
+    data: {
+        allocated: number;
+        consumed: number;
+    };
+    storage: {
+        allocated: number;
+        consumed: number;
+    };
+    encoding: {
+        allocated: number;
+        consumed: number;
+    };
     flags: Flag[];
 }
 
-export const accountsListInitialState: Account[] | false = false
+export const accountsListInitialState: {users: Account[]; total: number} | false = false

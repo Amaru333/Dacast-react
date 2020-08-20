@@ -10,7 +10,7 @@ import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
 import { Routes } from './utils/utils';
-import { isLoggedIn } from './utils/token';
+import { adminToken } from './utils/token';
 import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';
@@ -21,7 +21,7 @@ interface AdminMainProps {
 }
 const PrivateRoute = (props: {key: string; component: any; path: string; exact: boolean}) => {  
     return (
-        isLoggedIn() ?
+        adminToken.isLoggedIn() ?
             <Route 
                 path={props.path}
                 exact={props.exact}
@@ -94,7 +94,7 @@ const AdminContent = () => {
     return (
         <div>
             <Switch>
-                {isLoggedIn() ?
+                {adminToken.isLoggedIn() ?
                     <PrivateRoute key='/' exact path='/' component={Accounts} />  
                     : 
                     <Route exact path='/'>                

@@ -9,7 +9,7 @@ export enum ActionTypes {
 
 export interface PaymentMethod {
     id?: string;
-    accountNumber?: number;
+    accountNumber?: string;
     paymentMethodType?: string;
     paymentMethodName?: string;
     payee?: string;
@@ -17,7 +17,7 @@ export interface PaymentMethod {
     recipientType?: 'business' | 'personal';
     swift?: string;
     iban?: string;
-    routingNumber?: number;
+    routingNumber?: string;
     firstName?: string;
     lastName?: string;
     accountName?: string;

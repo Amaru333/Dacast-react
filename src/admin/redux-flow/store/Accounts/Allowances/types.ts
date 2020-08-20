@@ -4,9 +4,23 @@ export enum ActionTypes {
 }
 
 export interface Allowances {
-    data: number;
-    storage: number;
-    encoding: number;
+    data: {
+        allocated: number;
+        consumed: number;
+    };
+    storage: {
+        allocated: number;
+        consumed: number;
+    };
+    encoding: {
+        allocated: number;
+        consumed: number;
+    };
+}
+
+export interface PutAllowances {
+    type: 'data' | 'storage' | 'encoding';
+    amount: number;
 }
 
 export const accountAllowancesDefaultState: Allowances | false = false

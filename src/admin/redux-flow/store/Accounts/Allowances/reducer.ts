@@ -9,9 +9,7 @@ const reducer: Reducer<Allowances | false> = (state = accountAllowancesDefaultSt
                 ...action.payload
             }
         case ActionTypes.SAVE_ACCOUNT_ALLOWANCES: 
-            return {
-                ...action.payload
-            }
+            return state
         default:
             return state
     }

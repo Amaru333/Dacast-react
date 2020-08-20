@@ -18,11 +18,11 @@ import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { userToken } from '../../../utils/token';
 
 
-export const SetupPage = (props: SetupComponentProps) => {
+export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {
 
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    const formateData: FolderAsset[] = props.playlistData.contentList ? props.playlistData.contentList.map(item =>{
+    const formateData: FolderAsset[] = props.contentData.contentList ? props.contentData.contentList.map(item =>{
         return {
             ownerID: "",
             objectID: item['live-channel-id'] ? item['live-channel-id'] : item['vod-id'],
@@ -37,12 +37,12 @@ export const SetupPage = (props: SetupComponentProps) => {
     }) : [];
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
-    const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">(props.playlistData.playlistType);
+    const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">(props.contentData.playlistType);
     const [selectedFolder, setSelectedFolder] = React.useState<string>(rootNode.fullPath);
 
     const [selectedItems, setSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>(formateData);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
-    const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.playlistData.folderId ? props.playlistData.folderId : null);
+    const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.contentData.folderId ? props.contentData.folderId : null);
 
     const [checkedFolders, setCheckedFolders] = React.useState<FolderTreeNode[]>([]);
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
@@ -124,13 +124,13 @@ export const SetupPage = (props: SetupComponentProps) => {
     const handleMoveFoldersToSelected = () => {
         if(checkedFolders.length < 1 ) return;
         const wait = async () => {
-            await props.getFolderContent("status=online,offline,processing&page=1&per-page=10&content-types=channel,vod&folders="+checkedFolders[0].id, 
-                (data) => {
-                    if(data.data.data.results) {
-                        setSelectedItems(data.data.data.results);
-                        setSelectedFolderId(checkedFolders[0].id)
-                    }
-                });
+            await props.getFolderContent("status=online,offline,processing&page=1&per-page=10&content-types=channel,vod&folders="+checkedFolders[0].id)
+            .then((response: any) => {
+                if(response.data.data.results) {
+                    setSelectedItems(response.data.data.results);
+                    setSelectedFolderId(checkedFolders[0].id)
+                }
+            })
         }
         wait();
         //setSelectedItems([...checkedFolders]);
@@ -337,15 +337,15 @@ export const SetupPage = (props: SetupComponentProps) => {
                 'live-channel-id': item.type === 'channel'? removePrefix(item.objectID): null ,
             }
         })
-        let newData = {...props.playlistData};
+        let newData = {...props.contentData};
         newData.contentList = newContent;
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
         newData.playlistType = selectedTab;
         newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
-        props.savePlaylistSetup(newData, props.playlistData.id, () => {
-            setSaveLoading(false)
-        })
+        props.saveContentSetup(newData, props.contentData.id, props.contentType)
+        .then(() => setSaveLoading(false))
+        .catch(() => setSaveLoading(false))
     }
 
     const switchTabSuccess = () => {
@@ -434,7 +434,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <Button  disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>{props.playlistData.title}</Text>
+                        <Text color={"gray-1"} size={14} weight='med'>{props.contentData.title}</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>
@@ -445,7 +445,7 @@ export const SetupPage = (props: SetupComponentProps) => {
                 <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className=" col-3 sm-col-2 mt25 mr1 right" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
             {
-                previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.playlistData.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.contentData.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }
         </>
     )

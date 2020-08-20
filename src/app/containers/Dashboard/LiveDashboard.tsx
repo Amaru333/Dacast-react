@@ -10,7 +10,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
 
     var totalChannels = numberFormatter(props.profile.totalChannels, 'comma');
     var activeChannels = numberFormatter(props.profile.activeChannels, 'comma');
-    var liveViewers = numberFormatter(props.profile.liveViewers.data, 'comma');
+    var liveViewers = numberFormatter(props.profile.liveViewers, 'comma');
 
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
@@ -31,7 +31,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement loading={props.profile.liveViewers.loading} failed={props.profile.liveViewers.failed} className={classItemHalfWidthContainer}>
+                <WidgetElement failed={typeof props.profile.liveViewers === "undefined"} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Live Viewers </Text>
                     </WidgetHeader>
@@ -40,7 +40,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement loading={props.profile.topChannels.loading} failed={props.profile.topChannels.failed} className={classItemFullWidth}>
+                <WidgetElement failed={typeof props.profile.topChannels === "undefined"} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Live Channels </Text>
                     </WidgetHeader>
@@ -55,7 +55,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                             </thead>
                             <tbody>
                                 {
-                                    props.profile.topChannels.data && props.profile.topChannels.data.map((value, key) => {
+                                    props.profile.topChannels && props.profile.topChannels.map((value, key) => {
                                         return (
                                             <tr key={value.viewers+"_"+key}>
                                                 <td className="col-2"><Text size={14} weight="reg" >{key + 1}</Text></td>

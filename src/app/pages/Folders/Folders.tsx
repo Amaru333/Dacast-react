@@ -133,11 +133,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             })
         }
 
-    }, [updateList])
+    }, [fetchContent])
 
-    React.useEffect(() => {
-        setFetchContent(true)
-    }, [updateList])
+    // React.useEffect(() => {
+    //     setFetchContent(true)
+    // }, [updateList])
 
     React.useEffect(() => {
         const wait = async () => {

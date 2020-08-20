@@ -6,7 +6,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/
 import { Modal } from '../../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
 import { useMedia, dataToTimeVideo } from '../../../../utils/utils';
-import { ChapterMarkerInfos } from '../../../redux-flow/store/VOD/Chapters/types';
+import { ChapterMarkerInfos } from '../../../redux-flow/store/Content/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/player';
@@ -15,7 +15,7 @@ import { emptyContentListBody, emptyContentListHeader } from '../../../shared/Li
 import { userToken } from '../../../utils/token';
 
 
-export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => {
+export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; contentType: string}) => {
 
     const [chapterMarkerModalOpened, setChapterMarkerModalOpened] = React.useState<boolean>(false);
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
@@ -25,7 +25,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-    let player = usePlayer(playerRef, userId +  '-vod-' + props.vodId);
+    let player = usePlayer(playerRef, userId +  '-vod-' + props.contentId);
 
 
     const tableHeaderElement = () => {
@@ -66,7 +66,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
                 <Text key={key.toString() +value.start} size={14}  weight="reg" color="gray-1">{dataToTimeVideo(value.start)}</Text>,
                 <IconContainer className="iconAction" key={key.toString()+value.text}>
                     <ActionIcon id={"deleteTooltip" + value.id}>
-                        <IconStyle onClick={(event) => {event.preventDefault;props.deleteVodChapterMarker(props.vodId, props.chapterPageDetails.chapterMarkers.filter(chapterMarker => chapterMarker.id !== value.id))}} >delete</IconStyle>
+                        <IconStyle onClick={(event) => {event.preventDefault;props.deleteContentChapterMarker(props.contentId, props.contentType, props.chapterPageDetails.chapterMarkers.filter(chapterMarker => chapterMarker.id !== value.id))}} >delete</IconStyle>
                     </ActionIcon>
                     <Tooltip target={"deleteTooltip" + value.id}>Delete</Tooltip>
                     <ActionIcon id={"editTooltip" + value.id}>
@@ -107,11 +107,12 @@ export const ChaptersPage = (props: ChapterComponentProps & {vodId: string}) => 
                 {
                     chapterMarkerModalOpened &&
                         <ChapterMarkerForm 
-                            vodId={props.vodId} 
+                            contentId={props.contentId} 
+                            contentType={props.contentType}
                             chapters={props.chapterPageDetails.chapterMarkers} 
                             item={selectedItem && props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem).length > 0 ? props.chapterPageDetails.chapterMarkers.filter(item => item.id === selectedItem)[0] : {text: '', start: marker}} 
                             toggle={setChapterMarkerModalOpened} 
-                            submit={selectedItem ? props.saveVodChapterMarker : props.addVodChapterMarker}
+                            submit={selectedItem ? props.saveContentChapterMarker : props.addContentChapterMarker}
                         />
                 }
             </Modal>

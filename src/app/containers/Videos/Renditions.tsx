@@ -1,41 +1,38 @@
 import React from 'react';
 import { VodRenditionsPage } from '../../pages/Videos/Renditions/Renditions';
-import { RenditionsList, RenditionsListState } from '../../redux-flow/store/VOD/Renditions/types';
+import { RenditionsList, RenditionsListState } from '../../redux-flow/store/Content/Renditions/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, getVodRenditionsAction, addVodRenditionsAction, deleteVodRenditionsAction } from '../../redux-flow/store/VOD/Renditions/actions';
+import { Action, getContentRenditionsAction, addContentRenditionsAction, deleteContentRenditionsAction } from '../../redux-flow/store/Content/Renditions/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
 
-interface VodRenditionsContainerProps {
+export interface VodRenditionsProps {
     renditions: RenditionsList;
-    renditionsState: RenditionsListState;
-    getVodRenditions: (vodId: string) => Promise<void>;
-    addVodRenditions: (data: string[], vodId: string) => Promise<void>;
-    deleteVodRenditions: (data: string[], vodId: string) => Promise<void>;
+    renditionsState: RenditionsListState
+    addContentRenditions: (ids: string[], contentId: string, contentType: string) => Promise<void>;
+    deleteContentRenditions: (ids: string[], contentId: string, contentType: string) => Promise<void>;
+    getContentRenditions: (contentId: string, contentType: string) => Promise<void>;
 }
-
-export const VodRenditions = (props: VodRenditionsContainerProps) => {
+export const VodRenditions = (props: VodRenditionsProps) => {
 
     let { vodId } = useParams()
 
     React.useEffect(() => {
-        if (!props.renditionsState[vodId]) {
-            props.getVodRenditions(vodId);
-        }
+            props.getContentRenditions(vodId, 'vod');
     }, [])
 
     return (
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.renditionsState[vodId] ?
+                props.renditionsState['vod'] && props.renditionsState['vod'][vodId] ?
                     (
                         <div className='flex flex-column'>
-                            <VodRenditionsPage {...props} renditions={props.renditionsState[vodId]} vodId={vodId} />
+                            <VodRenditionsPage {...props} renditions={props.renditionsState['vod'][vodId]} contentId={vodId} contentType='vod' />
                         </div>
                     )
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -46,20 +43,20 @@ export const VodRenditions = (props: VodRenditionsContainerProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        renditionsState: state.vod.renditions
+        renditionsState: state.content.renditions
     }
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getVodRenditions: async (vodId: string) => {
-            await dispatch(getVodRenditionsAction(vodId));
+        getContentRenditions: async (contentId: string, contentType: string) => {
+            await dispatch(getContentRenditionsAction(contentId, contentType));
         },
-        addVodRenditions: async (data: string[], vodId: string) => {
-            await dispatch(addVodRenditionsAction(data, vodId));
+        addContentRenditions: async (ids: string[], contentId: string, contentType: string) => {
+            await dispatch(addContentRenditionsAction(ids, contentId, contentType));
         },
-        deleteVodRenditions: async (data: string[], vodId: string) => {
-            await dispatch(deleteVodRenditionsAction(data, vodId));
+        deleteContentRenditions: async (ids: string[], contentId: string, contentType: string) => {
+            await dispatch(deleteContentRenditionsAction(ids, contentId, contentType));
         }
     }
 }

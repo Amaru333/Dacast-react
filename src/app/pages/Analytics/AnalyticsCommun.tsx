@@ -16,6 +16,7 @@ import ReactTable from 'react-table';
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 
+import moment from 'moment'
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
@@ -168,7 +169,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div className="col col-12 mb25 clearfix">
             {renderDatePresets()}
-            <DateRangePickerWrapper disabled dates={{ startDate: dates.start, endDate: dates.end }} className="inline" presets={presets} />
+            <DateRangePickerWrapper disabled dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" presets={presets} />
             <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )

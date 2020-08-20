@@ -6,20 +6,14 @@ import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { RenditionsList, Rendition } from '../../../redux-flow/store/VOD/Renditions/types';
+import { RenditionsList, Rendition } from '../../../redux-flow/store/Content/Renditions/types';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { useWebSocket } from '../../../utils/customHooks';
 import { UploadObject } from '../../../utils/uploaderService';
 import { ProgressBar } from '../../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
+import { VodRenditionsProps } from '../../../containers/Videos/Renditions';
 
-interface VodRenditionsProps {
-    renditions: RenditionsList;
-    addVodRenditions: Function;
-    deleteVodRenditions: Function;
-    getVodRenditions: Function;
-}
-
-export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) => {
+export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string; contentType: string}) => {
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
@@ -40,11 +34,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
-        console.log(selectedEncodedRendition)
-        console.log(selectedNotEncodedRendition)
-    }, [])
-
-    React.useEffect(() => {
         if(!replaceSourceModalOpen) {
             setUploadError(null)
             setNewSourceFileUpload(null)
@@ -55,7 +44,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
     React.useEffect(() => {
         if(wsData){
             setTimeout(() => {
-                props.getVodRenditions(props.vodId)
+                props.getContentRenditions(props.contentId, props.contentType)
             }, 10000)
         }  
     }, [wsData])
@@ -166,7 +155,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
 
     const encodeRenditions = () => {
         event.preventDefault();
-        props.addVodRenditions(selectedNotEncodedRendition, props.vodId)
+        props.addContentRenditions(selectedNotEncodedRendition, props.contentId, props.contentType)
         setSelectedNotEncodedRendition([])
     }
 
@@ -178,7 +167,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                 ids.push(rendition.renditionID)
             }
         })
-        props.deleteVodRenditions(ids, props.vodId)
+        props.deleteContentRenditions(ids, props.contentId, props.contentType)
         setSelectedEncodedRendition([])
     }
 
@@ -208,7 +197,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {vodId: string}) =
                     (percent: number) => { handleUploadProgress(percent) },
                     (err: any) => { handleUploadError(err)},
                     null,
-                    props.vodId
+                    props.contentId
                 )
                 setNewSourceFileUpload(newUpload)
                 newUpload.startUpload()
