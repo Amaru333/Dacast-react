@@ -25,7 +25,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     let {url} = useRouteMatch()
 
     React.useEffect(() => {
-        if(pagination) {
+        if(pagination && !contentLoading) {
             setContentLoading(true)
             props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}`)
             .then(() => setContentLoading(false))
@@ -89,10 +89,10 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (salesforceId: string, search: string) => {
         // query.push(location.pathname + '?accountId=' + accountId)
         setContentLoading(true)
-        props.getAccounts(accountId, (`page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : '')))
+        props.getAccounts(accountId, (`page=${pagination.page - 1}&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
         .then(() => setContentLoading(false))
         .catch(() => setContentLoading(false))
     }
@@ -102,13 +102,13 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
-                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
+                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
                 </div>
                 <div className='relative flex items-center mr2'>
                     <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
-                    <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setKeyword('')}><IconStyle>close</IconStyle></div>
+                    <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setKeyword('');handleSubmit(accountId, '')}}><IconStyle>close</IconStyle></div>
                 </div>
-                <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />

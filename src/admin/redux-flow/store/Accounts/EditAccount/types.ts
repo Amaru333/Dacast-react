@@ -35,6 +35,7 @@ export interface PutAccountInfo {
         amountGb: number;
     };
     forceVerifyEmail?: boolean;
+    preferredPlatform?: string;
     accountFlags?: Flag[];
 }
 

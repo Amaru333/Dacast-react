@@ -109,7 +109,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     list={{'Unified App': false, 'Legacy': false}} 
                     dropdownTitle='Preferred platform' 
                     dropdownDefaultSelect={!props.accountInfo.preferredPlatform || props.accountInfo.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
-                    callback={(value: string) => setPreferredPlatform(value)}
+                    callback={(value: string) => {setPreferredPlatform(value); setAccountInfo({...accountInfo, preferredPlatform: value == 'Legacy' ? 'legacy' : 'unified-app'})}}
                 />
                 <div className='col col-3 pl1 mb2'>
                     <Button  isLoading={createPlatformLoading} onClick={() => handleCreateLegacy()} buttonColor='blue' typeButton='primary' sizeButton='small'>Create account on legacy</Button>
