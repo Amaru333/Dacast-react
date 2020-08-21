@@ -67,7 +67,7 @@ export const editContentDetailsAction = (data: ContentDetails, contentType: stri
     return async (dispatch: ThunkDispatch<ApplicationState, {}, EditContentDetails>) => {
         await ContentGeneralServices.editContentDetailsService(data, parseContentType(contentType))
             .then(response => {
-                dispatch({ type: ActionTypes.EDIT_CONTENT_DETAILS, payload: {data: response.data, contentType: contentType} })
+                dispatch({ type: ActionTypes.EDIT_CONTENT_DETAILS, payload: {data: data, contentType: contentType} })
                 dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
             })
             .catch(() => {

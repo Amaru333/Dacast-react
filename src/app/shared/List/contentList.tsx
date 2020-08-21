@@ -202,6 +202,18 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const handleContentStatus = (status: string, type: string, size: number) =>{
+        switch(status) {
+            case 'online':
+                return type === 'vod' && !size ? <Label backgroundColor="gray-5" color="gray-1" label="Processing" /> : <Label backgroundColor="green20" color="green" label="Online" />
+            case 'offline':
+            case 'deleted':
+                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />  
+            default:
+            return null
+        }
+    }
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -229,7 +241,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
                         <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
+                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
                         <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >

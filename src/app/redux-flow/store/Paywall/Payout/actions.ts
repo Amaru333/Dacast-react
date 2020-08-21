@@ -11,7 +11,7 @@ export interface GetPaymentMethods {
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: {data: {widthdrawals: WithdrawalRequest[]}};
+    payload: {data: {withdrawals: WithdrawalRequest[]}};
 }
 
 export interface AddPaymentMethod {
@@ -96,7 +96,7 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
-                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: response.data});
+                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
                 dispatch(showToastNotification(`New Withdrawl Request submitted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));

@@ -5,10 +5,29 @@ import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { ColorsApp } from '../../../../styled/types';
-import { WithdrawalRequest } from '../../../redux-flow/store/Paywall/Payout';
+import { WithdrawalRequest, PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
+import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
-export const WithdrawalModal = (props: { action: Function; toggle: Function }) => {
-    const [withdrawalRequest, setwithdrawalRequest] = React.useState<WithdrawalRequest>(null)
+export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (wr: WithdrawalRequest) => Promise<void>; toggle: (b: boolean) => void }) => {
+    const [withdrawalRequest, setwithdrawalRequest] = React.useState<WithdrawalRequest>({
+        paymentMethodId: props.paymentList[0].id,
+        currency: 'USD',
+        amount: 0,
+        requestDate: Math.floor(Date.now() / 1000),
+        transferDate: NaN,
+        status: 'Pending'
+    })
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
+
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.action(withdrawalRequest)
+        .then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        })
+        .catch(() => setButtonLoading(false))
+    }
     return (
         <div>
             <div className='col col-12 my2'>
@@ -16,11 +35,11 @@ export const WithdrawalModal = (props: { action: Function; toggle: Function }) =
                     className='col xs-no-gutter xs-mb1 col-12 sm-col-8 pr1'
                     id='widthdrawalModalPaymentMethodDropdown'
                     dropdownTitle='Choose Method'
-                    list={{ 'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false }}
-                    callback={(value: string) => { setwithdrawalRequest({ ...withdrawalRequest, requestType: value }) }}
-                    dropdownDefaultSelect='Bank Account (US)'
+                    list={props.paymentList.reduce((acc: DropdownListType, next) => {return {...acc, [next.paymentMethodName]: false}}, {})}
+                    callback={(value: string) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: props.paymentList.find(p => p.paymentMethodName === value).id }) }}
+                    dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
-                <Input className='col xs-no-gutter col-12 sm-col-5 pl1 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='100' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />
+                <Input className='col xs-no-gutter col-12 sm-col-5 pl1 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>
@@ -40,8 +59,8 @@ export const WithdrawalModal = (props: { action: Function; toggle: Function }) =
             <Text size={12} weight='reg' color='gray-3'>*Your first payment request will be delayed at least 35 days</Text>
             <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
             <div className='flex col col-12 my2'>
-                <Button onClick={() => { props.action(withdrawalRequest); props.toggle(false) }} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
-                <Button onClick={() => { props.toggle(false) }} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
+                <Button onClick={() => props.toggle(false)} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
     )

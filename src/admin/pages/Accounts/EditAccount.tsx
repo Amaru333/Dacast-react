@@ -88,10 +88,10 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                 />
             </div>
 
-            <Text className='py1' size={16} weight='med'>Account Flags</Text>
+            {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>
             <div className='flex flex-column mb1'>
                 {renderFlags(flags)}
-            </div>
+            </div> */}
 
             <div className='my1 flex'>
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
