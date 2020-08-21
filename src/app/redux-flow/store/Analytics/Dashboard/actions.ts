@@ -15,7 +15,6 @@ export const getAnalyticsDashboardAction = (dates: GetAnalyticsDashboardOptions)
         dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD, payload: false} );
         await AnalyticsDashboardServices.getAnalyticsDashboard(dates)
             .then( response => {
-                console.log(response);
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD, payload: {data: response.data} } );
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD, payload: { data:  { map: [], failed: true} } }  );

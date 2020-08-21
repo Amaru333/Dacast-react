@@ -20,9 +20,6 @@ import moment from 'moment'
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
-
-    console.log(props.data);
-
     const exportCsvAnalytics = (data: any) => {
         CsvService.exportToCsv(props.dataName + ".csv", Object.values(data));
     };
@@ -161,10 +158,6 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
         )
             : null;
     }
-
-    React.useEffect(() => {
-        console.log(dates);
-    }, [dates])
 
     return (
         <div className="col col-12 mb25 clearfix">

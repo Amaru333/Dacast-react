@@ -67,7 +67,6 @@ export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringC
 
     React.useEffect(() => {
         checkActiveFilter();
-        console.log(filteringState)
     }, [filteringState])
 
     const handleNumberInputChange = (event: React.FormEvent<HTMLInputElement>, key: string) => {

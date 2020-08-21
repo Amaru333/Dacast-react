@@ -56,7 +56,6 @@ export const handleValidationForm = (id: string, data: any, type?: CustomType, r
         for(var i = 0; i < deepness.length; i++) {
             targetObject = targetObject ? targetObject[deepness[i]] : data[deepness[i]]
         }
-        console.log(targetObject)
         let spreadProps: any =  {
             isError: targetObject,
             help: targetObject && (targetObject.message ? targetObject.message : targetObject.validate) ,

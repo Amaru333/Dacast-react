@@ -49,7 +49,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         timezone=timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
-        console.log(timezone)
         if(ts > 0 ) {
             return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
         } 
@@ -406,7 +405,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                                     </Text>
                                                 </BubbleContent>
                                             </Bubble>
-                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { console.log("free the niples") }}>Purge Live Stream</Button>
+                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { }}>Purge Live Stream</Button>
                                         </div>
                                 }
                             </div>

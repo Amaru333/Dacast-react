@@ -48,7 +48,6 @@ class AxiosClient {
     private responseInterceptor = (error: any) => {
         const config = error.config
         if(!config){
-            console.log('couldnt retry, error has no config:', error)
             return Promise.reject(error)
         }
         let {
@@ -62,8 +61,6 @@ class AxiosClient {
         }
         currentCount++
         config.headers['X-Api-Key'].currentCount = currentCount
-
-        console.log('setup retry', currentCount)
 
         return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
     }

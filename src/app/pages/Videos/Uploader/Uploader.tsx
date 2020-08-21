@@ -39,12 +39,10 @@ export const UploaderPage = (props: UploaderProps) => {
         if (!isOnline) {
             if (currentUpload && currentUpload.hasStarted) {
                 currentUpload.pauseUpload();
-                console.log("PAUSE");
             }
         } else {
             if (currentUpload) {
                 currentUpload.resumeUpload();
-                console.log("RESUME");
             }
         }
     }, [isOnline])
@@ -108,8 +106,6 @@ export const UploaderPage = (props: UploaderProps) => {
                     FILE_CHUNK_SIZE,
                     (percent: number) => { updateItem(percent, file.name, startTime) },
                     (err: any) => {
-                        console.log(err)
-                        console.log(uploadFileQueue, uploadingList)
                         setUploadFileQueue((currentList: any[]) => {
                             uploadNextFile(currentList)
                             return currentList;

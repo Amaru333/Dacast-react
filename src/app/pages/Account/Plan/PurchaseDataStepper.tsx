@@ -12,8 +12,6 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
     const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData? props.stepperData.dataPrice : null)
     const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData? props.stepperData.quantity : null)
 
-    console.log(props.stepperData, dataAmount)
-
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
     }, [props.stepperData])
@@ -88,7 +86,7 @@ export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunction
         <div>
             <Table id='PurchaseDataPayment' headerBackgroundColor="gray-10" header={paymentTableHeaderElement()}/>
             
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} handleThreeDSecureFail={() => {}} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} stepperData={props.stepperData} />
+            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={() => {}} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} stepperData={props.stepperData} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

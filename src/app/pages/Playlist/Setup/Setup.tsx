@@ -76,10 +76,6 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
 
     }
 
-    React.useEffect(() => {
-        console.log('checked content', checkedContents)
-    }, [checkedContents])
-
     React.useEffect(() => { 
         setDropdownIsOpened(false); 
         props.getFolderContent(parseFiltersToQueryString())
@@ -247,7 +243,6 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
-        console.log(props.folderData.requestedContent.results)
         return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
             if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;

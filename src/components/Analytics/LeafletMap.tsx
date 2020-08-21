@@ -16,7 +16,6 @@ const LeafletMap = (props: any) => {
     
 
     const updateMap = () => {
-        console.log(leafletDiv, loadedScript);
         if (!leafletDiv || !loadedScript) {
             return;
         }
@@ -46,7 +45,6 @@ const LeafletMap = (props: any) => {
         }
         let max = Math.max(...props.markers.map(k => k.consumedMB));
 
-        console.log(max);
         markers.forEach(m => leafletMap.removeLayer(m));
         setMarkers([]);
 
@@ -76,7 +74,6 @@ const LeafletMap = (props: any) => {
             });
             newMarkersTable.push(circle);
         }
-        console.log(newMarkersTable);
         setMarkers(newMarkersTable);
 
     }

@@ -27,7 +27,6 @@ export const getContentRenditionsAction = (contentId: string, contentType: strin
                 dispatch({ type: ActionTypes.GET_CONTENT_RENDITIONS, payload: {contentId: contentId, contentType: contentType, data: response.data.data }});
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

@@ -20,7 +20,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
     const handleReload = () => {
         let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
         if(selectedChannelFilter) {
-            console.log(selectedChannelFilter)
             let selectedChannelId = selectedChannelFilter[0].objectID;
             props.getAnalyticsRealTime({period: timePeriod, channelId:  selectedChannelId ? selectedChannelId : null })
         } else {
@@ -39,7 +38,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                 setTimePeriod(30);
                 break;
             case '45 Minutes':
-                console.log("test");
                 setTimePeriod(45);
                 break;
             case '1 Hour':
@@ -59,7 +57,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             <div className="flex items-end col col-12 mb25">
                 <DropdownSingle
                     id='timeRefreshDropdown'
-                    callback={(name: string) => { console.log(name); handleTimePeriodsUpdate(name) }}
+                    callback={(name: string) => handleTimePeriodsUpdate(name) }
                     isInModal={false}
                     isWhiteBackground
                     defaultSelected="5 Minutes"
@@ -102,7 +100,6 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                 </div>
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard realTime dataName="playsPerRealTime" data={props.realTimeAnalytics.data.playsPerRealTime} infoText="The number of new viewers who haven't consumed your content before" title="Plays by Time">
-                        {console.log(props.realTimeAnalytics.data.playsPerRealTime)}
                         {
                             props.realTimeAnalytics.data.playsPerRealTime ?
                                 props.realTimeAnalytics.data.playsPerRealTime.failed ?

@@ -97,7 +97,6 @@ export class FolderTree {
             currentNode = foundChild
         }
         if (Object.values(currentNode.children).length === 0 && currentNode.subfolders !== 0) {
-            console.log('node has no children, fecthing')
             await this.loadChildren(currentNode)
         }
         return currentNode
@@ -117,7 +116,6 @@ export class FolderTree {
             return
         }
         if (node.loadingStatus === 'loading') {
-            console.log('blocked double loading')
             return
         }
         node.isExpanded = !node.isExpanded
@@ -231,7 +229,6 @@ export class FolderTree {
                 oldFolderId: oldFolderId
             }
         ).then(response => {
-            console.log(response)
             return response
         }).catch(error => {
             throw new Error(error)

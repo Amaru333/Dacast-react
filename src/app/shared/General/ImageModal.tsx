@@ -27,11 +27,6 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
-        console.log('upload url', props.uploadUrl)
-        console.log('logo', logoFile)
-    }, [props.uploadUrl, logoFile])
-
-    React.useEffect(() => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
         } else { 

@@ -46,7 +46,6 @@ export const getDashboardDetailsAction = (): ThunkDispatch<Promise<void>, {}, Ge
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: response.data} );
             }).catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -59,7 +58,6 @@ export const getDashboardLiveTopChannels = (jobID: string): ThunkDispatch<Promis
             .then( response => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload: {...response.data, failed: false, loading: false } } );
             }).catch((error) => {
-                console.log(error)
                 dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -110,7 +108,6 @@ export const getDashboardVodPlayRateAction = (jobID: string): ThunkDispatch<Prom
         dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload:{data: {}, failed: false, loading: true}} );
         await DashboardServices.getDashboardVodPlayRateService(jobID)
             .then( response => {
-                console.log(response, "response");
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload: {data: response.data, failed: false, loading: false } } );
             }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload: {data: {}, failed: true, loading: false}} );

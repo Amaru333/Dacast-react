@@ -49,7 +49,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                         key === props.stepperData.firststep.prices.length - 1 ?
                             <div onClick={() => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: [...props.stepperData.firststep.prices, {price: { value: "", currency: 'USD' }}] } })} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
 
-                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() =>   {var newList = props.stepperData.firststep.prices.filter((item, index) => { return index !== key }); console.log(newList); props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: newList} }) }}  >close</IconStyle></div>
+                            : <div className={'pointer sm-ml2 col col-2 sm-col-6 px1 ' + (key === 0 ? 'mt3 flex items-center' : 'my-auto')} ><IconStyle onClick={() =>   {var newList = props.stepperData.firststep.prices.filter((item, index) => { return index !== key });props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, prices: newList} }) }}  >close</IconStyle></div>
                     }
                 </div>
             )

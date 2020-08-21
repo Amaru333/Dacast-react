@@ -77,12 +77,10 @@ export const compareValues = (key: string, order: 'asc' | 'desc' = 'asc') => {
 
 
 export function readableBytes(size: number): string {
-    console.log(size);
     if (size == 0) {
         return "0";
     }
     var i = Math.floor(Math.log(size) / Math.log(1000));
-    console.log((size / Math.pow(1000, i)));
     return (size / Math.pow(1000, i) * 1 ).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
 }
 

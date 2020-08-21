@@ -3,7 +3,6 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../components/Typography/Text';
 
 export const handleButtonToPurchase = (percentage: number, purchaseItem: string, handlePurchaseStepper: Function) => {
-    console.log(purchaseItem);
     if(percentage <= 25 ) {
         return;
         // return (

@@ -48,14 +48,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
         props.purchasePlan(stepperData, recurlyToken, null,  (response) => {
-            console.log(response);
             setIsLoading(false);
             if (response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setStepperPlanOpened(false)
-                console.log(`${stepperData.name} plan purchased successfully`)
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
             }

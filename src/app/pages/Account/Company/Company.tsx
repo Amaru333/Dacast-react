@@ -32,10 +32,6 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     let history = useHistory();
 
-    React.useEffect(() => {
-        console.log('dirty state value', formState)
-    })
-
     useKeyboardSubmit( () => handleSubmit(onSubmit) )
     
     let {CompanyPageDetails} = props;

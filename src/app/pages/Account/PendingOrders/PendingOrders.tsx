@@ -80,7 +80,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 stepTitles={["Cart", "Payment"]}
                 lastStepButton="Purchase"
-                finalFunction={() => {console.log('final function executed');setPurchaseStepperOpen(false); props.updatePendingOrders(selectedPendingOrder)}}
+                finalFunction={() => {setPurchaseStepperOpen(false); props.updatePendingOrders(selectedPendingOrder)}}
                 functionCancel={() => setPurchaseStepperOpen(false)}
                 stepperData={selectedPendingOrder}
             />

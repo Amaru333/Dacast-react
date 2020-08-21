@@ -48,10 +48,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
     }, [selectedStreamType])
 
-    React.useEffect(() => {
-        console.log(streamSetupOptions)
-    }, [streamSetupOptions])
-
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
         setSelectedStreamType('standard')

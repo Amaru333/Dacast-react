@@ -284,7 +284,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log('search');setFetchContent(true)}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);setFetchContent(true)}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedContent.length > 0 &&
