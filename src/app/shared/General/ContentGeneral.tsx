@@ -50,7 +50,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         timezone=timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
         if(ts > 0 ) {
-            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
+            return {date: momentTZ(ts * 1000).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts * 1000).tz(timezone).format('HH:mm:ss')}
         } 
         return {date: moment().toString(), time: '00:00'}
     }
