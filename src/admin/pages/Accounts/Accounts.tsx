@@ -92,7 +92,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleSubmit = () => {
         // query.push(location.pathname + '?accountId=' + accountId)
         setContentLoading(true)
-        props.getAccounts(accountId, (`page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&userId=${accountId}` : '') + (keyword ? `&search=${keyword}` : '')))
+        props.getAccounts(accountId, (`page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : '')))
         .then(() => setContentLoading(false))
         .catch(() => setContentLoading(false))
     }
