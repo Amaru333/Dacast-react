@@ -17,6 +17,7 @@ import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     const [accountId, setAccountId] = React.useState<string>(null)
+    const [keyword, setKeyword] = React.useState<string>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
 
@@ -89,9 +90,9 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handleSubmit = () => {
-        query.push(location.pathname + '?accountId=' + accountId)
+        // query.push(location.pathname + '?accountId=' + accountId)
         setContentLoading(true)
-        props.getAccounts(accountId, `page=${pagination.page}&perPage=${pagination.nbResults}`)
+        props.getAccounts(accountId, (`page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&userId=${accountId}` : '') + (keyword ? `&search=${keyword}` : '')))
         .then(() => setContentLoading(false))
         .catch(() => setContentLoading(false))
     }
@@ -101,9 +102,13 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
-                    <div className={ accountId && accountId.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
+                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
                 </div>
-                <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                <div className='relative flex items-center mr2'>
+                    <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
+                    <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setKeyword('')}><IconStyle>close</IconStyle></div>
+                </div>
+                <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />
