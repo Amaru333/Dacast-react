@@ -224,7 +224,7 @@ const ThumbnailFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
-    max-width: 500px;
+    max-width: 90%;
 `
 
 export const PlayerSection = styled.div`

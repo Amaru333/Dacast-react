@@ -10,6 +10,7 @@ import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { UploadText } from '../../../shared/General/ImageModal';
 
 //STEPS
 export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}; staticStepperData: {[key: string]: any}}) => {
@@ -80,7 +81,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                             <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                         </SpinnerContainer>: 
                             <WatermarkFile className="col mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</Text>
+                                <UploadText className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</UploadText>
                                 <WatermarkDeleteButton>
                                     <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
                                 </WatermarkDeleteButton>
@@ -199,6 +200,7 @@ const WatermarkFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 90%;
 `
 
 const PositioningRow = styled.div`
