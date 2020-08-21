@@ -141,7 +141,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                             { logoFile &&
                                 <ThumbnailFile className="col mt1">
-                                    <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
+                                    <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
                                     </button>   
@@ -179,7 +179,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                         <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                         { logoFile &&
                             <ThumbnailFile className="col mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</Text>
+                                <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
                                 </button>   
@@ -224,6 +224,7 @@ const ThumbnailFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 500px;
 `
 
 export const PlayerSection = styled.div`
@@ -238,5 +239,10 @@ export const PlayerContainer = styled.div`
 `
 
 export const ButtonsArea = styled.div`
+`
 
+export const UploadText = styled(Text)`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `
