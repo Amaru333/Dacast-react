@@ -12,7 +12,7 @@ import { AccountAllowancesReducer } from './Allowances/reducer';
 
 
 export interface AccountsState {
-    list: Account[] | false;
+    list: {users: Account[]; total: number} | false;
     account: AccountInfo | false;
     plan: PlanInfo | false;
     logs: Logs[] | false;

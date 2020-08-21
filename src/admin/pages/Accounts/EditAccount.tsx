@@ -20,6 +20,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
+        setButtonLoading(true)
         props.saveAccountInfo(accountInfo, props.accountInfo.accountId)
         .then(() => {
             setButtonLoading(false)
