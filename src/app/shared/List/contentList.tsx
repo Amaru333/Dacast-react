@@ -245,14 +245,14 @@ export const ContentListPage = (props: ContentListProps) => {
                         <div onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
-                            <ActionIcon id={"editTooltip" + value.objectID}>
-                                <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
-                            <ActionIcon id={"deleteTooltip" + value.objectID}>
+                                <ActionIcon id={"deleteTooltip" + value.objectID}>
                                 <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setSelectedContent([value.objectID]);setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
+                                </ActionIcon>
+                                <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip> 
+                                <ActionIcon id={"editTooltip" + value.objectID}>
+                                    <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                </ActionIcon>
+                                <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             </div>
                         : <span></span>
 
