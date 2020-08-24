@@ -61,7 +61,7 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
         await PayoutServices.addPaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.data.data.id}});
-                dispatch(showToastNotification(`Withdrawl Method has been saved`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawl Method has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -73,7 +73,7 @@ export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
         await PayoutServices.updatePaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
-                dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawl Method has been edited`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
