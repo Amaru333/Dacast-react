@@ -86,7 +86,7 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                 } else {
                     return {
                         ...domainControl,
-                        isDefault: (!action.payload.isDefault && state.domainControl.filter(f => f.id === action.payload.id)[0].isDefault && domainControl.id === '-1') ? true : false
+                        isDefault: action.payload.isDefault ? false : domainControl.isDefault
                     }
                 }
             })
