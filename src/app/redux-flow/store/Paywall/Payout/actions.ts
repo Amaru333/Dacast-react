@@ -70,7 +70,7 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
 
 export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, UpdatePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UpdatePaymentMethod>) => {
-        await PayoutServices.deletePaymentMethod(data)
+        await PayoutServices.updatePaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
                 dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
