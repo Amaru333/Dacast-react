@@ -10,6 +10,8 @@ import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
 import { AddStreamModal } from '../Navigation/AddStreamModal';
 import { userToken } from '../../utils/token';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { link } from 'fs';
 const faqIcon = require('../../../../public/assets/support-faq.png');
 const supportIcon = require('../../../../public/assets/support-widget.png');
 
@@ -55,37 +57,37 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
         {
             isChecked: false,
             name: "How to start streaming with OBS",
-            href: "https://www.dacast.com/support/knowledgebase/quick-start-with-live-streaming-obs-studio/"
+            href: getKnowledgebaseLink("OBS")
 
         },
         {
             isChecked: false,
             name: "How to start streaming with Wirecast",
-            href: "https://www.dacast.com/support/knowledgebase/how-to-live-stream-with-wirecast/"
+            href: getKnowledgebaseLink("Wirecast")
 
         },
         {
             isChecked: false,
             name: "How to upload a Video",
-            href: "https://www.dacast.com/support/knowledgebase/video-guide-how-to-upload-videos-on-pc-mac/"
+            href: getKnowledgebaseLink("Upload")
 
         },
         {
             isChecked: false,
             name: "How to embed on your website",
-            href: "https://www.dacast.com/support/knowledgebase/how-can-i-embed-a-video-on-my-website/"
+            href: getKnowledgebaseLink("Embed")
 
         },
         {
             isChecked: false,
             name: "How to customize the player theme",
-            href: "https://www.dacast.com/support/knowledgebase/"
+            href: getKnowledgebaseLink("Theme")
 
         },
         {
             isChecked: false,
             name: "How to add security to your video: password protection, geo and referencing",
-            href: "https://www.dacast.com/support/knowledgebase/"
+            href: getKnowledgebaseLink("Security")
 
         }
     ]
@@ -105,7 +107,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader style={{justifyContent: 'space-between'}} className="flex">
                         <Text size={16} weight="med" color="gray-1"> Tutorials </Text>
-                        <Button onClick={() => window.open('https://www.dacast.com/support/knowledgebase/', '_blank')} className="col col-2" sizeButton="xs" typeButton="secondary">See More</Button>
+                        <Button onClick={() => window.open(getKnowledgebaseLink("Default"), '_blank')} className="col col-2" sizeButton="xs" typeButton="secondary">See More</Button>
                     </WidgetHeader>
                     <div className="flex mb1">
                         <TodoList items={todoItems} />

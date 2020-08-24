@@ -15,6 +15,7 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
 import { isMobile } from 'react-device-detect';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -145,7 +146,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                 <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
                 <div className="flex col col-12 mt2 mb25">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href={getKnowledgebaseLink("Encoding Recipes")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
                 <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe, smScreen)} body={recipesBodyElement(props.encodingRecipeData, editRecipe, setDeleteWarningModalOpen, setDeletedRecipe)} />

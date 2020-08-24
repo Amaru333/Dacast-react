@@ -28,6 +28,7 @@ import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Dat
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { axiosClient } from '../../utils/axiosClient';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -608,7 +609,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <Bubble type='info' className='my2'>
                                         <BubbleContent>
                                             <Text weight="reg" size={16} >
-                                                Correct <a href="https://www.dacast.com/support/knowledgebase/live-encoder-configuration/" target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
+                                                Correct <a href={getKnowledgebaseLink("Encoder Setup")} target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                             </Text>
                                         </BubbleContent>
                                     </Bubble>
@@ -661,7 +662,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 </div>
                                 <div className="flex col col-12 mt2">
                                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                                 </div>
                             </ModalContent>
                             <ModalFooter className="mt1" >

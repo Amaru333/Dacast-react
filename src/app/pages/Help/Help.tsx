@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { SmallHelpCard, LargeHelpCard, HelpCardHeader, HelpCardContent, CardPlaceholder, HelpPageIcon, ButtonContainer } from "./HelpStyle"
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 
 export const HelpPage = () => {
@@ -41,7 +42,7 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/support/knowledgebase/")}>Knowledge Base</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open(getKnowledgebaseLink("Default"))}>Knowledge Base</Button>
                     </div> 
                 </SmallHelpCard>
 

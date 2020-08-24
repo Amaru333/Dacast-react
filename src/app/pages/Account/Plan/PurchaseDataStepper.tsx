@@ -6,6 +6,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { handleDataPrice } from '../../../../utils/utils';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
 
@@ -66,7 +67,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
             </div>
             <div className="flex mt1">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                <Text  size={14} weight="reg">Need help with purchasing additional data? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text  size={14} weight="reg">Need help with purchasing additional data? Visit the <a href={getKnowledgebaseLink("Data")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
             
         </div>

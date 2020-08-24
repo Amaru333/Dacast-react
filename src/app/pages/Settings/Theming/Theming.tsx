@@ -12,6 +12,7 @@ import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
@@ -92,7 +93,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 <TextStyle className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></TextStyle>
                 <div className='my2 flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle> 
-                    <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href={getKnowledgebaseLink("Theme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
                 <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />

@@ -23,6 +23,7 @@ import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyle';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -425,7 +426,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>
                             <IconStyle className="mr1">info_outlined</IconStyle>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")}>Knowledge Base</a></Text>
                         </div>
                         <div className="clearfix mb2">
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>

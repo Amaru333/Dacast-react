@@ -12,6 +12,7 @@ import { PresetsComponentProps } from '../../../containers/Paywall/Presets';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Pagination } from '../../../../components/Pagination/Pagination';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -133,7 +134,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
                 <div className="flex col col-12 mt2 xs-mb2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href={getKnowledgebaseLink('Price Preset')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
                 {props.presetsInfos.presets.totalItems === 0 ? 
@@ -151,7 +152,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
                 <div className="flex col col-12 mt2 xs-mb2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href={getKnowledgebaseLink("Promo Preset")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
                 { props.presetsInfos.promos.totalItems === 0 ?
