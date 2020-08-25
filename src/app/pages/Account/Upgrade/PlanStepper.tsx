@@ -194,11 +194,11 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
     React.useEffect(() => {
         setNewSelectedPrivileges(props.stepperData.privileges.filter((item: Privilege) => {
             if(props.stepperData.selectedPrivileges){
-                return props.stepperData.selectedPrivileges.includes(item.code)
+                return props.stepperData.selectedPrivileges.indexOf(item.code) > -1
             }
         }))
         props.updateStepperData({...props.stepperData, privileges: props.stepperData.privileges.map((item: Privilege) => {
-            if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.includes(item.code)){
+            if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.indexOf(item.code) > -1){
                 return {...item, checked: true}
             } else {
                 return item
