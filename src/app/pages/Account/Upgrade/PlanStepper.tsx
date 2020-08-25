@@ -197,6 +197,13 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
                 return props.stepperData.selectedPrivileges.includes(item.code)
             }
         }))
+        props.updateStepperData({...props.stepperData, privileges: props.stepperData.privileges.map((item: Privilege) => {
+            if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.includes(item.code)){
+                return {...item, checked: true}
+            } else {
+                return item
+            }
+        })})
     }, [props.stepperData.paymentTerm])
 
 React.useEffect(() => {

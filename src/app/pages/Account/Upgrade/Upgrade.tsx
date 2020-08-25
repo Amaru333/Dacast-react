@@ -45,10 +45,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     let history = useHistory()
 
-    React.useEffect(() => {
-        console.log(stepperData)
-    }, [stepperData])
-
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
         props.purchasePlan(stepperData, recurlyToken, null,  (response) => {
