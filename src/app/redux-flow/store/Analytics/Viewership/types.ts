@@ -30,7 +30,7 @@ export interface AnalyticsViewershipInfos {
 export const AnalyticsViewershipInitialState: AnalyticsViewershipState = false;
 
 export interface AnalyticsViewershipState {
-    readonly data: AnalyticsViewershipInfos | false;
+    readonly data: AnalyticsViewershipInfos | false ;
 }
 
 export interface GetAnalyticsViewershipOptions {

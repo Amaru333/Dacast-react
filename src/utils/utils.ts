@@ -245,7 +245,7 @@ export const formateDateFromDatepicker = (dates: { startDate: any; endDate: any 
 }
 
 
-export const convertToCSV = (objArray) => {
+export const convertToCSV = (objArray: any) => {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
     var str = '';
 
@@ -263,7 +263,7 @@ export const convertToCSV = (objArray) => {
     return str;
 }
 
-export const exportCSVFile = (headers, items, fileTitle) => {
+export const exportCSVFile = (headers: Object, items: Object[], fileTitle: string) => {
     if (headers) {
         items.unshift(headers);
     }
