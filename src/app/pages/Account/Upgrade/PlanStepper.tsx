@@ -192,14 +192,9 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
     React.useEffect(() => { props.setStepValidated(true) }, [props.stepperData])
 
     React.useEffect(() => {
-        console.log('featuresTotal', featuresTotal)
-        console.log("newSelectedPrivileges", newSelectedPrivileges)
-    }, [featuresTotal, newSelectedPrivileges])
-
-    React.useEffect(() => {
         setNewSelectedPrivileges(props.stepperData.privileges.filter((item: Privilege) => {
             if(props.stepperData.selectedPrivileges){
-                props.stepperData.selectedPrivileges.includes(item.code)
+                return props.stepperData.selectedPrivileges.includes(item.code)
             }
         }))
     }, [props.stepperData.paymentTerm])
@@ -207,10 +202,9 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
 React.useEffect(() => {
     let subTotal = 0
     newSelectedPrivileges.map((item: Privilege) => {
-        
-            subTotal += (item.price.usd / 100)
-            setFeaturesTotal(subTotal)
-})
+        subTotal += (item.price.usd / 100)
+        setFeaturesTotal(subTotal)
+    })
 
 }, [newSelectedPrivileges])
 
