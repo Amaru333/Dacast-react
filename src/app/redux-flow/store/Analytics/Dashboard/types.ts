@@ -11,6 +11,7 @@ export interface GetAnalyticsDashboardOptions {
 export interface AnalyticsDashboardConsumptionPerTime {
     time: number[];
     data: number[];
+    csv: {header: Object, data: Object[]},
     failed?: boolean;
 };
 
@@ -23,6 +24,7 @@ export interface AnalyticsDashboardPlaysViewersPerTime {
         time: number[];
         data: number[];
     };
+    csv: {header: Object, data: Object[]},
     failed?: boolean;
 };
 

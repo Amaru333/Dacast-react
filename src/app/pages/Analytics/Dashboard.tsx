@@ -59,7 +59,8 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
             <DateFilteringAnalytics defaultDates={dates} refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="playtimePerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.playtimePerTime? props.dashboardAnalytics.data.playtimePerTime.data: [], props.dashboardAnalytics.data.playtimePerTime && props.dashboardAnalytics.data.playtimePerTime.time  ? labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.playtimePerTime} infoText="How much data is consumed over time" title="Play time by Time">
+                    {console.log(props.dashboardAnalytics.data.playtimePerTime)}
+                    <AnalyticsCard dataName="playtimePerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.playtimePerTime? props.dashboardAnalytics.data.playtimePerTime.data: [], props.dashboardAnalytics.data.playtimePerTime && props.dashboardAnalytics.data.playtimePerTime.time  ? labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.playtimePerTime.csv} infoText="How much data is consumed over time" title="Play time by Time">
                         {
                             props.dashboardAnalytics.data.playtimePerTime ?
                                 props.dashboardAnalytics.data.playtimePerTime.failed ?
@@ -77,7 +78,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.plays : []} infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
+                    <AnalyticsCard dataName="playsViewersPerTime" data={props.dashboardAnalytics.data.playsViewersPerTime ? props.dashboardAnalytics.data.playsViewersPerTime.csv : []} infoText="The number of views vs number of people viewing over time" title="Plays and Viewers by Time">
                         {
                             props.dashboardAnalytics.data.playsViewersPerTime ?
                                 props.dashboardAnalytics.data.playsViewersPerTime.failed ?

@@ -186,7 +186,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard infoText="On which devices viewers are consuming your data" title="Play time by Device">
+                        <AnalyticsCard data={viewershipAnalytics.playtimePerDevices ? viewershipAnalytics.playtimePerDevices.csv : []} infoText="On which devices viewers are consuming your data" title="Play time by Device">
                             {
                                 viewershipAnalytics.playtimePerDevices ?
                                     viewershipAnalytics.playtimePerDevices.failed ?
@@ -201,7 +201,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard infoText="Reports on your data consumption" title="Play time by location">
+                        <AnalyticsCard data={viewershipAnalytics.playtimePerLocation.data ? viewershipAnalytics.playtimePerDevices.csv : []} infoText="Reports on your data consumption" title="Play time by location">
                             {
                                 viewershipAnalytics.playtimePerLocation.data ?
                                     viewershipAnalytics.playtimePerLocation.failed ?

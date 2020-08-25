@@ -1,4 +1,4 @@
-import { CsvService, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
+import { exportCSVFile, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
@@ -23,8 +23,8 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
 
     console.log(props.data);
 
-    const exportCsvAnalytics = (data: any) => {
-        CsvService.exportToCsv(props.dataName + ".csv", Object.values(data));
+    const exportCsvAnalytics = () => {
+        exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
     };
 
     const [showTable, setShowTable] = React.useState<boolean>(false);
@@ -42,7 +42,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
                     </div>
                     {!props.realTime ?
                         <ActionIcon id={"download" + props.title}>
-                            <IconStyle onClick={() => { exportCsvAnalytics(props.data) }} >get_app</IconStyle>
+                            <IconStyle onClick={() => { exportCsvAnalytics() }} >get_app</IconStyle>
                         </ActionIcon>
                         : null}
                     {props.table &&

@@ -3,29 +3,14 @@ export enum ActionTypes {
     
 }
 
-export interface AnalyticsViewershipConsumptionDomain {
-    domain: string[]; 
-    value: number[];
-    failed?: boolean;
-}
-
 export interface AnalyticsViewershipConsumptionDevices {
     labels: string[];
     data: number[];
+    csv: {header: Object, data: Object[]},
     failed?: boolean;
 }
 
 export interface AnalyticsViewershipPlaytimePerLocation {
-    time: false | {
-        time: number[];
-        data: number[];
-        failed?: boolean;
-    };
-    content: false | {
-        labels: string[];
-        data: number[];
-        failed?: boolean;
-    };
     data: false | {
         city: string;
         position: {
@@ -33,70 +18,14 @@ export interface AnalyticsViewershipPlaytimePerLocation {
             longitude: number;
         };
         consumedMB: number;
-    }[];
+    }[],
+    csv: {header: Object, data: Object[]},
 }
-
-export interface AnalyticsViewershipPlaysViewersTime {
-    plays: {
-        time: number[];
-        data: number[];
-    };
-    viewers: {
-        time: number[];
-        data: number[];
-    };
-    failed?: boolean;
-}
-
-export interface AnalyticsViewershipViewingTimeBreakdown {
-    content: false |  {
-        labels: string[];
-        data: number[];
-        failed?: boolean;
-    };
-    map: false | {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[];
-    device: false | {
-        failed?: boolean;
-        labels: string[];
-        data: number[];
-    };
-}
-
-export interface AnalyticsViewershipConcurrentPlayback {
-    content: false | {
-        labels: string[];
-        data: number[];
-    };
-    map: false | {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[];
-    device: false |  {
-        labels: string[];
-        data: number[];
-    };
-};
 
 export interface AnalyticsViewershipInfos {
-    consumptionPerDomain: AnalyticsViewershipConsumptionDomain | false;
     playtimePerDevices: AnalyticsViewershipConsumptionDevices | false;
-    playsViewersPerTime: AnalyticsViewershipPlaysViewersTime | false;
-    playtimePerLocation: AnalyticsViewershipPlaytimePerLocation;
-    viewingTimeBreakdown: AnalyticsViewershipViewingTimeBreakdown;
-    concurrentPlayback: AnalyticsViewershipConcurrentPlayback;
+    playtimePerLocation: AnalyticsViewershipPlaytimePerLocation | false;
 }
-
 
 export const AnalyticsViewershipInitialState: AnalyticsViewershipState = false;
 
