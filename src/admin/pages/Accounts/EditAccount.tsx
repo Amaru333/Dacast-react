@@ -9,6 +9,7 @@ import { EditAccountComponentProps } from '../../containers/Accounts/EditAccount
 import { PutAccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
+import { AccountServices } from '../../redux-flow/store/Accounts/EditAccount/service'
 
 const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
 
@@ -18,8 +19,11 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     const [accountInfo, setAccountInfo] = React.useState<PutAccountInfo>({})
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [preferredPlatform, setPreferredPlatform] = React.useState<string>(props.accountInfo.preferredPlatform)
+    const [createPlatformLoading, setCreatePlatformLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
+        setButtonLoading(true)
         props.saveAccountInfo(accountInfo, props.accountInfo.accountId)
         .then(() => {
             setButtonLoading(false)
@@ -46,6 +50,14 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
             return  <InputCheckbox className='my1' key={flag} id={flag} defaultChecked={accountInfo.accountFlags && accountInfo.accountFlags.indexOf(flag) > -1} onChange={() => handleCheckboxChange(flag)} label={flag.charAt(0).toUpperCase() + flag.substring(1)} />
         }) : null
 
+    }
+
+    const handleCreateLegacy = () => {
+        setCreatePlatformLoading(true)
+        AccountServices.createLegacyAccount(props.accountInfo.accountId)
+        .then(() => {
+            setCreatePlatformLoading(false)
+        }).catch(() => setCreatePlatformLoading(false))
     }
 
     return (
@@ -86,12 +98,28 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     dropdownDefaultSelect={props.accountInfo.emailVerified ? 'Yes' : 'No'} 
                     callback={(value: string) => setAccountInfo({...accountInfo, forceVerifyEmail: value == 'Yes' ? true : false})}
                 />
+
+
             </div>
 
-            <Text className='py1' size={16} weight='med'>Account Flags</Text>
+            <div className='flex items-end'>
+            <DropdownSingle 
+                    className='col col-3 pl1 my1' 
+                    id='preferredDropdown' 
+                    list={{'Unified App': false, 'Legacy': false}} 
+                    dropdownTitle='Preferred platform' 
+                    dropdownDefaultSelect={!props.accountInfo.preferredPlatform || props.accountInfo.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
+                    callback={(value: string) => {setPreferredPlatform(value); setAccountInfo({...accountInfo, preferredPlatform: value == 'Legacy' ? 'legacy' : 'unified-app'})}}
+                />
+                <div className='col col-3 pl1 mb2'>
+                    <Button  isLoading={createPlatformLoading} onClick={() => handleCreateLegacy()} buttonColor='blue' typeButton='primary' sizeButton='small'>Create account on legacy</Button>
+                </div>
+            </div>
+
+            {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>
             <div className='flex flex-column mb1'>
                 {renderFlags(flags)}
-            </div>
+            </div> */}
 
             <div className='my1 flex'>
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>

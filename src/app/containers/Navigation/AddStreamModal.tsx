@@ -15,6 +15,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { logAmplitudeEvent } from '../../utils/amplitudeService';
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/axiosClient';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 const moment = require('moment-timezone')
 
@@ -47,10 +48,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     React.useEffect(() => {
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
     }, [selectedStreamType])
-
-    React.useEffect(() => {
-        console.log(streamSetupOptions)
-    }, [streamSetupOptions])
 
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
@@ -170,7 +167,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                    <Text size={14} weight="reg">Need help creating a Live Stream? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight="reg">Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
             </ModalContent>
             <ModalFooter>

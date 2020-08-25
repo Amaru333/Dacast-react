@@ -79,7 +79,7 @@ export const DragAndDrop = (props: {hasError: boolean; handleDrop: Function} & R
                       fontSize: 36
                   }}
               >
-                  <div>drop here :)</div>
+                  <div>Drop your files to upload</div>
               </div>
           </div>
             }

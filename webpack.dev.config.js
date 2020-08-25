@@ -6,8 +6,6 @@ const SRC = path.resolve(__dirname, 'public/assets/');
 
 var HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 
-console.log('app env', process.env.APP_ENV)
-
 const entries = {
     app: ['@babel/polyfill', './src/app/index.tsx'],
     admin: ['@babel/polyfill', './src/admin/index.tsx'],

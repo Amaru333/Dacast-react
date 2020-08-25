@@ -18,6 +18,7 @@ export interface AccountInfo {
         amountGb: number;
     };
     emailVerified: boolean;
+    preferredPlatform: string;
     accountFlags: Flag[];
 }
 
@@ -34,7 +35,7 @@ export interface PutAccountInfo {
         amountGb: number;
     };
     forceVerifyEmail?: boolean;
-    
+    preferredPlatform?: string;
     accountFlags?: Flag[];
 }
 

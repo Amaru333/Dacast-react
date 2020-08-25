@@ -25,10 +25,6 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
     const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
 
-    React.useEffect(() => {
-        console.log('data', props.analyticsRevenueData)
-    }, [props.analyticsRevenueData])
-
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
         setCheckedContents([]);

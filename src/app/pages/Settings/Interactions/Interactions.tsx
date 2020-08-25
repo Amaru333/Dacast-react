@@ -28,6 +28,7 @@ import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { userToken } from '../../../utils/token';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -187,7 +188,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
-                            <IconStyle id={'adTableCopy' + i} onClick={() => { console.log('filter', props.interactionsInfos.adsSettings.ads.filter(ad => ad !== item)); props.deleteAd(props.interactionsInfos.adsSettings.ads.filter(ad => ad !== item)) }} >delete</IconStyle>
+                            <IconStyle id={'adTableCopy' + i} onClick={() => props.deleteAd(props.interactionsInfos.adsSettings.ads.filter(ad => ad !== item))} >delete</IconStyle>
                             <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -254,7 +255,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex mb2'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
-                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                        <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
                     <div className="clearfix mb2">
                         <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPreviewModalOpen(true) }}>Preview</Button>

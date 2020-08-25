@@ -26,13 +26,16 @@ const updatePaymentMethod = async (data: PaymentMethod) => {
 }
 
 const deletePaymentMethod = async (data: PaymentMethod) => {
-    return await axiosClient.get('/paywall/payment-requests/' + data.id)
+    return await axiosClient.delete('/paywall/payment-methods/' + data.id)
 }
 
 const addWithdrawalRequest = async (data: WithdrawalRequest) => {
+    let parsedData = data
+
+    delete parsedData.status
     return await axiosClient.post('/paywall/payment-requests', 
         {
-            ...data
+            ...parsedData
         }
     )
 }

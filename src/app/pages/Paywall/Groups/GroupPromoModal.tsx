@@ -137,16 +137,20 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     </>
                 }
             </GroupPromoDateContainer>
-            <div className=' col col-12 mb2'>
-                <DropdownSingle 
-                    hasSearch 
-                    id='groupPromoTimezoneDropdown' 
-                    dropdownDefaultSelect={groupPromo.timezone || 'Etc/UTC (+00:00 UTC)'} 
-                    className='col col-6 pr2' 
-                    dropdownTitle='Timezone' 
-                    callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 
-                    list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
-                />
+            <div className=' col col-12 mb2'> 
+                {
+                    (endDateTime === 'Set Date and Time' || startDateTime === 'Set Date and Time') &&
+                    <DropdownSingle 
+                        hasSearch 
+                        id='groupPromoTimezoneDropdown' 
+                        dropdownDefaultSelect={groupPromo.timezone || 'Etc/UTC (+00:00 UTC)'} 
+                        className='col col-6 pr2' 
+                        dropdownTitle='Timezone' 
+                        callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 
+                        list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
+                    />
+                }
+
 
                 <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
             </div>

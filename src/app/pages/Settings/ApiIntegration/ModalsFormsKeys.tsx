@@ -16,7 +16,6 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {
     })
 
     const onSubmit = (data: any) => { 
-        console.log(data)
     }
 
     return (
@@ -45,7 +44,6 @@ const WebHooksForm = (props: {item?: WebHookItem; toggle: Function}) => {
     })
 
     const onSubmit = (data: any) => { 
-        console.log(data)
     }
 
     return (
@@ -74,7 +72,6 @@ const EncoderKeysForm = (props: {item?: EncoderKeyItem; toggle: Function}) => {
     })
 
     const onSubmit = (data: any) => { 
-        console.log(data)
     }
 
     return (
@@ -105,7 +102,6 @@ const S3KeysForm = (props: {item?: S3KeyItem; toggle: Function}) => {
     })
 
     const onSubmit = (data: any) => { 
-        console.log(data)
     }
 
     return (

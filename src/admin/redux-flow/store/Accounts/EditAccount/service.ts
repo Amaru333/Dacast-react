@@ -10,7 +10,12 @@ const saveAccountInfo = async (accountInfo: PutAccountInfo, accountId: string) =
     return await axiosClient.put('/accounts/' + accountId, {...accountInfo})
 }
 
+const createLegacyAccount = async (accountId: string) => { 
+    return await axiosClient.post(`/accounts/${accountId}/create-legacy`)
+}
+
 export const AccountServices = {
     getAccountInfo,
-    saveAccountInfo
+    saveAccountInfo,
+    createLegacyAccount
 }

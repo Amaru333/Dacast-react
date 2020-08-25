@@ -24,10 +24,10 @@ const saveContentAd = async (data: Ad[], contentId: string, contentType: string)
     )
 }
 
-const getUploadUrl = async (data: string, contentId: string) => {
+const getUploadUrl = async (data: string, contentId: string, contentType: string) => {
     return await axiosClient.post('/uploads/signatures/singlepart/' + data,
         {
-            contentID: contentId
+            [contentType + 'ID']: contentId
         }
     )
 }

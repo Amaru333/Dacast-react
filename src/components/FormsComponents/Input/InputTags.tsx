@@ -25,7 +25,6 @@ export const InputTags = (props: TagProps) => {
 
     const inputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const val = e.currentTarget.value;
-        console.log(e.key);
 
         if ( (e.key === 'Enter' || e.key === ' ' || e.key === ',' ) && val) {
             e.preventDefault();

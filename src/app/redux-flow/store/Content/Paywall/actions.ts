@@ -63,7 +63,6 @@ export const getContentPaywallInfosAction = (contentId: string, contentType: str
             .then( response => {
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_INFOS, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
     }
@@ -87,7 +86,6 @@ export const getContentPaywallPricesAction = (contentId: string, contentType: st
             .then( response => {
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_PRICES, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
     }

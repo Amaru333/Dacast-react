@@ -155,15 +155,15 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
     }
 
     React.useEffect(() => {
-        if (props.stepperData) {
             let subTotal = 0;
+            let tempSelectedPrivileges: string[] = []
             props.stepperData.privileges.map((item: Privilege) => {
                 if (item.checked) {
+                    tempSelectedPrivileges.push(item.code)
                     subTotal += (item.price.usd / 100)
                 }
-            })
-            props.updateStepperData({ ...props.stepperData, privilegesTotal: subTotal })
-        }
+            props.updateStepperData({ ...props.stepperData, privilegesTotal: subTotal, selectedPrivileges: tempSelectedPrivileges })
+        })
         props.setStepValidated(true)
     }, [props.stepperData.privileges])
 
@@ -182,17 +182,44 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
 
+    const [featuresTotal, setFeaturesTotal] = React.useState<number>(props.stepperData.privilegesTotal)
+
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
-    const featuresTotal: number = (props.stepperData.privilegesTotal)
     const totalPrice: number = calculateDiscount(((props.stepperData.price.usd / 100) + featuresTotal), props.stepperData.discount)
+    const [newSelectedPrivileges, setNewSelectedPrivileges] = React.useState<Privilege[]>([])
+    
 
     React.useEffect(() => { props.setStepValidated(true) }, [props.stepperData])
 
+    React.useEffect(() => {
+        setNewSelectedPrivileges(props.stepperData.privileges.filter((item: Privilege) => {
+            if(props.stepperData.selectedPrivileges){
+                return props.stepperData.selectedPrivileges.indexOf(item.code) > -1
+            }
+        }))
+        props.updateStepperData({...props.stepperData, privileges: props.stepperData.privileges.map((item: Privilege) => {
+            if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.indexOf(item.code) > -1){
+                return {...item, checked: true}
+            } else {
+                return item
+            }
+        })})
+    }, [props.stepperData.paymentTerm])
+
+React.useEffect(() => {
+    let subTotal = 0
+    newSelectedPrivileges.map((item: Privilege) => {
+        subTotal += (item.price.usd / 100)
+        setFeaturesTotal(subTotal)
+    })
+
+}, [newSelectedPrivileges])
+
     const setPlanLength = (length: string) => {
         if (length === 'Monthly') {
-            props.updateStepperData({ ...props.usefulFunctions['planDetails'].scalePlanMonthly, selectedScalePlan: props.stepperData.selectedScalePlan, privileges: props.stepperData.privileges, privilegesTotal: props.stepperData.privilegesTotal })
+            props.updateStepperData({ ...props.usefulFunctions['planDetails'].scalePlanMonthly, selectedScalePlan: props.stepperData.selectedScalePlan, privilegesTotal: props.stepperData.privilegesTotal, selectedPrivileges: props.stepperData.selectedPrivileges })
         } else if (length === 'Annually') {
-            props.updateStepperData({ ...props.usefulFunctions['planDetails'].scalePlanAnnual, selectedScalePlan: props.stepperData.selectedScalePlan, privileges: props.stepperData.privileges, privilegesTotal: props.stepperData.privilegesTotal })
+            props.updateStepperData({ ...props.usefulFunctions['planDetails'].scalePlanAnnual, selectedScalePlan: props.stepperData.selectedScalePlan,  privilegesTotal: props.stepperData.privilegesTotal, selectedPrivileges: props.stepperData.selectedPrivileges })
         }
     }
 
@@ -374,7 +401,7 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()} />
 
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} recurlyFunction={props.usefulFunctions['purchasePlan']} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} stepperData={props.stepperData} billingInfo={props.usefulFunctions['billingInfo']} />
+            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} recurlyFunction={props.usefulFunctions['purchasePlan']} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} stepperData={props.stepperData} billingInfo={props.usefulFunctions['billingInfo']} />
 
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

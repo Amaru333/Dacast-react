@@ -28,6 +28,7 @@ import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Dat
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { axiosClient } from '../../utils/axiosClient';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -49,9 +50,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
         timezone=timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
-        console.log(timezone)
         if(ts > 0 ) {
-            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
+            return {date: momentTZ(ts * 1000).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts * 1000).tz(timezone).format('HH:mm:ss')}
         } 
         return {date: moment().toString(), time: '00:00'}
     }
@@ -77,17 +77,14 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ?props.contentDetails.countdown.startTime !== 0 : null)
+    const [hasChanged, setHasChanged] = React.useState<boolean>(false)
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
-        setContentDetails(props.contentDetails)
-    }, [props.contentDetails.title, props.contentDetails.folders, props.contentDetails.description, props.contentDetails.online]);
-
-    React.useEffect(() => {
         if(liveStreamCountdownToggle){
             let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: countdownTs}})
+            setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: Math.floor(countdownTs / 1000)}})
         } else {
             setContentDetails({...contentDetails, countdown: {...contentDetails.countdown, startTime: 0}})
         }
@@ -229,9 +226,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        props.saveContentDetails(contentDetails, props.contentType).then(() =>  
-             setButtonLoading(false)
-        ).catch(() =>
+        props.saveContentDetails(contentDetails, props.contentType).then(() => {
+            setButtonLoading(false)
+            setHasChanged(false)
+        }).catch(() =>
              setButtonLoading(false)
         )
     }
@@ -259,14 +257,14 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         <Toggle
                             className="col col-12 mb2"
                             defaultChecked={contentDetails.online}
-                            onChange={() => {setContentDetails({ ...contentDetails, online: !contentDetails.online });}}
+                            onChange={() => {setContentDetails({ ...contentDetails, online: !contentDetails.online });setHasChanged(true)}}
                             label={handleOnlineToggle(props.contentType) + " Online"}
                         />
                         <Input
                             className={ClassHalfXsFullMd + "pr2 mb2"}
                             label="Title"
                             value={contentDetails.title}
-                            onChange={event => {setContentDetails({...contentDetails, title: event.currentTarget.value });}}
+                            onChange={event => {setContentDetails({...contentDetails, title: event.currentTarget.value });setHasChanged(true)}}
                         />
                         <InputTags
                             className={ClassHalfXsFullMd + "mb2"}
@@ -281,7 +279,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             type="textarea"
                             label="Description"
                             value={contentDetails.description ? contentDetails.description : ''}
-                            onChange={event => {setContentDetails({ ...contentDetails, description: event.currentTarget.value });}}
+                            onChange={event => {setContentDetails({ ...contentDetails, description: event.currentTarget.value });setHasChanged(true)}}
                         />
                         <div className={"col col-3 flex flex-column"}>
                             <LinkBoxLabel>
@@ -338,7 +336,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         {
                             userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={contentDetails.recording} onChange={() => setContentDetails({ ...contentDetails, recording: !contentDetails.recording })}></Toggle>
+                                <Toggle label="Live Stream Recording" defaultChecked={contentDetails.recording} onChange={() => {setContentDetails({ ...contentDetails, recording: !contentDetails.recording });setHasChanged(true)}}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                                 </ToggleTextInfo>
@@ -348,7 +346,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         <div className="mb2 clearfix">
                             <Toggle
                                 label="Live Stream Start Countdown"
-                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle) }}
+                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setHasChanged(true) }}
                                 defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
@@ -363,14 +361,14 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                                 id="startDate"
                                                 datepickerTitle='Start Date'
                                                 date={moment(startDateTimeValue.date)}
-                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) }}
+                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) ;setHasChanged(true)}}
                                             />
                                         </div>
                                         <Input
                                             type='time'
                                             className='col col-12 sm-col-4 pl1 pr1'
                                             defaultValue={startDateTimeValue.time}
-                                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
+                                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value});setHasChanged(true)} }
                                             disabled={false}
                                             id='promptTime'
                                             label='Prompt Time'
@@ -384,7 +382,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             dropdownTitle='Timezone'
                                             dropdownDefaultSelect={startDateTimeValue.timezone}
                                             id='dropdownTimezone'
-                                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
+                                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]});setHasChanged(true)}} 
                                             list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}
                                         />
                                     </div>
@@ -408,7 +406,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                                     </Text>
                                                 </BubbleContent>
                                             </Bubble>
-                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { console.log("free the niples") }}>Purge Live Stream</Button>
+                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { }}>Purge Live Stream</Button>
                                         </div>
                                 }
                             </div>
@@ -611,7 +609,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <Bubble type='info' className='my2'>
                                         <BubbleContent>
                                             <Text weight="reg" size={16} >
-                                                Correct <a href="https://www.dacast.com/support/knowledgebase/live-encoder-configuration/" target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
+                                                Correct <a href={getKnowledgebaseLink("Encoder Setup")} target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                             </Text>
                                         </BubbleContent>
                                     </Bubble>
@@ -664,7 +662,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 </div>
                                 <div className="flex col col-12 mt2">
                                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                                 </div>
                             </ModalContent>
                             <ModalFooter className="mt1" >
@@ -709,16 +707,16 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         </Modal>
 
                 </Card>
-               {    JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails) && 
+               {    hasChanged && 
                     <ButtonContainer>
                         <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave() }>Save</Button>
-                        <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
+                        <Button typeButton="tertiary" onClick={() => {setContentDetails(props.contentDetails);props.showToast("Changes have been discarded", 'fixed', "success");setHasChanged(false)}}>Discard</Button>
                     </ButtonContainer>
                 }
                 {
                     previewModalOpen && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                 }
-                <Prompt when={JSON.stringify(contentDetails) !== JSON.stringify(props.contentDetails)} message='' />
+                <Prompt when={hasChanged} message='' />
             </React.Fragment>
             
     )

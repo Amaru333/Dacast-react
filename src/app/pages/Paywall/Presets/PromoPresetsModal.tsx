@@ -125,15 +125,18 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 }
             </div>
             <div className=' col col-12 mb25'>
-                <DropdownSingle 
-                    hasSearch 
-                    id='promoPresetTimezoneDropdown' 
-                    dropdownDefaultSelect='Etc/UTC (+00:00 UTC)'
-                    className={ClassHalfXsFullMd + ' pr1'}  
-                    dropdownTitle='Timezone' 
-                    callback={(value: string) => setPromoPreset({...promoPreset, timezone: value.split(' ')[0]})} 
-                    list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
-                <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={promoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setPromoPreset({...promoPreset, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
+                {
+                    (endDateTime === 'Set Date and Time' || startDateTime === 'Set Date and Time') &&
+                    <DropdownSingle 
+                        hasSearch 
+                        id='promoPresetTimezoneDropdown' 
+                        dropdownDefaultSelect='Etc/UTC (+00:00 UTC)'
+                        className={ClassHalfXsFullMd + ' pr1'}  
+                        dropdownTitle='Timezone' 
+                        callback={(value: string) => setPromoPreset({...promoPreset, timezone: value.split(' ')[0]})} 
+                        list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} />
+                }
+               <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={promoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setPromoPreset({...promoPreset, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
             </div>
             <div className='col col-12 mt1'>
                 <Button isLoading={buttonLoading} disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || Number.isNaN(promoPreset.limit)} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>

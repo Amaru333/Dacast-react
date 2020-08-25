@@ -46,8 +46,6 @@ export const DateRangePickerWrapper = (props: {presets?: any; callBack?: Functio
             : null;
     }
 
-    console.log(dates);
-
     return (
         <div className='noTransition' {...other}>
             <DateRangePicker 

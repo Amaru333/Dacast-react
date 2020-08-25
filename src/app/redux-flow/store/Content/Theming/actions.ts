@@ -37,7 +37,6 @@ export const saveContentThemeAction = (data: ThemeOptions, contentId: string, co
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch((error) => {
-                console.log('error', error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };

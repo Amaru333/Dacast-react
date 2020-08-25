@@ -202,6 +202,18 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const handleContentStatus = (status: string, type: string, size: number) =>{
+        switch(status) {
+            case 'online':
+                return type === 'vod' && !size ? <Label backgroundColor="gray-5" color="gray-1" label="Processing" /> : <Label backgroundColor="green20" color="green" label="Online" />
+            case 'offline':
+            case 'deleted':
+                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />  
+            default:
+            return null
+        }
+    }
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -226,21 +238,21 @@ export const ContentListPage = (props: ContentListProps) => {
                                     </div>
                             }
                         </div>,
-                        <Text key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                        <Text key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                        <Text key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{value.status === "online" ? <Label backgroundColor="green20" color="green" label="Online" /> : <Label backgroundColor="red20" color="red" label={value.status.charAt(0).toUpperCase() + value.status.slice(1)} />}</Text>,
-                        <div className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
-                        value.status !== 'deleted' ?
+                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
+                        <div onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
-                            <ActionIcon id={"editTooltip" + value.objectID}>
-                                <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
-                            <ActionIcon id={"deleteTooltip" + value.objectID}>
+                                <ActionIcon id={"deleteTooltip" + value.objectID}>
                                 <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setSelectedContent([value.objectID]);setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
-                            </ActionIcon>
-                            <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>    
+                                </ActionIcon>
+                                <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip> 
+                                <ActionIcon id={"editTooltip" + value.objectID}>
+                                    <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                </ActionIcon>
+                                <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             </div>
                         : <span></span>
 
@@ -272,7 +284,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);console.log('search');setFetchContent(true)}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);setFetchContent(true)}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedContent.length > 0 &&

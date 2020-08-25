@@ -62,7 +62,6 @@ const exampleStep4 = () => {
 }
 
 const submitForm = () => {
-    console.log("submitted!")
   }
 
 const stepList = [exampleStep1, exampleStep2, exampleStep3, exampleStep4]

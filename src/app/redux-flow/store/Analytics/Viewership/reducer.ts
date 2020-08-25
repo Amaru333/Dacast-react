@@ -8,6 +8,9 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
         case ActionTypes.GET_ANALYTICS_VIEWERSHIP: 
             const formateDataDevice = Object.entries(action.payload.playtimePerOs).map(el => { return el[0] })
             const formateDataDeviceValue = Object.entries(action.payload.playtimePerOs).map(el => { return el[1] })
+            const formateCsvDataDevice = Object.entries(action.payload.playtimePerOs).map(el => { return { device: el[0], playtime: el[1] } })
+            const formateCsvDataLocation = Object.entries(action.payload.playtimePerCountry).map(el => { return { country: el[0], playtime: el[1] } })
+
             if(action.payload.failed) {
                 return {
                     data: {
@@ -21,7 +24,8 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
                     ...AnalyticsViewershipInitialState.data,
                     playtimePerDevices: {
                         labels: formateDataDevice,
-                        data: formateDataDeviceValue 
+                        data: formateDataDeviceValue,
+                        csv: { header: { device: "Device", playtime: "Play Time" }, data: formateCsvDataDevice }
                     } ,
                     playtimePerLocation:  {
                         data: Object.entries(action.payload.playtimePerCountry).map(item => {
@@ -36,7 +40,9 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
                                 },
                                 consumedMB: item[1]
                             }
-                        })
+                        }),
+                        csv: { header: { country: "Country", playtime: "Play Time" }, data: formateCsvDataLocation }
+
                     }    
                 },
             }

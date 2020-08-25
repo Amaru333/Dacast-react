@@ -55,7 +55,6 @@ export class UploadObject {
         if (this.hasStarted) {
             throw new Error('Upload has alredy started.')
         }
-        console.log('starting upload')
         this.hasStarted = true
         this.createCancelToken()
         if (this.fileChunkSize >= this.file.size) {
@@ -67,7 +66,6 @@ export class UploadObject {
     }
 
     public pauseUpload() {
-        console.log(this.execCancel);
         this.execCancel()
         this.createCancelToken()
     }
@@ -89,13 +87,11 @@ export class UploadObject {
 
     private createCancelToken() {
         this.token = new axios.CancelToken(function executor(c: any) {
-            console.log(c);
             this.execCancel = c;
         }.bind(this))
     }
 
     private async initUpload() {
-        console.log('init upload for file ', this.file.name)
         let bodyRequest = null
         bodyRequest = {
             fileName: this.file.name,
@@ -221,7 +217,6 @@ export class UploadObject {
             })
             delete this.onGoingUploads[partNumber]
         }).catch((error: any) => {
-            console.log(error);
             if (!axios.isCancel(error)) {
                 this.onError(error)
             }
@@ -262,8 +257,6 @@ export class UploadObject {
 
     private async runUpload() {
         const nbChunks = Math.ceil(this.file.size / this.fileChunkSize)
-        console.log('chunks', nbChunks)
-        console.log('next start', this.nextStart)
 
         while (this.nextStart < nbChunks) {
             let nextParts: number[] = []

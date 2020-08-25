@@ -203,7 +203,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
        
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
-                <Scrollbar removeTracksWhenNotUsed removeTrackYWhenNotUsed={false} minimalThumbYSize={6} trackYProps={{style: {backgroundColor: 'inherit'}}}>
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
@@ -218,7 +217,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <SectionStyle>
                         {renderMenu()}
                     </SectionStyle>
-                </Scrollbar>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
            
                   

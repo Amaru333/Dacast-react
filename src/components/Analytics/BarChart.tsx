@@ -101,12 +101,10 @@ export const BarChart = (props: any) => {
     };
 
     if(displayFromMb) {
-        console.log(line)
         if(line.datasets[0] && line.datasets[0].data){
             var  newDatasets = line.datasets[0].data.map(element => element / 1000)
             line.datasets[0].data = newDatasets;
         }
-        console.log(line)
     }
 
     return (

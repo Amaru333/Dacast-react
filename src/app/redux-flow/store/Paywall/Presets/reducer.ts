@@ -27,7 +27,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                                 recurrence: preset.preset.settings.recurrence ? {
                                     unit: preset.preset.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
-                                    : preset.preset.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : preset.preset.settings.recurrence.value > 1 ? 'Quaterly'
                                     : 'Monthly'
                                 } 
                                 : null

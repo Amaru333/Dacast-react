@@ -23,6 +23,7 @@ import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyle';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -239,9 +240,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         brandImageSettings: {
                             locked: true,
                             brandImageLink: props.globalEngagementSettings.brandImageSettings.brandImageLink, 
-                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding.toString(), 
+                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding, 
                             brandImagePosition: props.globalEngagementSettings.brandImageSettings.brandImagePosition, 
-                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize.toString(), 
+                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize, 
                             brandImageURL: props.globalEngagementSettings.brandImageSettings.brandImageURL
                         }
                     })
@@ -306,9 +307,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     brandImageSettings: {
                         locked:false,
                         brandImageLink: '',
-                        brandImagePadding: '',
+                        brandImagePadding: NaN,
                         brandImagePosition: '',
-                        brandImageSize: '',
+                        brandImageSize: NaN,
                         brandImageURL: ''
                     }
                 }          
@@ -319,9 +320,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     brandImageSettings: {
                         locked:false,
                         brandImageLink: '',
-                        brandImagePadding: '',
+                        brandImagePadding: NaN,
                         brandImagePosition: '',
-                        brandImageSize: '',
+                        brandImageSize: NaN,
                         brandImageURL: ''
                     }
                 })
@@ -425,7 +426,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Text className="mb2 inline-block" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                         <div className='flex mb2'>
                             <IconStyle className="mr1">info_outlined</IconStyle>
-                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                            <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")}>Knowledge Base</a></Text>
                         </div>
                         <div className="clearfix mb2">
                             <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPlayerModalOpened(true) }}>Preview</Button>
@@ -516,8 +517,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
                             callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePosition: value }});setSettingsEdited(true)}}
                             />
-                            <Input className="col col-4 pr2" value={engagementSettings.brandImageSettings.brandImageSize || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageSize: event.currentTarget.value}});setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                            <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImageSettings.brandImagePadding || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePadding: event.currentTarget.value}});setSettingsEdited(true)}} />
+                            <Input className="col col-4 pr2" value={engagementSettings.brandImageSettings.brandImageSize ? engagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImageSettings.brandImagePadding ? engagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});setSettingsEdited(true)}} />
                         <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={engagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});setSettingsEdited(true)}} />
                         </div>
                     </div>

@@ -21,7 +21,6 @@ const ConfirmEmail = (props: ConfirmEmailComponentProps) => {
     let qs = useQuery()
     React.useEffect(() => {
         if(props.userInfos && props.userInfos.email) {
-            console.log('user info', props.userInfos)
             setEmail(props.userInfos.email)
         }
         if (qs.get('email')) {

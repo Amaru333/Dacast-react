@@ -34,7 +34,6 @@ export const SignupPage = (props: SignupContainerProps) => {
 
     const verifyCallback = (recaptchaToken: string) => {
         setRecaptchaToken(recaptchaToken);
-        console.log(recaptchaToken, "<= your recaptcha token")
     }
 
     const updateToken = () => {
@@ -57,9 +56,6 @@ export const SignupPage = (props: SignupContainerProps) => {
         }
     }, [props.UserInfo.email])
 
-    const callback = (value: any) => {
-        console.log("Captcha value:", value);
-    }
     useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
 
     return (<LoginContainer>

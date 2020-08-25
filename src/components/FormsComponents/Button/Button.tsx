@@ -7,7 +7,7 @@ import { LoadingSpinner } from '../Progress/LoadingSpinner/LoadingSpinner';
 export const Button = (props: ButtonProps) => {
     const { disabled, ...other } = props;
 
-    return <ButtonStyle colorObject={buttonArrayColor[props.buttonColor!]} {...other} disabled= {disabled || props.isLoading ? true : false } >{props.children}{ props.isLoading && <LoadingSpinner className="ml1" color={props.typeButton === "primary" ? 'white' : 'violet'} size={props.sizeButton === "xs" ? 'xxs' : "xs"} />}</ButtonStyle>;
+    return <ButtonStyle colorObject={buttonArrayColor[props.buttonColor!]} {...other} disabled= {disabled || props.isLoading ? true : false } >{props.children}{ props.isLoading && <LoadingSpinner className="ml1 align-middle" color={props.typeButton === "primary" ? 'white' : 'violet'} size={props.sizeButton === "xs" ? 'xxs' : "xxs"} />}</ButtonStyle>;
 
 }
 

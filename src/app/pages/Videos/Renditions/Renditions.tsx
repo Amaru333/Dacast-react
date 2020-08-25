@@ -12,6 +12,7 @@ import { useWebSocket } from '../../../utils/customHooks';
 import { UploadObject } from '../../../utils/uploaderService';
 import { ProgressBar } from '../../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { VodRenditionsProps } from '../../../containers/Videos/Renditions';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string; contentType: string}) => {
 
@@ -229,7 +230,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             </div>
             <div className="flex mt1">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href={getKnowledgebaseLink('Encoding Recipes')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
             <div className="widgets flex items-baseline mt25">
                 <RenditionsWidget>

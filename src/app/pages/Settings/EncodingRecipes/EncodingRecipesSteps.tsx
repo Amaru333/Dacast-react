@@ -10,6 +10,8 @@ import { Table } from '../../../../components/Table/Table';
 import { isMobile } from "react-device-detect";
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { UploadText } from '../../../shared/General/ImageModal';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 //STEPS
 export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}; staticStepperData: {[key: string]: any}}) => {
@@ -80,7 +82,7 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
                             <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
                         </SpinnerContainer>: 
                             <WatermarkFile className="col mt1">
-                                <Text className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</Text>
+                                <UploadText className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</UploadText>
                                 <WatermarkDeleteButton>
                                     <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
                                 </WatermarkDeleteButton>
@@ -159,7 +161,7 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             <Table tableHeight={300} className="col col-12 mt2" headerBackgroundColor="gray-10" id="createRecipe" header={createRecipeHeaderElement()} body={createRecipeBodyElement()} />
             <div className="flex col col-12 mt3">
                 <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text size={14} weight="reg">Need help choosing your presets? Visit the <a href={getKnowledgebaseLink("Encoding Recipes")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
         </StepContent>
     )
@@ -199,6 +201,7 @@ const WatermarkFile = styled.div`
     height: 32px;
     align-items: center;
     justify-content: space-between;
+    max-width: 90%;
 `
 
 const PositioningRow = styled.div`

@@ -82,7 +82,6 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
             })
 
             paypal.on('ready', () => {
-                console.log('Ready')
             })
 
             paypal.start();

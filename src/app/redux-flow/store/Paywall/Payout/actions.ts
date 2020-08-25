@@ -11,7 +11,7 @@ export interface GetPaymentMethods {
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: {data: {widthdrawals: WithdrawalRequest[]}};
+    payload: {data: {withdrawals: WithdrawalRequest[]}};
 }
 
 export interface AddPaymentMethod {
@@ -61,7 +61,7 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
         await PayoutServices.addPaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.data.data.id}});
-                dispatch(showToastNotification(`Withdrawl Method has been saved`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawl Method has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -70,10 +70,10 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
 
 export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, UpdatePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UpdatePaymentMethod>) => {
-        await PayoutServices.deletePaymentMethod(data)
+        await PayoutServices.updatePaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
-                dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawl Method has been edited`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -96,7 +96,7 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
-                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: response.data});
+                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
                 dispatch(showToastNotification(`New Withdrawl Request submitted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));

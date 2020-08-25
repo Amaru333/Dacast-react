@@ -7,6 +7,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { axiosClient } from '../../utils/axiosClient';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -44,7 +45,7 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
                 </div>
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                    <Text size={14} weight="reg">Need help creating a Playlist? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight="reg">Need help creating a Playlist? Visit the <a href={getKnowledgebaseLink("Playlist")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
             </ModalContent>
             <ModalFooter>

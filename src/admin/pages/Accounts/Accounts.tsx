@@ -17,6 +17,7 @@ import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     const [accountId, setAccountId] = React.useState<string>(null)
+    const [keyword, setKeyword] = React.useState<string>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
 
@@ -24,7 +25,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     let {url} = useRouteMatch()
 
     React.useEffect(() => {
-        if(pagination) {
+        if(pagination && !contentLoading) {
             setContentLoading(true)
             props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}`)
             .then(() => setContentLoading(false))
@@ -44,7 +45,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             {cell: <Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
             {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data (GB)</Text>},
             {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
-            {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
+            // {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
             {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
             {cell: <Text key='accountsTableHeaderLogCell' size={14} weight='med'>Log</Text>},
             {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
@@ -73,12 +74,13 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
                     <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{account.plan ? account.plan.charAt(0).toUpperCase() + account.plan.slice(1) : ''}</Link>,
+                    account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{account.plan.charAt(0).toUpperCase() + account.plan.slice(1)}</Link>
+                    : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
                     <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate)}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 10000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 10000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
-                    <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags ? renderFlags(account.flags) : null}</div>,
+                    // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to={`/accounts/${account.userId}/logs`}>Logs</Link>,
                     <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
@@ -87,10 +89,10 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         }
     }
 
-    const handleSubmit = () => {
-        query.push(location.pathname + '?accountId=' + accountId)
+    const handleSubmit = (salesforceId: string, search: string) => {
+        // query.push(location.pathname + '?accountId=' + accountId)
         setContentLoading(true)
-        props.getAccounts(accountId, `page=${pagination.page}&perPage=${pagination.nbResults}`)
+        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
         .then(() => setContentLoading(false))
         .catch(() => setContentLoading(false))
     }
@@ -100,9 +102,13 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
-                    <div className={ accountId && accountId.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => setAccountId('')}><IconStyle>close</IconStyle></div>
+                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
                 </div>
-                <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                <div className='relative flex items-center mr2'>
+                    <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
+                    <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setKeyword('');handleSubmit(accountId, '')}}><IconStyle>close</IconStyle></div>
+                </div>
+                <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />

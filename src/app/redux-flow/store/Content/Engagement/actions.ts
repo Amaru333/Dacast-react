@@ -38,7 +38,7 @@ export interface DeleteContentAd {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string, contentId: string; contentType: string }};
+    payload: {presignedURL: string, contentId: string; contentType: string };
 }
 
 export interface UploadContentImage {
@@ -118,7 +118,6 @@ export const deleteContentAdAction = (data: Ad[], contentId: string, contentType
                 dispatch( {type: ActionTypes.DELETE_CONTENT_AD, payload: {ads: data, contentId: contentId, contentType: contentType}} );
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch((e) => {
-                console.log(e)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
@@ -126,12 +125,11 @@ export const deleteContentAdAction = (data: Ad[], contentId: string, contentType
 
 export const getUploadUrlAction = (uploadType: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await contentEngagementServices.getUploadUrl(uploadType, contentId)
+        await contentEngagementServices.getUploadUrl(uploadType, contentId, contentType)
             .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data, contentId: contentId, contentType: contentType} })
+                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {presignedURL: response.data.data.presignedURL, contentId: contentId, contentType: contentType} })
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }
@@ -145,7 +143,6 @@ export const uploadContentImageAction = (data: File, uploadUrl: string): ThunkDi
                 dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }
@@ -159,7 +156,6 @@ export const deleteContentImageAction = (targetId: string, contentType: string):
                 dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }

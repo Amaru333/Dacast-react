@@ -161,14 +161,19 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     </>
                 }
             </div>
+            
             <div className=' col col-12 mb25'>
-                <DropdownSingle 
-                    hasSearch 
-                    id='newPromoPresetTimezoneDropdown' 
-                    dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
-                    className={ClassHalfXsFullMd + ' pr1'} 
-                    dropdownTitle='Timezone' 
-                    callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
+                {
+                    (endDateTime === 'Set Date and Time' || startDateTime === 'Set Date and Time') &&
+                    <DropdownSingle 
+                        hasSearch 
+                        id='newPromoPresetTimezoneDropdown' 
+                        dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                        className={ClassHalfXsFullMd + ' pr1'} 
+                        dropdownTitle='Timezone' 
+                        callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
+                }
+
                 <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, discountApplied: value })} list={{ 'Once': false, 'Forever': false }} />
             </div>
             <div className='col col-12 mb2'>

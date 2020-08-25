@@ -13,6 +13,7 @@ import { ColorsApp } from '../../../../styled/types';
 import { IconStyle, ActionIcon, IconContainer } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
+import { tsToLocaleDate } from '../../../../utils/utils';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
@@ -23,7 +24,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     const paymentMethodTableHeader = () => {
         return {
             data: [
-                { cell: <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Method</Text> },
+                { cell: <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Name</Text> },
                 { cell: <Text key='paymentMethodTableHeaderlastUpdated' size={14} weight='med'>Last Updated</Text> },
                 { cell: <Button key='paymentMethodTableHeaderActionButton' className='right mr2 sm-show' onClick={() => {setSelectedPaymentMethod(null); setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
             ]
@@ -35,8 +36,8 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             return props.payoutInfos.paymentMethods.map((item, i) => {
                 return {
                     data: [
-                        <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodType}</Text>,
-                        <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>lol</Text>,
+                        <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodName}</Text>,
+                        <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(Math.floor(Date.now() / 1000))}</Text>,
                         <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                             <ActionIcon>
                                 <IconStyle id={"deleteTooltip" + i} onClick={() => { props.deletePaymentMethod(item) }}>delete</IconStyle>
@@ -96,17 +97,17 @@ export const PayoutPage = (props: PayoutComponentProps) => {
     }
 
     const withdrawalTableBody = () => {
-        if (props.payoutInfos.withdrawalRequests) {
+        if (props.payoutInfos.withdrawalRequests && props.payoutInfos.paymentMethods) {
             return props.payoutInfos.withdrawalRequests.map((item, i) => {
                 const color = item.status === 'Completed' ? 'green' : item.status === 'Cancelled' ? 'red' : 'yellow';
                 const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
                 return {
                     data: [
-                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{item.requestType}</Text>,
+                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId).paymentMethodName}</Text>,
                         <Text key={'withdrawalRequestTableBodyCurrency' + i} size={14} weight='reg' color='gray-3'>{item.currency}</Text>,
                         <Text key={'withdrawalRequestTableBodyAmount' + i} size={14} weight='reg' color='gray-3'>{item.amount}</Text>,
-                        <Text key={'withdrawalRequestTableBodyRequestDate' + i} size={14} weight='reg' color='gray-3'>{item.requestDate}</Text>,
-                        <Text key={'withdrawalRequestTableBodyTransferDate' + i} size={14} weight='reg' color='gray-3'>{item.transferDate}</Text>,
+                        <Text key={'withdrawalRequestTableBodyRequestDate' + i} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(item.requestDate)}</Text>,
+                        <Text key={'withdrawalRequestTableBodyTransferDate' + i} size={14} weight='reg' color='gray-3'>{isNaN(item.transferDate) || item.transferDate === 0 ? '' : tsToLocaleDate(item.transferDate)}</Text>,
                         <Label color={color} backgroundColor={BackgroundColor} label={item.status} />,
                         <IconContainer className="iconAction" key={'withdrawalRequestTableBodyDeleteButton' + i}>
                             <ActionIcon>
@@ -151,7 +152,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         :
         <div>
             <Card>
-                <Text size={20} weight='reg'>New Withdrawal Method</Text>
+                <Text size={20} weight='reg'>Withdrawal Method</Text>
                 <Text className='pt2 pb1' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Button key='paymentMethodTableHeaderActionButton' className='col col-12 xs-show' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
                 {
@@ -172,7 +173,11 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 }
             </Card>
             <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
-                <WithdrawalModal action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
+                {
+                    withdrawalModalOpened &&
+                    <WithdrawalModal paymentList={props.payoutInfos.paymentMethods} action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
+
+                }
             </Modal>
         </div>
 }

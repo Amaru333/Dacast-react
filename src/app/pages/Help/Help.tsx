@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { SmallHelpCard, LargeHelpCard, HelpCardHeader, HelpCardContent, CardPlaceholder, HelpPageIcon, ButtonContainer } from "./HelpStyle"
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 
 export const HelpPage = () => {
@@ -13,7 +14,7 @@ export const HelpPage = () => {
             </div>
 
             <div className="col col-12 flex mt2">
-                <SmallHelpCard className="mr2 col col-3 flex p2">
+                <SmallHelpCard className="mr2 col col-4 flex p2">
                     <HelpCardHeader className="col col-12">
                         <Text size={16} weight="med">FAQ</Text>
                         <HelpPageIcon className="material-icons-two-tone ml2">live_help</HelpPageIcon>
@@ -29,7 +30,7 @@ export const HelpPage = () => {
                     </div> 
                 </SmallHelpCard>
 
-                <SmallHelpCard className="mr2 col col-3 flex p2">
+                <SmallHelpCard className="mr2 col col-4 flex p2">
                     <HelpCardHeader className="col col-12">
                         <Text size={16} weight="med">Knowledge Base</Text>
                         <HelpPageIcon className="material-icons-two-tone ml2">find_in_page</HelpPageIcon>
@@ -41,11 +42,11 @@ export const HelpPage = () => {
                         <CardPlaceholder /> 
                     </div>
                     <div className="col col-12 mt3">
-                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/support/knowledgebase/")}>Knowledge Base</Button>
+                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open(getKnowledgebaseLink("Default"))}>Knowledge Base</Button>
                     </div> 
                 </SmallHelpCard>
 
-                <SmallHelpCard className="mr2 col col-3 flex p2">
+                {/* <SmallHelpCard className="mr2 col col-3 flex p2">
                     <HelpCardHeader className="col col-12">
                         <Text size={16} weight="med">API Documentation</Text>
                         <HelpPageIcon className="material-icons-two-tone ml2">import_contacts</HelpPageIcon>
@@ -59,9 +60,9 @@ export const HelpPage = () => {
                     <div className="col col-12 mt3">
                         <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/player-api-documentation/")}>Read Documentation</Button>
                     </div> 
-                </SmallHelpCard>
+                </SmallHelpCard> */}
 
-                <SmallHelpCard className="col col-3 flex p2">
+                <SmallHelpCard className="col col-4 flex p2">
                     <HelpCardHeader className="col col-12">
                         <Text size={16} weight="med">Blog</Text>
                         <HelpPageIcon className="material-icons-two-tone ml2">bookmark</HelpPageIcon>

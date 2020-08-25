@@ -55,7 +55,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 recurrence: price.settings.recurrence ? {
                                     unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : price.settings.recurrence.value > 4 ? 'Biannual'
-                                    : price.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : price.settings.recurrence.value > 1 ? 'Quaterly'
                                     : 'Monthly'
                                 } 
                                 : null
@@ -85,7 +85,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 recurrence: price.settings.recurrence ? {
                                     unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                     : price.settings.recurrence.value > 4 ? 'Biannual'
-                                    : price.settings.recurrence.value < 1 ? 'Quaterly'
+                                    : price.settings.recurrence.value > 1 ? 'Quaterly'
                                     : 'Monthly'
                                 } 
                                 : null

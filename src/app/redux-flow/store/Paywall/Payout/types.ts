@@ -39,7 +39,7 @@ export interface PaymentMethod {
 }
 
 export interface WithdrawalRequest {
-    requestType: string;
+    paymentMethodId: string;
     currency: string;
     amount: number;
     requestDate: number;

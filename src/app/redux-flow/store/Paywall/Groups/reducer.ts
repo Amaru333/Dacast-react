@@ -31,7 +31,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                         recurrence: price.settings.recurrence ? {
                                             unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                             : price.settings.recurrence.value > 4 ? 'Biannual'
-                                            : price.settings.recurrence.value < 1 ? 'Quaterly'
+                                            : price.settings.recurrence.value > 1 ? 'Quaterly'
                                             : 'Monthly'
                                         } 
                                         : null
@@ -50,7 +50,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                 recurrence: item.prices[0].settings.recurrence ? {
                                     unit: item.prices[0].settings.recurrence.unit === 'week' ? 'Weekly'
                                     : item.prices[0].settings.recurrence.value > 4 ? 'Biannual'
-                                    : item.prices[0].settings.recurrence.value < 1 ? 'Quaterly'
+                                    : item.prices[0].settings.recurrence.value > 1 ? 'Quaterly'
                                     : 'Monthly'
                                 } 
                                 : null

@@ -14,6 +14,7 @@ import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './Group
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -182,7 +183,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Group content into a single Price Group that can be purchased together.</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
+                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href={getKnowledgebaseLink('Group Price')} target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
@@ -192,7 +193,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Allow a promo to be used to purchase content in a Price Group.</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href={getKnowledgebaseLink('Group Promo')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={props.groupsInfos.promos.promos.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={props.groupsInfos.promos.promos.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />

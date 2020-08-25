@@ -13,7 +13,7 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
                 ...state,
-                withdrawalRequests: action.payload.data.widthdrawals
+                withdrawalRequests: action.payload.data.withdrawals
             }
         case ActionTypes.ADD_PAYMENT_METHOD :
             paymentMethods = state.paymentMethods.slice();

@@ -159,9 +159,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
             </div>
         )
     }
-
-    React.useEffect(() => console.log(planData), [planData])
-
+    
     const handleSwitchPlan = () => {
         props.switchAccountPlan(selectedPlan)
         setShowSwitchPlan(false)

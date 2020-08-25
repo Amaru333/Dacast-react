@@ -162,7 +162,6 @@ export const getUploadUrlAction = (uploadType: string): ThunkDispatch<Promise<vo
                 dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data} })
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }
@@ -176,7 +175,6 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
                 dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }
@@ -190,7 +188,6 @@ export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>,
                 dispatch(showToastNotification("Brand Image has been successfully deleted", 'fixed', "success"))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
             })
     }

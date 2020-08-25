@@ -28,7 +28,6 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
         } else {
             var returnValue = event.target.value;
         }
-        console.log(event.target.value.length)
         if( parseInt(event.target.value.charAt(3)) > 5 ) {
             returnValue = replaceAt(returnValue, 3, event.target.value.length > 4 ? '0' : '');   
         }

@@ -6,13 +6,12 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { handleDataPrice } from '../../../../utils/utils';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
 
     const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData? props.stepperData.dataPrice : null)
     const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData? props.stepperData.quantity : null)
-
-    console.log(props.stepperData, dataAmount)
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -68,7 +67,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
             </div>
             <div className="flex mt1">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                <Text  size={14} weight="reg">Need help with purchasing additional data? Visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text  size={14} weight="reg">Need help with purchasing additional data? Visit the <a href={getKnowledgebaseLink("Data")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
             
         </div>
@@ -88,7 +87,7 @@ export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunction
         <div>
             <Table id='PurchaseDataPayment' headerBackgroundColor="gray-10" header={paymentTableHeaderElement()}/>
             
-            <NewPaymentMethodForm callback={() => console.log()} actionButton={props.finalFunction} handleThreeDSecureFail={() => {}} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} stepperData={props.stepperData} />
+            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={() => {}} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} stepperData={props.stepperData} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

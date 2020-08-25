@@ -62,6 +62,7 @@ export const ModalCloseButtonStyle = styled.button`
     border: none;
     margin-left: auto;
     cursor: pointer;
+    background-color: ${props => props.theme.colors["white"]};
 `;
 
 export const ModalBodyStyle = styled.div`
