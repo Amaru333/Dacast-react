@@ -18,6 +18,7 @@ export interface Plan {
     price: Price;
     allowances: Allowances[]
     privileges: Privilege[]
+    selectedPrivileges: string[] // front end only
     privilegesTotal: number; // front end only
     termsAndConditions: boolean; // frontend only
     paymentFrequency: string;
