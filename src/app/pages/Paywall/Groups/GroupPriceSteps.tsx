@@ -20,10 +20,10 @@ import { userToken } from '../../../utils/token';
 var moment = require('moment-timezone');
 
 
-export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: Function, setStepValidated: Function }) => {
+export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void }) => {
 
     React.useEffect(() => {
-        props.setStepValidated(props.stepperData.firststep.name && props.stepperData.firststep.groupSettings.duration.value && !props.stepperData.firststep.prices.some(price => !price.price.value))
+        props.setStepValidated(props.stepperData.firststep.name && (props.stepperData.firststep.groupSettings.type === 'Pay Per View' && props.stepperData.firststep.groupSettings.duration.value || props.stepperData.firststep.groupSettings.type === 'Subscription') && !props.stepperData.firststep.prices.some(price => !price.price.value))
     }, [props.stepperData])
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
@@ -92,7 +92,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     props.stepperData.firststep.groupSettings.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence.unit} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence ? props.stepperData.firststep.groupSettings.recurrence.unit : 'Weekly'} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
                         :
                         <>
                             <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
