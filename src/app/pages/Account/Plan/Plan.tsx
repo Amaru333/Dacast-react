@@ -10,7 +10,7 @@ import { useMedia, getPercentage, tsToLocaleDate } from '../../../../utils/utils
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
-import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, Extras, PlaybackProtection } from '../../../redux-flow/store/Account/Plan/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
@@ -25,12 +25,12 @@ import { Divider } from '../../../shared/Common/MiscStyle';
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
     widgetData: DashboardInfos;
-    saveBillingPagePaymentMethod: Function;
-    addBillingPagePaymenPlaybackProtection: Function;
-    editBillingPagePaymenPlaybackProtection: Function;
-    deleteBillingPagePaymenPlaybackProtection: Function;
-    addBillingPageExtras: Function;
-    purchaseProducts: Function;
+    saveBillingPagePaymentMethod: (data: string) => Promise<void>
+    addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    addBillingPageExtras: (data: Extras) => Promise<void>
+    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
@@ -39,21 +39,18 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
-    const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
-    const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-    const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null,  (response) => {
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then((response) => {
             setIsLoading(false);
             if (response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
@@ -62,33 +59,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 setPurchaseDataOpen(false)
                 setDataPaymentSuccessOpen(true)
             }
-        }, () => {
+        }).catch(() => {
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
-    }
-
-    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
-        setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, threeDSecureToken, (response) => {
-            setPurchaseDataOpen(false)
-            setIsLoading(false);
-            setDataPaymentSuccessOpen(true)
-            setThreeDSecureActive(false)
-        }, () => {
-            setIsLoading(false);
-            setPurchaseDataOpen(false)
-            setDataPaymentFailedOpen(true)
-        })
-
-    }
-  
-    const submitExtra = () => {
-        if(stepperExtraItem) {
-            props.addBillingPageExtras(stepperExtraItem);
-            setExtrasModalOpened(false);
-        }
     }
 
     let smScreen = useMedia('(max-width: 780px)');
