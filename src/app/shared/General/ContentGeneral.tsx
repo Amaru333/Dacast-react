@@ -327,10 +327,12 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <Divider className="col col-12 mt3 mr25 mb25" />
+                        
                     </div>
-                    {
+                    {   
                         props.contentType === "live" &&
+                        <>
+                        <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className="settings col col-12">
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
                     <div className="col col-12">
@@ -415,6 +417,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
                     </div>
                 </div>
+                </>
             }
                 <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className="thumbnail col col-12">
@@ -495,9 +498,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             </ImageContainer>
                         </ImagesContainer>
                     </div>
-                    <Divider className="col col-12 mt3 mr25 mb25" />
+                    
                     {props.contentType === "vod" && 
                     <>
+                    <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className="subtitles col col-12">
                         <Text className="col col-12" size={20} weight="med">Subtitles</Text>
                         <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
