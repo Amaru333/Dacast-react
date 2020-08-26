@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface BillingContainerProps {
     billingInfos: BillingPageInfos;
-    getBillingPageInfos: () => Promise<void>
+    getBillingPageInfos: () => void
     saveBillingPagePaymentMethod: (data: string) => Promise<void>;
 }
 
