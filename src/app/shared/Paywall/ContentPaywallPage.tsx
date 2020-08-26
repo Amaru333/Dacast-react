@@ -242,7 +242,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 }
                    
             </Card>
-            <div className={'mt2' + (hasChanged ? ' hide' : '')}>
+            <div className={'mt2' + (hasChanged ? '' : 'hide')}>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
             </div>
