@@ -1,5 +1,4 @@
 import React from 'react';
-import { ToggleTextInfo, TextStyle, BorderStyle } from './SecurityStyle';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
@@ -19,6 +18,8 @@ import { Prompt } from 'react-router';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Divider } from '../../../shared/Common/MiscStyle';
+import { TextStyle, ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 
 var momentTZ = require('moment-timezone')
 
@@ -279,7 +280,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     </div>
                 </div>
 
-                <BorderStyle className="p1" />
+                <Divider className="p1" />
 
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></TextStyle>
 
@@ -290,7 +291,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                 <Table className="col-12" id="geoRestrictionTable" headerBackgroundColor="gray-10" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
 
-                <BorderStyle className="py1" />
+                <Divider className="py1" />
 
                 <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
 

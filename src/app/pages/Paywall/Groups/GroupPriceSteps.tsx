@@ -12,7 +12,7 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import { ItemSetupRow, ContainerHalfSelector, HeaderBorder } from './GroupsStyle';
 import { GroupStepperData } from './Groups';
-import { ArrowButton } from '../../../shared/Common/arrowButtonStyle';
+import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { userToken } from '../../../utils/token';

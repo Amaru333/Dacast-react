@@ -10,7 +10,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Ico
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { Divider, LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
+import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -29,6 +29,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { axiosClient } from '../../utils/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { Divider } from '../Common/MiscStyle';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -292,7 +293,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             </LinkBox>
                         </div>
                     </div>
-                    <Divider className="col col-12" />
+                    <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className='col col-12'>
                         <header className="flex justify-between">
                             <Text className='col col-12' size={20} weight='med'>Sharing</Text>
@@ -326,7 +327,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <Divider className="col col-12" />
+                        <Divider className="col col-12 mt3 mr25 mb25" />
                     </div>
                     {
                         props.contentType === "live" &&
@@ -415,7 +416,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </div>
                 </div>
             }
-                <Divider className="col col-12" />
+                <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className="thumbnail col col-12">
                         <Text className="col col-12" size={20} weight="med">Images</Text>
                         <Text className="col col-12 pt1" size={14} weight="reg">Upload image assets for your content.</Text>
@@ -494,7 +495,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             </ImageContainer>
                         </ImagesContainer>
                     </div>
-                    <Divider className="col col-12" />
+                    <Divider className="col col-12 mt3 mr25 mb25" />
                     {props.contentType === "vod" && 
                     <>
                     <div className="subtitles col col-12">
@@ -506,7 +507,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable" />
                     }
                     </>}
-                    <Divider className="col col-12" />
+                    <Divider className="col col-12 mt3 mr25 mb25" />
                     <div className="col col-12 advancedVideoLinks">
                         <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                             <IconStyle  className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>

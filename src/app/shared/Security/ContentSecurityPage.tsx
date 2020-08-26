@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, BorderStyle, DisabledSection, Header, BubbleContent } from './SecurityStyle';
+import { TextStyle, ToggleTextInfo, DisabledSection, Header, BubbleContent } from './SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -16,6 +16,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import moment from 'moment'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { Divider } from '../Common/MiscStyle';
 
 var momentTZ = require('moment-timezone')
 
@@ -296,7 +297,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                               
                     </div>
 
-                    <BorderStyle className="p1" />
+                    <Divider className="p1" />
 
                     <div className="col col-12">
                         <TextStyle className="pt25" >
@@ -317,7 +318,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                         />
                     </div>
 
-                    <BorderStyle className="p1" />
+                    <Divider className="p1" />
                 
                     <div>
                         <TextStyle className="pt25" >

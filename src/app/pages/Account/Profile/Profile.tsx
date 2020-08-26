@@ -9,7 +9,7 @@ import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { TextStyle, BorderStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
+import { TextStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Bubble } from '../../../../components/Bubble/Bubble';
@@ -17,6 +17,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 var moment = require('moment-timezone');
 
@@ -130,7 +131,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                         />
                     </div>
-                    <BorderStyle className="p1 mx1" />
+                    <Divider className="p1 mx1" />
 
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
 
@@ -140,7 +141,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <Button className="m1" sizeButton='xs' onClick={(event) => { event.preventDefault(); setPasswordModalToggle(true) }} typeButton='secondary' buttonColor='blue'><Text size={12} weight='reg' color='dark-violet'>Change password</Text></Button>
 
-                    <BorderStyle className="p1 mx1" />
+                    <Divider className="p1 mx1" />
 
                     <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
 

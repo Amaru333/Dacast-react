@@ -6,8 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia, readableBytes, getPercentage, tsToLocaleDate } from '../../../../utils/utils';
-import { PaymentMethodModal } from './PaymentMethodModal';
+import { useMedia, getPercentage, tsToLocaleDate } from '../../../../utils/utils';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
@@ -15,16 +14,13 @@ import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
-import { WidgetElement } from '../../../containers/Dashboard/WidgetElement';
-import { WidgetHeader, classContainer, classItemThirdWidthContainer } from '../../../containers/Dashboard/DashboardStyles';
-import { ProgressBarDashboard, GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
-import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
-import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
-import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
+import { GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
+import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { useHistory } from 'react-router-dom'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -192,7 +188,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                { 
                    (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.state === "active") &&
                     <>
-                        <BorderStyle className="py1" />
+                        <Divider className="py1" />
                         <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
                             <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
                             <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
@@ -202,7 +198,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                             }
                         
-                            <BorderStyle className="py1" />
+                            <Divider className="py1" />
                             <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
                             <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
                             <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
@@ -293,11 +289,6 @@ export const ToggleTextInfo = styled.p<{}>`
 
 export const TextStyle = styled.span<{}>`
     display: block;
-`
-
-export const BorderStyle = styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
-    display: flex;
 `
 
 export const DataPricingTable = styled.table`

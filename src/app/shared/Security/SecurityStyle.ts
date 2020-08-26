@@ -11,11 +11,6 @@ export const ToggleTextInfo = styled.p<{}>`
     display: inline-flex;
 `
 
-export const BorderStyle = styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
-    display: flex;
-`
-
 export const DisabledSection = styled.div<{settingsEditable: boolean}>`
 pointer-events: none;
 opacity: 0.5;

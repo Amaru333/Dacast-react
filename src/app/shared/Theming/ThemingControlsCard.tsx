@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlsCard, TitleSection, TextStyle, BorderStyle, ControlToggleContainer, DisabledSection, PlayerSection, PlayerContainer, RadioButtonContainer } from './ThemingStyle';
+import { ControlsCard, TitleSection, TextStyle, ControlToggleContainer, DisabledSection, PlayerSection, PlayerContainer, RadioButtonContainer } from './ThemingStyle';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -16,6 +16,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { usePlayer } from '../../utils/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/token';
+import { Divider } from '../Common/MiscStyle';
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
@@ -152,7 +153,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{'Top': false, 'Middle': false, 'Fullscreen': false}} dropdownDefaultSelect={selectedTheme.offlineMessagePosition.charAt(0).toUpperCase() + selectedTheme.offlineMessagePosition.slice(1)} callback={(value: string) => {setEditedSettings(true);setSelectedTheme({...selectedTheme, offlineMessagePosition: value.toLowerCase()})}} disabled={!customEnabled} />
                         </DisabledSection>
 
-                        <BorderStyle className="p1" />
+                        <Divider className="p1" />
 
 
                         <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-aes')}>
@@ -176,7 +177,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             
                         </DisabledSection>
                             
-                        <BorderStyle className="p1" />
+                        <Divider className="p1" />
 
                         <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-china')}>
                             <TitleSection className="my2">
@@ -235,7 +236,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             </>
                         }
                         
-                        <BorderStyle className="p1" />
+                        <Divider className="p1" />
 
                         <DisabledSection enabled={customEnabled}>
                             <TextStyle  className='py2'><Text size={20} weight='med'>Controls</Text></TextStyle>
@@ -256,7 +257,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             </ControlToggleContainer>
                             
 
-                            <BorderStyle className="p1" />
+                            <Divider className="p1" />
                             
                             
                             <TextStyle className="py2" ><Text size={20} weight='med'>Actions</Text></TextStyle>
@@ -275,12 +276,12 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                             <ControlToggleContainer>
                                 <Toggle className={togglePadding} label='Embed Code' checked={selectedTheme.embedCode} onChange={() => {setEditedSettings(true);setSelectedTheme({...selectedTheme, embedCode: !selectedTheme.embedCode});}} />
-                                <BorderStyle className="p1" />
+                                <Divider className="p1" />
                                 <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
                                 <Tooltip target="embedCodeTooltip">Whether viewers can see and copy the embed code for the content</Tooltip>
                             </ControlToggleContainer>
                             
-                            <BorderStyle className="p1" />
+                            <Divider className="p1" />
 
                             <TextStyle className="py2" ><Text size={20} weight='med'>Appearance</Text></TextStyle>
                             <div className='relative'>
@@ -305,7 +306,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => {setEditedSettings(true);setSelectedTheme({...selectedTheme, customMenuColor: value});}} />
                             </div>
                                 
-                            <BorderStyle className="p1" />
+                            <Divider className="p1" />
 
                             <TextStyle className="py2" ><Text size={20} weight='med'>Behaviour</Text></TextStyle>
 
@@ -332,7 +333,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         {
                             (props.contentType === 'live' || props.contentType === 'settings') &&
                                 <>
-                                    <BorderStyle className="p1" />
+                                    <Divider className="p1" />
 
                                     <DisabledSection enabled={liveEnabled}>
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Live Streams</Text></TextStyle>
@@ -354,7 +355,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                         {
                             (props.contentType === 'playlist' || props.contentType === 'settings') &&
                                 <> 
-                                    <BorderStyle className="p1" />
+                                    <Divider className="p1" />
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <TextStyle className="py2" ><Text size={20} weight='med'>Playlists</Text></TextStyle>

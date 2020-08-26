@@ -11,11 +11,6 @@ export const ButtonStyle = styled.div<{}>`
     width: fit-content;
 `
 
-export const BorderStyle = styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
-    display: flex;
-`
-
 export const ImageStyle = styled.img<{}>`
     position: relative;
     max-width: 204px;
