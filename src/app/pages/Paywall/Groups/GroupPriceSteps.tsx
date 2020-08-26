@@ -139,7 +139,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
     )
 }
 
-export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: Function; setStepValidated: Function }) => {
+export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void  }) => {
 
     const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])

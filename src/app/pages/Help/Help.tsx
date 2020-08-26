@@ -21,7 +21,7 @@ export const HelpPage = () => {
                     </HelpCardHeader>
                     <div className="col col-12 flex mt2">
                         <HelpCardContent>
-                            <Text size={12}>Have some questions relating to the free trial?</Text>
+                            <Text size={12}>Find answers to common questions.</Text>
                         </HelpCardContent>
                         <CardPlaceholder /> 
                     </div>
@@ -37,7 +37,7 @@ export const HelpPage = () => {
                     </HelpCardHeader>
                     <div className="col col-12 flex mt2">
                         <HelpCardContent>
-                            <Text size={12}>Have some questions relating to the free trial?</Text>
+                            <Text size={12}>Browse our Help Videos and Documentation.</Text>
                         </HelpCardContent>
                         <CardPlaceholder /> 
                     </div>
@@ -53,7 +53,7 @@ export const HelpPage = () => {
                     </HelpCardHeader>
                     <div className="col col-12 flex mt2">
                         <HelpCardContent>
-                            <Text size={12}>Have some questions relating to the free trial?</Text>
+                            <Text size={12}>Learn more about all the possible API calls with Dacast.</Text>
                         </HelpCardContent>
                         <CardPlaceholder /> 
                     </div>
@@ -69,7 +69,7 @@ export const HelpPage = () => {
                     </HelpCardHeader>
                     <div className="col col-12 flex mt2">
                         <HelpCardContent>
-                            <Text size={12}>Have some questions relating to the free trial?</Text>
+                            <Text size={12}>All you need to know about live streaming and video hosting.</Text>
                         </HelpCardContent>
                         <CardPlaceholder /> 
                     </div>
