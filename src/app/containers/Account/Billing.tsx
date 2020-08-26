@@ -1,6 +1,6 @@
 import React from 'react';
 import { BillingPage } from '../../pages/Account/Billing/Billing';
-import { BillingPageInfos, getBillingPageInfosAction, saveBillingPagePaymentMethodAction, PlanAction, CreditCardPayment, PaypalPayment } from '../../redux-flow/store/Account/Plan';
+import { BillingPageInfos, getBillingPageInfosAction, saveBillingPagePaymentMethodAction, PlanAction } from '../../redux-flow/store/Account/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
@@ -9,8 +9,8 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 
 export interface BillingContainerProps {
     billingInfos: BillingPageInfos;
-    getBillingPageInfos: Function;
-    saveBillingPagePaymentMethod: Function;
+    getBillingPageInfos: () => Promise<void>
+    saveBillingPagePaymentMethod: (data: string) => Promise<void>;
 }
 
 const Billing = (props: BillingContainerProps) => {
@@ -36,11 +36,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, PlanAction>) {
     return {
-        getBillingPageInfos: () => {
-            dispatch(getBillingPageInfosAction());
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction());
         },
-        saveBillingPagePaymentMethod: (data: CreditCardPayment | PaypalPayment) => {
-            dispatch(saveBillingPagePaymentMethodAction(data));
+        saveBillingPagePaymentMethod: async (data: string) => {
+            await dispatch(saveBillingPagePaymentMethodAction(data));
         }
     };
 }
