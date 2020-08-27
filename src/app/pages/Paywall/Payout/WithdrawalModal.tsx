@@ -19,6 +19,21 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
     })
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
 
+    const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
+        switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
+            case 'us-transfer' :
+                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
+            case 'international-transfer':
+                return {minRequest: '$1,000 USD', fees: '$1,000 USD', nbDays: 15}
+            case 'check':
+                return {minRequest: '$1,000 USD', fees: 'Free', nbDays: 5}
+            case 'paypal':
+                return {minRequest: '$1,000 USD', fees: 'Free', nbDays: 5}
+            default:
+                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
+        }
+    }
+
     const handleSubmit = () => {
         setButtonLoading(true)
         props.action(withdrawalRequest)
@@ -44,15 +59,15 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>
                     <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Minimum Request</Text></TextContainer>
-                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>$1000 USD</Text></TextContainer>
+                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().minRequest}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1'>
                     <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Fee</Text></TextContainer>
-                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>$25 USD</Text></TextContainer>
+                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().fees}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1 mb2'>
                     <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
-                    <TextContainer className='col col-5 ' backgroundColor='white'><Text size={14} weight='reg'>5 Business Days*</Text></TextContainer>
+                    <TextContainer className='col col-5 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Businees Days*'}</Text></TextContainer>
                 </div>
             </div>
 
