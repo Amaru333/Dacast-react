@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextStyle } from '../../../shared/Theming/ThemingStyle'
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -90,7 +89,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
         return (
             <Card>
                 <Text className='py2' size={20} weight='med'>Themes</Text>
-                <TextStyle className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></TextStyle>
+                <div className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></div>
                 <div className='my2 flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle> 
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href={getKnowledgebaseLink("Theme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>

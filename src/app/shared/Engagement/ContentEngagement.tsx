@@ -5,7 +5,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
-import { TextStyle, Header, DisabledSection, AdTableURLContainer } from './EngagementStyle';
+import { Header, DisabledSection, AdTableURLContainer } from './EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
@@ -407,9 +407,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Header className="mb2">
-                        <TextStyle>
+                        <div>
                             <Text size={20} weight='med'>Advertising</Text>
-                        </TextStyle>
+                        </div>
                         <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
                             {!engagementSettings.adsSettings.locked ? "lock_open" : "lock"}
                         </IconStyle>
@@ -440,9 +440,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
             {/* <Card className='my2'>
                 <Header className="mb2">
-                    <TextStyle>
+                    <div>
                         <Text size={20} weight='med'>Email Catcher</Text>
-                    </TextStyle>
+                    </div>
                     <IconStyle className='pointer' id="unlockMailSectionTooltip" onClick={() => setMailSectionEditable(!mailSectionEditable)}>
                         {mailSectionEditable ? "lock_open" : "lock"}
                     </IconStyle>
@@ -474,9 +474,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
             <Card className="my2">
                 <Header className="mb2">
-                    <TextStyle> 
+                    <div> 
                         <Text size={20} weight='med'>Brand Image</Text>
-                    </TextStyle>
+                    </div>
                     <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {handleBrandImageLockChange()}}>
                         {!engagementSettings.brandImageSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>
@@ -527,9 +527,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
             <Card className='my2'>
                 <Header className="mb2">
-                    <TextStyle>
+                    <div>
                         <Text size={20} weight='med'>Brand Text</Text>
-                    </TextStyle>
+                    </div>
                     <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {handleBrandTextLockChange()}}>
                         {!engagementSettings.brandTextSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>
@@ -556,9 +556,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
             <Card className='my2'>
                 <Header className="mb2">
-                    <TextStyle>
+                    <div>
                         <Text size={20} weight='med'>End Screen Text</Text>
-                    </TextStyle>
+                    </div>
                     <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {handleEndScreenTextLockChange()}}>
                         {!engagementSettings.endScreenSettings.locked ? "lock_open" : "lock"}
                     </IconStyle>

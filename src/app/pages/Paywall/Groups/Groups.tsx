@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
-import { BorderStyle } from './GroupsStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
@@ -15,6 +14,7 @@ import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -187,7 +187,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
                 <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
-                <BorderStyle className='my2' />
+                <Divider className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Allow a promo to be used to purchase content in a Price Group.</Text>

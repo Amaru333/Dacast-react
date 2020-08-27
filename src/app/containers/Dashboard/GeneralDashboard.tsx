@@ -65,7 +65,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
             return ;
         }else {
-            return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
+            return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
         }
     }
 
@@ -78,15 +78,15 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     const classItem = classItemThirdWidthContainer;
     return (
         <section className="col col-12">
-            {
-                !props.isPlanPage &&
-                    <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
-                        <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb3 inline-block"}>
+            <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
+                {
+                    !props.isPlanPage &&
+                        <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb2 inline-block"}>
                             Dashboard
                         </Text>
-                        {handleBillingPeriod()}
-                    </div>
-            }
+                }
+                {handleBillingPeriod()}
+            </div>
             <div className={classContainer}>
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">

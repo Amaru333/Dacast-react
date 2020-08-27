@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
-import { BorderStyle } from './PresetsStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../../components/Modal/Modal';
 import { PricePresetsModal } from './PricePresetsModal';
@@ -13,6 +12,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -146,7 +146,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
 
                    </>
                 }
-                <BorderStyle className='my2' />
+                <Divider className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Presets</Text>
                 <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>

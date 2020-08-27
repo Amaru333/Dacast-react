@@ -5,7 +5,6 @@ import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle, TextAreaStyle } from './InputStyle';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { TextStyle } from '../../../app/containers/Navigation/NavigationStyle';
 import { replaceAt } from '../../../utils/utils';
 
 export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {

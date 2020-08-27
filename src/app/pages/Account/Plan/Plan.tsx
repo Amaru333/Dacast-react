@@ -6,35 +6,31 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia, readableBytes, getPercentage, tsToLocaleDate } from '../../../../utils/utils';
-import { PaymentMethodModal } from './PaymentMethodModal';
+import { useMedia, getPercentage, tsToLocaleDate } from '../../../../utils/utils';
 import { ProtectionModal } from './ProtectionModal';
 import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
-import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, Extras, PlaybackProtection } from '../../../redux-flow/store/Account/Plan/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
-import { WidgetElement } from '../../../containers/Dashboard/WidgetElement';
-import { WidgetHeader, classContainer, classItemThirdWidthContainer } from '../../../containers/Dashboard/DashboardStyles';
-import { ProgressBarDashboard, GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
-import { handleButtonToPurchase } from '../../../shared/Widgets/Widgets';
-import { DashboardTrial, DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
-import { PurchaseStepperCartStep } from '../../../containers/Dashboard/PurchaseStepper';
+import { GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
+import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { useHistory } from 'react-router-dom'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
     widgetData: DashboardInfos;
-    saveBillingPagePaymentMethod: Function;
-    addBillingPagePaymenPlaybackProtection: Function;
-    editBillingPagePaymenPlaybackProtection: Function;
-    deleteBillingPagePaymenPlaybackProtection: Function;
-    addBillingPageExtras: Function;
-    purchaseProducts: Function;
+    saveBillingPagePaymentMethod: (data: string) => Promise<void>
+    addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    addBillingPageExtras: (data: Extras) => Promise<void>
+    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
@@ -43,56 +39,33 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
-    const [extrasModalOpened, setExtrasModalOpened] = React.useState<boolean>(false);
-    const [stepperExtraItem, setStepperExtraItem] = React.useState<Extras>(null);
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-    const stepList = [ExtrasStepperFirstStep, ExtrasStepperSecondStepCreditCard];
 
     let history = useHistory()
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null,  (response) => {
+        await props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
+            (response) => {
             setIsLoading(false);
-            if (response.data.data.tokenID) {
+            if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setPurchaseDataOpen(false)
                 setDataPaymentSuccessOpen(true)
             }
-        }, () => {
+        }).catch((error) => {
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
+            console.log(error)
         })
-    }
-
-    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
-        setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, threeDSecureToken, (response) => {
-            setPurchaseDataOpen(false)
-            setIsLoading(false);
-            setDataPaymentSuccessOpen(true)
-            setThreeDSecureActive(false)
-        }, () => {
-            setIsLoading(false);
-            setPurchaseDataOpen(false)
-            setDataPaymentFailedOpen(true)
-        })
-
-    }
-  
-    const submitExtra = () => {
-        if(stepperExtraItem) {
-            props.addBillingPageExtras(stepperExtraItem);
-            setExtrasModalOpened(false);
-        }
     }
 
     let smScreen = useMedia('(max-width: 780px)');
@@ -173,9 +146,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "Free" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency}</Text>,
-                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{paymentTerm === 12 ? "Yearly" : "Monthly"}</Text>,
-                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : ''}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
+                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
+                <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]
@@ -187,14 +160,14 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         <div>
             <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} />
             <Card>
-                <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
+                <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                { 
                    (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.state === "active") &&
                     <>
-                        <BorderStyle className="py1" />
-                        <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
-                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
+                        <Divider className="py1" />
+                        <div className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></div>
                             <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                             {
                                 (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
@@ -202,11 +175,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                             }
                         
-                            <BorderStyle className="py1" />
-                            <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
-                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
+                            <Divider className="py1" />
+                            <div className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></div>
                             <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
-                            <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
+                            <div className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></div>
                             <div className="col col-2 mb2">
                                 <DataPricingTable >
                                     {
@@ -222,7 +195,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     }  
                                 </DataPricingTable>
                             </div>
-                            <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
+                            <div className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></div>
                     </>
                 }
             </Card>
@@ -289,15 +262,6 @@ export const ToggleTextInfo = styled.p<{}>`
     margin-top: 0px;
     margin-block-end: 8px;
     display: inline-flex;
-`
-
-export const TextStyle = styled.span<{}>`
-    display: block;
-`
-
-export const BorderStyle = styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
-    display: flex;
 `
 
 export const DataPricingTable = styled.table`
