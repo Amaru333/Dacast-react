@@ -50,10 +50,10 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
+        await props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
             (response) => {
             setIsLoading(false);
-            if (response.data.data.tokenID) {
+            if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
