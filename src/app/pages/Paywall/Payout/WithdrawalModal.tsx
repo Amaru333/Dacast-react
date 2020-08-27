@@ -26,9 +26,9 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
             case 'international-transfer':
                 return {minRequest: '$1,000 USD', fees: '$1,000 USD', nbDays: 15}
             case 'check':
-                return {minRequest: '$1,000 USD', fees: 'Free', nbDays: 5}
+                return {minRequest: '$250 USD', fees: 'Free', nbDays: 5}
             case 'paypal':
-                return {minRequest: '$1,000 USD', fees: 'Free', nbDays: 5}
+                return {minRequest: '$100 USD', fees: 'Free', nbDays: 5}
             default:
                 return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
         }
@@ -67,7 +67,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
                 </div>
                 <div className='col col-12 sm-col-7 pr1 mb2'>
                     <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
-                    <TextContainer className='col col-5 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Businees Days*'}</Text></TextContainer>
+                    <TextContainer className='col col-5 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days*'}</Text></TextContainer>
                 </div>
             </div>
 

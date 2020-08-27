@@ -25,12 +25,11 @@ export const Toast = (props: ToastProps) => {
         <ToastStyle {...props}>                    
             <Text color={(props.toast.notificationType == "warning") ? "black" : "white"} size={16} weight="reg">{props.toast.text}</Text>
             <IconStyle>{renderIcon(props)}</IconStyle>
-            {props.toast.size == "fixed" ? (
+            {props.toast.size == "fixed" &&
                 <ToastCloseButtonStyle notificationType={props.toast.notificationType} onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => props.hideToast(event)}>
                     <Icon>close</Icon>
                 </ToastCloseButtonStyle>
-            ) 
-                : null}            
+            }            
         </ToastStyle>
 
     );

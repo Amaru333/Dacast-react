@@ -103,7 +103,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
                 return {
                     data: [
-                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId).paymentMethodName}</Text>,
+                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId) ? props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId).paymentMethodName : ''}</Text>,
                         <Text key={'withdrawalRequestTableBodyCurrency' + i} size={14} weight='reg' color='gray-3'>{item.currency}</Text>,
                         <Text key={'withdrawalRequestTableBodyAmount' + i} size={14} weight='reg' color='gray-3'>{item.amount}</Text>,
                         <Text key={'withdrawalRequestTableBodyRequestDate' + i} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(item.requestDate)}</Text>,
