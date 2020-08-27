@@ -90,6 +90,7 @@ export interface PlanSummary {
     playbackProtectionUnitPrice: string;
     periodStartedAt: number;
     periodEndsAt: number;
+    trialExpiresIn?: number;
     price: number;
     currency: string;
     paymentFrequency: string;

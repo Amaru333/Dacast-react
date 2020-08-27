@@ -133,7 +133,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.profile.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :
