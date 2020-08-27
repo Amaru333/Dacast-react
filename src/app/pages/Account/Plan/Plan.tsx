@@ -50,7 +50,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then((response) => {
+        props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
+            (response) => {
             setIsLoading(false);
             if (response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
@@ -59,10 +60,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 setPurchaseDataOpen(false)
                 setDataPaymentSuccessOpen(true)
             }
-        }).catch(() => {
+        }).catch((error) => {
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
+            console.log(error)
         })
     }
 

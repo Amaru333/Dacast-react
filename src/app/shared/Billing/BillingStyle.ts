@@ -1,9 +1,5 @@
 import styled, {css} from 'styled-components';
 
-export const TextStyle = styled.div`
-
-`
-
 export const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     position: relative;
     display: flex;
