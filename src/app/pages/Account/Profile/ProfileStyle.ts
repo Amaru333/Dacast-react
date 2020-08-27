@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const TextStyle = styled.span<{}>`
-    display: block;
-`
-
 export const AvatarInputContainer = styled.div<{}>`
     display: flex;
     flex-direction: row;

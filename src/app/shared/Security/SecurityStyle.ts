@@ -1,10 +1,5 @@
 import styled, { css } from 'styled-components';
 
-export const TextStyle = styled.span<{}>`
-    display: block;
-    margin-right: 12px;
-    `
-
 export const ToggleTextInfo = styled.p<{}>`
     margin-top: 8px;
     margin-block-end: 8px;

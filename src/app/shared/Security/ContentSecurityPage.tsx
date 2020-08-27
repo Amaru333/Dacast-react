@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { TextStyle, ToggleTextInfo, DisabledSection, Header, BubbleContent } from './SecurityStyle';
+import { ToggleTextInfo, DisabledSection, Header, BubbleContent } from './SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -158,9 +158,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             }
             <Card>
                 <Header className="pb25">
-                    <TextStyle>
+                    <div>
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
-                    </TextStyle>
+                    </div>
                     <IconStyle className='pointer' id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ? 
                             "lock_open"
@@ -300,13 +300,13 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Divider className="p1" />
 
                     <div className="col col-12">
-                        <TextStyle className="pt25" >
+                        <div className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
-                        </TextStyle>
+                        </div>
 
-                        <TextStyle className="pt2" >
+                        <div className="pt2" >
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
-                        </TextStyle>
+                        </div>
 
                         <DropdownSingle 
                             className='col col-12 md-col-3 my2 mr1' 
@@ -321,13 +321,13 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <Divider className="p1" />
                 
                     <div>
-                        <TextStyle className="pt25" >
+                        <div className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
-                        </TextStyle>
+                        </div>
 
-                        <TextStyle className="pt2" >
+                        <div className="pt2" >
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
-                        </TextStyle>
+                        </div>
                         <div className="col col-12 py2">
                             <DropdownSingle 
                                 className="col col-12 md-col-3" 

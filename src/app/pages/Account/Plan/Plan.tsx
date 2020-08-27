@@ -160,14 +160,14 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         <div>
             <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} />
             <Card>
-                <TextStyle className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></TextStyle>
+                <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                { 
                    (props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.state === "active") &&
                     <>
                         <Divider className="py1" />
-                        <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></TextStyle>
-                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></TextStyle>
+                        <div className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></div>
                             <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                             {
                                 (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
@@ -176,10 +176,10 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                             }
                         
                             <Divider className="py1" />
-                            <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></TextStyle>
-                            <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></TextStyle>
+                            <div className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></div>
                             <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
-                            <TextStyle className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></TextStyle>
+                            <div className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></div>
                             <div className="col col-2 mb2">
                                 <DataPricingTable >
                                     {
@@ -195,7 +195,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     }  
                                 </DataPricingTable>
                             </div>
-                            <TextStyle className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></TextStyle>
+                            <div className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></div>
                     </>
                 }
             </Card>
@@ -262,10 +262,6 @@ export const ToggleTextInfo = styled.p<{}>`
     margin-top: 0px;
     margin-block-end: 8px;
     display: inline-flex;
-`
-
-export const TextStyle = styled.span<{}>`
-    display: block;
 `
 
 export const DataPricingTable = styled.table`

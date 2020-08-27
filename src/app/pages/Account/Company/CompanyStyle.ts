@@ -20,10 +20,6 @@ export const ImageStyle = styled.img<{}>`
     margin: 0 auto;
 `
 
-export const TextStyle = styled.span<{}>`
-    display: block;
-`
-
 export const LinkStyle = styled.span<{}>`
     &:hover{
         cursor:pointer;

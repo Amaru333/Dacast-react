@@ -9,7 +9,7 @@ import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { TextStyle, AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
+import { AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Bubble } from '../../../../components/Bubble/Bubble';
@@ -78,7 +78,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         <div>
             <Card>
                 <form id='profilePageForm' onSubmit={handleSubmit(onSubmit)} >
-                    <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
+                    <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
                     <div className="md-col md-col-12">
                         <Input
                             type="text"
@@ -133,7 +133,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     </div>
                     <Divider className="p1 mx1" />
 
-                    <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></TextStyle>
+                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></div>
 
                     <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {tsToLocaleDate(props.ProfilePageDetails.passwordLastChanged ? props.ProfilePageDetails.passwordLastChanged : Math.round(Date.now()/1000), DateTime.DATETIME_SHORT)}</Text></p>
 
@@ -143,7 +143,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <Divider className="p1 mx1" />
 
-                    <TextStyle className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></TextStyle>
+                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></div>
 
                     <ToggleContainer>
                         <Toggle name="marketing" refForwarded={register()}  

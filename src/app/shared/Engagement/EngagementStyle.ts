@@ -1,10 +1,5 @@
 import styled, { css } from 'styled-components';
 
-export const TextStyle = styled.span<{}>`
-    display: block;
-    margin-right: 12px;
-`
-
 export const DisabledSection = styled.div<{settingsEditable: boolean}>`
 pointer-events: none;
 opacity: 0.5;

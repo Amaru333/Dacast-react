@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { handleValidationForm } from '../../../utils/hooksFormSubmit';
-import { CompanyPageContainer, ButtonStyle, ImageStyle, TextStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
+import { CompanyPageContainer, ButtonStyle, ImageStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
@@ -176,7 +176,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <Divider className="p1 mx1" />
 
                 <form id='companyPageForm' onSubmit={handleSubmit(onSubmit)}>
-                    <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
+                    <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
                     <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
@@ -267,10 +267,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
                     <Divider className="p1 mx1" />
 
-                    <TextStyle className="px1 pt2 pb1" >
+                    <div className="px1 pt2 pb1" >
                         <Text size={20} weight='med'>Address</Text>
                         <Text color='gray-4' size={12} weight='reg'>Optional</Text>
-                    </TextStyle>
+                    </div>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 
