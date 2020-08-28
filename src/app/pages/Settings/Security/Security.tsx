@@ -1,5 +1,4 @@
 import React from 'react';
-import { ToggleTextInfo, TextStyle, BorderStyle } from './SecurityStyle';
 import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
@@ -19,6 +18,8 @@ import { Prompt } from 'react-router';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Divider } from '../../../shared/Common/MiscStyle';
+import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 
 var momentTZ = require('moment-timezone')
 
@@ -181,7 +182,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             </Bubble>
             <Card>
                 <div id='settingsPageForm'>
-                    <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></TextStyle>
+                    <div className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></div>
 
                     {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
                     <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
@@ -279,22 +280,22 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                     </div>
                 </div>
 
-                <BorderStyle className="p1" />
+                <Divider className="p1" />
 
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></TextStyle>
+                <div className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></div>
 
-                <TextStyle className="pb1" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></TextStyle>
+                <div className="pb1" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></div>
                 <div className="clearfix">
                     <Button className={"left col col-12 xs-show"} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setGeoRestrictionModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>
 
                 <Table className="col-12" id="geoRestrictionTable" headerBackgroundColor="gray-10" header={tableHeaderElement('geoRestriction')} body={geoRestrictionBodyElement()} />
 
-                <BorderStyle className="py1" />
+                <Divider className="py1" />
 
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></TextStyle>
+                <div className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></div>
 
-                <TextStyle className="pb1"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></TextStyle>
+                <div className="pb1"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></div>
                 <div className="clearfix">
                     <Button className={"col col-12 xs-show "} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>

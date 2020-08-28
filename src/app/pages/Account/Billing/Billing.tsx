@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from '../../../../components/Card/Card';
-import { TextStyle } from '../../../shared/Billing/BillingStyle';
 import { Text } from '../../../../components/Typography/Text';
 import { useMedia } from '../../../../utils/utils';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -83,22 +82,24 @@ export const BillingPage = (props: BillingContainerProps) => {
     return (
         <React.Fragment>
             <Card>
-                <TextStyle className="py2" ><Text size={20} weight='med' color='gray-1'>Payment Method</Text></TextStyle>
-                    <TextStyle className="pb2" ><Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text></TextStyle>
-                    <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
-                    {
-                        props.billingInfos.paymentMethod.type === "paypal" ? 
-                            <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
+                <div className="py2" >
+                    <Text size={20} weight='med' color='gray-1'>Payment Method</Text>
+                </div>
+                <div className="pb2" >
+                    <Text size={14} weight='reg' color='gray-1'>Your chosen Payment Method will be charged for your Plan, optional Playback Protection, Extras and Overages. Choose from PayPal or Card. If you wish to pay using Check, Wire or Transfer, then please Contact Us.</Text>
+                </div>
+                <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
+                {
+                    props.billingInfos.paymentMethod.type === "paypal" ? 
+                        <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
-                            : props.billingInfos.paymentMethod.type === "card" ?                
-                                <Table className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
-                                : 
-                                <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowences and Enable Playback Protection')} />
+                        : props.billingInfos.paymentMethod.type === "card" ?                
+                            <Table className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
+                            : 
+                            <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowences and Enable Playback Protection')} />
 
 
-                    }
-
-                    
+                }    
             </Card>
             <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
                 <Elements>

@@ -5,7 +5,6 @@ import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle, TextAreaStyle } from './InputStyle';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { TextStyle } from '../../../app/containers/Navigation/NavigationStyle';
 import { replaceAt } from '../../../utils/utils';
 
 export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<HTMLInputElement>) => {
@@ -89,10 +88,10 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     </AddonStyle>
                     :
                     null}
+                {icon ? <IconStyle className="absolute" style={ {top: 8, right: 8} } disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
             </RelativeContainer>
 
 
-            {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

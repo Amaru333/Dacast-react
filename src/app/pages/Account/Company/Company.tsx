@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { handleValidationForm } from '../../../utils/hooksFormSubmit';
-import { CompanyPageContainer, ButtonStyle, BorderStyle, ImageStyle, TextStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
+import { CompanyPageContainer, ButtonStyle, ImageStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';
 import { IconStyle } from '../../../../shared/Common/Icon';
@@ -19,6 +19,7 @@ import { SpinnerContainer } from '../../../../components/FormsComponents/Progres
 import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -164,11 +165,18 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     </DragAndDrop>
                 </div>
 
-                {errorMessage.length > 0 ?<div className="py1 mx1"  ><Text size={10} weight='reg' color='red'>{errorMessage}</Text></div> : null}
+                {
+                    errorMessage.length > 0 &&
+                        <div className="py1 mx1"  >
+                            <Text size={10} weight='reg' color='red'>{errorMessage}</Text>
+                        </div>
+                }
                 <div className="mb25 ml1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
-                <BorderStyle className="p1 mx1" />
+
+                <Divider className="p1 mx1" />
+
                 <form id='companyPageForm' onSubmit={handleSubmit(onSubmit)}>
-                    <TextStyle className="mx1 my2"><Text size={20} weight='med'>Details</Text></TextStyle>
+                    <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
                     <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
@@ -257,12 +265,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                     </div>
 
-                    <BorderStyle className="p1 mx1" />
+                    <Divider className="p1 mx1" />
 
-                    <TextStyle className="px1 pt2 pb1" >
+                    <div className="px1 pt2 pb1" >
                         <Text size={20} weight='med'>Address</Text>
                         <Text color='gray-4' size={12} weight='reg'>Optional</Text>
-                    </TextStyle>
+                    </div>
                     <div className="md-col md-col-12">
                         <Input 
                             disabled={false} 

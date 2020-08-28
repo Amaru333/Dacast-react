@@ -16,7 +16,7 @@ export interface UpgradeContainerProps {
     getPlanDetails: () => void;
     purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => void;
     billingInfos: BillingPageInfos;
-    getBillingPageInfos: Function;
+    getBillingPageInfos: () => void
 }
 
 const UpgradeContainer = (props: UpgradeContainerProps) => {
@@ -46,11 +46,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
     return {
-        getPlanDetails: () => {
-            dispatch(getPlanDetailsAction())
+        getPlanDetails: async () => {
+            await dispatch(getPlanDetailsAction())
         },
-        getBillingPageInfos: () => {
-            dispatch(getBillingPageInfosAction());
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction());
         },
         purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
             await dispatch(purchasePlanAction(data, recurlyToken, token3Ds, callback, fallback))

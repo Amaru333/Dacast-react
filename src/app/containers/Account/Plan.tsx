@@ -12,15 +12,15 @@ import { DashboardInfos, getDashboardDetailsAction } from '../../redux-flow/stor
 interface PlanContainerProps {
     billingInfos: BillingPageInfos;
     widgetData: DashboardInfos
-    getWidgetData: Function;
-    getBillingPageInfos: Function;
-    saveBillingPagePaymentMethod: Function;
-    addBillingPagePaymenPlaybackProtection: Function;
-    editBillingPagePaymenPlaybackProtection: Function;
-    deleteBillingPagePaymenPlaybackProtection: Function;
-    addBillingPageExtras: Function;
-    getProductDetails: Function;
-    purchaseProducts: Function;
+    getWidgetData: () => Promise<void>;
+    getBillingPageInfos: () => Promise<void>;
+    saveBillingPagePaymentMethod: (data: string) => Promise<void>
+    addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
+    addBillingPageExtras: (data: Extras) => Promise<void>
+    getProductDetails: () => Promise<void>;
+    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
 }
 const Plan = (props: PlanContainerProps) => {
 
@@ -53,32 +53,32 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, PlanAction>) {
     return {
-        getBillingPageInfos: () => {
-            dispatch(getBillingPageInfosAction());
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction());
         },
-        saveBillingPagePaymentMethod: (data: CreditCardPayment | PaypalPayment) => {
-            dispatch(saveBillingPagePaymentMethodAction(data));
+        saveBillingPagePaymentMethod: async (data: string) => {
+            await dispatch(saveBillingPagePaymentMethodAction(data));
         },
-        addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
-            dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
+        addBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
+             await dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
         },
-        editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
-            dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
+        editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
+             await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
         },
-        deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
-            dispatch(deleteBillingPagePaymenPlaybackProtectionAction(data));
+        deleteBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
+             await dispatch(deleteBillingPagePaymenPlaybackProtectionAction(data));
         },
-        addBillingPageExtras: (data: Extras) => {
-            dispatch(addBillingPageExtrasAction(data));
+        addBillingPageExtras: async (data: Extras) => {
+             await dispatch(addBillingPageExtrasAction(data));
         },
-        getWidgetData: () => {
-            dispatch(getDashboardDetailsAction());
+        getWidgetData: async () => {
+             await dispatch(getDashboardDetailsAction());
         },
-        getProductDetails: () => {
-            dispatch(getProductDetailsAction());
+        getProductDetails: async () => {
+             await dispatch(getProductDetailsAction());
         },
-        purchaseProducts: async (data: Extras, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
-            await dispatch(purchaseProductsAction(data, recurlyToken, token3Ds, callback, fallback))
+        purchaseProducts: async (data: Extras, recurlyToken: string, token3Ds?: string) => {
+            await dispatch(purchaseProductsAction(data, recurlyToken, token3Ds))
         }
     }
 }

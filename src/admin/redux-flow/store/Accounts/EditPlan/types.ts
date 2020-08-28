@@ -23,6 +23,7 @@ export interface PlanInfo {
     vod: PlanSetting;
     folders: PlanSetting;
     playlists: PlanSetting;
+    analytics: PlanSetting;
     aes: PlanSetting;
     signedKeys: PlanSetting;
     api: PlanSetting;

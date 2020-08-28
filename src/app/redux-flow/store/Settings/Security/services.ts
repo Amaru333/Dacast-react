@@ -18,9 +18,11 @@ const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
 
 const createGeoRestrictionGroupService = async (data: GeoRestriction) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let parsedData = data
+    delete parsedData.id
     return await axiosClient.post('/accounts/' + userId + '/settings/security/restrictions',
         {
-            ...data
+            ...parsedData
         }
     )
 }
@@ -41,9 +43,11 @@ const deleteGeoRestrictionGroupService = async (data: GeoRestriction) => {
 
 const createDomainControlGroupService = async (data: DomainControl) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let parsedData = data
+    delete parsedData.id
     return await axiosClient.post('/accounts/' + userId + '/settings/security/restrictions',
         {
-            ...data
+            ...parsedData
         }
     )
 }

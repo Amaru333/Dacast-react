@@ -35,7 +35,7 @@ const defaultPreset: Preset = {
     }
 }
 
-export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void> }) => {
+export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void>; fetchContentPrices: (contentId: string, contentType: string) => Promise<void>}) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
         let offset = moment.tz(timezoneName).utcOffset()*60
@@ -114,6 +114,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
         }
         props.action(savedPrice, props.contentId, props.contentType)
         .then(() => {
+            props.fetchContentPrices(props.contentId, props.contentType)
             props.toggle(false)
             setButtonLoading(false)
         }).catch(() => {
@@ -163,9 +164,9 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                     newPricePreset.type === 'Subscription' ?
                         <DropdownSingle
                             id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={newPricePreset.settings.recurrence.unit} 
+                            dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'} 
                             dropdownTitle='Recurrence'
-                            list={{ 'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false }}
+                            list={{ 'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false }}
                             callback={(value: string) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: value}}})}
 
                         />
@@ -239,7 +240,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                     sizeButton='large'
                     buttonColor='blue'
                 >
-                    Create
+                {props.preset ? "Save" : "Create"}
                 </Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>

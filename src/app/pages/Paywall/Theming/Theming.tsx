@@ -15,6 +15,7 @@ import { PaywallThemingComponentProps } from '../../../containers/Paywall/Themin
 import styled from 'styled-components';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
@@ -138,7 +139,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})
 
                     }} />
-                    <BorderStyle className='mt3 mb2' />
+                    <Divider className='mt3 mb2' />
                     <Tab className='col col-12 my1' orientation='horizontal' list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
                         <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
@@ -306,11 +307,6 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             </div>
     )
 }
-
-export const BorderStyle = styled.div<{}>`
-    border-bottom: 1px solid ${props => props.theme.colors['gray-7']};
-    display: flex;
-`
 
 export const ColorPickerLabel = styled.div`
     margin-bottom: 4px;

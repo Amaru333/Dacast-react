@@ -124,10 +124,10 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                 {
                     presetsList.type === 'Subscription' ?
                         <DropdownSingle id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={presetsList.settings.recurrence.unit} 
+                            dropdownDefaultSelect={presetsList.settings.recurrence ? presetsList.settings.recurrence.unit : 'Weekly'} 
                             dropdownTitle='Recurrence' 
                             callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: value}}})}
-                            list={{'Weekly': false, 'Monthly': false, 'Quaterly': false, 'Biannual': false}} 
+                            list={{'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false}} 
                         />
                         :
                         <>
@@ -180,7 +180,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     </div>
             }
             <div className='col col-12 mt3'>
-                <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+        <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.preset ? "Save" : "Create"}</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

@@ -9,7 +9,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { MailCatcherModal } from './MailCatcherModal';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { TextStyle, AdTableURLContainer } from '../../../shared/Engagement/EngagementStyle';
+import { AdTableURLContainer } from '../../../shared/Engagement/EngagementStyle';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
 import { EngagementInfo, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
@@ -266,7 +266,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                 </Card>}
             {/* TODO: MAIL CATCHER
             <Card className='my2'>
-                <TextStyle> <Text size={20} weight='med'>Email Catcher</Text></TextStyle>
+                <div> <Text size={20} weight='med'>Email Catcher</Text></div>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>Prompts viewers to provide their email address before viewing your content and store them wherever you create an integration.</Text>
                 <div className='flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle>
@@ -280,7 +280,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card> */}
 
             <Card className="my2">
-                <TextStyle> <Text size={20} weight='med'>Brand Image</Text></TextStyle>
+                <div> <Text size={20} weight='med'>Brand Image</Text></div>
                 <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
 
 
@@ -326,7 +326,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
             </Card>
 
             <Card className='my2'>
-                <TextStyle className="pb2" ><Text size={20} weight='med'>Brand Text</Text></TextStyle>
+                <div className="pb2" ><Text size={20} weight='med'>Brand Text</Text></div>
                 <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                 <div className='clearfix mb2'>
                     <Input

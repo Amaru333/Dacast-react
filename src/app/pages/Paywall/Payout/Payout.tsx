@@ -3,7 +3,6 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { BorderStyle } from './PayoutStyle';
 import { PaywallPaymentMethod } from './PaywallPaymentMethod';
 import { Modal } from '../../../../components/Modal/Modal';
 import { WithdrawalModal } from './WithdrawalModal';
@@ -14,6 +13,7 @@ import { IconStyle, ActionIcon, IconContainer } from '../../../../shared/Common/
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
 import { tsToLocaleDate } from '../../../../utils/utils';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
@@ -103,7 +103,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
                 return {
                     data: [
-                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId).paymentMethodName}</Text>,
+                        <Text key={'withdrawalRequestTableBodyRequestType' + i} size={14} weight='reg' color='gray-3'>{props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId) ? props.payoutInfos.paymentMethods.find(p => p.id ===item.paymentMethodId).paymentMethodName : ''}</Text>,
                         <Text key={'withdrawalRequestTableBodyCurrency' + i} size={14} weight='reg' color='gray-3'>{item.currency}</Text>,
                         <Text key={'withdrawalRequestTableBodyAmount' + i} size={14} weight='reg' color='gray-3'>{item.amount}</Text>,
                         <Text key={'withdrawalRequestTableBodyRequestDate' + i} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(item.requestDate)}</Text>,
@@ -160,7 +160,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         <Table id='paywallPaymentMethodTable' headerBackgroundColor="gray-10" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
                         : <Table id='paymentMethodEmptyTable' headerBackgroundColor="gray-10" header={emptyPaymentMethodTableHeader()} body={emptyPaymentMethodTableBody('Add a Withdrawal Method so you can withdraw money from your Paywall balance')} />
                 }
-                <BorderStyle className='mt2 mb1' />
+                <Divider className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
                 <Text className='pt2 py1' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
                 {props.payoutInfos.paymentMethods &&

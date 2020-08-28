@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextStyle, RadioButtonContainer, RadioButtonOption, RecurlyElementStyle } from './BillingStyle';
+import { RadioButtonContainer, RadioButtonOption, RecurlyElementStyle } from './BillingStyle';
 import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -157,7 +157,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
         </div>
         }
             <form hidden={hideForm} id='paymentMethodForm' ref={formRef} onSubmit={(event) => { event.preventDefault() }} >
-                <TextStyle className='mb2'><Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text></TextStyle>
+                <div className='mb2'>
+                    <Text size={14} weight='reg' color='gray-1'>Choose which payment method you want to use</Text>
+                </div>
                 <RadioButtonContainer isSelected={selectedOption === 'creditCard'}>
                     <InputRadio name='paymentMethodForm' value='creditCard' defaultChecked={true} onChange={() => setSelectedOption('creditCard')} label='Credit Card' />
                     <img src={CardLogo} />

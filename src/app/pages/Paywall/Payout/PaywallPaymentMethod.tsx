@@ -3,11 +3,11 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { BorderStyle } from './PayoutStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
+import { Divider } from '../../../shared/Common/MiscStyle';
 
 enum PaymentMethodType {
     BankAccountUS = 'Bank Account (US)',
@@ -40,7 +40,7 @@ const BankAccountUS = (updatePaymentMethod: (data: PaymentMethod) => void, payme
                 <Input className='col col-12 sm-col-4 xs-no-gutter pl1 mb2' id='zipCode' value={paymentMethodData ? paymentMethodData.zipCode : ''} label='Zip/Postal Code' placeholder='Zip/Postal Code' onChange={(event) => updatePaymentMethod({...paymentMethodData, zipCode: event.currentTarget.value})} />
             </div>
 
-            <BorderStyle className='mb2' />
+            <Divider className='mb2' />
             <Text size={20} weight='reg'>Bank Details</Text>
             <div className='col col-12 my2'>
                 <Input className='col col-12 sm-col-4' id='bankName' label='Bank Name' value={paymentMethodData ? paymentMethodData.bankName : ''} placeholder='Bank Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankName: event.currentTarget.value})} />
@@ -83,7 +83,7 @@ const BankAccountInternational = (updatePaymentMethod: (data: PaymentMethod) => 
                 <Input className='col xs-no-gutter col-12 sm-col-3 pl1' id='Country' label='Country' value={paymentMethodData ? paymentMethodData.country : ''} placeholder='Country' onChange={(event) => updatePaymentMethod({...paymentMethodData, country: event.currentTarget.value})} />
             </div>
 
-            <BorderStyle className='my2' />
+            <Divider className='my2' />
             <Text size={20} weight='reg'>Bank Details</Text>
             <div className='col col-12 my2'>
                 <Input className='col col-12 sm-col-4' id='bankName' label='Bank Name' value={paymentMethodData ? paymentMethodData.bankName : ''} placeholder='Bank Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, bankName: event.currentTarget.value})} />
@@ -227,7 +227,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     }   
                 </div>
 
-                <BorderStyle className='mb2' />
+                <Divider className='mb2' />
 
                 {renderPaymentMethod()}
             </Card> 

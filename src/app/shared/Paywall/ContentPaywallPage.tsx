@@ -8,7 +8,6 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Table } from '../../../components/Table/Table'
 import { Modal } from '../../../components/Modal/Modal'
 import { IconStyle, IconContainer , ActionIcon} from '../../../shared/Common/Icon'
-import { BorderStyle } from '../../pages/Paywall/Presets/PresetsStyle'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -20,6 +19,7 @@ import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { userToken } from '../../utils/token'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
+import { Divider } from '../Common/MiscStyle';
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -210,7 +210,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
                 <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value});setHasChanged(true)}} />
                         
-                <BorderStyle className='my2' />
+                <Divider className='my2' />
 
                 <Text size={20} weight='med'>Prices</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
@@ -220,7 +220,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody('You have no Prices')} />
 
                 }
-                <BorderStyle className='my2' />
+                <Divider className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promos</Text>
                 <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
@@ -231,7 +231,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 }
 
-                <BorderStyle className='my2' />
+                <Divider className='my2' />
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
@@ -242,13 +242,17 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 }
                    
             </Card>
-            <div className={'mt2' + (hasChanged ? ' hide' : '')}>
-                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
-            </div>
+            {
+                hasChanged &&
+                <div className='mt2'>
+                    <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
+                </div>
+            }
+
             <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit' : 'Create') + ' Price'} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
                 {
-                    priceModalOpened && <ContentPricePresetsModal contentType={props.contentType} contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
+                    priceModalOpened && <ContentPricePresetsModal fetchContentPrices={props.getContentPrices} contentType={props.contentType} contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit' : 'Create') + ' Promo'} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>

@@ -127,14 +127,13 @@ export const getProductDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetP
     };
 }
 
-export const purchaseProductsAction = (data: Extras, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function): ThunkDispatch<Promise<void>, {}, PurchaseProducts> => {
+export const purchaseProductsAction = (data: Extras, recurlyToken: string, token3Ds?: string): ThunkDispatch<Promise<void>, {}, PurchaseProducts> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, PurchaseProducts> ) => {
         await BillingServices.purchaseProductsService(data, recurlyToken, token3Ds)
             .then( response => {
                 dispatch( {type: ActionTypes.PURCHASE_PRODUCTS, payload: data} );
-                callback(response);
-            }).catch((error) => {
-                fallback(error);
+                return response
+            }).catch(() => {
             })
     };
 }

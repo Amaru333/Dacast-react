@@ -8,6 +8,8 @@ import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
 import { SearchResult } from '../../redux-flow/store/Content/General/types';
+import { ErrorRealTime } from '../../../components/Error/ErrorRealTime';
+import { useHistory } from 'react-router';
 
 
 export interface RealTimePageProps {
@@ -19,6 +21,10 @@ export interface RealTimePageProps {
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
 
+    const [noChannel, setNoChannel] = React.useState<boolean>(false)
+
+    let history = useHistory()
+
     React.useEffect(() => {
         props.getLiveList(null)
     }, [])
@@ -26,7 +32,7 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
     React.useEffect(() => {
         if(props.liveList) {
             if(!props.liveList.results || props.liveList.results.length === 0) {
-                // HANDLE NO CHANNEL
+                setNoChannel(true)
             } else if(!props.realTimeAnalytics ) {
                 props.getAnalyticsRealTime({ period: 5, channelId: props.liveList.results[0].objectID })
             }
@@ -34,9 +40,10 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
     }, [props.liveList])
 
     
-
     if(!props.liveList || !props.realTimeAnalytics) {
         return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    } else if(noChannel){
+        return <ErrorRealTime handleSubmit={() => history.push('/livestreams')} /> 
     } else {
         return <RealTimeAnalyticsPage {...props} />  
     }

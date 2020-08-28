@@ -65,7 +65,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
             return ;
         }else {
-            return <Text className={smallScreen ? 'mb1' : "ml-auto"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
+            return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
         }
     }
 
@@ -78,15 +78,15 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     const classItem = classItemThirdWidthContainer;
     return (
         <section className="col col-12">
-            {
-                !props.isPlanPage &&
-                    <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
-                        <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb3 inline-block"}>
+            <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
+                {
+                    !props.isPlanPage &&
+                        <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb2 inline-block"}>
                             Dashboard
                         </Text>
-                        {handleBillingPeriod()}
-                    </div>
-            }
+                }
+                {handleBillingPeriod()}
+            </div>
             <div className={classContainer}>
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
@@ -126,14 +126,14 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 
                 {
-                    props.plan.displayName === "Free" ?
+                    props.plan.displayName === "30 Day Trial" ?
                         <WidgetElement className={classItem}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
                                 <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
                             </WidgetHeader>
                             <div className="flex flex-wrap items-baseline mb1">
-                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.profile.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                             </div>
                             <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
                         </WidgetElement> :
@@ -156,7 +156,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 }
 
 export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number}; plan?: PlanSummary }) => {
-    let history = useHistory()
 
     const handleProgressBar = (percentage: number) => {
         return (
