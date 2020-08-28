@@ -130,7 +130,6 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             props.setStepValidated(props.stepperData.recipePresets.length > 0)
         }, [])
         if(props.staticStepperData['recipePresets']) {
-            debugger
             let presets: RecipePreset[] = props.staticStepperData['recipePresets']
             return presets.map((value, key) => {
     
