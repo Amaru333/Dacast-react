@@ -22,8 +22,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
 
 
-    const [accountId, setAccountId] = React.useState<string>(null)
-    const [keyword, setKeyword] = React.useState<string>(null)
+    const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
+    const [keyword, setKeyword] = React.useState<string>(qs.get('search') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1,nbResults: parseInt(qs.get('perPage')) || 10})
 
@@ -31,7 +31,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     React.useEffect(() => {
         if(pagination && !contentLoading) {
             setContentLoading(true)
-            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}`)
+            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
             .then(() => {
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${pagination.page - 1}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
@@ -98,13 +98,17 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
     const handleSubmit = (salesforceId: string, search: string) => {
         setContentLoading(true)
+        const previousPagination = pagination
+        setPagination({page: 0, nbResults: pagination.nbResults})
         props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
         .then(() => {
             query.push(location.pathname + `?page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : ''))
-            setPagination({page: 0, nbResults: pagination.nbResults})
             setContentLoading(false)
         })
-        .catch(() => setContentLoading(false))
+        .catch(() => {
+            setPagination(previousPagination)
+            setContentLoading(false)
+        })
     }
     return (
         <div>
