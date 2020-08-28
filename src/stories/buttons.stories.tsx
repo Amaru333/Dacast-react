@@ -9,16 +9,19 @@ storiesOf('Buttons', module)
         <React.Fragment>
             <div className="m3">
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button isLoading={true} buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1"  >Loading</Button>
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
             </div>
             <div className="m3">
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1" disabled  >Primary disabled</Button>
+                <Button isLoading={true} buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1" disabled  >Disabled Loading</Button>
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="secondary" className="mr1" disabled >Secondary disabled</Button>
                 <Button buttonColor='blue' onClick={action("button-click")} sizeButton="large" typeButton="tertiary" className="mr1" disabled >Tertiary disabled</Button>
             </div>
             <div className="m3">
                 <Button buttonColor='red' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1"  >Primary</Button>
+                <Button isLoading buttonColor='red' onClick={action("button-click")} sizeButton="large" typeButton="primary" className="mr1"  >Loading</Button>
                 <Button buttonColor='red' onClick={action("button-click")} sizeButton="large" typeButton="secondary" className="mr1"  >Secondary</Button>
                 <Button buttonColor='red' onClick={action("button-click")} sizeButton="large" typeButton="tertiary" className="mr1"   >Tertiary</Button>
             </div>
@@ -31,6 +34,7 @@ storiesOf('Buttons', module)
                 <Button colorObject={buttonArrayColor['red']} onClick={action("button-click")} sizeButton="large" className="mr1"  >Custom Color Button Red</Button>
                 <Button colorObject={buttonArrayColor['blue']} onClick={action("button-click")} sizeButton="large" className="mr1"  >Custom Color Button Blue</Button>
                 <Button colorObject={buttonArrayColor['gray']} onClick={action("button-click")} sizeButton="large" className="mr1"  >Custom Color Button Gray</Button>
+                <Button isLoading={true} colorObject={buttonArrayColor['gray']} onClick={action("button-click")} sizeButton="large" className="mr1"  >Loading</Button>
             </div>
         </React.Fragment>
 

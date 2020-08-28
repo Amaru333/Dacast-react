@@ -8,6 +8,8 @@ import React from 'react';
 import "../src/scss/style.scss";
 import { globalDefaultState } from "../src/app/redux-flow/store";
 import { withA11y } from '@storybook/addon-a11y';
+import { theme } from './theme';
+import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
 
 const initialState = globalDefaultState;
 const store = configureStore(initialState);
@@ -17,7 +19,14 @@ function loadStories() {
     req.keys().forEach(req);
 }
 addDecorator(withA11y);
-
+addParameters({
+    options: {
+        theme,
+    },
+    viewport: {
+        viewports: MINIMAL_VIEWPORTS,
+    },
+})
 addDecorator((story) => (
     <Provider store={store}>
         <ThemeProvider theme={Theme}>

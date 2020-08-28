@@ -80,6 +80,8 @@
     "@storybook/addon-a11y": "^5.2.3",
     "@storybook/addon-knobs": "^5.3.18",
     "@storybook/addon-storysource": "^5.2.3",
+    "@storybook/addon-viewport": "^6.0.20",
+    "@storybook/theming": "^6.0.20",
     "@types/googlemaps": "^3.38.0",
     "@types/luxon": "^1.15.2",
     "@types/node": "^12.7.5",
