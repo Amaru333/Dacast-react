@@ -8,6 +8,7 @@ import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
 import { InputSlider } from '../components/FormsComponents/Input/InputSlider';
 import { InputTags } from '../components/FormsComponents/Input/InputTags';
 import { Text } from '../components/Typography/Text';
+import { action } from '@storybook/addon-actions';
 
 storiesOf('Inputs', module)
     .add('Text input', () => ( 
@@ -15,28 +16,25 @@ storiesOf('Inputs', module)
 
 
             <StorybookInputContainerStyle>
-                <Input placeholder="Placeholder" /> 
+                <Input label='Simple Input' placeholder="Placeholder" /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input placeholder="Placeholder" icon="error"/> 
+                <Input label="Simple Input with icon" placeholder="Placeholder" icon="error"/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input defaultValue="With a default value" placeholder="Placeholder" help="Help for this input"/> 
+                <Input label="Simple Input with help" defaultValue="And a default value" placeholder="Placeholder" help="Help message here"/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input placeholder="Placeholder" help="Error for this input" isError={true}/> 
+                <Input label="Simple Input on error" placeholder="Placeholder" help="Error message here" isError={true}/> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input label="Whatever label"  placeholder="Placeholder" /> 
+                <Input label="Disabled Input with icon/help" placeholder="Placeholder" help="Help message here" icon="error" disabled /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input label="Whatever label" placeholder="Placeholder" help="Info for this input" icon="error" disabled /> 
+                <Input label="Input with icon prefix" inputPrefix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info message here" /> 
             </StorybookInputContainerStyle>
             <StorybookInputContainerStyle>
-                <Input label="Whatever label" inputPrefix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info for this input" /> 
-            </StorybookInputContainerStyle>
-            <StorybookInputContainerStyle>
-            <Input label="Whatever label"  suffix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" help="Info for this input" /> 
+                <Input label="Input with icon suffix"  suffix={<Text size={14} weight="med" color={"gray-3"} > $ </Text>} placeholder="Placeholder" /> 
             </StorybookInputContainerStyle>
         </React.Fragment>
 
@@ -64,12 +62,16 @@ storiesOf('Inputs', module)
 
     .add('Radio button input', () => (
         <React.Fragment>
-            <InputRadio name="test" value="test" label="Test"></InputRadio>
-            <InputRadio name="test" value="test2" label="Test 2"></InputRadio>
-            <InputRadio name="test" value="test3" label="Test 3"></InputRadio>
-            <InputRadio disabled name="test-disabled" value="test" label="Disabled Test"></InputRadio>
-            <InputRadio  disabled name="test-disabled" value="test2" label="Disabled Test 2"></InputRadio>
-            <InputRadio checked disabled name="test-disabled" value="test3" label="Disabled Test 3"></InputRadio>
+            <StorybookInputContainerStyle>
+                <InputRadio name="test" value="test" label="Radio Button 1"></InputRadio>
+                <InputRadio name="test" value="test2" label="Radio Button 2"></InputRadio>
+                <InputRadio name="test" value="test3" label="Radio Button 3"></InputRadio>
+            </StorybookInputContainerStyle>
+            <StorybookInputContainerStyle>
+                <InputRadio disabled name="test-disabled" value="test" label="Disabled Radio Button 1"></InputRadio>
+                <InputRadio  disabled name="test-disabled" value="test2" label="Disabled Radio Button 2"></InputRadio>
+                <InputRadio checked disabled name="test-disabled" value="test3" label="Disabled Radio Button 3"></InputRadio>
+            </StorybookInputContainerStyle>
         </React.Fragment>
             
     ))
@@ -77,7 +79,7 @@ storiesOf('Inputs', module)
     .add('Slider input', () => (
         <React.Fragment>
             <StorybookInputContainerStyle>
-                 <InputSlider id="testSlider" min={0} max={150} value={[30, 100]}/>
+                 <InputSlider callback={action('Callback trigger')} id="testSlider" min={0} max={150} value={[30, 100]}/>
             </StorybookInputContainerStyle>
         </React.Fragment>
     ))
@@ -85,16 +87,17 @@ storiesOf('Inputs', module)
     .add('Tags input', () => (
         <React.Fragment>
             <StorybookInputContainerStyle>
-                 <InputTags placeholder="Type URL..." label="test"/>
+                 <InputTags placeholder="Placeholder..." label="Tags Input"/>
             </StorybookInputContainerStyle>
             <br/>
             <StorybookInputContainerStyle>
-                 <InputTags defaultTags={["www.google.com", "www.someothereallylongdomainname.org"]} placeholder="Type URL..." label="test with default tags"/>
+                 <InputTags defaultTags={["www.google.com", "www.someothereallylongdomainname.org"]} placeholder="Placeholder..." label="Tags Input with defaults"/>
             </StorybookInputContainerStyle>    
         </React.Fragment>
     ));
 
 const StorybookInputContainerStyle = styled.div`
     width: 200px;
+    display:inline-block;
     margin: 20px;
 `;

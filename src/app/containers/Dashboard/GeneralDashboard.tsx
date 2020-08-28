@@ -156,7 +156,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 }
 
 export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number}; plan?: PlanSummary }) => {
-    let history = useHistory()
 
     const handleProgressBar = (percentage: number) => {
         return (

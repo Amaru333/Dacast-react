@@ -22,7 +22,7 @@ const TextComponent = (props:{textstring: string, weight: Weight}) => {
 }
 
 const tableHeader = {data: [
-    {cell: InputCheckboxComponent('checkbox0'),
+    {cell: InputCheckboxComponent('checkbox0')},
     {cell: TextComponent({textstring:'ID', weight:'med'})},
     {cell: TextComponent({textstring:'Number', weight:'med'})},
     {cell: TextComponent({textstring:'Name', weight:'med'})},

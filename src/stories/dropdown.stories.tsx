@@ -6,7 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import styled from 'styled-components';
 import "../scss/style.scss";
 import { DropdownCountries } from '../components/FormsComponents/Dropdown/DropdownCountries';
-
+import { action } from '@storybook/addon-actions';
 
 const stories = storiesOf('Dropdown', module);
 stories.addDecorator(withKnobs);
@@ -17,8 +17,10 @@ stories.add('Dropdown', () => {
             <StorybookDropdownContainerStyle>
                 <DropdownSingle 
                     id="singleDopdown"
-                    dropdownTitle="My dropdown" 
-                    list={{ "item1":false, "item2":false, "item3":false }}/> 
+                    dropdownTitle="Dropdown example" 
+                    list={{ "Green":false, "Yellow":false, "Blue":false }}
+                    callback={action("Callback Trigger")}
+                    />
             </StorybookDropdownContainerStyle>
             {/* <StorybookDropdownContainerStyle>
                 <DropdownCheckbox  
@@ -30,8 +32,9 @@ stories.add('Dropdown', () => {
             <StorybookDropdownContainerStyle>
                 <DropdownCountries 
                     id="countriesDropdown"
-                    dropdownTitle="My ccountries dropdown"
-                    list={['France', 'Spain']}
+                    dropdownTitle="Multi Check Countries Dropdown"
+                    list={[]}
+                    callback={action("Callback Trigger")}
                 /> 
             </StorybookDropdownContainerStyle>
         </React.Fragment>
@@ -39,7 +42,7 @@ stories.add('Dropdown', () => {
 });
 
 const StorybookDropdownContainerStyle = styled.div`
-    width: 200px;
+    width: 400px;
     float: left;
     margin: 20px;
 `;
