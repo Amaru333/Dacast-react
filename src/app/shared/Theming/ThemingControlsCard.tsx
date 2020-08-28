@@ -345,7 +345,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         </ControlToggleContainer>
                                         {
                                             selectedTheme.isViewerCounterEnabled &&
-                                                <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit.toString()} onChange={(event) => {setEditedSettings(true);setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)});}} />
+                                                <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => {setEditedSettings(true);setSelectedTheme({...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value)});}} />
                                         }
                                     </DisabledSection>
                                 </>
