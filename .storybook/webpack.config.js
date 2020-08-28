@@ -12,27 +12,39 @@ module.exports = ({ config }) => {
         ]
     });
     config.module.rules.push({
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx?$/,
+        loader: 'babel-loader',
         include: [SRC_PATH, STORIES_PATH],
-        use: [
-            {
-                loader: require.resolve('awesome-typescript-loader'),
-                options: {
-                    configFileName: './.storybook/tsconfig.json',
-                    "ignoreDiagnostics": [7005, 2740, 2345, 2531]
-                }
-            }
-        ]
+        options: {
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "browsers": ["last 2 versions", "ie >= 11"],
+                        },
+                    }
+                ],
+                "@babel/preset-react"
+            ]
+        }
     });
     config.module.rules.push({
         test: /\.stories\.tsx?$/,
-        loaders: [{
-            loader: require.resolve('@storybook/source-loader'),
-            options: { 
-                parser: 'typescript',
-            },
-        }],
-        enforce: 'pre',
+        loader: 'babel-loader',
+        options: {
+            presets: [
+                [
+                    "@babel/preset-env",
+                    {
+                        "targets": {
+                            "browsers": ["last 2 versions", "ie >= 11"],
+                        },
+                    }
+                ],
+                "@babel/preset-react"
+            ]
+        }
     });
     config.resolve.extensions.push('.ts', '.tsx', '.scss', '.css', '.js');
     return config;

@@ -113,20 +113,6 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                         <TodoList items={todoItems} />
                     </div>
                 </WidgetElement>
-                {/* <div className={classItemFullWidthContainer}>
-                    <Card className="dashboardCard mb1">
-                        <WidgetHeader className="flex">
-                            <Text size={16} weight="med" color="gray-1"> Profile Completion </Text>
-                            <Text className="ml-auto" size={16} weight="med" color="gray-1">25%</Text>
-                        </WidgetHeader>
-                        <ProgressBar size="large" color="violet" startingValue={50} />
-                        <div className="flex mb1">
-                            <TodoList items={todoProfileItems} />
-                        </div>
-                    </Card>
-                    <Button className="col-12 mb1" sizeButton="large" typeButton='secondary' onClick={() => history.push('/uploader')}> Upload a Video </Button>
-                    <Button className="col-12" sizeButton="large" typeButton='secondary' onClick={() => handleCreateStream()}> Create a Live Stream </Button>
-                </div> */}
                 { supportWidgetOpen &&
                     <div className={classItemFullWidthContainer}>
                         <SupportCard className="dashboardCard col col-12">

@@ -13,6 +13,7 @@ export const HelpStyle = styled.div`
 `;
 
 export const RelativeContainer = styled.div`
+    position: relative;
     display: -webkit-box;
     display: -moz-box;
 `;

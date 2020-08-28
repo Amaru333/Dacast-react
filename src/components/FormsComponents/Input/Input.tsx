@@ -88,10 +88,10 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                     </AddonStyle>
                     :
                     null}
+                {icon ? <IconStyle className="absolute" style={ {top: 8, right: 8} } disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
             </RelativeContainer>
 
 
-            {icon ? <IconStyle disabled={props.disabled ? true : false}><Icon>{icon}</Icon></IconStyle> : null}
             {help ? <HelpStyle>
                 <Text color={props.isError ? "red" : props.disabled ? "gray-4" : "gray-3"} size={12} weight="reg"> {help} </Text>
             </HelpStyle> : null}

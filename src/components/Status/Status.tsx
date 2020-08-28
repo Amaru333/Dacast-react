@@ -16,5 +16,6 @@ export const StatusStyle = styled.div<{color: ColorsApp}>`
 width: 8px;
 height: 8px;
 border-radius: 100px;
+display:inline-block;
 background-color: ${props => props.theme.colors[props.color]}
 `
