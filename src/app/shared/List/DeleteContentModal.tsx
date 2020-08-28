@@ -22,7 +22,7 @@ export const DeleteContentModal = (props: {showToast: (text: string, size: Size,
     return (
         <div className='flex flex-column'>
             <Text className='py1' size={14} weight='reg'>Are you sure that you want to delete {props.contentName}?</Text>
-            <Text className='py1' size={14} weight='med' >Deleted assets stay in the Trash for the next 30 days. </Text>
+            <Text className='py1' size={14} weight='med' >Deleted videos stay in the Trash for the next 30 days. </Text>
             <div className='flex mt2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Delete</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>

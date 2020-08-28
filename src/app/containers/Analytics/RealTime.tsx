@@ -14,9 +14,9 @@ import { useHistory } from 'react-router';
 
 export interface RealTimePageProps {
     realTimeAnalytics: AnalyticsRealTimeState;
-    getAnalyticsRealTime: Function;
     liveList: false | SearchResult;
-    getLiveList: Function;
+    getAnalyticsRealTime: (options?: any) => Promise<void>;
+    getLiveList: (qs: string) => Promise<void>;
 }
 
 const RealTimeAnalytics = (props: RealTimePageProps) => {
@@ -60,11 +60,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRealTime: (options?: any) => {
-            dispatch(getAnalyticsRealTimeAction(options));
+        getAnalyticsRealTime: async (options?: any) => {
+            await dispatch(getAnalyticsRealTimeAction(options));
         },
-        getLiveList: (qs: string) => {
-            dispatch(getContentListAction(qs, 'live'));
+        getLiveList: async (qs: string) => {
+            await dispatch(getContentListAction(qs, 'live'));
         },
     };
 }
