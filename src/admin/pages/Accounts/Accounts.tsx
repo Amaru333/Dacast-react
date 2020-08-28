@@ -12,6 +12,8 @@ import { IconStyle } from '../../../shared/Common/Icon'
 import { DateTime } from 'luxon'
 import { tsToLocaleDate, useQuery } from '../../../utils/utils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
@@ -122,7 +124,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         }
     }
 
-    return (
+    return props.accounts ?
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex my1'>
@@ -139,5 +141,6 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
+
 }
