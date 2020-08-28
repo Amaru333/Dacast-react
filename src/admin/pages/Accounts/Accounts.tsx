@@ -34,7 +34,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
             .then(() => {
                 setContentLoading(false)
-                query.push(location.pathname + `?page=${pagination.page - 1}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+                query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
             })
             .catch(() => setContentLoading(false))
         }
@@ -102,7 +102,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         setPagination({page: 0, nbResults: pagination.nbResults})
         props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
         .then(() => {
-            query.push(location.pathname + `?page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : ''))
+            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : ''))
             setContentLoading(false)
         })
         .catch(() => {
