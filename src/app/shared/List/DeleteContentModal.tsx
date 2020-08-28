@@ -12,10 +12,10 @@ export const DeleteContentModal = (props: {showToast: (text: string, size: Size,
         props.deleteContent().then(() => {
             setButtonLoading(false)
             props.toggle(false)            
-            props.showToast(`${props.contentName} successfully deleted`, 'flexible', 'success')
+            props.showToast(`${props.contentName} successfully deleted`, 'fixed', 'success')
         }).catch((error) => {
             setButtonLoading(false)
-            props.showToast(`${props.contentName} couldn't be deleted`, 'flexible', 'error')
+            props.showToast(`${props.contentName} couldn't be deleted`, 'fixed', 'error')
         })
     }
 

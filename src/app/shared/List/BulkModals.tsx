@@ -31,14 +31,14 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('deleted')
-                props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
+                props.showToast(`${props.items.length} ${item} have been deleted`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'flexible', 'error')
+            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'fixed', 'error')
 
         })
     }
@@ -69,14 +69,14 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
+                props.showToast(`Theme has been assigned to ${props.items.length} items`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'flexible', 'error')
+            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'fixed', 'error')
 
         })
     }
@@ -137,14 +137,14 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList(online ? 'online' : 'offline')
-                props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
+                props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} items couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'error')
+            props.showToast(`${props.items.length} items couldn't be turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'error')
 
         })
     }
@@ -172,14 +172,14 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('paywall')
-                props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
+                props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast('Paywall couldn\'t be turned Offline', 'flexible', 'error')
+            props.showToast('Paywall couldn\'t be turned Offline', 'fixed', 'error')
 
         })
     }

@@ -73,7 +73,7 @@ export const saveContentPaywallInfosAction = (data: ContentPaywallPageInfos, con
         await ContentPaywallServices.saveContentPaywallInfos(data, contentId, parseContentType(contentType))
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PAYWALL_INFOS, payload: {data: data, contentId: contentId, contentType: contentType}});
-                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
             })
@@ -96,7 +96,7 @@ export const createContentPricePresetAction = (data: Preset, contentId: string, 
         await ContentPaywallServices.createContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_CONTENT_PRICE_PRESET, payload: {data: {...data, id: response.data.data.id}, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -108,7 +108,7 @@ export const saveContentPricePresetAction = (data: Preset, contentId: string, co
         await ContentPaywallServices.saveContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PRICE_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -120,7 +120,7 @@ export const deleteContentPricePresetAction = (data: Preset, contentId: string, 
         await ContentPaywallServices.deleteContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_CONTENT_PRICE_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -143,7 +143,7 @@ export const createContentPromoPresetAction = (data: Promo, contentId: string, c
         await ContentPaywallServices.createContentPromoPreset(data, contentId)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_CONTENT_PROMO_PRESET, payload: {data: {...data, id: response.data.data.id}, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -155,7 +155,7 @@ export const saveContentPromoPresetAction = (data: Promo, contentId: string, con
         await ContentPaywallServices.saveContentPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PROMO_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
@@ -167,7 +167,7 @@ export const deleteContentPromoPresetAction = (data: Promo, contentId: string, c
         await ContentPaywallServices.deleteContentPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_CONTENT_PROMO_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
             })
