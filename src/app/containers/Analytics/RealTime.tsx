@@ -39,14 +39,16 @@ const RealTimeAnalytics = (props: RealTimePageProps) => {
         }
     }, [props.liveList])
 
-    
+
+    if(noChannel) {
+        return  <ErrorRealTime handleSubmit={() => history.push('/livestreams')} /> 
+    }
+
     if(!props.liveList || !props.realTimeAnalytics) {
         return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    } else if(noChannel){
-        return <ErrorRealTime handleSubmit={() => history.push('/livestreams')} /> 
-    } else {
-        return <RealTimeAnalyticsPage {...props} />  
     }
+
+    return <RealTimeAnalyticsPage {...props} />  
 }
 
 export function mapStateToProps(state: ApplicationState) {
