@@ -25,20 +25,18 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [keyword, setKeyword] = React.useState<string>(qs.get('search') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1,nbResults: parseInt(qs.get('perPage')) || 10})
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
 
 
     React.useEffect(() => {
-        if(pagination && !contentLoading) {
-            setContentLoading(true)
-            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-            .then(() => {
-                setContentLoading(false)
-                query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-            })
-            .catch(() => setContentLoading(false))
-        }
-    }, [pagination])
+        setContentLoading(true)
+        props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+        .then(() => {
+            setContentLoading(false)
+            query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+        })
+        .catch(() => setContentLoading(false))
+    }, [])
 
     const accountsTableHeader = () => {
         return {data: [
@@ -110,6 +108,20 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             setContentLoading(false)
         })
     }
+
+    const handlePaginationChange = (page: number, nbResults: number) => {
+        setPagination({page:page,nbResults:nbResults})
+        if(pagination.page && pagination.nbResults && !contentLoading) {
+            setContentLoading(true)
+            props.getAccounts(accountId, `page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            .then(() => {
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            })
+            .catch(() => setContentLoading(false))
+        }
+    }
+
     return (
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
@@ -125,7 +137,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
-            <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />
+            <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
     )
 }
