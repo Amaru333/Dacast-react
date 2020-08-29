@@ -84,7 +84,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{account.plan.charAt(0).toUpperCase() + account.plan.slice(1)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
-                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate)}</Text>,
+                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 10000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 10000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
