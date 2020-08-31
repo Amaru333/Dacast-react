@@ -77,7 +77,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ?props.contentDetails.countdown.startTime !== 0 : null)
+    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ? (props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false : null)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)

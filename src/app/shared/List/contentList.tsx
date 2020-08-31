@@ -258,7 +258,8 @@ export const ContentListPage = (props: ContentListProps) => {
 
                     ],
                     isSelected: selectedContent.includes(value.objectID),
-                    isDisabled: value.status === 'deleted'
+                    isDisabled: value.status === 'deleted',
+                    isProcessing: (value.type === 'vod' && !value.size)
                 }
             })
         }
