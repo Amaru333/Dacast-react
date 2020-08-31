@@ -33,11 +33,19 @@ interface ContentSecurityComponentProps {
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
-    const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
-        if(ts > 0 ) {
-            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
-        } 
-        return {date: moment().toString(), time: '00:00'}
+    const inputTimeToTs = (value: string, timezoneName: string) => {
+        let offset = momentTZ.tz(timezoneName)*60
+        let splitValue = value.split(':')
+        let hours = parseInt(splitValue[0]) * 3600
+        if(isNaN(hours)){
+            hours = 0
+        }
+        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
+        if(isNaN(min)){
+            min = 0
+        }
+        let total = hours + min - offset
+        return total
     }
 
     
@@ -50,8 +58,14 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.startTime, props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone), timezone: props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.startTimezone : momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({...initTimestampValues(props.contentSecuritySettings.securitySettings.contentScheduling.endTime, props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone), timezone: props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone ? props.contentSecuritySettings.securitySettings.contentScheduling.endTimezone : momentTZ.tz.guess()})
+
+    let startTimestamp = momentTZ.tz((selectedSettings.contentScheduling.startTime && selectedSettings.contentScheduling.startTime > 0 ? selectedSettings.contentScheduling.startTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
+    let endTimestamp = momentTZ.tz((selectedSettings.contentScheduling.endTime && selectedSettings.contentScheduling.endTime > 0 ? selectedSettings.contentScheduling.endTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
+
+    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
+    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
+    const [endTime, setEndTime] = React.useState<number>(endTimestamp.clone().valueOf()/1000 - endTimestamp.clone().startOf('day').valueOf()/1000)
 
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
@@ -86,16 +100,17 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs =  (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        let startDate = startDateTime === 'Set Date and Time' ? momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone).valueOf()/1000 : 0
+        let endDate = endDateTime === 'Set Date and Time' ? momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone).valueOf()/1000 : 0
+        
         props.saveContentSecuritySettings(
             {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
-                    startTime: startTimeTs, 
-                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone : null,
-                    endTime: endTimeTs,
-                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
+                    startTime: startDate, 
+                    startTimezone: startDateTime === 'Set Date and Time' ? selectedSettings.contentScheduling.startTimezone : null,
+                    endTime: endDate,
+                    endTimezone: endDateTime === 'Set Date and Time' ? selectedSettings.contentScheduling.endTimezone : null
                 }, 
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl
@@ -215,31 +230,31 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 startDateTime === "Set Date and Time" &&
                                 <>        
                                     <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
-                                        <DateSinglePickerWrapper 
-                                            date={moment(startDateTimeValue.date)}
-                                            className='mt2'
-                                            id="startDate"
-                                            callback={(startDateValue: string) =>{ setHasToggleChanged(true);setStartDateTimeValue({...startDateTimeValue, date: startDateValue})}}
-                                        />
+                                    <DateSinglePickerWrapper
+                                        id='startDate'
+                                        date={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess())}
+                                        callback={(_, timestamp: string) => { setHasToggleChanged(true);setStartDay(momentTZ.tz(parseInt(timestamp)*1000, selectedSettings.contentScheduling.startTimezone).startOf('day').valueOf()/1000)}}
+                                        className='mt2' 
+                                    />
                                     </div>
 
-                                    <Input 
+                                    <Input
                                         type='time'
-                                        defaultValue={startDateTimeValue.time} 
-                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
-                                        disabled={false} 
-                                        id='startTime' 
+                                        value={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()).format('HH:mm')}
+                                        onChange={(event) => { setHasToggleChanged(true);setStartTime(inputTimeToTs(event.currentTarget.value, selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()))}}
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'                                        disabled={false}
+                                        id='startTime'
                                         pattern="[0-9]{2}:[0-9]{2}"
-                                        onChange={(event) =>{ setHasToggleChanged(true);setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                                        required
-                                    /> 
+                                        
+                                    />
+
                                     <DropdownSingle 
                                         hasSearch 
                                         id='startDateTimezoneDropdown' 
-                                        dropdownDefaultSelect={startDateTimeValue.timezone} 
+                                        dropdownDefaultSelect={selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()} 
                                         className='col col-3 px2' 
                                         dropdownTitle='Timezone' 
-                                        callback={(value: string) => {setHasToggleChanged(true);setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
+                                        callback={(value: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, startTimezone: value.split(' ')[0]}})}} 
                                         list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
                                     />
 
@@ -262,31 +277,31 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 <>
                                     <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
                                         <DateSinglePickerWrapper
-                                            date={moment(endDateTimeValue.date)}
+                                            id='endDate'
+                                            date={momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess())}
+                                            callback={(_, timestamp: string) => { setHasToggleChanged(true);setEndDay(momentTZ.tz(parseInt(timestamp)*1000, selectedSettings.contentScheduling.endTimezone).startOf('day').valueOf()/1000)}}
                                             className='mt2' 
-                                            id="endDate"
-                                            minDate={moment(startDateTimeValue.date)}
-                                            callback={(endDateValue: string) => {setHasToggleChanged(true);setEndDateTimeValue({...endDateTimeValue, date: endDateValue})}}
+                                            minDate={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess())}
                                         />
                                     </div>
-                                    <Input 
-                                        type='time' 
-                                        defaultValue={endDateTimeValue.time}
-                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'
-                                        disabled={false} 
-                                        id='endTime' 
+
+                                    <Input
+                                        type='time'
+                                        value={momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()).format('HH:mm')}
+                                        onChange={(event) => { setHasToggleChanged(true);setEndTime(inputTimeToTs(event.currentTarget.value, selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()))}}
+                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'                                        disabled={false}
+                                        id='endTime'
                                         pattern="[0-9]{2}:[0-9]{2}"
-                                        onChange={(event) => {setHasToggleChanged(true);setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
-                                        required
-                                    /> 
+                                        
+                                    />
 
                                     <DropdownSingle 
                                         hasSearch 
                                         id='endDateTimezoneDropdown' 
-                                        dropdownDefaultSelect={endDateTimeValue.timezone} 
+                                        dropdownDefaultSelect={selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()} 
                                         className='col col-3 px2' 
                                         dropdownTitle='Timezone' 
-                                        callback={(value: string) => {setHasToggleChanged(true);setEndDateTimeValue({...endDateTimeValue, timezone: value.split(' ')[0]})}} 
+                                        callback={(value: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, endTimezone: value.split(' ')[0]}})}} 
                                         list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
                                     />
                                 </>
