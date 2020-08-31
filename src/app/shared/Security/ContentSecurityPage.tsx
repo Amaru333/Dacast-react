@@ -34,7 +34,7 @@ interface ContentSecurityComponentProps {
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = momentTZ.tz(timezoneName)*60
+        //let offset = momentTZ.tz(timezoneName)*60
         let splitValue = value.split(':')
         let hours = parseInt(splitValue[0]) * 3600
         if(isNaN(hours)){
@@ -44,7 +44,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         if(isNaN(min)){
             min = 0
         }
-        let total = hours + min - offset
+        let total = hours + min
         return total
     }
 
@@ -100,8 +100,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startDate = startDateTime === 'Set Date and Time' ? momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone).valueOf()/1000 : 0
-        let endDate = endDateTime === 'Set Date and Time' ? momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone).valueOf()/1000 : 0
+        let startDate = startDateTime === 'Set Date and Time' ? momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()).valueOf()/1000 : 0
+        let endDate = endDateTime === 'Set Date and Time' ? momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()).valueOf()/1000 : 0
         
         props.saveContentSecuritySettings(
             {
