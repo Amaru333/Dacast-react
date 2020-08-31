@@ -47,7 +47,12 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
         <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
             <div className='flex flex-column'>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
-                <Text size={14} weight="med" className='inline-block mb3 mt1' >Deleted videos will stay in the Trash for 30 days. Other assets will be deleted permanently.</Text>
+                {
+                    props.items.some(i => i.type === 'folder') ?
+                    <Text size={14} weight="med" className='inline-block mb3 mt1' >Folders will be deleted permanently and videos inside it will be moved to Unsorted. All other assets will be moved to Unsorted.</Text>
+                    :
+                    <Text size={14} weight="med" className='inline-block mb3 mt1' >Deleted videos will stay in the Trash for 30 days. Other assets will be deleted permanently.</Text>
+                }
                 <div className='mt2'>
                     <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Delete</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
