@@ -43,8 +43,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.passwordProtection && props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
-    const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime ? 'Always' : 'Set Date and Time')
-    const [endDateTime, setEndDateTime] = React.useState<'Forever' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime ? 'Forever' : 'Set Date and Time')
+    const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime || props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time')
+    const [endDateTime, setEndDateTime] = React.useState<'Forever' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime || props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time')
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(!props.contentSecuritySettings.securitySettings.locked )
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.contentSecuritySettings.securitySettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
@@ -314,7 +314,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
                             dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name} 
-                            callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.contentSecuritySettings.securitySettings.geoRestriction.filter(f => f.name === selectedItem)[0].id})}} 
+                            callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.globalSecuritySettings.geoRestriction.find(f => f.name === selectedItem).id})}} 
                         />
                     </div>
 
@@ -335,7 +335,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 dropdownTitle="Select Domain Control Group" 
                                 list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
                                 dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name} 
-                                callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.contentSecuritySettings.securitySettings.domainControl.filter(f => f.name === selectedItem)[0].id})}} 
+                                callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.globalSecuritySettings.domainControl.find(f => f.name === selectedItem).id})}} 
                             />
                         </div>
                     </div>
