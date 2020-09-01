@@ -20,9 +20,7 @@ const EditPlan = (props: EditPlanComponentProps) => {
     let { accountId } = useParams()
 
     React.useEffect(() => {
-        if(!props.accountPlan) {
-            props.getAccountPlan(accountId)
-        }
+        props.getAccountPlan(accountId)
     }, [])
     return props.accountPlan ?
         <EditPlanPage {...props} accountId={accountId} /> 

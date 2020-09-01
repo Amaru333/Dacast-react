@@ -303,21 +303,29 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
                         <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Embed Code</Text>
+                                <Text size={14} weight="med">JavaScript Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">
-                                { props.contentDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>` }
+                                    {`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
                                 </LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.contentDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
+                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Iframe Embed Code</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">
+                                {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
+                                </LinkText>
+                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`)}}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
@@ -327,7 +335,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        
                     </div>
                     {   
                         props.contentType === "live" &&

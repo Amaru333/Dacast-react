@@ -7,6 +7,8 @@ import { Action, getAccountAllowancesAction, saveAccountAllowancesAction } from 
 import { Allowances, PutAllowances } from '../../redux-flow/store/Accounts/Allowances/types';
 import { useParams } from 'react-router-dom';
 import { PutAccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AccountAllowancesComponentProps {
     accountAllowances: Allowances;
@@ -23,9 +25,9 @@ const AccountAllowances = (props: AccountAllowancesComponentProps) => {
 
     }, [])
 
-    return (
+    return props.accountAllowances ?
         <AccountAllowancesPage {...props} accountId={accountId} />
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }
 
 export function mapStateToProps(state: AdminState) {
