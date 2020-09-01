@@ -11,27 +11,41 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
     let history = useHistory()
 
 
-    const [selectedStatus, setSelectedStatus] = React.useState<string>(null)
+    const [selectedStatus, setSelectedStatus] = React.useState<string>(props.withdrawal.status.charAt(0).toUpperCase() + props.withdrawal.status.slice(1))
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
-        props.saveWithdrawalStatus(props.withdrawalId, selectedStatus)
-        setOpenConfirmationModal(false)
+        setButtonLoading(true)
+        props.saveWithdrawalStatus(props.withdrawalId, selectedStatus.toLowerCase())
+        .then(() => {
+            setOpenConfirmationModal(false)
+            setButtonLoading(false)
+        }).catch(() => setButtonLoading(false))
     }
 
     const renderWithdrawalInfo = () => {
         if(props.withdrawal) {
             return Object.keys(props.withdrawal).map((key, i) => {
                 return (
-                    key === 'data' ? 
-                        Object.keys(props.withdrawal.data).map((dataKey, index) => {
-                            return (
-                                <div key={dataKey + index} className='flex col col-12'>
-                                    <Text size={14} weight='reg'>&quot;{dataKey}&quot;{': ' + props.withdrawal.data[dataKey] + ','}</Text>
-                                </div>
-                            )
-                        })
+                    key === 'paymentMethod' ? 
+                    <div key={'paymentMethod' + i}>
+                        <div  className='flex  col col-12'>
+                            <Text size={14} weight='reg'>&quot;{key}&quot;{': {'}</Text>
+                        </div>
+                        {
+                            Object.keys(props.withdrawal.paymentMethod).filter(p => props.withdrawal.paymentMethod[p]).map((dataKey, index) => {
+                                return (
+                                    <div key={dataKey + index} className='pl4 flex col col-12'>
+                                        <Text size={14} weight='reg'>&quot;{dataKey}&quot;{': ' + props.withdrawal.paymentMethod[dataKey] + ','}</Text>
+                                    </div>
+                                )
+                            })
+                        }
+                        <div className='flex  col col-12'>
+                            <Text size={14} weight='reg'>{'},'}</Text>
+                        </div>
+                        </div>
                         :
                         <div key={key + i} className='flex  col col-12'>
                             <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + props.withdrawal[key] + ','}</Text>
@@ -44,7 +58,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
 
     return (
         <div className='flex flex-column'>
-            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? props.withdrawal.status : ''} callback={(value: string) => setSelectedStatus(value)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={{'Pending': false, 'Completed': false, 'Cancelled': false}} />
+            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? props.withdrawal.status.charAt(0).toUpperCase() + props.withdrawal.status.slice(1) : ''} callback={(value: string) => setSelectedStatus(value)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={{'Pending': false, 'Completed': false, 'Cancelled': false}} />
             <div className='p1 border center col col-6'>
                 {renderWithdrawalInfo()}
             </div>

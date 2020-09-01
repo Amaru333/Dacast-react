@@ -11,14 +11,14 @@ export interface Withdrawal {
     currency: string;
     totalBalance: number;
     requestedDate: number;
-    completedDate: number;
+    transferDate: number;
     method: string;
     recurlyId: string;
     status: Status;
 }
 
 export interface WithdrawalsList {
-    list: Withdrawal[];
+    withdrawalRequests: Withdrawal[];
     total: number
 }
 

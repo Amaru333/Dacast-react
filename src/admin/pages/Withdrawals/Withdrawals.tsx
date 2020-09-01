@@ -7,6 +7,7 @@ import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import { tsToLocaleDate } from '../../../utils/utils'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -25,13 +26,13 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     }
 
     const withdrawalsTableBody = () => {
-        if(props.withdrawals) {
-            return props.withdrawals.list.map((withdrawal, key) => {
+        if(props.withdrawals && props.withdrawals.withdrawalRequests) {
+            return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
                     <Link key={'withdrawalsTableBodyAccountIdCell' + key }to=''>{withdrawal.accountSalesforceId}</Link>,
                     <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?accountId=${withdrawal.id}`}>{withdrawal.currency + withdrawal.amount}</Link>,
-                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.requestedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
-                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.completedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
                     <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
                     <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
