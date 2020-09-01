@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { axiosClient } from '../../../../utils/adminAxiosClient'
 
-const getWithdrawals = async (accountId: string) => {  
-    return await axiosClient.get('/' + (accountId ? ('paywall?accountId=' + accountId) : 'paywall'))
+const getWithdrawals = async (qs: string) => {  
+    return await axiosClient.get('/payment-requests' + qs ? qs : '?page=0&perPage=10')
 }
 
 export const WithdrawalsServices = {

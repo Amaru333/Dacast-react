@@ -1,15 +1,11 @@
-import { ActionTypes, Withdrawal } from './types';
+import { ActionTypes, WithdrawalsList } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { WithdrawalsServices } from './services';
 
 export interface GetWithdrawals {
     type: ActionTypes.GET_WITHDRAWALS;
-    payload: { 
-        data: {
-            operations: Withdrawal[]
-        }
-    };
+    payload: WithdrawalsList;
 }
 
 export const getWithdrawalsAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetWithdrawals> => {

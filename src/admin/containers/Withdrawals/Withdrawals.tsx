@@ -4,13 +4,13 @@ import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getWithdrawalsAction, Action } from '../../redux-flow/store/Withdrawals/List/actions';
-import { Withdrawal } from '../../redux-flow/store/Withdrawals/List/types';
+import { WithdrawalsList } from '../../redux-flow/store/Withdrawals/List/types';
 import { useQuery } from '../../../utils/utils';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface WithdrawalsComponentsProps {
-    withdrawals: Withdrawal[] | false;
+    withdrawals: WithdrawalsList | false;
     getWithdrawals: (qs: string) => Promise<void>;
 }
 
@@ -42,8 +42,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getWithdrawals: async (accountId: string) => {
-            await dispatch(getWithdrawalsAction(accountId));
+        getWithdrawals: async (qs: string) => {
+            await dispatch(getWithdrawalsAction(qs));
         }
     };
 }
