@@ -558,7 +558,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 }
             </Modal>
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <DeleteBulkForm isInFolder={FIXED_FOLDERS.indexOf(selectedFolder) === -1} updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             {
                 bulkThemeOpen &&

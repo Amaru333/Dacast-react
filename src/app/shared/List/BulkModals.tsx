@@ -17,6 +17,7 @@ interface PropsBulkModal {
     toggle: (b: boolean) => void;
     updateList?: (data: 'online' | 'offline' | 'paywall' | 'deleted') => void;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    isInFolder?: boolean;
 } 
 
 
@@ -48,7 +49,7 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
             <div className='flex flex-column'>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
                 {
-                    props.items.some(i => i.type === 'folder') ?
+                    props.isInFolder ?
                     <Text size={14} weight="med" className='inline-block mb3 mt1' >Folders will be deleted permanently and videos inside it will be moved to Unsorted. All other assets will be moved to Unsorted.</Text>
                     :
                     <Text size={14} weight="med" className='inline-block mb3 mt1' >Deleted videos will stay in the Trash for 30 days. Other assets will be deleted permanently.</Text>
