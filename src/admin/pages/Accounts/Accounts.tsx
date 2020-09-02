@@ -100,9 +100,9 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         setContentLoading(true)
         const previousPagination = pagination
         setPagination({page: 0, nbResults: pagination.nbResults})
-        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
+        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
         .then(() => {
-            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : ''))
+            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
             setContentLoading(false)
         })
         .catch(() => {
@@ -115,10 +115,10 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         setPagination({page:page,nbResults:nbResults})
         if(pagination.page && pagination.nbResults && !contentLoading) {
             setContentLoading(true)
-            props.getAccounts(accountId, `page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            props.getAccounts(accountId, `page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
             .then(() => {
                 setContentLoading(false)
-                query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+                query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
             })
             .catch(() => setContentLoading(false))
         }

@@ -5,7 +5,7 @@ const getAccounts = async (accountId: string, qs: string) => {
 }
 
 const impersonate = async (accountId: string) => { 
-    return await axiosClient.post('/impersonate',{userIdentifier: accountId})
+    return await axiosClient.post('/impersonate',{userIdentifier: accountId.replace(/,/g, '')})
 }
 
 export const AccountsServices = {
