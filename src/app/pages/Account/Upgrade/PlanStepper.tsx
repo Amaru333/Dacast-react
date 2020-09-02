@@ -146,7 +146,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
                         <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{item.code.charAt(0).toUpperCase() + item.code.slice(1)}</Text>
                     </div>,
                     <div className="right mr2">
-                        <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{'$' + (item.price.usd / 100).toLocaleString()}{props.stepperData.name === "Monthly Scale" && "/mo"}</Text>
+                        <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{props.stepperData.name === "Developer" ? "6 Months Trial" :  '$' + (item.price.usd / 100).toLocaleString() + "/yr"}</Text>
                     </div>
 
                 ]
@@ -226,7 +226,7 @@ React.useEffect(() => {
 
     const cartTableBodyElement = () => {
 
-        if (props.stepperData.name !== 'Developer') {
+        if (props.stepperData.name === "Event" ) {
             return [
                 {
                     data: [
@@ -237,7 +237,7 @@ React.useEffect(() => {
                 {
                     data: [
                         <Text key="cartTableFeaturesHeading" size={14} weight="med" color="gray-1">Features</Text>,
-                        <Text className='right pr2' key="cartTableFeaturesTotal" size={14} weight="reg" color="gray-1">{props.stepperData.name === "Monthly Scale" ? '$' + (featuresTotal) + '/mo' : '$' + featuresTotal + ' /yr'}</Text>
+                        <Text className='right pr2' key="cartTableFeaturesTotal" size={14} weight="reg" color="gray-1">{'$' + featuresTotal + ' /yr'}</Text>
                     ]
                 }
             ]
@@ -251,23 +251,6 @@ React.useEffect(() => {
                 }]
         }
 
-    }
-
-    const allowancesBodyElement = () => {
-        return [
-            {
-                data: [
-                    <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">Data</Text>,
-                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">2Tb/Mo</Text>
-                ]
-            },
-            {
-                data: [
-                    <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">Storage</Text>,
-                    <Text className='right pr2' key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">1000 Gb</Text>
-                ]
-            }
-        ]
     }
 
     const cartDropdownOption = () => {
@@ -320,7 +303,7 @@ React.useEffect(() => {
                     {props.stepperData.name === 'Annual Scale' &&
                         <Label className="mr2" color='green' backgroundColor='green20' label={props.stepperData.discount + '% discount Applied'} />
                     }
-                    <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.name !== 'Developer' ? '$' + (totalPrice) : '$' + (planPrice)}</Text>
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.name !== 'Annual Scale' ? '$' + (totalPrice) : '$' + (planPrice)}</Text>
                 </div>
 
             ]
@@ -331,7 +314,7 @@ React.useEffect(() => {
                     {props.stepperData.commitment === 3 && <Text key={"cartTableFooterTotalFrequency"} size={10} weight="reg" color="gray-5">(First 3 months paid upfront)</Text>}
                 </div>
                 ,
-                <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + (planPrice + featuresTotal) * 3 : "$" + (planPrice + featuresTotal) }</Text>,
+                <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + (planPrice * 3) : (props.stepperData.name !== 'Monthly Scale' ? "$" + (planPrice + featuresTotal) : "$" + planPrice)}</Text>,
             ]
         }
     }
@@ -339,9 +322,6 @@ React.useEffect(() => {
     return (
         <div>
             <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} />
-            {props.stepperData.name === ('Annual Scale' || 'Monthly Scale') &&
-                <Table id='thirdStepAllowances' headerBackgroundColor="gray-10" body={allowancesBodyElement()} />
-            }
             <Table id='thirdStepTotal' className='tableOverflow' customClassName=' tableOverflow' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} />
 
         </div>
@@ -370,10 +350,10 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         return {
             data: [
                 { cell: <Text key={"step2headerText"} size={14} weight="med" color="gray-1">Total Pay Now</Text> },
-                props.stepperData.name === 'Developer' ?
+                props.stepperData.name === 'Annual Scale' ?
                     { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">${planPrice}</Text> }
                     :
-                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + ((totalPrice)) * 3 : '$' + totalPrice}</Text> }
+                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + ((planPrice)) * 3 : '$' + totalPrice}</Text> }
 
             ]
         }
