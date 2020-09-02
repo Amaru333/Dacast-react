@@ -543,7 +543,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
-                <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
+                <EmptyTrashModal showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} toggle={setEmptyTrashModalOpened} />
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
