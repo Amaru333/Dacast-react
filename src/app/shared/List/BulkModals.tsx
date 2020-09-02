@@ -19,34 +19,36 @@ interface PropsBulkModal {
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 } 
 
+const setBulkItemCount = (items: ContentType[]) => {
+    return `${items.length} ${items.length === 1 ? " item" : " items"}`
+}
 
-const DeleteBulkForm = (props: PropsBulkModal) => {   
+const DeleteBulkForm = (props: PropsBulkModal) => { 
      
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        let item = props.items.length > 1 ? 'items' : 'item'
         bulkActionsService(props.items, 'delete').then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('deleted')
-                props.showToast(`${props.items.length} ${item} have been deleted`, 'flexible', 'success')
+                props.showToast(`${setBulkItemCount(props.items)} have been deleted`, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} ${item} couldn't be deleted`, 'flexible', 'error')
+            props.showToast(`${setBulkItemCount(props.items)} couldn't be deleted`, 'flexible', 'error')
 
         })
     }
 
     return (
-        <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div className='flex flex-column'>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete these "+ props.items.length +" items?"}</Text>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete the "+ setBulkItemCount(props.items)}</Text>
                 <Text size={14} weight="med" className='inline-block mb3 mt1' >{props.items.some(item => item.type === 'folder') ? 'Folders will be deleted permanently and assets will ' : 'Deleted assets '}stay in the Trash for 30 days.</Text>
                 <div className='mt2'>
                     <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Delete</Button>
@@ -69,14 +71,14 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.showToast(`Theme has been assigned to ${props.items.length} items`, 'flexible', 'success')
+                props.showToast(`Theme has been assigned to ${setBulkItemCount(props.items)} `, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`Theme couldn't be assigned to ${props.items.length} items`, 'flexible', 'error')
+            props.showToast(`Theme couldn't be assigned to ${setBulkItemCount(props.items)}`, 'flexible', 'error')
 
         })
     }
@@ -95,7 +97,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     }, [props.themes])
 
     return (
-        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items) } size="small" opened={props.open}>
             <div className='col col-12 flex flex-column'>
                 {
                     themesList.length === 0 ?
@@ -104,7 +106,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
                     </div>
                     :
                     <>
-                        <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status "+ props.items.length +" selected items?"}</Text>
+                        <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update Theme Status for "+ setBulkItemCount(props.items) + "?"}</Text>
                         <DropdownSingle className="mb3"
                             dropdownTitle='Theme' 
                             id='thumbnailPositionDropdown' 
@@ -137,22 +139,22 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList(online ? 'online' : 'offline')
-                props.showToast(`${props.items.length} items have been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
+                props.showToast(`${setBulkItemCount(props.items)} ${props.items.length === 1 ? "has" : "have"} been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${props.items.length} items couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'error')
+            props.showToast(`${setBulkItemCount(props.items)} couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'error')
 
         })
     }
 
     return (
-        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for "+ props.items.length +" selected items?"}</Text>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for " + setBulkItemCount(props.items) + "?"}</Text>
                 <Toggle defaultChecked={online} onChange={(event) => {setOnline(!online)}}label={online ? "Online" : 'Offline'} className="mb3" />
                 <Button isLoading={buttonLoading} onClick={async () => {await handleSubmit()}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
@@ -172,7 +174,7 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('paywall')
-                props.showToast(`Paywall has been turned Offline for ${props.items.length} items`, 'flexible', 'success')
+                props.showToast(`Paywall has been turned Offline for ${setBulkItemCount(props.items)}`, 'flexible', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
             }
@@ -185,9 +187,9 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
     }
 
     return (
-        <Modal hasClose={false} toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ props.items.length+" Items"} size="small" opened={props.open}>
+        <Modal hasClose={false} toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Turn off Paywall Status for "+ props.items.length +" selected items?"}</Text>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Turn off Paywall Status for "+ setBulkItemCount(props.items) + "?"}</Text>
                 <div className='mt2'>
                     <Button isLoading={buttonLoading} onClick={async () => {await handleSubmit()}} sizeButton="large" typeButton="primary" buttonColor="blue" >Save</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
