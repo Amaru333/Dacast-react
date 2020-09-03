@@ -27,7 +27,7 @@ export const EmptyTrashModal = (props: {toggle: (b: boolean) => void;showToast: 
     return (
         <div>
             <Text size={14} weight='reg'>Are you sure that you want to Empty the Trash?</Text>
-            <Text size={14} weight='med' >Any content emptied from the Trash will not be retrievable and something about getting back the storage space.</Text>
+            <Text size={14} weight='med' >Any content emptied from the Trash will not be retrievable.</Text>
             <div className='flex my2'>
                 <Button isLoading={buttonLoading} onClick={async () => {await handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Empty</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
