@@ -29,7 +29,7 @@ export interface FilteringContentState {
     sizeEnd?: string;
 }
 
-export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringContentState) => void, contentType: string}) => {
+export const ContentFiltering = (props: {defaultFilters: FilteringContentState; setSelectedFilter: (filters: FilteringContentState) => void, contentType: string}) => {
 
     var filteringDefault = {
         status: {
@@ -50,7 +50,7 @@ export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringC
         sizeEnd: ''
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringContentState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringContentState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
@@ -135,7 +135,7 @@ export const ContentFiltering = (props: {setSelectedFilter: (filters: FilteringC
                         <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
                     </div>
                     {
-                        props.contentType === "videos" && 
+                        props.contentType === "vod" && 
                             <div className="mb3" id="contentFilterSize">
                             <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                                 <div className="mxn2 clearfix">

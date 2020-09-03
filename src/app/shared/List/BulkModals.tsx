@@ -17,6 +17,7 @@ interface PropsBulkModal {
     toggle: (b: boolean) => void;
     updateList?: (data: 'online' | 'offline' | 'paywall' | 'deleted') => void;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    isInFolder?: boolean;
 } 
 
 const setBulkItemCount = (items: ContentType[]) => {
@@ -33,14 +34,14 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('deleted')
-                props.showToast(`${setBulkItemCount(props.items)} have been deleted`, 'flexible', 'success')
+                props.showToast(`${setBulkItemCount(props.items)} have been deleted`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${setBulkItemCount(props.items)} couldn't be deleted`, 'flexible', 'error')
+            props.showToast(`${setBulkItemCount(props.items)} couldn't be deleted`, 'fixed', 'error')
 
         })
     }
@@ -48,8 +49,13 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     return (
         <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div className='flex flex-column'>
-                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete the "+ setBulkItemCount(props.items)}</Text>
-                <Text size={14} weight="med" className='inline-block mb3 mt1' >{props.items.some(item => item.type === 'folder') ? 'Folders will be deleted permanently and assets will ' : 'Deleted assets '}stay in the Trash for 30 days.</Text>
+                <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete the " + setBulkItemCount(props.items) + "?" }</Text>
+                {
+                    props.isInFolder ?
+                    <Text size={14} weight="med" className='inline-block mb3 mt1' >Folders will be deleted permanently and videos inside it will be moved to Unsorted. All other assets will be moved to Unsorted.</Text>
+                    :
+                    <Text size={14} weight="med" className='inline-block mb3 mt1' >Deleted videos will stay in the Trash for 30 days. Other assets will be deleted permanently.</Text>
+                }
                 <div className='mt2'>
                     <Button isLoading={buttonLoading} onClick={async () => await handleSubmit()} sizeButton="large" typeButton="primary" buttonColor="blue" >Delete</Button>
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
@@ -71,14 +77,14 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.showToast(`Theme has been assigned to ${setBulkItemCount(props.items)} `, 'flexible', 'success')
+                props.showToast(`Theme has been assigned to ${setBulkItemCount(props.items)} `, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`Theme couldn't be assigned to ${setBulkItemCount(props.items)}`, 'flexible', 'error')
+            props.showToast(`Theme couldn't be assigned to ${setBulkItemCount(props.items)}`, 'fixed', 'error')
 
         })
     }
@@ -139,14 +145,14 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList(online ? 'online' : 'offline')
-                props.showToast(`${setBulkItemCount(props.items)} ${props.items.length === 1 ? "has" : "have"} been turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'success')
+                props.showToast(`${setBulkItemCount(props.items)} ${props.items.length === 1 ? "has" : "have"} been turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${setBulkItemCount(props.items)} couldn't be turned ` + (online ? 'Online' : 'Offline'), 'flexible', 'error')
+            props.showToast(`${setBulkItemCount(props.items)} couldn't be turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'error')
 
         })
     }
@@ -174,14 +180,14 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
                 props.updateList('paywall')
-                props.showToast(`Paywall has been turned Offline for ${setBulkItemCount(props.items)}`, 'flexible', 'success')
+                props.showToast(`Paywall has been turned Offline for ${setBulkItemCount(props.items)}`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'flexible', 'error')
+                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast('Paywall couldn\'t be turned Offline', 'flexible', 'error')
+            props.showToast('Paywall couldn\'t be turned Offline', 'fixed', 'error')
 
         })
     }

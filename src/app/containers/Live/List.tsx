@@ -13,11 +13,14 @@ import { Action, getContentListAction, deleteContentAction } from '../../redux-f
 
 export const LiveList = (props: ContentListProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     React.useEffect(() => {     
         props.getContentList(null, 'live')
+        .then(() => setIsFetching(false))
     }, [])
 
-    return props.contentListState['live'] ? 
+    return !isFetching ? 
         <ContentListPage
             contentType="live" 
             items={props.contentListState['live']}

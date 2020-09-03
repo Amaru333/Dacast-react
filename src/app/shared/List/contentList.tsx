@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
-import { tsToLocaleDate, readableBytes, useOutsideAlerter } from '../../../utils/utils';
+import { tsToLocaleDate, readableBytes, useOutsideAlerter, useQuery } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { Label } from '../../../components/FormsComponents/Label/Label';
@@ -43,6 +43,29 @@ export const ContentListPage = (props: ContentListProps) => {
 
     let history = useHistory()
 
+    let qs = useQuery()
+
+    const formatFilters = () => {
+        let filters: FilteringContentState = {
+            status: {
+                online: qs.toString().indexOf('online') > -1,
+                offline: qs.toString().indexOf('offline') > -1
+            },
+            features: {
+                paywall: qs.toString().indexOf('paywall') > -1,
+                advertising: qs.toString().indexOf('advertising') > -1,
+                playlists: qs.toString().indexOf('playlists') > -1,
+                // recording: qs.toString().indexOf('recording') > -1,
+                // rewind: qs.toString().indexOf('rewind') > -1
+            },
+            afterDate: parseInt(qs.get('afterDate')) || false,
+            beforeDate: parseInt(qs.get('beforeDate')) || false,
+            sizeEnd: qs.get('sizeEnd'),
+            sizeStart: qs.get('sizeStart')
+        }
+        return filters
+    }
+
     const [selectedContent, setSelectedContent] = React.useState<string[]>([]);
     const [bulkOnlineOpen, setBulkOnlineOpen] = React.useState<boolean>(false);
     const [bulkPaywallOpen, setBulkPaywallOpen] = React.useState<boolean>(false);
@@ -51,10 +74,10 @@ export const ContentListPage = (props: ContentListProps) => {
     const [bulkDeleteOpen, setBulkDeleteOpen] = React.useState<boolean>(false);
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
-    const [selectedFilters, setSelectedFilter] = React.useState<any>(null)
-    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
-    const [searchString, setSearchString] = React.useState<string>(null)
-    const [sort, setSort] = React.useState<string>('created-at-desc')
+    const [selectedFilters, setSelectedFilter] = React.useState<FilteringContentState>(formatFilters())
+    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [searchString, setSearchString] = React.useState<string>(qs.get('keyword') || null)
+    const [sort, setSort] = React.useState<string>(qs.get('sortBy') || 'created-at-desc')
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
@@ -65,11 +88,17 @@ export const ContentListPage = (props: ContentListProps) => {
     const [contentList, setContentList] = React.useState<SearchResult>(props.items)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
+    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
 
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
     React.useEffect(() => {
         foldersTree.initTree()
+        // const interval = setInterval(() => {
+        //     setFetchContent(true)
+        //   }, 60000)
+
+        //   return () => clearInterval(interval)
     }, [])
 
     React.useEffect(() => {
@@ -99,53 +128,69 @@ export const ContentListPage = (props: ContentListProps) => {
     }, [updateList])
 
 
-    const parseFiltersToQueryString = (filters: FilteringContentState) => {
-        let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
+    const formatFiltersToQueryString = (filters: FilteringContentState, pagination: {page: number; nbResults: number}, sortValue: string, keyword: string, ) => {
+        let returnedString= `page=${pagination.page}&perPage=${pagination.nbResults}`
         if(filters) {
             
-            Object.keys(filters).map((filter) => {
-                if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
-                    returnedString += filter + '='
-                    Object.keys(filters[filter]).map((subfilter, i) => {
-                        if(filters[filter][subfilter]) {
-                            returnedString += subfilter + ','
-                        }
-                    })  
-                    returnedString += '&'                
-                    returnedString = returnedString.replace(',&','&')
-                }            
-            })
+            if(filters.features) {
+                returnedString += '&features=' + (filters.features.advertising ? 'advertising' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
+            }
 
-            if(filters.afterDate || filters.beforeDate) {
-                returnedString+= `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforeDate ? filters.beforeDate : ''}&`
+            if(filters.status) {
+                returnedString += '&status=' + (filters.status.online ? 'online' : '') + (filters.status.offline ? ',offline' : '')
             }
-            if(filters.sizeStart || filters.sizeEnd) {
-                returnedString+= `size=${filters.sizeStart ? filters.sizeStart : ''},${filters.sizeEnd ? filters.sizeEnd : ''}&`
+
+            if(filters.afterDate) {
+                returnedString += `&afterDate=${filters.afterDate}`
+            }
+
+            if(filters.beforeDate) {
+                returnedString += `&beforeDate=${filters.beforeDate}`
+            }
+
+            if(filters.sizeStart) {
+                returnedString += `&sizeStart=${filters.sizeStart}`
+            }
+
+            if(filters.sizeEnd) {
+                returnedString += `&sizeEnd=${filters.sizeEnd}`
             }
         }
-        if(searchString) {
-            returnedString += `keyword=${searchString}&`
+        if(keyword) {
+            returnedString += `&keyword=${keyword}`
         }
-        if(sort) {
-            returnedString += `sort-by=${sort}&`
+        if(sortValue) {
+            returnedString += `&sortBy=${sortValue}`
         }
+
+        if(returnedString.indexOf('status=&') > -1) {
+            returnedString = returnedString.replace('status=&','status=online,offline&')
+        }
+
+        if(returnedString.indexOf('features=&') > -1) {
+            returnedString = returnedString.replace('features=&','')
+        }
+
         if(returnedString.indexOf('status') === -1) {
-            returnedString += 'status=online,offline,processing'
+            returnedString += '&status=online,offline'
         }
+        setQsParams(returnedString)
+    }
+
+    React.useEffect(() => {
         if(!fetchContent) {
             setFetchContent(true)
         }
-        return returnedString
-
-    }
+    }, [qsParams])
 
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            props.getContentList(parseFiltersToQueryString(selectedFilters), props.contentType).then(() => {
+            console.log(qsParams)
+            props.getContentList(qsParams, props.contentType).then(() => {
                 setContentLoading(false)
                 setFetchContent(false)
-
+                history.push(`${location.pathname}?${qsParams}`)
             }).catch(() => {
                 setContentLoading(false)
                 setFetchContent(false)
@@ -198,7 +243,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 {cell: <div style={{ width: "80px" }} ></div>},
             ], 
             defaultSort: 'created-at',
-            sortCallback: (value: string) => {setSort(value); if(!fetchContent) { setFetchContent(true)}}
+            sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
         }
     }
 
@@ -238,11 +283,11 @@ export const ContentListPage = (props: ContentListProps) => {
                                     </div>
                             }
                         </div>,
-                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
-                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
-                        <div onClick={() => history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
+                        <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -258,7 +303,8 @@ export const ContentListPage = (props: ContentListProps) => {
 
                     ],
                     isSelected: selectedContent.includes(value.objectID),
-                    isDisabled: value.status === 'deleted'
+                    isDisabled: value.status === 'deleted',
+                    isProcessing: (value.type === 'vod' && !value.size)
                 }
             })
         }
@@ -284,7 +330,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <div className='flex items-center mb2'>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);setFetchContent(true)}}   />
+                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
                 </div>
                 <div className="flex items-center" >
                     {selectedContent.length > 0 &&
@@ -297,7 +343,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         </DropdownList>
                     </div>
                     <SeparatorHeader className="mx2 inline-block" />
-                    <ContentFiltering setSelectedFilter={(filters) => {setSelectedFilter(filters);setFetchContent(true)}} contentType={props.contentType} />                
+                    <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} contentType={props.contentType} />                
                     {
                         props.contentType === "vod" &&
                             <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
@@ -313,7 +359,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 </div>
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={contentList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});if(!fetchContent) { setFetchContent(true)}}} />
+            <Pagination totalResults={contentList.totalResults} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />

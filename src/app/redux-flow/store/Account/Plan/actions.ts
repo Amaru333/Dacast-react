@@ -61,7 +61,7 @@ export const saveBillingPagePaymentMethodAction = (data: string): ThunkDispatch<
         await BillingServices.saveBillingPagePaymentMethodService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD, payload: response.data} );
-                dispatch(showToastNotification("Payment Method has been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Payment Method has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Payment Method was unsucessfully added", 'fixed', "error"));
             })
@@ -73,7 +73,7 @@ export const addBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProte
         await BillingServices.addBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
-                dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been enabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -85,7 +85,7 @@ export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProt
         await BillingServices.editBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
-                dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been enabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -97,7 +97,7 @@ export const deleteBillingPagePaymenPlaybackProtectionAction = (data: PlaybackPr
         await BillingServices.deleteBillingPagePaymenPlaybackProtectionService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION, payload: response.data} );
-                dispatch(showToastNotification("Playack Protection has been disabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been disabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
@@ -109,7 +109,7 @@ export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<
         await BillingServices.addBillingPageExtrasService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_BILLING_PAGE_EXTRAS, payload: response.data} );
-                dispatch(showToastNotification("Data saved!", 'flexible', "success"));
+                dispatch(showToastNotification("Data saved!", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

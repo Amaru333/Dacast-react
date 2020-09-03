@@ -6,6 +6,8 @@ import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { WithdrawalInfo } from '../../redux-flow/store/Withdrawals/EditStatus/types';
 import { useParams } from 'react-router';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface EditStatusComponentProps {
     withdrawal: WithdrawalInfo;
@@ -23,9 +25,9 @@ const EditStatus = (props: EditStatusComponentProps) => {
         }
     }, [])
 
-    return (
+    return props.withdrawal ? 
         <EditStatusPage {...props} withdrawalId={withdrawalId} />
-    )
+        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }
 
 export function mapStateToProps(state: AdminState) {

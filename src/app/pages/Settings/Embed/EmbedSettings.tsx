@@ -13,7 +13,7 @@ import { Prompt } from 'react-router';
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
     const defaultEmbedSettings = {
-        ['embed-type']:  'iframe',
+        ['embed-type']:  'script',
         ['embed-scaling']:  'responsive',
         'embed-size': 0
     }
@@ -47,29 +47,6 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
         <React.Fragment>
             <form>
                 <Card>
-                    <header><Text size={20} weight="med">Embed Settings</Text></header>
-                    <br />
-                    <div>
-                        <Text size={14} weight="reg">
-                            Choose how you wish to embed your videos.
-                        </Text>
-                    </div>
-                    <br />
-                    <div>
-                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "iframe" })} defaultChecked={props.embedSettingsOption["embed-type"] === "iframe"} />
-                        <RadioText>
-                            <Text size={14} weight="reg">
-                                Our fully-functional player, embedded in an Iframe element.
-                            </Text>
-                        </RadioText>
-                        <InputRadio name="embed-settings" value="script" label="Script" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "script" })} defaultChecked={props.embedSettingsOption["embed-type"] === "script"} />
-                        <RadioText>
-                            <Text size={14} weight="reg">
-                                Our fully-functional player, embedded dynamically with JavaScript.
-                            </Text>
-                        </RadioText>
-                    </div>
-                    <Divider />
                     <header><Text size={20} weight="med">Embed Size</Text></header>
                     <br />
                     <div>

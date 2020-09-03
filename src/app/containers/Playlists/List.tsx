@@ -13,11 +13,14 @@ import { Action, getContentListAction, deleteContentAction } from '../../redux-f
 
 const PlaylistList = (props: ContentListProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     React.useEffect(() => {     
-        props.getContentList(null, 'playlist')
+        props.getContentList(null, 'playlist')        
+        .then(() => setIsFetching(false))
     }, [])
 
-    return props.contentListState['playlist'] ? 
+    return !isFetching ? 
         <ContentListPage
             contentType="playlist" 
             items={props.contentListState['playlist']}

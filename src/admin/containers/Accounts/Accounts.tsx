@@ -16,23 +16,7 @@ export interface AccountsComponentProps {
 }
 
 const Accounts = (props: AccountsComponentProps) => {
-
-    let query = useQuery()
-
-    React.useEffect(() => {
-        if (query.get('accountId')) {
-            props.getAccounts(query.get('accountId'), null)
-        }else if(!props.accounts) {
-            props.getAccounts(null, null)
-        }
-    }, [])
-
-    return (
-        props.accounts ? 
-        <AccountsPage {...props} />
-        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-
-    )
+    return <AccountsPage {...props} />
 }
 
 export function mapStateToProps(state: AdminState) {
