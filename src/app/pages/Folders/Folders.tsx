@@ -1,5 +1,5 @@
 import React from 'react'
-import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer } from './FoldersStyle'
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer, TitleContainer, ListContentTitle } from './FoldersStyle'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../components/Typography/Text'
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox'
@@ -373,7 +373,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 {handleRowIconType(row)}
                             </RowIconContainer>
                         </div>,
-                        <Text key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</Text>,
+                        <TitleContainer>
+                            <ListContentTitle key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</ListContentTitle>
+                        </TitleContainer>
+                        ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                         <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,

@@ -9,7 +9,7 @@ import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
-import { SeparatorHeader } from '../../../app/pages/Folders/FoldersStyle';
+import { SeparatorHeader, TitleContainer, ListContentTitle } from '../../../app/pages/Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
@@ -283,7 +283,10 @@ export const ContentListPage = (props: ContentListProps) => {
                                     </div>
                             }
                         </div>,
-                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</Text>,
+                        <TitleContainer>
+                            <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
+                        </TitleContainer>
+                        ,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
@@ -391,3 +394,4 @@ export const ContentListPage = (props: ContentListProps) => {
 
     )
 }
+

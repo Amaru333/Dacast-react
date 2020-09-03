@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import {Text} from '../../../components/Typography/Text'
 
 export const FoldersTreeSection = styled.div<{smallScreen: boolean; foldersTreeHidden: boolean}>`
     display: ${props => props.foldersTreeHidden && !props.smallScreen ? 'none' : 'flex' };
@@ -54,4 +55,14 @@ export const RowIconContainer = styled.div`
     width: 94px;
     height: 54px;
     text-align: center;
+`
+export const TitleContainer = styled.div`
+    display: flex;
+    max-width: 300px;
+`
+
+export const ListContentTitle = styled(Text)`
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `
