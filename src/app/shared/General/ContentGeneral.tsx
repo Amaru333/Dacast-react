@@ -309,8 +309,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <LinkText size={14} weight="reg">
                                     {`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
                                 </LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied') } }>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                                <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyJSEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
                         <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
@@ -321,8 +321,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <LinkText size={14} weight="reg">
                                 {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
                                 </LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                                <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyIframeEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
                         <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
