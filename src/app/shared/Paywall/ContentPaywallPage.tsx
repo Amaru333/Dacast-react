@@ -195,7 +195,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         <div>
             <Card>
                 <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' checked={contentPaywallSettings.paywallEnabled} onChange={() => {setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled});setHasChanged(true)}} className='mt2' label='Paywall Enabled' />
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => {setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled});setHasChanged(true)}} className='mt2' label='Paywall Enabled' />
                 <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
                 
                 <DropdownSingle 
