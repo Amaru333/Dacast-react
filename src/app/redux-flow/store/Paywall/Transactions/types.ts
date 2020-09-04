@@ -12,7 +12,7 @@ export interface TransactionInfos {
     purchaser: string;
     currency: string;
     price: number;
-    usdBalance: number;
+    usdBalance?: number;
 }
 
 export type TransactionsInfos = TransactionInfos[];

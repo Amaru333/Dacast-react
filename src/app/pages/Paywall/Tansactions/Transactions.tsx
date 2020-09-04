@@ -21,8 +21,8 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>},
             {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
-            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>},
-            {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>},
+            // {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Credit</Text>},
+            // {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Debit</Text>},
         ], defaultSort: 'Created Date'}
     }
 
@@ -49,8 +49,8 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
-                    <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />,
-                    <span></span>
+                    // <Label label={transaction.usdBalance.toString()} color='green' backgroundColor='green20' />,
+                    // <span></span>
                 ]}
             })
         }
