@@ -168,7 +168,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />   
                 </div>
-                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button>
+                {/* <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button> */}
                 <TransactionsFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} />
             </div>
 
