@@ -1,6 +1,6 @@
 import { axiosClient } from '../../../../utils/axiosClient'
 
-const getTransactions = async () => {
+const getTransactions = async (qs: string) => {
     return await axiosClient.get('/paywall/transactions/')
 }
 

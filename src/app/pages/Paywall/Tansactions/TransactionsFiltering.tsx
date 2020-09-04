@@ -7,26 +7,29 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 
-export const TransactionsFiltering = (props: {}) => {
+export interface FilteringTransactionsState {
+    type: {
+        requestPayment: boolean;
+        externalPayment: boolean;
+        specialChargeback: boolean;
+        charge: boolean;
+    };
+    currency: {
+        aud: boolean;
+        gbp: boolean;
+        usd: boolean;
+        eur: boolean;
+    };
+    startDate: number | boolean;
+    endDate: number | boolean;
+}
+
+export const TransactionsFiltering = (props: {defaultFilters: FilteringTransactionsState; setSelectedFilter: (filters: FilteringTransactionsState) => void}) => {
 
 
-    interface FilteringState {
-        type: {
-            requestPayment: boolean;
-            externalPayment: boolean;
-            specialChargeback: boolean;
-            charge: boolean;
-        };
-        currency: {
-            aud: boolean;
-            gbp: boolean;
-            usd: boolean;
-        };
-        startDate: number | boolean;
-        endDate: number | boolean;
-    }
 
-    var filteringDefault = {
+
+    var filteringDefault: FilteringTransactionsState = {
         type: {
             requestPayment: false,
             externalPayment: false,
@@ -37,12 +40,13 @@ export const TransactionsFiltering = (props: {}) => {
             aud: false,
             gbp: false,
             usd: false,
+            eur: false
         },
         startDate: false,
         endDate: false,
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringTransactionsState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
@@ -66,9 +70,8 @@ export const TransactionsFiltering = (props: {}) => {
                 <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
                     {
-                        activeFilter > 0 ?
+                        activeFilter > 0 &&
                             <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                            : null
                     }
                 </Button>
             </div>
@@ -101,6 +104,9 @@ export const TransactionsFiltering = (props: {}) => {
                         <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, usd: !prevState.currency.usd } } }) }}
                             id='transactionFilterUSD' label="USD" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, eur: !prevState.currency.eur } } }) }}
+                            id='transactionFilterEUR' label="EUR" labelWeight="reg" />
                     </div>
                     <div className="mb3" id="transactionFilterStartDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Start Date</Text>
@@ -112,11 +118,11 @@ export const TransactionsFiltering = (props: {}) => {
                     </div>
                 </div>
                 
-                <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
+                <div className="flex" id="transactionFilterbuttons">
+                    <Button onClick={() => { setOpenFilters(false);props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault);props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

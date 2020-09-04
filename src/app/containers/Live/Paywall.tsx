@@ -21,9 +21,11 @@ var moment = require('moment-timezone');
 const LivePaywall = (props: ContentPaywallComponentProps) => {
 
     let { liveId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         props.getContentPaywallInfos(liveId, 'live')
+        .then(() => setIsFetching(false))
         if(!props.groupsInfos) {
             props.getGroupsInfos()
         }
@@ -73,7 +75,6 @@ const LivePaywall = (props: ContentPaywallComponentProps) => {
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
-                rateType: 'Pay Per View',
                 startDate: null,
                 endDate: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
@@ -88,7 +89,7 @@ const LivePaywall = (props: ContentPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.contentPaywallInfo['live']])
 
-    return props.contentPaywallInfo['live'] && props.contentPaywallInfo['live'][liveId] && props.groupsInfos && props.theming && customPricePresetList? 
+    return !isFetching && props.groupsInfos && props.theming && customPricePresetList? 
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
             <ContentPaywallPage
