@@ -98,12 +98,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 {startDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')').format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
@@ -121,12 +121,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     endDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || 'UTC')}
+                            date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')}
                             callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-4 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')').format('HH:mm')}
                             onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
                             className='col col-3 md-col-3'
                             disabled={false}

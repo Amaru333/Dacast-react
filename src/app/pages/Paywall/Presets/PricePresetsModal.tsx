@@ -164,12 +164,12 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     <div className='col col-12 mb2'>
 
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone ||moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')').format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, presetsList.settings.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
