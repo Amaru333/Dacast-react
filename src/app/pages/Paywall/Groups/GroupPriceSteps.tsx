@@ -71,7 +71,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         return total
     }
 
-    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
+    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
 
@@ -120,12 +120,12 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                 props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')}
+                            date={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, props.stepperData.firststep.groupSettings.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
