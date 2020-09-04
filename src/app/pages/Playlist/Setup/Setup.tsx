@@ -378,11 +378,16 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         <>
             <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { switchTabSuccess(); }} />
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data: number) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
-            <div className="flex items-center">
-                <div className="inline-flex items-center flex col-7 mb1">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
-                </div>
+            <div className="flex items-center">             
+                    <div className="inline-flex items-center flex col-7 mb1">
+                        { 
+                            selectedTab === 'content' &&   
+                            <> 
+                                <IconStyle coloricon='gray-3'>search</IconStyle>
+                                <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                            </>
+                        }
+                    </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div>
                         <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
