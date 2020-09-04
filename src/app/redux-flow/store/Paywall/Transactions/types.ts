@@ -11,6 +11,7 @@ export interface TransactionLine {
     currency: string;
     price: number;
     dacastFee: number;
+    actionType: string;
 }
 
 export type TransactionsInfo = {

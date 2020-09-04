@@ -30,6 +30,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 aud: qs.toString().indexOf('aud') > -1,
                 gbp: qs.toString().indexOf('gbp') > -1,
                 usd: qs.toString().indexOf('usd') > -1,
+                eur: qs.toString().indexOf('eur') > -1,
             },
             startDate: parseInt(qs.get('startDate')) || false,
             endDate: parseInt(qs.get('endDate')) || false,
@@ -148,7 +149,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(props.transactionsInfo.transactionsList) {
             return props.transactionsInfo.transactionsList.map((transaction, i) => {
                 return {data: [
-                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
+                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.actionType}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
