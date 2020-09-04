@@ -41,10 +41,10 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
 
 
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'UTC'} : defaultPromo)
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} : defaultPromo)
 
-    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
+    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
@@ -143,7 +143,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     <DropdownSingle 
                         hasSearch 
                         id='groupPromoTimezoneDropdown' 
-                        dropdownDefaultSelect={groupPromo.timezone || 'Etc/UTC (+00:00 UTC)'} 
+                        dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className='col col-6 pr2' 
                         dropdownTitle='Timezone' 
                         callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 

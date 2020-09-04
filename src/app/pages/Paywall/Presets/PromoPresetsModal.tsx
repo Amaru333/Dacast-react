@@ -17,7 +17,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: 'Etc/UTC',
+    timezone: moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')',
     discountApplied: 'Once',
     assignedGroupIds: [],
     assignedContentIds: []
@@ -43,8 +43,8 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
 
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo)
 
-    let startTimestamp = moment.tz((promoPreset.startDate && promoPreset.startDate > 0 ? promoPreset.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((promoPreset.endDate && promoPreset.endDate> 0 ? promoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((promoPreset.startDate && promoPreset.startDate > 0 ? promoPreset.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
+    let endTimestamp = moment.tz((promoPreset.endDate && promoPreset.endDate> 0 ? promoPreset.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
@@ -130,7 +130,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     <DropdownSingle 
                         hasSearch 
                         id='promoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect='Etc/UTC (+00:00 UTC)'
+                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(value: string) => setPromoPreset({...promoPreset, timezone: value.split(' ')[0]})} 

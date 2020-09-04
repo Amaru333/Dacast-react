@@ -49,8 +49,8 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
-    let startTimestamp = moment.tz((newPromoPreset.startDate && newPromoPreset.startDate > 0 ? newPromoPreset.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((newPromoPreset.endDate && newPromoPreset.endDate > 0 ? newPromoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((newPromoPreset.startDate && newPromoPreset.startDate > 0 ? newPromoPreset.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
+    let endTimestamp = moment.tz((newPromoPreset.endDate && newPromoPreset.endDate > 0 ? newPromoPreset.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
@@ -168,7 +168,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     <DropdownSingle 
                         hasSearch 
                         id='newPromoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className={ClassHalfXsFullMd + ' pr1'} 
                         dropdownTitle='Timezone' 
                         callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />

@@ -29,7 +29,7 @@ const defaultPreset: Preset = {
         duration: {value: NaN, unit: 'Hours'},
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: 'Etc/UTC',
+        timezone: moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')',
         startDate: 0,
     }
 }
@@ -87,7 +87,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
         })
     }
 
-    let startTimestamp = moment.tz((presetsList.settings.startDate && presetsList.settings.startDate > 0 ? presetsList.settings.startDate :  Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((presetsList.settings.startDate && presetsList.settings.startDate > 0 ? presetsList.settings.startDate :  Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)

@@ -71,7 +71,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         return total
     }
 
-    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')')
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
 
@@ -110,7 +110,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                             id='groupPriceTimezoneDropdown' 
                             className='col col-6 pl1 mt-auto' 
                             dropdownTitle='Timezone' 
-                            dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                            dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                             callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})}
                         />
