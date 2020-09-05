@@ -169,7 +169,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 dirty &&
                     <div>
                         <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'flexible', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'fixed', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
             }
 

@@ -10,7 +10,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Ico
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
+import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer, ClassThirdXsFullMd } from "../../shared/General/GeneralStyle"
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -77,7 +77,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ?props.contentDetails.countdown.startTime !== 0 : null)
+    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ? (props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false : null)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
 
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -287,7 +287,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Text size={14} weight="med">Content ID</Text>
                             </LinkBoxLabel>
                             <LinkBox>
-                                <LinkText size={14} weight="reg">{userId + + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
+                                <LinkText size={14} weight="reg">{userId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
                                 <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                                 <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
@@ -301,23 +301,31 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         </header>
                         <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 
-                        <div className={ClassHalfXsFullMd + "mt2 pr2 flex flex-column"}>
+                        <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
-                                <Text size={14} weight="med">Embed Code</Text>
+                                <Text size={14} weight="med">JavaScript Embed Code</Text>
                             </LinkBoxLabel>
                             <LinkBox>
                                 <LinkText size={14} weight="reg">
-                                { props.contentDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>` }
+                                    {`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
                                 </LinkText>
-                                <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(props.contentDetails.embedType === "iframe" ? 
-                                    `<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>` : 
-                                    `<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'Iframe Embed Code Copied') } }>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
+                                <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyJSEmbedTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        <div className={ClassHalfXsFullMd + "mt2 flex flex-column"}>
+                        <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">Iframe Embed Code</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">
+                                {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
+                                </LinkText>
+                                <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}}>file_copy_outlined</IconStyle>
+                                <Tooltip target="copyIframeEmbedTooltip">Copy to clipboard</Tooltip>
+                            </LinkBox>
+                        </div>
+                        <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Share Link</Text>
                             </LinkBoxLabel>
@@ -327,7 +335,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                             </LinkBox>
                         </div>
-                        
                     </div>
                     {   
                         props.contentType === "live" &&

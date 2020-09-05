@@ -5,15 +5,21 @@ export type Status = 'completed' | 'pending' | 'cancelled'
 
 export interface Withdrawal {
     id: string;
+    accountSalesforceId: string;
     accountId: string;
     amount: number;
+    currency: string;
     totalBalance: number;
     requestedDate: number;
-    previous: number;
-    completedDate: number;
+    transferDate: number;
     method: string;
     recurlyId: string;
     status: Status;
 }
 
-export const withdrawalsListInitialState: Withdrawal[] | false = false
+export interface WithdrawalsList {
+    withdrawalRequests: Withdrawal[];
+    total: number
+}
+
+export const withdrawalsListInitialState: WithdrawalsList | false = false

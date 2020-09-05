@@ -18,13 +18,13 @@ export interface EditPlanComponentProps {
 const EditPlan = (props: EditPlanComponentProps) => {
 
     let { accountId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
-        if(!props.accountPlan) {
-            props.getAccountPlan(accountId)
-        }
+        props.getAccountPlan(accountId)
+        .then(() => setIsFetching(false))
     }, [])
-    return props.accountPlan ?
+    return !isFetching ?
         <EditPlanPage {...props} accountId={accountId} /> 
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }

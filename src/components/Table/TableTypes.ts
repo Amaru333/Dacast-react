@@ -12,6 +12,7 @@ interface BodyTable {
     callbackData?: any;
     isSelected?: boolean;
     isDisabled?: boolean;
+    isProcessing?: boolean;
 }
 
 interface HeaderCell {

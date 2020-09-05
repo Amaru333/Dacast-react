@@ -263,9 +263,9 @@ export const UploaderPage = (props: UploaderProps) => {
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
-                <div className="col col-4 flex items-center justify-end">
+                {/* <div className="col col-4 flex items-center justify-end">
                     <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/integrations")}> FTP/S3 Uploader </Button>
-                </div>
+                </div> */}
             </div>
 
             <Prompt

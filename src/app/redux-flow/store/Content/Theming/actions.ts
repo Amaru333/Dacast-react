@@ -29,7 +29,6 @@ export const getContentThemeAction = (contentId: string, contentType: string): T
 }
 
 export const saveContentThemeAction = (data: ThemeOptions, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentTheme> => {
-    debugger;
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentTheme> ) => {
         await ContentThemingServices.saveContentThemeService(data, contentId, parseContentType(contentType))
             .then( response => {

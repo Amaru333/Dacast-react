@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { Action, getAccountAllowancesAction, saveAccountAllowancesAction } from '../../redux-flow/store/Accounts/Allowances/actions';
 import { Allowances, PutAllowances } from '../../redux-flow/store/Accounts/Allowances/types';
 import { useParams } from 'react-router-dom';
-import { PutAccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AccountAllowancesComponentProps {
     accountAllowances: Allowances;
@@ -17,15 +18,17 @@ export interface AccountAllowancesComponentProps {
 const AccountAllowances = (props: AccountAllowancesComponentProps) => {
 
     let { accountId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         props.getAccountAllowances(accountId)
+        .then(() => setIsFetching(false))
 
     }, [])
 
-    return (
+    return !isFetching ?
         <AccountAllowancesPage {...props} accountId={accountId} />
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }
 
 export function mapStateToProps(state: AdminState) {

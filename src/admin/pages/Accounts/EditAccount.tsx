@@ -6,7 +6,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Flag } from '../../redux-flow/store/Accounts/List/types'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { EditAccountComponentProps } from '../../containers/Accounts/EditAccount'
-import { PutAccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types'
+import { PutAccountInfo, AccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
 import { AccountServices } from '../../redux-flow/store/Accounts/EditAccount/service'
@@ -17,6 +17,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
     let history = useHistory()
     const [accountInfo, setAccountInfo] = React.useState<PutAccountInfo>({})
+    const [accountDetails, setAccountDetails] = React.useState<AccountInfo>(props.accountInfo)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [preferredPlatform, setPreferredPlatform] = React.useState<string>(props.accountInfo.preferredPlatform)
@@ -33,9 +34,9 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
         })
     }
 
-    // React.useEffect(() => {
-    //     setAccountInfo(props.accountInfo)
-    // }, [props])
+    React.useEffect(() => {
+        setAccountDetails(props.accountInfo)
+    }, [props])
 
     const handleCheckboxChange = (flag: Flag) => {
         if(accountInfo.accountFlags.indexOf(flag) > -1) {
@@ -65,19 +66,19 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
             <Text size={20} weight='med'>Editing Account</Text>
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='companyNameInput' defaultValue={props.accountInfo.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='userFirstNameInput' defaultValue={props.accountInfo.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={props.accountInfo.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />
+                <Input className='col col-3 pr1 py1' id='companyNameInput' defaultValue={accountDetails.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
+                <Input className='col col-3 pl1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
+                <Input className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={accountDetails.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />
 
             </div>
 
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='websiteInput' defaultValue={props.accountInfo.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
+                <Input className='col col-3 pr1 py1' id='websiteInput' defaultValue={accountDetails.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
                 <Input className='col col-3 pl1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
             </div>
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='phoneInput' defaultValue={props.accountInfo.phone} placeholder='Phone' label='Phone' onChange={(event) => setAccountInfo({...accountInfo, phone: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='emailInput' defaultValue={props.accountInfo.email} placeholder='Email' label='Email' onChange={(event) => setAccountInfo({...accountInfo, email: event.currentTarget.value})} />
+                <Input className='col col-3 pr1 py1' id='phoneInput' defaultValue={accountDetails.phone} placeholder='Phone' label='Phone' onChange={(event) => setAccountInfo({...accountInfo, phone: event.currentTarget.value})} />
+                <Input className='col col-3 pl1 py1' id='emailInput' defaultValue={accountDetails.email} placeholder='Email' label='Email' onChange={(event) => setAccountInfo({...accountInfo, email: event.currentTarget.value})} />
             </div>
 
             <div className='flex'>
@@ -86,7 +87,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     id='playbackProtectionDropdown' 
                     list={{'Off': false, '50 GB': false, '100 GB': false, '250 GB': false, '500 GB': false, '1 TB': false, '2 TB': false, '5 TB': false}} 
                     dropdownTitle='Playback Protection' 
-                    dropdownDefaultSelect={props.accountInfo.playbackProtection.enabled ? props.accountInfo.playbackProtection.amountGb + ' GB' : 'No'} 
+                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'No'} 
                     callback={(value: string) => setAccountInfo({...accountInfo, playbackProtection: value === 'No' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: parseInt(value)}})}
                 />
                 <DropdownSingle 
@@ -94,7 +95,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     id='emailVerifiedDropdown' 
                     list={{'Yes': false, 'No': false}} 
                     dropdownTitle='Email Verified' 
-                    disabled={props.accountInfo.emailVerified}
+                    disabled={accountDetails.emailVerified}
                     dropdownDefaultSelect={props.accountInfo.emailVerified ? 'Yes' : 'No'} 
                     callback={(value: string) => setAccountInfo({...accountInfo, forceVerifyEmail: value == 'Yes' ? true : false})}
                 />
@@ -108,7 +109,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     id='preferredDropdown' 
                     list={{'Unified App': false, 'Legacy': false}} 
                     dropdownTitle='Preferred platform' 
-                    dropdownDefaultSelect={!props.accountInfo.preferredPlatform || props.accountInfo.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
+                    dropdownDefaultSelect={!accountDetails.preferredPlatform || accountDetails.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
                     callback={(value: string) => {setPreferredPlatform(value); setAccountInfo({...accountInfo, preferredPlatform: value == 'Legacy' ? 'legacy' : 'unified-app'})}}
                 />
                 <div className='col col-3 pl1 mb2'>

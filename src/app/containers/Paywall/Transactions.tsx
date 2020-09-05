@@ -4,25 +4,26 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { TransactionsPage } from '../../pages/Paywall/Tansactions/Transactions';
 import { getTransactionsAction, Action } from '../../redux-flow/store/Paywall/Transactions/actions';
-import { TransactionsInfos } from '../../redux-flow/store/Paywall/Transactions/types';
+import { TransactionsInfo } from '../../redux-flow/store/Paywall/Transactions/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 
 export interface TransactionsComponentProps {
-    transactionsInfos: TransactionsInfos;
-    getTransactions: () => Promise<void>;
+    transactionsInfo: TransactionsInfo;
+    getTransactions: (qs:string) => Promise<void>;
 }
 
 const Transactions = (props: TransactionsComponentProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     React.useEffect(() => {
-        if(!props.transactionsInfos) {
-            props.getTransactions()
-        }
+        props.getTransactions(null)
+        .then(() => setIsFetching(false))
     }, [])
 
     return (
-        props.transactionsInfos ?     
+        !isFetching ?     
             <TransactionsPage {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
@@ -30,14 +31,14 @@ const Transactions = (props: TransactionsComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        transactionsInfos: state.paywall.transactions
+        transactionsInfo: state.paywall.transactions
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getTransactions: async () => {
-            await dispatch(getTransactionsAction())
+        getTransactions: async (qs:string) => {
+            await dispatch(getTransactionsAction(qs))
         },
     }
 }

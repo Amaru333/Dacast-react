@@ -36,7 +36,7 @@ const ChangePassword = (props: ChangePasswordProps) => {
             {authRequired: false}
         ).then(() => {
             history.push('/login')
-            props.showToast("Your password has been reset", 'flexible', "success")
+            props.showToast("Your password has been reset", 'fixed', "success")
         })
 
     }

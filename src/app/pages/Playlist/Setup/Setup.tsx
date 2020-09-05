@@ -16,6 +16,7 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { userToken } from '../../../utils/token';
+import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {
@@ -120,12 +121,10 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     const handleMoveFoldersToSelected = () => {
         if(checkedFolders.length < 1 ) return;
         const wait = async () => {
-            await props.getFolderContent("status=online,offline,processing&page=1&per-page=10&content-types=channel,vod&folders="+checkedFolders[0].id)
+            await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders="+checkedFolders[0].id)
             .then((response: any) => {
-                if(response.data.data.results) {
-                    setSelectedItems(response.data.data.results);
-                    setSelectedFolderId(checkedFolders[0].id)
-                }
+                setSelectedItems(props.folderData.requestedContent.results);
+                setSelectedFolderId(checkedFolders[0].id)
             })
         }
         wait();
@@ -179,10 +178,9 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             var newSelectedItems = selectedItems.filter(el => {
                 return !checkedSelectedItems.find(elChecked => {
                     if( (el as FolderAsset).type) {
-                        return el.objectID === elChecked.objectID;
-                    } else {
-                        return el.id === el.id;
-                    }
+                        return (el as FolderAsset).objectID === (elChecked as FolderAsset).objectID
+                    } 
+                    return true
                 })
             });
             setSelectedItems(newSelectedItems);
@@ -243,7 +241,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     /** END OF FOLDER SERVICE STUFF */
 
     const renderContentsList = () => {
-        return props.folderData.requestedContent ? props.folderData.requestedContent.results.map((row) => {
+        return props.folderData.requestedContent && selectedTab === 'content' ? props.folderData.requestedContent.results.map((row) => {
             if (row.type === "playlist" || selectedItems.includes(row)) {
                 return;
             }
@@ -322,17 +320,16 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
 
     const handleSave = () => {
         setSaveLoading(true);
-        let newContent = selectedItems.map(item => {
-            (item as FolderAsset)
+        let newContent = selectedItems.map((item: FolderAsset): Content => {
             return {
-                'content-type': item.type === 'channel' ? 'live' : item.type,
-                'title': item.title,
-                'thumbnailURL': item.thumbnail,
+                'content-type': item.type === 'channel' ? 'live' : 'vod',
+                title: item.title,
+                thumbnailURL: item.thumbnail,
                 'vod-id': item.type === 'vod'? removePrefix(item.objectID) : null ,
                 'live-channel-id': item.type === 'channel'? removePrefix(item.objectID): null ,
             }
         })
-        let newData = {...props.contentData};
+        let newData: ContentSetupObject = {...props.contentData};
         newData.contentList = newContent;
         newData.folderId = selectedFolderId;
         newData.maxItems = maxNumberItems;
@@ -380,12 +377,17 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     return (
         <>
             <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { switchTabSuccess(); }} />
-            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
-            <div className="flex items-center">
-                <div className="inline-flex items-center flex col-7 mb1">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
-                </div>
+            <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data: number) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
+            <div className="flex items-center">             
+                    <div className="inline-flex items-center flex col-7 mb1">
+                        { 
+                            selectedTab === 'content' &&   
+                            <> 
+                                <IconStyle coloricon='gray-3'>search</IconStyle>
+                                <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0])}} />
+                            </>
+                        }
+                    </div>
                 <div className="inline-flex items-center flex col-5 justify-end mb2">
                     <div>
                         <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
