@@ -38,11 +38,11 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         return filters
     }
 
-    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
+    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'type=&page=1&perPage=20&sortBy=created-at-desc')
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [sort, setSort] = React.useState<string>(qs.get('sortBy') || 'created-at-desc')
     const [searchString, setSearchString] = React.useState<string>(qs.get('keyword') || null)
-    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 20})
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringTransactionsState>(formatFilters())
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
 
