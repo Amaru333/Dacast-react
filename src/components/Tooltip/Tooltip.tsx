@@ -15,7 +15,7 @@ export const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
         if(target && tooltip.current) {
 
             setTop(target.offsetTop - (tooltip.current.clientHeight + 2) );
-            setLeft(props.leftValueToZero ? 0: target.offsetLeft + ((target.clientWidth - tooltip.current.clientWidth) / 2) );
+            setLeft(props.leftPositionValueToZero ? 0: target.offsetLeft + ((target.clientWidth - tooltip.current.clientWidth) / 2) );
             console.log(target)
     
             if(!target.onmouseleave) {
