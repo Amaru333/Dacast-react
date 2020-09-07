@@ -4,6 +4,8 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 
 export const ClassHalfXsFullMd = "col lg-col-6 md-col-6 sm-col-12 col-12 xs-no-gutter ";
 
+export const ClassThirdXsFullMd = "col lg-col-4 md-col-4 sm-col-12 col-12 xs-no-gutter ";
+
 export const LinkBoxContainer = styled.div`
     display: flex;
     flex-direction: column;

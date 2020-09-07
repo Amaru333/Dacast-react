@@ -15,6 +15,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../shared/Common/MiscStyle';
+var moment = require('moment-timezone')
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -41,7 +42,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: 'Etc/UTC',
+            timezone: moment.tz.guess(),
             startDate: 0,
             type: 'Pay Per View',
         },
@@ -56,7 +57,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: 'Etc/UTC',
+            timezone: moment.tz.guess(),
             startDate: 0,
             type: 'Pay Per View',
         } 

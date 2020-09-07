@@ -36,9 +36,9 @@ export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispa
         await ProfileServices.saveProfilePageDetailsService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PROFILE_PAGE_DETAILS, payload: data} );
-                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'flexible', "error"));
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })
     };
 }
@@ -48,7 +48,7 @@ export const saveProfilePasswordAction = (currentPassword: string, newPassword: 
         await ProfileServices.saveProfilePasswordService(currentPassword, newPassword)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_PROFILE_PASSWORD, payload: response.data.data} );
-                dispatch(showToastNotification("Password saved!", 'flexible', "success"));
+                dispatch(showToastNotification("Password saved!", 'fixed', "success"));
             }).catch(() => {
             })
     };

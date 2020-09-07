@@ -56,6 +56,9 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                     }
                 }
             })
+            if(geoRestrictionsList.filter(g => g.isDefault).length < 1) {
+                geoRestrictionsList[0].isDefault = true
+            }
             return {
                 ...state,
                 geoRestriction: geoRestrictionsList,
@@ -90,6 +93,9 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
                     }
                 }
             })
+            if(domainControlsList.filter(g => g.isDefault).length < 1) {
+                domainControlsList[0].isDefault = true
+            }
             return {
                 ...state,
                 domainControl: domainControlsList,

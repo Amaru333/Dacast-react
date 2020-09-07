@@ -10,28 +10,35 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DateTime } from 'luxon'
-import { tsToLocaleDate } from '../../../utils/utils'
+import { tsToLocaleDate, useQuery } from '../../../utils/utils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
 
-    const [accountId, setAccountId] = React.useState<string>(null)
-    const [keyword, setKeyword] = React.useState<string>(null)
-    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
-
     let query = useHistory()
-    let {url} = useRouteMatch()
+
+    let qs = useQuery()
+
+
+
+    const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
+    const [keyword, setKeyword] = React.useState<string>(qs.get('search') || null)
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+
 
     React.useEffect(() => {
-        if(pagination && !contentLoading) {
-            setContentLoading(true)
-            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}`)
-            .then(() => setContentLoading(false))
-            .catch(() => setContentLoading(false))
-        }
-    }, [pagination])
+        setContentLoading(true)
+        props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+        .then(() => {
+            setContentLoading(false)
+            query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+        })
+        .catch(() => setContentLoading(false))
+    }, [])
 
     const accountsTableHeader = () => {
         return {data: [
@@ -77,7 +84,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{account.plan.charAt(0).toUpperCase() + account.plan.slice(1)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
-                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate)}</Text>,
+                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 10000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 10000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
@@ -90,13 +97,34 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handleSubmit = (salesforceId: string, search: string) => {
-        // query.push(location.pathname + '?accountId=' + accountId)
         setContentLoading(true)
-        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId}` : '') + (search ? `&search=${search}` : '')))
-        .then(() => setContentLoading(false))
-        .catch(() => setContentLoading(false))
+        const previousPagination = pagination
+        setPagination({page: 0, nbResults: pagination.nbResults})
+        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
+        .then(() => {
+            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
+            setContentLoading(false)
+        })
+        .catch(() => {
+            setPagination(previousPagination)
+            setContentLoading(false)
+        })
     }
-    return (
+
+    const handlePaginationChange = (page: number, nbResults: number) => {
+        setPagination({page:page,nbResults:nbResults})
+        if(pagination.page && pagination.nbResults && !contentLoading) {
+            setContentLoading(true)
+            props.getAccounts(accountId, `page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
+            .then(() => {
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
+            })
+            .catch(() => setContentLoading(false))
+        }
+    }
+
+    return props.accounts ?
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex my1'>
@@ -111,7 +139,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
-            <Pagination totalResults={props.accounts.total} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => {setPagination({page:page,nbResults:nbResults})}} />
+            <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
+
 }

@@ -21,9 +21,11 @@ var moment = require('moment-timezone');
 const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
 
     let { playlistId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         props.getContentPaywallInfos(playlistId, 'playlist')
+        .then(() => setIsFetching(false))
         if(!props.groupsInfos) {
             props.getGroupsInfos()
         }
@@ -73,7 +75,6 @@ const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
                 alphanumericCode: '',
                 discount: NaN,
                 limit: NaN,
-                rateType: 'Pay Per View',
                 startDate: null,
                 endDate: null,
                 timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
@@ -88,7 +89,7 @@ const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.contentPaywallInfo['playlist']])
 
-    return props.contentPaywallInfo['playlist'] && props.contentPaywallInfo['playlist'][playlistId] && props.groupsInfos && customPricePresetList && props.theming ? 
+    return !isFetching && props.groupsInfos && customPricePresetList && props.theming ? 
         <div className='flex flex-column'>
             <PlaylistsTabs playlistId={playlistId} />
             <ContentPaywallPage

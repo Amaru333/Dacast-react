@@ -11,11 +11,12 @@ interface PaginationProps {
     displayedItemsOptions: number[];
     callback: Function;
     defaultDisplayedOption?: number;
+    defaultPage?: number;
 }
 
 export const Pagination = (props: PaginationProps) => {
 
-    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [currentPage, setCurrentPage] = React.useState<number>(props.defaultPage || 1);
     const [displayedOptions, setDisplayedOptions] = React.useState<number>(props.defaultDisplayedOption ? props.defaultDisplayedOption : props.displayedItemsOptions[0]);
     const [flag, setFlag] = React.useState<boolean>(false)
 

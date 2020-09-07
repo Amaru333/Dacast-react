@@ -23,11 +23,14 @@ export interface ContentListProps {
 
 const VideosList = (props: ContentListProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     React.useEffect(() => {     
         props.getContentList(null, 'vod')
+        .then(() => setIsFetching(false))
     }, [])
 
-    return props.contentListState['vod'] ? 
+    return !isFetching ? 
         <ContentListPage
             contentType="vod" 
             items={props.contentListState['vod']}

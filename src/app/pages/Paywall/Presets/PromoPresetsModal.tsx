@@ -17,7 +17,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: 'Etc/UTC',
+    timezone: moment.tz.guess(),
     discountApplied: 'Once',
     assignedGroupIds: [],
     assignedContentIds: []
@@ -43,8 +43,8 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
 
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo)
 
-    let startTimestamp = moment.tz((promoPreset.startDate && promoPreset.startDate > 0 ? promoPreset.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((promoPreset.endDate && promoPreset.endDate> 0 ? promoPreset.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((promoPreset.startDate && promoPreset.startDate > 0 ? promoPreset.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
+    let endTimestamp = moment.tz((promoPreset.endDate && promoPreset.endDate> 0 ? promoPreset.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
@@ -85,12 +85,12 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     {startDateTime === "Set Date and Time" &&
                         <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(promoPreset.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(promoPreset.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(promoPreset.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(promoPreset.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, promoPreset.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
@@ -108,12 +108,12 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     endDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((endDay + endTime)*1000).tz(promoPreset.timezone || 'UTC')}
+                            date={moment.utc((endDay + endTime)*1000).tz(promoPreset.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-4 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((endDay + endTime)*1000).tz(promoPreset.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((endDay + endTime)*1000).tz(promoPreset.timezone ||  moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, promoPreset.timezone || 'UTC'))}
                             className='col col-3 md-col-3'
                             disabled={false}
@@ -130,7 +130,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     <DropdownSingle 
                         hasSearch 
                         id='promoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect='Etc/UTC (+00:00 UTC)'
+                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(value: string) => setPromoPreset({...promoPreset, timezone: value.split(' ')[0]})} 

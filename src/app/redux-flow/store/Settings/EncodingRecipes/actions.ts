@@ -124,7 +124,7 @@ export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Pr
         await EncodingRecipesServices.uploadWatermarkService(data, uploadUrl)
             .then( response => {
                 dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: response.data} );
-                dispatch(showToastNotification("Watermark file has been uploaded", 'flexible', "success"));
+                dispatch(showToastNotification("Watermark file has been uploaded", 'fixed', "success"));
             }).catch((error) => {
                 dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: error} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
@@ -137,7 +137,7 @@ export const deleteWatermark = (data: EncodingRecipeItem): ThunkDispatch<Promise
         await EncodingRecipesServices.deleteWatermarkService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: data} );
-                dispatch(showToastNotification("Watermark file has been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Watermark file has been deleted", 'fixed', "success"));
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
             })

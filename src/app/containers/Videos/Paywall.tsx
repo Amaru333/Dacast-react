@@ -46,9 +46,11 @@ export interface ContentPaywallComponentProps {
 const VodPaywall = (props: ContentPaywallComponentProps) => {
 
     let { vodId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         props.getContentPaywallInfos(vodId, 'vod')
+        .then(() => setIsFetching(false))
         if(!props.groupsInfos) {
             props.getGroupsInfos()
         }
@@ -113,7 +115,7 @@ const VodPaywall = (props: ContentPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.contentPaywallInfo['vod']])
 
-    return props.contentPaywallInfo['vod'] && props.contentPaywallInfo['vod'][vodId] && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
+    return !isFetching && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
         <div className='flex flex-column'>
             <VideoTabs videoId={vodId} />
             <ContentPaywallPage

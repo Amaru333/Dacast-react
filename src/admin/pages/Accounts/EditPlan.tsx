@@ -42,7 +42,6 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
 
     const handleKeyChange = (key:string, value: boolean | number) => {
         let tempPlanData = planData
-        debugger
         if(tempPlanData.privileges.findIndex(obj => obj.key === key) > -1) {
             tempPlanData.privileges[tempPlanData.privileges.findIndex(obj => obj.key === key)] = {key: key, value: value}
         } else {

@@ -30,7 +30,7 @@ const defaultPreset: Preset = {
         duration: { value: NaN, unit: 'Hours' },
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: 'Etc/UTC',
+        timezone: moment.tz.guess(),
         startDate: 0,
     }
 }
@@ -97,7 +97,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
 
     }
 
-    let startTimestamp = moment.tz((newPricePreset.settings.startDate && newPricePreset.settings.startDate > 0 ? newPricePreset.settings.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((newPricePreset.settings.startDate && newPricePreset.settings.startDate > 0 ? newPricePreset.settings.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
@@ -121,6 +121,11 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             setButtonLoading(false)
         })
     }
+
+    React.useEffect(() => {
+        console.log('price', newPricePreset)
+        console.log('time', startTime)
+    }, [newPricePreset, startTime])
 
     return (
         <div>
@@ -216,12 +221,12 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                 (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, newPricePreset.settings.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}

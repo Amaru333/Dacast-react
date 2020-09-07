@@ -60,10 +60,10 @@ export const MoveItemModal = (props: {showToast: (text: string, size: Size, noti
             setSaveLoading(false)
             props.toggle(false)
             props.setMoveModalSelectedFolder(null)
-            props.showToast('Items moved succesfully', 'flexible', 'success')
+            props.showToast('Items moved succesfully', 'fixed', 'success')
         }).catch(() => {
             setSaveLoading(false)
-            props.showToast('Items couldn\'t be moved', 'flexible', 'error')
+            props.showToast('Items couldn\'t be moved', 'fixed', 'error')
 
         })
     } 

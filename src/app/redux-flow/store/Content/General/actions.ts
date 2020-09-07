@@ -67,7 +67,7 @@ export const editContentDetailsAction = (data: ContentDetails, contentType: stri
         await ContentGeneralServices.editContentDetailsService(data, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.EDIT_CONTENT_DETAILS, payload: {data: data, contentType: contentType} })
-                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer } from './FoldersStyle'
+import { FoldersTreeSection, ContentSection, FolderRow, SeparatorHeader, RowIconContainer, TitleContainer, ListContentTitle } from './FoldersStyle'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Text } from '../../../components/Typography/Text'
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox'
@@ -373,7 +373,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                 {handleRowIconType(row)}
                             </RowIconContainer>
                         </div>,
-                        <Text key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</Text>,
+                        <TitleContainer>
+                            <ListContentTitle key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-3'>{row.title}</ListContentTitle>
+                        </TitleContainer>
+                        ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                         <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
@@ -543,7 +546,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
-                <EmptyTrashModal toggle={setEmptyTrashModalOpened} />
+                <EmptyTrashModal showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} toggle={setEmptyTrashModalOpened} />
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
@@ -558,7 +561,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 }
             </Modal>
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <DeleteBulkForm isInFolder={FIXED_FOLDERS.indexOf(selectedFolder) === -1} updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
             {
                 bulkThemeOpen &&
