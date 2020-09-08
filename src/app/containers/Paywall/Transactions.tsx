@@ -18,7 +18,7 @@ const Transactions = (props: TransactionsComponentProps) => {
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
-        props.getTransactions(null)
+        props.getTransactions('page=1&perPage=20&sortBy=created-at-desc')
         .then(() => setIsFetching(false))
     }, [])
 
