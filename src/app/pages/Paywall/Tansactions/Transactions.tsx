@@ -20,12 +20,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
 
     const formatFilters = () => {
         let filters: FilteringTransactionsState = {
-            type: {
-                requestPayment: qs.toString().indexOf('requestPayment') > -1,
-                externalPayment: qs.toString().indexOf('externalPayment') > -1,
-                specialChargeback: qs.toString().indexOf('specialChargeback') > -1,
-                charge: qs.toString().indexOf('charge') > -1,
-            },
+            type: qs.get('type'),
             currency: {
                 aud: qs.toString().indexOf('aud') > -1,
                 gbp: qs.toString().indexOf('gbp') > -1,
@@ -38,7 +33,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         return filters
     }
 
-    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'type=&page=1&perPage=20&sortBy=created-at-desc')
+    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'page=1&perPage=20&sortBy=created-at-desc')
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [sort, setSort] = React.useState<string>(qs.get('sortBy') || 'created-at-desc')
     const [searchString, setSearchString] = React.useState<string>(qs.get('keyword') || null)
@@ -51,7 +46,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(filters) {
             
             if(filters.type) {
-                returnedString += '&type=' + (filters.type.requestPayment ? 'requestPayment' : '') + (filters.type.externalPayment ? ',externamPayment' : '') + (filters.type.charge ? ',charge' : '') + (filters.type.specialChargeback ? ',specialChargeback' : '')
+                returnedString += '&type=' + filters.type 
             }
 
             if(filters.currency) {
@@ -74,20 +69,16 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         }
 
         if(returnedString.indexOf('type=&') > -1) {
-            returnedString = returnedString.replace('type=&','type=requestPayment,specialChargeback,externalPayment,charge&')
+            returnedString = returnedString.replace('type=&','')
         }
 
         if(returnedString.indexOf('currency=&') > -1) {
-            returnedString = returnedString.replace('currency=&','currency=aud,gbp,usd,eur')
+            returnedString = returnedString.replace('currency=&','')
         }
 
-        if(returnedString.indexOf('type') === -1) {
-            returnedString += '&type=requestPayment,specialChargeback,externalPayment,charge'
-        }
-
-        if(returnedString.indexOf('currency') === -1) {
-            returnedString += 'currency=aud,gbp,usd,eur'
-        }
+        // if(returnedString.indexOf('currency') === -1) {
+        //     returnedString += 'currency=aud,gbp,usd,eur'
+        // }
 
 
         setQsParams(returnedString)

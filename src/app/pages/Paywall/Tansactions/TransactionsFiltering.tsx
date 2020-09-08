@@ -6,14 +6,10 @@ import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/
 import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
 export interface FilteringTransactionsState {
-    type: {
-        requestPayment: boolean;
-        externalPayment: boolean;
-        specialChargeback: boolean;
-        charge: boolean;
-    };
+    type: string;
     currency: {
         aud: boolean;
         gbp: boolean;
@@ -30,12 +26,7 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
 
 
     var filteringDefault: FilteringTransactionsState = {
-        type: {
-            requestPayment: false,
-            externalPayment: false,
-            specialChargeback: false,
-            charge: false,
-        },
+        type: null,
         currency: {
             aud: false,
             gbp: false,
@@ -52,7 +43,7 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
 
     const checkActiveFilter = () => {
         var counter = 0;
-        Object.entries(filteringState.type).map(item => item[1] !== false ? counter++ : null);
+        filteringState.type? counter++ : null;
         Object.entries(filteringState.currency).map(item => item[1] !== false ? counter++ : null)
         filteringState.startDate ? counter++ : null;
         filteringState.endDate ? counter++ : null;
@@ -79,19 +70,13 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                     <div className="mb3" id="transactionsFilterType">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.requestPayment}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, requestPayment: !prevState.type.requestPayment } } }) }}
-                            id='transactionFilterRequestPayment' label="Request Payment" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.externalPayment}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, externalPayment: !prevState.type.externalPayment } } }) }}
-                            id='transactionsFilterExternalPayment' label="External Payment" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.specialChargeback}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.type, specialChargeback: !prevState.type.specialChargeback } } }) }}
-                            id='transactionFilterSpecialChargeback' label="Special Chargeback" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.charge}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, charge: !prevState.type.charge } } }) }}
-                            id='transactionFilterCharge' label="Charge" labelWeight="reg" />
+                        {/* <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text> */}
+                        <DropdownSingle id='filterType' 
+                            dropdownTitle='Type'
+                            dropdownDefaultSelect={filteringState.type}
+                            list={{'Pay Per View': false, 'Subscription': false, 'External Payment': false, 'Special Chargeback': false, 'Viewer Refund': false, 'Request Payment': false, 'Payment With Balance': false}}
+                            callback={(value: string) => setFilteringState({...filteringState, type: value})}
+                        />
                     </div>
                     <div className="mb3" id="transactionFilterCurrency">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
