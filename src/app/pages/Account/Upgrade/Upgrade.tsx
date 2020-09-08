@@ -109,7 +109,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                     return (
                                         <AllowanceElement className='flex items-center'>
                                             <IconStyle customsize={customInfoIconSize} className="mr1" id={'icon' + element.name} coloricon='gray-5'>info_outlined</IconStyle>
-                                            <Tooltip target={'icon' + element.name}>{element.tooltip}</Tooltip>
+                                            <Tooltip leftPositionValueToZero={true} target={'icon' + element.name}>{element.tooltip}</Tooltip>
                                             <Text className={textClassName} size={14} weight='med' color='gray-1'>{element.name}</Text>
                                         </AllowanceElement>
                                     );
