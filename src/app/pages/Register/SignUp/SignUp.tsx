@@ -45,9 +45,8 @@ export const SignupPage = (props: SignupContainerProps) => {
     const onSubmit = (data: UserInfo) => { 
         setSubmitLoading(true);
         data.token = recaptchaToken;
-        props.signup(data, () => {
-            setSubmitLoading(false);
-        });
+        props.signup(data)
+        .then(() => setSubmitLoading(false))
     }
 
     React.useEffect(() => {
@@ -56,7 +55,11 @@ export const SignupPage = (props: SignupContainerProps) => {
         }
     }, [props.UserInfo.email])
 
-    useKeyboardSubmit( ()=> handleSubmit(onSubmit) )
+    useKeyboardSubmit( ()=> {
+        if(!submitLoading) {
+            handleSubmit(onSubmit)
+        }
+    })
 
     return (<LoginContainer>
         <ImageStyle className="mx-auto" src={logo} />

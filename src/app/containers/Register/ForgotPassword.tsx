@@ -6,7 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 
 export interface ForgotPasswordComponentProps {
-    forgotPassword: Function;
+    forgotPassword: (email: string) => Promise<void>;
 }
 
 const ForgotPassword = (props: ForgotPasswordComponentProps) => {
@@ -22,8 +22,8 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        forgotPassword: (email: string) => {
-            dispatch(forgotPasswordAction(email));
+        forgotPassword: async (email: string) => {
+            await dispatch(forgotPasswordAction(email));
         },
     };
 }

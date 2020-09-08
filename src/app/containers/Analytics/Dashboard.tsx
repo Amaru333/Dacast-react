@@ -8,7 +8,7 @@ import moment from 'moment';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardState;
-    getAnalyticsDashboard: Function;
+    getAnalyticsDashboard: (options?: GetAnalyticsDashboardOptions) => Promise<void>;
 
 }
 
@@ -30,8 +30,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsDashboard: (options?: GetAnalyticsDashboardOptions) => {
-            dispatch(getAnalyticsDashboardAction(options));
+        getAnalyticsDashboard: async (options?: GetAnalyticsDashboardOptions) => {
+            await dispatch(getAnalyticsDashboardAction(options));
         }
     };
 }

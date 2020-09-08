@@ -4,13 +4,13 @@ export interface MainMenuSpecificProps {
     routes: Routes[]; 
     history: any;
     isOpen: boolean;
-    setOpen: Function;
+    setOpen: (b: boolean) => void;
     isMobile: boolean;
     navWidth: string;
     menuLocked: boolean;
-    setMenuLocked: Function;
-    openAddStream?: Function;
-    openPlaylist?: Function;
+    setMenuLocked: (b: boolean) => void;
+    openAddStream?: (b: boolean) => void;
+    openPlaylist?: (b: boolean) => void;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

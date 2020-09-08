@@ -18,16 +18,11 @@ import { Modal } from '../../../components/Modal/Modal';
 export interface DashboardProps {
     infos: DashboardInfos;
     billingInfos: BillingPageInfos;
-    getDashboardDetails: Function;
-    getDashboardVodPlayRate: Function;
-    getDashboardVodPlay: Function;
-    getDashboardLiveViewers: Function;
-    getDashboardLiveTopChannels: Function;
-    getDashboardVodTopVideos: Function;
-    getDashboardVodImpressions: Function;
-    getBillingPageInfos: Function;
-    editBillingPagePaymenPlaybackProtection: Function;
-    addBillingPagePaymenPlaybackProtection: Function;
+    getDashboardDetails: () => Promise<void>;
+    getDashboardVodPlayRate: (jobID: string) => Promise<void>;
+    getBillingPageInfos: () => Promise<void>;
+    editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
+    addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
 }
 
 const Dashboard = (props: DashboardProps) => {
@@ -100,20 +95,20 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getBillingPageInfos: () => {
-            dispatch(getBillingPageInfosAction());
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction());
         },
-        getDashboardDetails: () => {
-            dispatch(getDashboardDetailsAction());
+        getDashboardDetails: async () => {
+            await dispatch(getDashboardDetailsAction());
         },
-        getDashboardVodPlayRate: (jobID: string) => {
-            dispatch(getDashboardVodPlayRateAction(jobID));
+        getDashboardVodPlayRate: async (jobID: string) => {
+            await dispatch(getDashboardVodPlayRateAction(jobID));
         },
-        editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
-            dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
+        editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
+            await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
         },
-        addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => {
-            dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
+        addBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
+            await dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
         }
     };
 }

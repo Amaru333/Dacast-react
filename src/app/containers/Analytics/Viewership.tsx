@@ -12,16 +12,9 @@ import moment from 'moment';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
-    getFolders: Function;
-    getFolderContent: Function;
-    moveItemsToFolder: Function;
-    addFolder: Function;
-    deleteFolder: Function;
-    deleteContent: Function;
-    restoreContent: Function;
-    renameFolder: Function;
     viewershipAnalytics: AnalyticsViewershipState;
-    getAnalyticsViewership: Function;
+    getFolderContent: (folderPath: string) => Promise<void>;
+    getAnalyticsViewership: (options?: GetAnalyticsViewershipOptions) => Promise<void>;
 }
 
 const Viewership = (props: ViewershipComponentProps) => {
@@ -57,14 +50,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: async (folderPath: string) => {
+            await dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: ContentType[]) => {
-            dispatch(restoreContentAction(content))
-        },
-        getAnalyticsViewership: (options?: GetAnalyticsViewershipOptions) => {
-            dispatch(getAnalyticsViewershipAction(options))
+        getAnalyticsViewership: async (options?: GetAnalyticsViewershipOptions) => {
+           await dispatch(getAnalyticsViewershipAction(options))
         },
 
     };

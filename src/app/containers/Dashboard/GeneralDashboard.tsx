@@ -22,10 +22,10 @@ interface PlanType {
     nextBill: string;
     isTrial: boolean;
     daysLeft?: number;
-    openOverage: Function;
+    openOverage: (b: boolean) => void;
 }
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; profile: DashboardGeneral; isPlanPage?: boolean}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean}) => {
 
     let history = useHistory()
     
@@ -155,7 +155,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
 }
 
-export const ProgressBarDashboard = (props: { openOverage?: Function; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number}; plan?: PlanSummary }) => {
+export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void; percentage: number; widget: 'bandwidth' | 'storage' | 'encoding'; overage?: {enabled: boolean; amount: number}; plan?: PlanSummary }) => {
 
     const handleProgressBar = (percentage: number) => {
         return (
