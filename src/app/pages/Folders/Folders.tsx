@@ -27,6 +27,7 @@ import { useHistory } from 'react-router'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
+import { handleRowIconType } from '../../utils/utils'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -241,25 +242,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             setFolderAssetSelected(folderAssetSelected + 1)
         } else if (!isChecked && item.type === 'folder') {
             setFolderAssetSelected(folderAssetSelected > 0 ? folderAssetSelected - 1 : 0)
-        }
-    }
-
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
-            case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID} fontSize="large">playlist_play</IconStyle>
-            case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID} fontSize="large">folder_open</IconStyle>
-            case 'channel':
-            case 'vod':
-                return item.thumbnail ? 
-                    <img key={"thumbnail" + item.objectID} width={94} height={54} src={item.thumbnail} ></img> 
-                    :
-                    <div className='relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
-                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                    </div>
-            default:
-                return
         }
     }
 
