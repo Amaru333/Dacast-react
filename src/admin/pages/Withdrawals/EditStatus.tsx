@@ -50,7 +50,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
                         </div>
                         :
                         <div key={key + i} className='flex  col col-12'>
-                            <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + (key.indexOf('Date') > -1 ? props.withdrawal[key] : tsToLocaleDate(props.withdrawal[key], DateTime.DATETIME_SHORT)) + ','}</Text>
+                            <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + (key.indexOf('Date') > -1 ? props.withdrawal[key] : tsToLocaleDate(parseInt(props.withdrawal[key]), DateTime.DATETIME_SHORT)) + ','}</Text>
                         </div>
                 )
             })
