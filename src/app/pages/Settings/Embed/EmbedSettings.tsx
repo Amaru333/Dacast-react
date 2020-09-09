@@ -17,7 +17,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
         ['embed-scaling']:  'responsive',
         'embed-size': 0
     }
-    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys((props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object) ? defaultEmbedSettings : props.embedSettingsOption);
+    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys(props.embedSettingsOption).length === 0  ? defaultEmbedSettings : props.embedSettingsOption);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
     let inputRef = React.useRef<HTMLInputElement>(null)
@@ -44,6 +44,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
     }
 
     console.log(inputOptions);
+    console.log(inputOptions['embed-size'] == NaN)
 
     return (
         <React.Fragment>
@@ -77,7 +78,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                 {
                     Object.entries(inputOptions).toString() === Object.entries(props.embedSettingsOption).toString() ? null :
                         <ButtonContainer>
-                            <ButtonStyle disabled={inputOptions['embed-scaling'] === 'fixed' && inputOptions['embed-size'] === NaN} isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
+                            <ButtonStyle disabled={inputOptions['embed-scaling'] === 'fixed' && Number.isNaN(inputOptions['embed-size']) } isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
                             <ButtonStyle onClick={() => {setInputOptions(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption)}} typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>
