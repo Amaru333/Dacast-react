@@ -24,7 +24,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
             case 'us-transfer' :
                 return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
             case 'international-transfer':
-                return {minRequest: '$1,000 USD', fees: '$1,000 USD', nbDays: 15}
+                return {minRequest: '$1,000 USD', fees: '$50 USD', nbDays: 15}
             case 'check':
                 return {minRequest: '$250 USD', fees: 'Free', nbDays: 5}
             case 'paypal':

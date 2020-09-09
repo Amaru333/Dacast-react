@@ -65,7 +65,7 @@ const BankAccountInternational = (updatePaymentMethod: (data: PaymentMethod) => 
             <Text className='col col-12' size={20} weight='reg'>Account Details</Text>
             <div className='col col-12 sm-col-9 mt2'>
                 <Input className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' id='swiftBic' value={paymentMethodData ? paymentMethodData.swift : ''} label='SWIFT/BIC' placeholder='SWIFT/BIC' onChange={(event) => updatePaymentMethod({...paymentMethodData, swift: event.currentTarget.value})} />
-                <Input className='col xs-no-gutter col-12 sm-col-4 pl1' id='iban' label='IBAN' value={paymentMethodData ? paymentMethodData.iban : ''} indicationLabel='Optional' placeholder='IBAN' onChange={(event) => updatePaymentMethod({...paymentMethodData, iban: event.currentTarget.value})}/>
+                <Input className='col xs-no-gutter col-12 sm-col-4 pl1' id='iban' label='IBAN/Account Number' value={paymentMethodData ? paymentMethodData.iban : ''} placeholder='IBAN/Account Number' onChange={(event) => updatePaymentMethod({...paymentMethodData, iban: event.currentTarget.value})}/>
             </div>
             <div className='col col-12 sm-col-9 mt2'>
                 <Input className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' id='firstName' value={paymentMethodData ? paymentMethodData.firstName : ''} label='First Name' indicationLabel={paymentMethodRecipientType === "Business" ? 'Optional' : null} placeholder='First Name' onChange={(event) => updatePaymentMethod({...paymentMethodData, firstName: event.currentTarget.value})} />
@@ -139,7 +139,7 @@ const PayPal = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMetho
 }
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>('Bank Account (US)');
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod.paymentMethodType);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>('Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -217,7 +217,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         dropdownTitle='Payout Type' 
                         list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
                         callback={(value: string) => setSelectedPaymentMethod(value)}
-                        dropdownDefaultSelect='Bank Account (US)'
+                        dropdownDefaultSelect={props.selectedPaymentMethod.paymentMethodType}
                     />
                     {
                         (selectedPaymentMethod === 'Bank Account (US)' || selectedPaymentMethod === 'Bank Account (International)') &&

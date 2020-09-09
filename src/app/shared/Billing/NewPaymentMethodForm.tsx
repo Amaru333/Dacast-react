@@ -277,7 +277,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                 <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
                     <div className='m2'>
                         <Text size={14} weight='reg' color='gray-1'>
-                            When you click next, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
+                            When you click add, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                         </Text>
                     </div>
 
