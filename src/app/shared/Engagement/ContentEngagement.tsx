@@ -105,6 +105,10 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
     }
 
     React.useEffect(() => {
+        setEngagementSettings({...engagementSettings, adsSettings: {...engagementSettings.adsSettings, ads: props.contentEngagementSettings.engagementSettings.adsSettings.ads}})
+    }, [props.contentEngagementSettings.engagementSettings.adsSettings.ads])
+
+    React.useEffect(() => {
         if(props.contentEngagementSettings.engagementSettings.uploadurl) {
             props.uploadContentImage(logoFile, props.contentEngagementSettings.engagementSettings.uploadurl ).then(() => {
                 setUploadButtonLoading(false)
@@ -598,7 +602,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
             <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened &&
-                        <ContentNewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
+                        <ContentNewAdModal {...props} contentEngagementSettings={{contentId: props.contentId, engagementSettings: engagementSettings}} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
                 }
             </Modal>
             {
