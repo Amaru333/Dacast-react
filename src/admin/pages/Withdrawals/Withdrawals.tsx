@@ -32,7 +32,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                     <Link key={'withdrawalsTableBodyAccountIdCell' + key }to=''>{withdrawal.accountSalesforceId}</Link>,
                     <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?accountId=${withdrawal.id}`}>{withdrawal.currency + withdrawal.amount}</Link>,
                     <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
                     <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
                     <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
