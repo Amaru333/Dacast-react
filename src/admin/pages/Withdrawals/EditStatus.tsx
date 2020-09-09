@@ -5,6 +5,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Text } from '../../../components/Typography/Text'
+import { tsToLocaleDate } from '../../../utils/utils'
+import { DateTime } from 'luxon'
 
 export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: string}) => {
 
@@ -48,7 +50,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
                         </div>
                         :
                         <div key={key + i} className='flex  col col-12'>
-                            <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + props.withdrawal[key] + ','}</Text>
+                            <Text size={14} weight='reg'>&quot;{key}&quot;{': ' + (key.indexOf('Date') > -1 ? props.withdrawal[key] : tsToLocaleDate(props.withdrawal[key], DateTime.DATETIME_SHORT)) + ','}</Text>
                         </div>
                 )
             })
