@@ -218,6 +218,8 @@ export const ContentListPage = (props: ContentListProps) => {
                 return 'livestreams'
             case 'playlist':
                 return 'playlists'
+            case 'expos':
+                return 'expos'
         }
     }
 

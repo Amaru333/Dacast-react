@@ -73,6 +73,8 @@ class userTokenService {
     }
 
     public getPrivilege = (privilege: Privilege) => {
+        // TODO QUENTIN : Remove when privilege expos available
+        if(privilege == 'privilege-expos') { return true };
         //Remove this by updating type on backend
         return this.getUserInfoItem(privilege) === 'true';
     }

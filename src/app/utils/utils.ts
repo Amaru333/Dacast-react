@@ -15,5 +15,5 @@ export function updateTitleApp(title: string): void {
 }
 
 export const parseContentType = (contentType: string) => {
-    return contentType === 'live' ? 'channels' : contentType + 's'
+    return contentType === 'live' ? 'channels' : contentType === "expos" ? contentType : contentType + 's'
 }
