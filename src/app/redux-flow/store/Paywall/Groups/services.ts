@@ -20,7 +20,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
 
         }
     } else {
@@ -34,7 +34,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
 
             }
         } else {
@@ -48,7 +48,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
             }
         }
     } 
@@ -73,7 +73,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
 
         }
     } else {
@@ -88,7 +88,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
 
             }
         } else {
@@ -103,7 +103,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + content.type === 'channel' ? 'live' : content.type + '-' + content.objectID)
             }
         }
     } 
