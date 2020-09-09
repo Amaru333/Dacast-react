@@ -4,7 +4,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 
-export const FailedCardExpos = (props: {}) => {
+export const EmptyCardExpos = (props: {}) => {
 
     return (
         <div style={{height: '100vh'}} className='flex flex-column justify-center items-center center'>

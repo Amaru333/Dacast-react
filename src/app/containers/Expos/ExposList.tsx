@@ -10,7 +10,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
-import { FailedCardExpos } from '../../pages/Expos/FailedCardExpos';
+import { EmptyCardExpos } from '../../pages/Expos/EmptyCardExpos';
 
 const ExposList = (props: ContentListProps) => {
 
@@ -23,7 +23,7 @@ const ExposList = (props: ContentListProps) => {
 
     return !isFetching ? 
         props.contentListState['expos'].results.length === 0 || true ? 
-        <FailedCardExpos /> :
+        <EmptyCardExpos /> :
         <ContentListPage
             contentType="expos"
             items={props.contentListState['expos']}
