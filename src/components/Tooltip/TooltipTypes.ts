@@ -1,6 +1,6 @@
 export interface TooltipCustomProps {
     target: string;
-    leftValueToZero?:boolean;
+    leftPositionValueToZero?:boolean;
 }
 
 export type TooltipProps = TooltipCustomProps & React.HTMLAttributes<HTMLDivElement>

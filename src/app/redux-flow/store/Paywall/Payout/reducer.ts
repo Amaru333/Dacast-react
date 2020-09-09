@@ -11,7 +11,7 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 paymentMethods: action.payload.data.paymentMethods.map((p => {
                     return {
                         ...p,
-                        paymentMethodType: p === 'us-transfer' ? 'Bank Account (US)' : p === 'international-transfer' ? 'Bank Account (International)' : p === 'check' ? 'Check' : 'PayPal'
+                        paymentMethodType: p.paymentMethodType === 'us-transfer' ? 'Bank Account (US)' : p.paymentMethodType === 'international-transfer' ? 'Bank Account (International)' : p.paymentMethodType === 'check' ? 'Check' : 'PayPal'
                     }
                 }))
             }
