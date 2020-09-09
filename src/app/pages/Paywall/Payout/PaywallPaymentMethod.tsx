@@ -139,7 +139,7 @@ const PayPal = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMetho
 }
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod.paymentMethodType);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>('Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -217,7 +217,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         dropdownTitle='Payout Type' 
                         list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
                         callback={(value: string) => setSelectedPaymentMethod(value)}
-                        dropdownDefaultSelect={props.selectedPaymentMethod.paymentMethodType}
+                        dropdownDefaultSelect={selectedPaymentMethod}
                     />
                     {
                         (selectedPaymentMethod === 'Bank Account (US)' || selectedPaymentMethod === 'Bank Account (International)') &&
