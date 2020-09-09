@@ -162,7 +162,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     React.useEffect(() => {
         if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
             setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
-                return props.stepperData.firststep.contents.includes(userId + '-' + content.type + '-' +  content.objectID)
+                return props.stepperData.firststep.contents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' +  content.objectID)
             }))
         }
     }, [props.stepperData.secondStep.folderData.requestedContent.results])

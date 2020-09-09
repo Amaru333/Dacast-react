@@ -28,6 +28,7 @@ export interface Preset {
     id: string;
     name: string;
     type: string;
+    priceType?: string;
     prices: Price[];
     settings: PriceSettings;
     contentId?: string;

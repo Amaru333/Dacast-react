@@ -14,7 +14,7 @@ interface PaywallDashboardProps {
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: PaywallDashboardProps }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
     var balance = numberFormatter(props.profile.balance, 'comma');
-    var revenue = numberFormatter(props.profile.revenue.find(r => r.currency === 'USD').total || 0, 'comma');
+    var revenue = numberFormatter(props.profile.revenue ? props.profile.revenue.find(r => r.currency === 'USD').total : 0, 'comma');
 
 
     return (

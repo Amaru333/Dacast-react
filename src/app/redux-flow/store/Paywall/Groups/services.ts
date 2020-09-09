@@ -13,7 +13,7 @@ const createGroupPrice = async (data: GroupPrice) => {
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -27,7 +27,7 @@ const createGroupPrice = async (data: GroupPrice) => {
         if(data.groupSettings.startMethod === 'Upon Purchase') {
             parsedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -40,7 +40,7 @@ const createGroupPrice = async (data: GroupPrice) => {
         } else {
             parsedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -66,7 +66,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
         parsedPrice = {
             id: data.id,
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -81,7 +81,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
             parsedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -95,7 +95,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
             parsedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
