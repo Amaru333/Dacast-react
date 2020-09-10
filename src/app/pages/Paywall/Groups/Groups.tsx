@@ -98,7 +98,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         if(props.groupsInfos.prices) {
             return props.groupsInfos.prices.packages.map((price, key) => {
                 return {
-                    data: price.prices ? [
+                    data: price.prices.length > 0 ? [
                         <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
                         <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
                         <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
