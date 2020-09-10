@@ -60,7 +60,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = presetsList.prices;
         if(inputChange === 'amount') {
-            tempPrices[key].value = parseInt(value);
+            tempPrices[key].value = parseFloat(value);
         }
         else {
             tempPrices[key].currency = value;
@@ -73,7 +73,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             return( 
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
-                        <Input className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
+                        <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
                         <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) }  />
 
                         {
