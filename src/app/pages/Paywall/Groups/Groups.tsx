@@ -118,6 +118,11 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     ]
                     : [
                         <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{`Something went wrong with the group price: ${price.name}`}</Text>,
+                        <span key='emptyspan1'></span>,
+                        <span key='emptyspan2'></span>,
+                        <span key='emptyspan3'></span>,
+                        <span key='emptyspan4'></span>,
+                        <span key='emptyspan5'></span>,
                         <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                             <ActionIcon id={"deleteTooltipPrice" + price.id}>
                                 <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
