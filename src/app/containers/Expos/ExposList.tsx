@@ -22,18 +22,22 @@ const ExposList = (props: ContentListProps) => {
     }, [])
 
     return !isFetching ? 
-        props.contentListState['expos'].results.length === 0 || true ? 
-        <EmptyCardExpos /> :
-        <ContentListPage
-            contentType="expos"
-            items={props.contentListState['expos']}
-            themesList={props.themesList}
-            getContentList={props.getContentList}
-            deleteContentList={props.deleteContentList}
-            getThemesList={props.getThemesList}
-            showToast={props.showToast}
-         />
+        <>
+        {
+            props.contentListState['expos'].results.length === 0 ? 
+            <EmptyCardExpos setCreateModalOpen={setCreateModalOpen} /> :
+            <ContentListPage
+                contentType="expos"
+                items={props.contentListState['expos']}
+                themesList={props.themesList}
+                getContentList={props.getContentList}
+                deleteContentList={props.deleteContentList}
+                getThemesList={props.getThemesList}
+                showToast={props.showToast}
+            />}
+        </>
         : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
+
 
 }
 

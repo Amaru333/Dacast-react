@@ -28,9 +28,10 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
+import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 
 interface ContentListProps {
-    contentType: string
+    contentType: 'expos' | 'vod' | 'live' | 'playlist';
     items: SearchResult;
     themesList: ThemesData;
     getContentList: (qs: string, contentType: string) => Promise<void>;
@@ -87,6 +88,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
     const [contentList, setContentList] = React.useState<SearchResult>(props.items)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
+    const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
 
@@ -94,11 +96,6 @@ export const ContentListPage = (props: ContentListProps) => {
 
     React.useEffect(() => {
         foldersTree.initTree()
-        // const interval = setInterval(() => {
-        //     setFetchContent(true)
-        //   }, 60000)
-
-        //   return () => clearInterval(interval)
     }, [])
 
     React.useEffect(() => {
@@ -186,7 +183,6 @@ export const ContentListPage = (props: ContentListProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            console.log(qsParams)
             props.getContentList(qsParams, props.contentType).then(() => {
                 setContentLoading(false)
                 setFetchContent(false)
@@ -226,7 +222,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const contentListHeaderElement = () => {
         return {
             data: [
-                {cell: <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
+                {cell: props.contentType === 'expos' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
                     onChange={(event) => {
                         if (event.currentTarget.checked) {
                             const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
@@ -241,9 +237,9 @@ export const ContentListPage = (props: ContentListProps) => {
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
                 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text>},
-                {cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text>},
+                {cell: props.contentType === 'expos' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text>},
                 {cell: <div style={{ width: "80px" }} ></div>},
-            ], 
+            ].filter(x => x.cell !== undefined), 
             defaultSort: 'created-at',
             sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
         }
@@ -266,6 +262,7 @@ export const ContentListPage = (props: ContentListProps) => {
             return contentList.results.map((value) => {
                 return {
                     data: [
+                        props.contentType === 'expos' ? undefined :
                         <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
                             <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                                 if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
@@ -292,7 +289,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
-                        <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        props.contentType === 'expos' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -306,7 +303,7 @@ export const ContentListPage = (props: ContentListProps) => {
                             </div>
                         : <span></span>
 
-                    ],
+                    ].filter(x => x !== undefined),
                     isSelected: selectedContent.includes(value.objectID),
                     isDisabled: value.status === 'deleted',
                     isProcessing: (value.type === 'vod' && !value.size)
@@ -333,35 +330,40 @@ export const ContentListPage = (props: ContentListProps) => {
     return (
         <>
             <div className='flex items-center mb2'>
-                <div className="flex-auto items-center flex">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
-                </div>
-                <div className="flex items-center" >
-                    {selectedContent.length > 0 &&
-                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
-                    }
-                    <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                        <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
-                            {renderList()}
-                        </DropdownList>
-                    </div>
-                    <SeparatorHeader className="mx2 inline-block" />
-                    <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} contentType={props.contentType} />                
-                    {
-                        props.contentType === "vod" &&
-                            <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
-                    }
-                    {
-                        props.contentType === "live" &&
-                            <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
-                    }
-                    {
-                        props.contentType === "playlist" && 
-                            <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
-                    }
-                </div>
+                {
+                    props.contentType !== 'expos' ?
+                        <>
+                            <div className="flex-auto items-center flex">
+                                <IconStyle coloricon='gray-3'>search</IconStyle>
+                                <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
+                            </div>
+                            <div className="flex items-center" >
+                                {selectedContent.length > 0 &&
+                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
+                                }
+                                <div className="relative">
+                                    <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                                    <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                                        {renderList()}
+                                    </DropdownList>
+                                </div>
+                                <SeparatorHeader className="mx2 inline-block" />
+                                <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} contentType={props.contentType} />                
+                                {
+                                    props.contentType === "vod" &&
+                                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                                }
+                                {
+                                    props.contentType === "live" &&
+                                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
+                                }
+                                {
+                                    props.contentType === "playlist" && 
+                                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
+                                }
+                            </div>
+                        </> : <Button buttonColor="blue" className="ml-auto" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
+                }
             </div>        
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={contentList.totalResults} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
@@ -392,6 +394,7 @@ export const ContentListPage = (props: ContentListProps) => {
             </Modal>
             <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+            <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
         </>
 
     )
