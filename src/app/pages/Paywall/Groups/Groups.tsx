@@ -97,24 +97,36 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const groupPricesTableBody = () => {
         if(props.groupsInfos.prices) {
             return props.groupsInfos.prices.packages.map((price, key) => {
-                return {data: [
-                    <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
-                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
-                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
-                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.currency : 'Multiple Currencies'}</Text>,
-                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
-                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
-                    <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
-                        <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                            <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
-                        <ActionIcon id={"editTooltipPrice" + price.id}>
-                            <IconStyle onClick={() =>  {setStepperData({...stepperData, firststep: price});setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
-                    </IconContainer>
-                ]}
+                return {
+                    data: price.prices ? [
+                        <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
+                        <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.groupSettings.type}</Text>,
+                        <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
+                        <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.currency : 'Multiple Currencies'}</Text>,
+                        <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
+                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
+                        <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
+                            <ActionIcon id={"deleteTooltipPrice" + price.id}>
+                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
+                            <ActionIcon id={"editTooltipPrice" + price.id}>
+                                <IconStyle onClick={() =>  {setStepperData({...stepperData, firststep: price});setSelectedGroupPrice(price);setGroupPricesStepperOpened(true)}}>edit</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"editTooltipPrice" + price.id}>Edit</Tooltip>
+                        </IconContainer>
+                    ]
+                    : [
+                        <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{`Something went wrong with the group price: ${price.name}`}</Text>,
+                        <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
+                            <ActionIcon id={"deleteTooltipPrice" + price.id}>
+                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
+                        </IconContainer>
+                    ]
+
+                }
             })
         }
     }
