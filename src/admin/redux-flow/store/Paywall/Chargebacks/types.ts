@@ -4,7 +4,7 @@ export enum ActionTypes {
 
 export interface Chargeback {
     amount: number;
-    accountId: string;
+    salesforceId: string;
     type: string;
 }
 
