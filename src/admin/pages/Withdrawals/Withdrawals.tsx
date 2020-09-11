@@ -8,10 +8,18 @@ import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdra
 import { Link, useRouteMatch } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import { tsToLocaleDate } from '../../../utils/utils'
+import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
     let {url} = useRouteMatch()
+
+    const handleImpersonate = (userIdentifier: string) => {
+        AccountsServices.impersonate(userIdentifier)
+        .then((response) => {
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}`}).click();
+        })
+    }
 
     const withdrawalsTableHeader = () => {
         return {data: [
@@ -29,8 +37,8 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
         if(props.withdrawals && props.withdrawals.withdrawalRequests) {
             return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
-                    <Link key={'withdrawalsTableBodyAccountIdCell' + key }to=''>{withdrawal.accountSalesforceId}</Link>,
-                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?accountId=${withdrawal.id}`}>{withdrawal.currency + withdrawal.amount}</Link>,
+                    <a key={'withdrawalsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(withdrawal.accountSalesforceId)}>{withdrawal.accountSalesforceId}</a>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount}</Link>,
                     <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
