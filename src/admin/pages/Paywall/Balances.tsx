@@ -70,7 +70,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
     const handleSubmit = (salesforceId: string) => {
         setContentLoading(true)
         const previousPagination = pagination
-        setPagination({page: 0, nbResults: pagination.nbResults})
+        setPagination({page: 1, nbResults: pagination.nbResults})
         props.getBalances((`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '')))
         .then(() => {
             query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : ''))
