@@ -2,18 +2,23 @@ export enum ActionTypes {
     GET_BALANCES = "@@admin_paywall/GET_BALANCES"
 }
 
-export interface Balance {
-    id: string;
-    date: number;
-    type: string;
-    credit: number;
-    debit: number;
-    revenue: number;
+export interface Line {
+    lineType: "arbitrary" | "inplayer",
+    amount: number,
+    date: number,
+    note: string,
+    salesforceId: string
+    conversionRateToAccountCurency?: number,
+    currency?: string,
+    fee?: number,
+    title?: string,
+    transactionType?: string
 }
 
 export interface AccountBalanceInfo {
-    operations: Balance[];
-    accountBalance: number;
+    lines: Line[];
+    balance: number | null;
+    total: number;
 }
 
 export const balancesInitialState: AccountBalanceInfo | false = false
