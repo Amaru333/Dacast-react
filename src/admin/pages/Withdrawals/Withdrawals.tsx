@@ -25,6 +25,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
         return {data: [
             {cell: <Text key='withdrawalsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
             {cell: <Text key='withdrawalsTableHeaderAmountCell' size={14} weight='med'>Amount</Text>},
+            {cell: <Text key='withdrawalsTableHeaderTotalBalanceCell' size={14} weight='med'>Total Balance</Text>},
             {cell: <Text key='withdrawalsTableHeaderRequestedDateCell' size={14} weight='med'>Requested Date</Text>},
             {cell: <Text key='withdrawalsTableHeaderCompletedDateCell' size={14} weight='med'>Completed date</Text>},
             {cell: <Text key='withdrawalsTableHeaderMethodCell' size={14} weight='med'>Method</Text>},
@@ -38,7 +39,8 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
                     <a key={'withdrawalsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(withdrawal.accountSalesforceId)}>{withdrawal.accountSalesforceId}</a>,
-                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount}</Link>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount.toLocaleString()}</Link>,
+                    <Text key={'withdrawalsTableBodyTotalBalanceCell' + key } size={14}>${withdrawal.totalBalance.toLocaleString()}</Text>,
                     <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
