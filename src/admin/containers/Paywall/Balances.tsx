@@ -15,19 +15,7 @@ export interface BalancesComponentProps {
 
 const Balances = (props: BalancesComponentProps) => {
 
-    let query = useQuery()
-
-    React.useEffect(() => {
-        if (query.get('accountId')) {
-            props.getBalances(query.get('accountId'))
-        } else if(!props.balanceInfo) {
-            props.getBalances(null)
-        }
-    }, [])
-
-    return (
-        <BalancesPage {...props} />
-    )
+    return <BalancesPage {...props} />
 }
 
 export function mapStateToProps(state: AdminState) {

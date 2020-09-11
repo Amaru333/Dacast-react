@@ -8,8 +8,10 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { DateTime } from 'luxon'
-import { useQuery } from '../../../utils/utils'
+import { useQuery, tsToLocaleDate } from '../../../utils/utils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 
 
 export const BalancesPage = (props: BalancesComponentProps) => {
@@ -55,7 +57,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             return props.balanceInfo.lines.map((line, key) => {
                 return {data: [
                     <a key={'balanceTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(line.salesforceId)}>{line.salesforceId}</a>,
-                    <Link key={'balancesTableBodyDateCell' + key }to=''>{DateTime.fromSeconds(line.date).toFormat("yyyy-LL-dd HH:mm")}</Link>,
+                    <Link key={'balancesTableBodyDateCell' + key }to=''>{tsToLocaleDate(Math.floor(line.date / 1000), DateTime.DATETIME_SHORT)}</Link>,
                     <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.lineType}</Text>,
                     <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? Math.sign(line.fee).toString() + (Math.abs(line.amount * line.conversionRateToAccountCurency-line.fee)).toString() : '' : line.amount > 0 ? line.amount : 0}</Text>,
                     <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? Math.sign(line.fee).toString() + (Math.abs(line.amount * line.conversionRateToAccountCurency-line.fee)).toString() : '' : line.amount < 0 ? line.amount : 0}</Text>,
@@ -93,16 +95,17 @@ export const BalancesPage = (props: BalancesComponentProps) => {
         }
     }
 
-    return (
+    return props.balanceInfo ?
         <div>
             <Text className='py1' size={14}>Paywall balances - select an Account to view their transactions and current balance</Text>
             <div className='flex my1 items-center'>
                 <Input id='accountIdInput' placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                 <Button className='mx2' disabled={!accountId ? true : false} onClick={() => handleSubmit(accountId)} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
-                <Text size={14} weight='med'>{props.balanceInfo && props.balanceInfo.balance ? 'Balance: $' + props.balanceInfo.balance : ''}</Text>
+                <Text size={14} weight='med'>{props.balanceInfo.balance ? 'Balance: $' + props.balanceInfo.balance : ''}</Text>
             </div>
             <Table contentLoading={contentLoading} className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
             <Pagination totalResults={props.balanceInfo.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
+
 }
