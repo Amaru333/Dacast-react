@@ -17,7 +17,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
 
     const balancesTableHeader = () => {
         return {data: [
-            {cell: <Text key='balancesTableHeaderDateCell' size={14} weight='med'>Date(UTC)</Text>},
+            {cell: <Text key='balancesTableHeaderDateCell' size={14} weight='med'>Date (UTC)</Text>},
             {cell: <Text key='balancesTableHeaderTypeCell' size={14} weight='med'>Type</Text>},
             {cell: <Text key='balancesTableHeaderCreditCell' size={14} weight='med'>Credit (USD)</Text>},
             {cell: <Text key='balancesTableHeaderDebitCell' size={14} weight='med'>Debit (USD)</Text>},
