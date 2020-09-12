@@ -19,7 +19,7 @@ import { axiosClient } from '../../../utils/axiosClient'
 const logo = require('../../../../../public/assets/logo.png');
 
 export interface ChangePasswordProps {
-    showToast: Function;
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
 const ChangePassword = (props: ChangePasswordProps) => {

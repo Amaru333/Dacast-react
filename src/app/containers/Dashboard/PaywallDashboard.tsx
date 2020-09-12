@@ -8,14 +8,27 @@ import { IconStyle } from '../../../shared/Common/Icon'
 
 interface PaywallDashboardProps {
     balance: number;
-    revenue: {currency: string; total: number};
+    revenue: {currency: string; total: number}[];
 }
 
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: PaywallDashboardProps }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
     var balance = numberFormatter(props.profile.balance, 'comma');
-    var revenue = numberFormatter(props.profile.revenue.total, 'comma');
 
+    const handleCurrencySymbol = (currency: string) => {
+        switch(currency) {
+            case 'USD':
+                return '$'
+            case 'AUD':
+                return 'AU$'
+            case 'GBP': 
+                return '£'
+            case 'EUR':
+                return '€'
+            default:
+                return '$'
+        }
+    }
 
     return (
         <section className={classTopContainer}>
@@ -37,15 +50,20 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Text size={48} weight="reg" color="gray-1">${balance}</Text>
                     </div>
                 </WidgetElement>
-
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
                         <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
                         <Tooltip target="revenueTooltip">The paywall revenue you have earned since the start of the current billing period</Tooltip>
                     </WidgetHeader>
-                    <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">${revenue}</Text>
+                    <div className="flex flex-column minContentDash justify-center items-center mb1">
+                        {
+                            props.profile.revenue ? props.profile.revenue.map((r, i) => {
+                                return <Text key={'revenue' + i} size={48} weight="reg" color="gray-1">{handleCurrencySymbol(r.currency) + numberFormatter(r.total, 'comma')}</Text>
+
+                            })
+                            : <Text size={48} weight="reg" color="gray-1">$0</Text>
+                        }
                     </div>
                 </WidgetElement>
             </div>

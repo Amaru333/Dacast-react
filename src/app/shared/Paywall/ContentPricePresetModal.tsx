@@ -24,7 +24,8 @@ const pricesList = [
 const defaultPreset: Preset = {
     id: 'custom',
     name: '',
-    type: 'Pay Per View',
+    type: 'individual',
+    priceType: 'Pay Per View',
     prices: pricesList,
     settings: {
         duration: { value: NaN, unit: 'Hours' },
@@ -59,7 +60,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = newPricePreset.prices;
         if (inputChange === 'value') {
-            tempPrices[key].value = parseInt(value);
+            tempPrices[key].value = parseFloat(value);
         }
         else {
             tempPrices[key].currency = value;
@@ -73,7 +74,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                 return (
                     <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center ' + (key === newPricePreset.prices.length - 1 ? '' : 'mb2')}>
                         <div className='col sm-col-12 col-12 clearfix flex'>
-                            <Input className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
+                            <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
                             <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) }  />
                             {
                                 key === newPricePreset.prices.length - 1 ?
@@ -115,17 +116,14 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
         props.action(savedPrice, props.contentId, props.contentType)
         .then(() => {
             props.fetchContentPrices(props.contentId, props.contentType)
-            props.toggle(false)
-            setButtonLoading(false)
+            .then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            })
         }).catch(() => {
             setButtonLoading(false)
         })
     }
-
-    React.useEffect(() => {
-        console.log('price', newPricePreset)
-        console.log('time', startTime)
-    }, [newPricePreset, startTime])
 
     return (
         <div>
@@ -156,9 +154,9 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                     id='pricePresetTypeDropdown'
                     className={'col col-12 sm-col-6 mb2 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
                     dropdownTitle='Preset Type'
-                    dropdownDefaultSelect={newPricePreset.type}
+                    dropdownDefaultSelect={newPricePreset.priceType}
                     list={{ 'Pay Per View': false, 'Subscription': false }}
-                    callback={(value: string) => setNewPricePreset({ ...newPricePreset, type: value, settings:{...newPricePreset.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    callback={(value: string) => setNewPricePreset({ ...newPricePreset, priceType: value, settings:{...newPricePreset.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -166,7 +164,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             </div>
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
-                    newPricePreset.type === 'Subscription' ?
+                    newPricePreset.priceType === 'Subscription' ?
                         <DropdownSingle
                             id='pricePresetRecurrenceDropdown' 
                             dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'} 
@@ -202,10 +200,10 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                     className={ClassHalfXsFullMd + ' pr1'}
                     callback={(value: string) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, startMethod: value }})}
                     list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method'
-                    disabled={newPricePreset.type === 'Subscription'}
+                    disabled={newPricePreset.priceType === 'Subscription'}
                 />
                 {
-                    (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
+                    (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.priceType === 'Pay Per View') &&
                         <DropdownSingle
                             hasSearch
                             id='pricePresetTimezoneDropdown'
@@ -218,7 +216,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                 }
             </div>
             {
-                (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.type === 'Pay Per View') &&
+                (newPricePreset.settings.startMethod === 'Schedule' && newPricePreset.priceType === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper
                             date={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess())}
@@ -239,7 +237,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             <div className='col col-12 mt3'>
                 <Button
                     isLoading={buttonLoading}
-                    disabled={(!newPricePreset.name && newPricePreset.id === 'custom' && savePreset) || (newPricePreset.type === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || (!props.preset && newPricePreset.prices.some(price => Number.isNaN(price.value)&& Number.isNaN(newPricePreset.price)))}
+                    disabled={(!newPricePreset.name && newPricePreset.id === 'custom' && savePreset) || (newPricePreset.priceType === 'Pay Per View' && Number.isNaN(newPricePreset.settings.duration.value)) || (!props.preset && newPricePreset.prices.some(price => Number.isNaN(price.value)&& Number.isNaN(newPricePreset.price)))}
                     onClick={() => handleSubmit()} className='mr2'
                     typeButton='primary'
                     sizeButton='large'

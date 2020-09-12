@@ -117,7 +117,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
                     </div>
 
-                    {userToken.getPrivilege('privilege-live') &&
+                    {(userToken.getPrivilege('privilege-unsecure-m3u8') || userToken.getPrivilege('privilege-china')) &&
                         <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
                             <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
                                 <StreamTypeSelectorContents>

@@ -99,7 +99,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleSubmit = (salesforceId: string, search: string) => {
         setContentLoading(true)
         const previousPagination = pagination
-        setPagination({page: 0, nbResults: pagination.nbResults})
+        setPagination({page: 1, nbResults: pagination.nbResults})
         props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
         .then(() => {
             query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))

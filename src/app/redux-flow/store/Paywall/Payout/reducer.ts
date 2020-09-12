@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod,  } from "./types";
+import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod, PaymentMethodType,  } from "./types";
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
     let paymentMethods: PaymentMethod[] = []
@@ -8,7 +8,12 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_PAYMENT_METHODS :
             return {
                 ...state,
-                paymentMethods: action.payload.data.paymentMethods
+                paymentMethods: action.payload.data.paymentMethods.map(p => {
+                    return {
+                        ...p,
+                        paymentMethodType: p.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : p.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : p.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
+                    }
+                })
             }
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
@@ -17,7 +22,13 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
             }
         case ActionTypes.ADD_PAYMENT_METHOD :
             paymentMethods = state.paymentMethods.slice();
-            paymentMethods.splice(paymentMethods.length, 0, action.payload);
+            paymentMethods.splice(
+                paymentMethods.length, 
+                0, 
+                {
+                    ...action.payload,
+                    paymentMethodType: action.payload.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : action.payload.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : action.payload.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
+                 });
             return {
                 ...state,
                 paymentMethods: paymentMethods
@@ -32,7 +43,8 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                     else {
                         return {
                             ...item,
-                            ...action.payload
+                            ...action.payload,
+                            paymentMethodType: action.payload.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : action.payload.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : action.payload.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
                         }
                     }
                 })

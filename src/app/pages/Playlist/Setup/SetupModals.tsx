@@ -15,7 +15,7 @@ const SwitchTabConfirmation = (props: PropsBulkModal & {tab: string}) => {
     return (
         <Modal icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Select by "+ props.tab} size="small" opened={props.open}>
             <form>
-                <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Swtiching to view "+props.tab+" will clear all of your selected items. "}</Text>
+                <Text size={14} weight="reg" className='inline-block mb3 mt1' >{"Switching to view "+props.tab+" will clear all of your selected items. "}</Text>
                 <Button sizeButton="large" typeButton="primary" buttonColor="blue" onClick={(e) => {e.preventDefault();props.callBackSuccess();props.toggle(false);} } >Continue</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </form>
