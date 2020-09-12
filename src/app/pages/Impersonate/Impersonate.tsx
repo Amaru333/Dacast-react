@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery } from '../../../utils/utils'
 import { useHistory } from 'react-router'
 import { userToken } from '../../utils/token'
+import { store } from '../..'
 
 export const Impersonate = () => {
 
@@ -9,6 +10,7 @@ export const Impersonate = () => {
     let history = useHistory()
 
     React.useEffect(() => {
+        store.dispatch({type: 'USER_LOGOUT'});
         if(query.get('token')) {
             userToken.resetUserInfo()
             userToken.addTokenInfo({
