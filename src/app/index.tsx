@@ -26,6 +26,7 @@ if(location.href.indexOf('/impersonate') !== -1) {
             refresh: null,
             expires: 9999999999999
         })
+        console.log('token used')
     }
 }
 ReactDOM.render(<Main store={store}  />, document.getElementById("root"));
