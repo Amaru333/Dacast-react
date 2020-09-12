@@ -17,16 +17,5 @@ Sentry.init({dsn: "https://2e329011118c44b5a76d3670883a6535@o362894.ingest.sentr
 
 if(location.href.indexOf('impersonate') !== -1) {
     store.dispatch({type: 'USER_LOGOUT'})
-    let query = new URLSearchParams(location.search);
-    if(query.get('token')) {
-        userToken.resetUserInfo()
-        userToken.addTokenInfo({
-            token: query.get('token'),
-            accessToken: null,
-            refresh: null,
-            expires: 9999999999999
-        })
-        console.log('token used')
-    }
 }
 ReactDOM.render(<Main store={store}  />, document.getElementById("root"));
