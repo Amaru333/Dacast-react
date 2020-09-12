@@ -17,5 +17,6 @@ Sentry.init({dsn: "https://2e329011118c44b5a76d3670883a6535@o362894.ingest.sentr
 
 if(location.href.indexOf('impersonate') !== -1) {
     store.dispatch({type: 'USER_LOGOUT'})
+    userToken.resetUserInfo()
 }
 ReactDOM.render(<Main store={store}  />, document.getElementById("root"));
