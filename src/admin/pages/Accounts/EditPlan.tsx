@@ -69,7 +69,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.liveStream.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                     <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.liveStream.planValue || props.accountPlan.liveStream.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('liveStream', value === 'On' ? true : false)} />
                 </div>
-                <Text className='py1' size={14} weight='med'>Compatible Streams</Text>
+                <Text className='py1' size={14} weight='med'>Compatible Streams (M3U8)</Text>
                 <div className='flex items-center my1'>
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                     <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.compatibleStreams.planValue || props.accountPlan.compatibleStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('compatibleStreams', value === 'On' ? true : false)} />
