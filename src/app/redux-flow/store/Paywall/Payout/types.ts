@@ -7,6 +7,15 @@ export enum ActionTypes {
     ADD_WITHDRAWAL_REQUEST = "@@paywall_payout/ADD_WITHDRAWAL_REQUEST"
 }
 
+
+export enum PaymentMethodType {
+    BankAccountUS = 'Bank Account (US)',
+    BankAccountInternational = 'Bank Account (International)',
+    Check = 'Check',
+    PayPal = 'PayPal'
+}
+
+
 export interface PaymentMethod {
     id?: string;
     accountNumber?: string;

@@ -4,17 +4,10 @@ import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout/types';
+import { PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
-
-enum PaymentMethodType {
-    BankAccountUS = 'Bank Account (US)',
-    BankAccountInternational = 'Bank Account (International)',
-    Check = 'Check',
-    PayPal = 'PayPal'
-}
 
 const BankAccountUS = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMethodData: PaymentMethod, paymentMethodRecipientType: 'Business' | 'Personal') => {
     return (
@@ -220,7 +213,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         dropdownDefaultSelect={selectedPaymentMethod}
                     />
                     {
-                        (selectedPaymentMethod === 'Bank Account (US)' || selectedPaymentMethod === 'Bank Account (International)') &&
+                        (selectedPaymentMethod === PaymentMethodType.BankAccountUS || selectedPaymentMethod === PaymentMethodType.BankAccountInternational) &&
                             <div style={{marginTop: 2}} className="col col-4 pl1 xs-no-gutter">
                                 <Tab className='col col-12' orientation='horizontal' list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
                             </div>
