@@ -134,7 +134,7 @@ const PayPal = (updatePaymentMethod: (data: PaymentMethod) => void, paymentMetho
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
-    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod.recipientType === 'personal' ? 'Personal' : 'Business')
+    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const renderPaymentMethod = () => {
