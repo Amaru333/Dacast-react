@@ -18,14 +18,13 @@ const GeneralExpos = (props: GeneralComponentProps) => {
     let { exposId } = useParams()
 
     React.useEffect(() => {
-        //props.getContentDetails(exposId, 'expos');
+        props.getContentDetails(exposId, 'expos');
     }, [])
 
     return (
         <>
             <ExposTabs exposId={exposId} />
-            General
-            {/** props.contentDetailsState['expos'] && props.contentDetailsState['expos'][exposId] ?
+            {props.contentDetailsState['expos'] && props.contentDetailsState['expos'][exposId] ?
                 (
                     <div className='flex flex-column'>
                         General
@@ -38,11 +37,11 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                             uploadFile={props.uploadFile}
                             deleteFile={props.deleteFile}
                             showToast={props.showToast}
-                        />/}
+                        />
                     </div>            
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-            */}
+            }
         </>
     )
 
