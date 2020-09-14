@@ -42,10 +42,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
             return false;
         }
     }
-
-    console.log(inputOptions);
-    console.log(inputOptions['embed-size'] == NaN)
-
+    
     return (
         <React.Fragment>
             <form>
