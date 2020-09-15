@@ -196,7 +196,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8'), link: null }
+        { id: "m3u8", label: "M3U8", enabled: props.contentDetails.m3u8, link: "" }
     ]
 
     let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
@@ -422,6 +422,19 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                             </div>
                         } */}
 
+                        {
+                            userToken.getPrivilege('privilege-unsecure-m3u8') &&
+                                <div className="mb2 clearfix">
+                                    <Toggle
+                                        label="M3U8 Link"
+                                        onChange={() => { setContentDetails({...contentDetails, m3u8: !contentDetails.m3u8});setHasChanged(true) }}
+                                        defaultChecked={contentDetails.m3u8}
+                                    ></Toggle>
+                                    <ToggleTextInfo className="mt1">
+                                        <Text size={14} weight='reg' color='gray-1'>Note that M3U8 bypasses ALL security and analytics features. You can find it under Advanced Links below when enabled.</Text>
+                                    </ToggleTextInfo>
+                                </div>
+                        }
                     </div>
                 </div>
                 </>
