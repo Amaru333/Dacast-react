@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface VodRenditionsProps {
     renditions: RenditionsList;
@@ -20,10 +21,16 @@ export interface VodRenditionsProps {
 export const VodRenditions = (props: VodRenditionsProps) => {
 
     let { vodId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-            props.getContentRenditions(vodId, 'vod');
+        props.getContentRenditions(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

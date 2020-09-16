@@ -8,7 +8,9 @@ const getContentSecuritySettingsService = async (contentId: string, contentType:
 const saveContentSecuritySettingsService = async (data: SecuritySettings, contentId: string, contentType: string) => {
     return await axiosClient.put(`${contentType}/${contentId}/settings/security`, 
         {
-            ...data
+            ...data,
+            selectedDomainControl: data.selectedDomainControl === '-1' ? null : data.selectedDomainControl,
+            selectedGeoRestriction: data.selectedGeoRestriction === '-1' ? null : data.selectedGeoRestriction
         }
     )
 }

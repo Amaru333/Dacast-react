@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ThemeOptions, Action, getThemingListAction, saveThemeAction, createThemeAction, deleteThemeAction, ThemesData } from '../../redux-flow/store/Settings/Theming';
 import {ThemingPage} from '../../pages/Settings/Theming/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ThemingComponentProps {
     themingList: ThemesData;
@@ -17,11 +18,19 @@ export interface ThemingComponentProps {
 
 export const Theming = (props: ThemingComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if(!props.themingList) {
             props.getThemingList()
+            .catch(() => setNodataFetched(true))
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
     return (
         props.themingList ?
             <ThemingPage {...props} />

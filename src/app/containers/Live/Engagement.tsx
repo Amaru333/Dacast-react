@@ -13,18 +13,28 @@ import { ContentEngagementComponentProps } from '../Playlists/Engagement';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 
 export const LiveEngagement = (props: ContentEngagementComponentProps) => {
 
     let { liveId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
 
     React.useEffect(() => {
-        props.getContentEngagementSettings(liveId, 'live');
+        props.getContentEngagementSettings(liveId, 'live')
+        .catch(() => setNodataFetched(true))
+
         if (!props.globalEngagementSettings){
-            props.getGlobalEngagementSettings()
+            props.getGlobalEngagementSettings()        
+            .catch(() => setNodataFetched(true))
         }
-    }, []);
+    }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

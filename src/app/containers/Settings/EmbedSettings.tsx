@@ -6,6 +6,7 @@ import { Action, EmbedSettingsOptionType, getEmbedSettingsOptionsAction, saveEmb
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { EmbedSettingsPage } from '../../pages/Settings/Embed/EmbedSettings';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface EmbedSettingsComponentProps {
     embedSettingsOption: EmbedSettingsOptionType;
@@ -15,11 +16,17 @@ export interface EmbedSettingsComponentProps {
 
 const EmbedSettings = (props: EmbedSettingsComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.embedSettingsOption) {
-            props.getEmbedSettingsOptions();
-        }
+        props.getEmbedSettingsOptions()
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         !props.embedSettingsOption ? 

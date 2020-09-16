@@ -9,6 +9,7 @@ import { ChaptersPage } from '../../pages/Videos/ChapterMarkers/Chapters';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
@@ -22,10 +23,17 @@ export interface ChapterComponentProps {
 const Chapters = (props: ChapterComponentProps) => {
 
     let { vodId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getContentChapterMarkers(vodId, 'vod');
+        props.getContentChapterMarkers(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

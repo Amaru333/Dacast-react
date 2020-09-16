@@ -7,6 +7,7 @@ import { Action, PaywallThemingData, getPaywallThemesAction, PaywallTheme, saveP
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/store/Account/Company';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface PaywallThemingComponentProps {
     paywallThemes: PaywallThemingData;
@@ -20,14 +21,21 @@ export interface PaywallThemingComponentProps {
 
 const PaywallTheming = (props: PaywallThemingComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.paywallThemes) {
-            props.getPaywallThemes()
-        }
+        props.getPaywallThemes()
+        .catch(() => setNodataFetched(true))
+
         if(!props.companyState) {
             props.getCompanyState()
+            .catch(() => setNodataFetched(true))
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.paywallThemes && props.companyState ?

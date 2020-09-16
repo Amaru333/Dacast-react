@@ -15,6 +15,7 @@ import { ContentPaywallComponentProps } from '../Videos/Paywall';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Action, createContentPricePresetAction, saveContentPricePresetAction, deleteContentPricePresetAction, createContentPromoPresetAction, saveContentPromoPresetAction, deleteContentPromoPresetAction, getContentPaywallInfosAction, saveContentPaywallInfosAction, getContentPaywallPricesAction, getContentPaywallPromosAction } from '../../redux-flow/store/Content/Paywall/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 var moment = require('moment-timezone');
 
@@ -22,24 +23,35 @@ const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
 
     let { playlistId } = useParams()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         props.getContentPaywallInfos(playlistId, 'playlist')
         .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
+
         if(!props.groupsInfos) {
             props.getGroupsInfos()
+            .catch(() => setNodataFetched(true))
         }
         if(!props.theming) {
             props.getPaywallThemes()
+            .catch(() => setNodataFetched(true))
         }
         if(!props.globalPresets || !props.globalPresets.presets) {
             props.getPresetsInfo('page=1&per-page=100')
+            .catch(() => setNodataFetched(true))
         }
         if(!props.globalPresets || !props.globalPresets.promos) {
             props.getPromoPresetsInfo('page=1&per-page=100')
+            .catch(() => setNodataFetched(true))
         }
         props.getContentPaywallPrices(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
+
         props.getContentPaywallPromos(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
+
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -89,6 +101,10 @@ const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
         }
     }, [props.globalPresets.presets, props.contentPaywallInfo['playlist']])
 
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+    
     return !isFetching && props.groupsInfos && customPricePresetList && props.theming ? 
         <div className='flex flex-column'>
             <PlaylistsTabs playlistId={playlistId} />

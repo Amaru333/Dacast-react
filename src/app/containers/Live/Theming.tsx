@@ -10,15 +10,23 @@ import { useParams } from 'react-router';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { ContentThemingComponentProps } from '../Videos/Theming';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export const LiveTheming = (props: ContentThemingComponentProps) => {
 
     let { liveId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
 
     React.useEffect(() => {
-        if (!props.themeState[liveId])
-            props.getContentTheme(liveId, 'live')
+        props.getContentTheme(liveId, 'live')
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>
