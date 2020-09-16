@@ -13,7 +13,7 @@ interface PaywallDashboardProps {
 
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: PaywallDashboardProps }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
-    var balance = numberFormatter(props.profile.balance, 'comma');
+    var balance = numberFormatter(props.profile.balance., 'comma')
 
     const handleCurrencySymbol = (currency: string) => {
         switch(currency) {
@@ -47,7 +47,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Tooltip target="balanceTooltip">Your current paywall balance as of today</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">${balance}</Text>
+                        <Text size={48} weight="reg" color="gray-1">${props.profile.balance.toLocaleString()}</Text>
                     </div>
                 </WidgetElement>
                 <WidgetElement className={classItemHalfWidthContainer}>
@@ -59,7 +59,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
                         {
                             props.profile.revenue ? props.profile.revenue.map((r, i) => {
-                                return <Text key={'revenue' + i} size={48} weight="reg" color="gray-1">{handleCurrencySymbol(r.currency) + numberFormatter(r.total, 'comma')}</Text>
+                                return <Text key={'revenue' + i} size={48} weight="reg" color="gray-1">{handleCurrencySymbol(r.currency) + r.total.toLocaleString()}</Text>
 
                             })
                             : <Text size={48} weight="reg" color="gray-1">$0</Text>
