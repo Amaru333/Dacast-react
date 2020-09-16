@@ -9,25 +9,32 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/actions';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 
 export interface UpgradeContainerProps {
     planDetails: Plans;
-    getPlanDetails: () => void;
+    getPlanDetails: () => Promise<void>;
     purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => void;
     billingInfos: BillingPageInfos;
-    getBillingPageInfos: () => void
+    getBillingPageInfos: () => Promise<void>
 }
 
 const UpgradeContainer = (props: UpgradeContainerProps) => {
+
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.planDetails) {
-            props.getPlanDetails();
-        }
-        if(!props.billingInfos) {
-            props.getBillingPageInfos();
-        }
+        props.getBillingPageInfos()
+        .catch(() => setNodataFetched(true))
+
+        props.getPlanDetails()
+        .catch(() => setNodataFetched(true))
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         (props.planDetails && props.billingInfos) ? 

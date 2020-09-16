@@ -12,14 +12,22 @@ import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 import { GeneralComponentProps } from '../Videos/General';
 import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const GeneralPlaylist = (props: GeneralComponentProps) => {
 
     let { playlistId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getContentDetails(playlistId, 'playlist');
+        props.getContentDetails(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

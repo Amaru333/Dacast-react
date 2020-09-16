@@ -11,6 +11,7 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 export interface FoldersComponentProps {
     folderData: FoldersInfos;
     themesList: ThemesData
@@ -22,17 +23,23 @@ export interface FoldersComponentProps {
 }
 
 const Folders = (props: FoldersComponentProps) => {
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.folderData.requestedContent) {
-            props.getFolderContent(null)       
-        }
-        
+        props.getFolderContent(null)
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
-    return (
-        props.folderData ? 
-            <FoldersPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <FoldersPage {...props} />
 }
 
 

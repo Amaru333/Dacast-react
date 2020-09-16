@@ -6,6 +6,7 @@ import { PresetsPage } from '../../pages/Paywall/Presets/Presets';
 import { getPricePresetsInfosAction, Action, PresetsPageInfos, createPricePresetAction, Preset, savePricePresetAction, deletePricePresetAction, Promo, createPromoPresetAction, savePromoPresetAction, deletePromoPresetAction, getPromoPresetsInfosAction } from '../../redux-flow/store/Paywall/Presets';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;
@@ -21,14 +22,20 @@ export interface PresetsComponentProps {
 
 const Presets = (props: PresetsComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.presetsInfos.presets) {
-            props.getPresetsInfos('per-page=10&page=1')
-        }
-        if(!props.presetsInfos.promos) {
-            props.getPromoPresets('per-page=10&page=1')
-        }
+        props.getPresetsInfos('per-page=10&page=1')
+        .catch(() => setNodataFetched(true))
+
+        props.getPromoPresets('per-page=10&page=1')
+        .catch(() => setNodataFetched(true))
+
     }, [props.presetsInfos])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.presetsInfos.presets && props.presetsInfos.promos ?

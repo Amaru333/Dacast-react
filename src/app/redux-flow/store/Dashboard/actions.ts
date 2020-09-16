@@ -47,6 +47,7 @@ export const getDashboardDetailsAction = (): ThunkDispatch<Promise<void>, {}, Ge
                 dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: response.data} );
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -60,6 +61,7 @@ export const getDashboardLiveTopChannels = (jobID: string): ThunkDispatch<Promis
             }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -73,6 +75,7 @@ export const getDashboardLiveViewers = (jobID: string): ThunkDispatch<Promise<vo
             }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_VIEWERS, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -86,6 +89,7 @@ export const getDashboardVodImpressionsAction = (jobID: string): ThunkDispatch<P
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_IMPRESSIONS, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -99,6 +103,7 @@ export const getDashboardVodTopVideosAction = (jobID: string): ThunkDispatch<Pro
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_TOP_CONTENTS, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -112,6 +117,7 @@ export const getDashboardVodPlayRateAction = (jobID: string): ThunkDispatch<Prom
             }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -125,6 +131,7 @@ export const getDashboardVodPlayAction = (jobID: string): ThunkDispatch<Promise<
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY, payload: {data: {}, failed: true, loading: false}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

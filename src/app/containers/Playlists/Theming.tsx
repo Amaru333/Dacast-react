@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action } from '../../redux-flow/store/Playlists/Theming/actions';
+import { Action } from '../../redux-flow/store/Content/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -11,16 +11,22 @@ import { PlaylistsTabs } from './PlaylistTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { ContentThemingComponentProps } from '../Videos/Theming';
 import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const PlaylistTheming = (props: ContentThemingComponentProps) => {
 
     let { playlistId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (!props.themeState[playlistId]) {
-            props.getContentTheme(playlistId, 'playlist')
-        }
+        props.getContentTheme(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
 
     return (
         <>

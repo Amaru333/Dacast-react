@@ -21,6 +21,7 @@ export const getPaywallSettingsInfosAction = (): ThunkDispatch<Promise<void>, {}
                 dispatch({type: ActionTypes.GET_PAYWALL_SETTINGS_INFOS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -33,6 +34,7 @@ export const savePaywallSettingsInfosAction = (data: PaywallSettingsInfos): Thun
                 dispatch(showToastNotification("Changes have been saved", 'fixed', 'success'));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }

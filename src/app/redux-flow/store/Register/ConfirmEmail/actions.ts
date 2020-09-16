@@ -17,6 +17,7 @@ export const confirmEmailAction = (email: string): ThunkDispatch<Promise<void>, 
                 dispatch(showToastNotification('Your account is now active', 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 

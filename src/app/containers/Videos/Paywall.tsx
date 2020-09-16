@@ -15,6 +15,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
 import { ContentPaywallState } from '../../redux-flow/store/Content/Paywall/types';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 var moment = require('moment-timezone');
 
 export interface ContentPaywallComponentProps {
@@ -47,24 +48,35 @@ const VodPaywall = (props: ContentPaywallComponentProps) => {
 
     let { vodId } = useParams()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         props.getContentPaywallInfos(vodId, 'vod')
         .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
+
         if(!props.groupsInfos) {
             props.getGroupsInfos()
+            .catch(() => setNodataFetched(true))
         }
         if(!props.theming) {
             props.getPaywallThemes()
+            .catch(() => setNodataFetched(true))
         }
         if(!props.globalPresets || !props.globalPresets.presets) {
             props.getPresetsInfo('page=1&per-page=100')
+            .catch(() => setNodataFetched(true))
         }
         if(!props.globalPresets || !props.globalPresets.promos) {
             props.getPromoPresetsInfo('page=1&per-page=100')
+            .catch(() => setNodataFetched(true))
         }
         props.getContentPaywallPrices(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
+
         props.getContentPaywallPromos(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
+
     }, [])
 
     const [customPricePresetList, setCustomPricePresetList] = React.useState<Preset[]>(null)
@@ -114,6 +126,10 @@ const VodPaywall = (props: ContentPaywallComponentProps) => {
 
         }
     }, [props.globalPresets.presets, props.contentPaywallInfo['vod']])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return !isFetching && props.groupsInfos && customPricePresetList && customPromoPresetList && props.theming ? 
         <div className='flex flex-column'>

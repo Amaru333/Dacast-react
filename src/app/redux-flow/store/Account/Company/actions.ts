@@ -43,6 +43,7 @@ export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
                 dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -54,6 +55,7 @@ export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, 
                 dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
             }).catch(() => {
                 //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -66,6 +68,7 @@ export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispa
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -77,6 +80,7 @@ export const getUploadLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetUp
                 dispatch( {type: ActionTypes.GET_UPLOAD_LOGO_URL, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -90,6 +94,7 @@ export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<
             }).catch((error) => {
                 dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: error} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -102,6 +107,7 @@ export const deleteCompanyLogo = (): ThunkDispatch<Promise<void>, {}, DeleteComp
                 dispatch(showToastNotification("Company Logo has been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

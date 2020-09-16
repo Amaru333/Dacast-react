@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { Action, getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ContentThemingComponentProps {
     theme: ContentTheme;
@@ -20,12 +21,18 @@ export interface ContentThemingComponentProps {
 export const VodTheming = (props: ContentThemingComponentProps) => {
 
     let { vodId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (!props.themeState[vodId]) {
             props.getContentTheme(vodId, 'vod')
+            .catch(() => setNodataFetched(true))
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

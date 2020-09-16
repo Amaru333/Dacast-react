@@ -34,6 +34,7 @@ export const getContentChapterMarkersAction = (contentId: string, contentType: s
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -47,6 +48,7 @@ export const saveContentChapterMarkerAction = (contentId: string, contentType: s
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -60,6 +62,7 @@ export const addContentChapterMarkerAction = (contentId: string, contentType: st
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -73,6 +76,7 @@ export const deleteContentChapterMarkerAction = (contentId: string, contentType:
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }

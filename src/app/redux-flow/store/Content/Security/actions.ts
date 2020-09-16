@@ -29,6 +29,7 @@ export const getContentSecuritySettingsAction = (contentId: string, contentType:
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -42,6 +43,7 @@ export const saveContentSecuritySettingsAction = (data: SecuritySettings, conten
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -54,6 +56,7 @@ export const lockContentAction = (contentId: string, contentType: string): Thunk
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

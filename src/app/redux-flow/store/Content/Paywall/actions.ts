@@ -64,6 +64,7 @@ export const getContentPaywallInfosAction = (contentId: string, contentType: str
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_INFOS, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -76,6 +77,7 @@ export const saveContentPaywallInfosAction = (data: ContentPaywallPageInfos, con
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -87,6 +89,7 @@ export const getContentPaywallPricesAction = (contentId: string, contentType: st
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_PRICES, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -99,6 +102,7 @@ export const createContentPricePresetAction = (data: Preset, contentId: string, 
                 dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -111,6 +115,7 @@ export const saveContentPricePresetAction = (data: Preset, contentId: string, co
                 dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -123,6 +128,7 @@ export const deleteContentPricePresetAction = (data: Preset, contentId: string, 
                 dispatch(showToastNotification("Price have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -134,6 +140,7 @@ export const getContentPaywallPromosAction = (contentId: string, contentType: st
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_PROMOS, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -146,6 +153,7 @@ export const createContentPromoPresetAction = (data: Promo, contentId: string, c
                 dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -158,6 +166,7 @@ export const saveContentPromoPresetAction = (data: Promo, contentId: string, con
                 dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -170,6 +179,7 @@ export const deleteContentPromoPresetAction = (data: Promo, contentId: string, c
                 dispatch(showToastNotification("Promo have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }

@@ -7,6 +7,7 @@ import { getTransactionsAction, Action } from '../../redux-flow/store/Paywall/Tr
 import { TransactionsInfo } from '../../redux-flow/store/Paywall/Transactions/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface TransactionsComponentProps {
     transactionsInfo: TransactionsInfo;
@@ -16,11 +17,18 @@ export interface TransactionsComponentProps {
 const Transactions = (props: TransactionsComponentProps) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         props.getTransactions('page=1&perPage=20&sortBy=created-at-desc')
         .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         !isFetching ?     

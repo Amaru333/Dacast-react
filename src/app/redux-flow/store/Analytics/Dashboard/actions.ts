@@ -19,6 +19,7 @@ export const getAnalyticsDashboardAction = (dates: GetAnalyticsDashboardOptions)
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_DASHBOARD, payload: { data:  { map: [], failed: true} } }  );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
