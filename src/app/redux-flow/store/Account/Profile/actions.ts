@@ -50,6 +50,7 @@ export const saveProfilePasswordAction = (currentPassword: string, newPassword: 
                 dispatch( {type: ActionTypes.SAVE_PROFILE_PASSWORD, payload: response.data.data} );
                 dispatch(showToastNotification("Password saved!", 'fixed', "success"));
             }).catch(() => {
+                return Promise.reject()
             })
     };
 }

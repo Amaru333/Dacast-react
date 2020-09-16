@@ -337,7 +337,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 </div>
                 <div className="flex items-center" >
                     {selectedContent.length > 0 &&
-                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
+                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} {selectedContent.length === 1 ? "Item" : "Items"}</Text>
                     }
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
