@@ -67,6 +67,7 @@ export const getSettingsInteractionsInfosAction = (): ThunkDispatch<Promise<void
                 dispatch( {type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, payload: response.data} );
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -79,6 +80,7 @@ export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): Thunk
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -91,6 +93,7 @@ export const saveAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, SaveA
                 dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -103,6 +106,7 @@ export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, Cre
                 dispatch(showToastNotification("Ad created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -115,6 +119,7 @@ export const deleteAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, Del
                 dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -127,6 +132,7 @@ export const saveMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<
                 dispatch(showToastNotification("Mail catcher saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -139,6 +145,7 @@ export const createMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
                 dispatch(showToastNotification("Mail catcher created", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -151,6 +158,7 @@ export const deleteMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
                 dispatch(showToastNotification("Mail catcher deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -163,6 +171,7 @@ export const getUploadUrlAction = (uploadType: string): ThunkDispatch<Promise<vo
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -176,6 +185,7 @@ export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<P
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -189,6 +199,7 @@ export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>,
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }

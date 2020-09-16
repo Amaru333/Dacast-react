@@ -16,6 +16,7 @@ export const getInvoicesAction = (): ThunkDispatch<Promise<void>, {}, GetInvoice
                 dispatch( {type: ActionTypes.GET_INVOICES, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

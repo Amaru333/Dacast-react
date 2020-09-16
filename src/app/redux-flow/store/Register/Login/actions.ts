@@ -27,6 +27,7 @@ export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, 
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
             }).catch(() => {
                 dispatch({type: ActionTypes.LOGIN_ERROR, payload: null});
+                return Promise.reject()
             })
     };
 

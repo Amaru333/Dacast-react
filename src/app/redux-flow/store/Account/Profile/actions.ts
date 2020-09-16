@@ -27,6 +27,7 @@ export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
                 dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -39,6 +40,7 @@ export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispa
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

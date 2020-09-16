@@ -17,6 +17,7 @@ export const getAnalyticsRealTimeAction = (options?: any): ThunkDispatch<Promise
             }).catch((error) => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REALTIME, payload: {data: {failed: true}}} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

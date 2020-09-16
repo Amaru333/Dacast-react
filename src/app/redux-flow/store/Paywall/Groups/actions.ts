@@ -51,6 +51,7 @@ export const getGroupPricesAction = (): ThunkDispatch<Promise<void>, {}, GetGrou
                 dispatch({type: ActionTypes.GET_GROUP_PRICES, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -63,6 +64,7 @@ export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -75,6 +77,7 @@ export const saveGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<vo
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -87,6 +90,7 @@ export const deleteGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -98,6 +102,7 @@ export const getGroupPromosAction = (): ThunkDispatch<Promise<void>, {}, GetGrou
                 dispatch({type: ActionTypes.GET_GROUP_PROMOS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -110,6 +115,7 @@ export const createGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<
                 dispatch(showToastNotification(`promo has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -122,6 +128,7 @@ export const saveGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<vo
                 dispatch(showToastNotification(`promo has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -134,6 +141,7 @@ export const deleteGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<
                 dispatch(showToastNotification(`promo has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }

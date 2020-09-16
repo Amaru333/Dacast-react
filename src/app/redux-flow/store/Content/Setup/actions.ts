@@ -23,6 +23,7 @@ export const getContentSetupAction = (contentId: string, contentType: string): T
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -36,6 +37,7 @@ export const postContentSetupAction = (data: ContentSetupObject, contentId: stri
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

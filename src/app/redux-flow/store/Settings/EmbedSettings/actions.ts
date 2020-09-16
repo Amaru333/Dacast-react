@@ -22,6 +22,7 @@ export const getEmbedSettingsOptionsAction = (): ThunkDispatch<Promise<void>, {}
                 dispatch( {type: ActionTypes.GET_EMBED_SETTINGS_OPTIONS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -34,6 +35,7 @@ export const saveEmbedSettingsOptionsAction = (data: EmbedSettingsOptionType): T
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

@@ -17,6 +17,7 @@ export const getAnalyticsViewershipAction = (options?: GetAnalyticsViewershipOpt
             }).catch(() => {
                 dispatch( {type: ActionTypes.GET_ANALYTICS_VIEWERSHIP, payload: {failed: true} } );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

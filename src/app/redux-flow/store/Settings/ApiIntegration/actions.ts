@@ -17,6 +17,7 @@ export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {},
                 dispatch( {type: ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
