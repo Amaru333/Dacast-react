@@ -16,6 +16,7 @@ import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { userToken } from '../../../utils/token';
+import { handleRowIconType } from '../../../utils/utils';
 
 var moment = require('moment-timezone');
 
@@ -166,27 +167,6 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
             }))
         }
     }, [props.stepperData.secondStep.folderData.requestedContent.results])
-
-
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
-            case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
-            case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
-            case 'live':
-            case 'channel':
-            case 'vod':
-                return item.thumbnail ?
-                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
-                    : 
-                        <div className='relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
-                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                        </div>
-            default:
-                return;
-        }
-    }
 
     React.useEffect(() => {
         if(selectedItems && selectedItems.length > 0) {

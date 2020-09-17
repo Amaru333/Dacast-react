@@ -17,6 +17,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { userToken } from '../../../utils/token';
 import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
+import { handleRowIconType } from '../../../utils/utils';
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {
@@ -36,6 +37,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             status: 'online'
         }
     }) : [];
+    
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">(props.contentData.playlistType);
@@ -87,30 +89,6 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             setSelectedFolder('/');
         } 
     }, [selectedFolder])
-
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
-            case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
-            case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
-            case 'channel':
-            case 'live':
-            case 'vod':
-                return item.thumbnail ? 
-                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
-                    :                                  
-                        <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
-                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                        </div>
-            default:
-                return (                                    
-                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
-                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                    </div>
-                )
-        }
-    }
 
     const handleNavigateToFolder = (folderName: string) => {
         setSelectedFolder(selectedFolder + folderName + '/');
