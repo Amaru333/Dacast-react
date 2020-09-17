@@ -1,10 +1,7 @@
 import React from 'react';
-import { FolderTreeNode, FolderAsset } from '../../redux-flow/store/Folders/types';
+import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { SetupComponentProps } from '../../containers/Playlists/Setup';
-import { rootNode } from '../../utils/folderService';
 import { userToken } from '../../utils/token';
-import { ContentSetupObject, Content } from '../../redux-flow/store/Content/Setup/types';
-import { handleRowIconType, removePrefix } from '../../utils/utils';
 import { ContentSelector } from '../../../components/ContentSelector/ContentSelector';
 
 
@@ -42,7 +39,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                 loading={saveLoading}
                 folderId={props.contentData.folderId ? props.contentData.folderId : null} 
                 folderData={props.folderData}
-                type={props.contentData.playlistType} 
+                type={'content'} 
                 selectedItems={formateData} 
                 getFolderContent={props.getFolderContent} 
                 title={props.contentData.title} callback={handleSave} />

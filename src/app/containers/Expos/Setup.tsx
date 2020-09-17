@@ -26,11 +26,11 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
     let { exposId } = useParams()
     
     React.useEffect(() => {
-        //props.getContentSetup(exposId, 'expos')
+        props.getContentSetup(exposId, 'expos')
         if(!props.folderData) {
             
             const wait = async () => {
-                //await props.getFolderContent('/')
+                await props.getFolderContent('/')
             }
             wait()
         }
@@ -38,9 +38,9 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
     return (
         <>
             <ExposTabs exposId={exposId} />
-            { (props.folderData && props.contentDataState['playlist'] && props.contentDataState['playlist'][exposId]) ? 
+            { (props.folderData && props.contentDataState['expos'] && props.contentDataState['expos'][exposId]) ? 
                 <div className='flex flex-column'>
-                    <SetupPage {...props}  contentData={props.contentDataState['playlist'][exposId]} contentId={exposId} contentType='playlist'/>
+                    <SetupPage {...props}  contentData={props.contentDataState['expos'][exposId]} contentId={exposId} contentType='expos'/>
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }

@@ -2,6 +2,9 @@ import { ContentSetupObject } from './types';
 import { axiosClient } from '../../../../utils/axiosClient';
 
 const getContentSetupAction = async (contentId: string, contentType: string) => {
+    if(contentType === 'exposs') {
+        return {data: {data: []}}
+    }
     return await axiosClient.get(`${contentType}/${contentId}/setup`)
 }
 
