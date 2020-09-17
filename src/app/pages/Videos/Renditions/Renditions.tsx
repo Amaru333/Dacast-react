@@ -251,7 +251,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 </RenditionsWidget>
                 <RenditionsWidget>
                     <div>
-                        <Text size={24} weight="reg">{(props.renditions.storageRemaining / 10000000).toFixed(2)} GB</Text>
+                        <Text size={24} weight="reg">{(props.renditions.storageRemaining / 1000000000).toFixed(2)} GB</Text>
                     </div>
                     <div className="mt1">
                         <Text color="gray-4" size={14} weight="reg">Storage Remaining</Text>
