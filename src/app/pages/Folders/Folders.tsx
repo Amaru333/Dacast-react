@@ -135,9 +135,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     }, [fetchContent])
 
-    // React.useEffect(() => {
-    //     setFetchContent(true)
-    // }, [updateList])
+    React.useEffect(() => {
+        setFetchContent(true)
+    }, [selectedFilters])
 
     React.useEffect(() => {
         const wait = async () => {
@@ -458,7 +458,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         selectedFolder !== 'Trash' &&
                             <>
                                 {checkedItems.length > 0 &&
-                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
+                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
                                 }
                                 <div className='relative'>
                                     <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
