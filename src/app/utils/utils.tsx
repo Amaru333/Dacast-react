@@ -3,6 +3,7 @@ import { updateTitle } from '../redux-flow/store/Title/logic'
 import { store } from '..';
 import { FolderAsset } from '../redux-flow/store/Folders/types';
 import { IconStyle } from '../../shared/Common/Icon';
+import React from 'react';
 
 export function updateClipboard(copiedValue: string, toastMessage: string): void {
     navigator.clipboard.writeText(copiedValue).then(function () {
@@ -10,6 +11,10 @@ export function updateClipboard(copiedValue: string, toastMessage: string): void
     }, function () {
         store.dispatch(showToastNotification("Failed to copy to clipboard", 'fixed', "error"));
     });
+}
+
+export const removePrefix = (objectId: string) => {
+    return objectId.replace(/channel_|live_|vod_/, '');
 }
 
 export function updateTitleApp(title: string): void {

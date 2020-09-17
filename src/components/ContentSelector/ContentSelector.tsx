@@ -12,8 +12,9 @@ import { FolderTree, rootNode } from '../../app/utils/folderService';
 import { InputCheckbox } from '../FormsComponents/Input/InputCheckbox';
 import { handleRowIconType } from '../../app/utils/utils';
 import { DropdownList, DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
-import { compareValues } from '../../utils/utils';
+import { compareValues, useOutsideAlerter } from '../../utils/utils';
 import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
+import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModals';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
@@ -21,8 +22,10 @@ export interface ContentSelectorComponentProps {
     selectedItems: (FolderAsset | FolderTreeNode)[];
     getFolderContent: Function;
     title: string;
-    callback: Function;
+    loading?: boolean;
+    callback: (selectedItems: (FolderAsset | FolderTreeNode)[] ) => void;
     folderId?: string;
+    playlist?: { setPreviewModalOpen: (enable: boolean) => void, setPlaylistSettingsOpen: (enable: boolean) => void }
 }
 
 export const ContentSelector = (props: ContentSelectorComponentProps & React.HTMLAttributes<HTMLDivElement>) => {
@@ -40,36 +43,32 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.folderId ? props.folderId : null);
     const [sortSettings, setSortSettings] = React.useState<{name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none'}>({name: 'Sort', value: 'none'});
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
-    const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
 
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
 
-    React.useEffect(() => {
-       
+    const parseFiltersToQueryString = () => {
+        let returnedString= `page=1&per-page=200&content-types=channel,vod&`
+        if(searchString) {
+            returnedString += `keyword=${searchString}&`
+        }
+        if(returnedString.indexOf('status') === -1) {
+            returnedString += 'status=online,offline,processing'
+        }
+        return returnedString
 
-    }, [])
+    }
+
+    React.useEffect(() => { 
+        setDropdownIsOpened(false); 
+        props.getFolderContent(parseFiltersToQueryString())
+    }, [sortSettings, searchString])
+
+    useOutsideAlerter(sortDropdownRef, () => {
+        setDropdownIsOpened(!dropdownIsOpened)
+    })
 
     const handleSave = () => {
-        props.callback(selectedItems);
-        //setSaveLoading(true);
-        // let newContent = selectedItems.map((item: FolderAsset): Content => {
-        //     return {
-        //         'content-type': item.type === 'channel' ? 'live' : 'vod',
-        //         title: item.title,
-        //         thumbnailURL: item.thumbnail,
-        //         'vod-id': item.type === 'vod'? removePrefix(item.objectID) : null ,
-        //         'live-channel-id': item.type === 'channel'? removePrefix(item.objectID): null ,
-        //     }
-        // })
-        // let newData: ContentSetupObject = {...props.contentData};
-        // newData.contentList = newContent;
-        // newData.folderId = selectedFolderId;
-        // newData.maxItems = maxNumberItems;
-        // newData.playlistType = selectedTab;
-        // newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
-        // props.saveContentSetup(newData, props.contentData.id, props.contentType)
-        // .then(() => setSaveLoading(false))
-        // .catch(() => setSaveLoading(false))
+        props.callback(selectedItems, selectedTab, selectedFolderId, sortSettings);
     }
 
     const switchTabSuccess = () => {
@@ -170,6 +169,30 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
             setCheckedSelectedItems([...checkedSelectedItems, checkedOption]);
         }
     }
+
+
+    let foldersTree = new FolderTree(() => {}, setCurrentNode)
+
+    React.useEffect(() => {
+        const wait = async () => {
+            await foldersTree.initTree()
+        }
+        wait()
+    }, [])
+
+    React.useEffect(() => {
+        setCurrentNode({
+            ...currentNode,
+            loadingStatus: 'loading',
+            children: {}
+        });
+        foldersTree.goToNode(selectedFolder)
+            .then((node) => {
+                setCurrentNode(node);
+            }).catch((error) => {
+                throw Error(error)
+            })
+    }, [selectedFolder])
 
     const renderFoldersList = () => {
         return currentNode ? Object.values(currentNode.children).map((row) => {
@@ -279,7 +302,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
 
     return (
         <>
-            
+            <SwitchTabConfirmation open={switchTabOpen} toggle={setSwitchTabOpen} tab={selectedTab === "content" ? 'folder' : 'content'} callBackSuccess={() => { switchTabSuccess(); }} />
             <div className="flex items-center">             
                     <div className="inline-flex items-center flex col-7 mb1">
                         { 
@@ -290,21 +313,25 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                             </>
                         }
                     </div>
-                <div className="inline-flex items-center flex col-5 justify-end mb2">
-                    <div>
-                        <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
-                        <Tooltip target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
-                    </div>
+                {
+                    props.playlist &&
+                    <div className="inline-flex items-center flex col-5 justify-end mb2">
+                        <div>
+                            <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
+                            <Tooltip target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
+                        </div>
+                    
+                        <div className="relative">
+                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: "+sortSettings.name : 'Sort'}</Button>
+                            <DropdownList style={{ width: 208, left: 16, top: 36  }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
+                                {renderList()}
+                            </DropdownList>
+                        </div>
+                        <Button onClick={() => props.playlist.setPlaylistSettingsOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
+                        <Button onClick={() => props.playlist.setPreviewModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
+                    </div> 
+                }
                 
-                     <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: "+sortSettings.name : 'Sort'}</Button>
-                        <DropdownList style={{ width: 208, left: 16, top: 36  }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} ref={sortDropdownRef} >
-                            {renderList()}
-                        </DropdownList>
-                    </div>
-                    {/*<Button onClick={() => setPlaylistSettingsOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
-                    <Button onClick={() => setPreviewModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>*/}
-                </div> 
             </div>
             <div className="clearfix">
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
@@ -340,8 +367,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                 <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
             </div>
             <div>
-                {/**<Button onClick={() => { }} buttonColor="blue" className=" mt25 col-3 sm-col-2 right" sizeButton="large" typeButton="tertiary" >Discard</Button>**/}
-                <Button onClick={() => { handleSave()}} isLoading={saveLoading} buttonColor="blue" className="mt25 mr1 left" sizeButton="large" typeButton="primary" >Save</Button>
+                <Button onClick={() => { handleSave()}} isLoading={props.loading} buttonColor="blue" className="mt25 mr1 left" sizeButton="large" typeButton="primary" >Save</Button>
             </div>
         </>
     )
