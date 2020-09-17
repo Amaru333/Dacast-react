@@ -5,12 +5,12 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FoldersInfos } from '../../redux-flow/store/Folders/types';
-import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { ExposTabs } from './ExposTabs';
 import { getContentSetupAction, postContentSetupAction } from '../../redux-flow/store/Content/Setup/actions';
 import { ContentSetupState, ContentSetupObject } from '../../redux-flow/store/Content/Setup/types';
+import { SetupPage } from '../../pages/Expos/Setup';
 
 export interface ExposSetupComponentProps {
     folderData: FoldersInfos;
@@ -28,6 +28,7 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
     React.useEffect(() => {
         //props.getContentSetup(exposId, 'expos')
         if(!props.folderData) {
+            
             const wait = async () => {
                 //await props.getFolderContent('/')
             }
@@ -37,13 +38,12 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
     return (
         <>
             <ExposTabs exposId={exposId} />
-            Setup
-            {/** (props.folderData && props.contentDataState['playlist'] && props.contentDataState['playlist'][playlistId]) ? 
+            { (props.folderData && props.contentDataState['playlist'] && props.contentDataState['playlist'][exposId]) ? 
                 <div className='flex flex-column'>
-                    <SetupPage {...props}  contentData={props.contentDataState['playlist'][playlistId]} contentId={playlistId} contentType='playlist'/>
+                    <SetupPage {...props}  contentData={props.contentDataState['playlist'][exposId]} contentId={exposId} contentType='playlist'/>
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-             */}
+            }
         </>
     )
 }

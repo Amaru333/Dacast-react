@@ -11,11 +11,11 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
-import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import moment from 'moment';
 import { handleRowIconType } from '../../utils/utils';
+import { ItemSetupRow, HeaderBorder } from '../Paywall/Groups/GroupsStyle';
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
