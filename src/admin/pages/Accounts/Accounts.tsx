@@ -31,13 +31,15 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
 
     React.useEffect(() => {
-        setContentLoading(true)
-        props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-        .then(() => {
-            setContentLoading(false)
-            query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-        })
-        .catch(() => setContentLoading(false))
+        if(!contentLoading) {
+            setContentLoading(true)
+            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            .then(() => {
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            })
+            .catch(() => setContentLoading(false))
+        }
     }, [])
 
     const accountsTableHeader = () => {
@@ -97,18 +99,20 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handleSubmit = (salesforceId: string, search: string) => {
-        setContentLoading(true)
-        const previousPagination = pagination
-        setPagination({page: 1, nbResults: pagination.nbResults})
-        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
-        .then(() => {
-            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
-            setContentLoading(false)
-        })
-        .catch(() => {
-            setPagination(previousPagination)
-            setContentLoading(false)
-        })
+        if(!contentLoading) {
+            setContentLoading(true)
+            const previousPagination = pagination
+            setPagination({page: 1, nbResults: pagination.nbResults})
+            props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
+            .then(() => {
+                query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
+                setContentLoading(false)
+            })
+            .catch(() => {
+                setPagination(previousPagination)
+                setContentLoading(false)
+            })
+        }
     }
 
     const handlePaginationChange = (page: number, nbResults: number) => {
