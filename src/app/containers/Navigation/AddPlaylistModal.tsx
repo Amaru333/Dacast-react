@@ -40,7 +40,7 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
         <Modal size="small" modalTitle="Create Playlist" toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <div className='col col-12 flex mb2 relative'> 
-                    <Input id='liveStreamModalInput' className='col col-12' defaultValue={playlistTitle} onChange={(event) => {setPlaylistTitle(event.currentTarget.value)}} label='Title' />
+                    <Input id='playlistModalInput' className='col col-12' defaultValue={playlistTitle} onChange={(event) => {setPlaylistTitle(event.currentTarget.value)}} label='Title' />
 
                 </div>
                 <div className="flex mt2 col col-12">

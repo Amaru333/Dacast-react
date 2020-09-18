@@ -186,7 +186,6 @@ export const ContentListPage = (props: ContentListProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            console.log(qsParams)
             props.getContentList(qsParams, props.contentType).then(() => {
                 setContentLoading(false)
                 setFetchContent(false)

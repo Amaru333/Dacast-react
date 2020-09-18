@@ -28,11 +28,6 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         // setPaymentMethodData({...paymentMethodData, [key]: value})
     }
 
-    React.useEffect(() => {
-        console.log('form', formState)
-    }, [formState])
-
-
     const onSubmit = (data: PaymentMethod) => { 
         let paymentMethod: string = null
 
