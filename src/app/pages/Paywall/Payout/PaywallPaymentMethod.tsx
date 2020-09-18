@@ -23,6 +23,11 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         defaultValues: paymentMethodData || {},
     })
 
+    const handleChange = (key: string, value: string) => {
+        setValue(key, value)
+        // setPaymentMethodData({...paymentMethodData, [key]: value})
+    }
+
     const BankAccountUS = () => {
         return (
             <div className='flex flex-column'>
@@ -36,7 +41,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Account Number' 
                         {...handleValidationForm('accountNumber', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('accountNumber', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('accountNumber', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-12 sm-col-5 pl1 xs-no-gutter' 
@@ -46,7 +51,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Routing Number' 
                         {...handleValidationForm('routingNumber', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('routingNumber', event.currentTarget.value)}    
+                        onChange={(event) =>  handleChange('routingNumber', event.currentTarget.value)}    
                     />
                 </div>
                 
@@ -61,7 +66,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='First Name' 
                                 {...handleValidationForm('firstName', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  setValue('firstName', event.currentTarget.value)}  
+                                onChange={(event) =>  handleChange('firstName', event.currentTarget.value)}  
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 xs-no-gutter pr1' 
@@ -71,7 +76,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='First Name' 
                                 indicationLabel='Optional'
                                 ref={register()}
-                                onChange={(event) =>  setValue('firstName', event.currentTarget.value)}                             />
+                                onChange={(event) =>  handleChange('firstName', event.currentTarget.value)}                             />
                     }
                     {
                         paymentMethodRecipientType === 'Personal' ?
@@ -83,7 +88,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='Last Name' 
                                 {...handleValidationForm('lastName', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  setValue('lastName', event.currentTarget.value)}     
+                                onChange={(event) =>  handleChange('lastName', event.currentTarget.value)}     
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 px1 xs-no-gutter' 
@@ -93,7 +98,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='Last Name' 
                                 indicationLabel='Optional'
                                 ref={register()}
-                                onChange={(event) =>  setValue('lastName', event.currentTarget.value)}     
+                                onChange={(event) =>  handleChange('lastName', event.currentTarget.value)}     
                             /> 
                     }
 
@@ -107,7 +112,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='Account Name' 
                                 {...handleValidationForm('accountName', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  setValue('accountName', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 pl1 xs-no-gutter' 
@@ -117,7 +122,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 placeholder='Account Name' 
                                 indicationLabel='Optional' 
                                 ref={register()}
-                                onChange={(event) =>  setValue('accountName', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
                             />
                     }
 
@@ -131,7 +136,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('address', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('address', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('address', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-12 sm-col-5 xs-no-gutter pl1' 
@@ -141,7 +146,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}
-                        onChange={(event) =>  setValue('address2', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('address2', event.currentTarget.value)}  
                     />
                 </div>
                 <div className='col col-12 sm-col-6 mb2 clearfix'>
@@ -153,7 +158,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('state', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('state', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('state', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-6 sm-col-4 px1' 
@@ -163,7 +168,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('town', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('town', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('town', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-12 sm-col-4 xs-no-gutter pl1 mb2' 
@@ -173,7 +178,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('zipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('zipCode', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)}  
                     />
                 </div>
     
@@ -188,7 +193,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Bank Name' 
                         {...handleValidationForm('bankName', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankName', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankName', event.currentTarget.value)}  
                     />
                 </div>
                 <div className='col col-12 sm-col-9 mb2'>
@@ -200,7 +205,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('bankAddress', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankAddress', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankAddress', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -210,7 +215,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}
-                        onChange={(event) =>  setValue('bankAddress2', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('bankAddress2', event.currentTarget.value)} 
                     />
                 </div>
                 <div className='col col-12 sm-col-8 clearfix mb2'>
@@ -222,7 +227,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('bankState', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankState', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankState', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-6 sm-col-4 px1 xs-mb2' 
@@ -232,7 +237,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('bankTown', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankTown', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankTown', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-12 sm-col-4 xs-no-gutter pl1' 
@@ -242,7 +247,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('bankZipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankZipCode', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankZipCode', event.currentTarget.value)}  
                     />
                 </div>
             </div>
@@ -263,7 +268,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='SWIFT/BIC' 
                         {...handleValidationForm('swiftBic', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('swift', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('swift', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-4 pl1' 
@@ -273,7 +278,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='IBAN/Account Number' 
                         {...handleValidationForm('iban', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('iban', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('iban', event.currentTarget.value)} 
                     />
                 </div>
                 <div className='col col-12 sm-col-11 mt2'>
@@ -287,7 +292,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='First Name' 
                             {...handleValidationForm('firstName', errors)}
                             ref={register({ required: "Required"})}
-                            onChange={(event) =>  setValue('firstName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('firstName', event.currentTarget.value)} 
                         /> :
                         <Input 
                             className='col xs-no-gutter col-12 sm-col-4 pl1' 
@@ -297,7 +302,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='First Name' 
                             indicationLabel='Optional' 
                             ref={register()}
-                            onChange={(event) =>  setValue('firstName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('firstName', event.currentTarget.value)} 
                         />
                     }
                     {
@@ -310,7 +315,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='Last Name' 
                             {...handleValidationForm('lastName', errors)}
                             ref={register({ required: "Required"})}
-                            onChange={(event) =>  setValue('lastName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('lastName', event.currentTarget.value)} 
                         /> :
                         <Input 
                             className='col xs-no-gutter col-12 sm-col-4 pl1' 
@@ -320,7 +325,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='Last Name' 
                             indicationLabel='Optional' 
                             ref={register()}
-                            onChange={(event) =>  setValue('lastName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('lastName', event.currentTarget.value)} 
                         />
                     }
                     {
@@ -333,7 +338,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='Account Name' 
                             {...handleValidationForm('accountName', errors)}
                             ref={register({ required: "Required"})}
-                            onChange={(event) =>  setValue('accountName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
                         /> :
                         <Input 
                             className='col xs-no-gutter col-12 sm-col-4 pl1' 
@@ -343,7 +348,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='Account Name' 
                             indicationLabel='Optional' 
                             ref={register()}
-                            onChange={(event) =>  setValue('accountName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
                         />
                     }
                 </div>
@@ -356,7 +361,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('address', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('address', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('address', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -366,7 +371,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}                            
-                        onChange={(event) => setValue('address2', event.currentTarget.value)}
+                        onChange={(event) => handleChange('address2', event.currentTarget.value)}
                     />
                 </div>
                 <div className='col col-12 sm-col-11 mb2'>
@@ -378,7 +383,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('town', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('town', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('town', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-6 sm-col-3 sm-pl1 pr1 xs-mb2' 
@@ -388,7 +393,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('town', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('town', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('town', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-6 sm-col-3 sm-pr1 pl1' 
@@ -398,7 +403,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('zipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('zipCode', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-3 pl1' 
@@ -408,7 +413,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Country' 
                         {...handleValidationForm('country', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('country', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('country', event.currentTarget.value)} 
                     />
                 </div>
     
@@ -423,7 +428,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Bank Name' 
                         {...handleValidationForm('bankName', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankName', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankName', event.currentTarget.value)}  
                     />
                 </div>
                 <div className='col col-12 sm-col-11 mb2'>
@@ -435,7 +440,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('bankAddress', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankAddress', event.currentTarget.value)}   
+                        onChange={(event) =>  handleChange('bankAddress', event.currentTarget.value)}   
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -445,7 +450,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}                            
-                        onChange={(event) => setValue('bankAddress2', event.currentTarget.value)}   
+                        onChange={(event) => handleChange('bankAddress2', event.currentTarget.value)}   
                     />
                 </div>
                 <div className='col col-12 sm-col-11 clearfix mb2'>
@@ -457,7 +462,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('bankState', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankState', event.currentTarget.value)}
+                        onChange={(event) =>  handleChange('bankState', event.currentTarget.value)}
                     />
                     <Input 
                         className='col col-6 sm-col-3 sm-pr1 pl1 sx-mb2' 
@@ -467,7 +472,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('bankTown', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankTown', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('bankTown', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-6 sm-col-3 sm-pl1 pr1' 
@@ -477,7 +482,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('bankZipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankZipCode', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('bankZipCode', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-6 sm-col-3 pl1' 
@@ -487,7 +492,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Country' 
                         {...handleValidationForm('bankCountry', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('bankCountry', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('bankCountry', event.currentTarget.value)} 
                     />
                 </div>
             </div>
@@ -507,7 +512,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Payee' 
                         {...handleValidationForm('payee', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('payee', event.currentTarget.value)}    
+                        onChange={(event) =>  handleChange('payee', event.currentTarget.value)}    
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -517,7 +522,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Company Name' 
                         ref={register()}                            
-                        onChange={(event) => setValue('companyName', event.currentTarget.value)}      
+                        onChange={(event) => handleChange('companyName', event.currentTarget.value)}      
                     />
                 </div>
                 <div className='col col-12 sm-col-9'>
@@ -529,7 +534,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('checkAddress', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('address', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('address', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -539,7 +544,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}                            
-                        onChange={(event) => setValue('address2', event.currentTarget.value)} 
+                        onChange={(event) => handleChange('address2', event.currentTarget.value)} 
                     />
                 </div>
                 <div className='col col-12 my2'>
@@ -551,7 +556,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('checkState', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('state', event.currentTarget.value)}                    
+                        onChange={(event) =>  handleChange('state', event.currentTarget.value)}                    
                     />
                     <Input 
                         className='col col-6 sm-col-2 sm-pl1 pr1' 
@@ -561,7 +566,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('checkTown', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('town', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('town', event.currentTarget.value)}                     
                     />
                     <Input 
                         className='col col-6 sm-col-2 sm-pr1 pl1 xs-mb2' 
@@ -571,7 +576,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('checkZipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('zipCode', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)}                     
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-3 pl1' 
@@ -581,7 +586,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Country' 
                         {...handleValidationForm('checkCountry', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  setValue('country', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('country', event.currentTarget.value)}                     
                     />
                 </div>
             </div>
@@ -600,7 +605,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         defaultValue={paymentMethodData ? paymentMethodData.emailAddress : ''} 
                         placeholder='Email Address' 
                         {...handleValidationForm('emailAddress', errors, 'email', register)}
-                        onChange={(event) =>  setValue('emailAddress', event.currentTarget.value)}                    
+                        onChange={(event) =>  handleChange('emailAddress', event.currentTarget.value)}                    
                     />
                 </div>
                 <div className='col col-12 mb2'>
@@ -613,7 +618,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         label='Comments' 
                         placeholder='Comments' 
                         ref={register()}                            
-                        onChange={(event) => setValue('comments', event.currentTarget.value)}                    
+                        onChange={(event) => handleChange('comments', event.currentTarget.value)}                    
                     />
                 </div>
             </div>
@@ -689,7 +694,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             placeholder='Payout Method Name' 
                             {...handleValidationForm('paymentMethodName', errors)}
                             ref={register({ required: "Required"})}
-                            onChange={(event) =>  setValue('paymentMethodName', event.currentTarget.value)} 
+                            onChange={(event) =>  handleChange('paymentMethodName', event.currentTarget.value)} 
                         />
                         <Text size={12} weight="reg">If you have multiple payout methods of the same type, this name will help you </Text>
                     </div>
