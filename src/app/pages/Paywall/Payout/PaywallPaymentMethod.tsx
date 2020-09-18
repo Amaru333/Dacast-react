@@ -651,7 +651,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 break;
         }
         setButtonLoading(true)
-        props.addPaymentMethodRequest({...data, paymentMethodType: paymentMethod, recipientType: paymentMethodRecipientType.toLowerCase() as 'business' | 'personal'})
+        props.addPaymentMethodRequest({...data, id: props.selectedPaymentMethod.id, paymentMethodType: paymentMethod, recipientType: paymentMethodRecipientType.toLowerCase() as 'business' | 'personal'})
         .then(() => {
             setButtonLoading(false)
             props.displayPage(false)
