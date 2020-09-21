@@ -217,11 +217,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2,000 GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1,000 GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
                                         </div>
 
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -314,11 +314,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2000 GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1000 GB Storage</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB Storage</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>24/7 Phone Support</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
