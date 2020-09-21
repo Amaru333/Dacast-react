@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
+import { axiosClient } from '../../../utils/axiosClient';
 
 var moment = require('moment-timezone');
 
@@ -43,8 +44,10 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const onSubmit = (data: any) => {
         setSubmitLoading(true)
         props.saveProfilePageDetails(data).then(() => {
-            setSubmitLoading(false)
-            reset(data)
+            axiosClient.forceRefresh().then(() => {
+                setSubmitLoading(false)
+                reset(data)
+            })
         })
     }
 

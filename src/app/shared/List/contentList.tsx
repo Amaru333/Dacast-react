@@ -28,6 +28,10 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
+import EventHooker from '../../utils/EventHooker';
+import { store } from '../..';
+import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
+import { AnyAction } from 'redux';
 
 interface ContentListProps {
     contentType: string
@@ -93,12 +97,19 @@ export const ContentListPage = (props: ContentListProps) => {
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
     React.useEffect(() => {
+        let vodUploadedHandler = () => {
+            //set timer
+            console.log('vod was uploaded!')
+        }
+        EventHooker.subscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
         foldersTree.initTree()
         // const interval = setInterval(() => {
         //     setFetchContent(true)
         //   }, 60000)
 
-        //   return () => clearInterval(interval)
+        return () => {
+            EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
+        }
     }, [])
 
     React.useEffect(() => {

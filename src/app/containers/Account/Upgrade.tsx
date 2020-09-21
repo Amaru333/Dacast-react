@@ -15,7 +15,7 @@ import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 export interface UpgradeContainerProps {
     planDetails: Plans;
     getPlanDetails: () => Promise<void>;
-    purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => void;
+    purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string) => Promise<any>;
     billingInfos: BillingPageInfos;
     getBillingPageInfos: () => Promise<void>
 }
@@ -59,8 +59,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getBillingPageInfos: async () => {
             await dispatch(getBillingPageInfosAction());
         },
-        purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string, callback?: Function, fallback?: Function) => {
-            await dispatch(purchasePlanAction(data, recurlyToken, token3Ds, callback, fallback))
+        purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string) => {
+            await dispatch(purchasePlanAction(data, recurlyToken, token3Ds))
         }
     }
 }

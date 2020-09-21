@@ -84,8 +84,8 @@ const Header = (props: HeaderProps) => {
             setAvatarFirstName(userToken.getUserInfoItem('custom:first_name'))
             setAvatarLastName(userToken.getUserInfoItem('custom:last_name'))
         }
-
-    }, [userToken.isLoggedIn()])
+        console.log('token has changed')
+    }, [userToken])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 
