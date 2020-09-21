@@ -22,6 +22,7 @@ export const signupAction = (data: UserInfo): ThunkDispatch<Promise<void>, {}, S
                 if(error.response.data.error.indexOf('An account with the given email already exists') > -1){
                     dispatch( {type: ActionTypes.SIGNUP, payload: {...data, email: "", signupError: "This email address is already linked to an account"}});
                 }
+                return Promise.reject()
             })
     };
 

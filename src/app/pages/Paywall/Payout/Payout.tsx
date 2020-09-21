@@ -25,7 +25,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         return {
             data: [
                 { cell: <Text key='paymentMethodTableHeaderPayoutType' size={14} weight='med'>Name</Text> },
-                { cell: <Text key='paymentMethodTableHeaderlastUpdated' size={14} weight='med'>Last Updated</Text> },
+                { cell: <Text key='paymentMethodTableHeaderlastUpdated' size={14} weight='med'>Payout Type</Text> },
                 { cell: <Button key='paymentMethodTableHeaderActionButton' className='right mr2 sm-show' onClick={() => {setSelectedPaymentMethod(null); setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button> }
             ]
         }
@@ -37,7 +37,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 return {
                     data: [
                         <Text key={'paymentMethodTableBodyPaymentType' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodName}</Text>,
-                        <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(Math.floor(Date.now() / 1000))}</Text>,
+                        <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodType}</Text>,
                         <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                             <ActionIcon>
                                 <IconStyle id={"deleteTooltip" + i} onClick={() => { props.deletePaymentMethod(item) }}>delete</IconStyle>

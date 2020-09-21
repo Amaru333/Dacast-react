@@ -53,6 +53,7 @@ export const getEncodingRecipesAction = (): ThunkDispatch<Promise<void>, {}, Get
                 dispatch( {type: ActionTypes.GET_ENCODING_RECIPES, payload: response.data} );
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -65,6 +66,7 @@ export const getEncodingRecipesPresetsAction = (): ThunkDispatch<Promise<void>, 
                 dispatch( {type: ActionTypes.GET_ENCODING_RECIPES_PRESETS, payload: response.data} );
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -78,6 +80,7 @@ export const createEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
                 dispatch(showToastNotification(`${data.name} created`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -91,6 +94,7 @@ export const saveEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDispat
                 dispatch(showToastNotification(`${data.name} has been updated`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -104,6 +108,7 @@ export const deleteEncodingRecipesAction = (data: EncodingRecipeItem): ThunkDisp
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -115,6 +120,7 @@ export const getUploadWatermarkUrl = (): ThunkDispatch<Promise<void>, {}, GetUpl
                 dispatch( {type: ActionTypes.GET_UPLOAD_WATERMARK_URL, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -124,10 +130,11 @@ export const uploadWatermark = (data: File, uploadUrl: string): ThunkDispatch<Pr
         await EncodingRecipesServices.uploadWatermarkService(data, uploadUrl)
             .then( response => {
                 dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: response.data} );
-                dispatch(showToastNotification("Watermark file has been uploaded", 'flexible', "success"));
+                dispatch(showToastNotification("Watermark file has been uploaded", 'fixed', "success"));
             }).catch((error) => {
                 dispatch( {type: ActionTypes.UPLOAD_WATERMARK, payload: error} );
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -137,9 +144,10 @@ export const deleteWatermark = (data: EncodingRecipeItem): ThunkDispatch<Promise
         await EncodingRecipesServices.deleteWatermarkService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_WATERMARK, payload: data} );
-                dispatch(showToastNotification("Watermark file has been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Watermark file has been deleted", 'fixed', "success"));
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

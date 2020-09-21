@@ -17,7 +17,7 @@ const defaultPromo: GroupPromo = {
     limit: 0,
     startDate: 0,
     endDate: 0,
-    timezone: 'Etc/UTC',
+    timezone: moment.tz.guess(),
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -41,10 +41,10 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
 
 
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : 'UTC'} : defaultPromo)
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess()} : defaultPromo)
 
-    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, 'UTC')
-    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
+    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
 
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
@@ -77,7 +77,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
         <div>
             <div className="'col col-12 mb2 clearfix">
                 {/* <Input className={ ClassHalfXsFullMd + 'pr2 xs-mb2'} value={groupPromo.name} label='Preset name' onChange={(event) => setGroupPromo({...groupPromo, name: event.currentTarget.value})} /> */}
-                <Input className={ ClassHalfXsFullMd + ''} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 Characters" onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
+                <Input className={ ClassHalfXsFullMd + ''} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
             </div>
             <div className='col col-12 clearfix mb2'>
                 <DropdownSingle 
@@ -98,12 +98,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 {startDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
@@ -121,12 +121,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     endDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
-                            date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || 'UTC')}
+                            date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-4 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
                             className='col col-3 md-col-3'
                             disabled={false}
@@ -143,7 +143,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     <DropdownSingle 
                         hasSearch 
                         id='groupPromoTimezoneDropdown' 
-                        dropdownDefaultSelect={groupPromo.timezone || 'Etc/UTC (+00:00 UTC)'} 
+                        dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className='col col-6 pr2' 
                         dropdownTitle='Timezone' 
                         callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 

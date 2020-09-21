@@ -11,6 +11,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 import { getContentDetailsAction, editContentDetailsAction, getUploadUrlAction, uploadFileAction, uploadImageFromVideoAction, deleteFileAction, deleteSubtitleAction, addSubtitleAction, Action } from '../../redux-flow/store/Content/General/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
@@ -27,11 +28,18 @@ export interface GeneralComponentProps {
 }
 const General = (props: GeneralComponentProps) => {
 
-    let { vodId } = useParams();
+    let { vodId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
 
     React.useEffect(() => {
-            props.getContentDetails(vodId, "vod");
+        props.getContentDetails(vodId, "vod")
+        .catch(() => setNodataFetched(true))
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

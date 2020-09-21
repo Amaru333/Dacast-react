@@ -36,11 +36,32 @@ import { NotFound } from './containers/404page';
 import { AddStreamModal } from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
+import { store } from '.';
+import { getContentListAction } from './redux-flow/store/Content/List/actions';
+import EventHooker from './utils/EventHooker';
 
 // Any additional component props go here.
 interface MainProps {
     store: Store<ApplicationState>;
 }
+
+const refreshSpan = 60000
+const refreshEvery = 5000
+let fastRefreshUntil = 0
+let timeoutId: NodeJS.Timeout | null = null
+const timeoutFunc = () => {
+    store.dispatch(getContentListAction(null, 'vod') as any)
+    if(new Date().getTime() < fastRefreshUntil) {
+        timeoutId = setTimeout(timeoutFunc, refreshEvery)
+    }
+}
+
+EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
+    fastRefreshUntil = new Date().getTime() + refreshSpan
+    if(timeoutId === null) { 
+        timeoutId = setTimeout(timeoutFunc, refreshEvery)
+    }
+})
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
     let mobileWidth = useMedia('(max-width:780px');

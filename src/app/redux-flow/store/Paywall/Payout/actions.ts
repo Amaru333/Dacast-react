@@ -41,6 +41,7 @@ export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetP
                 dispatch({type: ActionTypes.GET_PAYMENT_METHODS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -52,6 +53,7 @@ export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, 
                 dispatch({type: ActionTypes.GET_WITHDRAWAL_REQUESTS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -61,9 +63,10 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
         await PayoutServices.addPaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.data.data.id}});
-                dispatch(showToastNotification(`Withdrawl Method has been created`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawal Method has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -73,9 +76,10 @@ export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
         await PayoutServices.updatePaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
-                dispatch(showToastNotification(`Withdrawl Method has been edited`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawal Method has been edited`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -85,9 +89,10 @@ export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
         await PayoutServices.deletePaymentMethod(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_PAYMENT_METHOD, payload: data});
-                dispatch(showToastNotification(`Withdrawl Method has been deleted`, 'fixed', "success"));
+                dispatch(showToastNotification(`Withdrawal Method has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -97,9 +102,10 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
                 dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
-                dispatch(showToastNotification(`New Withdrawl Request submitted`, 'fixed', "success"));
+                dispatch(showToastNotification(`New Withdrawal Request submitted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }

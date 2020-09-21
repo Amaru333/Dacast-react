@@ -16,6 +16,7 @@ export const forgotPasswordAction = (email: string): ThunkDispatch<Promise<void>
                 dispatch( {type: ActionTypes.FORGOT_PASSWORD, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 

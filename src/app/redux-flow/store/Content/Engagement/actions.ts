@@ -58,6 +58,7 @@ export const getContentEngagementSettingsAction = (contentId: string, contentTyp
                 dispatch( {type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS, payload: {contentId: contentId, contentType: contentType, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -70,6 +71,7 @@ export const saveContentEngagementSettingsAction = (data: ContentEngagementSetti
                 dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -82,6 +84,7 @@ export const lockSectionAction = (section: string, contentId: string, contentTyp
                 dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -95,6 +98,7 @@ export const saveContentAdAction = (data: Ad[], contentId: string, contentType: 
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -107,6 +111,7 @@ export const createContentAdAction = (data: Ad[], contentId: string, contentType
                 dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -119,6 +124,7 @@ export const deleteContentAdAction = (data: Ad[], contentId: string, contentType
                 dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
             }).catch((e) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -131,6 +137,7 @@ export const getUploadUrlAction = (uploadType: string, contentId: string, conten
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -144,6 +151,7 @@ export const uploadContentImageAction = (data: File, uploadUrl: string): ThunkDi
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -157,6 +165,7 @@ export const deleteContentImageAction = (targetId: string, contentType: string):
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }

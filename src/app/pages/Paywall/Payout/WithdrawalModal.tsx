@@ -5,7 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { ColorsApp } from '../../../../styled/types';
-import { WithdrawalRequest, PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
+import { WithdrawalRequest, PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (wr: WithdrawalRequest) => Promise<void>; toggle: (b: boolean) => void }) => {
@@ -20,14 +20,15 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
 
     const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
+        debugger
         switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
-            case 'us-transfer' :
+            case PaymentMethodType.BankAccountUS:
                 return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
-            case 'international-transfer':
-                return {minRequest: '$1,000 USD', fees: '$1,000 USD', nbDays: 15}
-            case 'check':
+            case PaymentMethodType.BankAccountInternational:
+                return {minRequest: '$1,000 USD', fees: '$50 USD', nbDays: 15}
+            case PaymentMethodType.Check:
                 return {minRequest: '$250 USD', fees: 'Free', nbDays: 5}
-            case 'paypal':
+            case PaymentMethodType.PayPal:
                 return {minRequest: '$100 USD', fees: 'Free', nbDays: 5}
             default:
                 return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
@@ -58,16 +59,16 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>
-                    <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Minimum Request</Text></TextContainer>
-                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().minRequest}</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Minimum Request</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().minRequest}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1'>
-                    <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Fee</Text></TextContainer>
-                    <TextContainer className='col col-5' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().fees}</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Fee</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().fees}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1 mb2'>
-                    <TextContainer className='col col-7' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
-                    <TextContainer className='col col-5 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days*'}</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
+                    <TextContainer className='col col-6 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days*'}</Text></TextContainer>
                 </div>
             </div>
 

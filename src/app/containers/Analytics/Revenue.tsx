@@ -12,23 +12,15 @@ import moment from 'moment';
 
 export interface RevenueComponentProps {
     folderData: FoldersInfos;
-    getFolders: Function;
-    getFolderContent: Function;
-    moveItemsToFolder: Function;
-    addFolder: Function;
-    deleteFolder: Function;
-    deleteContent: Function;
-    restoreContent: Function;
-    renameFolder: Function;
     analyticsRevenueData: AnalyticsRevenueInfos;
-    getAnalyticsRevenue: Function;
+    getFolderContent: (folderPath: string) => Promise<void>;
+    getAnalyticsRevenue: (options: GetAnalyticsRevenueOptions) => Promise<void>;
 }
 
 const Revenue = (props: RevenueComponentProps) => {
     React.useEffect(() => {
         const wait = async () => {
             await props.getFolderContent(null)
-            //await props.getFolders('/');
         }
         wait()
         if(!props.analyticsRevenueData) {
@@ -52,15 +44,12 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAnalyticsRevenue: (options: GetAnalyticsRevenueOptions) => {
-            dispatch(getAnalyticsRevenueAction(options))
+        getAnalyticsRevenue: async (options: GetAnalyticsRevenueOptions) => {
+            await dispatch(getAnalyticsRevenueAction(options))
         },
-        getFolderContent: (folderPath: string) => {
-            dispatch(getFolderContentAction(folderPath))
+        getFolderContent: async (folderPath: string) => {
+            await dispatch(getFolderContentAction(folderPath))
         },
-        restoreContent: (content: ContentType[]) => {
-            dispatch(restoreContentAction(content))
-        }
     };
 }
 

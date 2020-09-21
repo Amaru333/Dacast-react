@@ -7,7 +7,7 @@ import { Action, signupAction } from '../../../redux-flow/store/Register/SignUp/
 import { connect } from 'react-redux';
 
 export interface SignupContainerProps {
-    signup: Function;
+    signup: (data: UserInfo) => Promise<void>;
     UserInfo: UserInfo;
 }
 
@@ -25,8 +25,8 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        signup: (data: UserInfo, callback?: Function, fallback?: Function) => {
-            dispatch(signupAction(data)).then(callback, fallback);
+        signup: async (data: UserInfo) => {
+            await dispatch(signupAction(data));
         },
 
     };

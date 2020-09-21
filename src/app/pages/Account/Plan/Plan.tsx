@@ -64,7 +64,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
-            console.log(error)
         })
     }
 

@@ -13,14 +13,14 @@ export const NewFolderModal = (props: {submit: (folderName: string, folderPath: 
         props.submit(folderName, props.folderPath).then(() => {
             setTimeout(() => {
                 props.loadContent()
-                props.showToast(`${folderName} has been ${actionWord}`, 'flexible', "success")
+                props.showToast(`${folderName} has been ${actionWord}`, 'fixed', "success")
                 props.toggle(false)
                 setButtonLoading(false)
             }, 5000)
 
         }).catch(() => {
             setButtonLoading(false)
-            props.showToast(`${folderName} couldn't be ${actionWord}!`, 'flexible', "error")
+            props.showToast(`${folderName} couldn't be ${actionWord}!`, 'fixed', "error")
         })
     }
 

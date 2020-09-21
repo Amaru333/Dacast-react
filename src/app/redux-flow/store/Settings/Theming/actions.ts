@@ -31,6 +31,7 @@ export const getThemingListAction = (): ThunkDispatch<Promise<void>, {}, GetThem
                 dispatch( {type: ActionTypes.GET_SETTING_THEMING_LIST, payload: response.data} );
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 };
@@ -43,6 +44,7 @@ export const saveThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<void
                 dispatch(showToastNotification(`${theme.themeName} has been updated`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 };
@@ -55,6 +57,7 @@ export const createThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
                 dispatch(showToastNotification(`${theme.themeName} has been created`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 };
@@ -67,6 +70,7 @@ export const deleteThemeAction = (theme: ThemeOptions): ThunkDispatch<Promise<vo
                 dispatch(showToastNotification(`${theme.themeName} has been deleted`, 'fixed', "success"))
             }).catch(error => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 };

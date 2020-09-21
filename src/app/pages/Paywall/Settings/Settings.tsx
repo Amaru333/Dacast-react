@@ -79,7 +79,7 @@ export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
             { JSON.stringify(settingsInfos) !== JSON.stringify(props.paywallSettingsInfos) &&
                 <div>
                     <Button isLoading={loadingSave} disabled={(settingsInfos.paypalPurchases && !settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && settingsInfos.paypalTC) || (!settingsInfos.paypalPurchases && !settingsInfos.creditCardPurchases)} onClick={() => {handleSubmit()}} className='my2 mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'flexible', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                    <Button onClick={() => {setSettingsInfos(props.paywallSettingsInfos);props.showDiscardToast("Changes have been discarded", 'fixed', "success")}} className='my2' sizeButton='large' typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }
             <Prompt when={JSON.stringify(settingsInfos) !== JSON.stringify(props.paywallSettingsInfos) } message='' />

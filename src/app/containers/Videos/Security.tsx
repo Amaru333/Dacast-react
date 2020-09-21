@@ -12,6 +12,7 @@ import { ContentSecuritySettings, SecuritySettings, ContentSecuritySettingsState
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ContentSecurityProps {
     contentType: string
@@ -28,13 +29,21 @@ export interface ContentSecurityProps {
 export const VodSecurity = (props: ContentSecurityProps) => {
 
     let { vodId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (!props.globalSecuritySettings) {
-            props.getSettingsSecurityOptions();
+            props.getSettingsSecurityOptions()
+            .catch(() => setNodataFetched(true))
         }
-            props.getContentSecuritySettings(vodId, 'vod');
+        props.getContentSecuritySettings(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

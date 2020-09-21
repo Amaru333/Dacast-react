@@ -18,6 +18,7 @@ import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
+import { axiosClient } from '../../../utils/axiosClient';
 
 var moment = require('moment-timezone');
 
@@ -43,8 +44,10 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const onSubmit = (data: any) => {
         setSubmitLoading(true)
         props.saveProfilePageDetails(data).then(() => {
-            setSubmitLoading(false)
-            reset(data)
+            axiosClient.forceRefresh().then(() => {
+                setSubmitLoading(false)
+                reset(data)
+            })
         })
     }
 
@@ -169,7 +172,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 dirty &&
                     <div>
                         <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'flexible', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
+                        <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'fixed', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
             }
 

@@ -18,11 +18,13 @@ export interface EditAccountComponentProps {
 const EditAccount = (props: EditAccountComponentProps ) => {
 
     let { accountId } = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         props.getAccountInfo(accountId)
+        .then(() => setIsFetching(false))
     }, [])
-    return props.accountInfo ?
+    return !isFetching ?
         <EditAccountPage {...props} />
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }

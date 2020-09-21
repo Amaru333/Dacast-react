@@ -48,7 +48,11 @@ export const settingsStep = (props: {stepperData: EncodingRecipeItem; updateStep
 
     React.useEffect(() => {
         if(props.staticStepperData['uploadWatermarkUrl'] && watermarkFileFile) {
-            props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl'], () => {setUploadButtonLoading(false)})
+            props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl']).then(() => {
+                {setUploadButtonLoading(false)}
+            }).catch(() => {
+                {setUploadButtonLoading(false)}
+            })
         }
     }, [props.staticStepperData['uploadWatermarkUrl']])
 
@@ -130,7 +134,6 @@ export const presetStep = (props: {stepperData: EncodingRecipeItem; updateSteppe
             props.setStepValidated(props.stepperData.recipePresets.length > 0)
         }, [])
         if(props.staticStepperData['recipePresets']) {
-            debugger
             let presets: RecipePreset[] = props.staticStepperData['recipePresets']
             return presets.map((value, key) => {
     

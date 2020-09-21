@@ -74,7 +74,13 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
     )
 }
 
-export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunctions: { [key: string]: any }; finalFunction: Function;}) => {
+export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunctions: { [key: string]: any }; finalFunction: Function;setStepValidated: Function; }) => {
+
+    const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        props.setStepValidated(termsAndConditionsChecked)
+    })
 
     const paymentTableHeaderElement = () => {
         return {data: [
@@ -94,9 +100,9 @@ export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunction
             </div>
             
             <div className='py2 col col-12 flex flex-auto'>
-                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} defaultChecked={true}  onChange={() => {}} />
+                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} onChange={() => setTermsAndConditionsChecked(!termsAndConditionsChecked)} />
                 <div className='col col-11 flex'>
-                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a >Terms and Conditions.</a></Text>                   
+                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/">Terms and Conditions.</a></Text>                   
                 </div>
             </div>
         </div>

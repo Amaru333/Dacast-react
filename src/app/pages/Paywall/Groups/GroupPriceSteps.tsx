@@ -23,13 +23,13 @@ var moment = require('moment-timezone');
 export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void }) => {
 
     React.useEffect(() => {
-        props.setStepValidated(props.stepperData.firststep.name && (props.stepperData.firststep.groupSettings.type === 'Pay Per View' && props.stepperData.firststep.groupSettings.duration.value || props.stepperData.firststep.groupSettings.type === 'Subscription') && !props.stepperData.firststep.prices.some(price => !price.price.value))
+        props.setStepValidated(props.stepperData.firststep.name && (props.stepperData.firststep.groupSettings.type === 'Pay Per View' && props.stepperData.firststep.groupSettings.duration && props.stepperData.firststep.groupSettings.duration.value || props.stepperData.firststep.groupSettings.type === 'Subscription') && !props.stepperData.firststep.prices.some(price => !price.price.value))
     }, [props.stepperData])
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
         let tempPrices = props.stepperData.firststep.prices;
         if (inputChange === 'amount') {
-            tempPrices[key].price.value = parseInt(value);
+            tempPrices[key].price.value = parseFloat(value);
         }
         else {
             tempPrices[key].price.currency = value;
@@ -42,7 +42,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             return (
                 <div key={'groupPriceSection' + key} className={'col col-12 flex items-center ' + (key === props.stepperData.firststep.prices.length - 1 ? '' : 'mb2')}>
                     <div className='col sm-col-6 col-12 clearfix mxn1 flex'>
-                        <Input className={"col sm-col-6 col-5 px1"} value={price.price.value > 0 ? price.price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
+                        <Input type='number' className={"col sm-col-6 col-5 px1"} value={price.price.value > 0 ? price.price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
                         <DropdownSingle className={'col sm-col-6 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'groupPriceCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) } />
                     </div>
                     {
@@ -71,7 +71,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
         return total
     }
 
-    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, 'UTC')
+    let startTimestamp = moment.tz((props.stepperData.firststep.groupSettings.startDate && props.stepperData.firststep.groupSettings.startDate > 0 ? props.stepperData.firststep.groupSettings.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
     const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
     const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
 
@@ -95,8 +95,8 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                         <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence ? props.stepperData.firststep.groupSettings.recurrence.unit : 'Weekly'} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
                         :
                         <>
-                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration.unit} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }} />
+                            <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration && props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration ? props.stepperData.firststep.groupSettings.duration.unit : null} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }} />
                         </>
                 }
 
@@ -110,7 +110,7 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                             id='groupPriceTimezoneDropdown' 
                             className='col col-6 pl1 mt-auto' 
                             dropdownTitle='Timezone' 
-                            dropdownDefaultSelect='Etc/UTC (+00:00 UTC)' 
+                            dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                             list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
                             callback={(value: string) => props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, timezone: value.split(' ')[0]}}})}
                         />
@@ -120,12 +120,12 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
                 props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                     <div className='col col-12 mb2'>
                         <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || 'UTC')}
+                            date={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || 'UTC').format('HH:mm')}
+                            value={moment.utc((startDay + startTime)*1000).tz(props.stepperData.firststep.groupSettings.timezone || moment.tz.guess()).format('HH:mm')}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, props.stepperData.firststep.groupSettings.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
@@ -162,7 +162,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
     React.useEffect(() => {
         if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
             setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
-                return props.stepperData.firststep.contents.includes(userId + '-' + content.type + '-' +  content.objectID)
+                return props.stepperData.firststep.contents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' +  content.objectID)
             }))
         }
     }, [props.stepperData.secondStep.folderData.requestedContent.results])

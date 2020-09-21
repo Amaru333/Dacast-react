@@ -9,6 +9,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface PaywallSettingsComponentProps {
     paywallSettingsInfos: PaywallSettingsInfos;
@@ -18,11 +19,17 @@ export interface PaywallSettingsComponentProps {
 }
 const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.paywallSettingsInfos) {
-            props.getPaywallSettingsInfos()
-        }
+        props.getPaywallSettingsInfos()
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.paywallSettingsInfos ?

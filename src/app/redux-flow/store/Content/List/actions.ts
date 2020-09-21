@@ -23,6 +23,7 @@ export const getContentListAction = (qs: string, contentType: string): ThunkDisp
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -35,6 +36,7 @@ export const deleteContentAction = (contentId: string, contentType: string): Thu
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }

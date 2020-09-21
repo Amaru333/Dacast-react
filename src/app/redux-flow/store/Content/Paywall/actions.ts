@@ -64,6 +64,7 @@ export const getContentPaywallInfosAction = (contentId: string, contentType: str
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_INFOS, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -73,9 +74,10 @@ export const saveContentPaywallInfosAction = (data: ContentPaywallPageInfos, con
         await ContentPaywallServices.saveContentPaywallInfos(data, contentId, parseContentType(contentType))
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PAYWALL_INFOS, payload: {data: data, contentId: contentId, contentType: contentType}});
-                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -87,6 +89,7 @@ export const getContentPaywallPricesAction = (contentId: string, contentType: st
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_PRICES, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -96,9 +99,10 @@ export const createContentPricePresetAction = (data: Preset, contentId: string, 
         await ContentPaywallServices.createContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_CONTENT_PRICE_PRESET, payload: {data: {...data, id: response.data.data.id}, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -108,9 +112,10 @@ export const saveContentPricePresetAction = (data: Preset, contentId: string, co
         await ContentPaywallServices.saveContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PRICE_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -120,9 +125,10 @@ export const deleteContentPricePresetAction = (data: Preset, contentId: string, 
         await ContentPaywallServices.deleteContentPricePreset(data, contentId, contentType)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_CONTENT_PRICE_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Price have been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Price have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -134,6 +140,7 @@ export const getContentPaywallPromosAction = (contentId: string, contentType: st
                 dispatch({type: ActionTypes.GET_CONTENT_PAYWALL_PROMOS, payload: {data: response.data.data, contentId: contentId, contentType: contentType}});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -143,9 +150,10 @@ export const createContentPromoPresetAction = (data: Promo, contentId: string, c
         await ContentPaywallServices.createContentPromoPreset(data, contentId)
             .then( response => {
                 dispatch({type: ActionTypes.CREATE_CONTENT_PROMO_PRESET, payload: {data: {...data, id: response.data.data.id}, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -155,9 +163,10 @@ export const saveContentPromoPresetAction = (data: Promo, contentId: string, con
         await ContentPaywallServices.saveContentPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_CONTENT_PROMO_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -167,9 +176,10 @@ export const deleteContentPromoPresetAction = (data: Promo, contentId: string, c
         await ContentPaywallServices.deleteContentPromoPreset(data)
             .then( response => {
                 dispatch({type: ActionTypes.DELETE_CONTENT_PROMO_PRESET, payload: {data: data, contentId: contentId, contentType: contentType}})
-                dispatch(showToastNotification("Promo have been deleted", 'flexible', "success"));
+                dispatch(showToastNotification("Promo have been deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }

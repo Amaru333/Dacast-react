@@ -60,7 +60,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 } 
                                 : null
                             },
-                            type: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
+                            priceType: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
                         }
                     })
                 }
@@ -90,7 +90,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 } 
                                 : null
                             },
-                            type: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
+                            priceType: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
                         }
                     })
                 }

@@ -1,4 +1,4 @@
-import { ActionTypes, BillingPageInfos, CreditCardPayment, PaypalPayment, PlaybackProtection, Extras, Products } from './types';
+import { ActionTypes, BillingPageInfos, PlaybackProtection, Extras, Products } from './types';
 import { BillingServices } from './services';
 import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
@@ -52,6 +52,7 @@ export const getBillingPageInfosAction = (): ThunkDispatch<Promise<void>, {}, Ge
                 dispatch( {type: ActionTypes.GET_BILLING_PAGE_INFOS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -61,9 +62,10 @@ export const saveBillingPagePaymentMethodAction = (data: string): ThunkDispatch<
         await BillingServices.saveBillingPagePaymentMethodService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD, payload: response.data} );
-                dispatch(showToastNotification("Payment Method has been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Payment Method has been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Payment Method was unsucessfully added", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -73,9 +75,10 @@ export const addBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProte
         await BillingServices.addBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
-                dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been enabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -85,9 +88,10 @@ export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProt
         await BillingServices.editBillingPagePaymenPlaybackProtectionService(data.enabled, data.amount)
             .then( response => {
                 dispatch( {type: ActionTypes.EDIT_BILLING_PAGE_PLAYBACK_PROTECTION, payload: data} );
-                dispatch(showToastNotification("Playack Protection has been enabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been enabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -97,9 +101,10 @@ export const deleteBillingPagePaymenPlaybackProtectionAction = (data: PlaybackPr
         await BillingServices.deleteBillingPagePaymenPlaybackProtectionService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION, payload: response.data} );
-                dispatch(showToastNotification("Playack Protection has been disabled", 'flexible', "success"));
+                dispatch(showToastNotification("Playack Protection has been disabled", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -109,9 +114,10 @@ export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<
         await BillingServices.addBillingPageExtrasService(data)
             .then( response => {
                 dispatch( {type: ActionTypes.ADD_BILLING_PAGE_EXTRAS, payload: response.data} );
-                dispatch(showToastNotification("Data saved!", 'flexible', "success"));
+                dispatch(showToastNotification("Data saved!", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -123,6 +129,7 @@ export const getProductDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetP
                 dispatch( {type: ActionTypes.GET_PRODUCT_DETAILS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -134,6 +141,7 @@ export const purchaseProductsAction = (data: Extras, recurlyToken: string, token
                 dispatch( {type: ActionTypes.PURCHASE_PRODUCTS, payload: data} );
                 return response
             }).catch(() => {
+                return Promise.reject()
             })
     };
 }

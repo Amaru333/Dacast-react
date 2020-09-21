@@ -51,6 +51,7 @@ export const getSettingsSecurityOptionsAction = (): ThunkDispatch<Promise<void>,
                 dispatch( {type: ActionTypes.GET_SETTINGS_SECURITY_OPTIONS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -63,6 +64,7 @@ export const saveSettingsSecurityOptionsAction = (data: SecuritySettings): Thunk
                 dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -75,6 +77,7 @@ export const createGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDisp
                 dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -87,6 +90,7 @@ export const saveGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDispat
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -99,6 +103,7 @@ export const deleteGeoRestrictionGroupAction = (data: GeoRestriction): ThunkDisp
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -111,6 +116,7 @@ export const createDomainControlGroupAction = (data: DomainControl): ThunkDispat
                 dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -123,6 +129,7 @@ export const saveDomainControlGroupAction = (data: DomainControl): ThunkDispatch
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -135,6 +142,7 @@ export const deleteDomainControlGroupAction = (data: DomainControl): ThunkDispat
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

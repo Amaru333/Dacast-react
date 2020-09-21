@@ -1,11 +1,11 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, TransactionsInfos, transactionsInitialState } from './types';
+import { ActionTypes, TransactionsInfo, transactionsInitialState } from './types';
 
-const reducer: Reducer<TransactionsInfos> = (state = transactionsInitialState, action: Action) => {
+const reducer: Reducer<TransactionsInfo> = (state = transactionsInitialState, action: Action) => {
     switch(action.type) {
         case ActionTypes.GET_TRANSACTIONS : 
-            return action.payload.data.transactionsList        
+            return action.payload.data        
         default:
             return state;
     }

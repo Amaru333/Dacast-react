@@ -6,49 +6,44 @@ import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/
 import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 
-export const TransactionsFiltering = (props: {}) => {
+export interface FilteringTransactionsState {
+    type: string;
+    currency: {
+        aud: boolean;
+        gbp: boolean;
+        usd: boolean;
+        eur: boolean;
+    };
+    startDate: number | boolean;
+    endDate: number | boolean;
+}
+
+export const TransactionsFiltering = (props: {defaultFilters: FilteringTransactionsState; setSelectedFilter: (filters: FilteringTransactionsState) => void}) => {
 
 
-    interface FilteringState {
-        type: {
-            requestPayment: boolean;
-            externalPayment: boolean;
-            specialChargeback: boolean;
-            charge: boolean;
-        };
-        currency: {
-            aud: boolean;
-            gbp: boolean;
-            usd: boolean;
-        };
-        startDate: number | boolean;
-        endDate: number | boolean;
-    }
 
-    var filteringDefault = {
-        type: {
-            requestPayment: false,
-            externalPayment: false,
-            specialChargeback: false,
-            charge: false,
-        },
+
+    var filteringDefault: FilteringTransactionsState = {
+        type: null,
         currency: {
             aud: false,
             gbp: false,
             usd: false,
+            eur: false
         },
         startDate: false,
         endDate: false,
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringTransactionsState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
     const checkActiveFilter = () => {
         var counter = 0;
-        Object.entries(filteringState.type).map(item => item[1] !== false ? counter++ : null);
+        filteringState.type? counter++ : null;
         Object.entries(filteringState.currency).map(item => item[1] !== false ? counter++ : null)
         filteringState.startDate ? counter++ : null;
         filteringState.endDate ? counter++ : null;
@@ -66,9 +61,8 @@ export const TransactionsFiltering = (props: {}) => {
                 <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
                     {
-                        activeFilter > 0 ?
+                        activeFilter > 0 &&
                             <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                            : null
                     }
                 </Button>
             </div>
@@ -76,19 +70,13 @@ export const TransactionsFiltering = (props: {}) => {
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                     <div className="mb3" id="transactionsFilterType">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.requestPayment}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, requestPayment: !prevState.type.requestPayment } } }) }}
-                            id='transactionFilterRequestPayment' label="Request Payment" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.externalPayment}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, externalPayment: !prevState.type.externalPayment } } }) }}
-                            id='transactionsFilterExternalPayment' label="External Payment" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.specialChargeback}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.type, specialChargeback: !prevState.type.specialChargeback } } }) }}
-                            id='transactionFilterSpecialChargeback' label="Special Chargeback" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.type.charge}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, type: { ...prevState.type, charge: !prevState.type.charge } } }) }}
-                            id='transactionFilterCharge' label="Charge" labelWeight="reg" />
+                        {/* <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text> */}
+                        <DropdownSingle id='filterType' 
+                            dropdownTitle='Type'
+                            dropdownDefaultSelect={filteringState.type}
+                            list={{'Pay Per View': false, 'Subscription': false, 'External Payment': false, 'Special Chargeback': false, 'Viewer Refund': false, 'Request Payment': false, 'Payment With Balance': false}}
+                            callback={(value: string) => setFilteringState({...filteringState, type: value})}
+                        />
                     </div>
                     <div className="mb3" id="transactionFilterCurrency">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
@@ -101,6 +89,9 @@ export const TransactionsFiltering = (props: {}) => {
                         <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, usd: !prevState.currency.usd } } }) }}
                             id='transactionFilterUSD' label="USD" labelWeight="reg" />
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, eur: !prevState.currency.eur } } }) }}
+                            id='transactionFilterEUR' label="EUR" labelWeight="reg" />
                     </div>
                     <div className="mb3" id="transactionFilterStartDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Start Date</Text>
@@ -112,11 +103,11 @@ export const TransactionsFiltering = (props: {}) => {
                     </div>
                 </div>
                 
-                <div className="flex" id="vodFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
+                <div className="flex" id="transactionFilterbuttons">
+                    <Button onClick={() => { setOpenFilters(false);props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault);props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

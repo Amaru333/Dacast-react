@@ -5,19 +5,46 @@ import { makeRoute } from '../../utils/utils'
 import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import { tsToLocaleDate, useQuery } from '../../../utils/utils'
+import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
     let {url} = useRouteMatch()
+    let qs = useQuery()
+    let query = useHistory()
+
+    const [status, setStatus] = React.useState<string>(qs.get('status') ? qs.get('status').charAt(0).toUpperCase() + qs.get('status').slice(1) : 'All')
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+
+    const handleImpersonate = (userIdentifier: string) => {
+        AccountsServices.impersonate(userIdentifier)
+        .then((response) => {
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}`}).click();
+        })
+    }
+
+    React.useEffect(() => {
+        setContentLoading(true)
+        props.getWithdrawals(`page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (status !== 'All' ? `&requestStatus=${status.toLowerCase()}` : ''))
+        .then(() => {
+            setContentLoading(false)
+            query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` +  (status !== 'All' ? `&status=${status.toLowerCase()}` : ''))
+        })
+        .catch(() => setContentLoading(false))
+    }, [])
 
     const withdrawalsTableHeader = () => {
         return {data: [
             {cell: <Text key='withdrawalsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
             {cell: <Text key='withdrawalsTableHeaderAmountCell' size={14} weight='med'>Amount</Text>},
+            {cell: <Text key='withdrawalsTableHeaderTotalBalanceCell' size={14} weight='med'>Total Balance</Text>},
             {cell: <Text key='withdrawalsTableHeaderRequestedDateCell' size={14} weight='med'>Requested Date</Text>},
-            {cell: <Text key='withdrawalsTableHeaderPreviousDateCell' size={14} weight='med'>Previous Date</Text>},
             {cell: <Text key='withdrawalsTableHeaderCompletedDateCell' size={14} weight='med'>Completed date</Text>},
             {cell: <Text key='withdrawalsTableHeaderMethodCell' size={14} weight='med'>Method</Text>},
             {cell: <Text key='withdrawalsTableHeaderRecurlyCell' size={14} weight='med'>Recurly</Text>},
@@ -26,29 +53,74 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     }
 
     const withdrawalsTableBody = () => {
-        if(props.withdrawals) {
-            return props.withdrawals.map((withdrawal, key) => {
+        if(props.withdrawals && props.withdrawals.withdrawalRequests) {
+            return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
-                    <Link key={'withdrawalsTableBodyAccountIdCell' + key }to=''>{withdrawal.accountId}</Link>,
-                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?accountId=${withdrawal.id}`}>{withdrawal.amount}</Link>,
-                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.requestedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
-                    <Text key={'withdrawalsTableBodyPreviousDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.previous).toFormat("yyyy-LL-dd HH:mm")}</Text>,
-                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{DateTime.fromSeconds(withdrawal.completedDate).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                    <a key={'withdrawalsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(withdrawal.accountSalesforceId)}>{withdrawal.accountSalesforceId}</a>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10&salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount.toLocaleString()}</Link>,
+                    <Text key={'withdrawalsTableBodyTotalBalanceCell' + key } size={14}>${withdrawal.totalBalance.toLocaleString()}</Text>,
+                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
-                    <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://dacast.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
+                    <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://vzaar.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
                     <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
                 ]}
             })
         }
     }
 
-    return (
+    const handlePaginationChange = (page: number, nbResults: number) => {
+        setPagination({page:page,nbResults:nbResults})
+        if(pagination.page && pagination.nbResults && !contentLoading) {
+            setContentLoading(true)
+            props.getWithdrawals(`page=${page - 1}&perPage=${nbResults}` +  (status !== 'All' ? `&requestStatus=${status.toLowerCase()}` : ''))
+            .then(() => {
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${page}&perPage=${nbResults}` +  (status !== 'All' ? `&status=${status.toLowerCase()}` : ''))
+            })
+            .catch(() => setContentLoading(false))
+        }
+    }
+
+    const handleStatusChange = (newStatus: string) => {
+        const previousPagination = pagination
+        setPagination({page: 1, nbResults: pagination.nbResults}) 
+        if(pagination.page && pagination.nbResults && !contentLoading) {
+            setContentLoading(true)
+            props.getWithdrawals(`page=0&perPage=${pagination.nbResults}` +  (newStatus !== 'All' ? `&requestStatus=${newStatus.toLowerCase()}` : ''))
+            .then(() => {
+                setStatus(newStatus)
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` +  (newStatus !== 'All' ? `&status=${newStatus.toLowerCase()}` : ''))
+            })
+            .catch(() => {
+                setContentLoading(false)
+                setPagination(previousPagination)
+            })
+        }
+    }
+
+    const handleStatusDefaultValue = () => {
+        switch(status) {
+            case 'All':
+                return 0
+            case 'Completed': 
+                return 1
+            case 'Pending': 
+                return 2
+            case 'Cancelled':
+                return 3
+            default:
+                return 0
+        }
+    }
+
+    return props.withdrawals ? 
         <div className='flex flex-column'>
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
-            <Tab className='my1 col col-3' orientation='horizontal' callback={() => {}} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
-            <Table className='my1' id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
-            <Pagination totalResults={290} displayedItemsOptions={[25, 50, 100, 250, 1000]} defaultDisplayedOption={100} callback={() => {}} />
-
+            <Tab className='my1 col col-3' orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
+            <Table contentLoading={contentLoading} className='my1' id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
+            <Pagination totalResults={props.withdrawals.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
-    )
+        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }

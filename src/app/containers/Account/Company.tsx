@@ -9,6 +9,7 @@ import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -21,20 +22,23 @@ export interface CompanyComponentProps {
 }
 const Company = (props: CompanyComponentProps) => {
 
-    /** Fetching data using redux and services */
-    React.useEffect( () => {
-        if(!props.CompanyPageDetails) {
-            props.getCompanyPageDetails()
-        }
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
+    React.useEffect(() => {
+        props.getCompanyPageDetails()
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
 
-    return (
-        props.CompanyPageDetails ? 
-            <CompanyPage {...props} />
-            : 
-            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <CompanyPage {...props} />
 
 }
 

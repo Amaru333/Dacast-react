@@ -13,11 +13,11 @@ import { Prompt } from 'react-router';
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
     const defaultEmbedSettings = {
-        ['embed-type']:  'iframe',
+        ['embed-type']:  'script',
         ['embed-scaling']:  'responsive',
         'embed-size': 0
     }
-    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys((props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object) ? defaultEmbedSettings : props.embedSettingsOption);
+    const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys(props.embedSettingsOption).length === 0  ? defaultEmbedSettings : props.embedSettingsOption);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
     let inputRef = React.useRef<HTMLInputElement>(null)
@@ -42,34 +42,11 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
             return false;
         }
     }
-
+    
     return (
         <React.Fragment>
             <form>
                 <Card>
-                    <header><Text size={20} weight="med">Embed Settings</Text></header>
-                    <br />
-                    <div>
-                        <Text size={14} weight="reg">
-                            Choose how you wish to embed your videos.
-                        </Text>
-                    </div>
-                    <br />
-                    <div>
-                        <InputRadio name="embed-settings" value="iframe" label="IFrame (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "iframe" })} defaultChecked={props.embedSettingsOption["embed-type"] === "iframe"} />
-                        <RadioText>
-                            <Text size={14} weight="reg">
-                                Our fully-functional player, embedded in an Iframe element.
-                            </Text>
-                        </RadioText>
-                        <InputRadio name="embed-settings" value="script" label="Script" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-type"]: "script" })} defaultChecked={props.embedSettingsOption["embed-type"] === "script"} />
-                        <RadioText>
-                            <Text size={14} weight="reg">
-                                Our fully-functional player, embedded dynamically with JavaScript.
-                            </Text>
-                        </RadioText>
-                    </div>
-                    <Divider />
                     <header><Text size={20} weight="med">Embed Size</Text></header>
                     <br />
                     <div>
@@ -79,13 +56,13 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                     </div>
                     <br />
                     <div>
-                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "responsive" })} defaultChecked={props.embedSettingsOption["embed-scaling"] === "responsive"} />
+                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "responsive" })} defaultChecked={inputOptions["embed-scaling"] === "responsive"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Your videos will automatically resize to fit their container.
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "fixed" })} defaultChecked={props.embedSettingsOption["embed-scaling"] === "fixed"} />
+                        <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, ["embed-scaling"]: "fixed" })} defaultChecked={inputOptions["embed-scaling"] === "fixed"} />
                         <RadioText>
                             <Text size={14} weight="reg">
                                 Videos will default to a fixed width with their height determined automatically based on aspect ratio.
@@ -98,7 +75,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                 {
                     Object.entries(inputOptions).toString() === Object.entries(props.embedSettingsOption).toString() ? null :
                         <ButtonContainer>
-                            <ButtonStyle isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
+                            <ButtonStyle disabled={inputOptions['embed-scaling'] === 'fixed' && Number.isNaN(inputOptions['embed-size']) } isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
                             <ButtonStyle onClick={() => {setInputOptions(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption)}} typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>

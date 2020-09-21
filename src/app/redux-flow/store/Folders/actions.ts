@@ -19,16 +19,14 @@ export interface RestoreContent {
     payload: ContentType[];
 }
 
-export const getFolderContentAction = (qs: string, callback?: Function): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
+export const getFolderContentAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetFolderContent> ) => {
         await FoldersServices.getFolderContent(qs)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_FOLDER_CONTENT, payload: response.data} );
-                if(callback) {
-                    callback(response);
-                }
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -40,6 +38,7 @@ export const deleteContentAction = (content: ContentType[]): ThunkDispatch<Promi
                 dispatch( {type: ActionTypes.DELETE_CONTENT, payload: content} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -52,6 +51,7 @@ export const restoreContentAction = (content: ContentType[]): ThunkDispatch<Prom
                 dispatch(showToastNotification("Content has been restored", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

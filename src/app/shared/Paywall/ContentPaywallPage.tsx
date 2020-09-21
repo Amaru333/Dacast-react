@@ -74,9 +74,9 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const pricesTableBody = () => {
         if(props.contentPaywallInfos.prices) {
-            return props.contentPaywallInfos.prices.map((price, key) => {
+            return props.contentPaywallInfos.prices.filter(p => p.type === 'individual').map((price, key) => {
                 return {data: [
-                    <Text key={'pricesTableBodyType' + key} size={14} weight='reg'>{price.type}</Text>,
+                    <Text key={'pricesTableBodyType' + key} size={14} weight='reg'>{price.priceType}</Text>,
                     <Text key={'pricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices ? price.prices[0].value : price.price}</Text>,
                     <Text key={'pricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices ? price.prices[0].currency : price.currency}</Text>,
                     <Text key={'pricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.unit : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
@@ -140,23 +140,17 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     }
 
     const groupPricesTableBody = () => {
-        if(props.groupsInfos.prices) {
-            let tempArray: {
-                data: JSX.Element[];
-            }[] = []
-            props.groupsInfos.prices.packages.filter(p => p.contents.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).map((item, key) => {
-                item.prices.map((price) => {
-                    tempArray.push({data: [
-                        <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{item.name}</Text>,
-                        <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.settings.type}</Text>,
-                        <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.price.value}</Text>,
-                        <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.price.currency}</Text>,
-                        <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.unit : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
-                    ]})
-                })
+        if(props.contentPaywallInfos.prices) {
+            return props.contentPaywallInfos.prices.filter(p => p.type === 'package').map((price, key) => {
+                return {data: [
+                    <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.description}</Text>,
+                    <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.priceType}</Text>,
+                    <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices ? price.prices[0].value : price.price}</Text>,
+                    <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices ? price.prices[0].currency : price.currency}</Text>,
+                    <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.unit : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
+                    <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
+                ]}
             })
-            return tempArray
         } 
     }
 
@@ -214,7 +208,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Prices</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
-                {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.length > 0 ? 
+                {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.filter(p => p.type === 'individual').length > 0 ? 
                     <Table id='pricesTable' headerBackgroundColor="gray-10" header={pricesTableHeader()} body={pricesTableBody()} />
                     :
                     <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody('You have no Prices')} />
@@ -235,10 +229,9 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>Associated Group Prices</Text>
 
-                { !props.groupsInfos.prices || props.groupsInfos.prices.packages.filter(p => p.contents.indexOf(`${userId}-${props.contentType}-${props.contentId}`) !== -1).length === 0 ?
-                    <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
-                    :
+                { props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.filter(p => p.type === 'package').length > 0 ?
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
+                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
                 }
                    
             </Card>
@@ -246,7 +239,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 hasChanged &&
                 <div className='mt2'>
                     <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                    <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'flexible', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
+                    <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'fixed', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
                 </div>
             }
 

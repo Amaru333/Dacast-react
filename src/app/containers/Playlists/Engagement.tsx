@@ -13,6 +13,7 @@ import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
 import { ContentEngagementState } from '../../redux-flow/store/Content/Engagement/types';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ContentEngagementComponentProps {
     contentEngagementState: ContentEngagementState;
@@ -33,13 +34,21 @@ export interface ContentEngagementComponentProps {
 export const PlaylistEngagement = (props: ContentEngagementComponentProps) => {
 
     let { playlistId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getContentEngagementSettings(playlistId, 'playlist');
+        props.getContentEngagementSettings(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
+
         if (!props.globalEngagementSettings){
             props.getGlobalEngagementSettings()
+            .catch(() => setNodataFetched(true))
         }
-    }, []);
+    }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
 

@@ -66,6 +66,7 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
         var counter = 0;
         Object.entries(filteringState.features).map(item => item[1] !== false ? counter++ : null);
         Object.entries(filteringState.status).map(item => item[1] !== false ? counter++ : null)
+        Object.entries(filteringState["content-types"]).map(item => item[1] !== false ? counter++ : null);
         filteringState.afterDate ? counter++ : null;
         filteringState.beforedate ? counter++ : null;
         setActiveFilter(counter);

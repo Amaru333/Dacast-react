@@ -16,7 +16,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                             id: item.id,
                             name: item.name,
                             contents: item.contents,
-                            prices: item.prices.map((price) => {
+                            prices: item.prices.length > 0 ? item.prices.map((price) => {
                                 return {
                                     price: price.price,
                                     settings: {
@@ -37,8 +37,8 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                         : null
                                     }
                                 }
-                            }),
-                            groupSettings: {
+                            }) : [],
+                            groupSettings: item.prices.length > 0 ? {
                                 ...item.prices[0].settings,
                                 duration: item.prices[0].settings.duration ? {
                                     value: item.prices[0].settings.duration.value,
@@ -54,8 +54,8 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                     : 'Monthly'
                                 } 
                                 : null
-                            }
-                        }
+                            }: null
+                        } 
                     })
                 }
             }

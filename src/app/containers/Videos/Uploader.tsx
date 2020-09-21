@@ -7,6 +7,7 @@ import { UploaderPage } from '../../pages/Videos/Uploader/Uploader';
 import { EncodingRecipesData, getEncodingRecipesAction } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface UploaderProps {
     encodingRecipe: EncodingRecipesData;
@@ -15,13 +16,19 @@ export interface UploaderProps {
 
 const Uploader = (props: UploaderProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if(!props.encodingRecipe) {
-            props.getEncodingRecipe();
+            props.getEncodingRecipe()
+            .catch(() => setNodataFetched(true))
         }
     }, [])
 
-    
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
     return (
         props.encodingRecipe ?
             (

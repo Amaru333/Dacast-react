@@ -58,6 +58,7 @@ export const getContentDetailsAction = (contentId: string, contentType: string):
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     };
 }
@@ -67,10 +68,11 @@ export const editContentDetailsAction = (data: ContentDetails, contentType: stri
         await ContentGeneralServices.editContentDetailsService(data, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.EDIT_CONTENT_DETAILS, payload: {data: data, contentType: contentType} })
-                dispatch(showToastNotification("Changes have been saved", 'flexible', "success"));
+                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -84,6 +86,7 @@ export const getUploadUrlAction = (uploadType: string, contentId: string, extens
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -97,6 +100,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, contentId: strin
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -110,6 +114,7 @@ export const uploadImageFromVideoAction = (contentId: string, time: number, imag
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -123,6 +128,7 @@ export const deleteFileAction = (contentId: string, targetId: string, contentTyp
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -137,6 +143,7 @@ export const addSubtitleAction = (data: File, uploadUrl: string, subtitleInfo: S
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }
@@ -152,6 +159,7 @@ export const deleteSubtitleAction = (contentId: string, targetId: string, fileNa
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
             })
     }
 }

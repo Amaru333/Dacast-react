@@ -24,12 +24,12 @@ export const getContentThemeAction = (contentId: string, contentType: string): T
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
 
 export const saveContentThemeAction = (data: ThemeOptions, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentTheme> => {
-    debugger;
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentTheme> ) => {
         await ContentThemingServices.saveContentThemeService(data, contentId, parseContentType(contentType))
             .then( response => {
@@ -38,6 +38,7 @@ export const saveContentThemeAction = (data: ThemeOptions, contentId: string, co
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

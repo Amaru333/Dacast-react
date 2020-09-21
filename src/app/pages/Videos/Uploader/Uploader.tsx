@@ -15,6 +15,7 @@ import { useNetwork } from '../../../utils/customHooks';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import { logAmplitudeEvent } from '../../../utils/amplitudeService';
+import EventHooker from '../../../utils/EventHooker';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -49,6 +50,8 @@ export const UploaderPage = (props: UploaderProps) => {
 
     React.useEffect(() => {
         if (currentUpload && currentUpload.isCompleted) {
+            console.log('dispatching vod updaloded')
+            EventHooker.dispatch('EVENT_VOD_UPLOADED', undefined)
             uploadNextFile()
         }
     }, [currentUpload && currentUpload.isCompleted])
@@ -263,9 +266,9 @@ export const UploaderPage = (props: UploaderProps) => {
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
                 </div>
-                <div className="col col-4 flex items-center justify-end">
+                {/* <div className="col col-4 flex items-center justify-end">
                     <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/integrations")}> FTP/S3 Uploader </Button>
-                </div>
+                </div> */}
             </div>
 
             <Prompt

@@ -14,11 +14,6 @@ export interface LoginRequest {
     payload: null;
 }
 
-export interface Logout {
-    type: ActionTypes.LOGOUT;
-    payload: null;
-}
-
 export interface LoginError {
     type: ActionTypes.LOGIN_ERROR;
     payload: null;
@@ -32,17 +27,10 @@ export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, 
                 dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
             }).catch(() => {
                 dispatch({type: ActionTypes.LOGIN_ERROR, payload: null});
+                return Promise.reject()
             })
     };
 
 }
 
-
-
-export const LogoutAction = (): ThunkDispatch<void, {}, Logout> =>{
-    return (dispatch: ThunkDispatch<ApplicationState , {}, Logout>) => {
-        dispatch({type: ActionTypes.LOGOUT, payload: null})
-    }
-}
-
-export type Action = Login | Logout | LoginRequest | LoginError;
+export type Action = Login | LoginRequest | LoginError;

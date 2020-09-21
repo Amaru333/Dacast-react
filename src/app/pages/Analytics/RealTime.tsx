@@ -13,10 +13,8 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 
     const labelsFormate = (labels: number[]) => { return labels.length ? labels.map(number => tsToLocaleDate(number, { hour: "2-digit", minute: "2-digit", day: '2-digit' })) : [] };
     const [timePeriod, setTimePeriod] = React.useState<number>(5)
-    React.useEffect(() => {
-    }, [props.liveList])
 
-    const [selectedContent, setSelectedContent] = React.useState<string>(props.liveList.results.length ? props.liveList.results[0].objectID : '')
+    const [selectedContent, setSelectedContent] = React.useState<string>( props.liveList && props.liveList.results.length > 0 ? props.liveList.results[0].title : '')
     const handleReload = () => {
         let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
         if(selectedChannelFilter) {
@@ -65,7 +63,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                     dropdownTitle='Time Period'
                     list={{ '5 Minutes': true, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false }}
                 />
-                {props.liveList ?
+                {props.liveList &&
                     <DropdownSingle
                         id='liveChannelsDropdown'
                         isInModal
@@ -73,9 +71,9 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         className='col sm-col-3 col-5 px1'
                         dropdownTitle='Live Channel'
                         defaultSelected={props.liveList.results[0].title}
-                        callback={(name: string) => {;setSelectedContent(name)}}
+                        callback={(name: string) => setSelectedContent(name)}
                         list={props.liveList.results.reduce((reduced: DropdownListType, item: ContentItem) => { return { ...reduced, [item.title]: false } }, {})}
-                    /> : null
+                    />
                 }
 
                 <Button onClick={handleReload} style={{ marginBottom: 5 }} className='ml1' typeButton='primary' sizeButton='small' buttonColor='blue'>Apply</Button>

@@ -47,9 +47,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, null,  (response) => {
+        props.purchasePlan(stepperData, recurlyToken, null)
+        .then((response) => {
+            console.log('sucess repsonse',response)
             setIsLoading(false);
-            if (response.data.data.tokenID) {
+            if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
@@ -57,7 +59,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
             }
-        }, () => {
+        })
+        .catch((error) => {
+            console.log(error)
+            debugger
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -67,13 +72,15 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken, (response) => {
+        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken)
+        .then(() => {
             setStepperPlanOpened(false)
             setIsLoading(false);
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
-        }, () => {
+        })
+        .catch(() => {
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -109,7 +116,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                     return (
                                         <AllowanceElement className='flex items-center'>
                                             <IconStyle customsize={customInfoIconSize} className="mr1" id={'icon' + element.name} coloricon='gray-5'>info_outlined</IconStyle>
-                                            <Tooltip target={'icon' + element.name}>{element.tooltip}</Tooltip>
+                                            <Tooltip leftPositionValueToZero={true} target={'icon' + element.name}>{element.tooltip}</Tooltip>
                                             <Text className={textClassName} size={14} weight='med' color='gray-1'>{element.name}</Text>
                                         </AllowanceElement>
                                     );

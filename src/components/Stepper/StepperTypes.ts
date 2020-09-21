@@ -4,6 +4,7 @@ interface StepperButtonType {
     typeButton?: Type;
     sizeButton?: Size;
     buttonText: string;
+    isLoading?: boolean
 }
 
 export interface StepperSpecificProps {
