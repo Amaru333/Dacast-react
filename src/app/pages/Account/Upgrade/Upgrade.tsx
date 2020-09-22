@@ -142,7 +142,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth} GB&nbsp;</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-on</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>

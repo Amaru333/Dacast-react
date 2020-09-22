@@ -119,8 +119,10 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
 //FEATURES
 export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function }) => {
 
+    const availableAddOns = ["ads", "paywall", "phone-support"]
+
     const featuresTableBody = () => {
-        return props.stepperData.privileges ? props.stepperData.privileges.map((item: Privilege) => {
+        return props.stepperData.privileges ? props.stepperData.privileges.filter(item => availableAddOns.includes(item.code)).map((item: Privilege) => {
             return {
                 data: [
                     <div className='flex'>
