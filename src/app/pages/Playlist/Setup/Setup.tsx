@@ -64,6 +64,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         <>
             <PlaylistSettings open={playlistSettingsOpen} toggle={setPlaylistSettingsOpen} callBackSuccess={(data: number) => { setMaxNumberItems(data); setPlaylistSettingsOpen(false)} }/>
             <ContentSelector 
+                showSort={true}
                 loading={saveLoading}
                 playlist={ { setPreviewModalOpen: setPreviewModalOpen, setPlaylistSettingsOpen: setPlaylistSettingsOpen } }
                 folderId={props.contentData.folderId ? props.contentData.folderId : null} 

@@ -233,7 +233,8 @@ export const ContentListPage = (props: ContentListProps) => {
                     }} />},
                 // {cell: <></>},
                 {cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
-                {cell: <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text>},
+                {cell: props.contentType === 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text>},
+                {cell: props.contentType !== 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text>},
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
                 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
                 {cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text>},
@@ -286,7 +287,8 @@ export const ContentListPage = (props: ContentListProps) => {
                             <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
-                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        props.contentType === 'expos' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        props.contentType !== 'expos' ? undefined : <Text  key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
                         props.contentType === 'expos' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,

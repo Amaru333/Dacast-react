@@ -36,6 +36,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     return (
         <>
             <ContentSelector 
+                showSort={true}
                 loading={saveLoading}
                 folderId={props.contentData.folderId ? props.contentData.folderId : null} 
                 folderData={props.folderData}
