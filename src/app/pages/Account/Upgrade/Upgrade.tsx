@@ -29,7 +29,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const customInfoIconSize = 16;
     const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const fullSteps = [PlanStepperFirstStep, PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep];
-    const developerPlanSteps = [PlanStepperThirdStep, PlanStepperFourthStep];
+    const scalePlanSteps = [PlanStepperThirdStep, PlanStepperFourthStep];
     const eventPlanSteps = [PlanStepperSecondStep, PlanStepperThirdStep, PlanStepperFourthStep]
     const [stepperPlanOpened, setStepperPlanOpened] = React.useState<boolean>(false);
     const [allFeaturesOpen, setAllFeaturesOpen] = React.useState<boolean>(false);
@@ -37,7 +37,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [stepList, setStepList] = React.useState(fullSteps);
     const [currentPlan, setCurrentPlan] = React.useState<string>(defaultCurrentPlan && defaultCurrentPlan.name)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
-    const [stepTitles, setStepTitles] = React.useState<string[]>(['Allowances', 'Features', 'Cart', 'Payment'])
+    const [stepTitles, setStepTitles] = React.useState<string[]>(['Features', 'Cart', 'Payment'])
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
@@ -47,9 +47,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, null,  (response) => {
+        props.purchasePlan(stepperData, recurlyToken, null)
+        .then((response) => {
+            console.log('sucess repsonse',response)
             setIsLoading(false);
-            if (response.data.data.tokenID) {
+            if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
                 setThreeDSecureActive(true)
             } else {
@@ -57,7 +59,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
             }
-        }, () => {
+        })
+        .catch((error) => {
+            console.log(error)
+            debugger
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -67,13 +72,15 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken, (response) => {
+        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken)
+        .then(() => {
             setStepperPlanOpened(false)
             setIsLoading(false);
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
-        }, () => {
+        })
+        .catch(() => {
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -86,8 +93,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const handleSteps = (plan: string) => {
         switch (plan) {
-            case 'developer':
-                setStepList(developerPlanSteps);
+            case 'scale':
+                setStepList(scalePlanSteps);
                 setStepTitles(['Cart', 'Payment'])
                 break;
             default :
@@ -133,15 +140,13 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth} GB&nbsp;</Text>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'> every month</Text>
+                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-on</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
 
                                         <div className='absolute bottom-0 flex flex-column'>
                                             <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
@@ -171,15 +176,13 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
 
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].bandwidth} GB</Text>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;total data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.eventPlan.allowances[0].bandwidth).toLocaleString()} GB</Text>
+                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Contact Us</Text>
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
@@ -214,18 +217,16 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2000 GB</Text>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>&nbsp;every month</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB</Text>
+                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1000 GB</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
                                         </div>
 
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Contact Us</Text>
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
@@ -313,11 +314,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>2000 GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>1000 GB Storage</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB Storage</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>24/7 Phone Support</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>

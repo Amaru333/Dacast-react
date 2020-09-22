@@ -18,6 +18,8 @@ import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
+import { axiosClient } from '../../../utils/axiosClient';
+import EventHooker from '../../../utils/EventHooker';
 
 var moment = require('moment-timezone');
 
@@ -40,11 +42,24 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
     const { dirty } = formState;
 
+    const handleSubmitCleanup = (data: any) => {
+            axiosClient.forceRefresh()
+            setSubmitLoading(false)
+            reset(data)
+    }
+
+    React.useEffect(() => {
+        EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', handleSubmitCleanup)
+
+        return () => {
+            EventHooker.unsubscribe('EVENT_FORCE_TOKEN_REFRESH', handleSubmitCleanup)
+        }
+    }, [])
+
     const onSubmit = (data: any) => {
         setSubmitLoading(true)
         props.saveProfilePageDetails(data).then(() => {
-            setSubmitLoading(false)
-            reset(data)
+            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', data)
         })
     }
 

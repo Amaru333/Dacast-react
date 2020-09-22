@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { userToken } from './token'
 import { DateTime } from 'luxon'
+import EventHooker from './EventHooker'
 
 export type RequestConfig = {
     allowRetry?: boolean;
@@ -92,6 +93,10 @@ class AxiosClient {
         return config
     }
 
+    public forceRefresh = async () => {
+        await this.refreshToken()
+    }
+
     private checkRefresh = async () => {
         if(!this.refreshingToken) {
             return await this.refreshToken().then(() => {
@@ -108,6 +113,7 @@ class AxiosClient {
             localStorage.removeItem('userToken')
             localStorage.setItem('userToken', JSON.stringify(token))
             userToken.addTokenInfo(token)
+
         }).catch((error) => {
             throw new Error(error)
         })  

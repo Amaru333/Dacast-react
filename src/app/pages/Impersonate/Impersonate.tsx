@@ -15,7 +15,6 @@ export const Impersonate = () => {
                 refresh: null,
                 expires: 9999999999999
             })
-            console.log('token used')
         }
         history.push('/dashboard')
     }, [])
