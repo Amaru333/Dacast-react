@@ -23,11 +23,14 @@ export interface ContentSelectorComponentProps {
     getFolderContent: Function;
     title: string;
     loading?: boolean;
-    callback: (selectedItems: (FolderAsset | FolderTreeNode)[]) => void;
+    callback: (selectedItems: (FolderAsset | FolderTreeNode)[], selectedTab: "folder" | "content", selectedFolderId?: string | null, sortSettings?: SortSettingsContentSelector ) => void;
     folderId?: string;
     playlist?: { setPreviewModalOpen: (enable: boolean) => void, setPlaylistSettingsOpen: (enable: boolean) => void };
     showSort?: boolean;
+    showFolders?: boolean;
 }
+
+export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
 
 export const ContentSelector = (props: ContentSelectorComponentProps & React.HTMLAttributes<HTMLDivElement>) => {
 
@@ -42,7 +45,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
     const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.folderId ? props.folderId : null);
-    const [sortSettings, setSortSettings] = React.useState<{ name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }>({ name: 'Sort', value: 'none' });
+    const [sortSettings, setSortSettings] = React.useState<SortSettingsContentSelector>({ name: 'Sort', value: 'none' });
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
@@ -344,19 +347,25 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
             <div className="clearfix">
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <TabSetupContainer className="clearfix">
-                        <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { selectedTab === 'content' && (selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess()) }}>
-                            <Text color={selectedTab === "folder" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
-                        </TabSetupStyle>
+                        {props.showFolders && 
+                            <TabSetupStyle className="pointer" selected={selectedTab === "folder"} onClick={() => { selectedTab === 'content' && (selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess()) }}>
+                                <Text color={selectedTab === "folder" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Folders</Text>
+                            </TabSetupStyle>
+                        }
                         <TabSetupStyle className="pointer" selected={selectedTab === "content"} onClick={() => { selectedTab === 'folder' && (selectedItems.length > 0 ? setSwitchTabOpen(true) : switchTabSuccess()) }}>
-                            <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Content</Text>
+                            <Text color={selectedTab === "content" ? "dark-violet" : "gray-1"} size={14} weight='reg'>Contents</Text>
                         </TabSetupStyle>
                     </TabSetupContainer>
-                    <div hidden={selectedTab === 'content'} className="pl1 pr1">
-                        <Breadcrumb options={selectedFolder} callback={(value: string) => { setSelectedFolder(value) }} />
-                    </div>
-                    <div hidden={selectedTab !== "folder"} >
-                        {renderFoldersList()}
-                    </div>
+                    {props.showFolders && 
+                        <div hidden={selectedTab === 'content'} className="pl1 pr1">
+                            <Breadcrumb options={selectedFolder} callback={(value: string) => { setSelectedFolder(value) }} />
+                        </div>
+                    }
+                    {props.showFolders && 
+                        <div hidden={selectedTab !== "folder"} >
+                            {renderFoldersList()}
+                        </div>
+                    }
                     <div hidden={selectedTab !== "content"} >
                         {renderContentsList()}
                     </div>

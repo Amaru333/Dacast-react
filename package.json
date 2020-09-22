@@ -106,7 +106,7 @@
     "qs": "^6.9.1",
     "react": "^16.8.6",
     "react-chartjs-2": "^2.9.0",
-    "react-color": "^2.18.0",
+    "react-color": "^2.18.1",
     "react-dates": "^21.8.0",
     "react-device-detect": "^1.9.10",
     "react-dom": "^16.8.6",
