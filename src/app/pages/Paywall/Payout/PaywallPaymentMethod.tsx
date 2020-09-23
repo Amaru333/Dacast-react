@@ -100,7 +100,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     {
                         (selectedPaymentMethod === PaymentMethodType.BankAccountUS || selectedPaymentMethod === PaymentMethodType.BankAccountInternational) &&
                             <div style={{marginTop: 2}} className="col col-4 pl1 xs-no-gutter">
-                                <Tab className='col col-12' orientation='horizontal' list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
+                                <Tab className='col col-12' tabDefaultValue={paymentMethodRecipientType === 'Business' ? 0 : 1} orientation='horizontal' list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
                             </div>
                     }   
                 </div>
