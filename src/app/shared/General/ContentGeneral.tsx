@@ -196,7 +196,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.m3u8, link: props.contentDetails.m3u8 ? props.contentDetails.m3u8.link : "" }
+        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
     
     const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
