@@ -4,6 +4,7 @@ import { DomainControl } from '../../../redux-flow/store/Settings/Security/types
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
+import { Text } from '../../../../components/Typography/Text'
 
 export const DomainControlForm = (props: {item: DomainControl; toggle: (b: boolean) => void; submit: (domain: DomainControl) => Promise<void>}) => {
 
@@ -49,9 +50,9 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: (b: boole
                     placeholder="Type URL" 
                     label="URLs"
                 />
-
+                <Text size={14} weight="reg">Type a URL and press <strong>Enter</strong> or <strong>Space</strong> to add it to the list.</Text>
                 <InputCheckbox 
-                    className='col col-12 py1'
+                    className='col col-12 pb1 pt25'
                     id='domainControlDefautGroup'
                     onChange={(event) => setDomainControlItem({...domainControlItem, isDefault: event.currentTarget.checked})}
                     label='Make as Default Group'

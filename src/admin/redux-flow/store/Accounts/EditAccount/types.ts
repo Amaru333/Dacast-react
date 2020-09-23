@@ -13,6 +13,7 @@ export interface AccountInfo {
     website: string;
     phone: string;
     email: string;
+    isPaying: boolean;
     playbackProtection: {
         enabled: boolean;
         amountGb: number;
@@ -30,6 +31,7 @@ export interface PutAccountInfo {
     newPassword?: string;
     phone?: string;
     email?: string;
+    isPaying?: boolean;
     playbackProtection?: {
         enabled: boolean;
         amountGb: number;

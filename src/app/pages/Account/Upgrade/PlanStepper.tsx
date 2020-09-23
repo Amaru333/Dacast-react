@@ -239,7 +239,7 @@ React.useEffect(() => {
                 {
                     data: [
                         <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.paymentTerm === 12) ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.price.usd/100) + '/mo'}</Text>
+                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.paymentTerm === 12) ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.price.usd/100) + ' /mo'}</Text>
                     ]
                 },
                 {
@@ -254,7 +254,7 @@ React.useEffect(() => {
                 {
                     data: [
                         <Text key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">${(props.stepperData.price.usd / 100).toLocaleString()}&nbsp;/yr</Text>
+                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.paymentTerm === 12) ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.price.usd/100) + ' /mo'}</Text>
                     ]
                 }]
         }
@@ -293,7 +293,7 @@ React.useEffect(() => {
                 },
                 {
                     data: [
-                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {moment().format('DD MMMM YYYY')} </Text>,
+                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {moment().add(3, 'months').format('DD MMMM YYYY')} </Text>,
                         <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? '$' + ((planPrice) + (featuresTotal)) : '$' + (planPrice)}</Text>
                     ]
                 }
@@ -309,20 +309,22 @@ React.useEffect(() => {
                 <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now</Text>,
                 <div className="flex items-center right">
                     {props.stepperData.name === 'Annual Scale' &&
-                        <Label className="mr2" color='green' backgroundColor='green20' label={props.stepperData.discount + '% discount Applied'} />
+                        <Label className="mr2" color='green' backgroundColor='green20' label={props.stepperData.discount + '% Discount Applied'} />
                     }
-                    <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.name !== 'Annual Scale' ? '$' + (totalPrice) : '$' + (planPrice)}</Text>
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.name !== 'Annual Scale' ? '$' + totalPrice.toLocaleString() : '$' + planPrice.toLocaleString()}</Text>
                 </div>
 
             ]
         } else {
             return [
-                <div className="flex items-center">
-                    <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now&nbsp;</Text>
-                    {props.stepperData.commitment === 3 && <Text key={"cartTableFooterTotalFrequency"} size={10} weight="reg" color="gray-5">(First 3 months paid upfront)</Text>}
+                <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now&nbsp;</Text>,
+                <div className="flex items-center right">
+                    {
+                        props.stepperData.commitment === 3 && <Label className="mr2" color='green' backgroundColor='green20' label="3 Months Upfront" /> 
+                    }
+                    <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + (planPrice * 3) : (props.stepperData.name !== 'Monthly Scale' ? "$" + (planPrice + featuresTotal) : "$" + planPrice)}</Text>
                 </div>
-                ,
-                <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + (planPrice * 3) : (props.stepperData.name !== 'Monthly Scale' ? "$" + (planPrice + featuresTotal) : "$" + planPrice)}</Text>,
+                
             ]
         }
     }

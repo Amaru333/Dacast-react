@@ -96,7 +96,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         : props.billingInfos.paymentMethod.type === "card" ?                
                             <Table className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
                             : 
-                            <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowences and Enable Playback Protection')} />
+                            <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowances and Enable Playback Protection')} />
 
 
                 }    

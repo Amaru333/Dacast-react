@@ -139,8 +139,8 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                             <div className="mb3" id="contentFilterSize">
                             <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
                                 <div className="mxn2 clearfix">
-                                    <Input className="col col-6 px2" label="Min (Mb)" type="number" min='0' value={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
-                                    <Input className="col col-6 px2" label="Max (Mb)" type="number" min='0' value={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
+                                    <Input className="col col-6 px2" label="Min (MB)" type="number" min='0' value={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
+                                    <Input className="col col-6 px2" label="Max (MB)" type="number" min='0' value={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
                                 </div>
                             </div>
                     }

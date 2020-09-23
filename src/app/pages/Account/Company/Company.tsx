@@ -43,17 +43,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     const [edited, setEdited] = React.useState<boolean>(false)
+    const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
     let companyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
     let changeCompanyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
-
-
-    React.useEffect(() => {
-        if(!CompanyPageDetails.country) {
-            setValue('country', "United States");
-        }   
-    }, []);
 
     React.useEffect(() => {
         if(!props.CompanyPageDetails.logoURL && !props.CompanyPageDetails.uploadLogoUrl) {
@@ -65,7 +59,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const onSubmit = (data: CompanyPageInfos) => { 
         setSubmitLoading(true)
-        props.saveCompanyPageDetails(data).then(() => {
+        props.saveCompanyPageDetails(selectedCountry ? {...data, country: selectedCountry} : data).then(() => {
             setSubmitLoading(false)
             setEdited(false)
             reset(data)
@@ -331,8 +325,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
                         <DropdownSingle hasSearch 
                             direction='up'
-                            callback={(value: string) => {setEdited(true);setValue('country', value)}}
-                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "United States" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
+                            callback={(value: string) => {setEdited(true);setSelectedCountry(value)}}
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='countryDropdown' dropdownTitle='Country' 
                             list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
                     </div>
