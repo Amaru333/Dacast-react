@@ -146,7 +146,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-on</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='absolute bottom-0 flex flex-column'>
                                             <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
