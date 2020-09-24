@@ -12,6 +12,7 @@ const envKeys = Object.keys(process.env).reduce((prev, next) => {
   }, {});
 
 module.exports = {
+    mode:'production',
     entry: {
         app: ['@babel/polyfill', './src/app/index.tsx'],
         admin: ['@babel/polyfill', './src/admin/index.tsx'],

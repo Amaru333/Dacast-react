@@ -16,6 +16,7 @@ export const getTransactionsAction = (qs: string): ThunkDispatch<Promise<void>, 
                 dispatch({type: ActionTypes.GET_TRANSACTIONS, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }

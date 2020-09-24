@@ -6,6 +6,7 @@ import { Invoice, getInvoicesAction, Action } from '../../redux-flow/store/Accou
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InvoicesPage } from '../../pages/Account/Invoices/Invoices';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface InvoicesComponentProps {
     invoices: Invoice[];
@@ -14,15 +15,24 @@ export interface InvoicesComponentProps {
 
 const Invoices = (props: InvoicesComponentProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        props.getInvoices();
+        props.getInvoices()
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
 
-    return (
-        props.invoices ?
-            <InvoicesPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <InvoicesPage {...props} />
 }
 
 export function mapStateToProps( state: ApplicationState) {

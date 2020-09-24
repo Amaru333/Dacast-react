@@ -31,6 +31,7 @@ export const getPaywallThemesAction = (): ThunkDispatch<Promise<void>, {}, GetPa
                 dispatch({type: ActionTypes.GET_PAYWALL_THEMES, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -43,6 +44,7 @@ export const savePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promis
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -55,6 +57,7 @@ export const createPaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Prom
                 dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -67,6 +70,7 @@ export const deletePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Prom
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }

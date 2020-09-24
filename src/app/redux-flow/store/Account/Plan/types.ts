@@ -45,6 +45,7 @@ export interface PaymentDetails {
     lastName?: string;
     firstSix?: string;
     lastFour?: string;
+    state?: string;
     billingID: string;
     email?: string;
     postCode?: string;

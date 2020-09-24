@@ -9,6 +9,7 @@ import { PayoutInfos, WithdrawalRequest, PaymentMethod } from '../../redux-flow/
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 
 export interface PayoutComponentProps {
@@ -25,12 +26,20 @@ export interface PayoutComponentProps {
 
 const Payout = (props: PayoutComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.payoutInfos) {
-            props.getPaymentMethods()
-            props.getWithdrawalRequests()
-        }
+        props.getPaymentMethods()
+        .catch(() => setNodataFetched(true))
+
+        props.getWithdrawalRequests()
+        .catch(() => setNodataFetched(true))
+
     }, []) 
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.payoutInfos ?

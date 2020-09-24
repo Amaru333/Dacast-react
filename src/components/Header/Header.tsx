@@ -8,7 +8,7 @@ import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
-import { LogoutAction, Action } from '../../app/redux-flow/store/Register/Login';
+import { Action } from '../../app/redux-flow/store/Register/Login';
 import Burger from '../../app/containers/Navigation/Burger';
 import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
@@ -17,7 +17,6 @@ import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
 import { userToken } from '../../app/utils/token';
 import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
-import { store } from '../../app';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -26,7 +25,6 @@ export interface HeaderProps {
     ProfileInfo: ProfilePageInfos;
     contentGeneralState: ContentDetailsState;
     setOpen: (b: boolean) => void;
-    logout: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
     getContentDetails: (contentId: string, contentType: string) => Promise<void>;
 }
@@ -93,8 +91,8 @@ const Header = (props: HeaderProps) => {
             setAvatarFirstName(userToken.getUserInfoItem('custom:first_name'))
             setAvatarLastName(userToken.getUserInfoItem('custom:last_name'))
         }
-
-    }, [userToken.isLoggedIn()])
+        console.log('token has changed')
+    }, [userToken])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 
@@ -103,9 +101,10 @@ const Header = (props: HeaderProps) => {
     });
 
     const handleLogOut = () => {
-        props.logout();
-        store.dispatch({type: 'USER_LOGOUT'});
-        history.push('/login')
+        userToken.resetUserInfo()
+        window.location.href = '/login'
+        window.location.reload()
+        
     }
 
     const handleClick = (name: string) => {
@@ -193,9 +192,6 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
 
     return {
-        logout: () => {
-            dispatch(LogoutAction());
-        },
         getProfilePageDetails: () => {
             dispatch(getProfilePageDetailsAction());
         },

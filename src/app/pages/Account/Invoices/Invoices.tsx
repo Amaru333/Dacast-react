@@ -11,6 +11,7 @@ import { Pagination } from '../../../../components/Pagination/Pagination';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 import { axiosClient } from '../../../utils/axiosClient';
+import { Link } from 'react-router-dom';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {
 
@@ -61,6 +62,28 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
             ]}
         })
     }
+
+    const emptyInvoicesTableHeader = () => {
+        return {
+            data: [
+                { cell: <span key='invoicesTableEmptyHeaderCell'></span> }
+            ]
+        }
+    }
+
+
+    const emptyInvoicesTableBody = () => {
+        return [{
+            data: [
+                <div key='invoicesBodyEmptyTable' className='center'>
+                    <Text size={14} weight='reg' color='gray-3'>You have no invoices. </Text>
+                    <Link to='/account/upgrade'  >Click here</Link>
+                    <Text size={14} weight='reg' color='gray-3'> to upgrade your plan.</Text>
+                </div>
+            ]
+        }]
+    }
+
     return (
         <div>
             <div className='flex'>
@@ -70,7 +93,12 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 </div>
                 <InvoicesFiltering className="mb2" />
             </div>
-            <Table hasContainer id='invoicesTable' headerBackgroundColor="white" header={invoicesTableHeader()} body={invoicesTableBody()} />
+            {
+                props.invoices && props.invoices.length > 0 ?
+                <Table hasContainer id='invoicesTable' headerBackgroundColor="white" header={invoicesTableHeader()} body={invoicesTableBody()} />
+                : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
+
+            }
             <Pagination totalResults={290} displayedItemsOptions={[10, 20, 100]} callback={() => {}} />
         </div>
     )

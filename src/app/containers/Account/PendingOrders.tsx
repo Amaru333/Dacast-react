@@ -7,26 +7,33 @@ import { Action, getPendingOrdersAction, updatePendingOrdersAction } from '../..
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface PendingOrdersComponentProps {
     pendingOrders: PendingOrdersList;
-    getPendingOrders: Function;
-    updatePendingOrders: Function;
+    getPendingOrders: () => Promise<void>;
+    updatePendingOrders: (data: PendingOrder) => Promise<void>;
 }
 
 export const PendingOrders = (props: PendingOrdersComponentProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.pendingOrders) {
-            props.getPendingOrders();
-        }
+        props.getPendingOrders()
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
 
-    return (
-        props.pendingOrders ?
-            <PendingOrdersPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <PendingOrdersPage {...props} />
 }
 
 export function mapStateToProps( state: ApplicationState) {
@@ -37,11 +44,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getPendingOrders: () => {
-            dispatch(getPendingOrdersAction());
+        getPendingOrders: async () => {
+           await dispatch(getPendingOrdersAction());
         },
-        updatePendingOrders: (data: PendingOrder) => {
-            dispatch(updatePendingOrdersAction(data))
+        updatePendingOrders: async (data: PendingOrder) => {
+            await dispatch(updatePendingOrdersAction(data))
         }
     };
 }

@@ -6,26 +6,34 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface BillingContainerProps {
     billingInfos: BillingPageInfos;
-    getBillingPageInfos: () => void
+    getBillingPageInfos: () => Promise<void>
     saveBillingPagePaymentMethod: (data: string) => Promise<void>;
 }
 
 const Billing = (props: BillingContainerProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.billingInfos) {
-            props.getBillingPageInfos();
-        }
+        props.getBillingPageInfos()
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
 
-    return (
-        props.billingInfos ? 
-        <BillingPage {...props} />
-        : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <BillingPage {...props} />
+        
 }
 
 export function mapStateToProps( state: ApplicationState) {

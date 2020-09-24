@@ -12,15 +12,22 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
 import { ContentDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
     let { liveId } = useParams()
-
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getContentDetails(liveId, 'live');
+        props.getContentDetails(liveId, 'live')
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

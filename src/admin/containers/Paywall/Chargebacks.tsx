@@ -19,7 +19,7 @@ const Chargebacks = (props: ChargebackComponentProps) => {
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
         submitChargeback: async (data: Chargeback) => {
-            await dispatch(submitChargebackAction(data));
+            await dispatch(submitChargebackAction(data))
         }
     };
 }

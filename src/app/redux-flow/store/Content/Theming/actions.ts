@@ -24,6 +24,7 @@ export const getContentThemeAction = (contentId: string, contentType: string): T
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -37,6 +38,7 @@ export const saveContentThemeAction = (data: ThemeOptions, contentId: string, co
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

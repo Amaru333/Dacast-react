@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions';
 import { getSettingsInteractionsInfosAction, Action, EngagementInfo, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface SettingsInteractionComponentProps {
     interactionsInfos: EngagementInfo;
@@ -25,11 +26,17 @@ export interface SettingsInteractionComponentProps {
 
 const Interactions = (props: SettingsInteractionComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.interactionsInfos) {
-            props.getInteractionsInfos();
-        }
-    }, []);
+        props.getInteractionsInfos()
+        .catch(() => setNodataFetched(true))
+
+    }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.interactionsInfos ?
@@ -46,8 +53,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getInteractionsInfos: () => {
-            dispatch(getSettingsInteractionsInfosAction());
+        getInteractionsInfos: async () => {
+            await dispatch(getSettingsInteractionsInfosAction());
         },
         saveInteractionsInfos: async (data: EngagementInfo) => {
             await dispatch(saveSettingsInteractionsInfosAction(data))

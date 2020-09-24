@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
@@ -25,12 +26,18 @@ export interface GroupsComponentProps {
 
 const Groups = (props: GroupsComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if(!props.groupsInfos.prices) {
             props.getGroupPrices()
+            .catch(() => setNodataFetched(true))
+
         }
         if(!props.groupsInfos.promos) {
             props.getGroupPromos()
+            .catch(() => setNodataFetched(true))
+
         }
         if(!props.folderData) {
             const wait = async () => {
@@ -39,6 +46,10 @@ const Groups = (props: GroupsComponentProps) => {
             wait()
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.groupsInfos.prices && props.groupsInfos.promos ?

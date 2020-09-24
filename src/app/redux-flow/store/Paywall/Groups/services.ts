@@ -13,34 +13,34 @@ const createGroupPrice = async (data: GroupPrice) => {
     if(data.groupSettings.type === 'Subscription') {
         parsedPrice = {
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
         }
     } else {
         if(data.groupSettings.startMethod === 'Upon Purchase') {
             parsedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
             }
         } else {
             parsedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -48,7 +48,7 @@ const createGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
     } 
@@ -66,14 +66,14 @@ const saveGroupPrice = async (data: GroupPrice) => {
         parsedPrice = {
             id: data.id,
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+            contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
         }
     } else {
@@ -81,21 +81,21 @@ const saveGroupPrice = async (data: GroupPrice) => {
             parsedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
             }
         } else {
             parsedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'group description'}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -103,7 +103,7 @@ const saveGroupPrice = async (data: GroupPrice) => {
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + content.type + '-' + content.objectID)
+                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
     } 

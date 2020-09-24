@@ -4,10 +4,11 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
-import { CreditCardPayment, PaypalPayment, BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { DashboardInfos, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 interface PlanContainerProps {
     billingInfos: BillingPageInfos;
@@ -24,17 +25,22 @@ interface PlanContainerProps {
 }
 const Plan = (props: PlanContainerProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.billingInfos) {
-            props.getBillingPageInfos();
-        }
-        if(!props.widgetData) {
-            props.getWidgetData();
-        }
-        if(!props.billingInfos.products) {
-            props.getProductDetails();
-        }
+        props.getBillingPageInfos()
+        .catch(() => setNodataFetched(true))
+
+        props.getWidgetData()
+        .catch(() => setNodataFetched(true))
+
+        props.getProductDetails()
+        .catch(() => setNodataFetched(true))
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         props.billingInfos && props.widgetData && props.billingInfos.products ?

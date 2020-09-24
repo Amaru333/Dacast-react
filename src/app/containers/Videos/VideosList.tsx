@@ -11,6 +11,7 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ContentListProps {
     contentListState: ContentListState;
@@ -24,11 +25,18 @@ export interface ContentListProps {
 const VideosList = (props: ContentListProps) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {     
         props.getContentList(null, 'vod')
         .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return !isFetching ? 
         <ContentListPage

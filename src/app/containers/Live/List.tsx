@@ -10,15 +10,23 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export const LiveList = (props: ContentListProps) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {     
         props.getContentList(null, 'live')
         .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
+
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return !isFetching ? 
         <ContentListPage

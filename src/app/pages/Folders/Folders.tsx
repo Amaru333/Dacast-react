@@ -136,9 +136,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     }, [fetchContent])
 
-    // React.useEffect(() => {
-    //     setFetchContent(true)
-    // }, [updateList])
+    React.useEffect(() => {
+        setFetchContent(true)
+    }, [selectedFilters])
 
     React.useEffect(() => {
         const wait = async () => {
@@ -440,7 +440,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         selectedFolder !== 'Trash' &&
                             <>
                                 {checkedItems.length > 0 &&
-                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} items</Text>
+                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
                                 }
                                 <div className='relative'>
                                     <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
@@ -533,7 +533,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
                     deleteFolderModalOpened &&
-                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {if(!fetchContent) { setFetchContent(true)}})}} />
+                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {setSelectedFolder('Library');setCurrentFolder(null)})}} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >

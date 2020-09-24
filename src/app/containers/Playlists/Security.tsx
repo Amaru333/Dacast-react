@@ -13,18 +13,26 @@ import { SecuritySettings} from '../../redux-flow/store/Settings/Security/types'
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
 import { getContentSecuritySettingsAction, saveContentSecuritySettingsAction, Action, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const PlaylistSecurity = (props: ContentSecurityProps) => {
 
     let { playlistId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (!props.globalSecuritySettings) {
-            props.getSettingsSecurityOptions();
+            props.getSettingsSecurityOptions()
+            .catch(() => setNodataFetched(true))
         }
-            props.getContentSecuritySettings(playlistId, 'playlist');
+            props.getContentSecuritySettings(playlistId, 'playlist')
+            .catch(() => setNodataFetched(true))
+
     }, [])
 
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

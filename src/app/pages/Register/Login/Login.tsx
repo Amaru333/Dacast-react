@@ -11,6 +11,7 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { isMobile } from 'react-device-detect';
 import { handleValidationForm } from '../../../utils/hooksFormSubmit';
 import { useForm } from 'react-hook-form';
+import { LoginInfos } from '../../../redux-flow/store/Register/Login';
 
 const logo = require('../../../../../public/assets/logo.png');
 
@@ -36,14 +37,18 @@ export const LoginPage = (props: LoginComponentProps) => {
         return true;
     }
 
-    const submitLogin = (data: any) => {
+    const submitLogin = (data: LoginInfos) => {
         setButtonLoading(true);
-        props.login(data.email, data.password, () => {
-            setButtonLoading(false);
-        });
+        props.login(data)
+        .then(() => setButtonLoading(false))
+        .catch(() => setButtonLoading(false))
     }
 
-    useKeyboardSubmit( ()=> handleSubmit(submitLogin) )
+    useKeyboardSubmit( ()=> {
+        if(!buttonLoading) {
+            handleSubmit(submitLogin)
+        }
+    })
 
     return (
         <LoginContainer>

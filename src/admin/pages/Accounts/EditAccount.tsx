@@ -10,6 +10,7 @@ import { PutAccountInfo, AccountInfo } from '../../redux-flow/store/Accounts/Edi
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
 import { AccountServices } from '../../redux-flow/store/Accounts/EditAccount/service'
+import { Toggle } from '../../../components/Toggle/toggle'
 
 const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
 
@@ -66,15 +67,14 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
             <Text size={20} weight='med'>Editing Account</Text>
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='companyNameInput' defaultValue={accountDetails.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
+                <Input className='col col-3 pr1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
                 <Input className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={accountDetails.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />
 
             </div>
 
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='websiteInput' defaultValue={accountDetails.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
+                <Input className='col col-3 pr1 py1' id='companyNameInput' defaultValue={accountDetails.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
+                <Input className='col col-3 pl1 py1' id='websiteInput' defaultValue={accountDetails.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
             </div>
             <div className='flex'>
                 <Input className='col col-3 pr1 py1' id='phoneInput' defaultValue={accountDetails.phone} placeholder='Phone' label='Phone' onChange={(event) => setAccountInfo({...accountInfo, phone: event.currentTarget.value})} />
@@ -82,15 +82,8 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
             </div>
 
             <div className='flex'>
-                <DropdownSingle 
-                    className='col col-3 pr1 my1' 
-                    id='playbackProtectionDropdown' 
-                    list={{'Off': false, '50 GB': false, '100 GB': false, '250 GB': false, '500 GB': false, '1 TB': false, '2 TB': false, '5 TB': false}} 
-                    dropdownTitle='Playback Protection' 
-                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'No'} 
-                    callback={(value: string) => setAccountInfo({...accountInfo, playbackProtection: value === 'No' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: parseInt(value)}})}
-                />
-                <DropdownSingle 
+             <Input className='col col-3 pr1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
+             <DropdownSingle 
                     className='col col-3 pl1 my1' 
                     id='emailVerifiedDropdown' 
                     list={{'Yes': false, 'No': false}} 
@@ -100,12 +93,31 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     callback={(value: string) => setAccountInfo({...accountInfo, forceVerifyEmail: value == 'Yes' ? true : false})}
                 />
 
+            </div>
+
+            <div className='flex items-center'>
+                <DropdownSingle 
+                    className='col col-3 pr1 my1' 
+                    id='playbackProtectionDropdown' 
+                    list={{'Off': false, '50 GB': false, '100 GB': false, '250 GB': false, '500 GB': false, '1 TB': false, '2 TB': false, '5 TB': false}} 
+                    dropdownTitle='Playback Protection' 
+                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'No'} 
+                    callback={(value: string) => setAccountInfo({...accountInfo, playbackProtection: value === 'No' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: parseInt(value)}})}
+                />
+                <Toggle
+                    id='isPayingToggle'
+                    className='col col-3 pl1 mt3'
+                    defaultChecked={accountDetails.isPaying}
+                    onChange={() => setAccountInfo({ ...accountInfo, isPaying: accountInfo.isPaying ? !accountInfo.isPaying : !accountDetails.isPaying})} 
+                    label='Is Paying'
+                /> 
+
 
             </div>
 
             <div className='flex items-end'>
             <DropdownSingle 
-                    className='col col-3 pl1 my1' 
+                    className='col col-3 pr1 my1' 
                     id='preferredDropdown' 
                     list={{'Unified App': false, 'Legacy': false}} 
                     dropdownTitle='Preferred platform' 
@@ -115,6 +127,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                 <div className='col col-3 pl1 mb2'>
                     <Button  isLoading={createPlatformLoading} onClick={() => handleCreateLegacy()} buttonColor='blue' typeButton='primary' sizeButton='small'>Create account on legacy</Button>
                 </div>
+
             </div>
 
             {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>

@@ -158,7 +158,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     { cell: <Text key='advertisingTableHeaderUrl' size={14} weight='med'>Ad URL</Text> },
                     {
                         cell: <div key='advertisingTableHeaderButtons' className='right mr2 flex'>
-                            <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => { setPreviewModalOpen(true) }}>Preview</Button>
+                            {/* <Button className='mr2 sm-show' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={() => { setPreviewModalOpen(true) }}>Preview</Button> */}
                             <Button className="sm-show" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
                         </div>
                     }
@@ -181,7 +181,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"].charAt(0).toUpperCase() + item["ad-type"].slice(1)}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
@@ -258,7 +258,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
                     <div className="clearfix mb2">
-                        <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPreviewModalOpen(true) }}>Preview</Button>
+                        {/* <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPreviewModalOpen(true) }}>Preview</Button> */}
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                     </div>
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
@@ -383,9 +383,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
                 }
             </Modal>
-            {
+            {/* {
                 previewModalOpen && <PreviewModal contentId='1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22' toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
-            }
+            } */}
             <Prompt when={settingsEdited} message='' />
         </div>
     )

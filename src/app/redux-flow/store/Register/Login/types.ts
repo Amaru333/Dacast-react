@@ -11,7 +11,7 @@ export interface LoginInfos {
 }
 
 export interface TokenInfos {
-    expires: string;
+    expires: number;
     token: string;
     refresh: string;
     userId?: string;
@@ -19,7 +19,7 @@ export interface TokenInfos {
 }
 
 export const defaultStateLogin: TokenInfos = {
-    expires: '',
+    expires: NaN,
     token: '',
     refresh: '',
     userId: '',

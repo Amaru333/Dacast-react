@@ -10,28 +10,23 @@ import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEm
 import { userToken } from '../../../utils/token';
 
 export interface LoginComponentProps {
-    login: Function;
+    login: (data: LoginInfos) => Promise<void>;
     loginInfos: TokenInfos;
-    confirmEmail: Function;
+    confirmEmail: (email: string) => Promise<void>;
 }
 const Login = (props: LoginComponentProps) => {
 
     let history = useHistory()
 
     React.useEffect(() => {
-        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
-            
+        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
             userToken.addTokenInfo(props.loginInfos);
             history.push('/dashboard');
         }
     }, [props.loginInfos])
 
-    const  loginUser = async (username: string, password: string, callback: Function) => {
-        await props.login({email: username, password: password}, callback)
-    }
-
     return (
-        <LoginPage {...props} login={loginUser} /> 
+        <LoginPage {...props}/> 
     )
 }
 
@@ -43,11 +38,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        login: (data: LoginInfos, callback: Function) => {
-            dispatch(loginAction(data)).then(callback) ;
+        login: async (data: LoginInfos) => {
+            await dispatch(loginAction(data));
         },
-        confirmEmail: (email: string) => {
-            dispatch(confirmEmailAction(email));
+        confirmEmail: async (email: string) => {
+            await dispatch(confirmEmailAction(email));
         },
 
     };

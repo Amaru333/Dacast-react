@@ -28,6 +28,7 @@ export const getContentRenditionsAction = (contentId: string, contentType: strin
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -53,6 +54,7 @@ export const addContentRenditionsAction = (data: string[], contentId: string, co
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -65,6 +67,7 @@ export const deleteContentRenditionsAction = (data: string[], contentId: string,
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

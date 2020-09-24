@@ -7,20 +7,26 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { EncodingRecipesData, EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { EncodingRecipesComponentProps, EncodingRecipesPage } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 
 const EncodingRecipes = (props: EncodingRecipesComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if( !props.encodingRecipeData.recipes) {
-            props.getEncodingRecipes();
-        }
-        if(!props.encodingRecipeData.defaultRecipePresets) {
-            props.getEncodingRecipesPresets()
-        }
+        props.getEncodingRecipes()
+        .catch(() => setNodataFetched(true))
+
+        props.getEncodingRecipesPresets()
+        .catch(() => setNodataFetched(true))
+
     }, [])
 
-
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+    
     return (
         !props.encodingRecipeData.defaultRecipePresets || !props.encodingRecipeData.recipes ?
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>

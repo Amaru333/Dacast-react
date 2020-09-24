@@ -61,6 +61,7 @@ export const getPricePresetsInfosAction = (qs: string): ThunkDispatch<Promise<vo
                 dispatch({type: ActionTypes.GET_PRICE_PRESETS_LIST, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -72,6 +73,7 @@ export const createPricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
                 dispatch({type: ActionTypes.CREATE_PRICE_PRESET, payload:{...data, id:response.data.data.id}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -84,6 +86,7 @@ export const savePricePresetAction = (data: Preset): ThunkDispatch<Promise<void>
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -96,6 +99,7 @@ export const deletePricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -107,6 +111,7 @@ export const getPromoPresetsInfosAction = (qs: string): ThunkDispatch<Promise<vo
                 dispatch({type: ActionTypes.GET_PROMO_PRESETS_LIST, payload: response.data});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
             })
     }
 }
@@ -118,6 +123,7 @@ export const createPromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
                 dispatch({type: ActionTypes.CREATE_PROMO_PRESET, payload: {...data, id: response.data.data.id}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -130,6 +136,7 @@ export const savePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void>,
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
@@ -142,6 +149,7 @@ export const deletePromoPresetAction = (data: Promo): ThunkDispatch<Promise<void
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
+                return Promise.reject()
             })
     }
 }
