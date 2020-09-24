@@ -2,7 +2,7 @@ import { ActionTypes, LoginInfos, TokenInfos } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { AdminState } from "../../index";
 import { loginService } from './services';
-import { adminToken } from '../../../../utils/token';
+import { adminToken } from '../../../../utils/services/token/tokenService';
 
 export interface Login {
     type: ActionTypes.LOGIN;

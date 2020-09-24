@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 // import * as Leaflet from 'leaflet';
-import JSInjector from '../../utils/JSInjector';
-import CSSInjector from '../../utils/CSSInjector';
+import JSInjector from '../../utils/services/injectors/JSInjector';
+import CSSInjector from '../../utils/services/injectors/CSSInjector';
 import { lerpColor, logScale } from '../../utils/utils';
 
 const LeafletMap = (props: any) => {

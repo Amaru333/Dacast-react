@@ -14,7 +14,7 @@ import { SettingsInteractionComponentProps } from '../../../containers/Settings/
 import { EngagementInfo, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
-import { usePlayer } from '../../../utils/player/player';
+import { usePlayer } from '../../../utils/services/player/player';
 import { Prompt } from 'react-router';
 import { dataToTimeVideo } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';

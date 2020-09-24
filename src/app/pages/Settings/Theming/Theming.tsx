@@ -6,7 +6,7 @@ import { Table } from '../../../../components/Table/Table';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions, defaultTheme } from '../../../redux-flow/store/Settings/Theming';
-import { usePlayer } from '../../../utils/player/player';
+import { usePlayer } from '../../../utils/services/player/player';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';

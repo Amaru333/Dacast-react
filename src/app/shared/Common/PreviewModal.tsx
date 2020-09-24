@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal } from '../../../components/Modal/Modal'
-import { usePlayer } from '../../utils/player/player';
+import { usePlayer } from '../../utils/services/player/player';
 import { PlayerContainer } from '../General/ImageModal';
 
 export const PreviewModal = (props:{toggle: (v: boolean) => void; contentId: string; isOpened: boolean}) => {

@@ -1,4 +1,4 @@
-import { loopUntilCompleted } from '../../../../utils/LoopHttpServices';
+import { loopUntilCompleted } from '../../../../utils/services/axios/LoopHttpServices';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 
 const getDashboardDetailsService = async () => {
