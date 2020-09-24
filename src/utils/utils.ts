@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
 import { useLocation } from "react-router-dom";
+import { Country } from 'countries-list';
 
 export default function ScrollToTop(): void {
     const { pathname } = useLocation();
@@ -332,4 +333,17 @@ export const handleDataPrice = (data: number, setDataAmount: Function, setDataPr
     } else {
         setDataPrice(null)
     }
+}
+
+export const compareCountries = (a: Country, b: Country) => {
+    const countryA = a.name.toUpperCase();
+    const countryB = b.name.toUpperCase();
+
+    let comparison = 0
+    if (countryA > countryB) {
+        comparison = 1;
+      } else if (countryA < countryB) {
+        comparison = -1;
+      }
+      return comparison;
 }

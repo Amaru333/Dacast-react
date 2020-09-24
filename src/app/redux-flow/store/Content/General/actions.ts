@@ -4,6 +4,7 @@ import { ApplicationState } from "../.."
 import { showToastNotification } from '../../Toasts'
 import { ContentGeneralServices } from './services'
 import { parseContentType } from '../../../../utils/utils'
+import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 export interface GetContentDetails {
     type: ActionTypes.GET_CONTENT_DETAILS;
@@ -96,7 +97,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, contentId: strin
         await ContentGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {contentId: contentId, contentType: contentType} })
-                dispatch(showToastNotification(`${uploadType.charAt(0).toUpperCase() + uploadType.slice(1)} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${capitalizeFirstLetter(uploadType)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -110,7 +111,7 @@ export const uploadImageFromVideoAction = (contentId: string, time: number, imag
         await ContentGeneralServices.uploadImageFromVideo(contentId, time, imageType)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE_FROM_VIDEO, payload: response.data })
-                dispatch(showToastNotification(`${imageType.charAt(0).toUpperCase() + imageType.slice(1)} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${capitalizeFirstLetter(imageType)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

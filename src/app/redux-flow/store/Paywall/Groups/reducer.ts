@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, GroupsPageInfos, groupsInitialState  } from "./types";
+import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: Action) => {
     let prices = null;
@@ -23,7 +24,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                         ...price.settings,
                                         duration: price.settings.duration ? {
                                             value: price.settings.duration.value,
-                                            unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                            unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
                                         } 
                                         : null,
                                         type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
@@ -42,7 +43,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                                 ...item.prices[0].settings,
                                 duration: item.prices[0].settings.duration ? {
                                     value: item.prices[0].settings.duration.value,
-                                    unit: item.prices[0].settings.duration.unit.charAt(0).toUpperCase() + item.prices[0].settings.duration.unit.slice(1) + 's'
+                                    unit: capitalizeFirstLetter(item.prices[0].settings.duration.unit) + 's'
                                 } 
                                 : null,
                                 type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',

@@ -17,6 +17,7 @@ import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { handleValidationForm } from '../../utils/hooksFormSubmit';
 import { useForm } from 'react-hook-form';
+import { compareCountries } from '../../../utils/utils';
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
 
@@ -28,6 +29,8 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     const [recurlyError, setRecurlyError] = React.useState<string>(null)
     const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
     const [formState, setFormState] = React.useState<string>(null)
+
+    const countriesArray = Object.keys(countries).map(country => countries[country])
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
@@ -204,9 +207,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                         />
                         <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country" setValue={setBillingCountry}>
                             <option value="">Select</option>
-                           {Object.keys(countries).map(country => {
+                           {countriesArray.sort(compareCountries).map(country => {
                                return (
-                                <option>{countries[country].name}</option>
+                                <option>{country.name}</option>
                                )
                            })}
                         </DropdownSelect>

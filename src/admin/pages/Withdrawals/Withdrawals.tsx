@@ -7,7 +7,7 @@ import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
 import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon'
-import { tsToLocaleDate, useQuery } from '../../../utils/utils'
+import { tsToLocaleDate, useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
@@ -18,7 +18,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     let qs = useQuery()
     let query = useHistory()
 
-    const [status, setStatus] = React.useState<string>(qs.get('status') ? qs.get('status').charAt(0).toUpperCase() + qs.get('status').slice(1) : 'All')
+    const [status, setStatus] = React.useState<string>(qs.get('status') ? capitalizeFirstLetter(qs.get('status')) : 'All')
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
 
@@ -61,9 +61,9 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                     <Text key={'withdrawalsTableBodyTotalBalanceCell' + key } size={14}>${withdrawal.totalBalance.toLocaleString()}</Text>,
                     <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
-                    <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{withdrawal.method.charAt(0).toUpperCase() + withdrawal.method.slice(1)}</Text>,
+                    <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{capitalizeFirstLetter(withdrawal.method)}</Text>,
                     <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://vzaar.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
-                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{withdrawal.status.charAt(0).toUpperCase() + withdrawal.status.slice(1)}</Link>,
+                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{capitalizeFirstLetter(withdrawal.status)}</Link>,
                 ]}
             })
         }

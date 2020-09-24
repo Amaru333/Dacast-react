@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://singularity-api-app.dacast.com --env.RECURLY_TOKEN=ewr1-Q41rGVpgRgI2uLRM9kgivS --env.AMPLITUDE_API_KEY=64efab409adefee52210ae5f7b439186  webpack-dev-server -d --config webpack.dev.config.js",
+    "start": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://universe-api-app.dacast.com --env.RECURLY_TOKEN=ewr1-Q41rGVpgRgI2uLRM9kgivS --env.AMPLITUDE_API_KEY=64efab409adefee52210ae5f7b439186  webpack-dev-server -d --config webpack.dev.config.js",
     "start-staging": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://singularity-api-app.dacast.com --env.RECURLY_TOKEN=ewr1-hgy8aq1eSuf8LEKIOzQk6T --env.AMPLITUDE_API_KEY=91c66b0e632ea39b21b7ed408b571b26  webpack-dev-server -d --config webpack.dev.config.js",
     "start-admin": "cross-env NODE_ENV=development APP_ENV=admin --env.API_BASE_URL=https://singularity-api-app.dacast.com --env.ADMIN_API_BASE_URL=https://singularity-api-admin.dacast.com --env.APP_DOMAIN=https://staging-app.dacast.com webpack-dev-server -d --config webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --env.API_BASE_URL=$API_BASE_URL -p --config webpack.prod.config.js",

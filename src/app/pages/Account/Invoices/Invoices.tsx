@@ -8,7 +8,7 @@ import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { InvoicesFiltering } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate, capitalizeFirstLetter } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 import { axiosClient } from '../../../utils/axiosClient';
 import { Link } from 'react-router-dom';
@@ -56,7 +56,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
                 <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
                 <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
-                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)}  />,
+                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)}  />,
                 <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><a className="noTransition" href={item.downloadLink} target='_blank'><IconStyle>print</IconStyle></a><IconStyle onClick={() => saveFile(item.downloadLink, item.id + '.pdf')}>get_app</IconStyle></IconContainer>
 
             ]}
