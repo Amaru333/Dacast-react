@@ -9,7 +9,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { LoginComponentProps } from '../../../containers/Register/Login/Login';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { isMobile } from 'react-device-detect';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
 import { LoginInfos } from '../../../redux-flow/store/Register/Login';
 

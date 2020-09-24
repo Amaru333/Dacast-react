@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Text } from "../../components/Typography/Text"
 import { Button } from '../../components/FormsComponents/Button/Button';
 import { useHistory } from 'react-router-dom'
-import { userToken } from '../utils/token';
+import { userToken } from '../utils/services/token/tokenService';
 
 export const NotFound = () => {
     let history = useHistory()

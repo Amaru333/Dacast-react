@@ -1,5 +1,5 @@
 
-import { axiosClient } from '../app/utils/axiosClient';
+import { axiosClient } from '../app/utils/services/axios/axiosClient';
 
 const resolveAfter2Seconds = () => {
     return new Promise(resolve => {

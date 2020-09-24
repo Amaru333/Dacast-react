@@ -3,7 +3,7 @@ import { showToastNotification } from '../../Toasts/actions';
 import { UserInfo, ActionTypes } from './types';
 import {signupService} from './services'
 import { ApplicationState } from '../..';
-import { logAmplitudeEvent } from '../../../../utils/amplitudeService';
+import { logAmplitudeEvent } from '../../../../utils/services/amplitude/amplitudeService';
 import { AxiosError } from 'axios';
 
 

@@ -9,10 +9,10 @@ import { useMedia, dataToTimeVideo } from '../../../../utils/utils';
 import { ChapterMarkerInfos } from '../../../redux-flow/store/Content/Chapters/types';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { usePlayer } from '../../../utils/player';
+import { usePlayer } from '../../../utils/player/player';
 import { ChapterComponentProps } from '../../../containers/Videos/Chapters';
 import { emptyContentListBody, emptyContentListHeader } from '../../../shared/List/emptyContentListState';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 
 export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; contentType: string}) => {

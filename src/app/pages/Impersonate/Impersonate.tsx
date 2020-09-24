@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router'
-import { userToken } from '../../utils/token'
+import { userToken } from '../../utils/services/token/tokenService'
 
 export const Impersonate = () => {
     let history = useHistory()

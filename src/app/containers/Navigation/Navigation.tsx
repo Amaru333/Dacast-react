@@ -9,7 +9,7 @@ const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 

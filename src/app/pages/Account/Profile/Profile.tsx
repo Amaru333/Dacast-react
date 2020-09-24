@@ -5,7 +5,7 @@ import { Toggle } from '../../../../components/Toggle/toggle';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
@@ -18,8 +18,8 @@ import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
-import { axiosClient } from '../../../utils/axiosClient';
-import EventHooker from '../../../utils/EventHooker';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
+import EventHooker from '../../../utils/services/event/eventHooker';
 
 var moment = require('moment-timezone');
 

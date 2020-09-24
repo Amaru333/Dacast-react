@@ -18,7 +18,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;

@@ -1,6 +1,6 @@
 import { ContentPaywallPageInfos, Preset, Promo } from '../../Paywall/Presets';
-import { axiosClient } from '../../../../utils/axiosClient';
-import { userToken } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
+import { userToken } from '../../../../utils/services/token/tokenService';
 
 const getContentPaywallInfos = async (contentId: string, contentType: string) => {
     return await axiosClient.get(`/${contentType}/${contentId}/paywall`)

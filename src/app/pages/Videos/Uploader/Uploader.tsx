@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
-import { UploadObject } from '../../../utils/uploaderService';
+import { UploadObject } from '../../../utils/services/uploader/uploaderService';
 import { Prompt, useHistory } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../../shared/Common/Icon';
-import { useNetwork } from '../../../utils/customHooks';
+import { useNetwork } from '../../../utils/custom-hooks/networkNavigatorHook';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
-import { logAmplitudeEvent } from '../../../utils/amplitudeService';
-import EventHooker from '../../../utils/EventHooker';
+import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
+import EventHooker from '../../../utils/services/event/eventHooker';
 
 
 export const UploaderPage = (props: UploaderProps) => {

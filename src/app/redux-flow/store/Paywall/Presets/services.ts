@@ -1,5 +1,5 @@
 import { Preset, Promo } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getPricePresetsList = async (qs: string) => {
     return await axiosClient.get('/paywall/prices/presets?' + qs)

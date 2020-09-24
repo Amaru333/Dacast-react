@@ -1,5 +1,5 @@
 import { PaymentMethod, WithdrawalRequest } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getPaymentMethods = async () => {
     return await axiosClient.get('/paywall/payment-methods')

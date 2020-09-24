@@ -13,9 +13,9 @@ import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { usePlayer } from '../../utils/player';
+import { usePlayer } from '../../utils/player/player';
 import { Prompt, useHistory } from 'react-router';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 import { Divider } from '../Common/MiscStyle';
 
 export interface ControlCardThemingComponentProps {

@@ -10,7 +10,7 @@ import { InvoicesFiltering } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { tsToLocaleDate } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
-import { axiosClient } from '../../../utils/axiosClient';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { Link } from 'react-router-dom';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {

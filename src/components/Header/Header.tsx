@@ -14,7 +14,7 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
-import { userToken } from '../../app/utils/token';
+import { userToken } from '../../app/utils/services/token/tokenService';
 import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
 

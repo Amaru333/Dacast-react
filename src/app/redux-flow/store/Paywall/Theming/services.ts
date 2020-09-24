@@ -1,5 +1,5 @@
 import { PaywallTheme } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 
 const getPaywallThemes = async () => {

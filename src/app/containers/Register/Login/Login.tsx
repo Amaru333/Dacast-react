@@ -7,7 +7,7 @@ import { loginAction, Action } from '../../../redux-flow/store/Register/Login/ac
 import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;

@@ -15,7 +15,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 var moment = require('moment-timezone');
 

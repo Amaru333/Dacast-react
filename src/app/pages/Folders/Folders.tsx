@@ -22,7 +22,7 @@ import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
 import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
-import { FolderTree, rootNode } from '../../utils/folderService'
+import { FolderTree, rootNode } from '../../utils/services/folder/folderService'
 import { useHistory } from 'react-router'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { DeleteFolderModal } from './DeleteFolderModal'
