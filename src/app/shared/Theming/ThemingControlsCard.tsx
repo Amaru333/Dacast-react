@@ -251,12 +251,15 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 <div className="py2" ><Text size={20} weight='med'>Actions</Text></div>
 
-                                <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
-                                    <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                    {userToken.getPrivilege('privilege-player-download') && <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>}
-                                </ControlToggleContainer>
-
+                                {
+                                    userToken.getPrivilege('privilege-player-download') &&
+                                        <ControlToggleContainer>
+                                            <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
+                                            <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
+                                            <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
+                                        </ControlToggleContainer>
+                                }
+                                
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Social Sharing' checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
                                     <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
