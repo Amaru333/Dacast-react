@@ -1,6 +1,6 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory, Link } from 'react-router-dom';
@@ -152,9 +152,9 @@ const Header = (props: HeaderProps) => {
         <HeaderStyle>
             {props.isMobile ? <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} /> : null}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
-            <div className="mr-auto flex ml2 sm-show" >
+            <BreadcrumbContainer className="mr-auto flex ml2 sm-show" >
                 {renderHeaderBreadcrumb()}
-            </div>
+            </BreadcrumbContainer>
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
