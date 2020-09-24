@@ -347,7 +347,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <div className="py2" ><Text size={20} weight='med'>Playlists</Text></div>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{ 'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false }} dropdownDefaultSelect={selectedTheme.thumbnailPosition} callback={(value: string) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: value }); } }} tooltip="The position of the links to other content in the Playlist" />
+                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{ 'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false }} dropdownDefaultSelect={selectedTheme.thumbnailPosition.charAt(0).toUpperCase() + selectedTheme.thumbnailPosition.slice(1)} callback={(value: string) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: value }); } }} tooltip="The position of the links to other content in the Playlist" />
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
