@@ -10,6 +10,7 @@ import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodFo
 import { calculateDiscount } from '../../../../utils/utils';
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { PlansName } from './FeaturesConst';
+import { capitalizeFirstLetter } from '../../../../utils/utils'
 
 
 //PLAN
@@ -146,7 +147,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
                                 })
                             }}
                         />
-                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{item.code.charAt(0).toUpperCase() + item.code.slice(1)}</Text>
+                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{capitalizeFirstLetter(item.code)}</Text>
                     </div>,
                     <div className="right mr2">
                         <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" :  '$' + (item.price.usd / 100).toLocaleString() + "/yr"}</Text>

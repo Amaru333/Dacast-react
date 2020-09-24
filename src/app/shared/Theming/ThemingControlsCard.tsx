@@ -17,6 +17,7 @@ import { usePlayer } from '../../utils/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/token';
 import { Divider } from '../Common/MiscStyle';
+import { capitalizeFirstLetter } from '../../../utils/utils';
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
@@ -347,7 +348,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <div className="py2" ><Text size={20} weight='med'>Playlists</Text></div>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{ 'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false }} dropdownDefaultSelect={selectedTheme.thumbnailPosition.charAt(0).toUpperCase() + selectedTheme.thumbnailPosition.slice(1)} callback={(value: string) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: value }); } }} tooltip="The position of the links to other content in the Playlist" />
+                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{ 'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.thumbnailPosition)} callback={(value: string) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: value }); } }} tooltip="The position of the links to other content in the Playlist" />
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
@@ -373,7 +374,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
-                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={selectedTheme.offlineMessagePosition.charAt(0).toUpperCase() + selectedTheme.offlineMessagePosition.slice(1)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
+                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
                                     </DisabledSection>
                                 </>
                             }

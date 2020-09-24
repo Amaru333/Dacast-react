@@ -16,7 +16,7 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
-import { dataToTimeVideo } from '../../../../utils/utils';
+import { dataToTimeVideo, capitalizeFirstLetter } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
@@ -181,7 +181,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"].charAt(0).toUpperCase() + item["ad-type"].slice(1)}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item["ad-type"])}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
