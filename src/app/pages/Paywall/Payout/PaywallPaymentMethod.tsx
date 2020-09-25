@@ -464,9 +464,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 label='State/Province' 
                                 defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
                                 placeholder='State/Province' 
-                                {...handleValidationForm('town', errors)}
+                                {...handleValidationForm('state', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('town', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('state', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1 xs-mb2' 
