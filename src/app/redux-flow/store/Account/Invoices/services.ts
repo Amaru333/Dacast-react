@@ -3,7 +3,7 @@ import { axiosClient } from '../../../../utils/axiosClient'
 
 const formatQsToEndpoint = (qs: string) => {
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))
-    let endpointsQs = `page=${objectFromQs.page ? (objectFromQs.page): 1}&per-page=${objectFromQs.perPage || 20}&sort-by=${objectFromQs.sortBy || 'created-date' }`+ (objectFromQs.status ? `&status=${objectFromQs.status}` : '')
+    let endpointsQs = `page=${objectFromQs.page ? (objectFromQs.page): 1}&per-page=${objectFromQs.perPage || 20}&sort-by=created-date` + (objectFromQs.sortBy && objectFromQs.sortBy.indexOf('desc') > -1 ? '&sort-order=desc' : '&sort-order=asc') + (objectFromQs.status ? `&status=${objectFromQs.status}` : '')
     if(objectFromQs.afterDate) {
         endpointsQs+= `&created-after=${objectFromQs.afterDate}`
     }

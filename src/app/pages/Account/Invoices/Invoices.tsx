@@ -154,18 +154,19 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
         }]
     }
 
-    return (
-        <div>
-            <div className='flex'>
+    return props.invoicesInfo ?
+        <div className='flex flex-column'>
+            <div className=' col col-12 flex justify-end mb2'>
                 <InvoicesFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort)}} />
             </div>
             {
-                props.invoicesInfo && props.invoicesInfo.invoices && props.invoicesInfo.invoices.length > 0 ?
+                props.invoicesInfo.invoices && props.invoicesInfo.invoices.length > 0 ?
                 <Table contentLoading={contentLoading} hasContainer id='invoicesTable' headerBackgroundColor="white" header={invoicesTableHeader()} body={invoicesTableBody()} />
                 : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
 
             }
             <Pagination totalResults={props.invoicesInfo.total} defaultPage={props.invoicesInfo.page} defaultDisplayedOption={props.invoicesInfo.perPage} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort)}} />
         </div>
-    )
+        : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
+
 }

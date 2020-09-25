@@ -37,7 +37,7 @@ const Invoices = (props: InvoicesComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        invoices: state.account.invoices
+        invoicesInfo: state.account.invoices
     };
 }
 
