@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { ThunkDispatch } from 'redux-thunk';
-import { Invoice, getInvoicesAction, Action } from '../../redux-flow/store/Account/Invoices';
+import { Invoice, getInvoicesAction, Action, SearchInvoicesResult } from '../../redux-flow/store/Account/Invoices';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { InvoicesPage } from '../../pages/Account/Invoices/Invoices';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface InvoicesComponentProps {
-    invoices: Invoice[];
-    getInvoices: () => Promise<void>;
+    invoicesInfo: SearchInvoicesResult;
+    getInvoices: (qs: string) => Promise<void>;
 }
 
 const Invoices = (props: InvoicesComponentProps) => {
@@ -19,7 +19,7 @@ const Invoices = (props: InvoicesComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getInvoices()
+        props.getInvoices(null)
         .then(() => setIsFetching(false))
         .catch(() => setNodataFetched(true))
     }, [])
@@ -37,15 +37,15 @@ const Invoices = (props: InvoicesComponentProps) => {
 
 export function mapStateToProps( state: ApplicationState) {
     return {
-        invoices: state.account.invoices
+        invoicesInfo: state.account.invoices
     };
 }
 
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getInvoices: async () => {
-            await dispatch(getInvoicesAction());
+        getInvoices: async (qs: string) => {
+            await dispatch(getInvoicesAction(qs));
         },
     };
 }
