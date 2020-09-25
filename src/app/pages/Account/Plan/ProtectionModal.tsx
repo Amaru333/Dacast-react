@@ -3,12 +3,10 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { PlaybackProtection, BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
+import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 
-export const ProtectionModal = (props: {toggle: Function; actionButton: Function; setPlaybackProtectionEnabled: Function; playbackProtection: PlaybackProtection; billingInfos: BillingPageInfos}) => {
+export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (data: PlaybackProtection) => Promise<void>; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<number>(50);
-    // const [dataPrice, setDataPrice] = React.useState<number>(props.playbackProtection.price)
-    const dataPrice = parseFloat(props.billingInfos.currentPlan.playbackProtectionUnitPrice).toFixed(2)
 
     const ProtectionModalTableData = [
         {
@@ -17,7 +15,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
         },
         {
             label: 'Price per GB',
-            value: "$" + dataPrice
+            value: "$" + props.playbackProtection.price
         },
         {
             label: 'Billed',
@@ -37,7 +35,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
     const protectionModalTableFooterElement = () => {
         return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
-            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${(playbackProtectionAmount * dataPrice).toFixed(2)}</Text>,
+            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${(playbackProtectionAmount * props.playbackProtection.price).toFixed(2)}</Text>,
         ]
     }
 
@@ -59,7 +57,7 @@ export const ProtectionModal = (props: {toggle: Function; actionButton: Function
                 <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of Data.</Text>
             <div className='col col-12 py1'>
-                <Button sizeButton="large" onClick={() => {props.actionButton({enabled: true, amount: playbackProtectionAmount, price: (dataPrice * playbackProtectionAmount).toFixed(2) }); props.toggle(false); props.setPlaybackProtectionEnabled(true)}} typeButton="primary" buttonColor="blue" >Enable</Button>
+                <Button sizeButton="large" onClick={() => {props.actionButton({enabled: true, amount: playbackProtectionAmount, price: (props.playbackProtection.price * playbackProtectionAmount) }); props.toggle(false); props.setPlaybackProtectionEnabled(true)}} typeButton="primary" buttonColor="blue" >Enable</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             
