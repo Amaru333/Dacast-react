@@ -7,38 +7,37 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 
-export const InvoicesFiltering = (props: {}) => {
+export interface FilteringInvoicesState {
+    status: {
+        paid: boolean;
+        pending: boolean;
+        failed: boolean;
+    };
+    startDate: number | boolean;
+    endDate: number | boolean;
+}
 
+export const InvoicesFiltering = (props: {defaultFilters: FilteringInvoicesState; setSelectedFilter: (filters: FilteringInvoicesState) => void}) => {
 
-    interface FilteringState {
-        status: {
-            paid: boolean;
-            pending: boolean;
-            failed: boolean;
-        };
-        afterDate: number | boolean;
-        beforedate: number | boolean;
-    }
-
-    var filteringDefault = {
+    var filteringDefault: FilteringInvoicesState = {
         status: {
             paid: false,
             pending: false,
             failed: false,
         },
-        afterDate: false,
-        beforedate: false
+        startDate: false,
+        endDate: false
     }
 
-    const [filteringState, setFilteringState] = React.useState<FilteringState>(filteringDefault);
+    const [filteringState, setFilteringState] = React.useState<FilteringInvoicesState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
     const checkActiveFilter = () => {
         var counter = 0;
         Object.entries(filteringState.status).map(item => item[1] !== false ? counter++ : null)
-        filteringState.afterDate ? counter++ : null;
-        filteringState.beforedate ? counter++ : null;
+        filteringState.startDate ? counter++ : null;
+        filteringState.endDate ? counter++ : null;
         setActiveFilter(counter);
     }
 
@@ -53,9 +52,8 @@ export const InvoicesFiltering = (props: {}) => {
                 <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                     Filter
                     {
-                        activeFilter > 0 ?
+                        activeFilter > 0 &&
                             <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                            : null
                     }
                 </Button>
             </div>
@@ -76,19 +74,19 @@ export const InvoicesFiltering = (props: {}) => {
                     </div>
                     <div className="mb3" id="folderFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdAfter: ms } }) }} />
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, createdBefore: ms } }) }} />
+                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
                     </div>
                 </div>
                 
                 <div className="flex" id="folderFilterbuttons">
-                    <Button onClick={() => { setOpenFilters(false) }} className="mr1" typeButton="primary">
+                    <Button onClick={() => { setOpenFilters(false);props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
                         Apply
                     </Button>
-                    <Button onClick={() => { setFilteringState(filteringDefault) }} typeButton="tertiary">
+                    <Button onClick={() => { setFilteringState(filteringDefault);props.setSelectedFilter(null) }} typeButton="tertiary">
                         Reset
                     </Button>
                 </div>

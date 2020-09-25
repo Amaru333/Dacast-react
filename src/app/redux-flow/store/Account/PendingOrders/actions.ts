@@ -22,6 +22,7 @@ export const getPendingOrdersAction = (): ThunkDispatch<Promise<void>, {}, GetPe
                 dispatch( {type: ActionTypes.GET_PENDING_ORDERS, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }
@@ -33,6 +34,7 @@ export const updatePendingOrdersAction = (data: PendingOrder): ThunkDispatch<Pro
                 dispatch( {type: ActionTypes.UPDATE_PENDING_ORDER, payload: response.data} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

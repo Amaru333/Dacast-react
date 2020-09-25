@@ -8,14 +8,22 @@ import React from 'react';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApiIntegrationPage, ApiIntegrationProps } from '../../pages/Settings/ApiIntegration/ApiIntegration';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const ApiIntegration = (props: ApiIntegrationProps) => {
-    
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if(!props.infos) {
-            props.getSettingsIntegrationAction();
+            props.getSettingsIntegrationAction()
+            .catch(() => setNodataFetched(true))
+
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     if(props.infos) {
         return (

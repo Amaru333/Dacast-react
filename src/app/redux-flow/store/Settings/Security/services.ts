@@ -9,9 +9,12 @@ const getSettingsSecurityOptionsService = async () => {
 
 const saveSettingsSecurityOptionsService = async (data: SecuritySettings) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let parsedData = data
+    delete parsedData.selectedGeoRestriction
+    delete parsedData.selectedDomainControl
     return await axiosClient.put('/accounts/' + userId + '/settings/security',
         {
-            ...data
+            ...parsedData
         }
     )
 }

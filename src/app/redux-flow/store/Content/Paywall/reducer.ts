@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, ContentPaywallState  } from "./types";
 import { userToken } from '../../../../utils/token';
+import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
@@ -48,7 +49,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 ...price.settings,
                                 duration: price.settings.duration ? {
                                     value: price.settings.duration.value,
-                                    unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                    unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
                                 } 
                                 : null,
                                 startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
@@ -78,7 +79,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                                 ...price.settings,
                                 duration: price.settings.duration ? {
                                     value: price.settings.duration.value,
-                                    unit: price.settings.duration.unit.charAt(0).toUpperCase() + price.settings.duration.unit.slice(1) + 's'
+                                    unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
                                 } 
                                 : null,
                                 startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',

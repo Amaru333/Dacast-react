@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
-import { tsToLocaleDate, readableBytes, useOutsideAlerter, useQuery } from '../../../utils/utils';
+import { tsToLocaleDate, readableBytes, useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { Label } from '../../../components/FormsComponents/Label/Label';
@@ -28,6 +28,10 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
+import EventHooker from '../../utils/EventHooker';
+import { store } from '../..';
+import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
+import { AnyAction } from 'redux';
 
 interface ContentListProps {
     contentType: string
@@ -93,12 +97,19 @@ export const ContentListPage = (props: ContentListProps) => {
     let foldersTree = new FolderTree(() => {}, setCurrentFolder)
 
     React.useEffect(() => {
+        let vodUploadedHandler = () => {
+            //set timer
+            console.log('vod was uploaded!')
+        }
+        EventHooker.subscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
         foldersTree.initTree()
         // const interval = setInterval(() => {
         //     setFetchContent(true)
         //   }, 60000)
 
-        //   return () => clearInterval(interval)
+        return () => {
+            EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
+        }
     }, [])
 
     React.useEffect(() => {
@@ -186,7 +197,6 @@ export const ContentListPage = (props: ContentListProps) => {
     React.useEffect(() => {
         if(fetchContent) {
             setContentLoading(true)
-            console.log(qsParams)
             props.getContentList(qsParams, props.contentType).then(() => {
                 setContentLoading(false)
                 setFetchContent(false)
@@ -253,7 +263,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 return type === 'vod' && !size ? <Label backgroundColor="gray-5" color="gray-1" label="Processing" /> : <Label backgroundColor="green20" color="green" label="Online" />
             case 'offline':
             case 'deleted':
-                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />  
+                return <Label backgroundColor="red20" color="red" label={capitalizeFirstLetter(status)} />  
             default:
             return null
         }
@@ -337,7 +347,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 </div>
                 <div className="flex items-center" >
                     {selectedContent.length > 0 &&
-                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
+                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} {selectedContent.length === 1 ? "Item" : "Items"}</Text>
                     }
                     <div className="relative">
                         <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>

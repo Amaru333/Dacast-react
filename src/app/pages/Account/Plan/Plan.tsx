@@ -17,7 +17,6 @@ import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
 import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
-import { useHistory } from 'react-router-dom'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import { Divider } from '../../../shared/Common/MiscStyle';
@@ -30,7 +29,7 @@ interface PlanComponentProps {
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     addBillingPageExtras: (data: Extras) => Promise<void>
-    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
+    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<any>
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
@@ -45,8 +44,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-
-    let history = useHistory()
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
@@ -64,7 +61,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
-            console.log(error)
         })
     }
 
@@ -116,7 +112,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount} GB</Text>,
-                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">${props.billingInfos.playbackProtection.price}</Text>,
+                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">${props.billingInfos.playbackProtection.price} per GB</Text>,
                 <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
@@ -188,7 +184,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                             return (
                                                 <DataPricingTableRow key={item.code}>
                                                     <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
-                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{'$' + item.unitPrice + '/GB'}</Text></PriceCell>
+                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{`$${item.unitPrice}/GB`}</Text></PriceCell>
                                                 </DataPricingTableRow>
                                             )
                                         })
@@ -204,7 +200,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} billingInfos={props.billingInfos}/>
+                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} />
                         </Modal>
                     }            
 

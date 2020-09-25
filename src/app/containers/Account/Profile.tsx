@@ -8,6 +8,7 @@ import { ProfilePage } from '../../pages/Account/Profile/Profile';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface ProfileComponentProps {
     ProfilePageDetails: ProfilePageInfos;
@@ -19,18 +20,23 @@ export interface ProfileComponentProps {
 
 const Profile = (props: ProfileComponentProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
-        if(!props.ProfilePageDetails) {
-            props.getProfilePageDetails()
-        }
+        props.getProfilePageDetails()
+        .then(() => setIsFetching(false))
+        .catch(() => setNodataFetched(true))
     }, [])
 
-    return (
-        props.ProfilePageDetails ? 
-            <ProfilePage {...props} />
-            : 
-            <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
-    )
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
+    if(isFetching) {
+        return <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+    }
+    return <ProfilePage {...props} />
 }
 
 

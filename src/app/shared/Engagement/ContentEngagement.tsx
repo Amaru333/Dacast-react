@@ -15,7 +15,7 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { dataToTimeVideo } from '../../../utils/utils';
+import { dataToTimeVideo, capitalizeFirstLetter } from '../../../utils/utils';
 import { userToken } from '../../utils/token';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
@@ -189,7 +189,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
         return ads && ads.length > 0 ? ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{item["ad-type"]}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item["ad-type"])}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>

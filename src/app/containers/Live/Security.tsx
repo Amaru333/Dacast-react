@@ -12,22 +12,32 @@ import { LiveTabs } from './LiveTabs';
 import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
 import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 
 
 const LiveSecurity = (props: ContentSecurityProps) => {
 
     let { liveId } = useParams()
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
 
     React.useEffect(() => {
         if (!props.globalSecuritySettings) {
-            props.getSettingsSecurityOptions();
+            props.getSettingsSecurityOptions()
+            .catch(() => setNodataFetched(true))
+
         }
        
-            props.getContentSecuritySettings(liveId, 'live');
-        
+            props.getContentSecuritySettings(liveId, 'live')
+            .catch(() => setNodataFetched(true))
+
 
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
 
     return (
         <>

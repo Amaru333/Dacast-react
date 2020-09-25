@@ -17,6 +17,7 @@ import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { handleValidationForm } from '../../utils/hooksFormSubmit';
 import { useForm } from 'react-hook-form';
+import { compareCountries } from '../../../utils/utils';
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
 
@@ -27,6 +28,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     const [billingCountry, setBillingCountry] = React.useState<string>(null)
     const [recurlyError, setRecurlyError] = React.useState<string>(null)
     const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
+    const [formState, setFormState] = React.useState<string>(null)
+
+    const countriesArray = Object.keys(countries).map(country => countries[country])
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
@@ -35,9 +39,15 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     }, [billingCountry])
 
     React.useEffect(() => {
+        setFormData({...formData, state: formState})
+    }, [formState])
+
+    React.useEffect(() => {
         if(props.setFormValid){
             if((formData.firstName && formData.lastName && formData.address && formData.country && formData.city && formData.postCode) || selectedOption === "paypal"){
-                props.setFormValid(true)
+                if(((formData.country === "United States" || formData.country === "Canada") && formData.state) || (formData.country !== "United States" && formData.country !== "Canada")) {
+                    props.setFormValid(true)
+                }
             } else {
                 props.setFormValid(false)
             }
@@ -197,9 +207,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                         />
                         <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country" setValue={setBillingCountry}>
                             <option value="">Select</option>
-                           {Object.keys(countries).map(country => {
+                           {countriesArray.sort(compareCountries).map(country => {
                                return (
-                                <option>{countries[country].name}</option>
+                                <option>{country.name}</option>
                                )
                            })}
                         </DropdownSelect>
@@ -237,7 +247,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                         />
                         {
                             (billingCountry === "United States" || billingCountry === "Canada") ?
-                                <DropdownSelect dataRecurly="state" className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2" dropdownTitle="State/Province">
+                                <DropdownSelect dataRecurly="state" className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2" dropdownTitle="State/Province" setValue={setFormState}>
                                     <option value="">Select</option>
                                     {(billingCountry === "United States" ? StateList : ProvinceList).map(state => {
                                         return (
@@ -277,7 +287,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                 <RadioButtonOption isOpen={selectedOption === 'paypal'} className='mb2'>
                     <div className='m2'>
                         <Text size={14} weight='reg' color='gray-1'>
-                            When you click add, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
+                            When you click Add, you will be redirected to another website where you may securely enter your banking details. After completing the requested information you will be redirected back to Dacast.
                         </Text>
                     </div>
 

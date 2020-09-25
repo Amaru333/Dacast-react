@@ -17,6 +17,7 @@ export const getAnalyticsRevenueAction = (options?:  GetAnalyticsRevenueOptions)
                 dispatch( {type: ActionTypes.GET_ANALYTICS_REVENUE, payload: response.data.data} );
             }).catch((e) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
             })
     };
 }

@@ -10,7 +10,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DateTime } from 'luxon'
-import { tsToLocaleDate, useQuery } from '../../../utils/utils'
+import { tsToLocaleDate, useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
@@ -31,13 +31,15 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
 
     React.useEffect(() => {
-        setContentLoading(true)
-        props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-        .then(() => {
-            setContentLoading(false)
-            query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
-        })
-        .catch(() => setContentLoading(false))
+        if(!contentLoading) {
+            setContentLoading(true)
+            props.getAccounts(accountId, `page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            .then(() => {
+                setContentLoading(false)
+                query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            })
+            .catch(() => setContentLoading(false))
+        }
     }, [])
 
     const accountsTableHeader = () => {
@@ -81,12 +83,12 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
                     <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{account.plan.charAt(0).toUpperCase() + account.plan.slice(1)}</Link>
+                    account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
                     <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 10000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
-                    <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 10000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
+                    <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
+                    <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyLogCell' + key }to={`/accounts/${account.userId}/logs`}>Logs</Link>,
@@ -97,18 +99,20 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handleSubmit = (salesforceId: string, search: string) => {
-        setContentLoading(true)
-        const previousPagination = pagination
-        setPagination({page: 1, nbResults: pagination.nbResults})
-        props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
-        .then(() => {
-            query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
-            setContentLoading(false)
-        })
-        .catch(() => {
-            setPagination(previousPagination)
-            setContentLoading(false)
-        })
+        if(!contentLoading) {
+            setContentLoading(true)
+            const previousPagination = pagination
+            setPagination({page: 1, nbResults: pagination.nbResults})
+            props.getAccounts(accountId, (`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
+            .then(() => {
+                query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
+                setContentLoading(false)
+            })
+            .catch(() => {
+                setPagination(previousPagination)
+                setContentLoading(false)
+            })
+        }
     }
 
     const handlePaginationChange = (page: number, nbResults: number) => {

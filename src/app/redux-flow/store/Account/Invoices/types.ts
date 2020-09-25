@@ -10,4 +10,11 @@ export interface Invoice {
     downloadLink: string;
 }
 
-export const invoicesInitialState: Invoice[] = []; 
+export interface SearchInvoicesResult {
+    invoices: Invoice[];
+    page: number;
+    perPage: number;
+    total: number;
+}
+
+export const invoicesInitialState: SearchInvoicesResult = null; 

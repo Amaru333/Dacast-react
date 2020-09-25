@@ -7,6 +7,7 @@ import { SecurityPage } from '../../pages/Settings/Security/Security';
 import { SecuritySettings, DomainControl, GeoRestriction } from '../../redux-flow/store/Settings/Security/types';
 import { getSettingsSecurityOptionsAction, saveSettingsSecurityOptionsAction, saveGeoRestrictionGroupAction, saveDomainControlGroupAction, deleteDomainControlGroupAction, deleteGeoRestrictionGroupAction, Action, createGeoRestrictionGroupAction, createDomainControlGroupAction } from '../../redux-flow/store/Settings/Security';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface SecurityComponentProps {
     securityDetails: SecuritySettings;
@@ -22,11 +23,20 @@ export interface SecurityComponentProps {
 
 const Security = (props: SecurityComponentProps) => {
 
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if(!props.securityDetails) {
-            props.getSettingsSecurityOptions();
+            props.getSettingsSecurityOptions()
+            .catch(() => setNodataFetched(true))
+
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
     return (
         props.securityDetails ?
             <SecurityPage {...props} />

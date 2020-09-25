@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { getContentSetupAction, postContentSetupAction } from '../../redux-flow/store/Content/Setup/actions';
 import { ContentSetupState, ContentSetupObject } from '../../redux-flow/store/Content/Setup/types';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 export interface SetupComponentProps {
     folderData: FoldersInfos;
@@ -24,9 +25,11 @@ export interface SetupComponentProps {
 const Setup = (props: SetupComponentProps) => {
 
     let { playlistId } = useParams()
-    
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         props.getContentSetup(playlistId, 'playlist')
+        .catch(() => setNodataFetched(true))
 
         if(!props.folderData) {
 
@@ -37,6 +40,11 @@ const Setup = (props: SetupComponentProps) => {
             wait()
         }
     }, [])
+
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+
     return (
         <>
             <PlaylistsTabs playlistId={playlistId} />
