@@ -119,8 +119,8 @@ export const cancelWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDis
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CancelWithdrawalRequest>) => {
         await PayoutServices.cancelWithdrawalRequest(data)
             .then(() => {
-                dispatch({type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST, payload: data});
-                dispatch(showToastNotification(`Withdrawal Request deleted`, 'fixed', "success"));
+                dispatch({type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST, payload: {...data, status: 'Cancelled'}});
+                dispatch(showToastNotification(`Withdrawal Request cancelled`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
