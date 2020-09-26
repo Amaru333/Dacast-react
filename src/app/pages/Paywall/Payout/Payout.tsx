@@ -17,8 +17,9 @@ import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
-    const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false);
+    const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentMethod>(null)
+    const [deletePaymentMethodWarningModalOpened, setDeletePaymentMethodWarningModalOpened] = React.useState<boolean>(false)
     
 
     const paymentMethodTableHeader = () => {
@@ -40,7 +41,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         <Text key={'paymentMethodTableBodyDateCreated' + i} size={14} weight='reg' color='gray-3'>{item.paymentMethodType}</Text>,
                         <IconContainer className="iconAction" key={'paymentMethodTableBodyActionButtons' + i}>
                             <ActionIcon>
-                                <IconStyle id={"deleteTooltip" + i} onClick={() => { props.deletePaymentMethod(item) }}>delete</IconStyle>
+                                <IconStyle id={"deleteTooltip" + i} onClick={() => { props.payoutInfos.withdrawalRequests.some(r => r.paymentMethodId === item.id) ? setDeletePaymentMethodWarningModalOpened(true) : props.deletePaymentMethod(item) }}>delete</IconStyle>
                                 <Tooltip target={"deleteTooltip" + i}>Delete</Tooltip>
                             </ActionIcon>
                             <ActionIcon>
@@ -156,7 +157,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 <Text className='pt2 pb1' size={14} weight='reg'>Add ways to receive withdrawals from your paywall balance.</Text>
                 <Button key='paymentMethodTableHeaderActionButton' className='col col-12 xs-show' onClick={() => { setDisplayPaymentMethodRequest(true) }} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Method</Button>
                 {
-                    props.payoutInfos.paymentMethods ?
+                    props.payoutInfos.paymentMethods && props.payoutInfos.paymentMethods.length > 0 ?
                         <Table id='paywallPaymentMethodTable' headerBackgroundColor="gray-10" header={paymentMethodTableHeader()} body={paymentMethodTableBody()} />
                         : <Table id='paymentMethodEmptyTable' headerBackgroundColor="gray-10" header={emptyPaymentMethodTableHeader()} body={emptyPaymentMethodTableBody('Add a Withdrawal Method so you can withdraw money from your Paywall balance')} />
                 }
@@ -167,7 +168,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                     <Button key='withdrawalTableHeaderActionButton' className='xs-show' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>
                 }
                 {
-                    props.payoutInfos.withdrawalRequests ?
+                    props.payoutInfos.withdrawalRequests && props.payoutInfos.withdrawalRequests.length > 0 ?
                         <Table id='payoutWithdrawalTable' headerBackgroundColor="gray-10" header={withdrawalTableHeader()} body={withdrawalTableBody()} />
                         : <Table id='payoutWithdrawalsTable' headerBackgroundColor="gray-10" header={emptyWithdrawalTableHeder()} body={emptyWithdrawalTableBody('You must add a Payment Request Method before you can Request a Withdrawal')} />
                 }
@@ -179,5 +180,18 @@ export const PayoutPage = (props: PayoutComponentProps) => {
 
                 }
             </Modal>
+            {
+                deletePaymentMethodWarningModalOpened && 
+                <Modal size='small' icon={{name:'info_outlined', color: 'yellow'}} hasClose={false} modalTitle='You have pending requests' opened={deletePaymentMethodWarningModalOpened} toggle={() => setDeletePaymentMethodWarningModalOpened(!deletePaymentMethodWarningModalOpened)}>
+                <div className='flex flex-column'>
+                    <Text size={14} weight='reg'>You cannot delete a Withdrawal Method that’s being used by an incomplete Withdrawal Request.</Text>
+                    <Text size={14} weight='reg'>Either delete the request or wait until it is completed before trying again.</Text>
+                    <div className='mt2'>
+                        <Button buttonColor='blue' typeButton='primary' sizeButton='large' onClick={() => setDeletePaymentMethodWarningModalOpened(false)}>OK</Button>
+                    </div>
+                </div>
+            </Modal>
+            }
+
         </div>
 }

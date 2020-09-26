@@ -99,8 +99,10 @@ export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
 
 export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, AddWithdrawalRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
+        console.log('sending to service ', JSON.stringify(data))
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
+                console.log('data after service', JSON.stringify(data))
                 dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
                 dispatch(showToastNotification(`New Withdrawal Request submitted`, 'fixed', "success"));
             }).catch(() => {

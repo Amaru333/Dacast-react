@@ -14,8 +14,8 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
         currency: 'USD',
         amount: 0,
         requestDate: Math.floor(Date.now() / 1000),
+        status: 'Pending',
         transferDate: NaN,
-        status: 'Pending'
     })
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
 
@@ -36,6 +36,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
 
     const handleSubmit = () => {
         setButtonLoading(true)
+        console.log('sending to action WR: ', JSON.stringify(withdrawalRequest))
         props.action(withdrawalRequest)
         .then(() => {
             setButtonLoading(false)
