@@ -68,6 +68,11 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 ...state,
                 withdrawalRequests: withdrawalRequests
             }
+        case ActionTypes.DELETE_PAYMENT_METHOD :
+            return {
+                ...state,
+                withdrawalRequests: state.withdrawalRequests.filter(p => p.id !== action.payload.id)
+            }
         default:
             return state;
     }

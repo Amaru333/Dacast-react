@@ -34,6 +34,11 @@ export interface AddWithdrawalRequest {
     payload: WithdrawalRequest;
 }
 
+export interface CancelWithdrawalRequest {
+    type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST;
+    payload: WithdrawalRequest;
+}
+
 export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetPaymentMethods> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPaymentMethods>) => {
         await PayoutServices.getPaymentMethods()
@@ -99,10 +104,8 @@ export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
 
 export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, AddWithdrawalRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
-        console.log('sending to service ', JSON.stringify(data))
         await PayoutServices.addWithdrawalRequest(data)
             .then( response => {
-                console.log('data after service', JSON.stringify(data))
                 dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
                 dispatch(showToastNotification(`New Withdrawal Request submitted`, 'fixed', "success"));
             }).catch(() => {
@@ -112,5 +115,18 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
     }
 }
 
+export const cancelWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, CancelWithdrawalRequest> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, CancelWithdrawalRequest>) => {
+        await PayoutServices.cancelWithdrawalRequest(data)
+            .then(() => {
+                dispatch({type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST, payload: data});
+                dispatch(showToastNotification(`Withdrawal Request deleted`, 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
+            })
+    }
+}
 
-export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethod | UpdatePaymentMethod | DeletePaymentMethod | AddWithdrawalRequest
+
+export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethod | UpdatePaymentMethod | DeletePaymentMethod | AddWithdrawalRequest | CancelWithdrawalRequest

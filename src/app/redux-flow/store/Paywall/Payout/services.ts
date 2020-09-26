@@ -40,11 +40,16 @@ const addWithdrawalRequest = async (data: WithdrawalRequest) => {
     )
 }
 
+const cancelWithdrawalRequest = async (data: WithdrawalRequest) => {
+    return await axiosClient.delete(`/paywall/payment-requests/${data.id}`)
+}
+
 export const PayoutServices = {
     getPaymentMethods,
     getWithdrawalRequests,
     addPaymentMethod,
     updatePaymentMethod,
     deletePaymentMethod,
-    addWithdrawalRequest
+    addWithdrawalRequest,
+    cancelWithdrawalRequest
 }
