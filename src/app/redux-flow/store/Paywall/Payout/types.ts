@@ -4,7 +4,9 @@ export enum ActionTypes {
     ADD_PAYMENT_METHOD = "@@paywall_payout/ADD_PAYMENT_METHOD",
     UPDATE_PAYMENT_METHOD = "@@paywall_payout/UPDATE_PAYMENT_METHOD",
     DELETE_PAYMENT_METHOD = "@@paywall_payout/DELETE_PAYMENT_METHOD",
-    ADD_WITHDRAWAL_REQUEST = "@@paywall_payout/ADD_WITHDRAWAL_REQUEST"
+    ADD_WITHDRAWAL_REQUEST = "@@paywall_payout/ADD_WITHDRAWAL_REQUEST",
+    CANCEL_WITHDRAWAL_REQUEST = "@@paywall_payout/CANCEL_WITHDRAWAL_REQUEST"
+
 }
 
 
@@ -49,6 +51,7 @@ export interface PaymentMethod {
 
 export interface WithdrawalRequest {
     paymentMethodId: string;
+    id?: string;
     currency: string;
     amount: number;
     requestDate: number;

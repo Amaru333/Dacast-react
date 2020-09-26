@@ -1,6 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod, PaymentMethodType,  } from "./types";
+import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
     let paymentMethods: PaymentMethod[] = []
@@ -18,7 +19,12 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
                 ...state,
-                withdrawalRequests: action.payload.data.withdrawals
+                withdrawalRequests: action.payload.data.withdrawals.map(r => {
+                    return {
+                        ...r,
+                        status: capitalizeFirstLetter(r.status) as 'Completed' | 'Cancelled' | 'Pending'
+                    }
+                })
             }
         case ActionTypes.ADD_PAYMENT_METHOD :
             paymentMethods = state.paymentMethods.slice();
@@ -55,11 +61,17 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 paymentMethods: state.paymentMethods.filter(p => p.id !== action.payload.id)
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
-            let withdrawalRequests = [];
-            withdrawalRequests = [{...action.payload}]
+            console.log('adding WR ', JSON.stringify(action.payload))
+            let withdrawalRequests = state.withdrawalRequests.slice()
+            withdrawalRequests.push(action.payload)
             return {
                 ...state,
                 withdrawalRequests: withdrawalRequests
+            }
+        case ActionTypes.DELETE_PAYMENT_METHOD :
+            return {
+                ...state,
+                withdrawalRequests: state.withdrawalRequests.filter(p => p.id !== action.payload.id)
             }
         default:
             return state;
