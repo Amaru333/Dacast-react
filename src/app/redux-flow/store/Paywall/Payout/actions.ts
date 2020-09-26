@@ -34,6 +34,11 @@ export interface AddWithdrawalRequest {
     payload: WithdrawalRequest;
 }
 
+export interface CancelWithdrawalRequest {
+    type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST;
+    payload: WithdrawalRequest;
+}
+
 export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetPaymentMethods> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPaymentMethods>) => {
         await PayoutServices.getPaymentMethods()
@@ -110,5 +115,18 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
     }
 }
 
+export const cancelWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, CancelWithdrawalRequest> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, CancelWithdrawalRequest>) => {
+        await PayoutServices.cancelWithdrawalRequest(data)
+            .then(() => {
+                dispatch({type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST, payload: {...data, status: 'Cancelled'}});
+                dispatch(showToastNotification(`Withdrawal Request cancelled`, 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
+            })
+    }
+}
 
-export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethod | UpdatePaymentMethod | DeletePaymentMethod | AddWithdrawalRequest
+
+export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMethod | UpdatePaymentMethod | DeletePaymentMethod | AddWithdrawalRequest | CancelWithdrawalRequest

@@ -30,7 +30,7 @@ const deletePaymentMethod = async (data: PaymentMethod) => {
 }
 
 const addWithdrawalRequest = async (data: WithdrawalRequest) => {
-    let parsedData = data
+    let parsedData = {...data}
 
     delete parsedData.status
     return await axiosClient.post('/paywall/payment-requests', 
@@ -40,11 +40,19 @@ const addWithdrawalRequest = async (data: WithdrawalRequest) => {
     )
 }
 
+const cancelWithdrawalRequest = async (data: WithdrawalRequest) => {
+    return await axiosClient.put(`/paywall/payment-requests/${data.id}`, {
+        ...data,
+        status: 'cancelled'
+    })
+}
+
 export const PayoutServices = {
     getPaymentMethods,
     getWithdrawalRequests,
     addPaymentMethod,
     updatePaymentMethod,
     deletePaymentMethod,
-    addWithdrawalRequest
+    addWithdrawalRequest,
+    cancelWithdrawalRequest
 }

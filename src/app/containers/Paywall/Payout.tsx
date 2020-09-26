@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { PayoutPage } from '../../pages/Paywall/Payout/Payout';
-import { Action, addWithdrawalRequestAction, getPaymentMethodsAction, getWithdrawalRequestsAction, addPaymentMethodAction, updatePaymentMethodAction, deletePaymentMethodAction } from '../../redux-flow/store/Paywall/Payout/actions'
+import { Action, addWithdrawalRequestAction, getPaymentMethodsAction, getWithdrawalRequestsAction, addPaymentMethodAction, updatePaymentMethodAction, deletePaymentMethodAction, cancelWithdrawalRequestAction } from '../../redux-flow/store/Paywall/Payout/actions'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { PayoutInfos, WithdrawalRequest, PaymentMethod } from '../../redux-flow/store/Paywall/Payout';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -20,6 +20,7 @@ export interface PayoutComponentProps {
     updatePaymentMethod: (data: PaymentMethod) => Promise<void>;
     deletePaymentMethod: (data: PaymentMethod) => Promise<void>;
     addWithdrawalRequest: (data: WithdrawalRequest) => Promise<void>;
+    cancelWithdrawalRequest: (data: WithdrawalRequest) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -73,6 +74,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         addWithdrawalRequest: async (data: WithdrawalRequest) => {
             await dispatch(addWithdrawalRequestAction(data));
+        },
+        cancelWithdrawalRequest: async (data: WithdrawalRequest) => {
+            await dispatch(cancelWithdrawalRequestAction(data));
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
