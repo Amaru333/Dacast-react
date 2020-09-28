@@ -10,6 +10,7 @@ import { CartStep, PaymentStep } from './PendingOrderStepper';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
+import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
@@ -17,7 +18,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
     const emptyOrder: PendingOrder = 
     {   id: "-1", 
         items: [{id: "-1", price: 0, description: ""}], 
-        dateCreated: "", 
+        dateCreated: NaN, 
         price: 0, 
         currency: "", 
         status: "", 
@@ -56,8 +57,8 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.dateCreated, DateTime.DATETIME_SHORT)}</Text>,
                 <Text key={'pendingOrderTablePrice'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.price}</Text>,
                 <Text key={'pendingOrderTableCurrency'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.currency.toUpperCase()}</Text>,
-                <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={item.status.charAt(0).toUpperCase() + item.status.slice(1)} />,
-                <Text key={'pendingOrderTableType'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.type.charAt(0).toUpperCase() + item.type.slice(1)}</Text>,
+                <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)} />,
+                <Text key={'pendingOrderTableType'+ i.toString()} size={14} weight='reg' color='gray-1'>{capitalizeFirstLetter(item.type)}</Text>,
                 item.status === "unpaid" ?
                     <div className="right mr2"><Button sizeButton="xs" onClick={() => handlePurchase(item)}>Purchase</Button></div> : null
                 

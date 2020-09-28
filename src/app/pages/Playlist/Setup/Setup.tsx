@@ -223,8 +223,10 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                     onClick={() => {handleClickFolder(row)}}
                     selected={checkedFolders.includes(row)}>
                     <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
-
+                    <ItemNameContainer>
+                        <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+                    </ItemNameContainer>
+                    
                     {row.hasChild && <div className="flex justify-between  items-center" style={{flexGrow: 1}} >
                         <Badge color="gray-5" className='ml2' number={row.nbChildren} />
                         <IconGreyActionsContainer id={"iconGoTo"+row.id} >
@@ -259,7 +261,9 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                         />
                     }
                     {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                    <ItemNameContainer>
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                    </ItemNameContainer>
                     {
                         row.type === "folder" &&
                             <div className="flex-auto justify-end">
@@ -431,7 +435,9 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                 <Button  disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>{props.contentData.title}</Text>
+                        <ItemNameContainer>
+                            <Text color={"gray-1"} size={14} weight='med'>{props.contentData.title}</Text>
+                        </ItemNameContainer>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>
@@ -506,4 +512,10 @@ export const ItemSetupRow = styled.div<{ selected: boolean }>`
         }
         background-color: ${props => props.theme.colors['violet10']};
     }
+`
+
+export const ItemNameContainer = styled.div`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `

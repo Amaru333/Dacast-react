@@ -14,13 +14,12 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
         currency: 'USD',
         amount: 0,
         requestDate: Math.floor(Date.now() / 1000),
+        status: 'Pending',
         transferDate: NaN,
-        status: 'Pending'
     })
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
 
     const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
-        debugger
         switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
             case PaymentMethodType.BankAccountUS:
                 return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
@@ -37,6 +36,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
 
     const handleSubmit = () => {
         setButtonLoading(true)
+        console.log('sending to action WR: ', JSON.stringify(withdrawalRequest))
         props.action(withdrawalRequest)
         .then(() => {
             setButtonLoading(false)
@@ -55,7 +55,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
                     callback={(value: string) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: props.paymentList.find(p => p.paymentMethodName === value).id }) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
-                <Input className='col xs-no-gutter col-12 sm-col-5 pl1 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />
+                <Input className='col xs-no-gutter col-12 sm-col-5 mt2 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>

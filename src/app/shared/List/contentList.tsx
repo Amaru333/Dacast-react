@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
-import { useOutsideAlerter, useQuery } from '../../../utils/utils';
+import { useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
 import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
@@ -261,7 +261,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 return type === 'vod' && !size ? <Label backgroundColor="gray-5" color="gray-1" label="Processing" /> : <Label backgroundColor="green20" color="green" label="Online" />
             case 'offline':
             case 'deleted':
-                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />  
+                return <Label backgroundColor="red20" color="red" label={capitalizeFirstLetter(status)} />  
             default:
             return null
         }
