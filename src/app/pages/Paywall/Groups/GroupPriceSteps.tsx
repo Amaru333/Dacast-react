@@ -16,6 +16,7 @@ import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { userToken } from '../../../utils/token';
+import { ItemNameContainer } from '../../Playlist/Setup/Setup';
 
 var moment = require('moment-timezone');
 
@@ -252,7 +253,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                             />
                         }
                         {handleRowIconType(row)}
-                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                        <ItemNameContainer><Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text></ItemNameContainer>
                         {
                             row.type === "folder" &&
                                 <div className="flex-auto justify-end">
@@ -277,7 +278,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                         onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
+                    <ItemNameContainer><Text className='pl2' size={14} weight='reg'>{element.title}</Text></ItemNameContainer>
                 </ItemSetupRow>
             )
         })
