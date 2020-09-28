@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { axiosClient } from '../../../../utils/adminAxiosClient';
+import { axiosClient } from '../../../../utils/services/axios/adminAxiosClient';
 
 const getWithdrawalInfo = async (withdrawalId: string) => {  
     return await axiosClient.get('/payment-requests/' + withdrawalId)

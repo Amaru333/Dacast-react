@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { GetAnalyticsViewershipOptions } from '.';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 var qs = require('qs');
 

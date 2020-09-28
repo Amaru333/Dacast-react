@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AdminState } from "../../redux-flow/store";
 import { LoginPage } from '../../pages/Register/Login';
 import { loginAction, Action } from '../../redux-flow/store/Register/Login/actions';
-import { adminToken } from '../../utils/token';
+import { adminToken } from '../../utils/services/token/tokenService';
 import { LoginInfos, TokenInfos } from '../../redux-flow/store/Register/Login';
 import { useHistory } from 'react-router-dom'
 

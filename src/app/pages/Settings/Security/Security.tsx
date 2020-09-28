@@ -182,9 +182,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             <Card>
                 <div id='settingsPageForm'>
                     <div className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></div>
-
-                    {/* <Toggle id="privateVideosToggle" label='Private Videos' defaultChecked={props.securityDetails.privateVideo} {...handleValidationProps('Private Videos', validations)}/>
-                    <ToggleTextInfo className="mx3"><Text className="mx2 px1" size={14} weight='reg' color='gray-3'>They won't be dipslayed publicy on your website.</Text></ToggleTextInfo> */}
                     <div className='col col-12 mb2'>
                         <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>

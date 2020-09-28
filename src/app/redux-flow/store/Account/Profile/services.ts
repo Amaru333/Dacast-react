@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ProfilePageInfos } from './types';
-import {axiosClient} from '../../../../utils/axiosClient';
-import { userToken } from '../../../../utils/token';
+import {axiosClient} from '../../../../utils/services/axios/axiosClient';
+import { userToken } from '../../../../utils/services/token/tokenService';
 
 const getProfilePageDetailsService = async () => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id');

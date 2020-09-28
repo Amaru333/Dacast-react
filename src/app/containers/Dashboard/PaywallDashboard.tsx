@@ -2,7 +2,6 @@ import React from 'react'
 import { classContainer, classItemHalfWidthContainer, WidgetHeader } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
-import { numberFormatter } from '../../../utils/utils';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 

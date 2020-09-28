@@ -1,5 +1,5 @@
 import { PaywallSettingsInfos } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getPaywallSettingsInfos = async () => {
     return await axiosClient.get('/paywall/payment-options/')

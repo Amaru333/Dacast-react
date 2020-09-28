@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate } from '../../../utils/utils';
+import { tsToLocaleDate } from '../../../utils/formatUtils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';

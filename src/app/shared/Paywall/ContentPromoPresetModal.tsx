@@ -9,7 +9,7 @@ import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 var moment = require('moment-timezone');
 
 const defaultPromo: Promo = {

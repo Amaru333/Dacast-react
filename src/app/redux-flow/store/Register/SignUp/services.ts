@@ -1,5 +1,5 @@
 import {UserInfo} from './types'
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 var moment = require('moment-timezone');
 
 

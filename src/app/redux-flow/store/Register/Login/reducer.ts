@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, TokenInfos, defaultStateLogin } from './types'
-import { userToken } from '../../../../utils/token';
+import { userToken } from '../../../../utils/services/token/tokenService';
 
 const reducer: Reducer<TokenInfos> = (state = defaultStateLogin, action: Action) => {
     switch(action.type) {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GroupPrice, GroupPromo } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
-import { userToken } from '../../../../utils/token';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
+import { userToken } from '../../../../utils/services/token/tokenService';
 
 const getGroupPrices = async () => {
     return await axiosClient.get('/paywall/prices/groups?page=1&per-page=100')

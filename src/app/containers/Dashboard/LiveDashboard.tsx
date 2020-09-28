@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from '../../../components/Typography/Text';
 import { classContainer, classItemHalfWidthContainer, WidgetHeader, classItemFullWidth, TableListStyle } from "./DashboardStyles"
 import { WidgetElement } from "./WidgetElement";
-import { numberFormatter } from '../../../utils/utils';
+import { numberFormatter } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DashboardLive } from '../../redux-flow/store/Dashboard/types';
 

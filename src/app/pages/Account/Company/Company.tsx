@@ -6,7 +6,7 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { CompanyPageContainer, ButtonStyle, ImageStyle, ButtonsArea, AccountIdLabel, AccountIdContainer, AccountIdText} from './CompanyStyle';
 import { CompanyPageInfos } from '../../../redux-flow/store/Account/Company/types';
 import { countries } from 'countries-list';

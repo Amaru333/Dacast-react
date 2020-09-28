@@ -10,7 +10,7 @@ import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
 import { Routes } from './utils/utils';
-import { adminToken } from './utils/token';
+import { adminToken } from './utils/services/token/tokenService';
 import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';

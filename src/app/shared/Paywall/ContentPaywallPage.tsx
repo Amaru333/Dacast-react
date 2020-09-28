@@ -17,7 +17,7 @@ import { Preset, Promo, ContentPaywallPageInfos, PresetsPageInfos } from '../../
 import { GroupsPageInfos } from '../../redux-flow/store/Paywall/Groups/types'
 import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types'
 import { emptyContentListBody } from '../List/emptyContentListState';
-import { userToken } from '../../utils/token'
+import { userToken } from '../../utils/services/token/tokenService'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
 import { Divider } from '../Common/MiscStyle';
 

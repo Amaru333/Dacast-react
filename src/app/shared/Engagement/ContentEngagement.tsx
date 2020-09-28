@@ -15,8 +15,9 @@ import { DropdownListType } from '../../../components/FormsComponents/Dropdown/D
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import { dataToTimeVideo, capitalizeFirstLetter } from '../../../utils/utils';
-import { userToken } from '../../utils/token';
+import { dataToTimeVideo } from '../../../utils/formatUtils';
+import { userToken } from '../../utils/services/token/tokenService';
+import { capitalizeFirstLetter } from '../../../utils/utils';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { PreviewModal } from '../Common/PreviewModal';
 import { DragAndDrop } from '../../../components/DragAndDrop/DragAndDrop';
