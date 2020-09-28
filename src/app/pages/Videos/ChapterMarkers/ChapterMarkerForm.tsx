@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/Content/Chapters/types'
-import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/utils'
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils'
 
 export const ChapterMarkerForm = (props: {contentId: string; contentType: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: (b: boolean) => void; submit: (contentId: string, contentType: string, chapterMarkers: ChapterMarker[]) => Promise<void>;}) => {
 

@@ -12,7 +12,7 @@ import { ColorsApp } from '../../../../styled/types';
 import { IconStyle, ActionIcon, IconContainer } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { Divider } from '../../../shared/Common/MiscStyle';
 
 export const PayoutPage = (props: PayoutComponentProps) => {

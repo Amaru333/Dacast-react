@@ -16,7 +16,7 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { usePlayer } from '../../../utils/services/player/player';
 import { Prompt } from 'react-router';
-import { dataToTimeVideo } from '../../../../utils/utils';
+import { dataToTimeVideo } from '../../../../utils/formatUtils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';

@@ -9,7 +9,7 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { CartStep, PaymentStep } from './PendingOrderStepper';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { DateTime } from 'luxon';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {

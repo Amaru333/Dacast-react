@@ -8,7 +8,7 @@ import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { InvoicesFiltering } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { DateTime } from 'luxon';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { Link } from 'react-router-dom';

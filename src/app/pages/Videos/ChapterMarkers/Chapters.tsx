@@ -5,14 +5,14 @@ import { Text } from '../../../../components/Typography/Text';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { Modal } from '../../../../components/Modal/Modal';
 import { ChapterMarkerForm } from './ChapterMarkerForm';
-import { useMedia, dataToTimeVideo } from '../../../../utils/utils';
-import { ChapterMarkerInfos } from '../../../redux-flow/store/Content/Chapters/types';
+import { useMedia } from '../../../../utils/utils';
 import { TableContainer, ChaptersContainer, PlayerSection, PlayerContainer, ButtonsArea } from './ChaptersStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { usePlayer } from '../../../utils/services/player/player';
 import { ChapterComponentProps } from '../../../containers/Videos/Chapters';
 import { emptyContentListBody, emptyContentListHeader } from '../../../shared/List/emptyContentListState';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { dataToTimeVideo } from '../../../../utils/formatUtils';
 
 
 export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; contentType: string}) => {

@@ -4,11 +4,10 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { numberFormatter, getPercentage, tsToLocaleDate, useMedia, readableBytes } from '../../../utils/utils';
+import { getPercentage, useMedia } from '../../../utils/utils';
+import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { Label } from '../../../components/FormsComponents/Label/Label';
 import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
-import { CustomStepper } from '../../../components/Stepper/Stepper';
 import { PurchaseStepperCartStep, PurchaseStepperPaymentStep } from './PurchaseStepper';
 import { useHistory } from 'react-router';
 import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';

@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
-import { tsToLocaleDate, readableBytes, useOutsideAlerter, useQuery } from '../../../utils/utils';
+import { useOutsideAlerter, useQuery } from '../../../utils/utils';
+import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { Label } from '../../../components/FormsComponents/Label/Label';

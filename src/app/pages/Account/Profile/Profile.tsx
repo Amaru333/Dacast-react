@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { DateTime } from 'luxon';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';

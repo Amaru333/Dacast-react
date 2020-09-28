@@ -7,7 +7,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions, defaultTheme } from '../../../redux-flow/store/Settings/Theming';
 import { usePlayer } from '../../../utils/services/player/player';
-import { tsToLocaleDate } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { DateTime } from 'luxon';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';

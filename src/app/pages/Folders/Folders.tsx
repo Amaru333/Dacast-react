@@ -11,7 +11,8 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import { tsToLocaleDate, useMedia, useOutsideAlerter } from '../../../utils/utils'
+import { useMedia, useOutsideAlerter } from '../../../utils/utils'
+import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -164,10 +165,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             setFetchContent(false)
         })
     }, [selectedFolder])
-
-    // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
-    //     setBulkActionsDropdownIsOpened(false)
-    // });
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
