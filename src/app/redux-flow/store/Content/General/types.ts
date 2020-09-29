@@ -52,6 +52,7 @@ export interface ContentDetails {
     recording?: boolean;
     countdown?: LiveStreamCountdown;
     rewind?: boolean;
+    unsecureM3u8Url?: string;
 }
 
 interface PLaybackURLs {
