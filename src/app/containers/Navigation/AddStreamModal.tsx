@@ -38,22 +38,16 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const defaultStreamSetup: StreamSetupOptions = {
         rewind: false, 
         title: '', 
-        streamType: 'standard', 
         region: handleLocaleCountry()
     }
 
-    const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
-    React.useEffect(() => {
-        setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
-    }, [selectedStreamType])
 
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
-        setSelectedStreamType('standard')
         props.toggle()
     }
 
@@ -77,9 +71,9 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             {
                 title: streamSetupOptions.title,
                 online: true,
-                streamType: streamSetupOptions.streamType,
-                rewind: streamSetupOptions.rewind ? true : false,
+                // rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
+                renditionCount: renditionCount
             }
         ).then((response) => {
             setButtonLoading(false)
@@ -88,7 +82,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
             setStreamSetupOptions(defaultStreamSetup)
-            setSelectedStreamType('standard')
         }).catch((error) => {
             setButtonLoading(false)
             showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
@@ -131,7 +124,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         id='numberOfRenditionsDropdown' 
                         dropdownDefaultSelect="1 Rendition"
                         list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
-                        callback={(value: string) => console.log(value)} 
+                        callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
                     />
                     <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
                     <Tooltip target={"numberOfRenditionsDropdownTooltip"}>
@@ -149,7 +142,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>
