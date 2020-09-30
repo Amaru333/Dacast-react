@@ -26,8 +26,8 @@ const EditStatus = (props: EditStatusComponentProps) => {
     }, [])
 
     return isFetching ? 
-        <EditStatusPage {...props} withdrawalId={withdrawalId} />
-        : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        : <EditStatusPage {...props} withdrawalId={withdrawalId} />
 }
 
 export function mapStateToProps(state: AdminState) {
