@@ -18,14 +18,14 @@ export interface EditStatusComponentProps {
 const EditStatus = (props: EditStatusComponentProps) => {
 
     let {withdrawalId} = useParams()
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
-        if(!props.withdrawal) {
-            props.getWithdrawals(withdrawalId)
-        }
+        props.getWithdrawals(withdrawalId)
+        .then(() => setIsFetching(false))
     }, [])
 
-    return props.withdrawal ? 
+    return isFetching ? 
         <EditStatusPage {...props} withdrawalId={withdrawalId} />
         : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
 }

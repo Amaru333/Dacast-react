@@ -102,7 +102,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                     <div className='col col-12 flex mb2 relative'> 
                         <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' value={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
 
-                        <div className='col col-6 pl1 flex' >
+                        <div className='col col-6 pl1 flex relative' >
                             <DropdownSingle 
                                 dropdownTitle='Source Region' 
                                 className='col col-12' 
@@ -112,7 +112,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                                 callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
                             />
                             <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
-                            <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
+                            <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
                         </div>
 
                     </div>
