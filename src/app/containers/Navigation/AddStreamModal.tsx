@@ -1,13 +1,9 @@
 import React from 'react';
 import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Modal"
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { StreamTypeSelector, StreamTypeSelectorContainer, StreamTypeSelectorContents } from './NavigationStyle';
-import { UserAccountPrivileges, StreamSetupOptions } from './NavigationTypes';
-import { Toggle } from '../../../components/Toggle/toggle';
+import { StreamSetupOptions } from './NavigationTypes';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { userToken } from '../../utils/services/token/tokenService';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
