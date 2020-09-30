@@ -642,11 +642,11 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     </LinkBoxContainer>
                                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                         <LinkBoxLabel>
-                                            <Text size={14} weight="med">Stream Key</Text>
+                                            <Text size={14} weight="med">Backup Server</Text>
                                         </LinkBoxLabel>
                                         <LinkBox>
-                                            <LinkText size={14} weight="reg">{props.contentDetails.streamKeys[0]}</LinkText>
-                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.streamKeys[0], "Copied to clipboard")}>file_copy</IconStyle>
+                                            <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
                                         </LinkBox>
                                     </LinkBoxContainer>
                                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -667,15 +667,19 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
                                         </LinkBox>
                                     </LinkBoxContainer>
-                                    <LinkBoxContainer className={ClassHalfXsFullMd}>
+                                    {props.contentDetails.streamKeys.map((streamKey, i) => {
+                                        return(
+                                        <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
                                         <LinkBoxLabel>
-                                            <Text size={14} weight="med">Backup URL</Text>
+                                            <Text size={14} weight="med">{"Stream Key " + (i+1)}</Text>
                                         </LinkBoxLabel>
                                         <LinkBox>
-                                            <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
-                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                            <LinkText size={14} weight="reg">{streamKey}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
                                         </LinkBox>
                                     </LinkBoxContainer>
+                                        )
+                                    })}
                                 </div>
                                 <div className="flex col col-12 mt2">
                                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
