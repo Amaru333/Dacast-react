@@ -31,15 +31,17 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         return 'Americas'
     }
 
+    const [renditionCount, setRenditionCount] = React.useState<number>(1)
+
     const defaultStreamSetup: StreamSetupOptions = {
         rewind: false, 
         title: '', 
-        region: handleLocaleCountry()
+        region: handleLocaleCountry(),
+        renditionCount: renditionCount
     }
 
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
 
     const handleCancel = () => {

@@ -51,4 +51,5 @@ export interface StreamSetupOptions {
     title: string;
     rewind?: boolean;
     region: string;
+    renditionCount: number;
 }
