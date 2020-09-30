@@ -16,6 +16,7 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { Bubble } from '../../../components/Bubble/Bubble';
 
 const moment = require('moment-timezone')
 
@@ -44,6 +45,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
     React.useEffect(() => {
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
@@ -95,67 +97,47 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
 
     return (
-        <Modal size="large" modalTitle="Create Live Stream" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened} hasClose={false}>
+        <Modal size="small" modalTitle="Create Live Stream" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened} hasClose={false}>
             <ModalContent>
-                <StreamTypeSelectorContainer className="col col-12 mt25 ">
-
-                    <div className='col col-12 flex mb2 relative'> 
-                        <Input placeholder="My Live Stream" id='liveStreamModalInput' className='col col-6 pr1' value={streamSetupOptions.title} onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} label='Title' />
-
-                        <div className='col col-6 pl1 flex' >
-                            <DropdownSingle 
-                                dropdownTitle='Source Region' 
-                                className='col col-12' 
-                                id='channelRegionTypeDropdown' 
-                                dropdownDefaultSelect={streamSetupOptions.region}
-                                list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
-                                callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
-                            />
-                            <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
-                            <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>
-                        </div>
-
-                    </div>
-
-                    {(userToken.getPrivilege('privilege-unsecure-m3u8') || userToken.getPrivilege('privilege-china')) &&
-                        <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
-                            <StreamTypeSelector onClick={() => setSelectedStreamType("standard")} selected={selectedStreamType === "standard"}>
-                                <StreamTypeSelectorContents>
-                                    <IconStyle className="mb2">videocam</IconStyle>
-                                    <Text size={16} weight="med">Standard</Text>
-                                    <Text className="mt2" size={14}>Web, Mobile &amp; TV</Text>
-                                </StreamTypeSelectorContents>
-
-                            </StreamTypeSelector>
-                        </div>
-
-                    }
-
-                    {userToken.getPrivilege('privilege-unsecure-m3u8') &&
-                        <div className="col-12 sm-col-4 col sm-pr1 sm-pl1 xs-mb2">
-                            <StreamTypeSelector onClick={() => setSelectedStreamType("compatible")} selected={selectedStreamType === "compatible"}>
-                                <StreamTypeSelectorContents>
-                                    <IconStyle className="mb2">desktop_windows</IconStyle>
-                                    <Text size={16} weight="med">Compatible</Text>
-                                    <Text className="mt2" size={14}>Native Apps</Text>
-                                </StreamTypeSelectorContents>
-                            </StreamTypeSelector>
-                        </div>
-                    }
-
-                    {userToken.getPrivilege('privilege-china') &&
-                        <div className="col-12 sm-col-4 col sm-pl1">
-                            <StreamTypeSelector onClick={() => setSelectedStreamType("premium")} selected={selectedStreamType === "premium"}>
-                                <StreamTypeSelectorContents>
-                                    <IconStyle className="mb2">public</IconStyle>
-                                    <Text size={16} weight="med">Premium</Text>
-                                    <Text className="mt2" size={14}>Standard + China</Text>
-                                </StreamTypeSelectorContents>
-                            </StreamTypeSelector>
-                        </div>}
-
-                </StreamTypeSelectorContainer>
-
+                <Bubble className="mt1" type="info">
+                    Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>
+                </Bubble>
+                <Input 
+                    placeholder="My Live Stream" 
+                    id='liveStreamModalInput' 
+                    className='col col-12 mt1' 
+                    value={streamSetupOptions.title} 
+                    onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} 
+                    label='Title' 
+                />
+                <div className='col col-12 mt1 flex relative' >
+                    <DropdownSingle 
+                        dropdownTitle='Source Region' 
+                        className='col col-12' 
+                        id='channelRegionTypeDropdown' 
+                        dropdownDefaultSelect={streamSetupOptions.region}
+                        list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
+                        callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
+                    />
+                    <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
+                    <Tooltip target={"channelRegionTypeTooltip"}>
+                        The region your stream will broadcast from. Select the one closest to your encoder for best performance.
+                    </Tooltip>
+                </div>
+                <div className='col col-12 mt1 flex relative' >
+                    <DropdownSingle 
+                        dropdownTitle='Number of Renditions' 
+                        className='col col-12' 
+                        id='numberOfRenditionsDropdown' 
+                        dropdownDefaultSelect="1 Rendition"
+                        list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
+                        callback={(value: string) => console.log(value)} 
+                    />
+                    <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
+                    <Tooltip target={"numberOfRenditionsDropdownTooltip"}>
+                        For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
+                    </Tooltip>
+                </div>
                 {/* {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
@@ -165,10 +147,6 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
                     </div>} */}
 
-                <div className="flex mt2 col col-12">
-                    <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                    <Text size={14} weight="reg">Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
-                </div>
             </ModalContent>
             <ModalFooter>
                 <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} disabled={selectedStreamType === null} typeButton="primary" >Create</Button>
