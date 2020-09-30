@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { PutAccountInfo } from './types'
-import { axiosClient } from '../../../../utils/adminAxiosClient'
+import { axiosClient } from '../../../../utils/services/axios/adminAxiosClient'
 
 const getAccountInfo = async (accountId: string) => {  
     return await axiosClient.get('/accounts/' + accountId)

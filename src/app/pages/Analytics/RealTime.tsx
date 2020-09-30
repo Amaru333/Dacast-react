@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate, displayBytesForHumans, mapMarkerNameTranformBytesFromGB } from '../../../utils/utils';
+import { tsToLocaleDate } from '../../../utils/formatUtils';
 import { AnalyticsCard, renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';

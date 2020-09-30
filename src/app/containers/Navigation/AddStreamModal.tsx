@@ -7,14 +7,14 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { isMobile } from 'react-device-detect';
-import { axiosClient } from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 const moment = require('moment-timezone')

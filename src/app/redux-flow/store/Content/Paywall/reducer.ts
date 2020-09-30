@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, ContentPaywallState  } from "./types";
-import { userToken } from '../../../../utils/token';
+import { userToken } from '../../../../utils/services/token/tokenService';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {

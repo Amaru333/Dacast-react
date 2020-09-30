@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
-import { usePlayer } from '../../utils/player';
-import { userToken } from '../../utils/token';
+import { usePlayer } from '../../utils/services/player/player';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
     

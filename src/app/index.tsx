@@ -7,7 +7,7 @@ import configureStore from "./redux-flow/configureStore";
 import { globalDefaultState } from "./redux-flow/store";
 import "react-table/react-table.css";
 import * as Sentry from '@sentry/react';
-import { userToken } from './utils/token';
+import { userToken } from './utils/services/token/tokenService';
 
 
 const initialState = globalDefaultState;

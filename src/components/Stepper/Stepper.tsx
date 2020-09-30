@@ -8,7 +8,7 @@ import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, Stepper
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
-import { useStepperFinalStepAction } from '../../app/utils/useStepperFinalStepAction';
+import { useStepperFinalStepAction } from '../../app/utils/utils';
 
 export const CustomStepper = (props: StepperProps) => {
 

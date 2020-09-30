@@ -52,7 +52,7 @@ export const handleValidationForm = (id: string, data: any, type?: CustomType, r
         return spreadProps;
     } else {
         let deepness = id.split('.');
-        let targetObject = false;
+        let targetObject: any = false;
         for(var i = 0; i < deepness.length; i++) {
             targetObject = targetObject ? targetObject[deepness[i]] : data[deepness[i]]
         }
@@ -68,12 +68,4 @@ export const handleValidationForm = (id: string, data: any, type?: CustomType, r
         
     }
     
-}
-
-//TODO: Delete all of this under that
-export const handleValidationProps = (id: string, data: ValidationsInputObject) => {
-    return {
-        isError: data[id] ? data[id].error : false,
-        help: data[id] ? data[id].errorMessage : ""
-    }
 }

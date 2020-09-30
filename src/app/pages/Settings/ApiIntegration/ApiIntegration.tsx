@@ -6,7 +6,8 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { IconStyle, ActionIcon } from '../../../../shared/Common/Icon';
-import { tsToLocaleDate, useMedia } from '../../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
@@ -18,7 +19,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;

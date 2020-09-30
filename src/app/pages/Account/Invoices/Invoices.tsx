@@ -7,9 +7,10 @@ import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
 import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 import { InvoicesFiltering, FilteringInvoicesState } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
-import { tsToLocaleDate, capitalizeFirstLetter, useQuery } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { DateTime } from 'luxon';
-import { axiosClient } from '../../../utils/axiosClient';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
+import { capitalizeFirstLetter, useQuery } from '../../../../utils/utils';
 import { Link, useHistory } from 'react-router-dom';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {

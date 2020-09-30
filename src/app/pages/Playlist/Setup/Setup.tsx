@@ -1,8 +1,7 @@
 import React from 'react';
-import { FolderTreeNode, FoldersInfos, FolderAsset } from '../../../redux-flow/store/Folders/types';
+import { FolderTreeNode, FolderAsset } from '../../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Text } from '../../../../components/Typography/Text';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../../Folders/Breadcrumb';
 import styled, { css } from 'styled-components';
@@ -11,12 +10,13 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../../compon
 import { SwitchTabConfirmation, PlaylistSettings } from './SetupModals';
 import { useOutsideAlerter, compareValues } from '../../../../utils/utils';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
-import { FolderTree, rootNode } from '../../../utils/folderService';
+import { FolderTree, rootNode } from '../../../utils/services/folder/folderService';
 import { Badge } from '../../../../components/Badge/Badge';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
+import { Button } from '../../../../components/FormsComponents/Button/Button'; 
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {

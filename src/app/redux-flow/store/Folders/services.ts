@@ -1,5 +1,5 @@
 import { ContentType } from './types';
-import { axiosClient } from '../../../utils/axiosClient';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { contentListServices } from '../Content/List/services';
 import { ContentGeneralServices } from '../Content/General/services';
 

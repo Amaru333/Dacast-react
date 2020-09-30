@@ -1,5 +1,5 @@
 import { ApiIntegrationPageInfos } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getSettingsIntegrationService = async () => {
     return await axiosClient.get('/settings-integration-page');

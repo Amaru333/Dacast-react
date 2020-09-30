@@ -5,7 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { AppRoutes } from '../../constants/AppRoutes';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const PlaylistsTabs = (props: {playlistId: string}) => {
     let history = useHistory()

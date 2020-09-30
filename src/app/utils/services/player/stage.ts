@@ -1,4 +1,4 @@
-export enum Stages {
+enum Stages {
     Staging = 'staging',
     Production = 'prod'
 }
@@ -13,7 +13,7 @@ if (DevKeywords.some(keyword => process.env.API_BASE_URL.indexOf(keyword) !== -1
 
 process.env.BASE_IFRAME_URL = stage === Stages.Production ? 'iframe.dacast.com' : 'iframe-dev.dacast.com'
 
-export const STAGE = stage
+const STAGE = stage
 
 export const isProduction = () => {
     return STAGE === Stages.Production

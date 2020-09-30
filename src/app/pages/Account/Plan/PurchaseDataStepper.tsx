@@ -5,7 +5,6 @@ import { Table } from '../../../../components/Table/Table';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { handleDataPrice } from '../../../../utils/utils';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
@@ -57,6 +56,19 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
             <Text size={14} weight="med">Total Pay Now</Text>,
             <Text className="right pr2" weight="med" size={14}>{(dataAmount && dataAmount < 100000) ? `$ ${(dataPrice * dataAmount).toFixed(2)}` : null }</Text>
         ]
+    }
+
+    const handleDataPrice = (data: number, setDataAmount: Function, setDataPrice: Function) => {
+        setDataAmount(data)
+        if(data <= 4999 ){
+            setDataPrice(0.25)
+        } else if(data >= 5000 && data <= 9999){
+            setDataPrice(0.12)
+        } else if(data >= 10000) {
+            setDataPrice(0.09)
+        } else {
+            setDataPrice(null)
+        }
     }
 
     return (

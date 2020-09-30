@@ -1,4 +1,4 @@
-import { axiosClient } from '../../../../utils/axiosClient'
+import { axiosClient } from '../../../../utils/services/axios/axiosClient'
 
 const formatQsToEndpoint = (qs: string) => {
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))

@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, AnalyticsDashboardInitialState, AnalyticsDashboardState } from "./types";
-import { tsToLocaleDate } from '../../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../../utils/formatUtils';
 
 const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardInitialState, action: Action) => {
     switch (action.type) {

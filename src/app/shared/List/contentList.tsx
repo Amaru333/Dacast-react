@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
-import { tsToLocaleDate, readableBytes, useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
+import { useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
+import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { Table } from '../../../components/Table/Table';
 import { Text } from '../../../components/Typography/Text';
 import { Label } from '../../../components/FormsComponents/Label/Label';
@@ -17,7 +18,7 @@ import { DateTime } from 'luxon';
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { Modal } from '../../../components/Modal/Modal';
 import { MoveItemModal } from '../../../app/pages/Folders/MoveItemsModal';
-import { FolderTree, rootNode } from '../../utils/folderService';
+import { FolderTree, rootNode } from '../../utils/services/folder/folderService';
 import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { NewFolderModal } from '../../../app/pages/Folders/NewFolderModal';
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal';
@@ -28,10 +29,7 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
-import EventHooker from '../../utils/EventHooker';
-import { store } from '../..';
-import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
-import { AnyAction } from 'redux';
+import EventHooker from '../../utils/services/event/eventHooker';
 
 interface ContentListProps {
     contentType: string

@@ -14,7 +14,7 @@ import { Action } from '../../../redux-flow/store/Register/ResetPassword/actions
 import { Size, NotificationType } from '../../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../../redux-flow/store/Toasts/actions';
 import { connect } from 'react-redux';
-import { axiosClient } from '../../../utils/axiosClient'
+import { axiosClient } from '../../../utils/services/axios/axiosClient'
 
 const logo = require('../../../../../public/assets/logo.png');
 

@@ -14,20 +14,18 @@ import { SettingsInteractionComponentProps } from '../../../containers/Settings/
 import { EngagementInfo, Ad } from '../../../redux-flow/store/Settings/Interactions';
 import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
-import { usePlayer } from '../../../utils/player';
 import { Prompt } from 'react-router';
-import { dataToTimeVideo, capitalizeFirstLetter } from '../../../../utils/utils';
+import { dataToTimeVideo } from '../../../../utils/formatUtils';
+import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
-import { ImageStyle, ButtonStyle, LinkStyle } from '../../Account/Company/CompanyStyle';
+import { ImageStyle, ButtonStyle } from '../../Account/Company/CompanyStyle';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { PlayerContainer } from '../../../shared/Theming/ThemingStyle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
-import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {

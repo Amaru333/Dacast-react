@@ -1,5 +1,5 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { adminToken } from './token'
+import { userToken } from '../token/tokenService'
 import { DateTime } from 'luxon'
 
 export type RequestConfig = {
@@ -19,7 +19,7 @@ class AxiosClient {
     private getInstance = (): AxiosInstance => {
         if(!this.axiosInstance) {
             this.axiosInstance = Axios.create({
-                baseURL: process.env.ADMIN_API_BASE_URL,
+                baseURL: process.env.API_BASE_URL,
                 timeout: 30000,
                 headers: {Authorization: null}
             })
@@ -38,10 +38,10 @@ class AxiosClient {
             delete newConfig.headers.Authorization
             return newConfig
         }
-        if(DateTime.fromSeconds(adminToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 10000 <= 5) {
+        if(DateTime.fromSeconds(userToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 60000 <= 5) {
             await this.checkRefresh()
         }
-        config.headers['Authorization'] = adminToken.getTokenInfo().token
+        config.headers['Authorization'] = userToken.getTokenInfo().token
         return config
     }
 
@@ -92,6 +92,10 @@ class AxiosClient {
         return config
     }
 
+    public forceRefresh = async () => {
+        await this.refreshToken()
+    }
+
     private checkRefresh = async () => {
         if(!this.refreshingToken) {
             return await this.refreshToken().then(() => {
@@ -101,13 +105,14 @@ class AxiosClient {
     }
 
     private refreshToken = async () => {
-        let token = adminToken.getTokenInfo()
+        let token = userToken.getTokenInfo()
         return await Axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh}).then((response) => {
             token.token = response.data.data.token
             token.expires = response.data.data.expires
-            localStorage.removeItem('adminToken')
-            localStorage.setItem('adminToken', JSON.stringify(token))
-            adminToken.addTokenInfo(token)
+            localStorage.removeItem('userToken')
+            localStorage.setItem('userToken', JSON.stringify(token))
+            userToken.addTokenInfo(token)
+
         }).catch((error) => {
             throw new Error(error)
         })  

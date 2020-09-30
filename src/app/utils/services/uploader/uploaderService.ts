@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { axiosClient } from './axiosClient'
+import { axiosClient } from '../axios/axiosClient'
 
 export class UploadObject {
 

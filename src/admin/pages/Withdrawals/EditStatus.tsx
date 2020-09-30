@@ -5,7 +5,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Text } from '../../../components/Typography/Text'
-import { tsToLocaleDate, capitalizeFirstLetter } from '../../../utils/utils'
+import { tsToLocaleDate } from '../../../utils/formatUtils'
+import { capitalizeFirstLetter } from '../../../utils/utils'
 import { DateTime } from 'luxon'
 
 export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: string}) => {

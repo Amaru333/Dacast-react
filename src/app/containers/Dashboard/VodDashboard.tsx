@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { WidgetHeader, TableListStyle, classContainer, classItemHalfWidthContainer, classItemFullWidth, classItemFullWidthContainer } from './DashboardStyles';
 import { WidgetElement } from './WidgetElement';
-import { numberFormatter, getPercentage } from '../../../utils/utils';
+import { getPercentage } from '../../../utils/utils';
+import { numberFormatter } from '../../../utils/formatUtils';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DoughnutChart } from '../../../components/Analytics/DoughnutChart/DoughnutChart';

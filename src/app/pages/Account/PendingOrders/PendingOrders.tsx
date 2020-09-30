@@ -9,7 +9,8 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { CartStep, PaymentStep } from './PendingOrderStepper';
 import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/types';
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
-import { tsToLocaleDate, capitalizeFirstLetter } from '../../../../utils/utils';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
+import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { DateTime } from 'luxon';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
@@ -17,7 +18,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
     const emptyOrder: PendingOrder = 
     {   id: "-1", 
         items: [{id: "-1", price: 0, description: ""}], 
-        dateCreated: "", 
+        dateCreated: NaN, 
         price: 0, 
         currency: "", 
         status: "", 

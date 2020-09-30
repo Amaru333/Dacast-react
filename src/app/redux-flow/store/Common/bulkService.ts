@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ContentType } from '../Folders/types'
-import { axiosClient } from '../../../utils/axiosClient'
+import { axiosClient } from '../../../utils/services/axios/axiosClient'
 
 export const bulkActionsService = async (data: ContentType[], action: 'delete' | 'theme' | 'online' | 'paywall' | 'create', targetValue?: string | boolean) => {
     return await axiosClient.post('/bulk', 

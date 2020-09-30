@@ -15,11 +15,11 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../utils/utils';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
-import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/Content/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -27,7 +27,7 @@ import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { axiosClient } from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Divider } from '../Common/MiscStyle';
 
@@ -196,8 +196,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8'), link: null }
+        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
+    
+    const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
 
     let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.contentDetails.thumbnail).length !== 0;
@@ -421,7 +423,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 }
                             </div>
                         } */}
-
                     </div>
                 </div>
                 </>
@@ -518,36 +519,40 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable" />
                     }
                     </>}
-                    <Divider className="col col-12 mt3 mr25 mb25" />
-                    <div className="col col-12 advancedVideoLinks">
-                        <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
-                            <IconStyle  className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
-                            <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
-                        </div>                  
-                        <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                            {advancedLinksOptions.filter(item => item.enabled).map((item) => {
-                                {
-                                    if(item.link && item.link !== ''){
-                                        return (
-                                            <LinkBoxContainer key={item.id} className="col col-6 mt2">
-                                                <LinkBoxLabel>
-                                                    <Text size={14} weight="med">{item.label}</Text>
-                                                </LinkBoxLabel>
-                                                <LinkBox>
-                                                    <LinkText size={14}>
-                                                        <Text size={14} weight="reg">{item.link}</Text>
-                                                    </LinkText>
-                                                    <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                                    <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                                </LinkBox>
-                                            </LinkBoxContainer>
-                                        )
-                                    }
-                                }
-                            })}
-                        </ExpandableContainer>
-                    </div>
-
+                    {
+                        enabledAdvancedLinks.every(item => (!item.link || item.link === '')) ? null :
+                            <>
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <div className="col col-12 advancedVideoLinks">
+                                    <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
+                                        <IconStyle  className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
+                                        <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
+                                    </div>                  
+                                    <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
+                                        {enabledAdvancedLinks.map((item) => {
+                                            {
+                                                if(item.link && item.link !== ''){
+                                                    return (
+                                                        <LinkBoxContainer key={item.id} className="col col-6 mt2">
+                                                            <LinkBoxLabel>
+                                                                <Text size={14} weight="med">{item.label}</Text>
+                                                            </LinkBoxLabel>
+                                                            <LinkBox>
+                                                                <LinkText size={14}>
+                                                                    <Text size={14} weight="reg">{item.link}</Text>
+                                                                </LinkText>
+                                                                <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
+                                                                <Tooltip target={item.id}>Copy to clipboard</Tooltip>
+                                                            </LinkBox>
+                                                        </LinkBoxContainer>
+                                                    )
+                                                }
+                                            }
+                                        })}
+                                    </ExpandableContainer>
+                                </div>
+                            </>
+                    }
                    { (subtitleModalOpen && props.contentType === "vod") &&
                     <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
                             <ModalContent>

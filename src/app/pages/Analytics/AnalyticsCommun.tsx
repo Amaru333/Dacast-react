@@ -1,5 +1,5 @@
-import { exportCSVFile, displayBytesForHumans, mapMarkerNameTranformBytesFromGB, formateDateFromDatepicker } from '../../../utils/utils';
 import React from 'react';
+import { displayBytesForHumans } from '../../../utils/formatUtils';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Card } from '../../../components/Card/Card';
@@ -7,16 +7,16 @@ import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import LeafletMap from '../../../components/Analytics/LeafletMap';
 import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
-import { GetAnalyticsDashboardOptions } from '../../redux-flow/store/Analytics/Dashboard';
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import ReactTable from 'react-table';
+import moment from 'moment'
+import { exportCSVFile } from '../../../utils/services/csv/csvService';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 
-import moment from 'moment'
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
@@ -62,6 +62,16 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
     )
 }
 
+export const logScale = (value: number, minp: number, maxp: number, minv: number, maxv: number) => {
+    var minv = Math.log(minv);
+    var maxv = Math.log(maxv);
+
+    // calculate adjustment factor
+    var scale = (maxv - minv) / (maxp - minp);
+
+    return Math.exp(minv + scale * (value - minp));
+}
+
 export const mergeForTable = (data: any, dates: any) => {
     if(data && data.length) {
         var result = []
@@ -83,6 +93,9 @@ export const AnalyticsCardHeader = styled.div<{}>`
     display: flex;
     justify-content: space-between;
 `
+export const mapMarkerNameTranformBytesFromGB = (name: string, value: number) => {
+    return name + ': ' + displayBytesForHumans(value, true);
+}
 
 export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
     let mapMin: any = Math.min(...dataRepo.map(m => m.consumedMB));
@@ -137,6 +150,10 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
 
     const [dates, setDates] = React.useState<{ start: any; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
 
+    const formateDateFromDatepicker = (dates: { startDate: any; endDate: any }) => {
+        return { startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x') }
+    }
+
     const renderDatePresets = () => {
         return presets ? (
             <div>
@@ -166,6 +183,29 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
             <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )
+}
+
+/**
+ * A linear interpolator for hexadecimal colors
+ * @param {String} a
+ * @param {String} b
+ * @param {Number} amount
+ * @example
+ * // returns #7F7F7F
+ * lerpColor('#000000', '#ffffff', 0.5)
+ * @returns {String}
+ */
+export const lerpColor = (a: string, b: string, amount: number): string => {
+
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace(/#/g, ''), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
 }
 
 export const AnalyticsContainerHalfSelector = styled.div<{}>`

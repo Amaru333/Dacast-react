@@ -1,4 +1,4 @@
-import { axiosClient } from '../../../../utils/adminAxiosClient'
+import { axiosClient } from '../../../../utils/services/axios/adminAxiosClient'
 
 const getAccounts = async (accountId: string, qs: string) => { 
     return await axiosClient.get('/accounts' + (qs ? '?' + qs :  '?perPage=10&page=0'))
