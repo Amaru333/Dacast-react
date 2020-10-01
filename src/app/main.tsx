@@ -38,7 +38,7 @@ import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
-import EventHooker from './utils/services/event/eventHooker';
+import EventHooker from '../utils/services/event/eventHooker';
 
 // Any additional component props go here.
 interface MainProps {
@@ -61,6 +61,13 @@ EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     if(timeoutId === null) { 
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
+})
+
+EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
+    console.log('forcing logout')
+    store.dispatch({type: 'USER_LOGOUT'})
+    userToken.resetUserInfo()
+    location.reload()
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
@@ -238,6 +245,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     }, [])
 
     if (userToken.isLoggedIn()) {
+        console.log('user token ', userToken)
         let tagManagerArgs = {
             gtmId: 'GTM-PHZ3Z7F',
             dataLayer: {
@@ -253,6 +261,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         }
         TagManager.initialize(tagManagerArgs);
     } else {
+        console.log('user not logged ', userToken)
         let tagManagerArgs = { gtmId: 'GTM-PHZ3Z7F' };
         TagManager.initialize(tagManagerArgs);
     }

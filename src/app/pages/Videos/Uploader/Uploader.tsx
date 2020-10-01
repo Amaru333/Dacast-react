@@ -15,7 +15,7 @@ import { useNetwork } from '../../../utils/custom-hooks/networkNavigatorHook';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
-import EventHooker from '../../../utils/services/event/eventHooker';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -50,7 +50,6 @@ export const UploaderPage = (props: UploaderProps) => {
 
     React.useEffect(() => {
         if (currentUpload && currentUpload.isCompleted) {
-            console.log('dispatching vod updaloded')
             EventHooker.dispatch('EVENT_VOD_UPLOADED', undefined)
             uploadNextFile()
         }
