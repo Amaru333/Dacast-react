@@ -1,4 +1,4 @@
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 import { SecuritySettings } from '../../Settings/Security/types';
 
 const getContentSecuritySettingsService = async (contentId: string, contentType: string) => {

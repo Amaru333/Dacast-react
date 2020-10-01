@@ -1,7 +1,7 @@
 import React from 'react';
 import { isProduction } from './stage';
 
-
+// TODO WHILE REFACTORING: MAKE IT A PACKAGE
 export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, contentId: string) => {
     const [player, setPlayer] = React.useState<any>(null);
 

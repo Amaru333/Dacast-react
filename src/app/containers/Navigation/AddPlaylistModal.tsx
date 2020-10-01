@@ -6,7 +6,7 @@ import { Text } from '../../../components/Typography/Text';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { axiosClient } from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {

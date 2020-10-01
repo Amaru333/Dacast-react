@@ -1,5 +1,5 @@
 import { bulkActionsService } from '../../Common/bulkService';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getContentRenditionsService = async (contentId: string, contentType: string) => {
     return await axiosClient.get(`${contentType}/${contentId}/renditions`)

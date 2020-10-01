@@ -3,7 +3,7 @@ import { Tab } from '../../../components/Tab/Tab';
 import { useHistory } from "react-router-dom";
 import { TabsContainer } from '../../shared/TabsStyle';
 import { AppRoutes } from '../../constants/AppRoutes';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const VideoTabs = (props: {videoId: string}) => {
     let history = useHistory()

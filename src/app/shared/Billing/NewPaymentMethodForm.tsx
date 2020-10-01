@@ -6,16 +6,16 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
-import { useStepperFinalStepAction } from '../../utils/useStepperFinalStepAction';
+import { useStepperFinalStepAction } from '../../utils/utils';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos, PaymentDetails, DefaultPaymentDetails } from '../../redux-flow/store/Account/Plan/types';
 import { Table } from '../../../components/Table/Table';
 import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
-import {countries} from 'countries-list'
+import {countries, Country} from 'countries-list'
 import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { handleValidationForm } from '../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
@@ -28,6 +28,21 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
     const [recurlyError, setRecurlyError] = React.useState<string>(null)
     const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
     const [formState, setFormState] = React.useState<string>(null)
+
+    const countriesArray = Object.keys(countries).map(country => countries[country])
+
+    const compareCountries = (a: Country, b: Country) => {
+        const countryA = a.name.toUpperCase();
+        const countryB = b.name.toUpperCase();
+    
+        let comparison = 0
+        if (countryA > countryB) {
+            comparison = 1;
+          } else if (countryA < countryB) {
+            comparison = -1;
+          }
+          return comparison;
+    }
 
     let formRef = React.useRef<HTMLFormElement>(null)
 
@@ -204,9 +219,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                         />
                         <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country" setValue={setBillingCountry}>
                             <option value="">Select</option>
-                           {Object.keys(countries).map(country => {
+                           {countriesArray.sort(compareCountries).map(country => {
                                return (
-                                <option>{countries[country].name}</option>
+                                <option>{country.name}</option>
                                )
                            })}
                         </DropdownSelect>

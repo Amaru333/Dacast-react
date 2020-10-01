@@ -8,7 +8,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { DateTime } from 'luxon'
-import { useQuery, tsToLocaleDate } from '../../../utils/utils'
+import { useQuery } from '../../../utils/utils'
+import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
@@ -59,8 +60,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                     <a key={'balanceTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(line.salesforceId)}>{line.salesforceId}</a>,
                     <Link key={'balancesTableBodyDateCell' + key }to=''>{tsToLocaleDate(Math.floor(line.date / 1000), DateTime.DATETIME_SHORT)}</Link>,
                     <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.lineType}</Text>,
-                    <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? Math.sign(line.fee).toString() + (Math.abs(line.amount * line.conversionRateToAccountCurency-line.fee)).toString() : '' : line.amount > 0 ? line.amount : 0}</Text>,
-                    <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? Math.sign(line.fee).toString() + (Math.abs(line.amount * line.conversionRateToAccountCurency-line.fee)).toString() : '' : line.amount < 0 ? line.amount : 0}</Text>,
+                    <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)) : '' : line.amount > 0 ? line.amount : 0}</Text>,
+                    <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)): '' : line.amount < 0 ? line.amount : 0}</Text>,
                     <Text key={'balancesTableBodyRevenueCell' + key } size={14}>{line.fee || 0}</Text>,
                 ]}
             })

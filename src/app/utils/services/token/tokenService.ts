@@ -1,4 +1,4 @@
-import { Privilege } from '../constants/PrivilegesName';
+import { Privilege } from '../../../constants/PrivilegesName';
 
 type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website'
 

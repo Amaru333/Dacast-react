@@ -4,7 +4,7 @@ import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { BarChart } from '../../../components/Analytics/BarChart';
-import { tsToLocaleDate } from '../../../utils/utils';
+import { tsToLocaleDate } from '../../../utils/formatUtils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart'; 
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';

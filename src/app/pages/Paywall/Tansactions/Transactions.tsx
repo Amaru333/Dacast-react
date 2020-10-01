@@ -5,9 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { TransactionsComponentProps } from '../../../containers/Paywall/Transactions';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { tsToLocaleDate, useQuery } from '../../../../utils/utils';
-import { DateTime } from 'luxon';
+import { useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
@@ -146,8 +144,8 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
-                    transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) + (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
-                    transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) + (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
+                    transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
+                    transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
                 ]}
             })
         }

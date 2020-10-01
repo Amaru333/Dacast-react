@@ -4,7 +4,8 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementComponentProps } from './ContentEngagement';
-import { dataToTimeVideo, capitalizeFirstLetter, inputTimeVideoToTs } from '../../../utils/utils';
+import { capitalizeFirstLetter } from '../../../utils/utils';
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../utils/formatUtils';
 
 
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: (b: boolean) => void; selectedAd: Ad}) => {

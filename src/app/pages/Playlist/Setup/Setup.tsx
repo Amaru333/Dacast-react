@@ -4,7 +4,7 @@ import { PlaylistSettings } from './SetupModals';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
 import { rootNode } from '../../../utils/folderService';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
-import { userToken } from '../../../utils/token';
+import { userToken } from '../../../utils/services/token/tokenService';
 import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
 import { handleRowIconType, removePrefix } from '../../../utils/utils';
 import { ContentSelector } from '../../../../components/ContentSelector/ContentSelector';

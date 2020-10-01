@@ -7,7 +7,7 @@ import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 var moment = require('moment');
 
 export interface FilteringContentState {

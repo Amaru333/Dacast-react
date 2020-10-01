@@ -9,7 +9,7 @@ import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { useForm } from 'react-hook-form';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
@@ -46,7 +46,14 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 break;
         }
         setButtonLoading(true)
-        props.addPaymentMethodRequest({...data, id: props.selectedPaymentMethod.id, paymentMethodType: paymentMethod, recipientType: paymentMethodRecipientType.toLowerCase() as 'business' | 'personal'})
+        props.addPaymentMethodRequest(
+            {
+                ...data, 
+                id: props.selectedPaymentMethod ? props.selectedPaymentMethod.id : null, 
+                paymentMethodType: paymentMethod, 
+                recipientType: paymentMethodRecipientType.toLowerCase() as 'business' | 'personal'
+            }
+        )
         .then(() => {
             setButtonLoading(false)
             props.displayPage(false)
@@ -457,9 +464,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 label='State/Province' 
                                 defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
                                 placeholder='State/Province' 
-                                {...handleValidationForm('town', errors)}
+                                {...handleValidationForm('state', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('town', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('state', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1 xs-mb2' 

@@ -5,7 +5,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Text } from '../../../components/Typography/Text'
-import { tsToLocaleDate } from '../../../utils/utils'
+import { tsToLocaleDate } from '../../../utils/formatUtils'
+import { capitalizeFirstLetter } from '../../../utils/utils'
 import { DateTime } from 'luxon'
 
 export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: string}) => {
@@ -13,7 +14,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
     let history = useHistory()
 
 
-    const [selectedStatus, setSelectedStatus] = React.useState<string>(props.withdrawal.status.charAt(0).toUpperCase() + props.withdrawal.status.slice(1))
+    const [selectedStatus, setSelectedStatus] = React.useState<string>(capitalizeFirstLetter(props.withdrawal.status))
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -60,7 +61,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
 
     return (
         <div className='flex flex-column'>
-            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? props.withdrawal.status.charAt(0).toUpperCase() + props.withdrawal.status.slice(1) : ''} callback={(value: string) => setSelectedStatus(value)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={{'Pending': false, 'Completed': false, 'Cancelled': false}} />
+            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? capitalizeFirstLetter(props.withdrawal.status) : ''} callback={(value: string) => setSelectedStatus(value)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={{'Pending': false, 'Completed': false, 'Cancelled': false}} />
             <div className='p1 border center col col-6'>
                 {renderWithdrawalInfo()}
             </div>

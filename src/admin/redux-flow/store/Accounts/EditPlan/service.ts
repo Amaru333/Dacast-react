@@ -1,5 +1,5 @@
 import { PlanInfoPut } from './types'
-import { axiosClient } from '../../../../utils/adminAxiosClient'
+import { axiosClient } from '../../../../utils/services/axios/adminAxiosClient'
 
 const getAccountPlan = async (accountId: string) => {  
     return await axiosClient.get('/privileges/' + accountId)

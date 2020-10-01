@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { FolderTreeNode, SubFolder, ContentType } from '../redux-flow/store/Folders/types';
-import { axiosClient } from './axiosClient';
+import { FolderTreeNode, SubFolder, ContentType } from '../../../redux-flow/store/Folders/types';
+import { axiosClient } from '../axios/axiosClient';
 
 export const rootNode: FolderTreeNode = {
     isExpanded: true,

@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { useForm } from 'react-hook-form'
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { ReCaptcha } from 'react-recaptcha-v3'
 import axios from 'axios'
 import { Bubble } from '../../../../components/Bubble/Bubble';

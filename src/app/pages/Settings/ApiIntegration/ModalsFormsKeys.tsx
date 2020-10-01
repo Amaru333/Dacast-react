@@ -5,7 +5,7 @@ import { InputRadio } from '../../../../components/FormsComponents/Input/InputRa
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { handleValidationForm } from '../../../utils/hooksFormSubmit';
+import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
 
 const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: Function}) => {

@@ -1,5 +1,5 @@
 import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getContentEngagementSettings = async (contentId: string, contentType: string) => {
     return await axiosClient.get(`${contentType}/${contentId}/settings/engagement`)

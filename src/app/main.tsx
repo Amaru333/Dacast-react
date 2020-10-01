@@ -21,8 +21,8 @@ import {
 import "../scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from '../components/Header/Header';
-import { responsiveMenu } from './utils/hooksReponsiveNav';
-import { userToken } from './utils/token';
+import { responsiveMenu } from './utils/custom-hooks/reponsiveNavHook';
+import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
 import { updateTitleApp } from './utils/utils';
 import ScrollToTop, { useMedia } from '../utils/utils'
@@ -38,7 +38,7 @@ import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
-import EventHooker from './utils/EventHooker';
+import EventHooker from './utils/services/event/eventHooker';
 
 // Any additional component props go here.
 interface MainProps {

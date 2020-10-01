@@ -1,5 +1,5 @@
 import { ContentSetupObject } from './types';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getContentSetupAction = async (contentId: string, contentType: string) => {
     if(contentType === 'exposs') {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { axiosClient } from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 export const EmptyTrashModal = (props: {toggle: (b: boolean) => void;showToast: (text: string, size: Size, notificationType: NotificationType) => void; loadContent?: () => void}) => {
 

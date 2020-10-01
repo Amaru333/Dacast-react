@@ -1,5 +1,5 @@
 import { EncodingRecipeItem } from './EncodingRecipesTypes';
-import { axiosClient } from '../../../../utils/axiosClient';
+import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getEncodingRecipesService = async () => {
     return await axiosClient.get('/settings/encoding-recipes')

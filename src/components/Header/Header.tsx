@@ -1,12 +1,12 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
-import { useOutsideAlerter } from '../../utils/utils';
+import { useOutsideAlerter, capitalizeFirstLetter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from '../../app/redux-flow/store/Register/Login';
 import Burger from '../../app/containers/Navigation/Burger';
@@ -14,7 +14,7 @@ import { Text } from '../Typography/Text';
 import { AppRoutes } from '../../app/constants/AppRoutes';
 import { getProfilePageDetailsAction } from '../../app/redux-flow/store/Account/Profile/actions';
 import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
-import { userToken } from '../../app/utils/token';
+import { userToken } from '../../app/utils/services/token/tokenService';
 import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
 
@@ -74,7 +74,7 @@ const Header = (props: HeaderProps) => {
 
     React.useEffect(() => {
         let pathArray = location.pathname.split('-').join(' ').split('/')
-        let breadCrumbString = pathArray.map( path => path.match(UuidRegex) ? handleUid(path, pathArray[1]) : path.split(' ').map(f => f.charAt(0).toUpperCase() + f.slice(1)) )
+        let breadCrumbString = pathArray.map( path => path.match(UuidRegex) ? handleUid(path, pathArray[1]) : path.split(' ').map(f => capitalizeFirstLetter(f)) )
         let breadcrumbNames = breadCrumbString.map(path => path.join(' '))
         let removedSpace = breadcrumbNames.shift()
         setBreadcrumbItems(breadcrumbNames)
@@ -159,9 +159,9 @@ const Header = (props: HeaderProps) => {
         <HeaderStyle>
             {props.isMobile ? <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} /> : null}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
-            <div className="mr-auto flex ml2 sm-show" >
+            <BreadcrumbContainer className="mr-auto flex ml2 sm-show" >
                 {renderHeaderBreadcrumb()}
-            </div>
+            </BreadcrumbContainer>
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>

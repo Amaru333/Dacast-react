@@ -15,11 +15,11 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../utils/utils';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
-import { logAmplitudeEvent } from '../../utils/amplitudeService';
+import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/Content/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -27,7 +27,7 @@ import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { axiosClient } from '../../utils/axiosClient';
+import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Divider } from '../Common/MiscStyle';
 import { ColorPickerLabel } from '../../pages/Paywall/Theming/Theming';
@@ -206,8 +206,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8'), link: null }
+        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
+    
+    const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
 
     let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
     let headerEnable = props.contentDetails.header && Object.keys(props.contentDetails.header).length !== 0;

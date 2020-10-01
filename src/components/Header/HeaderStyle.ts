@@ -48,3 +48,9 @@ left: calc(100% - 194px);
     padding: 0 0 0 8px;
 }
 `
+
+export const BreadcrumbContainer = styled.div`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`

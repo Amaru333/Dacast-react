@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
-import { readableBytes } from '../../../../utils/utils';
-import { updateClipboard } from '../../../utils/utils'
+import { readableBytes } from '../../../../utils/formatUtils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
@@ -113,11 +112,12 @@ export const ProgressItemEndInfos = styled.div<{}>`
 export const UploaderItemLabel = styled.div<{}>`
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     width: 40%;
-    height: auto;
+    height: 24px;
     background-color: ${props => props.theme.colors["gray-10"]};
     padding: 8px 12px;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
 `
 

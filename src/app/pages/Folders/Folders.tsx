@@ -11,7 +11,8 @@ import { FoldersFiltering, FoldersFilteringState } from './FoldersFiltering'
 import { Modal } from '../../../components/Modal/Modal'
 import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
-import { tsToLocaleDate, useMedia, useOutsideAlerter } from '../../../utils/utils'
+import { useMedia, useOutsideAlerter } from '../../../utils/utils'
+import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
@@ -22,7 +23,7 @@ import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
 import { handleFeatures } from '../../shared/Common/Features'
 import { DateTime } from 'luxon'
-import { FolderTree, rootNode } from '../../utils/folderService'
+import { FolderTree, rootNode } from '../../utils/services/folder/folderService'
 import { useHistory } from 'react-router'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { DeleteFolderModal } from './DeleteFolderModal'
@@ -165,10 +166,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             setFetchContent(false)
         })
     }, [selectedFolder])
-
-    // useEasyOutsideAlerter(bulkActionsDropdownListRef, () => {
-    //     setBulkActionsDropdownIsOpened(false)
-    // });
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
