@@ -2,12 +2,7 @@ import { SubtitleInfo, ContentDetails } from './types'
 import { axiosClient } from '../../../../utils/services/axios/axiosClient'
 
 const getContentDetailsService = async (contentId: string, contentType: string) => {
-    // TODO QUENTIN REMOVE QFTER ENDPOINTS EXPOS 
-    if( contentType === 'exposs' ) {
-        return {
-            data: {"data":{"id":"1746b6e4-c7a0-c69a-1d1e-ed75cf0f8ede","vodStorageID":"0fd86984-13c7-7033-e921-3ddfac329556","fileLocation":"s3://universe-vod-storage/763e3b18-c4bd-03c2-189b-ffe5355b969d/source.mp4","title":"Coffee","description":null,"online":true,"paywallEnabled":null,"embedType":"script","embedScaling":"fixed","videoInfo":{"videoBitrateBytePerSec":2437516,"durationSec":1.24,"width":1280,"height":720,"rotationMetadataDegrees":0,"framerate":50,"videoCodec":"h264","fileSize":379508},"subtitles":[],"poster":{},"splashscreen":{},"thumbnail":{},"folders":[]}}
-        }
-    }
+
     return await axiosClient.get(`/${contentType}/${contentId}`)
 }
 
@@ -16,9 +11,20 @@ const restoreContentService = async (contentId: string, contentType: string) => 
 }
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
+    let parsedData = null
+    if(contentType === 'expos') {
+        parsedData = {
+            online: data.online,
+            title: data.title,
+            description: data.description,
+            appearance: data.appearance
+        }
+    } else {
+        parsedData = {...data}
+    }
     return await axiosClient.put(`/${contentType}/${data.id}`,
         {
-            ...data
+            ...parsedData
         } 
     )
 }

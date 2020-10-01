@@ -203,17 +203,17 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     let posterEnable = Object.keys(props.contentDetails.poster).length !== 0;
 
     const advancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail.url },
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen.url },
+        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
+        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
         { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
     
     const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
 
-    let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
-    let headerEnable = props.contentDetails.header && Object.keys(props.contentDetails.header).length !== 0;
-    let thumbnailEnable = Object.keys(props.contentDetails.thumbnail).length !== 0;
+    let splashScreenEnable = props.contentDetails.splashscreen && Object.keys(props.contentDetails.splashscreen).length !== 0;
+    let headerEnable = props.contentDetails.poster && Object.keys(props.contentDetails.poster).length !== 0;
+    let thumbnailEnable = props.contentDetails.thumbnail && Object.keys(props.contentDetails.thumbnail).length !== 0;
 
     function saveFile(url: string, filename: string) {
         axiosClient.get(`/vods/${contentDetails.id}/download-url`
@@ -471,8 +471,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             <Text size={14} weight='med'>Header Colour</Text>
                                         </ColorPickerLabel>
                                         <ColorPicker
-                                            defaultColor='white'
-                                            callback={(color: string) => { }}
+                                            defaultColor={contentDetails.appearance && contentDetails.appearance.headerColor ? contentDetails.appearance.headerColor : 'white'}
+                                            callback={(color: string) => setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, headerColor: color}})}
                                         />
                                     </div>
                                     <div className='mb1 col col-6 sm-col-3 px2'>
@@ -480,8 +480,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             <Text size={14} weight='med'>Font Colour</Text>
                                         </ColorPickerLabel>
                                         <ColorPicker
-                                            defaultColor='white'
-                                            callback={(color: string) => { }}
+                                            defaultColor={contentDetails.appearance && contentDetails.appearance.fontColor ? contentDetails.appearance.fontColor : 'white'}
+                                            callback={(color: string) => setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, fontColor: color}})}
                                         />
                                     </div>
                                 </div>
@@ -501,14 +501,14 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             }
                                             <Button
                                                 className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                                onClick={() => { setImageModalTitle("Change Header"); setSelectedImageName(props.contentDetails.header.url); setImageModalOpen(true) }}>
+                                                onClick={() => { setImageModalTitle("Change Header"); setSelectedImageName(props.contentDetails.poster.url); setImageModalOpen(true) }}>
                                                 {
                                                     headerEnable ?
                                                         "Change" : "Add"
                                                 }
                                             </Button>
                                         </ButtonSection>
-                                        {splashScreenEnable && <ImageSection> <SelectedImage src={props.contentDetails.header.url} /></ImageSection>}
+                                        {headerEnable && <ImageSection> <SelectedImage src={props.contentDetails.poster.url} /></ImageSection>}
                                     </ImageArea>
                                 </div>
                                 <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>

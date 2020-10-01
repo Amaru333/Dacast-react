@@ -378,7 +378,7 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "expos" &&
-                        <Button buttonColor="blue" className="ml-auto" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
+                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
                     }
                 </div>
 
