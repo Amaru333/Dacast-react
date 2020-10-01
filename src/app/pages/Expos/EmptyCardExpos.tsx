@@ -17,7 +17,8 @@ export const EmptyCardExpos = () => {
                 <Text className="mb2" size={14} weight='reg' color="black" >Expos are the easiest way to put content in front of your users.<br/>Click the button to create your first Expo!</Text>
                 <Button onClick={() => setCreateModalOpen(true)} typeButton="primary" sizeButton="small" >Create</Button>
             </div> 
-            <AddExpoModal toggle={setCreateModalOpen} />
+            { createModalOpen && <AddExpoModal opened={createModalOpen} toggle={setCreateModalOpen} /> }
+            
         </>
     )
 }

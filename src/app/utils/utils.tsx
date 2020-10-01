@@ -22,7 +22,16 @@ export function updateTitleApp(title: string): void {
 }
 
 export const parseContentType = (contentType: string) => {
-    return contentType === 'live' ? 'channels' : contentType + 's'
+    switch(contentType) {
+        case 'live' : 
+            return 'channels'
+        case 'vod' :
+            return 'vods'
+        case 'playlist' :
+            return 'playlists'
+        default :
+            return contentType
+    }
 }
 
 export const handleRowIconType = (item: FolderAsset) => {

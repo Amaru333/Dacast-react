@@ -25,7 +25,7 @@ const ExposList = (props: ContentListProps) => {
         <>
         {
             props.contentListState['expos'].results.length === 0 ? 
-            <EmptyCardExpos setCreateModalOpen={setCreateModalOpen} /> :
+            <EmptyCardExpos /> :
             <ContentListPage
                 contentType="expos"
                 items={props.contentListState['expos']}

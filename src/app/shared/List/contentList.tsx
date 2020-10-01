@@ -30,9 +30,6 @@ import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import EventHooker from '../../utils/EventHooker';
-import { store } from '../..';
-import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
-import { AnyAction } from 'redux';
 
 interface ContentListProps {
     contentType: 'expos' | 'vod' | 'live' | 'playlist';
@@ -80,13 +77,13 @@ export const ContentListPage = (props: ContentListProps) => {
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
     const bulkDropdownRef = React.useRef<HTMLUListElement>(null);
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringContentState>(formatFilters())
-    const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [paginationInfo, setPaginationInfo] = React.useState<{ page: number; nbResults: number }>({ page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10 })
     const [searchString, setSearchString] = React.useState<string>(qs.get('keyword') || null)
     const [sort, setSort] = React.useState<string>(qs.get('sortBy') || 'created-at-desc')
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(rootNode)
     const [newFolderModalOpened, setNewFolderModalOpened] = React.useState<boolean>(false);
     const [deleteContentModalOpened, setDeleteContentModalOpened] = React.useState<boolean>(false)
-    const [contentToDelete, setContentToDelete] = React.useState<{id: string; title: string}>({id: null, title: null})
+    const [contentToDelete, setContentToDelete] = React.useState<{ id: string; title: string }>({ id: null, title: null })
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
     const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
@@ -96,7 +93,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
 
-    let foldersTree = new FolderTree(() => {}, setCurrentFolder)
+    let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
     React.useEffect(() => {
         let vodUploadedHandler = () => {
@@ -119,15 +116,15 @@ export const ContentListPage = (props: ContentListProps) => {
     }, [props.items])
 
     React.useEffect(() => {
-        if(selectedContent.length > 0) {
+        if (selectedContent.length > 0) {
             setContentList({
-                ...contentList, 
+                ...contentList,
                 results: contentList.results.map((item) => {
-                    if(selectedContent.indexOf(item.objectID) > -1) {
+                    if (selectedContent.indexOf(item.objectID) > -1) {
                         return {
                             ...item,
                             status: updateList !== 'paywall' ? updateList : item.status,
-                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? {...item.featuresList, paywall: false} : item.featuresList
+                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? { ...item.featuresList, paywall: false } : item.featuresList
                         }
                     }
                     return {
@@ -141,63 +138,63 @@ export const ContentListPage = (props: ContentListProps) => {
     }, [updateList])
 
 
-    const formatFiltersToQueryString = (filters: FilteringContentState, pagination: {page: number; nbResults: number}, sortValue: string, keyword: string, ) => {
-        let returnedString= `page=${pagination.page}&perPage=${pagination.nbResults}`
-        if(filters) {
-            
-            if(filters.features) {
+    const formatFiltersToQueryString = (filters: FilteringContentState, pagination: { page: number; nbResults: number }, sortValue: string, keyword: string,) => {
+        let returnedString = `page=${pagination.page}&perPage=${pagination.nbResults}`
+        if (filters) {
+
+            if (filters.features) {
                 returnedString += '&features=' + (filters.features.advertising ? 'advertising' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
             }
 
-            if(filters.status) {
+            if (filters.status) {
                 returnedString += '&status=' + (filters.status.online ? 'online' : '') + (filters.status.offline ? ',offline' : '')
             }
 
-            if(filters.afterDate) {
+            if (filters.afterDate) {
                 returnedString += `&afterDate=${filters.afterDate}`
             }
 
-            if(filters.beforeDate) {
+            if (filters.beforeDate) {
                 returnedString += `&beforeDate=${filters.beforeDate}`
             }
 
-            if(filters.sizeStart) {
+            if (filters.sizeStart) {
                 returnedString += `&sizeStart=${filters.sizeStart}`
             }
 
-            if(filters.sizeEnd) {
+            if (filters.sizeEnd) {
                 returnedString += `&sizeEnd=${filters.sizeEnd}`
             }
         }
-        if(keyword) {
+        if (keyword) {
             returnedString += `&keyword=${keyword}`
         }
-        if(sortValue) {
+        if (sortValue) {
             returnedString += `&sortBy=${sortValue}`
         }
 
-        if(returnedString.indexOf('status=&') > -1) {
-            returnedString = returnedString.replace('status=&','status=online,offline&')
+        if (returnedString.indexOf('status=&') > -1) {
+            returnedString = returnedString.replace('status=&', 'status=online,offline&')
         }
 
-        if(returnedString.indexOf('features=&') > -1) {
-            returnedString = returnedString.replace('features=&','')
+        if (returnedString.indexOf('features=&') > -1) {
+            returnedString = returnedString.replace('features=&', '')
         }
 
-        if(returnedString.indexOf('status') === -1) {
+        if (returnedString.indexOf('status') === -1) {
             returnedString += '&status=online,offline'
         }
         setQsParams(returnedString)
     }
 
     React.useEffect(() => {
-        if(!fetchContent) {
+        if (!fetchContent) {
             setFetchContent(true)
         }
     }, [qsParams])
 
     React.useEffect(() => {
-        if(fetchContent) {
+        if (fetchContent) {
             setContentLoading(true)
             props.getContentList(qsParams, props.contentType).then(() => {
                 setContentLoading(false)
@@ -206,7 +203,7 @@ export const ContentListPage = (props: ContentListProps) => {
             }).catch(() => {
                 setContentLoading(false)
                 setFetchContent(false)
-            })  
+            })
         }
     }, [fetchContent])
 
@@ -238,39 +235,41 @@ export const ContentListPage = (props: ContentListProps) => {
     const contentListHeaderElement = () => {
         return {
             data: [
-                {cell: props.contentType === 'expos' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
-                    onChange={(event) => {
-                        if (event.currentTarget.checked) {
-                            const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
-                            setSelectedContent(editedselectedContent);
-                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
-                            setSelectedContent([])
-                        }
-                    }} />},
+                {
+                    cell: props.contentType === 'expos' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
+                        onChange={(event) => {
+                            if (event.currentTarget.checked) {
+                                const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
+                                setSelectedContent(editedselectedContent);
+                            } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                                setSelectedContent([])
+                            }
+                        }} />
+                },
                 // {cell: <></>},
-                {cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title'},
-                {cell: props.contentType === 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text>},
-                {cell: props.contentType !== 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text>},
+                { cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title' },
+                { cell: props.contentType === 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text> },
+                { cell: props.contentType !== 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text> },
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
-                {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at'},
-                {cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text>},
-                {cell: props.contentType === 'expos' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text>},
-                {cell: <div style={{ width: "80px" }} ></div>},
-            ].filter(x => x.cell !== undefined), 
+                { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at' },
+                { cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text> },
+                { cell: props.contentType === 'expos' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text> },
+                { cell: <div style={{ width: "80px" }} ></div> },
+            ].filter(x => x.cell !== undefined),
             defaultSort: 'created-at',
-            sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
+            sortCallback: (value: string) => { setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString) }
         }
     }
 
-    const handleContentStatus = (status: string, type: string, size: number) =>{
-        switch(status) {
+    const handleContentStatus = (status: string, type: string, size: number) => {
+        switch (status) {
             case 'online':
                 return type === 'vod' && !size ? <Label backgroundColor="gray-5" color="gray-1" label="Processing" /> : <Label backgroundColor="green20" color="green" label="Online" />
             case 'offline':
             case 'deleted':
-                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />  
+                return <Label backgroundColor="red20" color="red" label={status.charAt(0).toUpperCase() + status.slice(1)} />
             default:
-            return null
+                return null
         }
     }
 
@@ -280,46 +279,46 @@ export const ContentListPage = (props: ContentListProps) => {
                 return {
                     data: [
                         props.contentType === 'expos' ? undefined :
-                        <div key={"checkbox" + value.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'> 
-                            <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
-                                if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
-                                    setSelectedContent([...selectedContent, value.objectID])
-                                } else {
-                                    const editedselectedLive = selectedContent.filter(item => item !== value.objectID)
-                                    setSelectedContent(editedselectedLive);
+                            <div key={"checkbox" + value.objectID} style={{ paddingTop: 8, paddingBottom: 8 }} className='flex items-center'>
+                                <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
+                                    if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
+                                        setSelectedContent([...selectedContent, value.objectID])
+                                    } else {
+                                        const editedselectedLive = selectedContent.filter(item => item !== value.objectID)
+                                        setSelectedContent(editedselectedLive);
+                                    }
                                 }
-                            }
-                            } />
-                            {
-                                value.thumbnail ? 
-                                    <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
-                                    :
-                                    <div className='mr1 relative justify-center flex items-center' style={{width: 94, height: 54, backgroundColor: '#AFBACC'}}>
-                                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                                    </div>
-                            }
-                        </div>,
+                                } />
+                                {
+                                    value.thumbnail ?
+                                        <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        :
+                                        <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                                        </div>
+                                }
+                            </div>,
                         <TitleContainer>
                             <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
                         props.contentType === 'expos' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                        props.contentType !== 'expos' ? undefined : <Text  key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
+                        props.contentType !== 'expos' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
                         props.contentType === 'expos' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
-                                <IconStyle onClick={() => { {setContentToDelete({id: value.objectID, title: value.title});setSelectedContent([value.objectID]);setDeleteContentModalOpened(true)} }} className="right mr1" >delete</IconStyle>
+                                    <IconStyle onClick={() => { { setContentToDelete({ id: value.objectID, title: value.title }); setSelectedContent([value.objectID]); setDeleteContentModalOpened(true) } }} className="right mr1" >delete</IconStyle>
                                 </ActionIcon>
-                                <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip> 
+                                <Tooltip target={"deleteTooltip" + value.objectID}>Delete</Tooltip>
                                 <ActionIcon id={"editTooltip" + value.objectID}>
-                                    <IconStyle onClick={() => {history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
+                                    <IconStyle onClick={() => { history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general') }} className="right mr1" >edit</IconStyle>
                                 </ActionIcon>
                                 <Tooltip target={"editTooltip" + value.objectID}>Edit</Tooltip>
                             </div>
-                        : <span></span>
+                            : <span></span>
 
                     ].filter(x => x !== undefined),
                     isSelected: selectedContent.includes(value.objectID),
@@ -348,69 +347,69 @@ export const ContentListPage = (props: ContentListProps) => {
     return (
         <>
             <div className='flex items-center mb2'>
-                {
-                    props.contentType !== 'expos' ?
-                        <>
-                            <div className="flex-auto items-center flex">
-                                <IconStyle coloricon='gray-3'>search</IconStyle>
-                                <InputTags oneTag  noBorder={true} placeholder="Search by Title..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
-                            </div>
-                            <div className="flex items-center" >
-                                {selectedContent.length > 0 &&
-                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
-                                }
-                                <div className="relative">
-                                    <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                                    <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{width: 167, left: 16}} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
-                                        {renderList()}
-                                    </DropdownList>
-                                </div>
-                                <SeparatorHeader className="mx2 inline-block" />
-                                <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} contentType={props.contentType} />                
-                                {
-                                    props.contentType === "vod" &&
-                                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
-                                }
-                                {
-                                    props.contentType === "live" &&
-                                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button> 
-                                }
-                                {
-                                    props.contentType === "playlist" && 
-                                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button> 
-                                }
-                            </div>
-                        </> : <Button buttonColor="blue" className="ml-auto" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
-                }
-            </div>        
-            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ?contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={contentList.totalResults} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
-            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
-            
+                <div className="flex-auto items-center flex">
+                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
+                </div>
+                <div className="flex items-center" >
+                    {selectedContent.length > 0 &&
+                        <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
+                    }
+                    <div className="relative">
+                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                        <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                            {renderList()}
+                        </DropdownList>
+                    </div>
+                    <SeparatorHeader className="mx2 inline-block" />
+                    <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
+                    {
+                        props.contentType === "vod" &&
+                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                    }
+                    {
+                        props.contentType === "live" &&
+                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                    }
+                    {
+                        props.contentType === "playlist" &&
+                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
+                    }
+                    {
+                        props.contentType === "expos" &&
+                        <Button buttonColor="blue" className="ml-auto" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
+                    }
+                </div>
+
+            </div>
+            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Pagination totalResults={contentList.totalResults} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => {return {id:vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}})} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
-                    moveItemsModalOpened && 
-                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => {}} submit={async(folderIds: string[]) => {await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => {return {id: vodId, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist'}}))}} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    moveItemsModalOpened &&
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => { return { id: vodId, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => {}} />
+                    newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => { }} />
                 }
             </Modal>
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => {await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('deleted'))}} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('deleted')) }} />
                 }
             </Modal>
-            <AddStreamModal  toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+            <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
         </>
