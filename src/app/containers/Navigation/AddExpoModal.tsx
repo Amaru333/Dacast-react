@@ -1,14 +1,14 @@
 import { useForm } from 'react-hook-form'
 import React from 'react'
-import { handleValidationForm } from '../../utils/hooksFormSubmit'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Modal } from '../../../components/Modal/Modal'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Text } from '../../../components/Typography/Text'
-import { axiosClient } from '../../utils/axiosClient'
 import { showToastNotification } from '../../redux-flow/store/Toasts'
 import { useHistory } from 'react-router'
+import { axiosClient } from '../../utils/services/axios/axiosClient'
+import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook'
 
 export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
 

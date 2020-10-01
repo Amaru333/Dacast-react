@@ -2,7 +2,7 @@ import React from 'react';
 import { Tab } from '../../../components/Tab/Tab';
 import { TabsContainer } from '../../shared/TabsStyle';
 import { AppRoutes } from '../../constants/AppRoutes';
-import { userToken } from '../../utils/token';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const ExposTabs = (props: {exposId: string}) => {
 

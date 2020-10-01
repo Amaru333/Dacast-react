@@ -13,6 +13,20 @@ export function updateClipboard(copiedValue: string, toastMessage: string): void
     });
 }
 
+export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
+    function doAThing(){if(document.getElementById(buttonId).innerText !== 'Next') {
+        callback()
+    }}
+    React.useEffect(() => {
+        document.getElementById(buttonId).addEventListener('click', doAThing)
+
+        return () => {
+            document.getElementById(buttonId).removeEventListener('click', doAThing)
+        }
+
+    }, [callback])
+}
+
 export const removePrefix = (objectId: string) => {
     return objectId.replace(/channel_|live_|vod_/, '');
 }

@@ -2,12 +2,11 @@ import React from 'react';
 import { FolderTreeNode, FolderAsset } from '../../../redux-flow/store/Folders/types';
 import { PlaylistSettings } from './SetupModals';
 import { SetupComponentProps } from '../../../containers/Playlists/Setup';
-import { rootNode } from '../../../utils/folderService';
 import { PreviewModal } from '../../../shared/Common/PreviewModal';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
-import { handleRowIconType, removePrefix } from '../../../utils/utils';
 import { ContentSelector } from '../../../../components/ContentSelector/ContentSelector';
+import { removePrefix } from '../../../utils/utils';
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {

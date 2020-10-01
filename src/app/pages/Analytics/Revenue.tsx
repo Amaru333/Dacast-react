@@ -8,13 +8,12 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset, FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, handleRowIconType } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import moment from 'moment';
-import { handleRowIconType } from '../../utils/utils';
 import { ItemSetupRow, HeaderBorder } from '../Paywall/Groups/GroupsStyle';
 import { ContentSelector } from '../../../components/ContentSelector/ContentSelector';
 

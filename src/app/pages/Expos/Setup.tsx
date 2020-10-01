@@ -1,8 +1,8 @@
 import React from 'react';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { SetupComponentProps } from '../../containers/Playlists/Setup';
-import { userToken } from '../../utils/token';
 import { ContentSelector } from '../../../components/ContentSelector/ContentSelector';
+import { userToken } from '../../utils/services/token/tokenService';
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {

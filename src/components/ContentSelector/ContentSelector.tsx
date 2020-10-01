@@ -8,13 +8,13 @@ import { ContainerHalfSelector, TabSetupContainer, TabSetupStyle, ItemSetupRow, 
 import { Text } from '../Typography/Text';
 import { Badge } from '../Badge/Badge';
 import { FolderTreeNode, FoldersInfos, FolderAsset } from '../../app/redux-flow/store/Folders/types';
-import { FolderTree, rootNode } from '../../app/utils/folderService';
 import { InputCheckbox } from '../FormsComponents/Input/InputCheckbox';
-import { handleRowIconType } from '../../app/utils/utils';
 import { DropdownList, DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { compareValues, useOutsideAlerter } from '../../utils/utils';
 import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
 import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModals';
+import { handleRowIconType } from '../../app/pages/Analytics/AnalyticsCommun';
+import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
