@@ -472,7 +472,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </ColorPickerLabel>
                                         <ColorPicker
                                             defaultColor={contentDetails.appearance && contentDetails.appearance.headerColor ? contentDetails.appearance.headerColor : 'white'}
-                                            callback={(color: string) => setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, headerColor: color}})}
+                                            callback={(color: string) =>  { setHasChanged(true); setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, headerColor: color}}) } }
                                         />
                                     </div>
                                     <div className='mb1 col col-6 sm-col-3 px2'>
@@ -481,7 +481,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         </ColorPickerLabel>
                                         <ColorPicker
                                             defaultColor={contentDetails.appearance && contentDetails.appearance.fontColor ? contentDetails.appearance.fontColor : 'white'}
-                                            callback={(color: string) => setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, fontColor: color}})}
+                                            callback={(color: string) => { setHasChanged(true); setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, fontColor: color}})}}
                                         />
                                     </div>
                                 </div>

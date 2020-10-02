@@ -71,7 +71,8 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                 type={props.contentData.playlistType} 
                 selectedItems={formateData} 
                 getFolderContent={props.getFolderContent} 
-                title={props.contentData.title} callback={handleSave} />
+                title={props.contentData.title} callback={handleSave} 
+                showFolders={true} />
             {
                 previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + props.contentData.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
             }

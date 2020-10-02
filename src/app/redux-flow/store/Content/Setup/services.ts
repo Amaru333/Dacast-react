@@ -12,7 +12,7 @@ const postContentSetupAction = async (contentData: ContentSetupObject, contentId
     return await axiosClient.put(`${contentType}/${contentId}/setup`, 
         {
             ...contentData,
-            title: null
+            title: undefined
         }
     )
 }

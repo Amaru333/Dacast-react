@@ -12,12 +12,15 @@ export interface Content {
     'live-channel-id': string;
 }
 
+export type ContentSelector = 'content' | 'folder';
+
 export interface ContentSetupObject {
     contentList: Content[];
     folderId: string;
     id: string;
     maxItems: number;
-    playlistType: 'content' | 'folder';
+    expoType?: ContentSelector;
+    playlistType?: ContentSelector;
     sortType: "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc";
     title: string;
 }

@@ -11,16 +11,26 @@ import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
 import { EmptyCardExpos } from '../../pages/Expos/EmptyCardExpos';
+import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const ExposList = (props: ContentListProps) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
-    React.useEffect(() => {     
-        props.getContentList(null, 'expo')        
-        .then(() => setIsFetching(false))
+    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
+    React.useEffect(() => {
+        if(!noDataFetched) {
+            props.getContentList(null, 'expo')        
+            .then(() => setIsFetching(false))
+            .catch(() => setNodataFetched(true))
+        } 
     }, [])
 
+    if(noDataFetched) {
+        return <ErrorPlaceholder />
+    }
+    
     return !isFetching ? 
         <>
         {
