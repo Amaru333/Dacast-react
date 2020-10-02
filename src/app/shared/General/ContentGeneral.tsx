@@ -321,7 +321,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <Text size={14} weight="med">Share Link</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg">{`TODO QUENTIN UPDATE WHEN ENDPOINTS RDY`}</LinkText>
+                                    <LinkText size={14} weight="reg">{`https://expo.dacast.com?id=${props.contentDetails.id}`}</LinkText>
                                     <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}`, 'Share Link Copied') }}>file_copy_outlined</IconStyle>
                                     <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                                 </LinkBox>
