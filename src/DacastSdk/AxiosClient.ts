@@ -9,13 +9,15 @@ export type RequestConfig = {
 }
 
 export class AxiosClient {
-    constructor(isAdmin: boolean, userToken: UserTokenService) {
-        this.isAdmin = isAdmin
+    constructor(baseUrl: string, userToken: UserTokenService, refreshTokenUrl?: string) {
+        this.baseUrl = baseUrl
         this.userToken = userToken
+        this.refreshTokenUrl = refreshTokenUrl
     }
 
-    private isAdmin: boolean = false
+    private baseUrl: string = null
     private userToken: UserTokenService = null
+    private refreshTokenUrl: string = null
     private maxRetries = 3
     private retryDelay = 4000
     private axiosInstance: AxiosInstance = null
@@ -24,7 +26,7 @@ export class AxiosClient {
     private getInstance = (): AxiosInstance => {
         if(!this.axiosInstance) {
             this.axiosInstance = Axios.create({
-                baseURL: this.isAdmin ? process.env.ADMIN_API_BASE_URL: process.env.API_BASE_URL,
+                baseURL: this.baseUrl,
                 timeout: 30000,
                 headers: {Authorization: null}
             })
@@ -111,7 +113,7 @@ export class AxiosClient {
 
     private refreshToken = async () => {
         let token = this.userToken.getTokenInfo()
-        return await Axios.post(process.env.API_BASE_URL + '/sessions/refresh', {refresh: token.refresh})
+        return await Axios.post((this.refreshTokenUrl || this.baseUrl) + '/sessions/refresh', {refresh: token.refresh})
         .then((response) => {
             token.token = response.data.data.token
             token.expires = response.data.data.expires
@@ -120,9 +122,7 @@ export class AxiosClient {
             this.userToken.addTokenInfo(token)
 
         }).catch((error: any) => {
-            console.log('error', error.response)
             if(error.response.data.error.indexOf('Refresh Token has expired') > -1) {
-                console.log('refresh token has expired')
                 EventHooker.dispatch('EVENT_FORCE_LOGOUT', undefined)
             }
             return Promise.reject(error);
