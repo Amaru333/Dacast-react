@@ -56,7 +56,7 @@ export const getContentDetailsAction = (contentId: string, contentType: string):
         await ContentGeneralServices.getContentDetailsService(contentId, parseContentType(contentType))
             .then(response => {
                 console.log(response)
-                dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: contentType === 'expos' ? response.data : response.data.data, contentType: contentType, contentId: contentId} })
+                dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: contentType === 'expo' ? response.data : response.data.data, contentType: contentType, contentId: contentId} })
             })
             .catch((error) => {
                 debugger

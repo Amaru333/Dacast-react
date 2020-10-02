@@ -12,7 +12,7 @@ const restoreContentService = async (contentId: string, contentType: string) => 
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
     let parsedData = null
-    if(contentType === 'expos') {
+    if(contentType === 'expo') {
         parsedData = {
             online: data.online,
             title: data.title,
@@ -42,6 +42,9 @@ const getUploadUrl = async (data: string, contentId: string, extension: string, 
             break
         case 'playlist':
             requestData = {...requestData, playlistID: contentId}
+            break
+        case 'expo':
+            requestData = {...requestData, expoID: contentId}
             break
         default:
             break

@@ -43,6 +43,8 @@ export const parseContentType = (contentType: string) => {
             return 'vods'
         case 'playlist' :
             return 'playlists'
+        case 'expo':
+            return 'expos'
         default :
             return contentType
     }

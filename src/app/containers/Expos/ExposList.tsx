@@ -17,18 +17,18 @@ const ExposList = (props: ContentListProps) => {
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {     
-        props.getContentList(null, 'expos')        
+        props.getContentList(null, 'expo')        
         .then(() => setIsFetching(false))
     }, [])
 
     return !isFetching ? 
         <>
         {
-            props.contentListState['expos'].results.length === 0 ? 
+            props.contentListState['expo'].results.length === 0 ? 
             <EmptyCardExpos /> :
             <ContentListPage
-                contentType="expos"
-                items={props.contentListState['expos']}
+                contentType='expo'
+                items={props.contentListState['expo']}
                 themesList={props.themesList}
                 getContentList={props.getContentList}
                 deleteContentList={props.deleteContentList}

@@ -33,7 +33,7 @@ import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import EventHooker from '../../utils/services/event/eventHooker';
 
 interface ContentListProps {
-    contentType: 'expos' | 'vod' | 'live' | 'playlist';
+    contentType: 'expo' | 'vod' | 'live' | 'playlist';
     items: SearchResult;
     themesList: ThemesData;
     getContentList: (qs: string, contentType: string) => Promise<void>;
@@ -228,8 +228,8 @@ export const ContentListPage = (props: ContentListProps) => {
                 return 'livestreams'
             case 'playlist':
                 return 'playlists'
-            case 'expos':
-                return 'expos'
+            case 'expo':
+                return 'expo'
         }
     }
 
@@ -237,7 +237,7 @@ export const ContentListPage = (props: ContentListProps) => {
         return {
             data: [
                 {
-                    cell: props.contentType === 'expos' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
+                    cell: props.contentType === 'expo' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
@@ -249,12 +249,12 @@ export const ContentListPage = (props: ContentListProps) => {
                 },
                 // {cell: <></>},
                 { cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title' },
-                { cell: props.contentType === 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text> },
-                { cell: props.contentType !== 'expos' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text> },
+                { cell: props.contentType === 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text> },
+                { cell: props.contentType !== 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text> },
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
                 { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at' },
                 { cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text> },
-                { cell: props.contentType === 'expos' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text> },
+                { cell: props.contentType === 'expo' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text> },
                 { cell: <div style={{ width: "80px" }} ></div> },
             ].filter(x => x.cell !== undefined),
             defaultSort: 'created-at',
@@ -279,7 +279,7 @@ export const ContentListPage = (props: ContentListProps) => {
             return contentList.results.map((value) => {
                 return {
                     data: [
-                        props.contentType === 'expos' ? undefined :
+                        props.contentType === 'expo' ? undefined :
                             <div key={"checkbox" + value.objectID} style={{ paddingTop: 8, paddingBottom: 8 }} className='flex items-center'>
                                 <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                                     if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
@@ -303,11 +303,11 @@ export const ContentListPage = (props: ContentListProps) => {
                             <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
-                        props.contentType === 'expos' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
-                        props.contentType !== 'expos' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
+                        props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
+                        props.contentType !== 'expo' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
-                        props.contentType === 'expos' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -377,7 +377,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
                     }
                     {
-                        props.contentType === "expos" &&
+                        props.contentType === 'expo' &&
                         <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
                     }
                 </div>

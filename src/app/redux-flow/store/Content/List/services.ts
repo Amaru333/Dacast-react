@@ -14,7 +14,7 @@ const formatQsToEndpoint = (qs: string) => {
 }
 const getContentList = async (qs: string, contentType: string) => {
     if(contentType === 'exposs') {
-        contentType = 'expos'
+        contentType = 'expo'
     }
     return await axiosClient.get('/' + contentType + '?' + (qs ? formatQsToEndpoint(qs) : 'status=online,offline&page=1&per-page=10'))
 }

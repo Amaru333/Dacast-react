@@ -18,19 +18,19 @@ const GeneralExpos = (props: GeneralComponentProps) => {
     let { exposId } = useParams()
 
     React.useEffect(() => {
-        props.getContentDetails(exposId, 'expos');
+        props.getContentDetails(exposId, 'expo');
     }, [])
 
     return (
         <>
             <ExposTabs exposId={exposId} />
-            {props.contentDetailsState['expos'] && props.contentDetailsState['expos'][exposId] ?
+            {props.contentDetailsState['expo'] && props.contentDetailsState['expo'][exposId] ?
                 (
                     <div className='flex flex-column'>
                         General
                         <ContentGeneralPage
-                            contentType="expos" 
-                            contentDetails={props.contentDetailsState['expos'][exposId]}
+                            contentType='expo' 
+                            contentDetails={props.contentDetailsState['expo'][exposId]}
                             getContentDetails={props.getContentDetails}
                             saveContentDetails={props.saveContentDetails}
                             getUploadUrl={props.getUploadUrl}

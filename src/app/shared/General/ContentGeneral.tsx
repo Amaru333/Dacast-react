@@ -200,7 +200,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         }
     }
 
-    let posterEnable = Object.keys(props.contentDetails.poster).length !== 0;
+    let posterEnable = props.contentDetails.poster && Object.keys(props.contentDetails.poster).length !== 0;
 
     const advancedLinksOptions = [
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
@@ -235,7 +235,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                 return "Live Stream"
             case "playlist":
                 return "Playlist"
-            case "expos":
+            case 'expo':
                 return "Expo"
         }
     }
@@ -315,7 +315,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
                     </header>
                     {
-                        props.contentType === "expos" ?
+                        props.contentType === 'expo' ?
                             <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">Share Link</Text>
@@ -457,7 +457,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </>
                 }
                 {
-                    props.contentType === "expos" &&
+                    props.contentType === 'expo' &&
                     <>
                         <Divider className="col col-12 mt3 mr25 mb25" />
 
@@ -497,11 +497,11 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         <ButtonSection>
                                             {
                                                 headerEnable &&
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("header")} >Delete</Button>
+                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("poster")} >Delete</Button>
                                             }
                                             <Button
                                                 className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                                onClick={() => { setImageModalTitle("Change Header"); setSelectedImageName(props.contentDetails.poster.url); setImageModalOpen(true) }}>
+                                                onClick={() => { setImageModalTitle("Change Poster"); setSelectedImageName(props.contentDetails.poster ? props.contentDetails.poster.url : null); setImageModalOpen(true) }}>
                                                 {
                                                     headerEnable ?
                                                         "Change" : "Add"
@@ -517,12 +517,12 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </>
                 }
                 {
-                    props.contentType !== 'expos' &&
+                    props.contentType !== 'expo' &&
                     <>
                         <Divider className="col col-12 mt3 mr25 mb25" />
                         <div className="thumbnail col col-12">
                             <Text className="col col-12" size={20} weight="med">Images</Text>
-                            <Text className="col col-12 pt1" size={14} weight="reg">{props.contentType === "expos" ? "How your Expo looks when seen by your viewers." : "Upload image assets for your content."}</Text>
+                            <Text className="col col-12 pt1" size={14} weight="reg">{props.contentType === 'expo' ? "How your Expo looks when seen by your viewers." : "Upload image assets for your content."}</Text>
                             <ImagesContainer className="col col-12 pt2">
                                 <ImageContainer className="mr2 xs-mr0 xs-mb25">
                                     <div className="flex flex-center">
@@ -617,7 +617,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     </>}
                 <Divider className="col col-12 mt3 mr25 mb25" />
                 {
-                    props.contentType !== "expos" &&
+                    props.contentType !== 'expo' &&
                     <div className="col col-12 advancedVideoLinks">
                         <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
                             <IconStyle className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>

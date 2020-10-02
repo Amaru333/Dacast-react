@@ -61,11 +61,11 @@ const Header = (props: HeaderProps) => {
                     props.getContentDetails(realUid, 'playlist');
                     return [realUid]
                 }
-            case 'expos':
-                if (props.contentGeneralState['expos'] && props.contentGeneralState['expos'][realUid]) {
-                    return [props.contentGeneralState['expos'][realUid].title];
+            case 'expo':
+                if (props.contentGeneralState['expo'] && props.contentGeneralState['expo'][realUid]) {
+                    return [props.contentGeneralState['expo'][realUid].title];
                 } else {
-                    props.getContentDetails(realUid, 'expos');
+                    props.getContentDetails(realUid, 'expo');
                     return [realUid]
                 }
             default: return ["Unknown Asset Type"]
