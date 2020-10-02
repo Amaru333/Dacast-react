@@ -229,7 +229,7 @@ export const ContentListPage = (props: ContentListProps) => {
             case 'playlist':
                 return 'playlists'
             case 'expo':
-                return 'expo'
+                return 'expos'
         }
     }
 
