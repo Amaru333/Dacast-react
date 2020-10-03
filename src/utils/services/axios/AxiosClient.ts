@@ -1,7 +1,7 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { DateTime } from 'luxon'
-import { UserTokenService } from '../utils/services/token/token'
-import EventHooker from '../utils/services/event/eventHooker'
+import { UserTokenService } from '../token/token'
+import EventHooker from '../event/eventHooker'
 
 export type RequestConfig = {
     allowRetry?: boolean;
@@ -45,6 +45,7 @@ export class AxiosClient {
             delete newConfig.headers.Authorization
             return newConfig
         }
+        console.log('checking refresh token')
         if(DateTime.fromSeconds(this.userToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 60000 <= 5) {
             await this.checkRefresh()
         }
@@ -105,6 +106,7 @@ export class AxiosClient {
 
     private checkRefresh = async () => {
         if(!this.refreshingToken) {
+            console.log('checking refresh token')
             return await this.refreshToken().then(() => {
                 this.refreshingToken = null
             })

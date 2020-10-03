@@ -118,66 +118,11 @@ const deleteGroupPrice = async (data: GroupPrice) => {
     return await axiosClient.delete('/paywall/prices/groups/' + data.id)
 }
 
-const getGroupPromos = async () => {
-    return await axiosClient.get('/paywall/promos?page=1&per-page=100')
-}
 
-const createGroupPromo = async (data: GroupPromo) => {
-    let parsedData = null
-    parsedData = {
-        ...data,
-        assignedContentIds: [],
-        discountApplied: data.discountApplied.toLowerCase(),
-        startDate: Math.floor(data.startDate),
-        endDate: Math.floor(data.endDate),
-        id: null
-    }
-    if (data.startDate === 0) {
-        delete parsedData['startDate']
-    }
-    if (data.endDate === 0) {
-        delete parsedData['endDate']
-    }
-    return await axiosClient.post('/paywall/promos' , 
-        {
-            promo: parsedData
-        }
-    )
-}
-
-const saveGroupPromo = async (data: GroupPromo) => {
-    let parsedData = null
-    parsedData = {
-        ...data,
-        assignedContentIds: [],
-        discountApplied: data.discountApplied.toLowerCase(),
-        startDate: Math.floor(data.startDate),
-        endDate: Math.floor(data.endDate),
-    }
-    if (data.startDate === 0) {
-        delete parsedData['startDate']
-    }
-    if (data.endDate === 0) {
-        delete parsedData['endDate']
-    }
-    return await axiosClient.put('/paywall/promos/' + data.id , 
-        {
-            promo: parsedData  
-        }
-    )
-}
-
-const deleteGroupPromo = async (data: GroupPromo) => {
-    return await axiosClient.delete('/paywall/promos/' + data.id)
-}
 
 export const GroupsServices = {
     getGroupPrices,
     createGroupPrice,
     saveGroupPrice,
     deleteGroupPrice,
-    getGroupPromos,
-    createGroupPromo,
-    saveGroupPromo,
-    deleteGroupPromo
 }

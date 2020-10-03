@@ -90,14 +90,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
         case ActionTypes.GET_GROUP_PROMOS :
             return {
                 ...state,
-                promos: {
-                    total: action.payload.data.total,
-                    promos: action.payload.data.promos.map((promo) => {
-                        return {
-                            ...promo,
-                        }
-                    })
-                }
+                promos: action.payload
             }
         case ActionTypes.CREATE_GROUP_PROMO :
             promos = state.promos.promos.slice();

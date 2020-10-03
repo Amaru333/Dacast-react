@@ -5,7 +5,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../../../components/Typography/Text';
-import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
+import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups/types';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 var moment = require('moment-timezone');
@@ -67,10 +67,12 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
         setButtonLoading(true)
         let startDate = startDateTime === 'Set Date and Time' ? moment.utc((startDay + startTime)*1000).valueOf()/1000 : 0
         let endDate = endDateTime === 'Set Date and Time' ? moment.utc((endDay + endTime)*1000).valueOf()/1000 : 0
-        props.action({...groupPromo, startDate: startDate, endDate: endDate}).then(() => {
+        props.action({...groupPromo, startDate: startDate, endDate: endDate})
+        .then(() => {
             props.toggle(false)
             setButtonLoading(false)
         })
+        .catch(() => setButtonLoading(false))
     }
 
     return (
@@ -155,7 +157,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
             </div>
             <div className='col col-12 py2'>
-                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.groupPromo ? 'Save' : 'Create'}</Button>
                 <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
