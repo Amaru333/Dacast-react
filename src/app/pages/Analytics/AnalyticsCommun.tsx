@@ -13,6 +13,7 @@ import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import ReactTable from 'react-table';
 import moment from 'moment'
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
+import { LocationItem } from '../../redux-flow/store/Analytics/Dashboard';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
@@ -97,14 +98,15 @@ export const mapMarkerNameTranformBytesFromGB = (name: string, value: number) =>
     return name + ': ' + displayBytesForHumans(value, true);
 }
 
-export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
-    let mapMin: any = Math.min(...dataRepo.map(m => m.consumedMB));
+export const renderMap = (markers: LocationItem[], id: string, isGb?: boolean) => {
+
+    let mapMin: any = Math.min(...markers.map(m => m.consumedMB));
     if (isFinite(mapMin)) {
         mapMin = isGb ? displayBytesForHumans(mapMin, true) : mapMin;
     } else {
         mapMin = 'No Data';
     }
-    let mapMax: any = Math.max(...dataRepo.map(m => m.consumedMB));
+    let mapMax: any = Math.max(...markers.map(m => m.consumedMB));
     if (isFinite(mapMax)) {
         mapMax = isGb ? displayBytesForHumans(mapMax, true) : mapMax;
     } else {
@@ -114,9 +116,8 @@ export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
     return (
         <div>
             <LeafletMap
-                height="400px"
                 markerNameTranform={isGb ? mapMarkerNameTranformBytesFromGB : (name: string, value: string) => { return name+" : "+value }}
-                markers={dataRepo}
+                markers={markers}
                 idMap={id} />
             <div className="flex mt2 justify-center">
                 <a className="mr2">{mapMin}</a>

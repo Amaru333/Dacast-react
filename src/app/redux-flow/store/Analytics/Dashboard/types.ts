@@ -39,15 +39,16 @@ export interface AnalyticsDashboardTopContents {
     failed?: boolean;
 };
 
+export interface LocationItem {
+    city: string;
+    position: {
+        latitude: number;
+        longitude: number;
+    };
+    consumedMB: number;
+}
 export interface AnalyticsDashboardConsumptionPerLocation {
-    data: {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[];
+    data: LocationItem[];
     failed?: boolean;
 };
 

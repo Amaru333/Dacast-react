@@ -1,3 +1,5 @@
+import { LocationItem } from '../Dashboard';
+
 export enum ActionTypes {
     GET_ANALYTICS_VIEWERSHIP = "@@ANALYTICSVIEWERSHIP/GET_ANALYTICS_VIEWERSHIP",
     
@@ -11,14 +13,7 @@ export interface AnalyticsViewershipConsumptionDevices {
 }
 
 export interface AnalyticsViewershipPlaytimePerLocation {
-    data: false | {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[],
+    data: false | LocationItem[],
     csv: {header: Object, data: Object[]},
 }
 

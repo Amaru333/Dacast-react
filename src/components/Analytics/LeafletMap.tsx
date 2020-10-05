@@ -1,33 +1,46 @@
 
 
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { Map, TileLayer } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 import CSSInjector from '../../utils/services/injectors/CSSInjector';
+import JSInjector from '../../utils/services/injectors/JSInjector';
+import { LocationItem } from '../../app/redux-flow/store/Analytics/Dashboard';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 8;
 
-const [loadedScript, setLoadedScript] = React.useState<any>(false);
 
-const LeafletMap: React.FC = () => {
+const LeafletMap = (props: { markers: LocationItem[] }) => {
+
+    const [loadedScript, setLoadedScript] = React.useState<any>(false);
 
     const loadScript = async () => {
         CSSInjector.injectCss('https://unpkg.com/leaflet@1.6.0/dist/leaflet.css');
+        await JSInjector.injectJs('https://unpkg.com/leaflet@1.6.0/dist/leaflet.js');
         setLoadedScript(true);
     }
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!loadedScript) {
             loadScript();
         }
     }, [loadedScript]);
 
-    return loadedScript && (
+    
+
+    const renderMarkers = () => {
+        return props.markers.map( element => {
+            
+        } )
+    }
+
+    return (
             <Map id="mapId"
                 center={defaultLatLng}
                 zoom={zoom}>
+                {renderMarkers()}
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors">
@@ -35,6 +48,7 @@ const LeafletMap: React.FC = () => {
             </Map>)
 
 }
+
 export default LeafletMap;
 
 // import React, { useEffect } from 'react';

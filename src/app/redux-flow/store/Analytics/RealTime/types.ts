@@ -1,3 +1,5 @@
+import { LocationItem } from '../Dashboard';
+
 export enum ActionTypes {
     GET_ANALYTICS_REALTIME = "@@analytics_realtime/GET_ANALYTICS_REALTIME"
 }
@@ -15,14 +17,7 @@ export interface AnalyticsRealTimeInfos {
 }
 
 export interface AnalyticsRealTimeConsumptionLocation {
-    data: {
-        city: string;
-        position: {
-            latitude: number;
-            longitude: number;
-        };
-        consumedMB: number;
-    }[];
+    data: LocationItem[];
     failed?: boolean;
 }
 
