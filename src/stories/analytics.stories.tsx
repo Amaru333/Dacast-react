@@ -14,37 +14,37 @@ import { Tooltip } from '../components/Tooltip/Tooltip';
 import { IconStyle } from '../shared/Common/Icon';
 
 storiesOf('Analytics', module)
-    .add('General Dashboard', () => (
-        <React.Fragment>
-            <div className="p2">
+    // .add('General Dashboard', () => (
+    //     <React.Fragment>
+    //         <div className="p2">
 
-            <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"} >
-                <WidgetHeader className="flex">
-                    <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions Exemple</Text>
-                    <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                    <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
-                </WidgetHeader>
-                <div className="flex minContentDash justify-center items-center mb1">
-                    <DoughnutChart value={75} className="mr2" />
-                </div>
-            </WidgetElement>
-            <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"}>
-                <WidgetHeader className="flex">
-                    <Text size={16} weight="med" color="gray-3"> Storage Remaining Exemple</Text>
-                </WidgetHeader>
-                <div className="flex flex-wrap items-baseline mb1">
-                    <Text size={32} weight="reg" color="gray-1">75GB</Text><Text size={16} weight="reg" color="gray-4" >/100GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >75%</Text>
-                </div>
-                <ProgressBarDashboard percentage={75} widget="storage" />
-            </WidgetElement>
-            <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"} >
-                    <Text size={16} weight="med" color="gray-3">Fail Loading Analytics Exemple</Text>
-                    <FailedCardAnalytics />
-            </WidgetElement>
+    //         <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"} >
+    //             <WidgetHeader className="flex">
+    //                 <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions Exemple</Text>
+    //                 <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
+    //                 <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
+    //             </WidgetHeader>
+    //             <div className="flex minContentDash justify-center items-center mb1">
+    //                 <DoughnutChart value={75} className="mr2" />
+    //             </div>
+    //         </WidgetElement>
+    //         <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"}>
+    //             <WidgetHeader className="flex">
+    //                 <Text size={16} weight="med" color="gray-3"> Storage Remaining Exemple</Text>
+    //             </WidgetHeader>
+    //             <div className="flex flex-wrap items-baseline mb1">
+    //                 <Text size={32} weight="reg" color="gray-1">75GB</Text><Text size={16} weight="reg" color="gray-4" >/100GB</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >75%</Text>
+    //             </div>
+    //             <ProgressBarDashboard percentage={75} widget="storage" />
+    //         </WidgetElement>
+    //         <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"} >
+    //                 <Text size={16} weight="med" color="gray-3">Fail Loading Analytics Exemple</Text>
+    //                 <FailedCardAnalytics />
+    //         </WidgetElement>
 
-            </div>
-        </React.Fragment>
-    ))
+    //         </div>
+    //     </React.Fragment>
+    // ))
     .add('Analytics Section', () => (
         <React.Fragment>
             <div className="clearfix mxn1 mb2 p2">
