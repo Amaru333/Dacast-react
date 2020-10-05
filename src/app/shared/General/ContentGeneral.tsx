@@ -500,7 +500,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             }
                                         </Button>
                                     </ButtonSection>
-                                    {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.contentDetails.poster.url} /></ImageSection>}  
+                                    {posterEnable && <ImageSection> <SelectedImage src={props.contentDetails.poster.url} /></ImageSection>}  
                                 </ImageArea>
                                 <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                             </ImageContainer>
