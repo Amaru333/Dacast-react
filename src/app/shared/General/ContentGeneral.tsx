@@ -326,7 +326,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                 <LinkBox>
                                     <LinkText size={14} weight="reg">{`${expoBaseUrl}?id=${props.contentDetails.id}`}</LinkText>
                                     <IconStyle className='pointer' id="copyShareLinkExpoTooltip" onClick={() => updateClipboard(`${expoBaseUrl}?id=${props.contentDetails.id}`, 'Share Link Copied') }>file_copy_outlined</IconStyle>
-                                    <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
+                                    <Tooltip target="copyShareExpoLinkTooltip">Copy to clipboard</Tooltip>
                                 </LinkBox>
                             </div> :
                             <>
