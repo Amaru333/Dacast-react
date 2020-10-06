@@ -5,8 +5,8 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 
-export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (data: PlaybackProtection) => Promise<void>; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
-    const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<number>(50);
+export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (value: string) => void; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
+    const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<string>('50');
 
     const ProtectionModalTableData = [
         {
@@ -35,7 +35,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
     const protectionModalTableFooterElement = () => {
         return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
-            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${(playbackProtectionAmount * props.playbackProtection.price).toFixed(2)}</Text>,
+            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${(parseInt(playbackProtectionAmount) * props.playbackProtection.price).toFixed(2)}</Text>,
         ]
     }
 
@@ -47,17 +47,17 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
                     isInModal   
                     className='pb2 col sm-col-6 col-12'                  
                     dropdownTitle='Amount (GB)'
-                    list={{'50': false, '100': false, '250': false, '500': false, '1000': false, '2000': false, '5000': false}}
+                    list={{'Disable Protection': false, '50': false, '100': false, '250': false, '500': false, '1000': false, '2000': false, '5000': false}}
                     id='amountDropdown'
                     dropdownDefaultSelect={'50'}
-                    callback={(value: string) => setPlaybackProtectionAmount(parseInt(value))}
+                    callback={(value: string) => setPlaybackProtectionAmount(value)}
                         
                 />
             </div>
                 <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of Data.</Text>
             <div className='col col-12 py1'>
-                <Button sizeButton="large" onClick={() => {props.actionButton({enabled: true, amount: playbackProtectionAmount, price: (props.playbackProtection.price * playbackProtectionAmount) }); props.toggle(false); props.setPlaybackProtectionEnabled(true)}} typeButton="primary" buttonColor="blue" >Enable</Button>
+                <Button sizeButton="large" onClick={() => {props.actionButton(playbackProtectionAmount); props.toggle(false)}} typeButton="primary" buttonColor="blue" >Enable</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             

@@ -65,6 +65,24 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         })
     }
 
+    const handlePlaybackProtectionValue = (value: string) => {
+
+        let playbackProtectionData: PlaybackProtection = {enabled: true, amount: parseInt(value), price: (props.billingInfos.playbackProtection.price * parseInt(value))}
+
+        if(value === "Disable Protection"){
+            setProtectionModalOpened(false);
+            setDisableProtectionModalOpened(true);
+        } else {
+            if(props.billingInfos.playbackProtection.enabled){
+                props.editBillingPagePaymenPlaybackProtection(playbackProtectionData);
+            } else {
+                props.addBillingPagePaymenPlaybackProtection(playbackProtectionData);
+                setPlaybackProtectionEnabled(true);
+            }
+            
+        }
+    }
+
     let smScreen = useMedia('(max-width: 780px)');
 
     const storage = {
@@ -201,7 +219,12 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} />
+                            <ProtectionModal 
+                                actionButton={handlePlaybackProtectionValue} 
+                                toggle={setProtectionModalOpened} 
+                                setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
+                                playbackProtection={props.billingInfos.playbackProtection} 
+                            />
                         </Modal>
                     }            
 
