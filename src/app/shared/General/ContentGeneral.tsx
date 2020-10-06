@@ -32,6 +32,7 @@ import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Divider } from '../Common/MiscStyle';
 import { ColorPickerLabel } from '../../pages/Paywall/Theming/Theming';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { isProduction } from '../../utils/services/player/stage';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -208,6 +209,8 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
         { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
+
+    const expoBaseUrl = isProduction() ? 'https://expo.dacast.com' : 'https://singularity-expo.dacast.com'
     
     const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
 
@@ -321,7 +324,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                     <Text size={14} weight="med">Share Link</Text>
                                 </LinkBoxLabel>
                                 <LinkBox>
-                                    <LinkText size={14} weight="reg">{`https://expo.dacast.com?id=${props.contentDetails.id}`}</LinkText>
+                                    <LinkText size={14} weight="reg">{`${expoBaseUrl}?id=${props.contentDetails.id}`}</LinkText>
                                     <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}`, 'Share Link Copied') }}>file_copy_outlined</IconStyle>
                                     <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                                 </LinkBox>
