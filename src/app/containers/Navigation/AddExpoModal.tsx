@@ -34,7 +34,7 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             setButtonLoading(false)
             showToastNotification(`Expos ${data.title} created!`, 'fixed', 'success')
             props.toggle();
-            history.push(`/expos/${response.data.data.id}/general`)
+            history.push(`/expos/${response.data.id}/general`)
         }).catch((error) => {
             console.log(error);
             setButtonLoading(false)
