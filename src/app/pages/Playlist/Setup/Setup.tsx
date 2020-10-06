@@ -305,7 +305,10 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                     }
                     
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
+                    <ItemNameContainer>
+                        <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
+                    </ItemNameContainer>
+                    
                     {
                         sortSettings.value === "custom" &&  
                             <div className="iconAction flex-auto justify-end">
