@@ -11,7 +11,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
     const ProtectionModalTableData = [
         {
             label: 'GBs',
-            value: playbackProtectionAmount
+            value: playbackProtectionAmount === "Disable Protection" ? "0" : playbackProtectionAmount
         },
         {
             label: 'Price per GB',
@@ -19,7 +19,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
         },
         {
             label: 'Billed',
-            value: 'Recurring, when Data reaches 0 GB'
+            value: playbackProtectionAmount === "Disable Protection" ? "N/A" : 'Recurring, when Data reaches 0 GB'
         } 
     ]
 
@@ -35,7 +35,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
     const protectionModalTableFooterElement = () => {
         return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
-            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${(parseInt(playbackProtectionAmount) * props.playbackProtection.price).toFixed(2)}</Text>,
+            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${playbackProtectionAmount === "Disable Protection" ? "0" : (parseInt(playbackProtectionAmount) * props.playbackProtection.price).toFixed(2)}</Text>,
         ]
     }
 
@@ -57,7 +57,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
                 <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of Data.</Text>
             <div className='col col-12 py1'>
-                <Button sizeButton="large" onClick={() => {props.actionButton(playbackProtectionAmount); props.toggle(false)}} typeButton="primary" buttonColor="blue" >Enable</Button>
+                <Button sizeButton="large" onClick={() => {props.actionButton(playbackProtectionAmount); props.toggle(false)}} typeButton="primary" buttonColor="blue" >{playbackProtectionAmount === "Disable Protection" ? "Disable" : "Enable"}</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             
