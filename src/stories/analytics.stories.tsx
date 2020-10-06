@@ -1,20 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react'
-import { Avatar } from '../components/Avatar/Avatar';
 import { AnalyticsCard, HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/pages/Analytics/AnalyticsCommun';
 import { DoughnutChart } from '../components/Analytics/DoughnutChart/DoughnutChart';
-import { BarChart } from '../components/Analytics/BarChartOld';
-import { CheeseChart } from '../components/Analytics/CheeseChartOld';
-import { ProgressBarDashboard } from '../app/containers/Dashboard/GeneralDashboard';
-import { WidgetElement } from '../app/containers/Dashboard/WidgetElement';
-import { WidgetHeader } from '../app/containers/Dashboard/DashboardStyles';
-import { Text } from '../components/Typography/Text';
-import { Tooltip } from '../components/Tooltip/Tooltip';
-import { IconStyle } from '../shared/Common/Icon';
 import LeafletMap from '../components/Analytics/LeafletMap';
 import { displayBytesForHumans } from '../utils/formatUtils';
 import { LineChart } from '../components/Analytics/LineChart';
 import { PieChart } from '../components/Analytics/PieChart';
+import { BarChart } from '../components/Analytics/BarChart';
 
 storiesOf('Analytics', module)
     // .add('General Dashboard', () => (
@@ -51,7 +43,6 @@ storiesOf('Analytics', module)
     .add('Analytics Section', () => (
         <React.Fragment>
             <div className="clearfix mxn1 mb2 p2">
-            <DoughnutChart value={75} className="mr2" />
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard
                         dataName="exampleAnalyticsBarchart"
@@ -59,19 +50,18 @@ storiesOf('Analytics', module)
                         infoText="An example of Bar chart"
                         title="Bar Chart">
                         <BarChart
-                            datasetName="Seconds"
-                            beginAtZero={true}
-                            data={[12, 34, 120, 123, 12, 34]}
-                            yAxesName="sec"
+                            type="horizontal"
+                            title="Viewers / Plays"
+                            dataSets={ [ {data: [12, 34, 120, 123, 12, 34], label: "Viewers" }, {data: [12, 34, 120, 123, 12, 34], label: "Plays" } ] }
                             labels={["8:05", "8:06", "8:07", "8:08", "8:09", "8:10"]} />
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard
-                        dataName="exampleAnalyticsCheeseChart"
+                        dataName="exampleAnalyticsDoughnutChart"
                         data={[]}
-                        infoText="An example of Cheese chart"
-                        title="Cheese Chart">
+                        infoText="An example of Doughnut chart"
+                        title="Doughnut Chart">
                         <PieChart
                             type="doughnut"
                             title="OS"
