@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react'
 import { Avatar } from '../components/Avatar/Avatar';
 import { AnalyticsCard, HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/pages/Analytics/AnalyticsCommun';
 import { DoughnutChart } from '../components/Analytics/DoughnutChart/DoughnutChart';
-import { BarChart } from '../components/Analytics/BarChart';
-import { CheeseChart } from '../components/Analytics/CheeseChart';
+import { BarChart } from '../components/Analytics/BarChartOld';
+import { CheeseChart } from '../components/Analytics/CheeseChartOld';
 import { ProgressBarDashboard } from '../app/containers/Dashboard/GeneralDashboard';
 import { WidgetElement } from '../app/containers/Dashboard/WidgetElement';
 import { WidgetHeader } from '../app/containers/Dashboard/DashboardStyles';
@@ -13,7 +13,8 @@ import { Tooltip } from '../components/Tooltip/Tooltip';
 import { IconStyle } from '../shared/Common/Icon';
 import LeafletMap from '../components/Analytics/LeafletMap';
 import { displayBytesForHumans } from '../utils/formatUtils';
-import { LineAnalytics } from '../components/Analytics/LineAnalytics';
+import { LineChart } from '../components/Analytics/LineChart';
+import { PieChart } from '../components/Analytics/PieChart';
 
 storiesOf('Analytics', module)
     // .add('General Dashboard', () => (
@@ -50,6 +51,7 @@ storiesOf('Analytics', module)
     .add('Analytics Section', () => (
         <React.Fragment>
             <div className="clearfix mxn1 mb2 p2">
+            <DoughnutChart value={75} className="mr2" />
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard
                         dataName="exampleAnalyticsBarchart"
@@ -70,8 +72,10 @@ storiesOf('Analytics', module)
                         data={[]}
                         infoText="An example of Cheese chart"
                         title="Cheese Chart">
-                        <CheeseChart
-                            displayBytesFromGB={true}
+                        <PieChart
+                            type="doughnut"
+                            title="OS"
+                            dataLabel="Viewers"
                             data={[12, 44, 13, 24]}
                             labels={["MacOs", 'Windows', 'Ubuntu', 'Android']} />
                     </AnalyticsCard>
@@ -81,9 +85,8 @@ storiesOf('Analytics', module)
                         dataName="exampleAnalyticsDoubleLineChart"
                         data={[]}
                         infoText="An example of Double Line chart"
-                        title="Double Line Chart">
-                        <LineAnalytics
-                            //datasetName="Hits"
+                        title="Line Chart">
+                        <LineChart
                             title="Plays and viewers"
                             lines={ [ {data: [12, 34, 45, 13, 51, 3], label: "Viewers"}, {data: [9, 23, 24, 25, 42, 18], label: "Plays"} ] }
                             labels={["10/12/20", "10/13/20", "10/14/20", "10/15/20", "10/16/20", "10/17/20"]} />

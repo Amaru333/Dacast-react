@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChart } from '../../../components/Analytics/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
+import DoubleLineChart from '../../../components/Analytics/DoubleLineChartOld';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';

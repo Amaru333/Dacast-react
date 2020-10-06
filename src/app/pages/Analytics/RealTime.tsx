@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChart } from '../../../components/Analytics/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
 import { AnalyticsCard, renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';

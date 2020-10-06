@@ -1,8 +1,8 @@
 import React from 'react';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChart } from '../../../components/Analytics/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
-import { CheeseChart } from '../../../components/Analytics/CheeseChart';
+import DoubleLineChart from '../../../components/Analytics/DoubleLineChartOld';
+import { CheeseChart } from '../../../components/Analytics/CheeseChartOld';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
 import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommun';
