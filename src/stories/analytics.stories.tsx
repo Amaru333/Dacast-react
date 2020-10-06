@@ -5,13 +5,15 @@ import { AnalyticsCard, HalfSmFullXs, renderMap, FailedCardAnalytics } from '../
 import { DoughnutChart } from '../components/Analytics/DoughnutChart/DoughnutChart';
 import { BarChart } from '../components/Analytics/BarChart';
 import { CheeseChart } from '../components/Analytics/CheeseChart';
-import DoubleLineChart from '../components/Analytics/DoubleLineChart';
 import { ProgressBarDashboard } from '../app/containers/Dashboard/GeneralDashboard';
 import { WidgetElement } from '../app/containers/Dashboard/WidgetElement';
 import { WidgetHeader } from '../app/containers/Dashboard/DashboardStyles';
 import { Text } from '../components/Typography/Text';
 import { Tooltip } from '../components/Tooltip/Tooltip';
 import { IconStyle } from '../shared/Common/Icon';
+import LeafletMap from '../components/Analytics/LeafletMap';
+import { displayBytesForHumans } from '../utils/formatUtils';
+import { LineAnalytics } from '../components/Analytics/LineAnalytics';
 
 storiesOf('Analytics', module)
     // .add('General Dashboard', () => (
@@ -80,15 +82,10 @@ storiesOf('Analytics', module)
                         data={[]}
                         infoText="An example of Double Line chart"
                         title="Double Line Chart">
-                        <DoubleLineChart
-                            datasetName="Hits"
-                            noDecimals={false}
-                            beginAtZero={true}
-                            yAxesName="Plays and viewers"
-                            datasetName1="plays"
-                            datasetName2="viewers"
-                            data1={[12, 34, 45, 13, 51, 3]}
-                            data2={[9, 23, 24, 25, 42, 18]}
+                        <LineAnalytics
+                            //datasetName="Hits"
+                            title="Plays and viewers"
+                            lines={ [ {data: [12, 34, 45, 13, 51, 3], label: "Viewers"}, {data: [9, 23, 24, 25, 42, 18], label: "Plays"} ] }
                             labels={["10/12/20", "10/13/20", "10/14/20", "10/15/20", "10/16/20", "10/17/20"]} />
                     </AnalyticsCard>
                 </div>
@@ -98,12 +95,15 @@ storiesOf('Analytics', module)
                         data={[]}
                         infoText="An example of map analytics"
                         title="World Map Analytics">
-                        {renderMap([
+                        
+                        <LeafletMap 
+                        markers= {[
                             {  city: 'New York City', position: { latitude:  40.7808, longitude: -73.9772}, consumedMB: 9392 },
                             {  city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167}, consumedMB: 7602 },
                             {  city: 'San Francisco', position: { latitude: 37.6216, longitude:  -122.3929}, consumedMB: 12349 },
                             {  city: 'Londres', position: { latitude: 51.5073509, longitude:  -0.1277583}, consumedMB: 5402 } 
-                        ], 'exampleMapStory', true)}
+                        ]} 
+                        markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.consumedMB) } />
                     </AnalyticsCard>
                 </div>
             </div>
