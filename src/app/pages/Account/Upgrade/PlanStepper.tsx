@@ -123,6 +123,17 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
     const availableAddOns = ["ads", "paywall", "phone-support"]
     const isFreeAddOnTrial = (props.stepperData.name === "Developer" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
+    const handleAddOnNames = (addOn: string) => {
+        switch(addOn){
+            case "ads":
+                return "Ads"
+            case "paywall":
+                return "Paywall"
+            case "phone-support": 
+                return "24/7 Phone Support"
+        }
+    }
+
     const featuresTableBody = () => {
         return props.stepperData.privileges ? props.stepperData.privileges.filter(item => availableAddOns.includes(item.code)).map((item: Privilege) => {
             return {
@@ -147,7 +158,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
                                 })
                             }}
                         />
-                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{capitalizeFirstLetter(item.code)}</Text>
+                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>
                     </div>,
                     <div className="right mr2">
                         <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" :  '$' + (item.price.usd / 100).toLocaleString() + "/yr"}</Text>
