@@ -30,6 +30,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Divider } from '../Common/MiscStyle';
+import { GeneralDetails } from './Details';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -204,29 +205,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     let splashScreenEnable = Object.keys(props.contentDetails.splashscreen).length !== 0;
     let thumbnailEnable = Object.keys(props.contentDetails.thumbnail).length !== 0;
 
-    function saveFile(url: string, filename: string) {
-        axiosClient.get(`/vods/${contentDetails.id}/download-url`
-        ).then((response) => {
-            var a = document.createElement("a")
-            a.target = '_blank'
-            a.href = response.data.data.url
-            a.setAttribute("download", filename)
-            a.click()
-        })
-
-        }
-
-    const handleOnlineToggle = (contentType: string) => {
-        switch (contentType) {
-            case "vod":
-                return "Video"
-            case "live":
-                return "Live Stream"
-            case "playlist":
-                return "Playlist"
-        }
-    }
-
     const handleSave = () => {
         setButtonLoading(true)
         props.saveContentDetails(contentDetails, props.contentType).then(() => {
@@ -245,57 +223,15 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         contentDetails &&
             <React.Fragment>
                 <Card className="col-12 clearfix">
-                    <div className="details col col-12">
-                        <header className="flex justify-between mb2">
-                            <Text size={20} weight="med">Details</Text>
-                            { 
-                                (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
-                                    <Button onClick={() => saveFile(null, contentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
-                            }
-                            {
-                                props.contentType === 'live' &&
-                                    <Button onClick={() => setEncoderModalOpen(true)} sizeButton="xs" typeButton="secondary" >Encoder Setup</Button>
-                            }
-                        </header>
-                        <Toggle
-                            className="col col-12 mb2"
-                            defaultChecked={contentDetails.online}
-                            onChange={() => {setContentDetails({ ...contentDetails, online: !contentDetails.online });setHasChanged(true)}}
-                            label={handleOnlineToggle(props.contentType) + " Online"}
-                        />
-                        <Input
-                            className={ClassHalfXsFullMd + "pr2 mb2"}
-                            label="Title"
-                            value={contentDetails.title}
-                            onChange={event => {setContentDetails({...contentDetails, title: event.currentTarget.value });setHasChanged(true)}}
-                        />
-                        <InputTags
-                            className={ClassHalfXsFullMd + "mb2"}
-                            label="Folders"
-                            disabled
-                            greyBackground
-                            defaultTags={props.contentDetails.folders} 
-                        />
-
-                        <Input
-                            className={ClassHalfXsFullMd + "pr2 mb2"}
-                            type="textarea"
-                            label="Description"
-                            value={contentDetails.description ? contentDetails.description : ''}
-                            onChange={event => {setContentDetails({ ...contentDetails, description: event.currentTarget.value });setHasChanged(true)}}
-                        />
-                        <div className={"col col-3 flex flex-column"}>
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Content ID</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">{userId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
-                                <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
-                                <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
-                            </LinkBox>
-                        </div>
-                    </div>
-                    <Divider className="col col-12 mt3 mr25 mb25" />
+                    <GeneralDetails
+                        userId={userId}
+                        contentDetails={props.contentDetails}
+                        localContentDetails={contentDetails}
+                        contentType={props.contentType}
+                        setHasChanged={setHasChanged}
+                        setLocalContentDetails={setContentDetails}
+                        setEncoderModalOpen={setEncoderModalOpen}
+                    />
                     <div className='col col-12'>
                         <header className="flex justify-between">
                             <Text className='col col-12' size={20} weight='med'>Sharing</Text>
