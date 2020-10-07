@@ -9,7 +9,6 @@ export const EmptyTrashModal = (props: {toggle: (b: boolean) => void;showToast: 
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        debugger
         await axiosClient.delete('/vods/empty-trash')
         .then(() => {
             setTimeout(() => {

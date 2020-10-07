@@ -24,7 +24,6 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
     const onSubmit = async (data: {title: string}) => {
 
         setButtonLoading(true)
-        console.log("test")
         
         return await axiosClient.post('/expos',
             {
@@ -36,7 +35,6 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             props.toggle();
             history.push(`/expos/${response.data.id}/general`)
         }).catch((error) => {
-            console.log(error);
             setButtonLoading(false)
             showToastNotification('Error while creating your expos.', 'fixed', 'error')
         })

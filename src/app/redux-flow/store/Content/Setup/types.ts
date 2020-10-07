@@ -10,6 +10,7 @@ export interface Content {
     thumbnailURL: string;
     'vod-id': string;
     'live-channel-id': string;
+    id?: string
 }
 
 export type ContentSelector = 'content' | 'folder';

@@ -49,7 +49,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         setIsLoading(true);
         props.purchasePlan(stepperData, recurlyToken, null)
         .then((response) => {
-            console.log('sucess repsonse',response)
             setIsLoading(false);
             if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
@@ -61,8 +60,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             }
         })
         .catch((error) => {
-            console.log(error)
-            debugger
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })

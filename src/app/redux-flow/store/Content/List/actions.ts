@@ -22,7 +22,6 @@ export const getContentListAction = (qs: string, contentType: string): ThunkDisp
                 dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {data: response.data.data ? response.data.data : response.data, contentType: contentType} })
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
                 return Promise.reject()
             })

@@ -67,6 +67,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         props.getFolderContent(parseFiltersToQueryString())
     }, [sortSettings, searchString])
 
+
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
@@ -133,6 +134,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     }
 
     const handleRemoveFromSelected = () => {
+        console.log(selectedTab, selectedItems, checkedSelectedItems); 
         if (selectedTab === 'folder') {
             setCheckedSelectedItems([]);
             setSelectedItems([]);
@@ -274,7 +276,8 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
 
     const renderContentsList = () => {
         return props.folderData.requestedContent && selectedTab === 'content' ? props.folderData.requestedContent.results.map((row) => {
-            if (row.type === "playlist" || selectedItems.includes(row)) {
+            console.log(selectedItems, row)
+            if (row.type === "playlist" ||  selectedItems.some( (el: FolderAsset) => el.objectID === row.objectID ) || selectedItems.includes(row)  ) {
                 return;
             }
             return (

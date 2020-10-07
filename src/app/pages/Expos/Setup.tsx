@@ -14,10 +14,10 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     const formateData: FolderAsset[] = props.contentData.contentList ? props.contentData.contentList.map(item =>{
         return {
             ownerID: "",
-            objectID: item['live-channel-id'] ? item['live-channel-id'] : item['vod-id'],
+            objectID: item['id'],
             title: item.title,
             thumbnail: item.thumbnailURL,
-            type: item["content-type"],
+            type: item.contentType,
             createdAt: 0,
             duration: '',
             featuresList: {},
@@ -28,7 +28,6 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
 
     const handleSave = (items: any, selectedTab: string, selectedFolderId: string, sortSettings: Object) => {
-        console.log(items)
         setSaveLoading(true);
         let newContent = items.map((item: FolderAsset): Content => {
             return {
@@ -40,11 +39,13 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         newData.contentList = newContent;
         newData.folderId = selectedFolderId ? selectedFolderId : undefined ;
         newData.expoType = selectedTab ;
-        newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
+        newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom';
+        newData.id = undefined;
         props.saveContentSetup(newData, props.contentId, props.contentType)
         .then(() => setSaveLoading(false))
         .catch(() => setSaveLoading(false))
     }
+
 
     return (
         <>
@@ -54,7 +55,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
                 showFolders={true}
                 folderId={props.contentData.folderId ? props.contentData.folderId : null} 
                 folderData={props.folderData}
-                type={props.contentData.expoType ? props.contentData.expoType : "content"} 
+                type={props.contentData.expoType ? props.contentData.expoType.replace('-list', '') : "content"} 
                 selectedItems={formateData} 
                 getFolderContent={props.getFolderContent} 
                 title={props.contentData.title} callback={handleSave} />

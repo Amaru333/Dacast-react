@@ -61,7 +61,6 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 paymentMethods: state.paymentMethods.filter(p => p.id !== action.payload.id)
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
-            console.log('adding WR ', JSON.stringify(action.payload))
             let withdrawalRequests = state.withdrawalRequests.slice()
             withdrawalRequests.push(action.payload)
             return {

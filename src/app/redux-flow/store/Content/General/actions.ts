@@ -55,11 +55,9 @@ export const getContentDetailsAction = (contentId: string, contentType: string):
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentDetails>) => {
         await ContentGeneralServices.getContentDetailsService(contentId, parseContentType(contentType))
             .then(response => {
-                console.log(response)
                 dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: contentType === 'expo' ? response.data : response.data.data, contentType: contentType, contentId: contentId} })
             })
             .catch((error) => {
-                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
                 return Promise.reject()
             })
