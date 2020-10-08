@@ -145,7 +145,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.timestamp ? tsToLocaleDate(transaction.timestamp, DateTime.DATETIME_SHORT) : transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency || 'USD'}</Text>,
-                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.decimalValue ? transaction.decimalValue : transaction.price}</Text>,
+                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + (transaction.decimalValue ? transaction.decimalValue : transaction.price)}</Text>,
                     transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
                     transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
                 ]}
