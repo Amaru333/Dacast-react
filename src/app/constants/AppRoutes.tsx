@@ -253,7 +253,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-expos',
+        associatePrivilege: 'privilege-expo',
         notDisplayedInNavigation: true,
         component: GeneralExpos,
     },
@@ -262,7 +262,7 @@ export const AppRoutes: Routes[] = [
         name: 'Setup',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-expos',
+        associatePrivilege: 'privilege-expo',
         notDisplayedInNavigation: true,
         component: ExposSetup,
     },
@@ -278,7 +278,7 @@ export const AppRoutes: Routes[] = [
         name: 'Expos',
         isExact: true,
         iconName: 'desktop_mac',
-        associatePrivilege: 'privilege-expos',
+        associatePrivilege: 'privilege-expo',
         component: ExposList
     },
     {
