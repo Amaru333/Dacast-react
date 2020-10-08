@@ -7,6 +7,7 @@ export interface TransactionLine {
     type: string;
     contentName: string;
     date: string;
+    timestamp?: number;
     purchaser: string;
     currency: string;
     price: number;

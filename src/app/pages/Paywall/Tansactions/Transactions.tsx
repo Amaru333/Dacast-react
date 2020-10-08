@@ -9,6 +9,8 @@ import { useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
+import { tsToLocaleDate } from '../../../../utils/formatUtils';
+import { DateTime } from 'luxon';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -140,9 +142,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 return {data: [
                     <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.actionType}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
-                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
+                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.timestamp ? tsToLocaleDate(transaction.timestamp, DateTime.DATETIME_SHORT) : transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
-                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
+                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency || 'USD'}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
                     transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
                     transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
