@@ -15,8 +15,8 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
-import { ItemNameContainer } from '../../Playlist/Setup/Setup';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { handleRowIconType } from '../../Analytics/AnalyticsCommun';
 
 var moment = require('moment-timezone');
 
@@ -168,27 +168,6 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
         }
     }, [props.stepperData.secondStep.folderData.requestedContent.results])
 
-
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
-            case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
-            case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
-            case 'live':
-            case 'channel':
-            case 'vod':
-                return item.thumbnail ?
-                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
-                    : 
-                        <div className='relative justify-center flex items-center' style={{width: 74, height: 42, backgroundColor: '#AFBACC'}}>
-                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                        </div>
-            default:
-                return;
-        }
-    }
-
     React.useEffect(() => {
         if(selectedItems && selectedItems.length > 0) {
             props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems}})
@@ -253,7 +232,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                             />
                         }
                         {handleRowIconType(row)}
-                        <ItemNameContainer><Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text></ItemNameContainer>
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
                         {
                             row.type === "folder" &&
                                 <div className="flex-auto justify-end">
@@ -278,7 +257,7 @@ export const GroupPriceStepperSecondStep = (props: { stepperData: GroupStepperDa
                         onChange={() => handleCheckboxSelected(element)}
                     />
                     {handleRowIconType(element)}
-                    <ItemNameContainer><Text className='pl2' size={14} weight='reg'>{element.title}</Text></ItemNameContainer>
+                    <Text className='pl2' size={14} weight='reg'>{element.title}</Text>
                 </ItemSetupRow>
             )
         })

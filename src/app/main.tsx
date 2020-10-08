@@ -237,8 +237,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
     }, [])
 
-    // Removing GTM for now (too many issues on their side overloading our sentry)
-
     // if (userToken.isLoggedIn()) {
     //     let tagManagerArgs = {
     //         gtmId: 'GTM-PHZ3Z7F',

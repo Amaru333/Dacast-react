@@ -24,7 +24,7 @@ interface PlanType {
     openOverage: (b: boolean) => void;
 }
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean}) => {
 
     let history = useHistory()
     
@@ -90,7 +90,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
-                        {(props.plan.displayName !== "Free" && props.plan.state === "active") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
+                        {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
@@ -115,7 +115,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        {storage.percentage <= 25 && handleButtonToPurchase(storage.percentage, "Storage")}
+                        {handleButtonToPurchase(storage.percentage, "Storage", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>
@@ -162,7 +162,7 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
         )
     }
     const handleInfos = () => {
-        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && props.plan.state === "active") {
+        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && !props.plan.displayName.includes('Canceled')) {
             if(props.overage && props.overage.enabled && props.overage.amount > 0) {
                 return (
                     <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>

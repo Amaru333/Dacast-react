@@ -19,7 +19,7 @@ export const getContentListAction = (qs: string, contentType: string): ThunkDisp
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentList>) => {
         await contentListServices.getContentList(qs, parseContentType(contentType))
             .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {data: response.data.data, contentType: contentType} })
+                dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {data: response.data.data ? response.data.data : response.data, contentType: contentType} })
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))

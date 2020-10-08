@@ -16,7 +16,8 @@ export type UnsecureM3u8Privilege = "privilege-unsecure-m3u8";
 export type VodPrivilege = "privilege-vod";
 export type WebDownloadPrivilege = "privilege-web-download";
 export type AnalyticsPrivilege = "privilege-analytics";
+export type ExposPrivilege = "privilege-expos";
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege;

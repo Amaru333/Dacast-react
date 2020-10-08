@@ -21,6 +21,7 @@ interface UserInfo {
     "privilege-vod": string;
     "privilege-web-download": string;
     "privilege-analytics": string;
+    'privilege-expos': string;
     'custom:dacast_user_id': string;
     'custom:first_name': string;
     'custom:last_name': string;
@@ -73,6 +74,8 @@ class userTokenService {
     }
 
     public getPrivilege = (privilege: Privilege) => {
+        // TODO QUENTIN : Remove when privilege expos available
+        if(privilege == 'privilege-expos') { return true };
         //Remove this by updating type on backend
         return this.getUserInfoItem(privilege) === 'true';
     }
