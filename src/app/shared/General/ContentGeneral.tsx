@@ -1,8 +1,6 @@
 import React from 'react';
 import { Card } from '../../../components/Card/Card';
 import { Text } from "../../../components/Typography/Text"
-import { Toggle } from '../../../components/Toggle/toggle';
-import { Input } from '../../../components/FormsComponents/Input/Input';
 import styled from 'styled-components';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../components/Table/Table';
@@ -10,8 +8,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Ico
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer, ClassThirdXsFullMd } from "../../shared/General/GeneralStyle"
-import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
+import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../utils/utils';
@@ -20,18 +17,16 @@ import { languages } from 'countries-list';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
-import { SubtitleInfo, ContentDetails } from '../../redux-flow/store/Content/General/types';
+import { SubtitleInfo, ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/General/types';
 import moment from 'moment';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { BubbleContent, ToggleTextInfo } from '../Security/SecurityStyle';
-import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { BubbleContent } from '../Security/SecurityStyle';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
-import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Divider } from '../Common/MiscStyle';
 import { GeneralDetails } from './Details';
 import { GeneralSharing } from './Sharing';
+import { GeneralSettings } from './Settings'
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -77,7 +72,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
     const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<DateTimeValue>(props.contentType === 'live' ? {...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()} : null)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>(props.contentType === "live" ? (props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false : null)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
@@ -243,89 +238,15 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         props.contentType === "live" &&
                         <>
                         <Divider className="col col-12 mt3 mr25 mb25" />
-                    <div className="settings col col-12">
-                    <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
-                    <div className="col col-12">
-                        {
-                            userToken.getPrivilege('privilege-recording') &&
-                            <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={contentDetails.recording} onChange={() => {setContentDetails({ ...contentDetails, recording: !contentDetails.recording });setHasChanged(true)}}></Toggle>
-                                <ToggleTextInfo className="mt1">
-                                    <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
-                                </ToggleTextInfo>
-                            </div>
-                        }
-
-                        <div className="mb2 clearfix">
-                            <Toggle
-                                label="Live Stream Start Countdown"
-                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle);setHasChanged(true) }}
-                                defaultChecked={liveStreamCountdownToggle}
-                            ></Toggle>
-                            <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
-                            </ToggleTextInfo>
-
-                            {
-                                liveStreamCountdownToggle &&
-                                    <div className="col col-12">
-                                        <div className='col col-12 sm-col-4 pr1'>
-                                            <DateSinglePickerWrapper
-                                                id="startDate"
-                                                datepickerTitle='Start Date'
-                                                date={moment(startDateTimeValue.date)}
-                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) ;setHasChanged(true)}}
-                                            />
-                                        </div>
-                                        <Input
-                                            type='time'
-                                            className='col col-12 sm-col-4 pl1 pr1'
-                                            defaultValue={startDateTimeValue.time}
-                                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value});setHasChanged(true)} }
-                                            disabled={false}
-                                            id='promptTime'
-                                            label='Prompt Time'
-                                            required
-                                            pattern="[0-9]{2}:[0-9]{2}"
-                                            step='1'
-                                        />
-                                        <DropdownSingle
-                                            className="col col-12 sm-col-4 pl1 "
-                                            hasSearch
-                                            dropdownTitle='Timezone'
-                                            dropdownDefaultSelect={startDateTimeValue.timezone}
-                                            id='dropdownTimezone'
-                                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]});setHasChanged(true)}} 
-                                            list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}
-                                        />
-                                    </div>
-                            }
-                        </div>
-                        {/* MAYBE V2? 
-                            {
-                            getPrivilege('privilege-dvr') &&
-                            <div className="mb2 clearfix">
-                                <Toggle label="30 Minutes Rewind" checked={newLiveDetails.rewind} callback={() => { newLiveDetails.rewind ? setNewLiveDetails({ ...newLiveDetails, rewind: false }) : setConfirmRewindModal(true) }}></Toggle>
-                                <ToggleTextInfo className="mt1">
-                                    <Text size={14} weight='reg' color='gray-1'>Rewind, pause, and fast-forward to catch back up to the live broadcast for up to 30 minutes. For help setting up please visit the <a href="https://www.dacast.com/support/knowledgebase/" target="_blank" rel="noopener noreferrer">Knowledge Base</a>.</Text>
-                                </ToggleTextInfo>
-                                {
-                                    newLiveDetails.rewind &&
-                                        <div className="col col-12 mb2">
-                                            <Bubble type='warning' className='my2'>
-                                                <BubbleContent>
-                                                    <Text weight="reg" size={16}>
-                                                        30 Minute Rewind will take 2 hours to take effect after enabling. Please ensure you have Purged your Live Stream before starting your encoder.
-                                                    </Text>
-                                                </BubbleContent>
-                                            </Bubble>
-                                            <Button sizeButton="xs" typeButton="secondary" onClick={() => { }}>Purge Live Stream</Button>
-                                        </div>
-                                }
-                            </div>
-                        } */}
-                    </div>
-                </div>
+                    <GeneralSettings 
+                        localContentDetails={contentDetails}
+                        setLocalContentDetails={setContentDetails}
+                        setHasChanged={setHasChanged}
+                        liveStreamCountdownToggle={liveStreamCountdownToggle}
+                        setLiveStreamCountdownToggle={setLiveStreamCountdownToggle}
+                        startDateTimeValue={startDateTimeValue}
+                        setStartDateTimeValue={setStartDateTimeValue}
+                    />
                 </>
             }
                 <Divider className="col col-12 mt3 mr25 mb25" />
