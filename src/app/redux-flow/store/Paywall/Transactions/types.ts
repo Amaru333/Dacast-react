@@ -8,6 +8,8 @@ export interface TransactionLine {
     contentName: string;
     date: string;
     timestamp?: number;
+    decimalValue?: number;
+    note?: string;
     purchaser: string;
     currency: string;
     price: number;
