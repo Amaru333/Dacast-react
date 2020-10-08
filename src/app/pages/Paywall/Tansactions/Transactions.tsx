@@ -142,7 +142,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 return {data: [
                     <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.decimalValue ? transaction.note : transaction.actionType}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
-                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.decimalValue ? tsToLocaleDate(transaction.timestamp, DateTime.DATETIME_SHORT) : transaction.date}</Text>,
+                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, DateTime.DATETIME_SHORT) : transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency || 'USD'}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + (transaction.decimalValue ? transaction.decimalValue : transaction.price)}</Text>,
