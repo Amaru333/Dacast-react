@@ -254,7 +254,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     }
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, imageType, props.contentType)
+        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, imageType, props.contentType)
     }
 
     return (
