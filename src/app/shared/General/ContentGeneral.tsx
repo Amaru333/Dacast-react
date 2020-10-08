@@ -8,7 +8,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Ico
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ImagesContainer, ImageContainer, ImageArea, ImageSection, SelectedImage, ButtonSection, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
+import { LinkBoxContainer, LinkBoxLabel, LinkBox, LinkText, ButtonContainer, ClassHalfXsFullMd, ExpandableContainer } from "../../shared/General/GeneralStyle"
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { updateClipboard } from '../../utils/utils';
@@ -27,9 +27,7 @@ import { Divider } from '../Common/MiscStyle';
 import { GeneralDetails } from './Details';
 import { GeneralSharing } from './Sharing';
 import { GeneralSettings } from './Settings'
-import { ColorPickerLabel } from '../../pages/Paywall/Theming/Theming';
-import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
-import { isProduction } from '../../utils/services/player/stage';
+import { GeneralImages } from './Images'
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -102,7 +100,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     };
 
     const subtitlesTableBody = () => {
-        return props.contentDetails.subtitles ? props.contentDetails.subtitles.map((value, key) => {
+        return props.contentDetails.subtitles &&props.contentDetails.subtitles.map((value, key) => {
             return {
                 data: [
                     <div className='flex'>
@@ -123,13 +121,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                         <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
                         <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, value.name, props.contentType)}>delete</IconStyle></ActionIcon>
                         <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
-                        {/* <ActionIcon id={"editSubtitleTooltip" + key}><IconStyle onClick={() => editSubtitle(value)}>edit</IconStyle></ActionIcon>
-                    <Tooltip target={"editSubtitleTooltip" + key}>Edit</Tooltip> */}
                     </IconContainer>
                 ]
             }
         })
-            : null
     };
 
     const disabledSubtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
@@ -198,22 +193,12 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         }
     }
 
-    let posterEnable = props.contentDetails.poster && Object.keys(props.contentDetails.poster).length !== 0;
-
     const advancedLinksOptions = [
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
-        { id: "poster", label: "Poster", enabled: true, link: posterEnable ? props.contentDetails.poster.url : '' },
+        { id: "poster", label: "Poster", enabled: true, link: props.contentDetails.poster ? props.contentDetails.poster.url : '' },
         { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
-
-    const expoBaseUrl = isProduction() ? 'https://expo.dacast.com' : 'https://singularity-expo.dacast.com'
-    
-    const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
-
-    let splashScreenEnable = props.contentDetails.splashscreen && Object.keys(props.contentDetails.splashscreen).length !== 0;
-    let headerEnable = props.contentDetails.poster && Object.keys(props.contentDetails.poster).length !== 0;
-    let thumbnailEnable = props.contentDetails.thumbnail && Object.keys(props.contentDetails.thumbnail).length !== 0;
 
     const handleSave = () => {
         setButtonLoading(true)
@@ -223,10 +208,6 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         }).catch(() =>
             setButtonLoading(false)
         )
-    }
-
-    const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, imageType, props.contentType)
     }
 
     return (
@@ -263,153 +244,18 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     />
                 </>
             }
-        
-                {
-                    props.contentType === 'expo' &&
-                    <>
-                        <Divider className="col col-12 mt3 mr25 mb25" />
-
-                        <div className="thumbnail col col-12">
-                            <div className="col col-12">
-                                <Text className="col col-12" size={20} weight="med">Appearance</Text>
-                                <Text className="col col-12 mb25 pt1" size={14} weight="reg">How your Expo looks when seen by your viewers.</Text>
-                                <div className="mxn2">
-                                    <div className='mb1 col col-6 sm-col-3 px2'>
-                                        <ColorPickerLabel>
-                                            <Text size={14} weight='med'>Header Colour</Text>
-                                        </ColorPickerLabel>
-                                        <ColorPicker
-                                            defaultColor={contentDetails.appearance && contentDetails.appearance.headerColor ? contentDetails.appearance.headerColor : 'white'}
-                                            callback={(color: string) =>  { setHasChanged(true); setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, headerColor: color}}) } }
-                                        />
-                                    </div>
-                                    <div className='mb1 col col-6 sm-col-3 px2'>
-                                        <ColorPickerLabel>
-                                            <Text size={14} weight='med'>Font Colour</Text>
-                                        </ColorPickerLabel>
-                                        <ColorPicker
-                                            defaultColor={contentDetails.appearance && contentDetails.appearance.fontColor ? contentDetails.appearance.fontColor : 'white'}
-                                            callback={(color: string) => { setHasChanged(true); setContentDetails({...contentDetails, appearance: {...contentDetails.appearance, fontColor: color}})}}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <ImageContainer className="col col-6">
-                                <div className="flex flex-center">
-                                    <Text size={16} weight="med" className="mr1">Header</Text>
-                                    <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="splashscreenTooltip">Replaces Header Color if enabled.</Tooltip>
-                                </div>
-                                <div className="flex flex-center">
-                                    <ImageArea className="mt2 col col-12">
-                                        <ButtonSection>
-                                            {
-                                                headerEnable &&
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("poster")} >Delete</Button>
-                                            }
-                                            <Button
-                                                className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                                onClick={() => { setImageModalTitle("Change Poster"); setSelectedImageName(props.contentDetails.poster ? props.contentDetails.poster.url : null); setImageModalOpen(true) }}>
-                                                {
-                                                    headerEnable ?
-                                                        "Change" : "Add"
-                                                }
-                                            </Button>
-                                        </ButtonSection>
-                                        {headerEnable && <ImageSection> <SelectedImage src={props.contentDetails.poster.url} /></ImageSection>}
-                                    </ImageArea>
-                                </div>
-                                <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
-                            </ImageContainer>
-                        </div>
-                    </>
-                }
-                {
-                    props.contentType !== 'expo' &&
-                    <>
-                        <Divider className="col col-12 mt3 mr25 mb25" />
-                        <div className="thumbnail col col-12">
-                            <Text className="col col-12" size={20} weight="med">Images</Text>
-                            <Text className="col col-12 pt1" size={14} weight="reg">{props.contentType === 'expo' ? "How your Expo looks when seen by your viewers." : "Upload image assets for your content."}</Text>
-                            <ImagesContainer className="col col-12 pt2">
-                                <ImageContainer className="mr2 xs-mr0 xs-mb25">
-                                    <div className="flex flex-center">
-                                        <Text size={16} weight="med" className="mr1">Splashscreen</Text>
-                                        <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
-                                    </div>
-                                    <ImageArea className="mt2">
-                                        <ButtonSection>
-                                            {
-                                                (splashScreenEnable && props.contentType !== "vod") &&
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("splashscreen")} >Delete</Button>
-                                            }
-                                            <Button
-                                                className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                                onClick={() => { setImageModalTitle("Change Splashscreen"); setSelectedImageName(props.contentDetails.splashscreen.url); setImageModalOpen(true) }}>
-                                                {
-                                                    splashScreenEnable ?
-                                                        "Change" : "Add"
-                                                }
-                                            </Button>
-                                        </ButtonSection>
-                                        {splashScreenEnable && <ImageSection> <SelectedImage src={props.contentDetails.splashscreen.url} /></ImageSection>}
-                                    </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
-                                </ImageContainer>
-                                <ImageContainer className="mr2 xs-mb25 xs-mr0">
-                                    <div className="flex flex-center">
-                                        <Text size={16} weight="med" className="mr1">Thumbnail</Text>
-                                        <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
-                                    </div>
-                                    <ImageArea className="mt2">
-                                        <ButtonSection>
-                                            {
-                                                (thumbnailEnable && props.contentType !== "vod") &&
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("thumbnail")}>Delete</Button>
-                                            }
-                                            <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Thumbnail"); setSelectedImageName(props.contentDetails.thumbnail.url); setImageModalOpen(true) }}>
-                                                {
-                                                    thumbnailEnable ?
-                                                        "Change" : "Add"
-                                                }
-                                            </Button>
-                                        </ButtonSection>
-                                        {thumbnailEnable && <ImageSection> <SelectedImage src={props.contentDetails.thumbnail.url} /></ImageSection>}
-                                    </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
-                                </ImageContainer>
-                                <ImageContainer className="">
-                                    <div className="flex flex-center">
-                                        <Text className="mr1" size={16} weight="med">Poster</Text>
-                                        <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
-                                    </div>
-                                    <ImageArea className="mt2">
-                                        <ButtonSection>
-                                            {
-                                                posterEnable &&
-                                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => handleImageDelete("poster")}>Delete</Button>
-                                            }
-
-                                            <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { setImageModalTitle("Change Poster"); setSelectedImageName(props.contentDetails.poster.url); setImageModalOpen(true) }}>
-                                                {
-                                                    posterEnable ?
-                                                        "Change" : "Add"
-                                                }
-                                            </Button>
-                                        </ButtonSection>
-                                        {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.contentDetails.poster.url} /></ImageSection>}
-                                    </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
-                                </ImageContainer>
-
-
-                            </ImagesContainer>
-                        </div>
-                    </>
-                }
+            <Divider className="col col-12 mt3 mr25 mb25" />
+                <GeneralImages 
+                    contentType={props.contentType}
+                    localContentDetails={contentDetails}
+                    setLocalContentDetails={setContentDetails}
+                    contentDetails={props.contentDetails}
+                    setHasChanged={setHasChanged}
+                    setImageModalTitle={setImageModalTitle}
+                    setSelectedImageName={setSelectedImageName}
+                    setImageModalOpen={setImageModalOpen}
+                    deleteFile={props.deleteFile}
+                />
 
                 {props.contentType === "vod" &&
                     <>
