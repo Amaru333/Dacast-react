@@ -321,6 +321,8 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                             </DisabledSection>
+                            <Divider className="p1" />
+
                             <DisabledSection enabled={customEnabled}>
                                 <div className="pt25 flex justify-between">
                                     <div><Text size={20} weight='med'>Offline Message</Text></div>
