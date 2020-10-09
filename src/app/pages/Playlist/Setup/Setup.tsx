@@ -64,7 +64,8 @@ export const SetupPage = (props: SetupComponentProps & { contentId: string; cont
             <ContentSelector
                 showSort={true}
                 loading={saveLoading}
-                playlist={{ setPreviewModalOpen: setPreviewModalOpen, setPlaylistSettingsOpen: setPlaylistSettingsOpen }}
+                playlist={{ setPreviewModalOpen: setPreviewModalOpen}}
+                openSettings={setPlaylistSettingsOpen}
                 folderId={props.contentData.folderId ? props.contentData.folderId : null}
                 folderData={props.folderData}
                 type={props.contentData.playlistType}

@@ -25,9 +25,10 @@ export interface ContentSelectorComponentProps {
     loading?: boolean;
     callback: (selectedItems: (FolderAsset | FolderTreeNode)[], selectedTab: "folder" | "content", selectedFolderId?: string | null, sortSettings?: SortSettingsContentSelector ) => void;
     folderId?: string;
-    playlist?: { setPreviewModalOpen: (enable: boolean) => void, setPlaylistSettingsOpen: (enable: boolean) => void };
+    playlist?: { setPreviewModalOpen: (enable: boolean) => void };
     showSort?: boolean;
     showFolders?: boolean;
+    openSettings?: Function;
 }
 
 export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
@@ -335,12 +336,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                             </DropdownList>
                         </div>
                         {
-                            props.playlist &&
-                            <>
-                                <Button onClick={() => props.playlist.setPlaylistSettingsOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
-                            <Button onClick={() => props.playlist.setPreviewModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
-                        </>
-                    }
+                            props.openSettings && <Button onClick={() => props.openSettings(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >Settings</Button>
+                        }
+                        {
+                            props.playlist && <Button onClick={() => props.playlist.setPreviewModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Preview</Button>
+                        }
                 </div>
                 }
                 
