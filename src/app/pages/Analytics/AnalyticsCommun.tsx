@@ -220,7 +220,7 @@ min-height: 52px;
 `
 
 export const handleRowIconType = (item: FolderAsset) => {
-    switch (item.contentType) {
+    switch (item.type) {
         case 'playlist':
             return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>playlist_play</IconStyle>
         case 'folder':

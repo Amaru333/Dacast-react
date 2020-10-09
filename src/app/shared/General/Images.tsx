@@ -16,7 +16,7 @@ export const GeneralImages = (props: {contentType: string, localContentDetails: 
     let thumbnailEnable = props.contentDetails.thumbnail && Object.keys(props.contentDetails.thumbnail).length !== 0;
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, imageType, props.contentType)
+        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, props.contentType, imageType)
     }
 
     return (

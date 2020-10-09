@@ -27,7 +27,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
             {props.contentDetailsState['expo'] && props.contentDetailsState['expo'][exposId] ?
                 (
                     <div className='flex flex-column'>
-                        General
                         <ContentGeneralPage
                             contentType='expo' 
                             contentDetails={props.contentDetailsState['expo'][exposId]}

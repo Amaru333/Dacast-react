@@ -178,6 +178,14 @@ export const ContentListPage = (props: ContentListProps) => {
             returnedString = returnedString.replace('status=&', 'status=online,offline&')
         }
 
+        if (returnedString.indexOf('status=,') > -1) {
+            returnedString = returnedString.replace('status=,', 'status=')
+        }
+
+        if (returnedString.indexOf('created-at=,,') > -1) {
+            returnedString = returnedString.replace('created-at=,', 'created-at=')
+        }
+
         if (returnedString.indexOf('features=&') > -1) {
             returnedString = returnedString.replace('features=&', '')
         }
@@ -213,11 +221,11 @@ export const ContentListPage = (props: ContentListProps) => {
     })
 
     const bulkActions = [
-        { name: 'Online/Offline', function: setBulkOnlineOpen },
-        { name: 'Paywall Off', function: setBulkPaywallOpen },
-        { name: 'Change Theme', function: setBulkThemeOpen },
-        { name: 'Move To', function: setMoveItemsModalOpened },
-        { name: 'Delete', function: setBulkDeleteOpen },
+        { name: 'Online/Offline', function: setBulkOnlineOpen, hideForContent: [] },
+        { name: 'Paywall Off', function: setBulkPaywallOpen, hideForContent: ['expo'] },
+        { name: 'Change Theme', function: setBulkThemeOpen, hideForContent: ['expo'] },
+        { name: 'Move To', function: setMoveItemsModalOpened, hideForContent: ['expo'] },
+        { name: 'Delete', function: setBulkDeleteOpen, hideForContent: [] },
     ]
 
     const handleURLName = (contentType: string) => {
@@ -237,7 +245,7 @@ export const ContentListPage = (props: ContentListProps) => {
         return {
             data: [
                 {
-                    cell: props.contentType === 'expo' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
+                    cell: <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
@@ -279,7 +287,6 @@ export const ContentListPage = (props: ContentListProps) => {
             return contentList.results.map((value) => {
                 return {
                     data: [
-                        props.contentType === 'expo' ? undefined :
                             <div key={"checkbox" + value.objectID} style={{ paddingTop: 8, paddingBottom: 8 }} className='flex items-center'>
                                 <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                                     if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
@@ -332,6 +339,9 @@ export const ContentListPage = (props: ContentListProps) => {
 
     const renderList = () => {
         return bulkActions.map((item, key) => {
+            if(item.hideForContent.includes(props.contentType)) {
+                return;
+            }
             return (
                 <DropdownItem
                     isSingle
