@@ -3,7 +3,6 @@ import { Card } from '../../../components/Card/Card';
 import { Text } from "../../../components/Typography/Text"
 import styled from 'styled-components';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Table } from '../../../components/Table/Table';
 import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Icon';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -28,6 +27,7 @@ import { GeneralDetails } from './Details';
 import { GeneralSharing } from './Sharing';
 import { GeneralSettings } from './Settings'
 import { GeneralImages } from './Images'
+import { GeneralAdvancedLinks } from './AdvancedLinks'
 import { GeneralSubtitles } from './Subtitles';
 
 export interface ContentGeneralProps {
@@ -60,7 +60,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
+    
     const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
@@ -180,12 +180,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         }
     }
 
-    const advancedLinksOptions = [
-        { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
-        { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
-        { id: "poster", label: "Poster", enabled: true, link: props.contentDetails.poster ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
-    ]
+    
 
     const handleSave = () => {
         setButtonLoading(true)
@@ -257,34 +252,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                 <Divider className="col col-12 mt3 mr25 mb25" />
                 {
                     props.contentType !== 'expo' &&
-                    <div className="col col-12 advancedVideoLinks">
-                        <div onClick={() => setAdvancedLinksExpanded(!advancedLinksExpanded)}>
-                            <IconStyle className="col col-1 pointer">{advancedLinksExpanded ? "expand_less" : "expand_more"}</IconStyle>
-                            <Text className="col col-11 pointer" size={20} weight="med">Advanced Video Links</Text>
-                        </div>
-                        <ExpandableContainer className="col col-12" isExpanded={advancedLinksExpanded}>
-                            {advancedLinksOptions.filter(item => item.enabled).map((item) => {
-                                {
-                                    if (item.link && item.link !== '') {
-                                        return (
-                                            <LinkBoxContainer key={item.id} className="col col-6 mt2">
-                                                <LinkBoxLabel>
-                                                    <Text size={14} weight="med">{item.label}</Text>
-                                                </LinkBoxLabel>
-                                                <LinkBox>
-                                                    <LinkText size={14}>
-                                                        <Text size={14} weight="reg">{item.link}</Text>
-                                                    </LinkText>
-                                                    <IconStyle className='pointer' id={item.id} onClick={() => updateClipboard(item.link, `${item.label} Link Copied`)}>file_copy_outlined</IconStyle>
-                                                    <Tooltip target={item.id}>Copy to clipboard</Tooltip>
-                                                </LinkBox>
-                                            </LinkBoxContainer>
-                                        )
-                                    }
-                                }
-                            })}
-                        </ExpandableContainer>
-                    </div>
+                    <GeneralAdvancedLinks contentDetails={props.contentDetails} />
                 }
 
                 {(subtitleModalOpen && props.contentType === "vod") &&
