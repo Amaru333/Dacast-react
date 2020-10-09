@@ -37,7 +37,7 @@ export const PiracyPage = (props: PirateComponentProps) => {
             </div>
             }
             {
-                (!props.pirateData && !url) && 
+                (!props.pirateData && !buttonLoading) && 
                 <Text size={14} weight="reg">No pirate found for the searched URL</Text>
 
             }
