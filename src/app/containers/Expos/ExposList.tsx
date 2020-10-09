@@ -22,7 +22,9 @@ const ExposList = (props: ContentListProps) => {
     React.useEffect(() => {
         if(!noDataFetched) {
             props.getContentList(null, 'expo')        
-            .then(() => setIsFetching(false))
+            .then(() => {
+                setIsFetching(false)
+            })
             .catch(() => setNodataFetched(true))
         } 
     }, [])
@@ -34,7 +36,7 @@ const ExposList = (props: ContentListProps) => {
     return !isFetching ? 
         <>
         {
-            props.contentListState['expo'].results.length === 0 ? 
+            props.contentListState['expo'].countTotal === 0 ? 
             <EmptyCardExpos /> :
             <ContentListPage
                 contentType='expo'

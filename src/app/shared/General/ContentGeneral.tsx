@@ -178,7 +178,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         } else if (imageModalTitle === 'Change Poster') {
             return `${props.contentType}-poster`
         } else {
-            return ''
+            return `${props.contentType}-poster`
         }
     }
 

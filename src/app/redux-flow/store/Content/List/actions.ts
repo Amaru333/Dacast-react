@@ -4,10 +4,11 @@ import { ApplicationState } from "../.."
 import { showToastNotification } from '../../Toasts'
 import { contentListServices } from './services'
 import { parseContentType } from '../../../../utils/utils'
+import { resolve } from 'dns'
 
 export interface GetContentList {
     type: ActionTypes.GET_CONTENT_LIST;
-    payload: {data: SearchResult, contentType: string};
+    payload: {data: SearchResult, contentType: string, countTotal?: number };
 }
 
 export interface DeleteContent {
@@ -15,11 +16,12 @@ export interface DeleteContent {
     payload: {id: string};
 }
 
-export const getContentListAction = (qs: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentList> => {
+export const getContentListAction = (qs: string , contentType: string): ThunkDispatch<Promise<void>, {}, GetContentList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentList>) => {
         await contentListServices.getContentList(qs, parseContentType(contentType))
             .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {data: response.data.data ? response.data.data : response.data, contentType: contentType} })
+                const data = response.data.data ? response.data.data : response.data;
+                dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {countTotal: qs ? undefined : data.totalResults, data: data, contentType: contentType} })
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
