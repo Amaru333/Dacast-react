@@ -41,7 +41,7 @@ export interface ContentGeneralProps {
     saveContentDetails: (data: ContentDetails, contentType: string) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => Promise<void>;
-    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, contentType: string, uploadType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
     deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>;
@@ -254,7 +254,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     }
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, imageType, props.contentType)
+        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, props.contentType, imageType)
     }
 
     return (

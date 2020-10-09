@@ -120,12 +120,12 @@ export const uploadImageFromVideoAction = (contentId: string, time: number, imag
     }
 }
 
-export const deleteFileAction = (contentId: string, targetId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
+export const deleteFileAction = (contentId: string, targetId: string, contentType: string, imageType: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
         await ContentGeneralServices.deleteFile(contentId, targetId, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {contentId: contentId, id: targetId, contentType: contentType} })
-                dispatch(showToastNotification("Poster has been deleted", 'fixed', "success"))
+                dispatch(showToastNotification(`${imageType} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
