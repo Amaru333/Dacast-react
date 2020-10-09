@@ -504,7 +504,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                             }
                                             <Button
                                                 className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"
-                                                onClick={() => { setImageModalTitle("Change Poster"); setSelectedImageName(props.contentDetails.poster ? props.contentDetails.poster.url : null); setImageModalOpen(true) }}>
+                                                onClick={() => { setImageModalTitle("Change Header"); setSelectedImageName(props.contentDetails.poster ? props.contentDetails.poster.url : null); setImageModalOpen(true) }}>
                                                 {
                                                     headerEnable ?
                                                         "Change" : "Add"

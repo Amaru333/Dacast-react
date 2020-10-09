@@ -97,7 +97,7 @@ export const uploadFileAction = (data: File, uploadUrl: string, contentId: strin
         await ContentGeneralServices.uploadFile(data, uploadUrl)
             .then(response => {
                 dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {contentId: contentId, contentType: contentType} })
-                dispatch(showToastNotification(`${capitalizeFirstLetter(uploadType)} has been saved`, 'fixed', "success"))
+                dispatch(showToastNotification(`${contentType === "expo" ? 'Header' : capitalizeFirstLetter(uploadType)} has been saved`, 'fixed', "success"))
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -125,7 +125,7 @@ export const deleteFileAction = (contentId: string, targetId: string, contentTyp
         await ContentGeneralServices.deleteFile(contentId, targetId, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.DELETE_IMAGE, payload: {contentId: contentId, id: targetId, contentType: contentType} })
-                dispatch(showToastNotification(`${imageType} has been deleted`, 'fixed', "success"))
+                dispatch(showToastNotification(`${contentType === "expo" ? 'Header' : capitalizeFirstLetter(imageType)} has been deleted`, 'fixed', "success"))
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
