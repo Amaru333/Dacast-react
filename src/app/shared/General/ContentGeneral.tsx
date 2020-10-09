@@ -28,6 +28,7 @@ import { GeneralDetails } from './Details';
 import { GeneralSharing } from './Sharing';
 import { GeneralSettings } from './Settings'
 import { GeneralImages } from './Images'
+import { GeneralSubtitles } from './Subtitles';
 
 export interface ContentGeneralProps {
     contentType: string;
@@ -127,23 +128,9 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         })
     };
 
-    const disabledSubtitlesTableHeader = (setSubtitleModalOpen: (boolean: boolean) => void) => {
-        return {
-            data: [
-                { cell: <span key={'disabledTableHeader'}></span> },
-                { cell: <Button onClick={() => setSubtitleModalOpen(true)} className="right mr2" sizeButton="xs" typeButton="secondary">Create Subtitle</Button> }
-            ]
-        }
-    }
+    
 
-    const disabledSubtitlesTableBody = (text: string) => {
-        return [{
-            data: [
-                <span key={'disabledTableBody'}></span>,
-                <div className='left'><Text key={text} size={14} weight='reg' color='gray-3' >{text}</Text></div>
-            ]
-        }]
-    }
+    
 
     React.useEffect(() => {
         if (props.contentDetails.uploadurl && subtitleModalOpen) {
@@ -231,43 +218,41 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                     />
                     {   
                         props.contentType === "live" &&
-                        <>
-                        <Divider className="col col-12 mt3 mr25 mb25" />
-                    <GeneralSettings 
+                            <>
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <GeneralSettings 
+                                    localContentDetails={contentDetails}
+                                    setLocalContentDetails={setContentDetails}
+                                    setHasChanged={setHasChanged}
+                                    liveStreamCountdownToggle={liveStreamCountdownToggle}
+                                    setLiveStreamCountdownToggle={setLiveStreamCountdownToggle}
+                                    startDateTimeValue={startDateTimeValue}
+                                    setStartDateTimeValue={setStartDateTimeValue}
+                                />
+                            </>
+                    }
+                    <Divider className="col col-12 mt3 mr25 mb25" />
+                    <GeneralImages 
+                        contentType={props.contentType}
                         localContentDetails={contentDetails}
                         setLocalContentDetails={setContentDetails}
+                        contentDetails={props.contentDetails}
                         setHasChanged={setHasChanged}
-                        liveStreamCountdownToggle={liveStreamCountdownToggle}
-                        setLiveStreamCountdownToggle={setLiveStreamCountdownToggle}
-                        startDateTimeValue={startDateTimeValue}
-                        setStartDateTimeValue={setStartDateTimeValue}
+                        setImageModalTitle={setImageModalTitle}
+                        setSelectedImageName={setSelectedImageName}
+                        setImageModalOpen={setImageModalOpen}
+                        deleteFile={props.deleteFile}
                     />
-                </>
-            }
-            <Divider className="col col-12 mt3 mr25 mb25" />
-                <GeneralImages 
-                    contentType={props.contentType}
-                    localContentDetails={contentDetails}
-                    setLocalContentDetails={setContentDetails}
-                    contentDetails={props.contentDetails}
-                    setHasChanged={setHasChanged}
-                    setImageModalTitle={setImageModalTitle}
-                    setSelectedImageName={setSelectedImageName}
-                    setImageModalOpen={setImageModalOpen}
-                    deleteFile={props.deleteFile}
-                />
 
                 {props.contentType === "vod" &&
                     <>
                         <Divider className="col col-12 mt3 mr25 mb25" />
-                        <div className="subtitles col col-12">
-                            <Text className="col col-12" size={20} weight="med">Subtitles</Text>
-                            <Text className="col col-12 pt2" size={14} weight="reg">Add subtitles to improve the accessibility of your content.</Text>
-                        </div>
-                        {(!props.contentDetails.subtitles || props.contentDetails.subtitles.length === 0) ?
-                            <Table className="col col-12" headerBackgroundColor="gray-10" header={disabledSubtitlesTableHeader(setSubtitleModalOpen)} body={disabledSubtitlesTableBody('You currently have no Subtitles')} id="subtitlesTable" />
-                            : <Table className="col col-12" headerBackgroundColor="gray-10" header={subtitlesTableHeader(setSubtitleModalOpen)} body={subtitlesTableBody()} id="subtitlesTable" />
-                        }
+                        <GeneralSubtitles 
+                            contentType={props.contentType}
+                            contentDetails={props.contentDetails}
+                            setSubtitleModalOpen={setSubtitleModalOpen}
+                            deleteSubtitle={props.deleteSubtitle}
+                        />
                     </>}
                 <Divider className="col col-12 mt3 mr25 mb25" />
                 {
