@@ -74,6 +74,7 @@ class userTokenService {
     }
 
     public getPrivilege = (privilege: Privilege) => {
+        //Remove this by updating type on backend
         return this.getUserInfoItem(privilege) === 'true';
     }
 

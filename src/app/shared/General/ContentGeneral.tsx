@@ -254,7 +254,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     }
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, imageType, props.contentType)
+        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, imageType, props.contentType)
     }
 
     return (
@@ -726,65 +726,69 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                                         <Text weight="reg" size={16} >
                                             Correct <a href={getKnowledgebaseLink("Encoder Setup")} target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
                                             </Text>
-                                    </BubbleContent>
-                                </Bubble>
+                                        </BubbleContent>
+                                    </Bubble>
 
-                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">Server</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard") }}>file_copy</IconStyle>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">Stream Key</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{props.contentDetails.streamKeys[0]}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.streamKeys[0], "Copied to clipboard")}>file_copy</IconStyle>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">Username</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">Password</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-                                <LinkBoxContainer className={ClassHalfXsFullMd}>
-                                    <LinkBoxLabel>
-                                        <Text size={14} weight="med">Backup URL</Text>
-                                    </LinkBoxLabel>
-                                    <LinkBox>
-                                        <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
-                                    </LinkBox>
-                                </LinkBoxContainer>
-                            </div>
-                            <div className="flex col col-12 mt2">
-                                <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                                <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
-                            </div>
-                        </ModalContent>
-                        <ModalFooter className="mt1" >
-                            <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
-                        </ModalFooter>
-                    </Modal>
-                }
+                                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">Server</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard") } }>file_copy</IconStyle>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+                                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">Backup Server</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+                                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">Username</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+                                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">Password</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+                                    {props.contentDetails.streamKeys.map((streamKey, i) => {
+                                        return(
+                                        <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
+                                        <LinkBoxLabel>
+                                            <Text size={14} weight="med">{"Stream Key " + (i+1)}</Text>
+                                        </LinkBoxLabel>
+                                        <LinkBox>
+                                            <LinkText size={14} weight="reg">{streamKey}</LinkText>
+                                            <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
+                                        </LinkBox>
+                                    </LinkBoxContainer>
+                                        )
+                                    })}
+                                </div>
+                                <div className="flex col col-12 mt2">
+                                    <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
+                                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                                </div>
+                            </ModalContent>
+                            <ModalFooter className="mt1" >
+                                <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
+                            </ModalFooter>
+                        </Modal>
+                    }
 
                 <Modal hasClose={false} icon={stepModalRewind === 1 ? { name: 'info_outlined', color: 'yellow' } : { name: 'check', color: 'green' }} size="large" modalTitle={stepModalRewind === 1 ? "Is your Encoder turned off?" : "30 Minute Rewind Enabled"} opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
                     {stepModalRewind === 1 ?
