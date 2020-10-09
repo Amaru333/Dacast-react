@@ -13,10 +13,32 @@ interface PromoId {
     id: string
 }
 
-type Promo = PromoDetails & PromoId
+type PromoEndpoints = PromoDetails & PromoId
+
+
+interface PromoPresetDetails {
+    name: string;
+    type: 'voucher';
+    preset: {
+        discount: number;
+        limit: number;
+        startDate?: number;
+        endDate?: number;
+        discountApplied: string;
+        assignedContentIds: string[];
+        assignedGroupIds: string[];
+    };
+}
+
+type PromoPreset = PromoPresetDetails & PromoId
+
+interface GetPromoPresetOutput {
+    promos: PromoPreset[];
+    totalItems: number
+}
 
 interface GetPromoOutput {
-    promos: Promo[];
+    promos: PromoEndpoints[];
     totalItems: number
 }
 
@@ -152,9 +174,9 @@ interface PaypalDetails {
 
 type Paypal = PaypalDetails & PaymentMethodId
 
-type PaymentMethod = BankAccountUS | BankAccountInternational | Check | Paypal
+type PaymentMethodEndpoints = BankAccountUS | BankAccountInternational | Check | Paypal
 
-function isBankAccountMethod(paymentMethod: PaymentMethod): paymentMethod is BankAccountUS | BankAccountInternational {
+function isBankAccountMethod(paymentMethod: PaymentMethodEndpoints): paymentMethod is BankAccountUS | BankAccountInternational {
     //@ts-ignore
     return !!paymentMethod['recipientType']
 }
@@ -162,5 +184,32 @@ function isBankAccountMethod(paymentMethod: PaymentMethod): paymentMethod is Ban
 type PaymentMethodDetails = BankAccountUSDetails | BankAccountInternationalDetails | CheckDetails| PaypalDetails
 
 interface GetPaymentMethodOutput {
-    paymentMethods: PaymentMethod[];
+    paymentMethods: PaymentMethodEndpoints[];
 }
+
+interface PaymentRequestId {
+    id: string;
+}
+interface PaymentRequestDetails {
+    paymentMethodId: string;
+    currency: string;
+    amount: number;
+    requestDate: number;
+    transferDate: number;
+    status: 'completed' | 'cancelled' | 'pending';
+}
+
+type PaymentRequestEndpoints = PaymentRequestDetails & PaymentRequestId
+
+interface GetPaymentRequestOutput {
+    withdrawals: PaymentRequestEndpoints[];
+}
+
+interface PostPaymentRequestInput {
+    paymentMethodId: string;
+    currency: string;
+    amount: number;
+    requestDate: number;
+    transferDate: number;
+}
+

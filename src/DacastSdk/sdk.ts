@@ -16,6 +16,28 @@ export class DacastSdk {
         return data
     }
 
+    public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => {
+        return await this.axiosClient.get('/paywall/promos/presets?' + input)
+        .then(response => {
+            return this.checkExtraData(response.data)
+        })
+    }
+
+    public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => {
+        return await this.axiosClient.post('/paywall/promos/presets', {...input})
+        .then(response => {
+            return {id: this.checkExtraData(response.data)}
+        })
+    }
+
+    public putPromoPreset = async (input: PromoPreset): Promise<void> => {
+        return await this.axiosClient.put('/paywall/promos/presets/' + input.id, {...input})
+    }
+
+    public deletePromoPreset = async (input: string): Promise<void> => {
+        return await this.axiosClient.delete('/paywall/promos/presets/' + input)
+    }
+
     public getPromo = async (input: string): Promise<GetPromoOutput> => {
         return await this.axiosClient.get('/paywall/promos?' + input)
         .then(response => {
@@ -30,7 +52,7 @@ export class DacastSdk {
         })
     }
 
-    public putPromo = async (input: Promo): Promise<void> => {
+    public putPromo = async (input: PromoEndpoints): Promise<void> => {
         return await this.axiosClient.put('/paywall/promos/' + input.id, {promo: input})
     }
 
@@ -77,11 +99,33 @@ export class DacastSdk {
         })
     }
 
-    public putPaymentMethod = async (input: PaymentMethod): Promise<void> => {
+    public putPaymentMethod = async (input: PaymentMethodEndpoints): Promise<void> => {
         return await this.axiosClient.put('/paywall/payment-methods/'+ input.id, input)
     }
 
     public deletePaymentMethod = async (input: string): Promise<void> => {
         return await this.axiosClient.delete('/paywall/payment-methods/' + input)
     }
+
+
+
+    public getPaymentRequest = async (): Promise<GetPaymentRequestOutput> => {
+        return await this.axiosClient.get('/paywall/payment-requests')
+        .then(response => {
+            return this.checkExtraData(response)
+        })
+    }
+
+    public postPaymentRequest = async (input: PostPaymentRequestInput): Promise<PaymentRequestId> => {
+        return await this.axiosClient.post('/paywall/payment-requests', input)
+        .then(response => {
+            return this.checkExtraData(response)
+        })
+    }
+
+    public putPaymentRequest = async (input: PaymentRequestEndpoints): Promise<void> => {
+        return await this.axiosClient.put('/paywall/payment-requests/'+ input.id, input)
+    }
+
+
 }

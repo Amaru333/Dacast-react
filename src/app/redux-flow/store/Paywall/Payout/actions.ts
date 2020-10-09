@@ -2,9 +2,8 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, PaymentMethod, WithdrawalRequest } from './types';
-import { PayoutServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput } from './viewModel';
+import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput, formatPutWithdrawalMethodInput, formatGetWithdrawalRequestsOutput, formatPostWithdrawalRequestInput, formatPutWithdrawalRequestInput } from './viewModel';
 
 export interface GetPaymentMethods {
     type: ActionTypes.GET_PAYMENT_METHODS;
@@ -13,7 +12,7 @@ export interface GetPaymentMethods {
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: {data: {withdrawals: WithdrawalRequest[]}};
+    payload: WithdrawalRequest[];
 }
 
 export interface AddPaymentMethod {
@@ -55,9 +54,9 @@ export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetP
 
 export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, GetWithdrawalRequests> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetWithdrawalRequests>) => {
-        await PayoutServices.getWithdrawalRequests()
+        await dacastSdk.getPaymentRequest()
             .then( response => {
-                dispatch({type: ActionTypes.GET_WITHDRAWAL_REQUESTS, payload: response.data});
+                dispatch({type: ActionTypes.GET_WITHDRAWAL_REQUESTS, payload: formatGetWithdrawalRequestsOutput(response)});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
@@ -80,8 +79,8 @@ export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promi
 
 export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, UpdatePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, UpdatePaymentMethod>) => {
-        await PayoutServices.updatePaymentMethod(data)
-            .then( response => {
+        await dacastSdk.putPaymentMethod(formatPutWithdrawalMethodInput(data))
+            .then(() => {
                 dispatch({type: ActionTypes.UPDATE_PAYMENT_METHOD, payload: data});
                 dispatch(showToastNotification(`Withdrawal Method has been edited`, 'fixed', "success"));
             }).catch(() => {
@@ -93,8 +92,8 @@ export const updatePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
 
 export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, DeletePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePaymentMethod>) => {
-        await PayoutServices.deletePaymentMethod(data)
-            .then( response => {
+        await dacastSdk.deletePaymentMethod(data.id)
+            .then(() => {
                 dispatch({type: ActionTypes.DELETE_PAYMENT_METHOD, payload: data});
                 dispatch(showToastNotification(`Withdrawal Method has been deleted`, 'fixed', "success"));
             }).catch(() => {
@@ -106,9 +105,9 @@ export const deletePaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Pr
 
 export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, AddWithdrawalRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddWithdrawalRequest>) => {
-        await PayoutServices.addWithdrawalRequest(data)
+        await dacastSdk.postPaymentRequest(formatPostWithdrawalRequestInput(data))
             .then( response => {
-                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.data.data.id}});
+                dispatch({type: ActionTypes.ADD_WITHDRAWAL_REQUEST, payload: {...data, id: response.id}});
                 dispatch(showToastNotification(`New Withdrawal Request submitted`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
@@ -119,7 +118,7 @@ export const addWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispat
 
 export const cancelWithdrawalRequestAction = (data: WithdrawalRequest): ThunkDispatch<Promise<void>, {}, CancelWithdrawalRequest> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CancelWithdrawalRequest>) => {
-        await PayoutServices.cancelWithdrawalRequest(data)
+        await dacastSdk.putPaymentRequest(formatPutWithdrawalRequestInput({...data, status: 'Cancelled'}))
             .then(() => {
                 dispatch({type: ActionTypes.CANCEL_WITHDRAWAL_REQUEST, payload: {...data, status: 'Cancelled'}});
                 dispatch(showToastNotification(`Withdrawal Request cancelled`, 'fixed', "success"));

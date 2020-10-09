@@ -40,7 +40,7 @@ export interface Preset {
 export interface Promo {
     id: string;
     name: string;
-    alphanumericCode: string;
+    alphanumericCode?: string;
     discount: number;
     limit: number;
     startDate?: number;

@@ -21,7 +21,7 @@ export class AxiosClient {
     private maxRetries = 3
     private retryDelay = 4000
     private axiosInstance: AxiosInstance = null
-    private refreshingToken: Promise<any> | null = null
+    private refreshingToken: boolean = false
 
     private getInstance = (): AxiosInstance => {
         if(!this.axiosInstance) {
@@ -40,14 +40,18 @@ export class AxiosClient {
         let {
             authRequired = true,
         } = config.headers['X-Api-Key']
+        
         if(!authRequired) {
             let newConfig = config
             delete newConfig.headers.Authorization
             return newConfig
         }
-        console.log('checking refresh token')
-        if(DateTime.fromSeconds(this.userToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 60000 <= 5) {
-            await this.checkRefresh()
+
+        if(DateTime.fromSeconds(this.userToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 60000 <= 5 && !this.refreshingToken) {
+            this.refreshingToken = true
+            await this.refreshToken().then(() => {
+                this.refreshingToken = false
+            })        
         }
         config.headers['Authorization'] = this.userToken.getTokenInfo().token
         return config
@@ -102,15 +106,6 @@ export class AxiosClient {
 
     public forceRefresh = async () => {
         await this.refreshToken()
-    }
-
-    private checkRefresh = async () => {
-        if(!this.refreshingToken) {
-            console.log('checking refresh token')
-            return await this.refreshToken().then(() => {
-                this.refreshingToken = null
-            })
-        }
     }
 
     private refreshToken = async () => {

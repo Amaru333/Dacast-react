@@ -77,22 +77,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.GET_PROMO_PRESETS_LIST :
             return {
                 ...state,
-                promos: {
-                    totalItems: action.payload.data.totalItems,
-                    promos: action.payload.data.promos.map((promo: any) => {
-                        return {
-                            ...promo.preset,
-                            name: promo.name,
-                            id: promo.id,
-                            alphanumericCode: promo.preset.alphanumericCode,
-                            assignedContentIds: promo.preset.assignedContentIds,
-                            assignedGroupIds: promo.preset.assignedGroupIds,
-                            discount: promo.preset.discount,
-                            discountApplied: promo.preset.discountApplied,
-                            limit: promo.preset.limit,
-                        }
-                    })
-                }
+                promos: action.payload
             }
         case ActionTypes.CREATE_PROMO_PRESET :
             promos = state.promos.promos.slice();

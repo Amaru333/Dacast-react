@@ -4,7 +4,7 @@ import { userToken } from '../../../../utils/services/token/tokenService'
 
 
 export const formatGetPromoGroupOuput = (data: GetPromoOutput): GroupPromoData => {
-    let formattedData = {
+    let formattedData: GroupPromoData = {
         total: data.totalItems,
         promos: data.promos.map(promo => {
             return {
@@ -20,7 +20,7 @@ export const formatGetPromoGroupOuput = (data: GetPromoOutput): GroupPromoData =
 }
 
 export const formatPostPromoGroupInput = (data: GroupPromo): PromoDetails => {
-    let formattedData = {
+    let formattedData: PromoDetails = {
         alphanumericCode: data.alphanumericCode,
         discount: data.discount,
         limit: data.limit,
@@ -39,8 +39,8 @@ export const formatPostPromoGroupInput = (data: GroupPromo): PromoDetails => {
     return formattedData
 }
 
-export const formatPutPromoGroupInput = (data: GroupPromo): Promo => {
-    let formattedData = {
+export const formatPutPromoGroupInput = (data: GroupPromo): PromoEndpoints => {
+    let formattedData: PromoEndpoints = {
         id: data.id,
         alphanumericCode: data.alphanumericCode,
         discount: data.discount,
@@ -63,8 +63,7 @@ export const formatPutPromoGroupInput = (data: GroupPromo): Promo => {
 
 
 export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPriceData => {
-    console.log('input data format function ', data.packages)
-    let formattedData = {
+    let formattedData: GroupPriceData = {
         total: data.total,
         packages: data.packages.map((item) => {
             return {
@@ -121,7 +120,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
 
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    let formattedPrice = null
+    let formattedPrice: PostPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
         formattedPrice = {
             name: data.name,
@@ -170,7 +169,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
 
 export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-    let formattedPrice = null
+    let formattedPrice: PutPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
         formattedPrice = {
             id: data.id,
