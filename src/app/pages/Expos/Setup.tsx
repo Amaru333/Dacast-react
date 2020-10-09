@@ -42,7 +42,8 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         newData.contentList = newContent;
         newData.folderId = selectedFolderId ? selectedFolderId : undefined ;
         newData.expoType = selectedTab ;
-        newData.maxItems = maxNumberItems;
+        //Need Backend Ready to Uncomment
+        //newData.maxItems = maxNumberItems;
         newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom';
         newData.id = undefined;
         props.saveContentSetup(newData, props.contentId, props.contentType)
