@@ -366,12 +366,15 @@ export const ContentListPage = (props: ContentListProps) => {
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
                     }
-                    <div className="relative">
-                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                        <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
-                            {renderList()}
-                        </DropdownList>
-                    </div>
+                    {
+                        props.contentType !== 'expo' &&
+                        <div className="relative">
+                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                                {renderList()}
+                            </DropdownList>
+                        </div>
+                    }
                     <SeparatorHeader className="mx2 inline-block" />
                     <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
                     {

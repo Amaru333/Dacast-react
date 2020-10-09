@@ -6,7 +6,7 @@ export const bulkActionsService = async (data: ContentType[], action: 'delete' |
     return await axiosClient.post('/bulk', 
         {
             action: action,
-            items: data.map((item: any) => {return {id: item.id, contentType: item.type === 'live' ? 'channel' : item.type, name: item.name}}),
+            items: data.map((item: any) => {return {id: item.id, contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type, name: item.name}}),
             targetValue: targetValue
         }
     )
