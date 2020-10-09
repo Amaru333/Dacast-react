@@ -2,13 +2,12 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, GroupPrice, GroupPromo, GroupPriceData, GroupPromoData } from './types';
-import { GroupsServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetPromoGroupOuput, formatPostPromoGroupInput, formatPutPromoGroupInput } from './viewModel';
+import { formatGetPromoGroupOuput, formatPostPromoGroupInput, formatPutPromoGroupInput, formatGetPriceGroupOuput, formatPostPriceGroupInput, formatPutPriceGroupInput } from './viewModel';
 
 export interface GetGroupPrices {
     type: ActionTypes.GET_GROUP_PRICES;
-    payload: {data: GroupPriceData};
+    payload: GroupPriceData;
 }
 
 export interface CreateGroupPrice {
@@ -48,21 +47,21 @@ export interface DeleteGroupPromo {
 
 export const getGroupPricesAction = (): ThunkDispatch<Promise<void>, {}, GetGroupPrices> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetGroupPrices>) => {
-        await GroupsServices.getGroupPrices()
+        await dacastSdk.getPricePackage('page=1&per-page=100')
             .then( response => {
-                dispatch({type: ActionTypes.GET_GROUP_PRICES, payload: response.data});
-            }).catch(() => {
+                dispatch({type: ActionTypes.GET_GROUP_PRICES, payload: formatGetPriceGroupOuput(response)});
+            }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
-                return Promise.reject()
+                return Promise.reject(error)
             })
     }
 }
 
 export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, CreateGroupPrice> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPrice>) => {
-        await GroupsServices.createGroupPrice(data)
+        await dacastSdk.postPricePackage(formatPostPriceGroupInput(data))
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: data})
+                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: {...data, id: response.id}})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
@@ -73,8 +72,8 @@ export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<
 
 export const saveGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, SaveGroupPrice> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveGroupPrice>) => {
-        await GroupsServices.saveGroupPrice(data)
-            .then( response => {
+        await dacastSdk.putPricePackage(formatPutPriceGroupInput(data))
+            .then(() => {
                 dispatch({type: ActionTypes.SAVE_GROUP_PRICE, payload: data})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
@@ -86,8 +85,8 @@ export const saveGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<vo
 
 export const deleteGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, DeleteGroupPrice> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteGroupPrice>) => {
-        await GroupsServices.deleteGroupPrice(data)
-            .then( response => {
+        await dacastSdk.deletePricePackage(data.id)
+            .then(() => {
                 dispatch({type: ActionTypes.DELETE_GROUP_PRICE, payload: data})
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {

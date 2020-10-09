@@ -9,12 +9,7 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_PAYMENT_METHODS :
             return {
                 ...state,
-                paymentMethods: action.payload.data.paymentMethods.map(p => {
-                    return {
-                        ...p,
-                        paymentMethodType: p.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : p.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : p.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
-                    }
-                })
+                paymentMethods: action.payload
             }
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
@@ -61,7 +56,6 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 paymentMethods: state.paymentMethods.filter(p => p.id !== action.payload.id)
             }
         case ActionTypes.ADD_WITHDRAWAL_REQUEST :
-            console.log('adding WR ', JSON.stringify(action.payload))
             let withdrawalRequests = state.withdrawalRequests.slice()
             withdrawalRequests.push(action.payload)
             return {

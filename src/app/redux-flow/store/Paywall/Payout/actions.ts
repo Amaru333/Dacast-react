@@ -3,10 +3,12 @@ import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, PaymentMethod, WithdrawalRequest } from './types';
 import { PayoutServices } from './services';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput } from './viewModel';
 
 export interface GetPaymentMethods {
     type: ActionTypes.GET_PAYMENT_METHODS;
-    payload: {data: {paymentMethods: PaymentMethod[]}};
+    payload: PaymentMethod[];
 }
 
 export interface GetWithdrawalRequests {
@@ -41,9 +43,9 @@ export interface CancelWithdrawalRequest {
 
 export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetPaymentMethods> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPaymentMethods>) => {
-        await PayoutServices.getPaymentMethods()
+        await dacastSdk.getPaymentMethod()
             .then( response => {
-                dispatch({type: ActionTypes.GET_PAYMENT_METHODS, payload: response.data});
+                dispatch({type: ActionTypes.GET_PAYMENT_METHODS, payload: formatGetWithdrawalMethodsOutput(response)});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
@@ -65,9 +67,9 @@ export const getWithdrawalRequestsAction = (): ThunkDispatch<Promise<void>, {}, 
 
 export const addPaymentMethodAction = (data: PaymentMethod): ThunkDispatch<Promise<void>, {}, AddPaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, AddPaymentMethod>) => {
-        await PayoutServices.addPaymentMethod(data)
+        await dacastSdk.postPaymentMethod(formatPostWithdrawalMethodInput(data))
             .then( response => {
-                dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.data.data.id}});
+                dispatch({type: ActionTypes.ADD_PAYMENT_METHOD, payload: {...data, id: response.id}});
                 dispatch(showToastNotification(`Withdrawal Method has been created`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
