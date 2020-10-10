@@ -227,7 +227,11 @@ export const handleRowIconType = (item: FolderAsset) => {
             return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
         case 'live':
         case 'vod':
-            return <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
+        case 'channel':
+            return item.thumbnail ? <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
+                : <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
+                    </div>
         default:
             return;
     }

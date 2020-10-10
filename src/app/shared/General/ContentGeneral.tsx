@@ -254,7 +254,11 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
     }
 
     const handleImageDelete = (imageType: string) => {
-        props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, props.contentType, imageType)
+        if(props.contentType === 'expo') {
+            props.saveContentDetails({...contentDetails, poster: null}, props.contentType).then(() => props.getContentDetails(props.contentDetails.id, props.contentType))
+        } else {
+            props.deleteFile(props.contentDetails.id, props.contentDetails[imageType].targetID, props.contentType, imageType)
+        }
     }
 
     return (

@@ -368,14 +368,16 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType !== 'expo' &&
-                        <div className="relative">
-                            <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
-                            <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
-                                {renderList()}
-                            </DropdownList>
-                        </div>
+                        <>
+                            <div className="relative">
+                                <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                                <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
+                                    {renderList()}
+                                </DropdownList>
+                            </div>
+                            <SeparatorHeader className="mx2 inline-block" />
+                        </>
                     }
-                    <SeparatorHeader className="mx2 inline-block" />
                     <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
                     {
                         props.contentType === "vod" &&

@@ -67,7 +67,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
            await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
         },
         deleteFile: async (contentId: string, targetId: string, contentType: string) => {
-            await dispatch(deleteFileAction(contentId, targetId, contentType))
+            await dispatch(deleteFileAction(contentId, targetId, contentType, 'poster'))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
