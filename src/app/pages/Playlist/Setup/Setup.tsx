@@ -319,6 +319,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     }
 
     const removePrefix = (objectId: string) => {
+        console.log('removing prefix ', objectId.replace(/channel_|live_|vod_/, ''))
         return objectId.replace(/channel_|live_|vod_/, '');
     }
 
@@ -326,11 +327,11 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         setSaveLoading(true);
         let newContent = selectedItems.map((item: FolderAsset): Content => {
             return {
-                'content-type': item.type === 'channel' ? 'live' : 'vod',
+                'content-type': (item.type === 'channel'|| item.type === 'live') ? 'live' : 'vod',
                 title: item.title,
                 thumbnailURL: item.thumbnail,
                 'vod-id': item.type === 'vod'? removePrefix(item.objectID) : null ,
-                'live-channel-id': item.type === 'channel'? removePrefix(item.objectID): null ,
+                'live-channel-id': (item.type === 'channel' || item.type === 'live')? removePrefix(item.objectID): null ,
             }
         })
         let newData: ContentSetupObject = {...props.contentData};
