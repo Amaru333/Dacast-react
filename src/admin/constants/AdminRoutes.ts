@@ -8,6 +8,7 @@ import EditStatus from '../containers/Withdrawals/EditStatus'
 import Balances from '../containers/Paywall/Balances'
 import Chargebacks from '../containers/Paywall/Chargebacks'
 import Login from '../containers/Register/Login'
+import Piracy from '../containers/Piracy/Piracy'
 
 export const AdminRoutes = [
     {
@@ -65,6 +66,13 @@ export const AdminRoutes = [
         path: '/debits',
         name: 'Debits',
         component: Chargebacks,
+        exactPath: true,
+        displayedInHeadertab: true
+    },
+    {
+        path: '/piracy',
+        name: 'Piracy',
+        component: Piracy,
         exactPath: true,
         displayedInHeadertab: true
     },
