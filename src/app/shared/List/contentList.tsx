@@ -245,7 +245,7 @@ export const ContentListPage = (props: ContentListProps) => {
         return {
             data: [
                 {
-                    cell: <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
+                    cell: props.contentType === 'expo' ? undefined : <InputCheckbox className="inline-flex" label="" key="checkboxcontentListBulkAction" indeterminate={selectedContent.length >= 1 && selectedContent.length < contentList.results.filter(item => item.status !== 'deleted').length} defaultChecked={selectedContent.length === contentList.results.filter(item => item.status !== 'deleted').length} id="globalCheckboxcontentList"
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 const editedselectedContent = contentList.results.filter(item => item.status !== 'deleted').map(item => { return item.objectID })
@@ -287,7 +287,7 @@ export const ContentListPage = (props: ContentListProps) => {
             return contentList.results.map((value) => {
                 return {
                     data: [
-                            <div key={"checkbox" + value.objectID} style={{ paddingTop: 8, paddingBottom: 8 }} className='flex items-center'>
+                            props.contentType === 'expo' ? undefined : <div key={"checkbox" + value.objectID} style={{ paddingTop: 8, paddingBottom: 8 }} className='flex items-center'>
                                 <InputCheckbox className="inline-flex pr2" label="" defaultChecked={selectedContent.includes(value.objectID)} id={"checkbox" + value.objectID} onChange={(event) => {
                                     if (event.currentTarget.checked && selectedContent.length < contentList.results.length) {
                                         setSelectedContent([...selectedContent, value.objectID])
