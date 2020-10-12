@@ -83,7 +83,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     }
 
-    const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}]
+    const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
     
 
