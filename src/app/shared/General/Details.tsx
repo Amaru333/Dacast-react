@@ -13,7 +13,7 @@ import { axiosClient } from '../../utils/services/axios/axiosClient'
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
 
-export const GeneralDetails = (props: {userId: string, contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const GeneralDetails = (props: {userId: string, contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     function saveFile(url: string, filename: string) {
         axiosClient.get(`/vods/${props.contentDetails.id}/download-url`

@@ -182,15 +182,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
     
 
-    const handleSave = () => {
-        setButtonLoading(true)
-        props.saveContentDetails(contentDetails, props.contentType).then(() => {
-            setButtonLoading(false)
-            setHasChanged(false)
-        }).catch(() =>
-            setButtonLoading(false)
-        )
-    }
+    
 
     return (
         contentDetails &&
@@ -447,20 +439,3 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
 
 }
 
-const SubtitleFile = styled.div`
-    display: flex;
-    background-color: ${props => props.theme.colors["gray-10"]};
-    height: 32px;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 352px;
-    
-`
-
-const SubtitleTextContainer = styled.div`
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 352px;
-`
