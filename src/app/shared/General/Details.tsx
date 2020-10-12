@@ -6,7 +6,6 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags'
 import { LinkBoxLabel, LinkBox, LinkText, ClassHalfXsFullMd } from './GeneralStyle'
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import { Divider } from '../Common/MiscStyle'
 import { Text } from '../../../components/Typography/Text'
 import { updateClipboard } from '../../utils/utils'
 import { axiosClient } from '../../utils/services/axios/axiosClient'
@@ -88,7 +87,6 @@ export const GeneralDetails = (props: {userId: string, contentDetails: ContentDe
                     <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                 </LinkBox>
             </div>
-            <Divider className="col col-12 mt3 mr25 mb25" />
         </div>
     )
 }

@@ -9,7 +9,6 @@ import { useParams, Prompt } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 import { getContentDetailsAction, editContentDetailsAction, getUploadUrlAction, uploadFileAction, uploadImageFromVideoAction, deleteFileAction, deleteSubtitleAction, addSubtitleAction, Action } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
@@ -32,6 +31,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction } from '../../utils/general'
 import { PreviewModal } from '../../shared/Common/PreviewModal';
+import { Divider } from '../../shared/Common/MiscStyle';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
@@ -142,20 +142,6 @@ const General = (props: GeneralComponentProps) => {
                 props.contentDetailsState["vod"] && stateContentDetails ?
                     (
                         <div className='flex flex-column'>
-                            {/* <ContentGeneralPage
-                                contentType="vod" 
-                                contentDetails={stateContentDetailsState['vod'][vodId]}
-                                getContentDetails={props.getContentDetails}
-                                saveContentDetails={props.saveContentDetails}
-                                getUploadUrl={props.getUploadUrl}
-                                uploadFile={props.uploadFile}
-                                deleteFile={props.deleteFile}
-                                showToast={props.showToast}
-                                uploadImageFromVideo={props.uploadImageFromVideo}
-                                deleteSubtitle={props.deleteSubtitle}
-                                addSubtitle={props.addSubtitle}
-
-                            /> */}
                             <Card className="col col-12 clearfix">
                                 <GeneralDetails
                                     userId={userId}
@@ -165,12 +151,14 @@ const General = (props: GeneralComponentProps) => {
                                     setHasChanged={setHasChanged}
                                     setLocalContentDetails={setContentDetails}
                                 />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralSharing 
                                     userId={userId}
                                     contentDetails={stateContentDetails}
                                     contentType="vod"
                                     setPreviewModalOpen={setPreviewModalOpen}
                                 />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralImages 
                                     contentType="vod"
                                     localContentDetails={contentDetails}
@@ -182,12 +170,14 @@ const General = (props: GeneralComponentProps) => {
                                     setImageModalOpen={setImageModalOpen}
                                     deleteFile={props.deleteFile}
                                 />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralSubtitles 
                                     contentType="vod"
                                     contentDetails={stateContentDetails}
                                     setSubtitleModalOpen={setSubtitleModalOpen}
                                     deleteSubtitle={props.deleteSubtitle}
                                 />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralAdvancedLinks contentDetails={stateContentDetails} />
 
                                 {
