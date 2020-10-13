@@ -19,7 +19,7 @@ import { GeneralSettings } from '../../shared/General/Settings';
 import { GeneralImages } from '../../shared/General/Images';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { handleImageModalFunction } from '../../utils/general';
+import { handleImageModalFunction, userId } from '../../utils/general';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../shared/Security/SecurityStyle';
@@ -37,8 +37,6 @@ import { Divider } from '../../shared/Common/MiscStyle';
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
     let { liveId } = useParams()
-
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
 

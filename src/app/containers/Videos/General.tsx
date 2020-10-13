@@ -29,7 +29,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import styled from 'styled-components';
 import { userToken } from '../../utils/services/token/tokenService';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { handleImageModalFunction } from '../../utils/general'
+import { handleImageModalFunction, userId } from '../../utils/general'
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { Divider } from '../../shared/Common/MiscStyle';
 
@@ -50,9 +50,6 @@ const General = (props: GeneralComponentProps) => {
 
     let { vodId } = useParams()
 
-
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-
     const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -72,7 +69,6 @@ const General = (props: GeneralComponentProps) => {
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     
-
     React.useEffect(() => {
         props.getContentDetails(vodId, "vod")
         .catch(() => setNodataFetched(true))
