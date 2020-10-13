@@ -31,7 +31,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         setSaveLoading(true);
         let newContent = items.map((item: FolderAsset): Content => {
             return {
-                'contentType': item.type === 'channel' ? 'live' : 'vod',
+                'contentType': (item.type === 'channel'|| item.type === 'live') ? 'live' : 'vod',
                 contentId: removePrefix(item.objectID)
             }
         })
