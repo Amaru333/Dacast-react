@@ -114,8 +114,8 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                                 
                 <Text className='py1' size={14} weight='med'>Expos</Text>
                 <div className='flex items-center my1'>
-                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.expo.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
-                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.expo.planValue || props.accountPlan.expo.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('expo', value === 'On' ? true : false)} />
+                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.expo && props.accountPlan.expo.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.expo && (props.accountPlan.expo.planValue || props.accountPlan.expo.userValue) ? 0 : 1} callback={(value: string) => handleKeyChange('expo', value === 'On' ? true : false)} />
                 </div>
                 <Text className='py1' size={14} weight='med'>AES</Text>
                 <div className='flex items-center my1'>
