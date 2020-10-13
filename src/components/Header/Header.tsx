@@ -151,7 +151,7 @@ const Header = (props: HeaderProps) => {
                         : <Text size={14}>{item}</Text>
                     }
                 &nbsp;/&nbsp;</Text>
-                : <Text key={item + index} size={14}>{item}</Text>
+                : <Text key={item + index} size={14}>{item === "Livestreams" ? "Live Streams" : item}</Text>
         })
     }
 
