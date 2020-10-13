@@ -210,7 +210,7 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
         { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
 
-    const expoBaseUrl = isProduction() ? 'https://expo.dacast.com' : 'https://singularity-expo.dacast.com'
+    const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
     
     const enabledAdvancedLinks = advancedLinksOptions.filter(item => item.enabled)
 
