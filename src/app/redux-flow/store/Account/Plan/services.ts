@@ -36,10 +36,6 @@ const editBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, 
     )
 }
 
-const deleteBillingPagePaymenPlaybackProtectionService = async (data: PlaybackProtection) => {
-    return await axiosClient.delete('billing/playback-protection', {data:{...data}})
-}
-
 const addBillingPageExtrasService = async (data: Extras) => {
     return await axiosClient.post('billing/extras', {...data})
 }
@@ -67,7 +63,6 @@ export const BillingServices = {
     saveBillingPagePaymentMethodService,
     addBillingPagePaymenPlaybackProtectionService,
     editBillingPagePaymenPlaybackProtectionService,
-    deleteBillingPagePaymenPlaybackProtectionService,
     addBillingPageExtrasService,
     getProductDetailsService,
     purchaseProductsService

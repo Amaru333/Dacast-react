@@ -87,7 +87,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
                     // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
-                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
@@ -117,8 +117,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handlePaginationChange = (page: number, nbResults: number) => {
-        setPagination({page:page,nbResults:nbResults})
         if(pagination.page && pagination.nbResults && !contentLoading) {
+            setPagination({page:page,nbResults:nbResults})
             setContentLoading(true)
             props.getAccounts(accountId, `page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
             .then(() => {

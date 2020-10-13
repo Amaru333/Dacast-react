@@ -9,7 +9,6 @@ import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
 import { useMedia, getPercentage } from '../../../../utils/utils';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProtectionModal } from './ProtectionModal';
-import { ExtrasStepperFirstStep ,ExtrasStepperSecondStepCreditCard } from './ExtrasModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { BillingPageInfos, Extras, PlaybackProtection } from '../../../redux-flow/store/Account/Plan/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
@@ -28,7 +27,6 @@ interface PlanComponentProps {
     saveBillingPagePaymentMethod: (data: string) => Promise<void>
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
-    deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     addBillingPageExtras: (data: Extras) => Promise<void>
     purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<any>
 }
@@ -63,6 +61,24 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
+    }
+
+    const handlePlaybackProtectionValue = (value: string) => {
+
+        let playbackProtectionData: PlaybackProtection = {enabled: true, amount: parseInt(value), price: props.billingInfos.playbackProtection.price}
+
+        if(value === "Disable Protection"){
+            setProtectionModalOpened(false);
+            setDisableProtectionModalOpened(true);
+        } else {
+            if(props.billingInfos.playbackProtection.enabled){
+                props.editBillingPagePaymenPlaybackProtection(playbackProtectionData);
+            } else {
+                props.addBillingPagePaymenPlaybackProtection(playbackProtectionData);
+                setPlaybackProtectionEnabled(true);
+            }
+            
+        }
     }
 
     let smScreen = useMedia('(max-width: 780px)');
@@ -201,7 +217,12 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={props.billingInfos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} playbackProtection={props.billingInfos.playbackProtection} />
+                            <ProtectionModal 
+                                actionButton={handlePlaybackProtectionValue} 
+                                toggle={setProtectionModalOpened} 
+                                setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
+                                playbackProtection={props.billingInfos.playbackProtection} 
+                            />
                         </Modal>
                     }            
 
@@ -235,7 +256,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {props.deleteBillingPagePaymenPlaybackProtection(props.billingInfos.playbackProtection);setDisableProtectionModalOpened(false);setPlaybackProtectionEnabled(false)}}>Confirm</Button>
+                    <Button onClick={() => {props.editBillingPagePaymenPlaybackProtection({enabled: false, amount: null, price: props.billingInfos.playbackProtection.price});setDisableProtectionModalOpened(false);setPlaybackProtectionEnabled(false)}}>Confirm</Button>
                     <Button typeButton="tertiary" onClick={()=> setDisableProtectionModalOpened(false)}>Cancel</Button>
                 </ModalFooter>
             </Modal>

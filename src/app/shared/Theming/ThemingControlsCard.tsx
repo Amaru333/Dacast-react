@@ -129,14 +129,14 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 }
                             </Text>
                         </div>
-                        <Button
+                        {/* <Button
                             className='right flex items-center'
                             sizeButton='xs'
                             typeButton='tertiary'
                             buttonColor='blue'
                             onClick={() => { setShowAdvancedPanel(!showAdvancedPanel) }}>
                             {showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></> : 'Advanced'}
-                        </Button>
+                        </Button> */}
                     </TitleSection>
                     {showAdvancedPanel ?
                         <>
@@ -253,13 +253,13 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 {
                                     userToken.getPrivilege('privilege-player-download') &&
-                                        <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
-                                            <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
-                                        </ControlToggleContainer>
+                                    <ControlToggleContainer>
+                                        <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
+                                        <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
+                                    </ControlToggleContainer>
                                 }
-                                
+
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Social Sharing' checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
                                     <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
@@ -321,6 +321,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                             </DisabledSection>
+                            <Divider className="p1" />
+
+                            <DisabledSection enabled={customEnabled}>
+                                <div className="pt25 flex justify-between">
+                                    <div><Text size={20} weight='med'>Offline Message</Text></div>
+                                    <div>
+                                        <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                    </div>
+                                </div>
+
+                                <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
+
+                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
+                            </DisabledSection>
 
                             {
                                 (props.contentType === 'live' || props.contentType === 'settings') &&
@@ -365,20 +380,8 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
-                                    
-                                    <DisabledSection enabled={customEnabled}>
-                                        <div className="pt25 flex justify-between">
-                                            <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                            <div>
-                                                <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                                <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                            </div>
-                                        </div>
 
-                                        <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
-                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
-                                    </DisabledSection>
                                 </>
                             }
 
