@@ -319,7 +319,10 @@ export const ContentGeneralPage = (props: ContentGeneralProps) => {
                 <div className='col col-12'>
                     <header className="flex justify-between">
                         <Text className='col col-12' size={20} weight='med'>Sharing</Text>
-                        <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+                        {
+                            props.contentType !== 'expo' && <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
+
+                        }
                     </header>
                     {
                         props.contentType === 'expo' ?
