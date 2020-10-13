@@ -9,7 +9,7 @@ import { useParams, Prompt } from 'react-router-dom';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
-import { ContentDetails, SubtitleInfo, DateTimeValue } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
@@ -32,24 +32,13 @@ import { updateClipboard } from '../../utils/utils';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
-import moment from 'moment';
 import { Divider } from '../../shared/Common/MiscStyle';
-
-var momentTZ = require('moment-timezone')
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
     let { liveId } = useParams()
 
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-
-    const initTimestampValues = (ts: number, timezone: string): { date: string; time: string } => {
-        timezone = timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
-        if (ts > 0) {
-            return { date: momentTZ(ts * 1000).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts * 1000).tz(timezone).format('HH:mm:ss') }
-        }
-        return { date: moment().toString(), time: '00:00' }
-    }
 
     const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
 
