@@ -12,7 +12,30 @@ import { ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/Ge
 
 var momentTZ = require('moment-timezone')
 
-export const GeneralSettings = (props: {localContentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, liveStreamCountdownToggle: boolean, setLiveStreamCountdownToggle: React.Dispatch<React.SetStateAction<boolean>>, startDateTimeValue: DateTimeValue, setStartDateTimeValue: React.Dispatch<React.SetStateAction<DateTimeValue>>}) => {
+export const GeneralSettings = (props: {localContentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, contentDetails: ContentDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
+
+    const initTimestampValues = (ts: number, timezone: string): { date: string; time: string } => {
+        timezone = timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (ts > 0) {
+            return { date: momentTZ(ts * 1000).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts * 1000).tz(timezone).format('HH:mm:ss') }
+        }
+        return { date: moment().toString(), time: '00:00' }
+    }
+
+    const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>((props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false)
+    const [startDateTimeValue, setStartDateTimeValue] = React.useState<DateTimeValue>({...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone), timezone: props.contentDetails.countdown.timezone ? props.contentDetails.countdown.timezone : momentTZ.tz.guess()})
+
+    React.useEffect(() => {
+        if (liveStreamCountdownToggle) {
+            let countdownTs = liveStreamCountdownToggle ? momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
+            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: Math.floor(countdownTs / 1000) } })
+        } else {
+            if(props.localContentDetails){
+            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: 0 } })
+            }
+        }
+    }, [liveStreamCountdownToggle, startDateTimeValue])
+
     return (
         <div className="settings col col-12">
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
@@ -30,29 +53,29 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                         <div className="mb2 clearfix">
                             <Toggle
                                 label="Live Stream Start Countdown"
-                                onChange={() => { props.setLiveStreamCountdownToggle(!props.liveStreamCountdownToggle);props.setHasChanged(true) }}
-                                defaultChecked={props.liveStreamCountdownToggle}
+                                onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle);props.setHasChanged(true) }}
+                                defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
 
                             {
-                                props.liveStreamCountdownToggle &&
+                                liveStreamCountdownToggle &&
                                     <div className="col col-12">
                                         <div className='col col-12 sm-col-4 pr1'>
                                             <DateSinglePickerWrapper
                                                 id="startDate"
                                                 datepickerTitle='Start Date'
-                                                date={moment(props.startDateTimeValue.date)}
-                                                callback={(date: string) => {props.setStartDateTimeValue({...props.startDateTimeValue, date: date}) ;props.setHasChanged(true)}}
+                                                date={moment(startDateTimeValue.date)}
+                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) ;props.setHasChanged(true)}}
                                             />
                                         </div>
                                         <Input
                                             type='time'
                                             className='col col-12 sm-col-4 pl1 pr1'
-                                            defaultValue={props.startDateTimeValue.time}
-                                            onChange={(event) =>{props.setStartDateTimeValue({...props.startDateTimeValue, time: event.currentTarget.value});props.setHasChanged(true)} }
+                                            defaultValue={startDateTimeValue.time}
+                                            onChange={(event) =>{setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value});props.setHasChanged(true)} }
                                             disabled={false}
                                             id='promptTime'
                                             label='Prompt Time'
@@ -64,9 +87,9 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                                             className="col col-12 sm-col-4 pl1 "
                                             hasSearch
                                             dropdownTitle='Timezone'
-                                            dropdownDefaultSelect={props.startDateTimeValue.timezone}
+                                            dropdownDefaultSelect={startDateTimeValue.timezone}
                                             id='dropdownTimezone'
-                                            callback={(value: string) => {props.setStartDateTimeValue({...props.startDateTimeValue, timezone: value.split(' ')[0]});props.setHasChanged(true)}} 
+                                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]});props.setHasChanged(true)}} 
                                             list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}
                                         />
                                     </div>
