@@ -50,7 +50,6 @@ export const UploaderPage = (props: UploaderProps) => {
 
     React.useEffect(() => {
         if (currentUpload && currentUpload.isCompleted) {
-            console.log('dispatching vod updaloded')
             EventHooker.dispatch('EVENT_VOD_UPLOADED', undefined)
             uploadNextFile()
         }

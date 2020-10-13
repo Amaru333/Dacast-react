@@ -6,15 +6,16 @@ import { tsToLocaleDate } from '../../../utils/formatUtils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
-import { FolderAsset } from '../../redux-flow/store/Folders/types';
+import { FolderAsset, FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, handleRowIconType } from './AnalyticsCommun';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
-import { ItemSetupRow, HeaderBorder } from '../Playlist/Setup/Setup';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import moment from 'moment';
+import { ItemSetupRow, HeaderBorder } from '../Paywall/Groups/GroupsStyle';
+import { ContentSelector } from '../../../components/ContentSelector/ContentSelector';
 
 export const RevenueAnalytics = (props: RevenueComponentProps) => {
 
@@ -49,31 +50,6 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
         setSelectedItems(newSelectedItems);
         setCheckedSelectedItems([]);
     }
-
-    const handleRowIconType = (item: FolderAsset) => {
-        switch (item.type) {
-            case 'playlist':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>playlist_play</IconStyle>
-            case 'folder':
-                return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.objectID}>folder_open</IconStyle>
-            case 'channel':
-            case 'live':
-            case 'vod':
-                return item.thumbnail ? 
-                    <img key={"thumbnail" + item.objectID} width="auto" height={42} src={item.thumbnail} ></img>
-                    :                                  
-                        <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
-                            <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                        </div>
-            default:
-                return (                                    
-                    <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
-                        <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
-                    </div>
-                )
-        }
-    }
-
 
     const handleCheckboxContents = (checkedOption: FolderAsset) => {
         if (checkedContents.includes(checkedOption)) {
@@ -144,35 +120,24 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
         props.getAnalyticsRevenue(options);
     }
 
+    const handleSave = (selectedContents: (FolderAsset)[]) => {
+        let options = { ...dates, selectedContents: selectedContents.map(e => {return ( e.objectID)}) };
+        props.getAnalyticsRevenue(options);
+    }
+
     return (
         <React.Fragment>
             <div className="col col-12 mb25">
-                <DateFilteringAnalytics defaultDates={dates} refreshData={updateData} />
-                <div className="flex items-center col col-12">
-                    <div className="inline-flex items-center flex col-7 mb2">
-                        <IconStyle coloricon='gray-3'>search</IconStyle>
-                        <InputTags noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={[]} />
-                    </div>
-                </div>
-                <AnalyticsContainerHalfSelector className="col sm-col-5 col-12" >
-                    <BreadcrumbContainer className="pl1 pr1">
-                        <Breadcrumb options={selectedFolder} callback={(value: string) => setSelectedFolder(value)} />
-                    </BreadcrumbContainer>
-                    {renderContentsList()}
-                </AnalyticsContainerHalfSelector>
-                <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 70 }}>
-                    <Button onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
-                </div>
-                <Button  disabled={selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
-                <AnalyticsContainerHalfSelector className="col sm-col-5 col-12" >
-                    <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>Selected contents</Text>
-                        <Button className="right" buttonColor='blue' typeButton='primary' sizeButton='xs' onClick={() => props.getAnalyticsRevenue({...dates, selectedContents: selectedItems.map(e => {return (e.objectID)})})}>Update Charts</Button>
-                    </HeaderBorder>
-                    {renderSelectedItems()}
-                </AnalyticsContainerHalfSelector>
-                <Button disabled={!selectedItems.length} onClick={() => handleRemoveFromSelected()} className='xs-show col-12  mt2 mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Remove</Button>
+                <ContentSelector
+                    folderData={props.folderData}
+                    getFolderContent={props.getFolderContent}
+                    showSort={true}
+                    type={'content'}
+                    selectedItems={[]} 
+                    getFolderContent={props.getFolderContent} 
+                    title={"Selected contents"} 
+                    callback={handleSave}
+                />
             </div>
             <div className="clearfix mxn1 mb2">
                 <div className={ThirdLgHalfXmFullXs}>

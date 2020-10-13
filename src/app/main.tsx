@@ -10,6 +10,8 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
+TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
+
 import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
@@ -39,6 +41,7 @@ import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from './utils/services/event/eventHooker';
+import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 
 // Any additional component props go here.
 interface MainProps {
@@ -155,6 +158,7 @@ const AppContent = (props: { routes: any }) => {
     const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
+    const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
@@ -181,9 +185,10 @@ const AppContent = (props: { routes: any }) => {
             <Toasts />
             { userToken.isLoggedIn() ?
                 <>
-                    <MainMenu openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+                    <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+                    <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
 
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
@@ -237,27 +242,22 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
     }, [])
 
-    // Removing GTM for now (too many issues on their side overloading our sentry)
-
-    // if (userToken.isLoggedIn()) {
-    //     let tagManagerArgs = {
-    //         gtmId: 'GTM-PHZ3Z7F',
-    //         dataLayer: {
-    //             'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-    //             'companyName': userToken.getUserInfoItem('custom:website'),
-    //             'plan': 'Unknown yet',
-    //             'signedUp': 'Unknown yet',
-    //             'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-    //             'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-    //             'userLastName': userToken.getUserInfoItem('custom:last_name'),
-    //             'userEmail': userToken.getUserInfoItem('email'),
-    //         }
-    //     }
-    //     TagManager.initialize(tagManagerArgs);
-    // } else {
-    //     let tagManagerArgs = { gtmId: 'GTM-PHZ3Z7F' };
-    //     TagManager.initialize(tagManagerArgs);
-    // }
+    if (userToken.isLoggedIn()) {
+        TagManager.dataLayer(
+            {
+                dataLayer: {
+                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'companyName': userToken.getUserInfoItem('custom:website'),
+                    'plan': 'Unknown yet',
+                    'signedUp': 'Unknown yet',
+                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                    'userEmail': userToken.getUserInfoItem('email'),
+                }, 
+                // dataLayerName: 'Uapp'
+            });
+    }
 
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')

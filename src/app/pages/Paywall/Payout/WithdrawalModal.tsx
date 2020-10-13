@@ -36,7 +36,6 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        console.log('sending to action WR: ', JSON.stringify(withdrawalRequest))
         props.action(withdrawalRequest)
         .then(() => {
             setButtonLoading(false)

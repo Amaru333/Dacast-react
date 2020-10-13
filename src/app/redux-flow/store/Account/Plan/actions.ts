@@ -25,6 +25,11 @@ export interface EditBillingPagePlaybackProtection {
     payload: PlaybackProtection;
 }
 
+export interface DeleteBillingPagePlaybackProtection {
+    type: ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION;
+    payload: null;
+}
+
 export interface AddBillingPageExtras {
     type: ActionTypes.ADD_BILLING_PAGE_EXTRAS;
     payload: Extras;
@@ -91,6 +96,19 @@ export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProt
     };
 }
 
+export const deleteBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProtection): ThunkDispatch<Promise<void>, {}, DeleteBillingPagePlaybackProtection> => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteBillingPagePlaybackProtection> ) => {
+        await BillingServices.deleteBillingPagePaymenPlaybackProtectionService(data)
+            .then( response => {
+                dispatch( {type: ActionTypes.DELETE_BILLING_PAGE_PLAYBACK_PROTECTION, payload: response.data} );
+                dispatch(showToastNotification("Playack Protection has been disabled", 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
+            })
+    };
+}
+
 export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<void>, {}, AddBillingPageExtras> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, AddBillingPageExtras> ) => {
         await BillingServices.addBillingPageExtrasService(data)
@@ -134,5 +152,6 @@ GetBillingPageInfos
 | SaveBillingPagePaymentMethod 
 | AddBillingPagePlaybackProtection
 | EditBillingPagePlaybackProtection
+| DeleteBillingPagePlaybackProtection
 | AddBillingPageExtras
 | GetProductDetails

@@ -1,8 +1,5 @@
 import { userToken } from '../token/tokenService';
 
-const amplitude = require('amplitude-js');
-amplitude.getInstance().init(process.env.AMPLITUDE_API_KEY, userToken.getUserInfoItem('custom:dacast_user_id') || '');
-
 type EventType = 
     'create account' |
     'create live stream' |
@@ -16,5 +13,6 @@ type EventType =
 
 
 export const logAmplitudeEvent = (event: EventType) => {
+    //@ts-ignore
     amplitude.getInstance().logEvent(event);
 }

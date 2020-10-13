@@ -33,6 +33,7 @@ export interface PlanInfo {
     advertising: PlanSetting;
     emailCatcher: PlanSetting;
     admin: PlanSetting;
+    expo: PlanSetting;
 }
 
 export interface PlanInfoPut {
