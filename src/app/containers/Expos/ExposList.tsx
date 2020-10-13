@@ -3,48 +3,60 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
+import { getThemingListAction } from '../../redux-flow/store/Settings/Theming';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
+import { EmptyCardExpos } from '../../pages/Expos/EmptyCardExpos';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
-export const LiveList = (props: ContentListProps) => {
+const ExposList = (props: ContentListProps) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
-    React.useEffect(() => {     
-        props.getContentList(null, 'live')
-        .then(() => setIsFetching(false))
-        .catch(() => setNodataFetched(true))
-
+    React.useEffect(() => {
+        if(!noDataFetched) {
+            props.getContentList(null, 'expo')        
+            .then(() => {
+                setIsFetching(false)
+            })
+            .catch(() => setNodataFetched(true))
+        } 
     }, [])
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
-
+    
     return !isFetching ? 
-        <ContentListPage
-            contentType="live" 
-            items={props.contentListState['live']}
-            themesList={props.themesList}
-            getContentList={props.getContentList}
-            deleteContentList={props.deleteContentList}
-            getThemesList={props.getThemesList}
-            showToast={props.showToast}
-         />
-        : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
+        <>
+        {
+            props.contentListState['expo'].countTotal === 0 ? 
+            <EmptyCardExpos /> :
+            <ContentListPage
+                contentType='expo'
+                items={props.contentListState['expo']}
+                themesList={props.themesList}
+                getContentList={props.getContentList}
+                deleteContentList={props.deleteContentList}
+                getThemesList={props.getThemesList}
+                showToast={props.showToast}
+            />}
+        </>
+        : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
+
+
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
-        themesList: state.settings.theming
+        themeList: state.settings.theming
     };
 }
 
@@ -65,4 +77,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LiveList);
+export default connect(mapStateToProps, mapDispatchToProps)(ExposList);

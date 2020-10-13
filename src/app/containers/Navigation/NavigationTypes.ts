@@ -11,6 +11,7 @@ export interface MainMenuSpecificProps {
     setMenuLocked: (b: boolean) => void;
     openAddStream?: (b: boolean) => void;
     openPlaylist?: (b: boolean) => void;
+    openExpoCreate?: (b: boolean) => void;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -48,8 +49,8 @@ export interface UserAccountPrivileges {
 }
 
 export interface StreamSetupOptions {
-    streamType: string;
     title: string;
     rewind?: boolean;
     region: string;
+    renditionCount: number;
 }

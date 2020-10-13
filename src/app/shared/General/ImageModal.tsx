@@ -84,7 +84,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
                     props.toggle()
-                }, 3000)
+                }, 7000)
             })
         }
     }, [props.uploadUrl, saveButtonLoading])

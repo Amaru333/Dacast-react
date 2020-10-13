@@ -105,34 +105,38 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                                 id='contentFilterProcessing' label="Processing" labelWeight="reg" />
                         }
                     </div>
-                    <div className="mb3" id="contentFilterFeatures">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
-                        {userToken.getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
-                            id='contentFilterPaywall' label="Paywall" labelWeight="reg" />}
-                        {userToken.getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                            id='contentFilterAdvertising' label="Advertising" labelWeight="reg" />}
-                        {(userToken.getPrivilege('privilege-playlists') && props.contentType !== "playlists") &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                            id='contentFilterPlaylists' label="Playlists" labelWeight="reg" />}
-                        {
-                            props.contentType === "livestreams" &&
-                                <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
-                                    onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
-                                    id='contentFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
-                        }
-                        {(userToken.getPrivilege('privilege-recording') && props.contentType === "livestreams") && <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
-                            id='contentFilterRecording' label="Recording" labelWeight="reg" />}   
-                    </div>
+                    {
+                        props.contentType != 'expo' && 
+                        <div className="mb3" id="contentFilterFeatures">
+                            <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
+                            {userToken.getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
+                                onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
+                                id='contentFilterPaywall' label="Paywall" labelWeight="reg" />}
+                            {userToken.getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
+                                onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
+                                id='contentFilterAdvertising' label="Advertising" labelWeight="reg" />}
+                            {(userToken.getPrivilege('privilege-playlists') && props.contentType !== "playlists") &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
+                                onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
+                                id='contentFilterPlaylists' label="Playlists" labelWeight="reg" />}
+                            {
+                                props.contentType === "livestreams" &&
+                                    <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
+                                        onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, rewind: !prevState.features.rewind } } }) }}
+                                        id='contentFilterRewind' label="30 Minutes Rewind" labelWeight="reg" />
+                            }
+                            {(userToken.getPrivilege('privilege-recording') && props.contentType === "livestreams") && <InputCheckbox className="mb2" defaultChecked={filteringState.features.recording}
+                                onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, recording: !prevState.features.recording } } }) }}
+                                id='contentFilterRecording' label="Recording" labelWeight="reg" />}   
+                        </div>
+                    }
+                    
                     <div className="mb3" id="contentFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
                         <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="contentFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { console.log(date); setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
                     </div>
                     {
                         props.contentType === "vod" && 

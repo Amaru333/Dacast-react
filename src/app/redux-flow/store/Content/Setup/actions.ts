@@ -19,7 +19,7 @@ export const getContentSetupAction = (contentId: string, contentType: string): T
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentSetup>) => {
         await ContentSetupServices.getContentSetupAction(contentId, parseContentType(contentType))
             .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: response.data.data} });
+                dispatch({ type: ActionTypes.GET_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: contentType == "expo" ? response.data :  response.data.data} });
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

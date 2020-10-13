@@ -12,7 +12,7 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
-                    [action.payload.data.id] : {
+                    [action.payload.contentId] : {
                         ...action.payload.data
                     }
                 }
