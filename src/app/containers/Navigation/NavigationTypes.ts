@@ -51,6 +51,7 @@ export interface UserAccountPrivileges {
 export interface StreamSetupOptions {
     title: string;
     rewind?: boolean;
+    streamType?: string;
     region: string;
-    renditionCount: number;
+    renditionCount?: number;
 }
