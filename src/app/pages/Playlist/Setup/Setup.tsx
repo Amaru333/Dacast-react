@@ -44,7 +44,7 @@ export const SetupPage = (props: SetupComponentProps & { contentId: string; cont
                 title: item.title,
                 thumbnailURL: item.thumbnail,
                 'vod-id': item.type === 'vod' ? removePrefix(item.objectID) : null,
-                'live-channel-id': item.type === 'channel' ? removePrefix(item.objectID) : null,
+                'live-channel-id': (item.type === 'channel'|| item.type === 'live') ? removePrefix(item.objectID) : null,
             }
         })
         let newData: ContentSetupObject = { ...props.contentData };

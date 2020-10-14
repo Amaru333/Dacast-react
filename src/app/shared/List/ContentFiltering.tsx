@@ -136,7 +136,7 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     </div>
                     <div className="mb3" id="contentFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { console.log(date); setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
+                        <DateSinglePickerWrapper date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
                     </div>
                     {
                         props.contentType === "vod" && 

@@ -10,6 +10,8 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
+TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
+
 import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
@@ -240,25 +242,22 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
     }, [])
 
-    // if (userToken.isLoggedIn()) {
-    //     let tagManagerArgs = {
-    //         gtmId: 'GTM-PHZ3Z7F',
-    //         dataLayer: {
-    //             'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-    //             'companyName': userToken.getUserInfoItem('custom:website'),
-    //             'plan': 'Unknown yet',
-    //             'signedUp': 'Unknown yet',
-    //             'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-    //             'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-    //             'userLastName': userToken.getUserInfoItem('custom:last_name'),
-    //             'userEmail': userToken.getUserInfoItem('email'),
-    //         }
-    //     }
-    //     TagManager.initialize(tagManagerArgs);
-    // } else {
-    //     let tagManagerArgs = { gtmId: 'GTM-PHZ3Z7F' };
-    //     TagManager.initialize(tagManagerArgs);
-    // }
+    if (userToken.isLoggedIn()) {
+        TagManager.dataLayer(
+            {
+                dataLayer: {
+                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'companyName': userToken.getUserInfoItem('custom:website'),
+                    'plan': 'Unknown yet',
+                    'signedUp': 'Unknown yet',
+                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                    'userEmail': userToken.getUserInfoItem('email'),
+                }, 
+                // dataLayerName: 'Uapp'
+            });
+    }
 
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
