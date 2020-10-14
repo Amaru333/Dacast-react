@@ -70,15 +70,12 @@ export class DacastSdk {
     public postPricePreset = async (input: PricePresetDetails): Promise<PricePresetId> => {
         return await this.axiosClient.post('/paywall/prices/presets', {...input})
         .then(response => {
-            return this.checkExtraData(response)
+            return {id: this.checkExtraData(response.data)}
         })
     }
 
     public putPricePreset = async (input: PricePresetEndpoint): Promise<void> => {
         return await this.axiosClient.put('/paywall/prices/presets/' + input.id, {package: input})
-        .then(response => {
-            return this.checkExtraData(response)
-        })
     }
 
     public deletePricePreset = async (input: string): Promise<void> => {
@@ -95,15 +92,12 @@ export class DacastSdk {
     public postPricePackage = async (input: PostPricePackageInput): Promise<PricePackageId> => {
         return await this.axiosClient.post('/paywall/prices/groups', {...input})
         .then(response => {
-            return this.checkExtraData(response)
+            return {id: this.checkExtraData(response.data)}
         })
     }
 
     public putPricePackage = async (input: PutPricePackageInput): Promise<void> => {
         return await this.axiosClient.put('/paywall/prices/groups/' + input.id, {package: input})
-        .then(response => {
-            return this.checkExtraData(response)
-        })
     }
 
     public deletePricePackage = async (input: string): Promise<void> => {
@@ -113,14 +107,14 @@ export class DacastSdk {
     public getPaymentMethod = async (): Promise<GetPaymentMethodOutput> => {
         return await this.axiosClient.get('/paywall/payment-methods')
         .then(response => {
-            return this.checkExtraData(response)
+            return this.checkExtraData(response.data)
         })
     }
 
     public postPaymentMethod = async (input: PaymentMethodDetails): Promise<PaymentMethodId> => {
         return await this.axiosClient.post('/paywall/payment-methods', input)
         .then(response => {
-            return this.checkExtraData(response)
+            return {id: this.checkExtraData(response.data)}
         })
     }
 
@@ -137,14 +131,14 @@ export class DacastSdk {
     public getPaymentRequest = async (): Promise<GetPaymentRequestOutput> => {
         return await this.axiosClient.get('/paywall/payment-requests')
         .then(response => {
-            return this.checkExtraData(response)
+            return this.checkExtraData(response.data)
         })
     }
 
     public postPaymentRequest = async (input: PostPaymentRequestInput): Promise<PaymentRequestId> => {
         return await this.axiosClient.post('/paywall/payment-requests', input)
         .then(response => {
-            return this.checkExtraData(response)
+            return {id: this.checkExtraData(response.data)}
         })
     }
 
@@ -152,5 +146,44 @@ export class DacastSdk {
         return await this.axiosClient.put('/paywall/payment-requests/'+ input.id, input)
     }
 
+    public getPaywallSettings = async (): Promise<PaywallSettings> => {
+        return await this.axiosClient.get('paywall/payment-options')
+        .then(response => {
+            return this.checkExtraData(response.data)
+        })
+    }
+
+    public putPaywallSettings = async (input: PaywallSettings): Promise<void> => {
+        return await this.axiosClient.put('paywall/payment-options', {...input})
+    }
+
+    public getPaywallThemes = async (): Promise<GetPaywallThemesOutput> => {
+        return await this.axiosClient.get('/paywall/themes')
+        .then(response => {
+            return this.checkExtraData(response.data)
+        }) 
+    }
+
+    public postPaywallTheme = async (input: PaywallThemeDetails): Promise<PaywallThemeId> => {
+        return await this.axiosClient.post('/paywall/themes', input)
+        .then(response => {
+            return {id: this.checkExtraData(response.data)}
+        })
+    }
+
+    public putPaywallTheme = async (input: PaywallThemeEndpoints): Promise<void> => {
+        return await this.axiosClient.put('/paywall/themes/'+ input.id, input)
+    }
+
+    public deletePaywallTheme = async (input: string): Promise<void> => {
+        return await this.axiosClient.delete('/paywall/themes/' + input)
+    }
+
+    public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => {
+        return await this.axiosClient.get('/paywall/transactions?' + input)
+        .then(response => {
+            return this.checkExtraData(response.data)
+        })
+    }
 
 }

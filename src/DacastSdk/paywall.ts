@@ -233,3 +233,45 @@ interface PostPaymentRequestInput {
     transferDate: number;
 }
 
+interface PaywallSettings {
+    bankStatement: string;
+    creditCardPurchases: boolean;
+    customUrl: string;
+    paypalPurchases: boolean;
+}
+
+interface PaywallThemeDetails {
+    name: string;
+    isDefault: boolean;
+    splashScreen: {
+        buttonColor: string;
+        buttonTextColor: string;
+    };
+    loginScreen: {
+        buttonColor: string;
+        primaryColor: string;
+        headerColor: string;
+        hasCompanyLogo: boolean;
+    };
+}
+
+interface PaywallThemeId {
+    id: string
+}
+
+type PaywallThemeEndpoints = PaywallThemeDetails & PaywallThemeId
+
+interface GetPaywallThemesOutput {
+    themes: PaywallThemeEndpoints[]
+}
+
+interface PaywallTransaction {
+    
+}
+
+interface GetPaywallTransactionsOutput {
+    page: number;
+    perPage: number;
+    total: number;
+    transactionsList: PaywallTransaction[]
+}
