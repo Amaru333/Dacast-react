@@ -31,7 +31,7 @@ const Presets = (props: PresetsComponentProps) => {
         props.getPromoPresets('per-page=10&page=1')
         .catch(() => setNodataFetched(true))
 
-    }, [props.presetsInfos])
+    }, [])
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
