@@ -4,7 +4,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FoldersInfos } from '../../redux-flow/store/Folders/types';
+import { FoldersInfos, SearchResult } from '../../redux-flow/store/Folders/types';
 import { SetupPage } from '../../pages/Playlist/Setup/Setup';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
@@ -71,8 +71,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getContentSetup: async (contentId: string, contentType: string) => {
             await dispatch(getContentSetupAction(contentId, contentType))
         },
-        getFolderContent: async (folderPath: string) => {
-            await dispatch(getFolderContentAction(folderPath));
+        getFolderContent: async (folderPath: string, callback?: (data: SearchResult) => void) => {
+            await dispatch(getFolderContentAction(folderPath, callback));
         },
         saveContentSetup: async (data: ContentSetupObject, contentId: string, contentType: string) => {
             await dispatch(postContentSetupAction(data, contentId, contentType))

@@ -7,7 +7,7 @@ import { Button } from '../FormsComponents/Button/Button';
 import { ContainerHalfSelector, TabSetupContainer, TabSetupStyle, ItemSetupRow, HeaderBorder } from './ContentSelectorStyle';
 import { Text } from '../Typography/Text';
 import { Badge } from '../Badge/Badge';
-import { FolderTreeNode, FoldersInfos, FolderAsset } from '../../app/redux-flow/store/Folders/types';
+import { FolderTreeNode, FoldersInfos, FolderAsset, SearchResult } from '../../app/redux-flow/store/Folders/types';
 import { InputCheckbox } from '../FormsComponents/Input/InputCheckbox';
 import { DropdownList, DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { compareValues, useOutsideAlerter } from '../../utils/utils';
@@ -20,7 +20,7 @@ export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
     type: "folder" | "content";
     selectedItems: (FolderAsset | FolderTreeNode)[];
-    getFolderContent: Function;
+    getFolderContent: (qs: string, callback?: (data: SearchResult) => void ) => Promise<void> ;
     title: string;
     loading?: boolean;
     callback: (selectedItems: (FolderAsset | FolderTreeNode)[], selectedTab: "folder" | "content", selectedFolderId?: string | null, sortSettings?: SortSettingsContentSelector ) => void;
@@ -93,11 +93,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const handleMoveFoldersToSelected = () => {
         if (checkedFolders.length < 1) return;
         const wait = async () => {
-            await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id)
-                .then((response: any) => {
-                    setSelectedItems(props.folderData.requestedContent.results);
-                    setSelectedFolderId(checkedFolders[0].id)
-                })
+            await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id, (data) => {
+                console.log(data);
+                setSelectedItems(data.data.results);
+                setSelectedFolderId(checkedFolders[0].id)
+            })
         }
         wait();
         setCheckedFolders([]);
