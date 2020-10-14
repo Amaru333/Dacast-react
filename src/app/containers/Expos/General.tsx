@@ -62,16 +62,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
             {props.contentDetailsState['expo'] && stateContentDetails ?
                 (
                     <div className='flex flex-column'>
-                        {/* <ContentGeneralPage
-                            contentType='expo' 
-                            contentDetails={props.contentDetailsState['expo'][exposId]}
-                            getContentDetails={props.getContentDetails}
-                            saveContentDetails={props.saveContentDetails}
-                            getUploadUrl={props.getUploadUrl}
-                            uploadFile={props.uploadFile}
-                            deleteFile={props.deleteFile}
-                            showToast={props.showToast}
-                        /> */}
                         <Card className="col col-12 clearfix">
                             <GeneralDetails
                                 userId={userId}
