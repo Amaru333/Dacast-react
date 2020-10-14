@@ -8,7 +8,6 @@ import { tsToLocaleDate } from '../../../utils/formatUtils';
 import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
 import { CheeseChart } from '../../../components/Analytics/CheeseChart'; 
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
-import { TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
@@ -16,6 +15,7 @@ import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, An
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
+import { ItemSetupRow } from '../Paywall/Groups/GroupsStyle';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
 
@@ -25,11 +25,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([]);
 
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([]);
-
-    const [selectedTabConsumption, setSelectedTabConsumption] = React.useState<string>('time');
-    const [selectedTabViewing, setSelectedTabViewing] = React.useState<string>('device');
-    const [selectedTabPlayback, setSelectedTabPlayback] = React.useState<string>('map')
-
+    
     const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
 
     const handleNavigateToFolder = (folderName: string) => {

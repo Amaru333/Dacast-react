@@ -1,5 +1,5 @@
-import React, { ReactHTMLElement } from 'react';
-import { BlockPicker, Color } from 'react-color';
+import React from 'react';
+import { Color, SketchPicker } from 'react-color';
 import { Text } from '../Typography/Text';
 import { ColorPickerHeader, SelectedColor, ColorPickerBlock } from './ColorPickerStyle';
 import { IconStyle } from '../../shared/Common/Icon';
@@ -33,15 +33,11 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
             <ColorPickerHeader className={props.className } onClick={() => setIsOpened(!isOpened)}>
                 <div className="flex"><SelectedColor selectedColor={selectedColor.toString()} />
                     <Text size={14} weight='reg'>{selectedColor}</Text></div>
-                
                 <div><IconStyle coloricon="gray-5">{isOpened ?'arrow_drop_up' : 'arrow_drop_down'}</IconStyle></div>
             </ColorPickerHeader>
             <ColorPickerBlock ref={colorPickerRef} opened={isOpened}>
-                <BlockPicker  color={selectedColor} onChangeComplete={(color) => setSelectedColor(color.hex)} colors={["#D14642", "#DE8536", "#FFB75D", "#1E874B", "#2899F6", "#7048E8", "#FC427B"]} triangle="hide" />
+                <SketchPicker  color={selectedColor} onChangeComplete={(color) => setSelectedColor(color.hex)} colors={["#D14642", "#DE8536", "#FFB75D", "#1E874B", "#2899F6", "#7048E8", "#FC427B"]} triangle="hide" />
             </ColorPickerBlock>
-
-
-
         </div>
     )
 }

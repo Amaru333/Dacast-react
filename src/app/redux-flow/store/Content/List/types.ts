@@ -25,6 +25,7 @@ export interface SearchResult {
     perPage: number;
     totalResults: number;
     pageNumber: number;
+    countTotal?: number;
 }
 
 export interface SubtitleInfo {

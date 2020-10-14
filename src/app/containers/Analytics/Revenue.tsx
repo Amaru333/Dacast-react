@@ -3,8 +3,8 @@ import {LoadingSpinner} from '../../../components/FormsComponents/Progress/Loadi
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
+import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { RevenueAnalytics } from '../../pages/Analytics/Revenue';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { AnalyticsRevenueInfos, GetAnalyticsRevenueOptions, getAnalyticsRevenueAction } from '../../redux-flow/store/Analytics/Revenue';

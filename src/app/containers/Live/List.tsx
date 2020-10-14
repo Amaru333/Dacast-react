@@ -38,7 +38,6 @@ export const LiveList = (props: ContentListProps) => {
             getThemesList={props.getThemesList}
             showToast={props.showToast}
          />
-
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
 

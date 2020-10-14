@@ -19,11 +19,12 @@ export interface RestoreContent {
     payload: ContentType[];
 }
 
-export const getFolderContentAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
+export const getFolderContentAction = (qs: string, callback?: (data: SearchResult) => void): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetFolderContent> ) => {
         await FoldersServices.getFolderContent(qs)
             .then( response => {
                 dispatch( {type: ActionTypes.GET_FOLDER_CONTENT, payload: response.data} );
+                callback ? callback(response.data) : null;
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()

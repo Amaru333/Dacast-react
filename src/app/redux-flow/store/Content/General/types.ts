@@ -53,6 +53,12 @@ export interface ContentDetails {
     countdown?: LiveStreamCountdown;
     rewind?: boolean;
     unsecureM3u8Url?: string;
+    appearance?: Appearance;
+}
+
+interface Appearance {
+    fontColor: string;
+    headerColor: string;
 }
 
 interface PLaybackURLs {
