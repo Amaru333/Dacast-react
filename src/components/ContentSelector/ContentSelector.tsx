@@ -80,7 +80,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const switchTabSuccess = () => {
         setSelectedFolderId(null);
         setSelectedTab(selectedTab === "content" ? 'folder' : 'content');
-        props.getFolderContent(null)
+        props.getFolderContent(parseFiltersToQueryString())
         setSelectedItems([]);
         setSearchString(null)
     }
