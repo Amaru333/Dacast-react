@@ -13,7 +13,9 @@ export const GeneralSharing = (props: {userId: string, contentDetails: ContentDe
         <div className='col col-12'>
             <header className="flex justify-between">
                 <Text className='col col-12' size={20} weight='med'>Sharing</Text>
-                <Button sizeButton="xs" typeButton="secondary" onClick={() => props.setPreviewModalOpen(true)}>Preview</Button>
+                { props.contentType !== "expo" &&
+                    <Button sizeButton="xs" typeButton="secondary" onClick={() => props.setPreviewModalOpen(true)}>Preview</Button>
+                }
             </header>
             <Text className='pt2 col col-12' size={14}>The Embed Code can add content to your website and the Share Link can be shared on social media.</Text>
 

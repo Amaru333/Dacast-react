@@ -34,6 +34,8 @@ export const GeneralDetails = (props: {userId: string, contentDetails: ContentDe
                     return "Live Stream"
                 case "playlist":
                     return "Playlist"
+                case "expo":
+                    return "Expo"
             }
         }
 
