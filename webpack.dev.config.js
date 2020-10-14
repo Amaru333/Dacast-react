@@ -39,6 +39,10 @@ module.exports = {
     },
     devtool: 'source-map',
     resolve: {
+        alias: {
+            'react-dom$': 'react-dom/profiling',
+            'scheduler/tracing': 'scheduler/tracing-profiling',
+        },
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
     },
     devServer: {
