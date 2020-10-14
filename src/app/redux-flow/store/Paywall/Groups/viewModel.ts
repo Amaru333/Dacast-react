@@ -8,7 +8,7 @@ export const formatGetPromoGroupOuput = (data: GetPromoOutput): GroupPromoData =
         total: data.totalItems,
         promos: data.promos.map(promo => {
             return {
-                startDate: promo.startDate || 0,
+                startDate: promo.startDate && promo.startDate > Math.floor(Date.now()) / 1000 ? promo.startDate : 0,
                 endDate: promo.endDate || 0,
                 timezone: null,
                 ...promo,

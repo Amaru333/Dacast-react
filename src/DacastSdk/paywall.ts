@@ -43,27 +43,47 @@ interface GetPromoOutput {
 }
 
 
-interface Price {
+interface PriceEndpoints {
     value: number;
     currency: string;
     description: string;
 }
 
-interface PriceSettings {
+interface PriceSettingsEndpoints {
     duration?: {
         value: number; 
-        unit: string
-    };
+        unit: string;
+    }
     recurrence?: {
         unit: string; 
         value?: number
-    };
+    }
     startDate?: number;
 }
 
+interface PricePresetDetails {
+    name: string;
+    type: 'price';
+    preset: {
+        prices: PriceEndpoints[];
+        settings: PriceSettingsEndpoints;
+    }
+}
+
+interface PricePresetId {
+    id: string;
+}
+
+type PricePresetEndpoint = PricePresetDetails & PricePresetId
+
+interface GetPricePresetOutput {
+    presets: PricePresetEndpoint[]
+    totalItems: number;
+}
+
 interface PricePackageInfo {
-    price: Price;
-    settings: PriceSettings;
+    price: PriceEndpoints;
+    settings: PriceSettingsEndpoints;
 }
 
 interface PricePackageDetails {
@@ -89,8 +109,8 @@ interface PostPricePackageOutput {
 
 interface PostPricePackageInput {
     name: string;
-    prices: Price[];
-    settings: PriceSettings;
+    prices: PriceEndpoints[];
+    settings: PriceSettingsEndpoints;
     contents: string[];
 }
 

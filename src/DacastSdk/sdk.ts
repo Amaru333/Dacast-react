@@ -60,6 +60,31 @@ export class DacastSdk {
         return await this.axiosClient.delete('/paywall/promos/' + input)
     }
 
+    public getPricePreset = async (input: string): Promise<GetPricePresetOutput> => {
+        return await this.axiosClient.get('/paywall/prices/presets?' + input)
+        .then(response => {
+            return this.checkExtraData(response.data)
+        })
+    }
+
+    public postPricePreset = async (input: PricePresetDetails): Promise<PricePresetId> => {
+        return await this.axiosClient.post('/paywall/prices/presets', {...input})
+        .then(response => {
+            return this.checkExtraData(response)
+        })
+    }
+
+    public putPricePreset = async (input: PricePresetEndpoint): Promise<void> => {
+        return await this.axiosClient.put('/paywall/prices/presets/' + input.id, {package: input})
+        .then(response => {
+            return this.checkExtraData(response)
+        })
+    }
+
+    public deletePricePreset = async (input: string): Promise<void> => {
+        return await this.axiosClient.delete('/paywall/prices/presets/' + input)
+    }
+
     public getPricePackage = async (input: string): Promise<GetPricePackageOutput> => {
         return await this.axiosClient.get('/paywall/prices/groups?' + input)
         .then(response => {

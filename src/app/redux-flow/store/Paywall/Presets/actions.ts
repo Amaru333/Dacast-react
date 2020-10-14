@@ -2,17 +2,14 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, Preset, Promo } from './types';
-import { PresetsServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetPromoPresetOutput, formatPostPromoPresetInput, formatPutPromoPresetInput } from './viewModel';
+import { formatGetPromoPresetOutput, formatPostPromoPresetInput, formatPutPromoPresetInput, formatGetPricePresetOuput, formatPutPricePresetInput, formatPostPricePresetInput } from './viewModel';
 
 export interface GetPricePresetsList {
     type: ActionTypes.GET_PRICE_PRESETS_LIST;
     payload: {
-        data: {
-            presets: Preset[]; 
-            totalItems: number;
-        }
+        prices: Preset[]; 
+        totalItems: number;
     };
 }
 
@@ -56,9 +53,9 @@ export interface DeletePromoPreset {
 
 export const getPricePresetsInfosAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetPricePresetsList> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPricePresetsList>) => {
-        await PresetsServices.getPricePresetsList(qs)
-            .then( response => {
-                dispatch({type: ActionTypes.GET_PRICE_PRESETS_LIST, payload: response.data});
+        await dacastSdk.getPricePreset(qs)
+            .then(response => {
+                dispatch({type: ActionTypes.GET_PRICE_PRESETS_LIST, payload: formatGetPricePresetOuput(response)});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
@@ -68,9 +65,9 @@ export const getPricePresetsInfosAction = (qs: string): ThunkDispatch<Promise<vo
 
 export const createPricePresetAction = (data: Preset): ThunkDispatch<Promise<void>, {}, CreatePricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePricePreset>) => {
-        await PresetsServices.createPricePreset(data)
+        await dacastSdk.postPricePreset(formatPostPricePresetInput(data))
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PRICE_PRESET, payload:{...data, id:response.data.data.id}})
+                dispatch({type: ActionTypes.CREATE_PRICE_PRESET, payload:{...data, id:response.id}})
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
                 return Promise.reject()
@@ -80,8 +77,8 @@ export const createPricePresetAction = (data: Preset): ThunkDispatch<Promise<voi
 
 export const savePricePresetAction = (data: Preset): ThunkDispatch<Promise<void>, {}, SavePricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePricePreset>) => {
-        await PresetsServices.savePricePreset(data)
-            .then( response => {
+        await dacastSdk.putPricePreset(formatPutPricePresetInput(data))
+            .then(() => {
                 dispatch({type: ActionTypes.SAVE_PRICE_PRESET, payload: data})
                 dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
@@ -93,8 +90,8 @@ export const savePricePresetAction = (data: Preset): ThunkDispatch<Promise<void>
 
 export const deletePricePresetAction = (data: Preset): ThunkDispatch<Promise<void>, {}, DeletePricePreset> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePricePreset>) => {
-        await PresetsServices.deletePricePreset(data)
-            .then( response => {
+        await dacastSdk.deletePricePreset(data.id)
+            .then(() => {
                 dispatch({type: ActionTypes.DELETE_PRICE_PRESET, payload: data})
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {

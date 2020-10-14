@@ -9,34 +9,7 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
         case ActionTypes.GET_PRICE_PRESETS_LIST :
             return {
                 ...state,
-                presets: {
-                    totalItems: action.payload.data.totalItems,
-                    prices: action.payload.data.presets.map((preset: any) => {
-                        return {
-                            id: preset.id,
-                            name: preset.name,
-                            prices: preset.preset.prices,
-                            settings: {
-                                ...preset.preset.settings,
-                                duration: preset.preset.settings.duration ? {
-                                    value: preset.preset.settings.duration.value,
-                                    unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
-                                } 
-                                : null,
-                                startMethod: preset.preset.settings.startDate ? 'Schedule' : 'Upon Purchase',
-                                recurrence: preset.preset.settings.recurrence ? {
-                                    unit: preset.preset.settings.recurrence.unit === 'week' ? 'Weekly'
-                                    : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
-                                    : preset.preset.settings.recurrence.value > 1 ? 'Quarterly'
-                                    : 'Monthly'
-                                } 
-                                : null
-                            },
-                            type: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
-
-                        }
-                    })
-                }
+                presets: action.payload
             }
         case ActionTypes.CREATE_PRICE_PRESET :
             presets = state.presets.prices.slice();
