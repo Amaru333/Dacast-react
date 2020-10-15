@@ -31,6 +31,8 @@ import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import EventHooker from '../../utils/services/event/eventHooker';
+import { PreviewModal } from '../Common/PreviewModal';
+import { userToken } from '../../utils/services/token/tokenService';
 
 interface ContentListProps {
     contentType: 'expo' | 'vod' | 'live' | 'playlist';
@@ -47,6 +49,8 @@ export const ContentListPage = (props: ContentListProps) => {
     let history = useHistory()
 
     let qs = useQuery()
+
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const formatFilters = () => {
         let filters: FilteringContentState = {
@@ -93,6 +97,8 @@ export const ContentListPage = (props: ContentListProps) => {
     const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [previewedContent, setPreviewedContent] = React.useState<string>(null)
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -282,6 +288,12 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const handleThumbnailClick = (contentId: string) => {
+        console.log('reaching')
+        setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
+        setPreviewModalOpen(true)
+    }   
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -299,7 +311,7 @@ export const ContentListPage = (props: ContentListProps) => {
                                 } />
                                 {
                                     value.thumbnail ?
-                                        <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
                                         <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
@@ -430,6 +442,9 @@ export const ContentListPage = (props: ContentListProps) => {
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
+            {
+                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
         </>
 
     )
