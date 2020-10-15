@@ -1,4 +1,4 @@
-export const FeaturesDeveloperPlan =[
+export const FeaturesStarterPlan =[
     "Live Streaming",
     "Video On Demand Streaming",
     "Ad-free streaming",
@@ -135,7 +135,7 @@ export const MainFeatures: {name: string; tooltip: string}[] = [
 ]
 
 export enum PlansName {
-    "Developer" = "Developer Plan",
+    "Starter" = "Starter Plan",
     "Event" = "Event Plan",
     "Annual Scale" = "Scale Plan",
     'Monthly Scale' = "Scale Plan"

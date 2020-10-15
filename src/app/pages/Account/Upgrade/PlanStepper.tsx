@@ -121,7 +121,7 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
 export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
 
     const availableAddOns = ["ads", "paywall", "phone-support"]
-    const isFreeAddOnTrial = (props.stepperData.name === "Developer" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
+    const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const handleAddOnNames = (addOn: string) => {
         switch(addOn){
@@ -175,7 +175,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
             props.stepperData.privileges.map((item: Privilege) => {
                 if (item.checked) {
                     tempSelectedPrivileges.push(item.code)
-                    if(props.stepperData.name !== "Developer" || !isFreeAddOnTrial) {
+                    if(props.stepperData.name !== "Starter" || !isFreeAddOnTrial) {
                         subTotal += (item.price.usd / 100)
                     }
                 }
@@ -199,7 +199,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
 
-    const isFreeAddOnTrial = (props.stepperData.name === "Developer" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
+    const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const [featuresTotal, setFeaturesTotal] = React.useState<number>(props.stepperData.privilegesTotal)
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
@@ -227,7 +227,7 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
 React.useEffect(() => {
     let subTotal = 0
     newSelectedPrivileges.map((item: Privilege) => {
-        if(props.stepperData.name !== "Developer" || !isFreeAddOnTrial) {
+        if(props.stepperData.name !== "Starter" || !isFreeAddOnTrial) {
             subTotal += (item.price.usd / 100)
         }
         setFeaturesTotal(subTotal)
