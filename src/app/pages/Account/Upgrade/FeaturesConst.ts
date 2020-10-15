@@ -130,7 +130,6 @@ export const MainFeatures: {name: string; tooltip: string}[] = [
     {name: "24/7 Phone Support", tooltip: "Call us at any time for personalised help and assistance"},
     {name: "Paywall", tooltip: "Sell your content vie Pay Per View or Subscription"},
     {name: "Ads", tooltip: "Monetise your content with Pre-, Mid- and Post-Roll Ads"},
-    {name: "M3U8", tooltip: "Integrate video with devices like Smart TVs, Roku, etc."},
     {name: "China", tooltip: "Our Premium delivery method with increased performance in China"},
 ]
 
