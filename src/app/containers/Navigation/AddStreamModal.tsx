@@ -111,7 +111,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
                     />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
-                    <Tooltip target={"channelRegionTypeTooltip"}>
+                    <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
                         The region your stream will broadcast from. Select the one closest to your encoder for best performance.
                     </Tooltip>
                 </div>
@@ -125,7 +125,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
                     />
                     <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
-                    <Tooltip target={"numberOfRenditionsDropdownTooltip"}>
+                    <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
                         For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
                     </Tooltip>
                 </div>
