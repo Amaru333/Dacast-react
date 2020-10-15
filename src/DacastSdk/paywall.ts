@@ -265,9 +265,27 @@ interface GetPaywallThemesOutput {
     themes: PaywallThemeEndpoints[]
 }
 
-interface PaywallTransaction {
-    
+interface ExternalTransaction {
+    id: string;
+    type: string;
+    contentName: string;
+    date: string;
+    purchaser: string;
+    currency: string;
+    note: string;
+    price: number;
+    dacastFee: number;
+    actionType: string;
+    timestamp: number;
 }
+
+interface InternalTransaction {
+    timestamp: number;
+    decimalValue: number;
+    note: string;
+}
+
+type PaywallTransaction = ExternalTransaction & InternalTransaction
 
 interface GetPaywallTransactionsOutput {
     page: number;
