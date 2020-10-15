@@ -100,6 +100,12 @@ export interface SubtitleInfo {
     convertToUTF8?: boolean;
 }
 
+export interface DateTimeValue {
+    date: string;
+    time: string;
+    timezone: string;
+}
+
 export const initialContentGeneralState: ContentDetailsState = {};
 
 export const initialContentList: SearchResult | false = false
