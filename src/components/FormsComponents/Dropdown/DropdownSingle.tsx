@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle } from './DropdownStyle';
-import { DropdownProps, dropdownIcons, DropdownListType, SingleDropdownListItem } from './DropdownTypes';
+import { DropdownProps, dropdownIcons, DropdownListType, DropdownSingleListItem } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
     const [selectedItem, setSelectedItem] = React.useState<string>(props.defaultSelected ? props.defaultSelected : 'Select');
-    const [itemsList, setItemsList] = React.useState<SingleDropdownListItem[]>(props.list);
+    const [itemsList, setItemsList] = React.useState<DropdownSingleListItem[]>(props.list);
     const [filteringList, setFilteringList] = React.useState<string>('');
 
     useOutsideAlerter(dropdownListRef, () => {
@@ -30,10 +30,10 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
 
     React.useEffect(() => { setOpen(false) }, [selectedItem])
 
-    const handleClick = (name: string) => {
-        setSelectedItem(name);
-        if (props.callback && name !== "Select") {
-            props.callback(name);
+    const handleClick = (item: DropdownSingleListItem) => {
+        setSelectedItem(item.title);
+        if (props.callback && item.title !== "Select") {
+            props.callback(item);
         }
     }
 
@@ -60,7 +60,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                 isSingle
                                 id={props.id + '_' + item.title}
                                 isSelected={selectedItem === item.title}
-                                onClick={() => handleClick(item.title)}>
+                                onClick={() => handleClick(item)}>
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
                             </DropdownItem>
                         </Link>
@@ -71,7 +71,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             id={props.id + '_' + item.title}
                             className={key === 0 ? 'mt1' : ''}
                             isSelected={selectedItem === item.title}
-                            onClick={() => handleClick(item.title)}>
+                            onClick={() => handleClick(item)}>
                             <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
                         </DropdownItem>
                 )

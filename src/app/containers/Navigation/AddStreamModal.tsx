@@ -2,8 +2,7 @@ import React from 'react';
 import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Modal"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { StreamTypeSelector, StreamTypeSelectorContainer, StreamTypeSelectorContents } from './NavigationStyle';
-import { UserAccountPrivileges, StreamSetupOptions } from './NavigationTypes';
-import { Toggle } from '../../../components/Toggle/toggle';
+import { StreamSetupOptions } from './NavigationTypes';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
@@ -16,6 +15,7 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 const moment = require('moment-timezone')
 
@@ -44,6 +44,8 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const [selectedStreamType, setSelectedStreamType] = React.useState<string>('standard')
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
 
     React.useEffect(() => {
         setStreamSetupOptions({ ...streamSetupOptions, streamType: selectedStreamType, rewind: selectedStreamType === 'standard' ? streamSetupOptions.rewind : false })
@@ -108,8 +110,8 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                                 className='col col-12' 
                                 id='channelRegionTypeDropdown' 
                                 dropdownDefaultSelect={streamSetupOptions.region}
-                                list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
-                                callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
+                                list={regionDropdownList} 
+                                callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
                             />
                             <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                             <Tooltip target={"channelRegionTypeTooltip"}>The region your stream will broadcast from. Select the one closest to your encoder for best performance.</Tooltip>

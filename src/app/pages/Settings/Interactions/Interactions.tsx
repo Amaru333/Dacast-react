@@ -27,7 +27,7 @@ import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/
 import { SpinnerContainer } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
-import { SingleDropdownListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
@@ -46,7 +46,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const [mailCatcherModalOpened, setMailCatcherModalOpened] = React.useState<boolean>(false);
     const [logoFile, setLogoFile] = React.useState<File>(null);
 
-    const dropdownList: SingleDropdownListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
+    const dropdownList: DropdownSingleListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
 
     const newAd = () => {
         setSelectedAd(-1);
@@ -317,7 +317,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     </div>
                     <div className="col col-6">
                         <DropdownSingle hasSearch className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={dropdownList} dropdownDefaultSelect={props.interactionsInfos.brandImageSettings.brandImagePosition || 'Top Right'}
-                        callback={(value: string) => {setInteractionsInfos({...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImagePosition: value}});setSettingsEdited(true)}}></DropdownSingle>
+                        callback={(item: DropdownSingleListItem) => {setInteractionsInfos({...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImagePosition: item.title}});setSettingsEdited(true)}}></DropdownSingle>
                         <Input className="col col-4 pr2" defaultValue={props.interactionsInfos.brandImageSettings.brandImageSize && props.interactionsInfos.brandImageSettings.brandImageSize.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)} });setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                         <Input className="col col-4" label="Padding (px)" defaultValue={props.interactionsInfos.brandImageSettings.brandImagePadding && props.interactionsInfos.brandImageSettings.brandImagePadding.toString()} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)} });setSettingsEdited(true)}} />
                         <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" defaultValue={props.interactionsInfos.brandImageSettings.brandImageLink && props.interactionsInfos.brandImageSettings.brandImageLink} onChange={(event) => {setInteractionsInfos({ ...interactionInfos, brandImageSettings: {...interactionInfos.brandImageSettings, brandImageLink: event.currentTarget.value }});setSettingsEdited(true)}} />
