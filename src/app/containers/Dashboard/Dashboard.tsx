@@ -25,10 +25,11 @@ export interface DashboardProps {
 
 const Dashboard = (props: DashboardProps) => {
 
+    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+
     React.useEffect(() => {
-        if (!props.infos) {
-            props.getDashboardDetails();
-        }
+        props.getDashboardDetails()
+        .then(() => setIsFetching(false))
     }, [])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
@@ -64,7 +65,7 @@ const Dashboard = (props: DashboardProps) => {
     return (
         <>
             {
-                props.infos ?
+                !isFetching ?
                     <>
                         {renderDashboard()}
                         <div className="clearfix"></div>
