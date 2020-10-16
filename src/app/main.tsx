@@ -42,6 +42,7 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
+import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 
 // Any additional component props go here.
 interface MainProps {
@@ -71,6 +72,10 @@ EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
     store.dispatch({type: 'USER_LOGOUT'})
     userToken.resetUserInfo()
     location.reload()
+})
+
+EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
+    dacastSdk.forceRefresh()
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {

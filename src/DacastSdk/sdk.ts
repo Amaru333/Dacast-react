@@ -16,6 +16,10 @@ export class DacastSdk {
         return data
     }
 
+    public forceRefresh = async (): Promise<void> => {
+        return await this.axiosClient.forceRefresh()
+    }
+
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => {
         return await this.axiosClient.get('/paywall/promos/presets?' + input)
         .then(response => {

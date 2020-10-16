@@ -22,6 +22,7 @@ import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -57,6 +58,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepperPlanOpened(false)
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
+                EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
             }
         })
         .catch((error) => {
@@ -76,6 +78,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
+            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
         })
         .catch(() => {
             setIsLoading(false);
