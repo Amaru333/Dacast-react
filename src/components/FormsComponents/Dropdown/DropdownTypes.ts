@@ -1,6 +1,10 @@
 type CheckboxStatus = 'unchecked' | 'checked' | 'undeterminate'
 export interface DropdownListType {[key: string]: boolean}
 
+export interface SingleDropdownListItem {
+    title: string
+}
+
 export const dropdownIcons = {
     opened: "arrow_drop_up",
     closed: "arrow_drop_down"
@@ -9,7 +13,7 @@ export const dropdownIcons = {
 interface DropdownCustomProps {
     id: string;
     dropdownTitle: string;
-    list: DropdownListType;
+    list: SingleDropdownListItem[];
     isNavigation?: boolean;
     ref?: React.Ref<HTMLDivElement>;
     callback?: Function;
