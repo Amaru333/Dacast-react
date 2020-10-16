@@ -1,4 +1,4 @@
-import { PlayerEvents, EventType, EventArgs } from './eventConstants'
+import { EventType, EventArgs } from './eventConstants'
 
 export type EventHookerHandler<ArgsType> = (args: ArgsType) => void
 type HandlerType = 'persistant' | 'once'

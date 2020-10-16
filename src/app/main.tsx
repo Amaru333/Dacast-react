@@ -40,7 +40,7 @@ import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
-import EventHooker from './utils/services/event/eventHooker';
+import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 
 // Any additional component props go here.
@@ -64,6 +64,13 @@ EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     if(timeoutId === null) { 
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
+})
+
+EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
+    console.log('forcing logout')
+    store.dispatch({type: 'USER_LOGOUT'})
+    userToken.resetUserInfo()
+    location.reload()
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {

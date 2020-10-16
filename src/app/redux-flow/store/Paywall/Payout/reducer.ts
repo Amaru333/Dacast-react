@@ -1,7 +1,6 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod, PaymentMethodType,  } from "./types";
-import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
     let paymentMethods: PaymentMethod[] = []
@@ -9,22 +8,12 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_PAYMENT_METHODS :
             return {
                 ...state,
-                paymentMethods: action.payload.data.paymentMethods.map(p => {
-                    return {
-                        ...p,
-                        paymentMethodType: p.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : p.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : p.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
-                    }
-                })
+                paymentMethods: action.payload
             }
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
                 ...state,
-                withdrawalRequests: action.payload.data.withdrawals.map(r => {
-                    return {
-                        ...r,
-                        status: capitalizeFirstLetter(r.status) as 'Completed' | 'Cancelled' | 'Pending'
-                    }
-                })
+                withdrawalRequests: action.payload
             }
         case ActionTypes.ADD_PAYMENT_METHOD :
             paymentMethods = state.paymentMethods.slice();
@@ -67,10 +56,19 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                 ...state,
                 withdrawalRequests: withdrawalRequests
             }
-        case ActionTypes.DELETE_PAYMENT_METHOD :
+        case ActionTypes.CANCEL_WITHDRAWAL_REQUEST :
             return {
                 ...state,
-                withdrawalRequests: state.withdrawalRequests.filter(p => p.id !== action.payload.id)
+                withdrawalRequests: state.withdrawalRequests.map(item => {
+                    if(item.id !== action.payload.id) {
+                        return item;
+                    }
+                    else {
+                        return {
+                            ...action.payload,
+                        }
+                    }
+                })
             }
         default:
             return state;

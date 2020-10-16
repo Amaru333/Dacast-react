@@ -1,13 +1,15 @@
 import { combineReducers, Reducer } from 'redux';
 import { PayoutReducer } from './Payout/reducer';
 import { PayoutInfos } from './Payout/types';
-import { TransactionsInfos } from './Transactions/types';
+import { TransactionsInfo } from './Transactions/types';
 import { TransactionsReducer } from './Transactions/reducer';
 import { PaywallSettingsInfos } from './Settings/types';
 import { PaywallSettingsReducer } from './Settings/reducer';
 import { PresetsPageInfos, PresetsReducer } from './Presets';
 import { PaywallThemingData, PaywallThemingReducer } from './Theming';
-import { GroupsPageInfos, GroupsReducer, groupsInitialState } from './Groups';
+import { GroupsPageInfos, groupsInitialState } from './Groups/types';
+import { GroupsReducer } from './Groups/reducer';
+
 
 export const paywallInitialState: PaywallState = {
     payout: false,
@@ -20,7 +22,7 @@ export const paywallInitialState: PaywallState = {
 
 export interface PaywallState {
     payout: false | PayoutInfos;
-    transactions: false | TransactionsInfos;
+    transactions: false | TransactionsInfo;
     paywallSettings: false | PaywallSettingsInfos;
     presets: false | PresetsPageInfos;
     theming: false | PaywallThemingData;

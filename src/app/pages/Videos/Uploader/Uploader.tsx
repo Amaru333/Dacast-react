@@ -15,7 +15,7 @@ import { useNetwork } from '../../../utils/custom-hooks/networkNavigatorHook';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
-import EventHooker from '../../../utils/services/event/eventHooker';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 
 export const UploaderPage = (props: UploaderProps) => {

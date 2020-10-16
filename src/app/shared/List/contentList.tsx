@@ -29,8 +29,8 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
+import EventHooker from '../../../utils/services/event/eventHooker';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
-import EventHooker from '../../utils/services/event/eventHooker';
 import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
 

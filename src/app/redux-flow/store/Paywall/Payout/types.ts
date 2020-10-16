@@ -25,7 +25,7 @@ export interface PaymentMethod {
     paymentMethodName?: string;
     payee?: string;
     companyName?: string;
-    recipientType?: 'business' | 'personal';
+    recipientType?: 'Business' | 'Personal';
     swift?: string;
     iban?: string;
     routingNumber?: string;

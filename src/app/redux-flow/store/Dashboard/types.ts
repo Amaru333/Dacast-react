@@ -1,3 +1,5 @@
+import { PlanSummary, PlaybackProtection } from '../Account/Plan';
+
 export enum ActionTypes {
     GET_DASHBOARD_DETAILS = "@@dashboard/GET_DASHBOARD_DETAILS",
     GET_DASHBOARD_VOD_PLAY_RATE = "@@dashboard/GET_DASHBOARD_VOD_PLAY_RATE",
@@ -9,12 +11,14 @@ export enum ActionTypes {
 }
 
 export interface DashboardInfos {
-    vod: false | DashboardVod;
+    vod: DashboardVod;
     isTrial: false | DashboardTrial;
     isPayingPlan: false | DashboardPayingPlan;
-    paywall: false | DashboardPaywall;
-    live: false | DashboardLive;
+    paywall: DashboardPaywall;
+    live:  DashboardLive;
     generalInfos: DashboardGeneral;
+    currentPlan: PlanSummary;
+    playbackProtection: PlaybackProtection
 }
 
 export interface DashboardTrial {
@@ -65,7 +69,7 @@ export interface DashboardLive {
 
 export interface DashboardPaywall {
     balance: number;
-    revenue: number;
+    revenue: {currency: string; total: number}[];
 }
 
 export const dashboardInitialState: DashboardState = {
