@@ -30,7 +30,7 @@ export class DacastSdk {
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => {
         return await this.axiosClient.post('/paywall/promos/presets', {...input})
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -52,7 +52,7 @@ export class DacastSdk {
     public postPromo = async (input: PromoDetails): Promise<PromoId> => {
         return await this.axiosClient.post('/paywall/promos', {promo: input})
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -74,7 +74,7 @@ export class DacastSdk {
     public postPricePreset = async (input: PricePresetDetails): Promise<PricePresetId> => {
         return await this.axiosClient.post('/paywall/prices/presets', {...input})
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -96,7 +96,7 @@ export class DacastSdk {
     public postPricePackage = async (input: PostPricePackageInput): Promise<PricePackageId> => {
         return await this.axiosClient.post('/paywall/prices/groups', {...input})
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -118,7 +118,7 @@ export class DacastSdk {
     public postPaymentMethod = async (input: PaymentMethodDetails): Promise<PaymentMethodId> => {
         return await this.axiosClient.post('/paywall/payment-methods', input)
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -142,7 +142,7 @@ export class DacastSdk {
     public postPaymentRequest = async (input: PostPaymentRequestInput): Promise<PaymentRequestId> => {
         return await this.axiosClient.post('/paywall/payment-requests', input)
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
@@ -171,7 +171,7 @@ export class DacastSdk {
     public postPaywallTheme = async (input: PaywallThemeDetails): Promise<PaywallThemeId> => {
         return await this.axiosClient.post('/paywall/themes', input)
         .then(response => {
-            return {id: this.checkExtraData(response.data)}
+            return {id: this.checkExtraData(response.data).id}
         })
     }
 
