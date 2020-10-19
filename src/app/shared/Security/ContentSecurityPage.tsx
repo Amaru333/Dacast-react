@@ -7,7 +7,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { GeoRestriction, DomainControl, ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
@@ -17,6 +17,7 @@ import { Prompt } from 'react-router';
 import moment from 'moment'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../Common/MiscStyle';
+import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')
 
@@ -51,13 +52,25 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.passwordProtection && props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
-    const [startDateTime, setStartDateTime] = React.useState<'Always' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime || props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time')
-    const [endDateTime, setEndDateTime] = React.useState<'Forever' | 'Set Date and Time'>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime || props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time')
+    const [startDateTime, setStartDateTime] = React.useState<string>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime || props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time')
+    const [endDateTime, setEndDateTime] = React.useState<string>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime || props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time')
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(!props.contentSecuritySettings.securitySettings.locked )
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.contentSecuritySettings.securitySettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item) => {
+        let geoRestrictionDropdownListItem: DropdownSingleListItem = {title: null}
+        geoRestrictionDropdownListItem.title = item.name
+        return geoRestrictionDropdownListItem
+    })
+
+    const domainControlDropdownList = props.globalSecuritySettings.domainControl.map((item) => {
+        let domainControlDropdownListItem: DropdownSingleListItem = {title: null}
+        domainControlDropdownListItem.title = item.name
+        return domainControlDropdownListItem
+    })
 
     let startTimestamp = momentTZ.tz((selectedSettings.contentScheduling.startTime && selectedSettings.contentScheduling.startTime > 0 ? selectedSettings.contentScheduling.startTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
     let endTimestamp = momentTZ.tz((selectedSettings.contentScheduling.endTime && selectedSettings.contentScheduling.endTime > 0 ? selectedSettings.contentScheduling.endTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
@@ -222,9 +235,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 className='col col-12 md-col-3 clearfix sm-mr1'
                                 id="availableStart" 
                                 dropdownTitle="Available" 
-                                list={{'Always': false, "Set Date and Time": false}} 
+                                list={availableStartDropdownList} 
                                 dropdownDefaultSelect={startDateTime} 
-                                callback={(selectedItem: 'Always' | 'Set Date and Time') => {setHasToggleChanged(true);setStartDateTime(selectedItem)}} 
+                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setStartDateTime(item.title)}} 
                             />
                             {
                                 startDateTime === "Set Date and Time" &&
@@ -254,8 +267,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                         dropdownDefaultSelect={selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()} 
                                         className='col col-3 px2' 
                                         dropdownTitle='Timezone' 
-                                        callback={(value: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, startTimezone: value.split(' ')[0]}})}} 
-                                        list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
+                                        callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, startTimezone: item.title.split(' ')[0]}})}} 
+                                        list={timezoneDropdownList} 
                                     />
 
                                 </>
@@ -267,8 +280,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             className='col col-12 md-col-3 clearfix sm-mr1' 
                             id="availableEnd" 
                             dropdownTitle="Until" 
-                            list={{'Forever': false, "Set Date and Time": false}} 
-                            dropdownDefaultSelect={endDateTime} callback={(selectedItem: 'Forever' | 'Set Date and Time') => {setHasToggleChanged(true);setEndDateTime(selectedItem)}}
+                            list={availableEndDropdownList} 
+                            dropdownDefaultSelect={endDateTime} callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setEndDateTime(item.title)}}
                         />
 
                         {
@@ -301,8 +314,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                         dropdownDefaultSelect={selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()} 
                                         className='col col-3 px2' 
                                         dropdownTitle='Timezone' 
-                                        callback={(value: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, endTimezone: value.split(' ')[0]}})}} 
-                                        list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
+                                        callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, endTimezone: item.title.split(' ')[0]}})}} 
+                                        list={timezoneDropdownList} 
                                     />
                                 </>
                         }
@@ -327,9 +340,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             className='col col-12 md-col-3 my2 mr1' 
                             id="availableEnd" 
                             dropdownTitle="Select Geo-Restriction Group" 
-                            list={props.globalSecuritySettings.geoRestriction.reduce((reduced: DropdownListType, item: GeoRestriction)=> {return {...reduced, [item.name]: false}},{})} 
+                            list={geoRestrictionDropdownList} 
                             dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name} 
-                            callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.globalSecuritySettings.geoRestriction.find(f => f.name === selectedItem).id})}} 
+                            callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.globalSecuritySettings.geoRestriction.find(f => f.name === item.title).id})}} 
                         />
                     </div>
 
@@ -348,9 +361,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 className="col col-12 md-col-3" 
                                 id="availableEnd" 
                                 dropdownTitle="Select Domain Control Group" 
-                                list={props.globalSecuritySettings.domainControl.reduce((reduced: DropdownListType, item: DomainControl)=> {return {...reduced, [item.name]: false}},{})} 
+                                list={domainControlDropdownList} 
                                 dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name} 
-                                callback={(selectedItem: string) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.globalSecuritySettings.domainControl.find(f => f.name === selectedItem).id})}} 
+                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.globalSecuritySettings.domainControl.find(f => f.name === item.title).id})}} 
                             />
                         </div>
                     </div>

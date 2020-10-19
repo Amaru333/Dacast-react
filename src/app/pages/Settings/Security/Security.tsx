@@ -17,9 +17,10 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Prompt } from 'react-router';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
+import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')
 
@@ -209,7 +210,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         
                             
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setStartDateTime(value) }} />
+                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => { setDisplayformActionButtons(true);setStartDateTime(item.title) }} />
                                     {startDateTime === "Set Date and Time" &&
                                         <>
                                             <DateSinglePickerWrapper
@@ -233,14 +234,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                                 dropdownDefaultSelect={startDateTimeValue.timezone} 
                                                 className='col col-3 px2 mb2' 
                                                 dropdownTitle='Timezone' 
-                                                callback={(value: string) => {setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]})}} 
-                                                list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
+                                                callback={(item: DropdownSingleListItem) => {setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, timezone: item.title.split(' ')[0]})}} 
+                                                list={timezoneDropdownList} 
                                             />  
                                         </>
                                     }
                                 </div>
                                 <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever'} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => { setDisplayformActionButtons(true);setEndDateTime(value) }} />
+                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever'} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => { setDisplayformActionButtons(true);setEndDateTime(item.title) }} />
 
                                     {
                                         endDateTime === "Set Date and Time" &&
@@ -265,8 +266,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                                 dropdownDefaultSelect={endDateTimeValue.timezone} 
                                                 className='col col-3 px2 mb2' 
                                                 dropdownTitle='Timezone' 
-                                                callback={(value: string) => {setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, timezone: value.split(' ')[0]})}} 
-                                                list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false}}, {})} 
+                                                callback={(item: DropdownSingleListItem) => {setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, timezone: item.title.split(' ')[0]})}} 
+                                                list={timezoneDropdownList} 
                                             />
                                         </>
                                     }

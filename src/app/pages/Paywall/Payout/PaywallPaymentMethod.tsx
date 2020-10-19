@@ -10,12 +10,15 @@ import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { useForm } from 'react-hook-form';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International"}, {title: "Check"}, {title: "PayPal"}]
 
     const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
         reValidateMode: 'onChange',
@@ -100,8 +103,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col sm-col-3 col-12 px1 xs-mb2 clearfix xs-no-gutter'
                         id='paywallNewPaymentDropdown' 
                         dropdownTitle='Payout Type' 
-                        list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
-                        callback={(value: string) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(value)}}
+                        list={payoutTypeDropdownList} 
+                        callback={(item: DropdownSingleListItem) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(item.title)}}
                         dropdownDefaultSelect={selectedPaymentMethod}
                     />
                     {

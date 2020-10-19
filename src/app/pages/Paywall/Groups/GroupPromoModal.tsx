@@ -2,12 +2,13 @@ import React from 'react';
 import {Input} from '../../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../../../components/Typography/Text';
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
+import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 var moment = require('moment-timezone');
 
 const defaultPromo: GroupPromo = {
@@ -53,6 +54,15 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
     const [startDateTime, setStartDateTime] = React.useState<string>(groupPromo.startDate > 0 ? 'Set Date and Time' : 'Always')
     const [endDateTime, setEndDateTime] = React.useState<string>(groupPromo.endDate > 0 ? 'Set Date and Time' : 'Forever')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const associatedGroupDropdownList = props.groupList.map((item: GroupPrice) => {
+        let associatedGroupItem: DropdownSingleListItem = {title: null, data: null}
+        associatedGroupItem.title = item.name
+        associatedGroupItem.data = props.groupList.filter(n => n.name === item.name)[0].id
+    })
+    
+    
+    
     
     React.useEffect(() => {
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
@@ -85,8 +95,8 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     className={ ClassHalfXsFullMd + 'pr2 xs-mb2'} 
                     dropdownTitle='Associated Group'
                     dropdownDefaultSelect={props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0]).length > 0 ? props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0])[0].name : ''}
-                    list={props.groupList.reduce((reduced: DropdownListType, item: GroupPrice)=> {return {...reduced, [item.name]: false }},{})  } 
-                    callback={(value: string) => setGroupPromo({...groupPromo, assignedGroupIds: [props.groupList.filter(n => n.name === value)[0].id]})}
+                    list={associatedGroupDropdownList} 
+                    callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, assignedGroupIds: item.data})}
                 />
             </div>
             <div className='col col-12 mb2 clearfix'>
@@ -94,7 +104,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
+                <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => {setStartDateTime(item.title)}} />
                 {startDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
@@ -115,7 +125,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 }
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => {setEndDateTime(value)}} />
+                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => {setEndDateTime(item.title)}} />
 
                 {
                     endDateTime === "Set Date and Time" &&
@@ -152,7 +162,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 }
 
 
-                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(value: string) => setGroupPromo({...groupPromo, discountApplied: value})} list={{'Once': false, 'Forever': false}} />
+                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, discountApplied: item.title})} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 py2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Create</Button>

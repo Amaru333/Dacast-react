@@ -5,7 +5,7 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { Modal } from '../../../components/Modal/Modal';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentType, SearchResult } from '../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
@@ -72,6 +72,12 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     const [themesList, setThemesList] = React.useState<ThemeOptions[]>([])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    const themesListDropdown = themesList.map((item) => {
+        let themesListDropdownItem: DropdownSingleListItem = {title: null}
+        themesListDropdownItem.title = item.themeName
+        return themesListDropdownItem
+    })
+
     const handleSubmit = async () => {
         setButtonLoading(true)
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
@@ -116,9 +122,9 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
                         <DropdownSingle className="mb3"
                             dropdownTitle='Theme' 
                             id='thumbnailPositionDropdown' 
-                            list={themesList.reduce((reduced: DropdownListType, item: ThemeOptions) => {return {...reduced, [item.themeName]: false}}, {})}
+                            list={themesListDropdown}
                             isInModal={true} 
-                            callback={(value: string) => {setSelectedTheme(themesList.filter(theme => theme.themeName === value)[0].id)}} 
+                            callback={(item: DropdownSingleListItem) => {setSelectedTheme(themesList.filter(theme => theme.themeName === item.title)[0].id)}} 
                         />
                     </>
 

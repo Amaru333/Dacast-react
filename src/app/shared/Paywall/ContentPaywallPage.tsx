@@ -8,7 +8,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Table } from '../../../components/Table/Table'
 import { Modal } from '../../../components/Modal/Modal'
 import { IconStyle, IconContainer , ActionIcon} from '../../../shared/Common/Icon'
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { ContentPricePresetsModal } from './ContentPricePresetModal';
@@ -55,6 +55,12 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const [contentPaywallSettings, setContentPaywallSettings] = React.useState<ContentPaywallPageInfos>(props.contentPaywallInfos);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
+
+    const themeDropdownList = props.theming.themes.map((item) => {
+        let themeDropdownListItem: DropdownSingleListItem = {title: null}
+        themeDropdownListItem.title = item.name
+        return themeDropdownListItem
+    })
 
     React.useEffect(() => {
         setContentPaywallSettings(props.contentPaywallInfos)
@@ -197,8 +203,8 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     className='col col-12 sm-col-3 my2'
                     dropdownTitle='Paywall Theme'
                     dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
-                    list={props.theming.themes.reduce((reduced: DropdownListType, theme) => {return {...reduced, [theme.name]: false}}, {})}
-                    callback={(value: string) => {setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === value)[0].id});setHasChanged(true)}}
+                    list={themeDropdownList}
+                    callback={(item: DropdownSingleListItem) => {setContentPaywallSettings({...contentPaywallSettings, selectedTheme: props.theming.themes.filter(f => f.name === item.title)[0].id});setHasChanged(true)}}
                 />
                 <Text size={16} weight='med'>Intro Video ID</Text>
                 <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>

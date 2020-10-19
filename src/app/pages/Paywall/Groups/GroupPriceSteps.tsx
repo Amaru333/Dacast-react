@@ -17,19 +17,17 @@ import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../Analytics/AnalyticsCommun';
-import { timezoneDropdownList } from '../../../../utils/DropdownLists';
+import { timezoneDropdownList, currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList } from '../../../../utils/DropdownLists';
 
 var moment = require('moment-timezone');
 
 
 export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void }) => {
 
-    const currencyDropdownList = CURRENCY.map((item: string) => {
-        let currencyDropdownItem: DropdownSingleListItem = {title: null}
-        currencyDropdownItem.title = item
-        return currencyDropdownItem
-    })
-    const presetTypeDropdownList = [{title: "Subscription"}, {title: "Pay Per View"}]
+    
+    
+    
+    
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.firststep.name && (props.stepperData.firststep.groupSettings.type === 'Pay Per View' && props.stepperData.firststep.groupSettings.duration && props.stepperData.firststep.groupSettings.duration.value || props.stepperData.firststep.groupSettings.type === 'Subscription') && !props.stepperData.firststep.prices.some(price => !price.price.value))
@@ -101,17 +99,17 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     props.stepperData.firststep.groupSettings.type === 'Subscription' ?
-                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence ? props.stepperData.firststep.groupSettings.recurrence.unit : 'Weekly'} dropdownTitle='Recurrence' list={{ 'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false }} callback={(value: string) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: value}}}})} />
+                        <DropdownSingle id='groupPriceRecurrenceDropdown' className="col col-6" dropdownDefaultSelect={props.stepperData.firststep.groupSettings.recurrence ? props.stepperData.firststep.groupSettings.recurrence.unit : 'Weekly'} dropdownTitle='Recurrence' list={recurrenceDropdownList} callback={(item: DropdownSingleListItem) => props.updateStepperData({...props.stepperData, firststep:{...props.stepperData.firststep, groupSettings:{ ...props.stepperData.firststep.groupSettings, recurrence: {unit: item.title}}}})} />
                         :
                         <>
                             <Input className='col col-6 pr2' label='Duration' defaultValue={props.stepperData.firststep.groupSettings.duration && props.stepperData.firststep.groupSettings.duration.value > 0 ? props.stepperData.firststep.groupSettings.duration.value.toString() : ''} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, value: parseInt(event.currentTarget.value) } }} })} />
-                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration ? props.stepperData.firststep.groupSettings.duration.unit : null} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: value } } }})} dropdownTitle='' list={{ 'Hours': false, 'Days': false, 'Weeks': false, 'Months': false }} />
+                            <DropdownSingle id='groupPriceDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.duration ? props.stepperData.firststep.groupSettings.duration.unit : null} callback={(item: DropdownSingleListItem) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, duration: { ...props.stepperData.firststep.groupSettings.duration, unit: item.title } } }})} dropdownTitle='' list={durationDropdownList} />
                         </>
                 }
 
             </div>
             <div className='col col-12 mb2'>
-                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(value: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: value, startDate: value === 'Upon Purchase' ? 0 : props.stepperData.firststep.groupSettings.startDate }} })} list={{ 'Upon Purchase': false, 'Schedule': false }} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
+                <DropdownSingle id='groupPriceStartMethodDropdown' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.startMethod} className={ClassHalfXsFullMd + ' pr1'} callback={(item: DropdownSingleListItem) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: {...props.stepperData.firststep.groupSettings, startMethod: item.title, startDate: item.title === 'Upon Purchase' ? 0 : props.stepperData.firststep.groupSettings.startDate }} })} list={startMethodDropdownList} dropdownTitle='Start Method' disabled={props.stepperData.firststep.groupSettings.type === 'Subscription'} />
                 {
                     props.stepperData.firststep.groupSettings.startMethod === 'Schedule' && props.stepperData.firststep.groupSettings.type === 'Pay Per View' &&
                         <DropdownSingle 
