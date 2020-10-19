@@ -8,6 +8,7 @@ import { Text } from '../../../components/Typography/Text'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { capitalizeFirstLetter } from '../../../utils/utils'
 import { DateTime } from 'luxon'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: string}) => {
 
@@ -17,6 +18,8 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
     const [selectedStatus, setSelectedStatus] = React.useState<string>(capitalizeFirstLetter(props.withdrawal.status))
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const statusDropdownList = [{title: "Pending"}, {title: "Completed"}, {title: "Cancelled"}]
 
     const handleSubmit = () => {
         setButtonLoading(true)
@@ -61,7 +64,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
 
     return (
         <div className='flex flex-column'>
-            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? capitalizeFirstLetter(props.withdrawal.status) : ''} callback={(value: string) => setSelectedStatus(value)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={{'Pending': false, 'Completed': false, 'Cancelled': false}} />
+            <DropdownSingle className='col col-3 my1' dropdownDefaultSelect={props.withdrawal ? capitalizeFirstLetter(props.withdrawal.status) : ''} callback={(item: DropdownSingleListItem) => setSelectedStatus(item.title)} id='withdrawalStatusDropdown' dropdownTitle='Status' list={statusDropdownList} />
             <div className='p1 border center col col-6'>
                 {renderWithdrawalInfo()}
             </div>

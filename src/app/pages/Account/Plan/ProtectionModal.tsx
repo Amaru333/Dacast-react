@@ -4,9 +4,12 @@ import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (data: PlaybackProtection) => Promise<void>; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<number>(50);
+
+    const playbackProtectionDropdownList = [{title: "50"}, {title: "100"}, {title: "250"}, {title: "500"}, {title: "1000"}, {title: "2000"}, {title: "5000"}]
 
     const ProtectionModalTableData = [
         {
@@ -47,10 +50,10 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
                     isInModal   
                     className='pb2 col sm-col-6 col-12'                  
                     dropdownTitle='Amount (GB)'
-                    list={{'50': false, '100': false, '250': false, '500': false, '1000': false, '2000': false, '5000': false}}
+                    list={playbackProtectionDropdownList}
                     id='amountDropdown'
                     dropdownDefaultSelect={'50'}
-                    callback={(value: string) => setPlaybackProtectionAmount(parseInt(value))}
+                    callback={(item: DropdownSingleListItem) => setPlaybackProtectionAmount(parseInt(item.title))}
                         
                 />
             </div>

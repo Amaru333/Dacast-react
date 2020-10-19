@@ -8,7 +8,7 @@ import { Card } from '../../../../components/Card/Card';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import EventHooker from '../../../utils/services/event/eventHooker';
+import { timezoneDropdownList } from '../../../../utils/DropdownLists'
 
 var moment = require('moment-timezone');
 
@@ -142,8 +143,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             dropdownTitle='Timezone'
                             dropdownDefaultSelect={props.ProfilePageDetails.timezone ? props.ProfilePageDetails.timezone : moment.tz.guess}
                             id='dropdownTimezone'
-                            callback={(value: string) => { setValue('timezone', value) }}
-                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})}
+                            callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
+                            list={timezoneDropdownList}
                         />
                     </div>
                     <Divider className="p1 mx1" />
