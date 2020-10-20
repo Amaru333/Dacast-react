@@ -126,7 +126,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
     const handleAddOnNames = (addOn: string) => {
         switch(addOn){
             case "ads":
-                return "Ads"
+                return "Advertising"
             case "paywall":
                 return "Paywall"
             case "phone-support": 

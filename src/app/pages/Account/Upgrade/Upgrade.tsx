@@ -144,13 +144,13 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         </div>
                                         <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='absolute bottom-0 flex flex-column'>
-                                            <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
-                                            <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
+                                            {/* <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
+                                            <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
                                                 <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
                                                 <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
