@@ -12,7 +12,7 @@ import { makeRoute } from '../../utils/utils'
 import { handleFeatures } from '../../../app/shared/Common/Features'
 
 const Plans = [
-    'Starter',
+    'Developer',
     'Event',
     'Scale',
     'Custom'
