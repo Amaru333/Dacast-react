@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from '../../../../../utils/utils'
 import { userToken } from '../../../../utils/services/token/tokenService'
 
 
-export const formatGetPromoGroupOuput = (data: GetPromoOutput): GroupPromoData => {
+export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData => {
     let formattedData: GroupPromoData = {
         total: data.totalItems,
         promos: data.promos.map(promo => {
@@ -39,6 +39,15 @@ export const formatPostPromoGroupInput = (data: GroupPromo): PromoDetails => {
     return formattedData
 }
 
+export const formatPostPromoGroupOutput = (endpointResponse: PromoId, dataReact: GroupPromo): GroupPromo => {
+    let formattedData: GroupPromo = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
+}
+
 export const formatPutPromoGroupInput = (data: GroupPromo): PromoEndpoints => {
     let formattedData: PromoEndpoints = {
         id: data.id,
@@ -60,6 +69,8 @@ export const formatPutPromoGroupInput = (data: GroupPromo): PromoEndpoints => {
 
     return formattedData
 }
+
+export const formatDeletePromoGroupInput = (data: GroupPromo): string => data.id
 
 
 export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPriceData => {
@@ -124,7 +135,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
     if(data.groupSettings.type === 'Subscription') {
         formattedPrice = {
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -138,7 +149,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
         if(data.groupSettings.startMethod === 'Upon Purchase') {
             formattedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -151,7 +162,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
         } else {
             formattedPrice = {
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -165,6 +176,15 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
     } 
 
     return formattedPrice
+}
+
+export const formatPostPriceGroupOutput = (endpointResponse: PricePackageId, dataReact: GroupPrice): GroupPrice => {
+    let formattedData: GroupPrice = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
 }
 
 export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput => {
@@ -174,7 +194,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
         formattedPrice = {
             id: data.id,
             name: data.name,
-            prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+            prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -189,7 +209,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
             formattedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -203,7 +223,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
             formattedPrice = {
                 id: data.id,
                 name: data.name,
-                prices: data.prices.map((p) => {let price = p.price; return {...price, description: data.name}}),
+                prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.groupSettings.duration.unit.toLowerCase().substr(0, data.groupSettings.duration.unit.length - 1),
@@ -217,3 +237,5 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
     } 
     return formattedPrice
 }
+
+export const formatDeletePriceGroupInput = (data: GroupPrice): string => data.id

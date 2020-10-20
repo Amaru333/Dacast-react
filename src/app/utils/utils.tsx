@@ -4,6 +4,9 @@ import { store } from '..';
 import { FolderAsset } from '../redux-flow/store/Folders/types';
 import { IconStyle } from '../../shared/Common/Icon';
 import React from 'react';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action as ReduxAction } from 'redux';
+import { ApplicationState } from '../redux-flow/store';
 
 export function updateClipboard(copiedValue: string, toastMessage: string): void {
     navigator.clipboard.writeText(copiedValue).then(function () {
@@ -73,3 +76,25 @@ export const handleRowIconType = (item: FolderAsset) => {
             )
     }
 }
+
+export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
+    sdkFunction: (data: SdkIn) => Promise<SdkOut>,
+    inputFormatter: (data: ReactOut) => SdkIn, 
+    outputFormatter: undefined | ((responseSdk: SdkOut, dataReact?: ReactOut) => ActionPayload), 
+    action: string, 
+    successMsg: string, 
+    errorMsg: string): (data: ReactOut) => (dispatch: ThunkDispatch<ApplicationState, void, ReduxAction<string> & {payload: ActionPayload | ReactOut}>) => Promise<void> {
+    return (data) => async (dispatch) => {
+        try {
+            let response = await sdkFunction(inputFormatter(data))
+            dispatch({ type: action, payload: outputFormatter ? outputFormatter(response, data) : data })
+            if (successMsg) {
+                dispatch(showToastNotification(successMsg, 'fixed', "success"));
+            }
+        } catch(e) {
+            dispatch(showToastNotification(errorMsg, "fixed", "error"));
+            return Promise.reject(e)
+        }
+    }
+}
+
