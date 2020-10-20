@@ -110,7 +110,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
     }
     if(data.type === 'Subscription') {
         formattedData.preset = {
-            prices: data.prices.map((p) => {return {...p, description: ''}}),
+            prices: data.prices.map((p) => {return {...p, description: 'price'}}),
             settings: {
                 recurrence: {
                     unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -121,7 +121,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
     } else {
         if(data.settings.startMethod === 'Upon Purchase') {
             formattedData.preset = {
-                prices: data.prices.map((p) => {return {...p, description: ''}}),
+                prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
@@ -131,7 +131,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
             }
         } else {
             formattedData.preset = {
-                prices: data.prices.map((p) => {return {...p, description: ''}}),
+                prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
@@ -154,7 +154,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
     }
     if(data.type === 'Subscription') {
         formattedData.preset = {
-            prices: data.prices.map((p) => {return {...p, description: ''}}),
+            prices: data.prices.map((p) => {return {...p, description: 'price'}}),
             settings: {
                 recurrence: {
                     unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -165,7 +165,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
     } else {
         if(data.settings.startMethod === 'Upon Purchase') {
             formattedData.preset = {
-                prices: data.prices.map((p) => {return {...p, description: ''}}),
+                prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
@@ -175,7 +175,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
             }
         } else {
             formattedData.preset = {
-                prices: data.prices.map((p) => {return {...p, description: ''}}),
+                prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
