@@ -2,11 +2,12 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes, PaywallTheme } from './types';
-import { PaywallThemeServices } from './services';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetPaywallThemesOutput, formatPostPaywallThemeInput } from './viewModel';
 
 export interface GetPaywallThemes {
     type: ActionTypes.GET_PAYWALL_THEMES;
-    payload:{data: {themes:PaywallTheme[]}};
+    payload: PaywallTheme[];
 }
 
 export interface SavePaywallTheme {
@@ -26,22 +27,9 @@ export interface DeletePaywallTheme {
 
 export const getPaywallThemesAction = (): ThunkDispatch<Promise<void>, {}, GetPaywallThemes> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetPaywallThemes>) => {
-        await PaywallThemeServices.getPaywallThemes()
+        await dacastSdk.getPaywallThemes()
             .then( response => {
-                dispatch({type: ActionTypes.GET_PAYWALL_THEMES, payload: response.data});
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
-                return Promise.reject()
-            })
-    }
-}
-
-export const savePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promise<void>, {}, SavePaywallTheme> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePaywallTheme>) => {
-        await PaywallThemeServices.savePaywallTheme(data)
-            .then( response => {
-                dispatch({type: ActionTypes.SAVE_PAYWALL_THEME, payload: data});
-                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
+                dispatch({type: ActionTypes.GET_PAYWALL_THEMES, payload: formatGetPaywallThemesOutput(response)});
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
@@ -51,10 +39,23 @@ export const savePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promis
 
 export const createPaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promise<void>, {}, CreatePaywallTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, CreatePaywallTheme>) => {
-        await PaywallThemeServices.createPaywallTheme(data)
+        await dacastSdk.postPaywallTheme(formatPostPaywallThemeInput(data))
             .then( response => {
-                dispatch({type: ActionTypes.CREATE_PAYWALL_THEME, payload: {...data, id: response.data.data}});
+                dispatch({type: ActionTypes.CREATE_PAYWALL_THEME, payload: {...data, id: response.id}});
                 dispatch(showToastNotification(`${data.name} has been created`, 'fixed', "success"));
+            }).catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
+                return Promise.reject()
+            })
+    }
+}
+
+export const savePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promise<void>, {}, SavePaywallTheme> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, SavePaywallTheme>) => {
+        await dacastSdk.putPaywallTheme(data)
+            .then(() => {
+                dispatch({type: ActionTypes.SAVE_PAYWALL_THEME, payload: data});
+                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
@@ -64,8 +65,8 @@ export const createPaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Prom
 
 export const deletePaywallThemeAction = (data: PaywallTheme): ThunkDispatch<Promise<void>, {}, DeletePaywallTheme> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, DeletePaywallTheme>) => {
-        await PaywallThemeServices.deletePaywallTheme(data)
-            .then( response => {
+        await dacastSdk.deletePaywallTheme(data.id)
+            .then(() => {
                 dispatch({type: ActionTypes.DELETE_PAYWALL_THEME, payload: data});
                 dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
             }).catch(() => {

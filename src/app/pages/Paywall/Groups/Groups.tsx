@@ -7,7 +7,7 @@ import { Modal } from '../../../../components/Modal/Modal';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
-import { GroupPromo, GroupPrice, GroupPriceCreation } from '../../../redux-flow/store/Paywall/Groups';
+import { GroupPromo, GroupPrice, GroupPriceCreation } from '../../../redux-flow/store/Paywall/Groups/types';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';

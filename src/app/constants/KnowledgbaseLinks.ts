@@ -31,7 +31,7 @@ export const getKnowledgebaseLink = (name: string) => {
         case 'Encoding Recipes':
             return "https://www.dacast.com/support/knowledgebase/vod-renditions-bitrates/"
         case 'Ads':
-            return "https://www.dacast.com/support/knowledgebase/" //TBC
+            return "https://www.dacast.com/support/knowledgebase/can-i-use-local-ads-on-my-content/"
         case 'Encoder Setup':
             return "https://www.dacast.com/support/knowledgebase/live-encoder-configuration/"
         default:

@@ -22,6 +22,7 @@ import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -57,6 +58,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepperPlanOpened(false)
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
+                EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
             }
         })
         .catch((error) => {
@@ -76,6 +78,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
+            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
         })
         .catch(() => {
             setIsLoading(false);
@@ -180,7 +183,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
@@ -224,7 +227,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
                                             {planBillingFrequency === 'Annually' ?
@@ -321,7 +324,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>AES</Text>
-                                        <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
                                             {planBillingFrequency === 'Annually' ?
                                                 <div className="flex flex-column mb25 col col-8 ">
@@ -354,7 +356,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB Storage</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>Paywall</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
-                                        <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === 'scale' ?
                                                 <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :

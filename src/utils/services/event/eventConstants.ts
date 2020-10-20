@@ -14,12 +14,12 @@ function defineEvent<Name extends string, Type>(name: Name, _: Type): EventDef<N
  *
  * it's setup to automatically extract the type and strongly type the event handlers and hooks
  */
-const PlayerEventDefinitions = [
+const EventDefinitions = [
     defineEvent('EVENT_VOD_UPLOADED', {} as unknown),
-    defineEvent('EVENT_ACTIVE_VIEWERS_CHANGE', {} as number),
+    defineEvent('EVENT_FORCE_LOGOUT', {} as unknown),
     defineEvent('EVENT_FORCE_TOKEN_REFRESH', {} as unknown)
 ]
-export const PlayerEvents = PlayerEventDefinitions.map(event => event[0])
-export type EventArgs = Reduce<MapToObj<(typeof PlayerEventDefinitions)[0]>>
+export const Events = EventDefinitions.map(event => event[0])
+export type EventArgs = Reduce<MapToObj<(typeof EventDefinitions)[0]>>
 
-export type EventType = (typeof PlayerEventDefinitions)[0][0]
+export type EventType = (typeof EventDefinitions)[0][0]

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
+import { ItemNameContainer } from '../../pages/Playlist/Setup/Setup';
 
 export const DeleteContentModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; toggle: (b: boolean) => void; contentName: string; deleteContent: () => Promise<void>}) => {
 
@@ -21,7 +22,7 @@ export const DeleteContentModal = (props: {showToast: (text: string, size: Size,
 
     return (
         <div className='flex flex-column'>
-            <Text className='py1' size={14} weight='reg'>Are you sure that you want to delete {props.contentName}?</Text>
+            <div style={{overflowWrap: "break-word"}}><Text className='py1' size={14} weight='reg'>Are you sure that you want to delete {props.contentName}?</Text></div>
             <Text className='py1' size={14} weight='med' >Deleted videos stay in the Trash for the next 30 days. </Text>
             <div className='flex mt2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Delete</Button>

@@ -4,13 +4,9 @@ import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
+import { DashboardPaywall } from '../../redux-flow/store/Dashboard/types';
 
-interface PaywallDashboardProps {
-    balance: number;
-    revenue: {currency: string; total: number}[];
-}
-
-export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: PaywallDashboardProps }) => {
+export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: DashboardPaywall }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
 
     const handleCurrencySymbol = (currency: string) => {

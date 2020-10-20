@@ -40,8 +40,9 @@ import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
-import EventHooker from './utils/services/event/eventHooker';
+import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
+import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 
 // Any additional component props go here.
 interface MainProps {
@@ -64,6 +65,17 @@ EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     if(timeoutId === null) { 
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
+})
+
+EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
+    console.log('forcing logout')
+    store.dispatch({type: 'USER_LOGOUT'})
+    userToken.resetUserInfo()
+    location.reload()
+})
+
+EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
+    dacastSdk.forceRefresh()
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
@@ -186,7 +198,7 @@ const AppContent = (props: { routes: any }) => {
             { userToken.isLoggedIn() ?
                 <>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
-                    <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+                    { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
                     <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
 
