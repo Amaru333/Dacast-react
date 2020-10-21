@@ -2,6 +2,7 @@ import { ActionTypes, WithdrawalsList } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { WithdrawalsServices } from './services';
+import { showToastNotification } from '../../Toasts';
 
 export interface GetWithdrawals {
     type: ActionTypes.GET_WITHDRAWALS;
@@ -14,7 +15,7 @@ export const getWithdrawalsAction = (accountId: string): ThunkDispatch<Promise<v
             .then( response => {
                 dispatch({type: ActionTypes.GET_WITHDRAWALS, payload: response.data});
             }).catch(() => {
-
+                dispatch(showToastNotification('Couldn\'t get withdrawals list' , 'fixed', 'error'))
             })
     }
 }
