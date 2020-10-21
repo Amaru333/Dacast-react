@@ -120,19 +120,17 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
 //FEATURES
 export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
 
-    const availableAddOns = ["ads", "paywall", "phone-support", "player-sdk"]
+    const availableAddOns = ["ads", "paywall", "phone-support"]
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const handleAddOnNames = (addOn: string) => {
         switch(addOn){
             case "ads":
-                return "Ads"
+                return "Advertising"
             case "paywall":
                 return "Paywall"
             case "phone-support": 
                 return "24/7 Phone Support"
-            case "player-sdk":
-                return "Sdk"
             default: 
             return null
         }

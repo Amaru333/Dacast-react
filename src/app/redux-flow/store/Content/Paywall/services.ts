@@ -20,9 +20,10 @@ const getContentPaywallPrices = async (contentId: string, contentType: string) =
 }
 
 const createContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
+    debugger
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
-    if(data.type === 'Subscription') {
+    if(data.priceType === 'Subscription') {
         parsedPrice = {
             contentId: `${userId}-${contentType}-${contentId}`,
             prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
@@ -69,7 +70,7 @@ const createContentPricePreset = async (data: Preset, contentId: string, content
 const saveContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
-    if(data.type === 'Subscription') {
+    if(data.priceType === 'Subscription') {
         parsedPrice = {
             price: {value: data.price, currency: data.currency, description: data.description},
             settings: {

@@ -1,9 +1,7 @@
-import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "../..";
-import { showToastNotification } from '../../Toasts';
 import { ActionTypes, GroupPrice, GroupPromo, GroupPriceData, GroupPromoData } from './types';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetPromoGroupOuput, formatPostPromoGroupInput, formatPutPromoGroupInput, formatGetPriceGroupOuput, formatPostPriceGroupInput, formatPutPriceGroupInput } from './viewModel';
+import { formatPostPromoGroupInput, formatPutPromoGroupInput, formatGetPriceGroupOuput, formatPostPriceGroupInput, formatPutPriceGroupInput, formatPostPromoGroupOutput, formatGetPromoGroupOutput, formatDeletePromoGroupInput, formatDeletePriceGroupInput, formatPostPriceGroupOutput } from './viewModel';
+import { applyViewModel } from '../../../../utils/utils';
 
 export interface GetGroupPrices {
     type: ActionTypes.GET_GROUP_PRICES;
@@ -45,114 +43,20 @@ export interface DeleteGroupPromo {
     payload: GroupPromo;
 }
 
-export const getGroupPricesAction = (): ThunkDispatch<Promise<void>, {}, GetGroupPrices> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetGroupPrices>) => {
-        await dacastSdk.getPricePackage('page=1&per-page=100')
-            .then( response => {
-                dispatch({type: ActionTypes.GET_GROUP_PRICES, payload: formatGetPriceGroupOuput(response)});
-            }).catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
-                return Promise.reject(error)
-            })
-    }
-}
+export type Action = GetGroupPrices | CreateGroupPrice | SaveGroupPrice | DeleteGroupPrice | GetGroupPromos | CreateGroupPromo | SaveGroupPromo| DeleteGroupPromo
 
-export const createGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, CreateGroupPrice> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPrice>) => {
-        await dacastSdk.postPricePackage(formatPostPriceGroupInput(data))
-            .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PRICE, payload: {...data, id: response.id}})
-                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const getGroupPricesAction = applyViewModel(dacastSdk.getPricePackage, () => 'page=1&per-page=100', formatGetPriceGroupOuput, ActionTypes.GET_GROUP_PRICES, null, 'failed to get prices')
 
-export const saveGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, SaveGroupPrice> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveGroupPrice>) => {
-        await dacastSdk.putPricePackage(formatPutPriceGroupInput(data))
-            .then(() => {
-                dispatch({type: ActionTypes.SAVE_GROUP_PRICE, payload: data})
-                dispatch(showToastNotification(`${data.name} has been saved`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const createGroupPriceAction = applyViewModel(dacastSdk.postPricePackage, formatPostPriceGroupInput, formatPostPriceGroupOutput, ActionTypes.CREATE_GROUP_PRICE, 'price has been created', 'failed to create price')
 
-export const deleteGroupPriceAction = (data: GroupPrice): ThunkDispatch<Promise<void>, {}, DeleteGroupPrice> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteGroupPrice>) => {
-        await dacastSdk.deletePricePackage(data.id)
-            .then(() => {
-                dispatch({type: ActionTypes.DELETE_GROUP_PRICE, payload: data})
-                dispatch(showToastNotification(`${data.name} has been deleted`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const saveGroupPriceAction = applyViewModel(dacastSdk.putPricePackage, formatPutPriceGroupInput, undefined, ActionTypes.SAVE_GROUP_PRICE, 'price has been saved', 'failed to save price')
 
-export const getGroupPromosAction = (): ThunkDispatch<Promise<void>, {}, GetGroupPromos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetGroupPromos>) => {
-        await dacastSdk.getPromo('per-page=100&page=1')
-            .then( response => {
-                dispatch({type: ActionTypes.GET_GROUP_PROMOS, payload: formatGetPromoGroupOuput(response)});
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
-                return Promise.reject()
-            })
-    }
-}
+export const deleteGroupPriceAction = applyViewModel(dacastSdk.deletePricePackage, formatDeletePriceGroupInput, undefined, ActionTypes.DELETE_GROUP_PRICE, 'price has been deleted', 'failed to delete price')
 
-export const createGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<void>, {}, CreateGroupPromo> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, CreateGroupPromo>) => {
-        await dacastSdk.postPromo(formatPostPromoGroupInput(data))
-            .then( response => {
-                dispatch({type: ActionTypes.CREATE_GROUP_PROMO, payload: {...data, id: response.id}})
-                dispatch(showToastNotification(`promo has been saved`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const getGroupPromosAction = applyViewModel(dacastSdk.getPromo, () => 'page=1&per-page=100', formatGetPromoGroupOutput, ActionTypes.GET_GROUP_PROMOS, null, 'failed to get promo')
 
-export const saveGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<void>, {}, SaveGroupPromo> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, SaveGroupPromo>) => {
-        await dacastSdk.putPromo(formatPutPromoGroupInput(data))
-            .then(() => {
-                dispatch({type: ActionTypes.SAVE_GROUP_PROMO, payload: data})
-                dispatch(showToastNotification(`promo has been saved`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const createGroupPromoAction = applyViewModel(dacastSdk.postPromo, formatPostPromoGroupInput, formatPostPromoGroupOutput, ActionTypes.CREATE_GROUP_PROMO, 'promo has been created', 'failed to create promo')
 
-export const deleteGroupPromoAction = (data: GroupPromo): ThunkDispatch<Promise<void>, {}, DeleteGroupPromo> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteGroupPromo>) => {
-        await dacastSdk.deletePromo(data.id)
-            .then(() => {
-                dispatch({type: ActionTypes.DELETE_GROUP_PROMO, payload: data})
-                dispatch(showToastNotification(`promo has been deleted`, 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong...", "fixed", "error"));
-                return Promise.reject()
-            })
-    }
-}
+export const saveGroupPromoAction = applyViewModel(dacastSdk.putPromo, formatPutPromoGroupInput, undefined, ActionTypes.SAVE_GROUP_PROMO, 'promo has been saved', 'failed to save promo')
 
-
-export type Action = GetGroupPrices
-| CreateGroupPrice
-| SaveGroupPrice
-| DeleteGroupPrice
-| GetGroupPromos
-| CreateGroupPromo
-| SaveGroupPromo
-| DeleteGroupPromo
+export const deleteGroupPromoAction = applyViewModel(dacastSdk.deletePromo, formatDeletePromoGroupInput, undefined, ActionTypes.DELETE_GROUP_PROMO, 'promo has been deleted', 'failed to delete promo')

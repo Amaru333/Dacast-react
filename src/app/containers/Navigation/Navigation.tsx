@@ -102,11 +102,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 break
             case "Live Stream":
                 setAddDropdownIsOpened(false)
-                if (!userToken.getPrivilege('privilege-china') && !userToken.getPrivilege('privilege-unsecure-m3u8') && !userToken.getPrivilege('privilege-dvr') ) {
-                    history.push("/livestreams")
-                } else {
-                    props.openAddStream()
-                }
+                props.openAddStream()
                 break
             case "Playlist":
                 props.openPlaylist()

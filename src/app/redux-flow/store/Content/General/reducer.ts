@@ -27,7 +27,8 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                         title: action.payload.data.title,
                         description: action.payload.data.description,
                         online: action.payload.data.online,
-                        countdown: action.payload.data.countdown ?  action.payload.data.countdown : null
+                        countdown: action.payload.data.countdown ?  action.payload.data.countdown : null,
+                        ...action.payload.data
                     }
                 }
             }
