@@ -32,6 +32,7 @@ const PrivateRoute = (props: {key: string; component: any; path: string; exact: 
                     <ErrorBoundary>
                         <props.component {...props} />
                     </ErrorBoundary>
+                    <Toasts />
                 </div> 
 
             </Route>
@@ -95,7 +96,6 @@ const AdminContent = () => {
     return (
         <div>
             <Switch>
-                <Toasts />
                 {adminToken.isLoggedIn() ?
                     <PrivateRoute key='/' exact path='/' component={Accounts} />  
                     : 
