@@ -3,11 +3,13 @@ import { CompanyServices } from './services';
 import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from "../..";
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetCompanyDetailsOutput } from './viewModel';
 
 
 export interface GetCompanyPageDetails {
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS;
-    payload: {data: CompanyPageInfos};
+    payload: CompanyPageInfos;
 }
 
 export interface GetCompanyLogoUrl {
@@ -38,9 +40,9 @@ export interface DeleteCompanyLogo {
 
 export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
-        await CompanyServices.getCompanyPageDetailsService()
+        await dacastSdk.getCompanyDetails()
             .then( response => {
-                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: response.data} );
+                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: formatGetCompanyDetailsOutput(response)} );
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()
@@ -48,17 +50,17 @@ export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, 
     };
 }
 
-export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyLogoUrl> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyLogoUrl> ) => {
-        await CompanyServices.getCompanyPageLogoUrlService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
-            }).catch(() => {
-                //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+// export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyLogoUrl> => {
+//     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyLogoUrl> ) => {
+//         await CompanyServices.getCompanyPageLogoUrlService()
+//             .then( response => {
+//                 dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
+//             }).catch(() => {
+//                 //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+//                 return Promise.reject()
+//             })
+//     };
+// }
 
 export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {

@@ -6,9 +6,11 @@ export class DacastSdk {
 
     constructor(baseUrl: string, userToken: UserTokenService, refreshTokenUrl?: string) {
         this.axiosClient = new AxiosClient(baseUrl, userToken, refreshTokenUrl)
+        this.userId = userToken.getUserInfoItem('custom:dacast_user_id')
     }
 
     private axiosClient: AxiosClient = null
+    private userId: string = null
     
     private checkExtraData = (response: AxiosResponse<any>): any => {
         let responseData: any = response.data
@@ -19,6 +21,8 @@ export class DacastSdk {
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()
+
+    public getCompanyDetails = async (): Promise<GetCompanyRequestOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/company').then(this.checkExtraData)
 
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
 

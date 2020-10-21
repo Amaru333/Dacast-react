@@ -7,10 +7,10 @@ const getCompanyPageDetailsService = async () => {
     return await axiosClient.get('/accounts/' + userId + '/company')
 }
 
-const getCompanyPageLogoUrlService = async () => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-    return await axiosClient.get('/accounts/' + userId + '/company/logo-url')
-}
+// const getCompanyPageLogoUrlService = async () => {
+//     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+//     return await axiosClient.get('/accounts/' + userId + '/company/logo-url')
+// }
 
 const saveCompanyPageDetailsService = async (data: CompanyPageInfos) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
@@ -41,7 +41,7 @@ const deleteCompanyLogoService = async () => {
 
 export const CompanyServices = {
     getCompanyPageDetailsService,
-    getCompanyPageLogoUrlService,
+    // getCompanyPageLogoUrlService,
     saveCompanyPageDetailsService,
     getUploadLogoUrlService,
     uploadCompanyLogoService,
