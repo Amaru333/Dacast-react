@@ -9,7 +9,7 @@ export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData 
         promos: data.promos.map(promo => {
             return {
                 startDate: promo.startDate && promo.startDate > Math.floor(Date.now()) ? promo.startDate : 0,
-                endDate: promo.endDate && promo.startDate > Math.floor(Date.now()) ? promo.startDate : 0,
+                endDate: promo.endDate && promo.endDate > Math.floor(Date.now()) ? promo.endDate : 0,
                 timezone: null,
                 ...promo,
             }
