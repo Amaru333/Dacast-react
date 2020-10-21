@@ -171,7 +171,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     
     return (
         <div>
-            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} />
+            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} dataButtonFunction={() => setPurchaseDataOpen(true)} />
             <Card>
                 <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
