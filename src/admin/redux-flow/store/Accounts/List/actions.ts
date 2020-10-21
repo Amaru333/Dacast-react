@@ -24,9 +24,7 @@ export const getAccountsAction = (accountId: string, qs: string): ThunkDispatch<
             .then( response => {
                 dispatch({type: ActionTypes.GET_ACCOUNTS, payload: response.data});
             }).catch((error) => {
-                debugger
-                console.log(error.data)
-                if(error.response.data.error.indexOf('unable to retrieve plan') > -1) {
+                if(error.response.data.details.indexOf('unable to retrieve plan') > -1) {
                     dispatch(showToastNotification('User\'s plan couldn\'t be retrieved' , 'fixed', 'error'))
                 } else {
                     dispatch(showToastNotification('Couldn\'t get accounts list' , 'fixed', 'error'))
