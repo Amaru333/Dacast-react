@@ -35,7 +35,7 @@ export const saveAccountPlanAction = (accountId: string, planInfo: PlanInfoPut):
         await PlansServices.saveAccountPlan(accountId, planInfo)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_ACCOUNT_PLAN, payload: response.data})
-                dispatch(showToastNotification('Plan details saved!' , 'fixed', 'error'))
+                dispatch(showToastNotification('Plan details saved' , 'fixed', 'success'))
 
             }).catch(() => {
                 dispatch(showToastNotification('Couldn\'t save plan details' , 'fixed', 'error'))

@@ -30,7 +30,7 @@ export const saveWithdrawalStatusAction = (withdrawalId: string, withdrawalStatu
         await EditWithdrawalServices.saveWithdrawalStatus(withdrawalId, withdrawalStatus)
             .then( response => {
                 dispatch({type: ActionTypes.SAVE_WITHDRAWAL_STATUS, payload: response.data});
-                dispatch(showToastNotification('Withdrawal status saved' , 'fixed', 'error'))
+                dispatch(showToastNotification('Withdrawal status saved' , 'fixed', 'success'))
 
             }).catch(() => {
                 dispatch(showToastNotification('Couldn\'t save withdrawal status' , 'fixed', 'error'))
