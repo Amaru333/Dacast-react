@@ -15,6 +15,7 @@ import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
+import Toasts from './containers/Others/Toasts';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
@@ -94,6 +95,7 @@ const AdminContent = () => {
     return (
         <div>
             <Switch>
+                <Toasts />
                 {adminToken.isLoggedIn() ?
                     <PrivateRoute key='/' exact path='/' component={Accounts} />  
                     : 
