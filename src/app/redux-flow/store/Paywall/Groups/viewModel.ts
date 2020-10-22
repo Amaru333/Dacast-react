@@ -1,6 +1,7 @@
 import { GroupPromoData, GroupPromo, GroupPriceData, GroupPrice } from './types'
 import { capitalizeFirstLetter } from '../../../../../utils/utils'
 import { userToken } from '../../../../utils/services/token/tokenService'
+import { PromoId, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput } from '../../../../../DacastSdk/paywall'
 
 
 export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData => {
@@ -8,8 +9,8 @@ export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData 
         total: data.totalItems,
         promos: data.promos.map(promo => {
             return {
-                startDate: promo.startDate && promo.startDate > Math.floor(Date.now()) / 1000 ? promo.startDate : 0,
-                endDate: promo.endDate || 0,
+                startDate: promo.startDate && promo.startDate > Math.floor(Date.now()) ? promo.startDate : 0,
+                endDate: promo.endDate && promo.endDate > Math.floor(Date.now()) ? promo.endDate : 0,
                 timezone: null,
                 ...promo,
             }

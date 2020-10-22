@@ -45,7 +45,9 @@ export const getPaymentMethodsAction = (): ThunkDispatch<Promise<void>, {}, GetP
         await dacastSdk.getPaymentMethod()
             .then( response => {
                 dispatch({type: ActionTypes.GET_PAYMENT_METHODS, payload: formatGetWithdrawalMethodsOutput(response)});
-            }).catch(() => {
+            }).catch((error) => {
+                console.log('error caught ', error)
+                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', 'error'));
                 return Promise.reject()
             })

@@ -1,5 +1,6 @@
 import { PaymentMethodType, PaymentMethod, WithdrawalRequest } from './types';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
+import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints } from '../../../../../DacastSdk/paywall';
 
 export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput): PaymentMethod[] => {
     return input.paymentMethods.map((p) => {

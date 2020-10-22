@@ -1,4 +1,4 @@
-interface PromoDetails {
+export interface PromoDetails {
     alphanumericCode: string;
     discount: number;
     limit: number;
@@ -9,14 +9,14 @@ interface PromoDetails {
     assignedGroupIds: string[];
 }
 
-interface PromoId {
+export interface PromoId {
     id: string
 }
 
-type PromoEndpoints = PromoDetails & PromoId
+export type PromoEndpoints = PromoDetails & PromoId
 
 
-interface PromoPresetDetails {
+export interface PromoPresetDetails {
     name: string;
     type: 'voucher';
     preset: {
@@ -30,26 +30,26 @@ interface PromoPresetDetails {
     };
 }
 
-type PromoPreset = PromoPresetDetails & PromoId
+export type PromoPreset = PromoPresetDetails & PromoId
 
-interface GetPromoPresetOutput {
+export interface GetPromoPresetOutput {
     promos: PromoPreset[];
     totalItems: number
 }
 
-interface GetPromoOutput {
+export interface GetPromoOutput {
     promos: PromoEndpoints[];
     totalItems: number
 }
 
 
-interface PriceEndpoints {
+export interface PriceEndpoints {
     value: number;
     currency: string;
     description: string;
 }
 
-interface PriceSettingsEndpoints {
+export interface PriceSettingsEndpoints {
     duration?: {
         value: number; 
         unit: string;
@@ -61,7 +61,7 @@ interface PriceSettingsEndpoints {
     startDate?: number;
 }
 
-interface PricePresetDetails {
+export interface PricePresetDetails {
     name: string;
     type: 'price';
     preset: {
@@ -70,57 +70,57 @@ interface PricePresetDetails {
     }
 }
 
-interface PricePresetId {
+export interface PricePresetId {
     id: string;
 }
 
-type PricePresetEndpoint = PricePresetDetails & PricePresetId
+export type PricePresetEndpoint = PricePresetDetails & PricePresetId
 
-interface GetPricePresetOutput {
+export interface GetPricePresetOutput {
     presets: PricePresetEndpoint[]
     totalItems: number;
 }
 
-interface PricePackageInfo {
+export interface PricePackageInfo {
     price: PriceEndpoints;
     settings: PriceSettingsEndpoints;
 }
 
-interface PricePackageDetails {
+export interface PricePackageDetails {
     name: string;
     prices: PricePackageInfo[]
     contents: string[];
 }
 
-interface PricePackageId {
+export interface PricePackageId {
     id: string;
 }
 
-type PricePackage = PricePackageDetails & PricePackageId
+export type PricePackage = PricePackageDetails & PricePackageId
 
-interface GetPricePackageOutput {
+export interface GetPricePackageOutput {
     packages: PricePackage[];
     total: number;
 }
 
-interface PostPricePackageOutput {
+export interface PostPricePackageOutput {
     id: string;
 }
 
-interface PostPricePackageInput {
+export interface PostPricePackageInput {
     name: string;
     prices: PriceEndpoints[];
     settings: PriceSettingsEndpoints;
     contents: string[];
 }
 
-type PutPricePackageInput = PostPricePackageInput & PricePackageId
+export type PutPricePackageInput = PostPricePackageInput & PricePackageId
 
-interface PaymentMethodId {
+export interface PaymentMethodId {
     id: string
 }
 
-interface BankAccountUSDetails {
+export interface BankAccountUSDetails {
     paymentMethodType: 'us-transfer';
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
@@ -142,9 +142,9 @@ interface BankAccountUSDetails {
     bankZipCode: string;
 }
 
-type BankAccountUS = BankAccountUSDetails & PaymentMethodId
+export type BankAccountUS = BankAccountUSDetails & PaymentMethodId
 
-interface BankAccountInternationalDetails {
+export interface BankAccountInternationalDetails {
     paymentMethodType: 'international-transfer';
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
@@ -168,9 +168,9 @@ interface BankAccountInternationalDetails {
     bankCountry: string;
 }
 
-type BankAccountInternational = BankAccountInternationalDetails & PaymentMethodId
+export type BankAccountInternational = BankAccountInternationalDetails & PaymentMethodId
 
-interface CheckDetails {
+export interface CheckDetails {
     paymentMethodType: 'check';
     paymentMethodName: string;
     payee: string;
@@ -183,34 +183,34 @@ interface CheckDetails {
     country: string;
 }
 
-type Check = CheckDetails & PaymentMethodId
+export type Check = CheckDetails & PaymentMethodId
 
-interface PaypalDetails {
+export interface PaypalDetails {
     paymentMethodType: 'paypal';
     paymentMethodName: string;
     emailAddress: string;
     comments?: string;
 }
 
-type Paypal = PaypalDetails & PaymentMethodId
+export type Paypal = PaypalDetails & PaymentMethodId
 
-type PaymentMethodEndpoints = BankAccountUS | BankAccountInternational | Check | Paypal
+export type PaymentMethodEndpoints = BankAccountUS | BankAccountInternational | Check | Paypal
 
-function isBankAccountMethod(paymentMethod: PaymentMethodEndpoints): paymentMethod is BankAccountUS | BankAccountInternational {
+export function isBankAccountMethod(paymentMethod: PaymentMethodEndpoints): paymentMethod is BankAccountUS | BankAccountInternational {
     //@ts-ignore
     return !!paymentMethod['recipientType']
 }
 
-type PaymentMethodDetails = BankAccountUSDetails | BankAccountInternationalDetails | CheckDetails| PaypalDetails
+export type PaymentMethodDetails = BankAccountUSDetails | BankAccountInternationalDetails | CheckDetails| PaypalDetails
 
-interface GetPaymentMethodOutput {
+export interface GetPaymentMethodOutput {
     paymentMethods: PaymentMethodEndpoints[];
 }
 
-interface PaymentRequestId {
+export interface PaymentRequestId {
     id: string;
 }
-interface PaymentRequestDetails {
+export interface PaymentRequestDetails {
     paymentMethodId: string;
     currency: string;
     amount: number;
@@ -219,13 +219,13 @@ interface PaymentRequestDetails {
     status: 'completed' | 'cancelled' | 'pending';
 }
 
-type PaymentRequestEndpoints = PaymentRequestDetails & PaymentRequestId
+export type PaymentRequestEndpoints = PaymentRequestDetails & PaymentRequestId
 
-interface GetPaymentRequestOutput {
+export interface GetPaymentRequestOutput {
     withdrawals: PaymentRequestEndpoints[];
 }
 
-interface PostPaymentRequestInput {
+export interface PostPaymentRequestInput {
     paymentMethodId: string;
     currency: string;
     amount: number;
@@ -233,14 +233,14 @@ interface PostPaymentRequestInput {
     transferDate: number;
 }
 
-interface PaywallSettings {
+export interface PaywallSettings {
     bankStatement: string;
     creditCardPurchases: boolean;
     customUrl: string;
     paypalPurchases: boolean;
 }
 
-interface PaywallThemeDetails {
+export interface PaywallThemeDetails {
     name: string;
     isDefault: boolean;
     splashScreen: {
@@ -255,17 +255,17 @@ interface PaywallThemeDetails {
     };
 }
 
-interface PaywallThemeId {
+export interface PaywallThemeId {
     id: string
 }
 
-type PaywallThemeEndpoints = PaywallThemeDetails & PaywallThemeId
+export type PaywallThemeEndpoints = PaywallThemeDetails & PaywallThemeId
 
-interface GetPaywallThemesOutput {
+export interface GetPaywallThemesOutput {
     themes: PaywallThemeEndpoints[]
 }
 
-interface ExternalTransaction {
+export interface ExternalTransaction {
     id: string;
     type: string;
     contentName: string;
@@ -279,15 +279,15 @@ interface ExternalTransaction {
     timestamp: number;
 }
 
-interface InternalTransaction {
+export interface InternalTransaction {
     timestamp: number;
     decimalValue: number;
     note: string;
 }
 
-type PaywallTransaction = ExternalTransaction & InternalTransaction
+export type PaywallTransaction = ExternalTransaction & InternalTransaction
 
-interface GetPaywallTransactionsOutput {
+export interface GetPaywallTransactionsOutput {
     page: number;
     perPage: number;
     total: number;
