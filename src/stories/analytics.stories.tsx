@@ -7,6 +7,7 @@ import { displayBytesForHumans } from '../utils/formatUtils';
 import { LineChart } from '../components/Analytics/LineChart';
 import { PieChart } from '../components/Analytics/PieChart';
 import { BarChart } from '../components/Analytics/BarChart';
+import { ThemeAnalyticsColors } from '../styled/themes/dacast-theme';
 
 storiesOf('Analytics', module)
     // .add('General Dashboard', () => (
@@ -50,10 +51,10 @@ storiesOf('Analytics', module)
                         infoText="An example of Bar chart"
                         title="Bar Chart">
                         <BarChart
-                            type="horizontal"
-                            title="Viewers / Plays"
-                            dataSets={ [ {data: [12, 34, 120, 123, 12, 34], label: "Viewers" }, {data: [12, 34, 120, 123, 12, 34], label: "Plays" } ] }
-                            labels={["8:05", "8:06", "8:07", "8:08", "8:09", "8:10"]} />
+                            type="vertical"
+                            title="Plays & Impressions by device"
+                            dataSets={ [ {data: [26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue }, {data: [42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red } ] }
+                            labels={["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"]} />
                     </AnalyticsCard>
                 </div>
                 <div className={HalfSmFullXs}>
@@ -72,13 +73,27 @@ storiesOf('Analytics', module)
                 </div>
                 <div className={HalfSmFullXs}>
                     <AnalyticsCard
+                        dataName="exampleAnalyticsDoughnutChart"
+                        data={[]}
+                        infoText="An example of mixed chart"
+                        title="Mixed Chart">
+                        <BarChart
+                            type="vertical"
+                            title="Plays & Impressions by device"
+                            dataSets={ [ {data: [26, 12, 9, 12, 14, 24], label: "Sales", color: ThemeAnalyticsColors.red, type: 'line' }, {data: [42, 27, 18, 29, 19, 38], label: "Revenue", color: ThemeAnalyticsColors.blue } ] }
+                            labels={["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"]} />
+                    </AnalyticsCard>
+                </div>
+                <div className={HalfSmFullXs}>
+                    <AnalyticsCard
                         dataName="exampleAnalyticsDoubleLineChart"
                         data={[]}
                         infoText="An example of Double Line chart"
                         title="Line Chart">
                         <LineChart
-                            title="Plays and viewers"
-                            lines={ [ {data: [12, 34, 45, 13, 51, 3], label: "Viewers"}, {data: [9, 23, 24, 25, 42, 18], label: "Plays"} ] }
+                            title="Plays and Impressions by Time"
+                            options={ {fill: true, curve: 0} }
+                            lines={ [ {data: [26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue}, {data: [42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red} ] }
                             labels={["10/12/20", "10/13/20", "10/14/20", "10/15/20", "10/16/20", "10/17/20"]} />
                     </AnalyticsCard>
                 </div>

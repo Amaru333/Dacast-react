@@ -1,24 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Bar, HorizontalBar, Line, LinearComponentProps } from 'react-chartjs-2';
-import { randDarkColor } from '../../utils/utils';
-
-
-interface BarChartProps {
-    dataSets: BarItem[],
-    labels: string[],
-    title: string,
-    type?: 'horizontal' | 'vertical'
-}
-
-interface BarItem {
-    data: number[],
-    label?: string
-}
+import { BarChartProps, BaseItemAnalytics } from './AnalyticsType';
 
 export const BarChart = (props: BarChartProps) => {
 
-    const createDataset = (bar: BarItem) => {
-        return { data: bar.data, label: bar.label, backgroundColor: randDarkColor() };
+    const createDataset = (item: BaseItemAnalytics) => { 
+        return { 
+            data: item.data, 
+            label: item.label, 
+            backgroundColor: item.color,
+            type: item.type ? item.type : 'bar',
+            ...( item.type === 'line' && {
+                fill: false,
+                borderColor: item.color, 
+                pointBackgroundColor: item.color,
+                pointHighlightStroke: item.color,
+                lineTension: 0,
+            } )
+        };
     }
 
     const barProps: LinearComponentProps = {

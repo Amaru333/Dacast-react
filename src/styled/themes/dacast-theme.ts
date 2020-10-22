@@ -57,4 +57,9 @@ const Theme: DefaultTheme = {
     },
 }
 
-export { Theme };
+const ThemeAnalyticsColors = {
+    "blue": "#4285F4",
+    "red": "#EA4435"
+}
+
+export { Theme, ThemeAnalyticsColors };
