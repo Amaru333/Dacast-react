@@ -1,6 +1,7 @@
 import { TransactionsInfo } from './types'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils'
 import { DateTime } from 'luxon'
+import { GetPaywallTransactionsOutput } from '../../../../../DacastSdk/paywall'
 
 export const formatGetPaywallTransactionsInput = (qs: string) => {
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))

@@ -1,6 +1,7 @@
 import { GroupPromoData, GroupPromo, GroupPriceData, GroupPrice } from './types'
 import { capitalizeFirstLetter } from '../../../../../utils/utils'
 import { userToken } from '../../../../utils/services/token/tokenService'
+import { PromoId, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput } from '../../../../../DacastSdk/paywall'
 
 
 export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData => {

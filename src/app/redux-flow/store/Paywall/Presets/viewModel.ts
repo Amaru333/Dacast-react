@@ -1,4 +1,5 @@
 import { Promo, Preset } from './types'
+import { GetPromoPresetOutput, PromoPresetDetails, PromoPreset, GetPricePresetOutput, PricePresetDetails, PricePresetEndpoint } from '../../../../../DacastSdk/paywall'
 
 export const formatGetPromoPresetOutput = (data: GetPromoPresetOutput): {promos: Promo[]; totalItems: number} => {
     return {

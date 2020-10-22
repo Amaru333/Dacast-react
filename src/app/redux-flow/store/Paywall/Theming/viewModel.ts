@@ -1,4 +1,5 @@
 import { PaywallTheme } from './types';
+import { GetPaywallThemesOutput, PaywallThemeDetails } from '../../../../../DacastSdk/paywall';
 
 export const formatGetPaywallThemesOutput = (data: GetPaywallThemesOutput): PaywallTheme[] => {
     let standardTheme: PaywallTheme = {

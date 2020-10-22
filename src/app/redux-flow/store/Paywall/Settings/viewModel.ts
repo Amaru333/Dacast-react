@@ -1,4 +1,5 @@
 import { PaywallSettingsInfos } from './types';
+import { PaywallSettings } from '../../../../../DacastSdk/paywall';
 
 export const formatGetPaywallSettingsOutput = (data: PaywallSettings): PaywallSettingsInfos => {
     let formattedData: PaywallSettingsInfos = {
