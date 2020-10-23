@@ -1,6 +1,6 @@
 import { PaymentMethodType, PaymentMethod, WithdrawalRequest } from './types';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
-import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints } from '../../../../../DacastSdk/paywall';
+import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId } from '../../../../../DacastSdk/paywall';
 
 export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput): PaymentMethod[] => {
     return input.paymentMethods.map((p) => {
@@ -90,6 +90,15 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethod): PaymentMet
     }
 }
 
+export const formatPostWithdrawalMethodOuput = (endpointResponse: PaymentMethodId, dataReact: PaymentMethod ): PaymentMethod => {
+    let formattedData: PaymentMethod = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
+}
+
 export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMethodEndpoints => {
 
     switch(data.paymentMethodType) {
@@ -172,6 +181,8 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMeth
     }
 }
 
+export const formatDeleteWithdrawalMethodInput = (data: PaymentMethod): string => data.id
+
 export const formatGetWithdrawalRequestsOutput = (data: GetPaymentRequestOutput): WithdrawalRequest[] => {
     return data.withdrawals.map(withdrawal => {
         return {
@@ -191,6 +202,15 @@ export const formatPostWithdrawalRequestInput = (data: WithdrawalRequest): PostP
     }
 
     return formattedWithdrawalRequest
+}
+
+export const formatPostWithdrawalRequestOuput = (endpointResponse: PaymentRequestId, dataReact: WithdrawalRequest ): WithdrawalRequest => {
+    let formattedData: WithdrawalRequest = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
 }
 
 export const formatPutWithdrawalRequestInput = (data: WithdrawalRequest): PaymentRequestEndpoints => {

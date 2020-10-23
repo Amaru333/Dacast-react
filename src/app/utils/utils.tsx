@@ -86,7 +86,7 @@ export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
     errorMsg: string): (data: ReactOut) => (dispatch: ThunkDispatch<ApplicationState, void, ReduxAction<string> & {payload: ActionPayload | ReactOut}>) => Promise<void> {
     return (data) => async (dispatch) => {
         try {
-            let response = await sdkFunction(inputFormatter(data))
+            let response = await sdkFunction(inputFormatter ? inputFormatter(data) : null)
             dispatch({ type: action, payload: outputFormatter ? outputFormatter(response, data) : data })
             if (successMsg) {
                 dispatch(showToastNotification(successMsg, 'fixed', "success"));

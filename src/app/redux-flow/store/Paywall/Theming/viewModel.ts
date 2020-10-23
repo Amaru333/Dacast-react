@@ -1,5 +1,5 @@
 import { PaywallTheme } from './types';
-import { GetPaywallThemesOutput, PaywallThemeDetails } from '../../../../../DacastSdk/paywall';
+import { GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId } from '../../../../../DacastSdk/paywall';
 
 export const formatGetPaywallThemesOutput = (data: GetPaywallThemesOutput): PaywallTheme[] => {
     let standardTheme: PaywallTheme = {
@@ -28,6 +28,15 @@ export const formatPostPaywallThemeInput = (data: PaywallTheme): PaywallThemeDet
         isDefault: data.isDefault,
         splashScreen: data.splashScreen,
         loginScreen: data.loginScreen
+    }
+
+    return formattedData
+}
+
+export const formatPostPaywallThemeOutput = (endpointResponse: PaywallThemeId, dataReact: PaywallTheme): PaywallTheme => {
+    let formattedData: PaywallTheme = {
+        ...dataReact,
+        id: endpointResponse.id
     }
 
     return formattedData
