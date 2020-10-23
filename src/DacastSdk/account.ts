@@ -17,3 +17,18 @@ export interface CompanyDetailsEndpoints {
 export type GetCompanyRequestOutput = CompanyDetailsEndpoints & {
     logoURL: string;
 }
+
+interface Invoice {
+    id: string;
+    date: number;
+    total: number;
+    status: 'pending' | 'failed' | 'paid';
+    downloadLink: string;
+}
+
+export interface GetInvoicesOutput {
+    invoices: Invoice[];
+    page: number;
+    perPage: number;
+    total: number;
+}

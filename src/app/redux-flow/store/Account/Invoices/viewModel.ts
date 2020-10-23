@@ -1,7 +1,7 @@
-import { userToken } from '../../../../utils/services/token/tokenService'
-import { axiosClient } from '../../../../utils/services/axios/axiosClient'
+import { SearchInvoicesResult } from './types'
+import { GetInvoicesOutput } from '../../../../../DacastSdk/account'
 
-const formatQsToEndpoint = (qs: string) => {
+export const formatGetInvoicesInput = (qs: string) => {
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))
     let endpointsQs = `page=${objectFromQs.page ? (objectFromQs.page): 1}&per-page=${objectFromQs.perPage || 20}&sort-by=created-date` + (objectFromQs.sortBy && objectFromQs.sortBy.indexOf('desc') > -1 ? '&sort-order=desc' : '&sort-order=asc') + (objectFromQs.status ? `&status=${objectFromQs.status}` : '')
     if(objectFromQs.afterDate) {
@@ -15,11 +15,13 @@ const formatQsToEndpoint = (qs: string) => {
     return endpointsQs
 }
 
-const getInvoices = async (qs: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-    return await axiosClient.get('/accounts/' + userId + '/billing/invoices?' + formatQsToEndpoint(qs))
-}
+export const formatGetInvoicesOutput = (data: GetInvoicesOutput): SearchInvoicesResult => {
+    let formattedData: SearchInvoicesResult = {
+        page: data.page,
+        perPage: data.perPage,
+        total: data.total,
+        invoices: data.invoices
+    }
 
-export const InvoicesServices = {
-    getInvoices
+    return formattedData
 }
