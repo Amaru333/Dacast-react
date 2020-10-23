@@ -19,7 +19,7 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
         case ActionTypes.GET_UPLOAD_LOGO_URL:   
             return {
                 ...state,
-                uploadLogoUrl: action.payload.data.presignedURL,
+                uploadLogoUrl: action.payload.presignedURL,
                 isUploading: true
             }
         case ActionTypes.UPLOAD_COMPANY_LOGO:

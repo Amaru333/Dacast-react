@@ -53,16 +53,16 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, CompanyAction>) {
     return {
         getCompanyPageDetails: async () => {
-            await dispatch(getCompanyPageDetailsAction())
+            await dispatch(getCompanyPageDetailsAction(undefined))
         },
         saveCompanyPageDetails: async (data: CompanyPageInfos) => {
             await dispatch(saveCompanyPageDetailsAction(data))
         },
         getLogoUrlForUploading: async () => {
-            await dispatch(getUploadLogoUrlAction())
+            await dispatch(getUploadLogoUrlAction(undefined))
         },
         uploadCompanyLogo: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadCompanyLogo(data, uploadUrl))
+            await dispatch(uploadCompanyLogo({data: data, uploadUrl: uploadUrl}))
         },
         deleteCompanyLogo: async () => {
             await dispatch(deleteCompanyLogo())

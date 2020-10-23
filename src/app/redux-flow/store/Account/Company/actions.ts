@@ -1,20 +1,14 @@
 import { ActionTypes, CompanyPageInfos } from './types';
-import { CompanyServices } from './services';
-import { showToastNotification } from '../../Toasts/actions';
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from "../..";
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetCompanyDetailsOutput } from './viewModel';
+import { formatGetCompanyDetailsOutput, formatPutCompanyDetailsInput, formatPostCompanyLogoUrlInput } from './viewModel';
+import { applyViewModel } from '../../../../utils/utils';
+import { formatPutUploadFileInput } from '../../Common/viewModel';
+import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
 
 
 export interface GetCompanyPageDetails {
     type: ActionTypes.GET_COMPANY_PAGE_DETAILS;
     payload: CompanyPageInfos;
-}
-
-export interface GetCompanyLogoUrl {
-    type: ActionTypes.GET_COMPANY_LOGO_URL;
-    payload: {data: {id: string; url: string}};
 }
 
 export interface SaveCompanyPageDetails {
@@ -24,12 +18,12 @@ export interface SaveCompanyPageDetails {
 
 export interface GetUploadLogoUrl {
     type: ActionTypes.GET_UPLOAD_LOGO_URL;
-    payload: {data: {presignedURL: string}};
+    payload: {presignedURL: string};
 }
 
 export interface UploadCompanyLogo {
     type: ActionTypes.UPLOAD_COMPANY_LOGO;
-    payload: File;
+    payload: {data: File, uploadUrl: string};
 }
 
 export interface DeleteCompanyLogo {
@@ -37,88 +31,11 @@ export interface DeleteCompanyLogo {
     payload: File;
 }
 
+export type CompanyAction = GetCompanyPageDetails | SaveCompanyPageDetails | GetUploadLogoUrl | UploadCompanyLogo| DeleteCompanyLogo
 
-export const getCompanyPageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyPageDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyPageDetails> ) => {
-        await dacastSdk.getCompanyDetails()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_COMPANY_PAGE_DETAILS, payload: formatGetCompanyDetailsOutput(response)} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+export const getCompanyPageDetailsAction = applyViewModel(dacastSdk.getCompanyDetails, undefined, formatGetCompanyDetailsOutput, ActionTypes.GET_COMPANY_PAGE_DETAILS, null, 'Couldn\'t get company details')
+export const saveCompanyPageDetailsAction = applyViewModel(dacastSdk.putCompanyDetails, formatPutCompanyDetailsInput, undefined, ActionTypes.SAVE_COMPANY_PAGE_DETAILS, 'Changes have been saved', 'Couldn\'t save changes')
 
-// export const getCompanyPageLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetCompanyLogoUrl> => {
-//     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetCompanyLogoUrl> ) => {
-//         await CompanyServices.getCompanyPageLogoUrlService()
-//             .then( response => {
-//                 dispatch( {type: ActionTypes.GET_COMPANY_LOGO_URL, payload: response.data} );
-//             }).catch(() => {
-//                 //dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-//                 return Promise.reject()
-//             })
-//     };
-// }
-
-export const saveCompanyPageDetailsAction = (data: CompanyPageInfos): ThunkDispatch<Promise<void>, {}, SaveCompanyPageDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveCompanyPageDetails> ) => {
-        await CompanyServices.saveCompanyPageDetailsService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_COMPANY_PAGE_DETAILS, payload: data} );
-                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getUploadLogoUrlAction = (): ThunkDispatch<Promise<void>, {}, GetUploadLogoUrl> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetUploadLogoUrl> ) => {
-        await CompanyServices.getUploadLogoUrlService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_UPLOAD_LOGO_URL, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const uploadCompanyLogo = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadCompanyLogo> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, UploadCompanyLogo> ) => {
-        await CompanyServices.uploadCompanyLogoService(data, uploadUrl)
-            .then( response => {
-                dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: response.data} );
-                dispatch(showToastNotification("Company Logo has been uploaded", 'fixed', "success"));
-            }).catch((error) => {
-                dispatch( {type: ActionTypes.UPLOAD_COMPANY_LOGO, payload: error} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const deleteCompanyLogo = (): ThunkDispatch<Promise<void>, {}, DeleteCompanyLogo> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteCompanyLogo> ) => {
-        await CompanyServices.deleteCompanyLogoService()
-            .then( response => {
-                dispatch( {type: ActionTypes.DELETE_COMPANY_LOGO, payload: response.data} );
-                dispatch(showToastNotification("Company Logo has been deleted", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-
-export type CompanyAction = 
-GetCompanyPageDetails 
-| SaveCompanyPageDetails 
-| GetUploadLogoUrl 
-| UploadCompanyLogo
-| GetCompanyLogoUrl
-| DeleteCompanyLogo
+export const getUploadLogoUrlAction = applyViewModel(dacastSdk.postUploadUrl, formatPostCompanyLogoUrlInput, (data: PostUploadUrlOutput) => data, ActionTypes.GET_UPLOAD_LOGO_URL, null, 'Couldn\'t upload file')
+export const uploadCompanyLogo = applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, undefined, ActionTypes.UPLOAD_COMPANY_LOGO, 'Company Logo has been uploaded', 'Couldn\'t upload company logo')
+export const deleteCompanyLogo = applyViewModel(dacastSdk.deleteCompanyLogo, undefined, undefined, ActionTypes.DELETE_COMPANY_LOGO, 'Company Logo has been deleted', 'Couldn\'t delete company logo')

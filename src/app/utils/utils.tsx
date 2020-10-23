@@ -79,7 +79,7 @@ export const handleRowIconType = (item: FolderAsset) => {
 
 export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
     sdkFunction: (data: SdkIn) => Promise<SdkOut>,
-    inputFormatter: (data: ReactOut) => SdkIn, 
+    inputFormatter: undefined | ((data: ReactOut) => SdkIn), 
     outputFormatter: undefined | ((responseSdk: SdkOut, dataReact?: ReactOut) => ActionPayload), 
     action: string, 
     successMsg: string, 
