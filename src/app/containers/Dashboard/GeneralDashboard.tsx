@@ -1,5 +1,5 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemFullWidthContainer, classItemThirdWidthContainer, classItemQuarterWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemThirdWidthContainer } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -7,36 +7,18 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { getPercentage, useMedia } from '../../../utils/utils';
 import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
-import { PurchaseStepperCartStep, PurchaseStepperPaymentStep } from './PurchaseStepper';
+import { DashboardGeneral } from '../../redux-flow/store/Dashboard';
 import { useHistory } from 'react-router';
 import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
-import { useLocation } from 'react-router-dom'
-
-interface PlanType {
-    libelle: string;
-    price: number;
-    /** Change to Date maybe later or number for timestamp */
-    nextBill: string;
-    isTrial: boolean;
-    daysLeft?: number;
-    openOverage: (b: boolean) => void;
-}
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
     let history = useHistory()
-    
     let smallScreen = useMedia('(max-width: 40em)')
-
-    const mockPaymentMethod = "none"
-
-    const stepList = [PurchaseStepperCartStep, PurchaseStepperPaymentStep]
-
-    const [purchaseStepperOpened, setPurchaseStepperOpened] = React.useState<boolean>(false)
-    const [selectedPurchaseItem, setSelectedPurchaseItem] = React.useState<string>(null)
-
+    let date = new Date(), y = date.getFullYear(), m = date.getMonth()
+    const classItem = classItemThirdWidthContainer
+   
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
         left: props.profile.storage.limit-props.profile.storage.consumed,
@@ -47,18 +29,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         left: props.profile.bandwidth.limit-props.profile.bandwidth.consumed,
         limit: props.profile.bandwidth.limit,
     } 
-    
-    const handlePurchaseStepper = (purchaseItem: string) => {
-        history.push('/account/upgrade');
-
-        // setSelectedPurchaseItem(purchaseItem);
-        // setPurchaseStepperOpened(true);
-    }
-
-    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
-    var lastDay = new Date(y, m + 1, 0);
-
-    
 
     const handleBillingPeriod = () => {
         if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
@@ -68,13 +38,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
     }
 
-    const onSubmitFunctions = () => {
-        setPurchaseStepperOpened(false)
-    }
-
-
-    // const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
-    const classItem = classItemThirdWidthContainer;
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
