@@ -321,6 +321,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                             </DisabledSection>
+                            <Divider className="p1" />
+
+                            <DisabledSection enabled={customEnabled}>
+                                <div className="pt25 flex justify-between">
+                                    <div><Text size={20} weight='med'>Offline Message</Text></div>
+                                    <div>
+                                        <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                    </div>
+                                </div>
+
+                                <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
+
+                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
+                            </DisabledSection>
 
                             {
                                 (props.contentType === 'live' || props.contentType === 'settings') &&

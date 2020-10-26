@@ -16,12 +16,13 @@ import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
-import { FeaturesDeveloperPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
+import { FeaturesStarterPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
 import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -49,7 +50,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         setIsLoading(true);
         props.purchasePlan(stepperData, recurlyToken, null)
         .then((response) => {
-            console.log('sucess repsonse',response)
             setIsLoading(false);
             if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
@@ -58,11 +58,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepperPlanOpened(false)
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
+                EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
             }
         })
         .catch((error) => {
-            console.log(error)
-            debugger
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -79,6 +78,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             setPaymentSuccessfulModalOpened(true)
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
+            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
         })
         .catch(() => {
             setIsLoading(false);
@@ -130,30 +130,31 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                     !isMobile ?
                         <>
                             <PlanContainer className={marginBlocks}>
-                                <Text size={16} weight='med' color='gray-1'>Developer</Text>
-                                <PlanCard className='mt1' isSelected={currentPlan === 'Developer'}>
+                                <Text size={16} weight='med' color='gray-1'>Starter</Text>
+                                <PlanCard className='mt1' isSelected={currentPlan === 'Starter'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developerPlan.price.usd / 100) / 12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.starterPlan.price.usd / 100) / 12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth} GB&nbsp;</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].bandwidth} GB&nbsp;</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
-                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} GB</Text>
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} GB</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
-                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Trial *</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>-</Text>
 
                                         <div className='absolute bottom-0 flex flex-column'>
-                                            <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
-                                            <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
+                                            {/* <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
+                                            <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
                                                 <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
-                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.developerPlan }); handleSteps('developer') }}>{currentPlan === 'Developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
 
@@ -161,7 +162,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 </PlanCard>
                                 <ContainerAllFeatures isOpen={allFeaturesOpen || isMobile}>
                                     {
-                                        FeaturesDeveloperPlan.map(((feature: string) => <Text size={10} weight="reg" className="mb1" color="gray-1">{feature}</Text>))
+                                        FeaturesStarterPlan.map(((feature: string) => <Text size={10} weight="reg" className="mb1" color="gray-1">{feature}</Text>))
                                     }
                                 </ContainerAllFeatures>
                             </PlanContainer>
@@ -183,7 +184,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
@@ -227,7 +229,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
-                                        <Text className={textClassName} size={12} lineHeight={24} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
+                                        <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
 
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
                                             {planBillingFrequency === 'Annually' ?
@@ -276,26 +279,26 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                         :
                         <Carousel centerSlidePercentage={55} centerMode swipeable showArrows={false} showThumbs={false} showStatus={false} >
                             <PlanContainer className=''>
-                                <Text size={16} weight='reg' color='gray-3'>Developer</Text>
+                                <Text size={16} weight='reg' color='gray-3'>Starter</Text>
                                 <Card>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.developerPlan.price.usd / 100) / 12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.starterPlan.price.usd / 100) / 12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].bandwidth / 10} GB Data</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].bandwidth / 10} GB Data</Text>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
                                         </div>
-                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.developerPlan.allowances[0].storage} Storage</Text>
+                                        <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} Storage</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall*</Text>
                                         <div className='absolute bottom-0 flex flex-column'>
                                             <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text>
                                             {currentPlan === 'event' || currentPlan === 'scale' ?
                                                 <ButtonStyle className="mt25" disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
-                                                <ButtonStyle className="mt25" disabled={currentPlan === 'developer'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.developerPlan }); handleSteps('developer') }}>{currentPlan === 'developer' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25" disabled={currentPlan === 'starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
                                     </PlanInfosContainer>
@@ -324,7 +327,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Paywall</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>AES</Text>
-                                        <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
                                             {planBillingFrequency === 'Annually' ?
                                                 <div className="flex flex-column mb25 col col-8 ">
@@ -357,7 +359,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB Storage</Text>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>Paywall</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
-                                        <Text className={textClassName} size={14} weight='med' color='gray-1'>M3u8</Text>
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === 'scale' ?
                                                 <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :

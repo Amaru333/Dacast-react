@@ -57,6 +57,9 @@ import PlaylistPaywall from '../containers/Playlists/Paywall';
 import { ForgotPasswordEmail } from '../pages/Register/ResetPassword/ForgotPasswordEmail';
 import Plan from '../containers/Account/Plan';
 import { Impersonate } from '../pages/Impersonate/Impersonate';
+import ExposList from '../containers/Expos/ExposList';
+import GeneralExpos from '../containers/Expos/General';
+import ExposSetup from '../containers/Expos/Setup';
 
 
 export const AppRoutes: Routes[] = [   
@@ -255,8 +258,24 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         component: VodRenditions,
     },
-
-
+    {
+        path: '/expos/:exposId/general',
+        name: 'General',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-expo',
+        notDisplayedInNavigation: true,
+        component: GeneralExpos,
+    },
+    {
+        path: '/expos/:exposId/setup',
+        name: 'Setup',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-expo',
+        notDisplayedInNavigation: true,
+        component: ExposSetup,
+    },
     {
         path: '/folders',
         name: 'Folders',
@@ -264,7 +283,14 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-folders',
         component: Folders
     },
-
+    {
+        path: '/expos',
+        name: 'Expos',
+        isExact: true,
+        iconName: 'desktop_mac',
+        associatePrivilege: 'privilege-expo',
+        component: ExposList
+    },
     {
         path: '/playlists',
         name: 'Playlists',

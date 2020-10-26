@@ -10,8 +10,8 @@ export interface TransactionLine {
     purchaser: string;
     currency: string;
     price: number;
-    dacastFee: number;
-    actionType: string;
+    credit?: number;
+    debit?: number;
 }
 
 export type TransactionsInfo = {

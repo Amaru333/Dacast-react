@@ -61,6 +61,13 @@ const Header = (props: HeaderProps) => {
                     props.getContentDetails(realUid, 'playlist');
                     return [realUid]
                 }
+            case 'expos':
+                if (props.contentGeneralState['expo'] && props.contentGeneralState['expo'][realUid]) {
+                    return [props.contentGeneralState['expo'][realUid].title];
+                } else {
+                    props.getContentDetails(realUid, 'expo');
+                    return [realUid]
+                }
             default: return ["Unknown Asset Type"]
         }
     }
@@ -144,7 +151,7 @@ const Header = (props: HeaderProps) => {
                         : <Text size={14}>{item}</Text>
                     }
                 &nbsp;/&nbsp;</Text>
-                : <Text key={item + index} size={14}>{item}</Text>
+                : <Text key={item + index} size={14}>{item === "Livestreams" ? "Live Streams" : item}</Text>
         })
     }
 

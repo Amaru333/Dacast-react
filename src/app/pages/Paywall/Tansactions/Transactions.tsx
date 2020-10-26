@@ -138,14 +138,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(props.transactionsInfo.transactionsList) {
             return props.transactionsInfo.transactionsList.map((transaction, i) => {
                 return {data: [
-                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.actionType}</Text>,
+                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
                     <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
-                    transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
-                    transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
+                    transaction.credit ? <Label label={transaction.credit.toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
+                    transaction.debit ? <Label label={transaction.debit.toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
                 ]}
             })
         }

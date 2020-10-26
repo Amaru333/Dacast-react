@@ -83,7 +83,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     }
 
-    const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')}]
+    const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
     
 
@@ -102,14 +102,13 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 break
             case "Live Stream":
                 setAddDropdownIsOpened(false)
-                if (!userToken.getPrivilege('privilege-china') && !userToken.getPrivilege('privilege-unsecure-m3u8') && !userToken.getPrivilege('privilege-dvr') ) {
-                    history.push("/livestreams")
-                } else {
-                    props.openAddStream()
-                }
+                props.openAddStream()
                 break
             case "Playlist":
                 props.openPlaylist()
+                break
+            case "Expo": 
+                props.openExpoCreate()
                 break
             default:
                 return

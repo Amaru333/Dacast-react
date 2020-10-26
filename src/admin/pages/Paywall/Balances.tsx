@@ -59,7 +59,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                 return {data: [
                     <a key={'balanceTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(line.salesforceId)}>{line.salesforceId}</a>,
                     <Link key={'balancesTableBodyDateCell' + key }to=''>{tsToLocaleDate(Math.floor(line.date / 1000), DateTime.DATETIME_SHORT)}</Link>,
-                    <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.lineType}</Text>,
+                    <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.note}</Text>,
                     <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)) : '' : line.amount > 0 ? line.amount : 0}</Text>,
                     <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)): '' : line.amount < 0 ? line.amount : 0}</Text>,
                     <Text key={'balancesTableBodyRevenueCell' + key } size={14}>{line.fee || 0}</Text>,

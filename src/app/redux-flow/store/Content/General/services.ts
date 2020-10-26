@@ -2,6 +2,7 @@ import { SubtitleInfo, ContentDetails } from './types'
 import { axiosClient } from '../../../../utils/services/axios/axiosClient'
 
 const getContentDetailsService = async (contentId: string, contentType: string) => {
+
     return await axiosClient.get(`/${contentType}/${contentId}`)
 }
 
@@ -10,9 +11,20 @@ const restoreContentService = async (contentId: string, contentType: string) => 
 }
 
 const editContentDetailsService = async (data: ContentDetails, contentType: string) => {
+    let parsedData = null
+    if(contentType === 'expo') {
+        parsedData = {
+            online: data.online,
+            title: data.title,
+            description: data.description,
+            appearance: data.appearance
+        }
+    } else {
+        parsedData = {...data}
+    }
     return await axiosClient.put(`/${contentType}/${data.id}`,
         {
-            ...data
+            ...parsedData
         } 
     )
 }
@@ -30,6 +42,9 @@ const getUploadUrl = async (data: string, contentId: string, extension: string, 
             break
         case 'playlist':
             requestData = {...requestData, playlistID: contentId}
+            break
+        case 'expo':
+            requestData = {...requestData, expoID: contentId}
             break
         default:
             break

@@ -2,6 +2,7 @@ import { ActionTypes, Account } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { AccountsServices } from './services';
+import { showToastNotification } from '../../Toasts';
 
 export interface GetAccounts {
     type: ActionTypes.GET_ACCOUNTS;
@@ -22,8 +23,12 @@ export const getAccountsAction = (accountId: string, qs: string): ThunkDispatch<
         await AccountsServices.getAccounts(accountId, qs)
             .then( response => {
                 dispatch({type: ActionTypes.GET_ACCOUNTS, payload: response.data});
-            }).catch(() => {
-
+            }).catch((error) => {
+                if(error.response.data.details.indexOf('unable to retrieve plan') > -1) {
+                    dispatch(showToastNotification('User\'s plan couldn\'t be retrieved' , 'fixed', 'error'))
+                } else {
+                    dispatch(showToastNotification('Couldn\'t get accounts list' , 'fixed', 'error'))
+                }
             })
     }
 }
@@ -34,7 +39,7 @@ export const impersonateAction = (accountId: string): ThunkDispatch<Promise<void
             .then( response => {
                 dispatch({type: ActionTypes.IMPERSONATE, payload: response.data});
             }).catch(() => {
-
+                dispatch(showToastNotification('Couldn\'t impersonate account' , 'fixed', 'error'))
             })
     }
 }

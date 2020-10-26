@@ -15,6 +15,7 @@ import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
+import Toasts from './containers/Others/Toasts';
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
@@ -31,6 +32,7 @@ const PrivateRoute = (props: {key: string; component: any; path: string; exact: 
                     <ErrorBoundary>
                         <props.component {...props} />
                     </ErrorBoundary>
+                    <Toasts />
                 </div> 
 
             </Route>

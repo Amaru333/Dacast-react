@@ -21,7 +21,6 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
             .then( response => {
                 dispatch( {type: ActionTypes.GET_PLAN_DETAILS, payload: {data: response.data.data}} );
             }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()
             })
     };
@@ -34,7 +33,6 @@ export const purchasePlanAction = (data: Plan, recurlyToken: string, token3Ds?: 
                 dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
                 return response
             }).catch((error) => {
-                debugger
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()
             })

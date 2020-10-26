@@ -1,6 +1,7 @@
 import React from 'react'
 import { GroupsPage } from '../../pages/Paywall/Groups/Groups'
-import { GroupPrice, GroupsPageInfos, Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, GroupPromo, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupPricesAction, getGroupPromosAction } from '../../redux-flow/store/Paywall/Groups';
+import { Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupPricesAction, getGroupPromosAction } from '../../redux-flow/store/Paywall/Groups/actions';
+import { GroupPrice, GroupsPageInfos, GroupPromo } from '../../redux-flow/store/Paywall/Groups/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
