@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react'
-import { AnalyticsCard, HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/pages/Analytics/AnalyticsCommun';
+import { HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/pages/Analytics/AnalyticsCommun';
 import { DoughnutChart } from '../components/Analytics/DoughnutChart/DoughnutChart';
 import LeafletMap from '../components/Analytics/LeafletMap';
 import { displayBytesForHumans } from '../utils/formatUtils';
@@ -8,6 +8,7 @@ import { LineChart } from '../components/Analytics/LineChart';
 import { PieChart } from '../components/Analytics/PieChart';
 import { BarChart } from '../components/Analytics/BarChart';
 import { ThemeAnalyticsColors } from '../styled/themes/dacast-theme';
+import { AnalyticsCard } from '../components/Analytics/AnalyticsCard/AnalyticsCard';
 
 storiesOf('Analytics', module)
     // .add('General Dashboard', () => (

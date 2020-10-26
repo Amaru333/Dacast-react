@@ -5,10 +5,11 @@ import DoubleLineChart from '../../../components/Analytics/DoubleLineChartOld';
 import { CheeseChart } from '../../../components/Analytics/CheeseChartOld';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommun';
+import { renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommun';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
+import { AnalyticsCard } from '../../../components/Analytics/AnalyticsCard/AnalyticsCard';
 
 export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 

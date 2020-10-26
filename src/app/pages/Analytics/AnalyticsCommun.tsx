@@ -18,51 +18,6 @@ import { LocationItem } from '../../redux-flow/store/Analytics/Dashboard';
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 
-
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
-
-    const exportCsvAnalytics = () => {
-        exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
-    }
-
-    const [showTable, setShowTable] = React.useState<boolean>(false)
-
-    return (
-        <AnalyticsCardStyle className={props.className}>
-            <AnalyticsCardHeader>
-                <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
-                <div className="flex">
-                    <div>
-                        <ActionIcon id={"tooltip" + props.title}>
-                            <IconStyle >info_outlined</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip>
-                    </div>
-                    {!props.realTime ?
-                        <ActionIcon id={"download" + props.title}>
-                            <IconStyle onClick={() => { exportCsvAnalytics() }} >get_app</IconStyle>
-                        </ActionIcon>
-                        : null}
-                    {props.table &&
-                        <ActionIcon id={"table" + props.title}>
-                            <IconStyle onClick={() => { setShowTable(!showTable) }} >toc</IconStyle>
-                        </ActionIcon>
-                    }
-                </div>
-                <Tooltip target={"download" + props.title}>Download csv</Tooltip>
-                <Tooltip target={"table" + props.title}>Show table</Tooltip>
-            </AnalyticsCardHeader>
-            {showTable ?
-                <ReactTable
-                    data={props.table.data}
-                    columns={props.table.columns}
-                    pageSizeOptions={[5, 10, 20, 25]}
-                    defaultPageSize={10} /> : props.children
-            }
-        </AnalyticsCardStyle>
-    )
-}
-
 export const logScale = (value: number, minp: number, maxp: number, minv: number, maxv: number) => {
     var minv = Math.log(minv);
     var maxv = Math.log(maxv);
@@ -84,16 +39,7 @@ export const mergeForTable = (data: any, dates: any) => {
     }
     return result
 }
-export const AnalyticsCardStyle = styled(Card) <{}>`
-    padding: 16px !important;
-    min-height: 273px;
-`
 
-
-export const AnalyticsCardHeader = styled.div<{}>`
-    display: flex;
-    justify-content: space-between;
-`
 export const mapMarkerNameTranformBytesFromGB = (name: string, value: number) => {
     return name + ': ' + displayBytesForHumans(value, true);
 }

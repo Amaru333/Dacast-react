@@ -1,13 +1,14 @@
 import React from 'react';
 import { BarChart } from '../../../components/Analytics/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import { AnalyticsCard, renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentItem } from '../../redux-flow/store/Content/General/types';
+import { AnalyticsCard } from '../../../components/Analytics/AnalyticsCard/AnalyticsCard';
 
 export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 

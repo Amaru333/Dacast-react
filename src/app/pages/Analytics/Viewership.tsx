@@ -1,21 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
-import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { BarChart } from '../../../components/Analytics/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChartOld';
 import { CheeseChart } from '../../../components/Analytics/CheeseChartOld'; 
-import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
-import { TabSetupContainer, TabSetupStyles, HeaderBorder, ItemSetupRow } from '../Playlist/Setup/Setup';
+import { ItemSetupRow } from '../Playlist/Setup/Setup';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, HalfSmFullXs } from './AnalyticsCommun';
+import { renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, HalfSmFullXs } from './AnalyticsCommun';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
+import { AnalyticsCard } from '../../../components/Analytics/AnalyticsCard/AnalyticsCard';
 
 export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { AnalyticsCardStyle, AnalyticsCardHeader } from '../../../app/pages/Analytics/AnalyticsCommun';
 import { ActionIcon, IconStyle } from '../../../shared/Common/Icon';
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { Text } from '../../../components/Typography/Text';
+import styled from 'styled-components';
+import { Card } from '../../Card/Card';
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
@@ -49,3 +50,14 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { ta
         </AnalyticsCardStyle>
     )
 }
+
+export const AnalyticsCardStyle = styled(Card) <{}>`
+    padding: 16px !important;
+    min-height: 273px;
+`
+
+
+export const AnalyticsCardHeader = styled.div<{}>`
+    display: flex;
+    justify-content: space-between;
+`

@@ -47,6 +47,7 @@ import LiveEngagement  from '../containers/Live/Engagement';
 import LiveSecurity from '../containers/Live/Security';
 import LiveTheming  from '../containers/Live/Theming';
 import LivePaywall from '../containers/Live/Paywall';
+import LiveAnalytics from '../containers/Live/LiveAnalytics';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';
@@ -173,6 +174,15 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-live',
         notDisplayedInNavigation: true,
         component: LiveTheming
+    },
+    {
+        path: '/livestreams/:liveId/analytics',
+        name: 'Analytics',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-analytics',
+        notDisplayedInNavigation: true,
+        component: LiveAnalytics
     },
     {
         path: '/videos',
