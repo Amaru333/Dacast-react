@@ -11,6 +11,7 @@ import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
 import { AccountServices } from '../../redux-flow/store/Accounts/EditAccount/service'
 import { Toggle } from '../../../components/Toggle/toggle'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
 
@@ -21,8 +22,11 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     const [accountDetails, setAccountDetails] = React.useState<AccountInfo>(props.accountInfo)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [preferredPlatform, setPreferredPlatform] = React.useState<string>(props.accountInfo.preferredPlatform)
     const [createPlatformLoading, setCreatePlatformLoading] = React.useState<boolean>(false)
+
+    const verifyEmailDropdownList = [{title: "Yes"}, {title: "No"}]
+    const preferredPlatformDropdownList = [{title: "Unified App"}, {title: "Legacy"}]
+    const playbackProtectionDropdownList = [{title: "Off"}, {title: "50 GB", data: 50}, {title: "100 GB", data: 100}, {title: "250 GB", data: 250}, {title: "500 GB", data: 500}, {title: "1 TB", data: 1000}, {title: "2 TB", data: 2000}, {title: "5 TB", data: 5000}]
 
     const handleSubmit = () => {
         setButtonLoading(true)
@@ -86,11 +90,11 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
              <DropdownSingle 
                     className='col col-3 pl1 my1' 
                     id='emailVerifiedDropdown' 
-                    list={{'Yes': false, 'No': false}} 
+                    list={verifyEmailDropdownList} 
                     dropdownTitle='Email Verified' 
                     disabled={accountDetails.emailVerified}
                     dropdownDefaultSelect={props.accountInfo.emailVerified ? 'Yes' : 'No'} 
-                    callback={(value: string) => setAccountInfo({...accountInfo, forceVerifyEmail: value == 'Yes' ? true : false})}
+                    callback={(item: DropdownSingleListItem) => setAccountInfo({...accountInfo, forceVerifyEmail: item.title == 'Yes' ? true : false})}
                 />
 
             </div>
@@ -99,10 +103,10 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                 <DropdownSingle 
                     className='col col-3 pr1 my1' 
                     id='playbackProtectionDropdown' 
-                    list={{'Off': false, '50 GB': false, '100 GB': false, '250 GB': false, '500 GB': false, '1 TB': false, '2 TB': false, '5 TB': false}} 
+                    list={playbackProtectionDropdownList} 
                     dropdownTitle='Playback Protection' 
-                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'No'} 
-                    callback={(value: string) => setAccountInfo({...accountInfo, playbackProtection: value === 'No' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: parseInt(value)}})}
+                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'Off'} 
+                    callback={(item: DropdownSingleListItem) => setAccountInfo({...accountInfo, playbackProtection: item.title === 'Off' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: item.data}})}
                 />
                 <Toggle
                     id='isPayingToggle'
@@ -119,10 +123,10 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
             <DropdownSingle 
                     className='col col-3 pr1 my1' 
                     id='preferredDropdown' 
-                    list={{'Unified App': false, 'Legacy': false}} 
+                    list={preferredPlatformDropdownList} 
                     dropdownTitle='Preferred platform' 
                     dropdownDefaultSelect={!accountDetails.preferredPlatform || accountDetails.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
-                    callback={(value: string) => {setPreferredPlatform(value); setAccountInfo({...accountInfo, preferredPlatform: value == 'Legacy' ? 'legacy' : 'unified-app'})}}
+                    callback={(item: DropdownSingleListItem) => {setAccountInfo({...accountInfo, preferredPlatform: item.title == 'Legacy' ? 'legacy' : 'unified-app'})}}
                 />
                 <div className='col col-3 pl1 mb2'>
                     <Button  isLoading={createPlatformLoading} onClick={() => handleCreateLegacy()} buttonColor='blue' typeButton='primary' sizeButton='small'>Create account on legacy</Button>

@@ -6,7 +6,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentItem } from '../../redux-flow/store/Content/General/types';
 import { AnalyticsCard } from '../../../components/Analytics/AnalyticsCard/AnalyticsCard';
 
@@ -16,6 +16,14 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
     const [timePeriod, setTimePeriod] = React.useState<number>(5)
 
     const [selectedContent, setSelectedContent] = React.useState<string>( props.liveList && props.liveList.results.length > 0 ? props.liveList.results[0].title : '')
+
+    const timePeriodDropdownList = [{title: "5 Minutes", data: 5}, {title: "15 Minutes", data: 15}, {title: "30 Minutes", data: 30}, {title: "45 Minutes", data: 45}, {title: "1 Hour", data: 60}, {title: "1.5 Hours", data: 90}]
+    const liveChannelsDropdownList = props.liveList && props.liveList.results.map((item) => {
+        let channelDropdownItem: DropdownSingleListItem = {title: null}
+        channelDropdownItem.title = item.title
+        return channelDropdownItem
+    })
+
     const handleReload = () => {
         let selectedChannelFilter = selectedContent.length && props.liveList ? props.liveList.results.filter(element => element.title == selectedContent) : false;
         if(selectedChannelFilter) {
@@ -25,44 +33,19 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
             props.getAnalyticsRealTime({period: timePeriod})
         }
     }
-    const handleTimePeriodsUpdate = (name: string) => {
-        switch (name) {
-            case '5 Minutes':
-                setTimePeriod(5);
-                break;
-            case '15 Minutes':
-                setTimePeriod(15);
-                break;
-            case '30 Minutes':
-                setTimePeriod(30);
-                break;
-            case '45 Minutes':
-                setTimePeriod(45);
-                break;
-            case '1 Hour':
-                setTimePeriod(60);
-                break;
-            case '1.5 Hour':
-                setTimePeriod(90);
-                break;
-            case '2 Hours':
-                setTimePeriod(120);
-                break;
-        }
-
-    }
+    
     return (
         <React.Fragment>
             <div className="flex items-end col col-12 mb25">
                 <DropdownSingle
                     id='timeRefreshDropdown'
-                    callback={(name: string) => handleTimePeriodsUpdate(name) }
+                    callback={(item: DropdownSingleListItem) => setTimePeriod(item.data) }
                     isInModal={false}
                     isWhiteBackground
                     defaultSelected="5 Minutes"
                     className='col sm-col-2 col-5 pr1'
                     dropdownTitle='Time Period'
-                    list={{ '5 Minutes': true, '15 Minutes': false, '20 Minutes': false, '30 Minutes': false, '45 Minutes': false, '1 Hour': false, '1.5 Hour': false, '2 Hours': false }}
+                    list={timePeriodDropdownList}
                 />
                 {props.liveList &&
                     <DropdownSingle
@@ -72,8 +55,8 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                         className='col sm-col-3 col-5 px1'
                         dropdownTitle='Live Channel'
                         defaultSelected={props.liveList.results[0].title}
-                        callback={(name: string) => setSelectedContent(name)}
-                        list={props.liveList.results.reduce((reduced: DropdownListType, item: ContentItem) => { return { ...reduced, [item.title]: false } }, {})}
+                        callback={(item: DropdownSingleListItem) => setSelectedContent(item.title)}
+                        list={liveChannelsDropdownList}
                     />
                 }
 

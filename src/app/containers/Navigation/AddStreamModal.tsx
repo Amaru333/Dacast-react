@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Modal"
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { StreamTypeSelector, StreamTypeSelectorContainer, StreamTypeSelectorContents } from './NavigationStyle';
 import { StreamSetupOptions } from './NavigationTypes';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
@@ -13,6 +14,7 @@ import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Bubble } from '../../../components/Bubble/Bubble';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 const moment = require('moment-timezone')
 
@@ -23,19 +25,19 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const localeTimezone: string = moment.tz.guess()
 
     const handleLocaleCountry = (): string => {
-        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
+        if (localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
             return 'Australia & Asia Pacific'
-        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
+        } else if (localeTimezone.toLowerCase().indexOf('europe') > -1) {
             return 'Europe, Middle East & Africa'
-        } 
+        }
         return 'Americas'
     }
 
     const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
     const defaultStreamSetup: StreamSetupOptions = {
-        rewind: false, 
-        title: '', 
+        rewind: false,
+        title: '',
         region: handleLocaleCountry(),
         renditionCount: renditionCount
     }
@@ -43,28 +45,32 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
+    const renditionDrodownList = [ { title: '1 Rendition'}, { title: '2 Renditions'}, { title: '3 Renditions'}, { title: '4 Renditions'}, { title: '5 Renditions'}, ]
+
+    
 
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
         props.toggle()
     }
 
-    const handleRegionParse =(region: string): string => {
-        switch(region) {
+    const handleRegionParse = (region: string): string => {
+        switch (region) {
             case 'Americas':
                 return 'north-america'
             case 'Australia & Asia Pacific':
                 return 'asia-pacific'
             case 'Europe, Middle East & Africa':
                 return 'europe'
-            default: 
+            default:
                 return ''
         }
     }
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
-        
+
         await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
@@ -93,36 +99,35 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                 <Bubble className="mt1" type="info">
                     Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>
                 </Bubble>
-                <Input 
-                    placeholder="My Live Stream" 
-                    id='liveStreamModalInput' 
-                    className='col col-12 mt1' 
-                    value={streamSetupOptions.title} 
-                    onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} 
-                    label='Title' 
+                <Input
+                    placeholder="My Live Stream"
+                    id='liveStreamModalInput'
+                    className='col col-12 mt1'
+                    value={streamSetupOptions.title}
+                    onChange={(event) => { setStreamSetupOptions({ ...streamSetupOptions, title: event.currentTarget.value }) }}
+                    label='Title'
                 />
                 <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle 
-                        dropdownTitle='Source Region' 
-                        className='col col-12' 
-                        id='channelRegionTypeDropdown' 
+                    <DropdownSingle
+                        dropdownTitle='Source Region'
+                        className='col col-12'
+                        id='channelRegionTypeDropdown'
                         dropdownDefaultSelect={streamSetupOptions.region}
-                        list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
-                        callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
-                    />
+                        list={regionDropdownList}
+                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({ ...streamSetupOptions, region: item.title })} />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
                         The region your stream will broadcast from. Select the one closest to your encoder for best performance.
                     </Tooltip>
                 </div>
                 <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle 
-                        dropdownTitle='Number of Renditions' 
-                        className='col col-12' 
-                        id='numberOfRenditionsDropdown' 
+                    <DropdownSingle
+                        dropdownTitle='Number of Renditions'
+                        className='col col-12'
+                        id='numberOfRenditionsDropdown'
                         dropdownDefaultSelect="1 Rendition"
-                        list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
-                        callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
+                        list={renditionDrodownList}
+                        callback={(value: DropdownSingleListItem) => setRenditionCount(parseInt(value.title.charAt(0)))}
                     />
                     <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
@@ -140,7 +145,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} typeButton="primary" >Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>

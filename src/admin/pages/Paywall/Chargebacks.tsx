@@ -6,12 +6,15 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { ChargebackComponentProps } from '../../containers/Paywall/Chargebacks'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Chargeback } from '../../redux-flow/store/Paywall/Chargebacks/types'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const ChargebacksPage = (props: ChargebackComponentProps) => {
 
     const [submittedData, setSubmittedData] = React.useState<Chargeback>({amount: NaN, salesforceId: null, type: null})
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const chargebackTypeDropdownList = [{title: 'Credit'}, {title: 'Debit'}, {title: 'Special credit'}, {title: 'Special debit'}, {title: 'Payment by balance'}, {title: 'Bank transfer fee'}, {title: 'Viewer refund'}, {title: 'Dispute/chargeback fee'}]
 
     const handleSubmit = () => {
         setButtonLoading(true)
@@ -32,8 +35,8 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
                 id='typeDropdown' 
                 className='my1 col col-2'
                 dropdownTitle='Type' 
-                list={{'Credit': false, 'Debit': false, 'Special credit': false, 'Special debit': false, 'Payment by balance': false, 'Bank transfer fee': false, 'Viewer refund':false, 'Dispute/chargeback fee': false}}
-                callback={(value: string) => setSubmittedData({...submittedData, type: value})}
+                list={chargebackTypeDropdownList}
+                callback={(item: DropdownSingleListItem) => setSubmittedData({...submittedData, type: item.title})}
             />
             <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='my1 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
             <Text size={14} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>

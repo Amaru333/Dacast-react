@@ -12,7 +12,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { usePlayer } from '../../utils/services/player/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/services/token/tokenService';
@@ -98,10 +98,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const setThemesDropdownList = () => {
         if (props.theme.themes.filter(t => t.isCustom).length === 0) {
             let themesList: ThemeOptions[] = [...props.theme.themes, { ...defaultTheme, themeName: 'Custom Theme', isCustom: true }]
-            return themesList.reduce((reduced: DropdownListType, item: ThemeOptions) => { return { ...reduced, [item.themeName]: false } }, {})
+            return themesList.map(item => {
+                let themesListDropdownItem: DropdownSingleListItem = {title: null}
+                themesListDropdownItem.title = item.themeName
+                return themesListDropdownItem
+            })
         }
-        return props.theme.themes.reduce((reduced: DropdownListType, item: ThemeOptions) => { return { ...reduced, [item.themeName]: false } }, {})
+        return props.theme.themes.map(item => {
+            let themesListDropdownItem: DropdownSingleListItem = {title: null}
+            themesListDropdownItem.title = item.themeName
+            return themesListDropdownItem
+        })
     }
+
+    const messagePositionDropdownList = [{title: "Top"}, {title: "Middle"}, {title: "Fullscreen"}]
+    const thumbnailPositionDropdownList = [{title: "Top"}, {title: "Right"}, {title: "Left"}, {title: "Bottom"}, {title: "Hidden"}]
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
 
@@ -206,9 +217,9 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             list={setThemesDropdownList()}
                                             dropdownDefaultSelect={selectedTheme.themeName}
                                             callback={
-                                                (selectedTheme: string) => {
+                                                (item: DropdownSingleListItem) => {
                                                     setEditedSettings(true);
-                                                    setSelectedTheme(props.theme.themes.filter(theme => theme.themeName === selectedTheme).length === 0 ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : props.theme.themes.filter(theme => theme.themeName === selectedTheme)[0])
+                                                    setSelectedTheme(props.theme.themes.filter(theme => theme.themeName === item.title).length === 0 ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : props.theme.themes.filter(theme => theme.themeName === item.title)[0])
                                                 }} />
                                         <Bubble className="mt25" type="info">
                                             {selectedTheme.isCustom ?
@@ -334,7 +345,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
-                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
+                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
                             </DisabledSection>
 
                             {
@@ -366,7 +377,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <DisabledSection enabled={playlistEnabled}>
                                         <div className="py2" ><Text size={20} weight='med'>Playlists</Text></div>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={{ 'Top': false, 'Left': false, 'Right': false, 'Bottom': false, 'Hidden': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.thumbnailPosition)} callback={(value: string) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: value }); } }} tooltip="The position of the links to other content in the Playlist" />
+                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={thumbnailPositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.thumbnailPosition)} callback={(item: DropdownSingleListItem) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: item.title }); } }} tooltip="The position of the links to other content in the Playlist" />
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
@@ -392,7 +403,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
-                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={{ 'Top': false, 'Middle': false, 'Fullscreen': false }} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: value.toLowerCase() }) }} disabled={!customEnabled} />
+                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
                                     </DisabledSection>
                                 </>
                             }

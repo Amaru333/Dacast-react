@@ -3,13 +3,14 @@ import {Input} from '../../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Preset } from '../../../redux-flow/store/Paywall/Presets/types';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { presets } from '../../../constants/DatepickerPresets';
+import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 
 var moment = require('moment-timezone');
 
@@ -74,7 +75,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
                         <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
-                        <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(value: string) => handlePriceChange(value, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={CURRENCY.reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [item]: false}},{}) }  />
+                        <DropdownSingle className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList }  />
 
                         {
                             key === presetsList.prices.length - 1 ? 
@@ -113,8 +114,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
                     dropdownDefaultSelect={presetsList.type}
-                    callback={(value: string) => setPresetsList({...presetsList, type: value, settings:{...presetsList.settings, startMethod: value === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: value == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: value === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
-                    list={{'Pay Per View': false, 'Subscription': false}} 
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, type: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    list={presetTypeDropdownList} 
                 />
             </div>
             <div className="mb2 clearfix">
@@ -126,13 +127,13 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                         <DropdownSingle id='pricePresetRecurrenceDropdown' 
                             dropdownDefaultSelect={presetsList.settings.recurrence ? presetsList.settings.recurrence.unit : 'Weekly'} 
                             dropdownTitle='Recurrence' 
-                            callback={(value: string) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: value}}})}
-                            list={{'Weekly': false, 'Monthly': false, 'Quarterly': false, 'Biannual': false}} 
+                            callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: item.title}}})}
+                            list={recurrenceDropdownList} 
                         />
                         :
                         <>
                             <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: value}}})} dropdownTitle='' list={{'Hours': false, 'Days': false, 'Weeks': false, 'Months': false}} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: item.title}}})} dropdownTitle='' list={durationDropdownList} />
                         </>
                 }
 
@@ -142,8 +143,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     id='pricePresetStartMethodDropdown' 
                     dropdownDefaultSelect={presetsList.settings.startMethod} 
                     className={ClassHalfXsFullMd + ' pr1'} 
-                    callback={(value: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: value, startDate: 0 }})} 
-                    list={{'Upon Purchase': false, 'Schedule': false}} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: item.title, startDate: 0 }})} 
+                    list={startMethodDropdownList} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}
                 />
                 {
                     (presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View') &&
@@ -152,9 +153,9 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                             id='pricePresetTimezoneDropdown' 
                             className={ClassHalfXsFullMd + ' px1'}
                             dropdownTitle='Timezone' 
-                            callback={(value: string) => setPresetsList({...presetsList, settings: {...presetsList.settings, timezone: value.split(' ')[0]}})} 
+                            callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings: {...presetsList.settings, timezone: item.title.split(' ')[0]}})} 
                             dropdownDefaultSelect={moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')'}
-                            list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
+                            list={timezoneDropdownList} 
                             
                         />
                 }
