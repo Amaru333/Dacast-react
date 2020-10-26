@@ -26,8 +26,6 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/custom-hooks/reponsiveNavHook';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -43,6 +41,8 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import ScrollToTop, { useMedia } from '../utils/utils';
+import { updateTitleApp } from './utils/utils';
 
 // Any additional component props go here.
 interface MainProps {

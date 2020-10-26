@@ -47,7 +47,7 @@ import LiveEngagement  from '../containers/Live/Engagement';
 import LiveSecurity from '../containers/Live/Security';
 import LiveTheming  from '../containers/Live/Theming';
 import LivePaywall from '../containers/Live/Paywall';
-import LiveAnalytics from '../containers/Live/LiveAnalytics';
+import LiveAnalytics from '../containers/Live/Analytics';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';

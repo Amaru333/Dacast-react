@@ -6,58 +6,61 @@ import { Tooltip } from '../../Tooltip/Tooltip';
 import { Text } from '../../../components/Typography/Text';
 import styled from 'styled-components';
 import { Card } from '../../Card/Card';
+import { Tab } from '../../Tab/Tab';
+import { Routes } from '../../../app/containers/Navigation/NavigationTypes';
 
-export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
+export interface AnalyticsCardProps {
+    tabs: { [name: string]: TabAnalytics },
+    title: string,
+    infoText?: string
+}
 
-    const exportCsvAnalytics = () => {
-        exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
-    }
+type TabAnalytics = {
+    name: string,
+    content: JSX.Element
+}
 
-    const [showTable, setShowTable] = React.useState<boolean>(false)
+export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & AnalyticsCardProps) => {
+
+    // const exportCsvAnalytics = () => {
+    //     exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
+    // }
+    const tabsList: Routes[] = Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } })
+
+    const [selectedTab, setSelectedTab] = React.useState<string>(tabsList[0].name)
+
 
     return (
         <AnalyticsCardStyle className={props.className}>
-            <AnalyticsCardHeader>
-                <Text className='mb2' size={16} weight="med" color="gray-1">{props.title}</Text>
-                <div className="flex">
-                    <div>
-                        <ActionIcon id={"tooltip" + props.title}>
-                            <IconStyle >info_outlined</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip>
-                    </div>
-                    {!props.realTime ?
-                        <ActionIcon id={"download" + props.title}>
-                            <IconStyle onClick={() => { exportCsvAnalytics() }} >get_app</IconStyle>
-                        </ActionIcon>
-                        : null}
-                    {props.table &&
-                        <ActionIcon id={"table" + props.title}>
-                            <IconStyle onClick={() => { setShowTable(!showTable) }} >toc</IconStyle>
-                        </ActionIcon>
-                    }
+            <AnalyticsCardHeader className='mb2 items-center'>
+                <div className="">
+                    <Text  size={16} weight="med" color="gray-1">{props.title + " " + selectedTab}</Text>
+                    {/* <ActionIcon className="ml1" id={"tooltip" + props.title}>
+                        <IconStyle >info_outlined</IconStyle>
+                    </ActionIcon>
+                    <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip> */}
                 </div>
-                <Tooltip target={"download" + props.title}>Download csv</Tooltip>
-                <Tooltip target={"table" + props.title}>Show table</Tooltip>
+                <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} />
             </AnalyticsCardHeader>
-            {showTable ?
-                <ReactTable
-                    data={props.table.data}
-                    columns={props.table.columns}
-                    pageSizeOptions={[5, 10, 20, 25]}
-                    defaultPageSize={10} /> : props.children
-            }
+            <AnalyticsCardBody>
+                { props.tabs[selectedTab].content}
+            </AnalyticsCardBody>
         </AnalyticsCardStyle>
     )
 }
 
-export const AnalyticsCardStyle = styled(Card) <{}>`
-    padding: 16px !important;
+const AnalyticsCardStyle = styled(Card) <{}>`
     min-height: 273px;
 `
 
 
-export const AnalyticsCardHeader = styled.div<{}>`
+const AnalyticsCardHeader = styled.div<{}>`
     display: flex;
     justify-content: space-between;
+`
+
+const AnalyticsCardBody = styled.div<{}>`
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
 `

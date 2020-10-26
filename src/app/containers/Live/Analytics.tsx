@@ -6,15 +6,18 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
-import { ContentPaywallComponentProps } from '../Videos/Paywall';
+import { ContentAnalytics, ContentAnalyticsProps } from '../../shared/Analytics/ContentAnalytics';
 
 
-const LiveAnalytics = (props: ContentPaywallComponentProps) => {
+const LiveAnalytics = (props: ContentAnalyticsProps) => {
 
     let { liveId } = useParams()
+
     const [isFetching, setIsFetching] = React.useState<boolean>(false)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
+    console.log(liveId);
+    
     React.useEffect(() => {
 
     }, [])
@@ -25,7 +28,7 @@ const LiveAnalytics = (props: ContentPaywallComponentProps) => {
     return !isFetching ?
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
-               
+            <ContentAnalytics  contentType="live" contentId={liveId} />
         </div>
         : <><LiveTabs liveId={liveId} /><SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer></>
 }
