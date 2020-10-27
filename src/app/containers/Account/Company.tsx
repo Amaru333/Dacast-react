@@ -65,7 +65,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(uploadCompanyLogo({data: data, uploadUrl: uploadUrl}))
         },
         deleteCompanyLogo: async () => {
-            await dispatch(deleteCompanyLogo())
+            await dispatch(deleteCompanyLogo(undefined))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))

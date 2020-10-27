@@ -1,12 +1,11 @@
 import { ActionTypes, ProfilePageInfos } from './types';
-import { ProfileServices } from './services';
-import { showToastNotification } from '../../Toasts/actions';
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../..';
+import { applyViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetProfileDetailsOutput, formatPutProfileDetailsInput, formatPutUserPasswordInput } from './viewModel';
 
 export interface GetProfilePageDetails {
     type: ActionTypes.GET_PROFILE_PAGE_DETAILS;
-    payload: {data: ProfilePageInfos};
+    payload: ProfilePageInfos;
 }
 
 export interface SaveProfilePageDetails {
@@ -19,46 +18,8 @@ export interface SaveProfilePassword {
     payload: string;
 }
 
+export type ProfileAction = GetProfilePageDetails | SaveProfilePageDetails | SaveProfilePassword
 
-export const getProfilePageDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetProfilePageDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProfilePageDetails> ) => {
-        await ProfileServices.getProfilePageDetailsService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_PROFILE_PAGE_DETAILS, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const saveProfilePageDetailsAction = (data: ProfilePageInfos): ThunkDispatch<Promise<void>, {}, SaveProfilePageDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePageDetails> ) => {
-        await ProfileServices.saveProfilePageDetailsService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PROFILE_PAGE_DETAILS, payload: data} );
-                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const saveProfilePasswordAction = (currentPassword: string, newPassword: string): ThunkDispatch<Promise<void>, {}, SaveProfilePassword> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveProfilePassword> ) => {
-        await ProfileServices.saveProfilePasswordService(currentPassword, newPassword)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_PROFILE_PASSWORD, payload: response.data.data} );
-                dispatch(showToastNotification("Password saved!", 'fixed', "success"));
-            }).catch(() => {
-                return Promise.reject()
-            })
-    };
-}
-
-
-export type ProfileAction = 
-GetProfilePageDetails
-| SaveProfilePageDetails
-| SaveProfilePassword
+export const getProfilePageDetailsAction = applyViewModel(dacastSdk.getProfileDetails, undefined, formatGetProfileDetailsOutput, ActionTypes.GET_PROFILE_PAGE_DETAILS, null, 'Couldn\'t get profile details')
+export const saveProfilePageDetailsAction = applyViewModel(dacastSdk.putProfileDetails, formatPutProfileDetailsInput, undefined, ActionTypes.GET_PROFILE_PAGE_DETAILS, 'Changes have been saved', 'Couldn\'t save changes')
+export const saveProfilePasswordAction = applyViewModel(dacastSdk.putUserPassword, formatPutUserPasswordInput, undefined, ActionTypes.SAVE_PROFILE_PASSWORD, 'Password saved', null)

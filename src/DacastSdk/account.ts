@@ -32,3 +32,32 @@ export interface GetInvoicesOutput {
     perPage: number;
     total: number;
 }
+
+export interface ProfileDetails {
+    emailAddress: string;
+    firstName: string;
+    id: string;
+    lastName: string;
+    lowData: boolean;
+    marketing: boolean;
+    passwordLastChanged: number | null;
+    phoneNumber: string;
+    timezone: string;
+    videoUpload: boolean;
+}
+
+export interface PutProfileDetailsInput {
+    firstName: string;
+    lastName: string;
+    lowData: boolean;
+    marketing: boolean;
+    phoneNumber: string;
+    timezone: string;
+    videoUpload: boolean;
+}
+
+export interface PutUserPasswordInput {
+    currentPassword: string;
+    newPassword: string;
+    accessToken: string;
+}

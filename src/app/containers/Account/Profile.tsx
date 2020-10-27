@@ -49,13 +49,13 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, ProfileAction>) {
     return {
         getProfilePageDetails: async () => {
-            await dispatch(getProfilePageDetailsAction());
+            await dispatch(getProfilePageDetailsAction(undefined));
         },
         saveProfilePageDetails: async (data: ProfilePageInfos) => {
             await dispatch(saveProfilePageDetailsAction(data))
         },
         saveProfilePassword: async (currentPassword: string, newPassword: string) => {
-            await dispatch(saveProfilePasswordAction(currentPassword, newPassword))
+            await dispatch(saveProfilePasswordAction({currentPassword: currentPassword, newPassword: newPassword}))
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
