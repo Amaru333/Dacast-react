@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { ProfileDetails, PutProfileDetailsInput, PutUserPasswordInput } from '../../../../../DacastSdk/account'
+import { ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from '../../../../../DacastSdk/account'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils'
 import { userToken } from '../../../../utils/services/token/tokenService'
 import { ProfilePageInfos } from './types'
@@ -27,8 +27,8 @@ export const formatPutProfileDetailsInput = (data: ProfilePageInfos): PutProfile
     return formattedData
 }
 
-export const formatPutUserPasswordInput = (data: {currentPassword: string, newPassword: string}): PutUserPasswordInput => {
-    let formattedData: PutUserPasswordInput = {
+export const formatPostUserPasswordInput = (data: {currentPassword: string, newPassword: string}): PostUserPasswordInput => {
+    let formattedData: PostUserPasswordInput = {
         ...data,
         accessToken: userToken.getTokenInfo().accessToken
     }

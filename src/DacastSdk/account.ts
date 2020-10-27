@@ -56,7 +56,7 @@ export interface PutProfileDetailsInput {
     videoUpload: boolean;
 }
 
-export interface PutUserPasswordInput {
+export interface PostUserPasswordInput {
     currentPassword: string;
     newPassword: string;
     accessToken: string;
