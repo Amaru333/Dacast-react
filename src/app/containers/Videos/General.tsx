@@ -210,7 +210,7 @@ const General = (props: GeneralComponentProps) => {
                                                         <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
                                                     </div>
                                                     <ExpandableContainer className="flex my2" isExpanded={advancedSubtitleSectionExpanded}>
-                                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 ? uploadedSubtitleFile.convertToUTF8 : true} onChange={() => { setUploadedSubtitleFile({ ...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8 }) }} />
+                                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 || false} onChange={() => { setUploadedSubtitleFile({ ...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8 }) }} />
                                                         <IconStyle className="ml1" style={{ marginTop: 5 }} fontSize="small" id="utfTooltip">info_outlined</IconStyle>
                                                         <Tooltip target="utfTooltip">Uncheck if you have already converted your file to UTF-8.</Tooltip>
                                                     </ExpandableContainer>
