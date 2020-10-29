@@ -20,7 +20,6 @@ import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { userId, handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../shared/Common/MiscStyle';
 
@@ -31,7 +30,6 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
     const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
-    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
@@ -86,7 +84,6 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                                 userId={userId}
                                 contentDetails={stateContentDetails}
                                 contentType="playlist"
-                                setPreviewModalOpen={setPreviewModalOpen}
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
                             <GeneralImages 
@@ -127,9 +124,6 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                                     <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                     <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                                 </ButtonContainer>
-                        }
-                        {
-                            previewModalOpen && <PreviewModal contentId={userId + "-playlist-" + stateContentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                         }
                         <Prompt when={hasChanged} message='' />
                     </div>            

@@ -17,20 +17,10 @@ import { GeneralSharing } from '../../shared/General/Sharing';
 import { GeneralImages } from '../../shared/General/Images';
 import { GeneralSubtitles } from '../../shared/General/Subtitles';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
-import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
-import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { languages } from 'countries-list';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Text } from '../../../components/Typography/Text'
-import { IconStyle } from '../../../shared/Common/Icon';
-import { ExpandableContainer, ButtonContainer } from '../../shared/General/GeneralStyle';
-import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import styled from 'styled-components';
-import { userToken } from '../../utils/services/token/tokenService';
+import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction, userId } from '../../utils/general'
-import { PreviewModal } from '../../shared/Common/PreviewModal';
 import { Divider } from '../../shared/Common/MiscStyle';
 
 export interface GeneralComponentProps {
@@ -50,23 +40,13 @@ const General = (props: GeneralComponentProps) => {
 
     let { vodId } = useParams()
 
-    const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
-    let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
-
     const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
-
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
-    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
-    const [subtitleModalOpen, setSubtitleModalOpen] = React.useState<boolean>(false)
-    const [uploadedSubtitleFile, setUploadedSubtitleFile] = React.useState<SubtitleInfo>(emptySubtitle)
-    const [subtitleFile, setSubtitleFile] = React.useState<File>(null)
-    const [advancedSubtitleSectionExpanded, setAdvancedSubtitleSectionExpanded] = React.useState<boolean>(false)
-    const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     
     React.useEffect(() => {
@@ -80,42 +60,6 @@ const General = (props: GeneralComponentProps) => {
             setContentDetails(props.contentDetailsState['vod'][vodId])
         }
     }, [props.contentDetailsState])
-
-    React.useEffect(() => {
-        if (stateContentDetails && stateContentDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, stateContentDetails.uploadurl, { ...uploadedSubtitleFile, targetID: stateContentDetails.subtitles[stateContentDetails.subtitles.length - 1].targetID }, stateContentDetails.id, "vod").then(() =>
-                setSubtitleButtonLoading(false)
-            ).catch(() =>
-                setSubtitleButtonLoading(false)
-            )
-            setUploadedSubtitleFile(emptySubtitle)
-            setSubtitleModalOpen(false);
-        }
-    }, [stateContentDetails])
-
-    const handleDrop = (file: FileList) => {
-        const acceptedImageTypes = ['.srt', '.vtt'];
-        if (file.length > 0) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setSubtitleFile(file[0])
-                setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: file[0].name })
-            }
-            reader.readAsDataURL(file[0])
-        }
-    }
-
-    const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        if (e.target.files && e.target.files.length > 0) {
-            handleDrop(e.target.files);
-        }
-    }
-
-    const handleSubtitleSubmit = () => {
-        setSubtitleButtonLoading(true)
-        props.getUploadUrl('subtitle', stateContentDetails.id, null, "vod", uploadedSubtitleFile)
-    }
 
     const handleSave = () => {
         setButtonLoading(true)
@@ -152,7 +96,6 @@ const General = (props: GeneralComponentProps) => {
                                     userId={userId}
                                     contentDetails={stateContentDetails}
                                     contentType="vod"
-                                    setPreviewModalOpen={setPreviewModalOpen}
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralImages 
@@ -170,58 +113,12 @@ const General = (props: GeneralComponentProps) => {
                                 <GeneralSubtitles 
                                     contentType="vod"
                                     contentDetails={stateContentDetails}
-                                    setSubtitleModalOpen={setSubtitleModalOpen}
                                     deleteSubtitle={props.deleteSubtitle}
+                                    addSubtitle={props.addSubtitle}
+                                    getUploadUrl={props.getUploadUrl}
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralAdvancedLinks contentDetails={stateContentDetails} />
-
-                                {
-                                    subtitleModalOpen &&
-                                        <Modal id="addSubtitles" opened={subtitleModalOpen === true} toggle={() => setSubtitleModalOpen(false)} size="small" modalTitle="Add Subtitles" hasClose={false}>
-                                            <ModalContent>
-                                                <DropdownSingle
-                                                    hasSearch
-                                                    className="col col-12"
-                                                    id="subtitleLanguage"
-                                                    dropdownTitle="Subtitle Language"
-                                                    list={Object.keys(languages).reduce((reduced, language) => { return { ...reduced, [languages[language].name]: false } }, {})}
-                                                    dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
-                                                    callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value) })}
-                                                />
-                                                <input type='file' ref={subtitleBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
-                                                <Button onClick={() => { subtitleBrowseButtonRef.current.click() }} className="mt25" typeButton="secondary" sizeButton="xs">
-                                                    Select Files
-                                                    </Button>
-                                                <Text className="col col-12" size={10} weight="reg" color="gray-5">Max file size is 1MB, File srt or vtt</Text>
-                                                {uploadedSubtitleFile.name === "" ? null :
-                                                    <SubtitleFile className="col mt1">
-                                                        <SubtitleTextContainer>
-                                                            <Text className="ml2" color="gray-1" size={14} weight="reg">{uploadedSubtitleFile.name}</Text>
-                                                        </SubtitleTextContainer>
-                                                        <button style={{ border: "none", backgroundColor: "inherit" }}>
-                                                            <IconStyle onClick={() => setUploadedSubtitleFile({ ...uploadedSubtitleFile, name: "" })} className='flex items-center' customsize={14}>close</IconStyle>
-                                                        </button>
-                                                    </SubtitleFile>
-                                                }
-                                                <div className="col col-12">
-                                                    <div className="flex mt25" onClick={() => setAdvancedSubtitleSectionExpanded(!advancedSubtitleSectionExpanded)}>
-                                                        <IconStyle className="col col-1 pointer">{advancedSubtitleSectionExpanded ? "expand_less" : "expand_more"}</IconStyle>
-                                                        <Text className="col col-11 pointer" size={16} weight="med">Advanced Settings</Text>
-                                                    </div>
-                                                    <ExpandableContainer className="flex my2" isExpanded={advancedSubtitleSectionExpanded}>
-                                                        <InputCheckbox className='col' id='convertToUtf8Checkbox' label='Convert to UTF-8' defaultChecked={uploadedSubtitleFile.convertToUTF8 || false} onChange={() => { setUploadedSubtitleFile({ ...uploadedSubtitleFile, convertToUTF8: !uploadedSubtitleFile.convertToUTF8 }) }} />
-                                                        <IconStyle className="ml1" style={{ marginTop: 5 }} fontSize="small" id="utfTooltip">info_outlined</IconStyle>
-                                                        <Tooltip target="utfTooltip">Uncheck if you have already converted your file to UTF-8.</Tooltip>
-                                                    </ExpandableContainer>
-                                                </div>
-                                            </ModalContent>
-                                            <ModalFooter>
-                                                <Button disabled={uploadedSubtitleFile.name === "" || !uploadedSubtitleFile.languageLongName} isLoading={subtitleButtonLoading} onClick={() => { handleSubtitleSubmit() }}  >Add</Button>
-                                                <Button onClick={() => { setSubtitleModalOpen(false); setUploadedSubtitleFile(emptySubtitle) }} typeButton="secondary">Cancel</Button>
-                                            </ModalFooter>
-                                        </Modal>
-                                }
 
                                 {
                                     imageModalOpen &&
@@ -247,9 +144,6 @@ const General = (props: GeneralComponentProps) => {
                                     <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                     <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                                 </ButtonContainer>
-                            }
-                            {
-                                previewModalOpen && <PreviewModal contentId={userId + '-vod-' + stateContentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                             }
                             <Prompt when={hasChanged} message='' />
                         </div>
@@ -301,20 +195,3 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 
 export default connect(mapStateToProps, mapDispatchToProps)(General);
 
-const SubtitleFile = styled.div`
-    display: flex;
-    background-color: ${props => props.theme.colors["gray-10"]};
-    height: 32px;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 352px;
-    
-`
-
-const SubtitleTextContainer = styled.div`
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 352px;
-`

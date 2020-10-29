@@ -8,16 +8,19 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { updateClipboard } from '../../utils/utils';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { isProduction } from '../../utils/services/player/stage';
+import { PreviewModal } from '../Common/PreviewModal';
 
-export const GeneralSharing = (props: {userId: string, contentDetails: ContentDetails, contentType: string, setPreviewModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
-    const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
+export const GeneralSharing = (props: {userId: string, contentDetails: ContentDetails, contentType: string}) => {
     
+    const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+
     return (
         <div className='col col-12'>
             <header className="flex justify-between">
                 <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                 { props.contentType !== "expo" &&
-                    <Button sizeButton="xs" typeButton="secondary" onClick={() => props.setPreviewModalOpen(true)}>Preview</Button>
+                    <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
                 }
             </header>
             {
@@ -70,6 +73,9 @@ export const GeneralSharing = (props: {userId: string, contentDetails: ContentDe
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
+                    {
+                        previewModalOpen && <PreviewModal contentId={props.userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                    }
                 </>
             }
         </div>
