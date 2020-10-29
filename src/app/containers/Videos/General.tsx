@@ -84,7 +84,6 @@ const General = (props: GeneralComponentProps) => {
                         <div className='flex flex-column'>
                             <Card className="col col-12 clearfix">
                                 <GeneralDetails
-                                    userId={userId}
                                     contentDetails={stateContentDetails}
                                     localContentDetails={contentDetails}
                                     contentType="vod"
@@ -93,7 +92,6 @@ const General = (props: GeneralComponentProps) => {
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralSharing 
-                                    userId={userId}
                                     contentDetails={stateContentDetails}
                                     contentType="vod"
                                 />

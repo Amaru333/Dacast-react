@@ -72,7 +72,6 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                     <div className='flex flex-column'>
                         <Card className="col col-12 clearfix">
                             <GeneralDetails
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 localContentDetails={contentDetails}
                                 contentType="playlist"
@@ -81,7 +80,6 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
                             <GeneralSharing 
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 contentType="playlist"
                             />

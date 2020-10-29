@@ -17,7 +17,7 @@ import { GeneralSharing } from '../../shared/General/Sharing';
 import { GeneralImages } from '../../shared/General/Images';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { userId, handleImageModalFunction } from '../../utils/general';
+import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../shared/Common/MiscStyle';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 
@@ -62,7 +62,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                     <div className='flex flex-column'>
                         <Card className="col col-12 clearfix">
                             <GeneralDetails
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 localContentDetails={contentDetails}
                                 contentType="expo"
@@ -71,7 +70,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
                             <GeneralSharing 
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 contentType="expo"
                             />

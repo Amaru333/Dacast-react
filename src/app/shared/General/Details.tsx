@@ -12,7 +12,9 @@ import { axiosClient } from '../../utils/services/axios/axiosClient'
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
 
-export const GeneralDetails = (props: {userId: string, contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
+
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     function saveFile(url: string, filename: string) {
         axiosClient.get(`/vods/${props.contentDetails.id}/download-url`
@@ -84,8 +86,8 @@ export const GeneralDetails = (props: {userId: string, contentDetails: ContentDe
                     <Text size={14} weight="med">Content ID</Text>
                 </LinkBoxLabel>
                 <LinkBox>
-                    <LinkText size={14} weight="reg">{props.userId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
-                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(props.userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                    <LinkText size={14} weight="reg">{userId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
+                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                     <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                 </LinkBox>
             </div>

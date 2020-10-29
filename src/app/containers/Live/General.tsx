@@ -95,7 +95,6 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                             /> */}
                             <Card className="col col-12 clearfix">
                                 <GeneralDetails
-                                    userId={userId}
                                     contentDetails={stateContentDetails}
                                     localContentDetails={contentDetails}
                                     contentType="live"
@@ -105,7 +104,6 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralSharing 
-                                    userId={userId}
                                     contentDetails={stateContentDetails}
                                     contentType="live"
                                 />
