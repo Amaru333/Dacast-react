@@ -26,7 +26,7 @@ import { SearchResult } from '../../redux-flow/store/Content/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
-import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
+import AddStreamModal from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
 import EventHooker from '../../../utils/services/event/eventHooker';

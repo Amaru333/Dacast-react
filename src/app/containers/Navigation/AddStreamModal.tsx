@@ -13,10 +13,13 @@ import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { Bubble } from '../../../components/Bubble/Bubble';
+import { ApplicationState } from '../../redux-flow/store';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { connect } from 'react-redux';
 
 const moment = require('moment-timezone')
 
-export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
+const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
     let history = useHistory()
 
@@ -123,20 +126,24 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         The region your stream will broadcast from. Select the one closest to your encoder for best performance.
                     </Tooltip>
                 </div>
-                <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle 
-                        dropdownTitle='Number of Renditions' 
-                        className='col col-12' 
-                        id='numberOfRenditionsDropdown' 
-                        dropdownDefaultSelect="1 Rendition"
-                        list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
-                        callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
-                    />
-                    <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
-                    <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
-                        For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
-                    </Tooltip>
-                </div>
+                {
+                    !(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') &&
+                    <div className='col col-12 mt1 flex relative' >
+                        <DropdownSingle 
+                            dropdownTitle='Number of Renditions' 
+                            className='col col-12' 
+                            id='numberOfRenditionsDropdown' 
+                            dropdownDefaultSelect="1 Rendition"
+                            list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
+                            callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
+                        />
+                        <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
+                        <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
+                            For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
+                        </Tooltip>
+                    </div>
+                }
+
                 {/* {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
@@ -157,3 +164,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         </Modal>
     )
 }
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        billingInfo: state.account.plan
+    };
+}
+
+export default connect(mapStateToProps, null)(AddStreamModal);

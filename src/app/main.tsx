@@ -35,7 +35,7 @@ import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
 import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
-import { AddStreamModal } from './containers/Navigation/AddStreamModal';
+import AddStreamModal from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
