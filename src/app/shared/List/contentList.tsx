@@ -33,11 +33,13 @@ import EventHooker from '../../../utils/services/event/eventHooker';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 
 interface ContentListProps {
     contentType: 'expo' | 'vod' | 'live' | 'playlist';
     items: SearchResult;
     themesList: ThemesData;
+    billingInfo?: BillingPageInfos;
     getContentList: (qs: string, contentType: string) => Promise<void>;
     deleteContentList: (voidId: string, contentType: string) => Promise<void>;
     getThemesList: () => Promise<void>;
@@ -289,7 +291,6 @@ export const ContentListPage = (props: ContentListProps) => {
     }
 
     const handleThumbnailClick = (contentId: string) => {
-        console.log('reaching')
         setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
         setPreviewModalOpen(true)
     }   
@@ -309,13 +310,22 @@ export const ContentListPage = (props: ContentListProps) => {
                                     }
                                 }
                                 } />
+
                                 {
+                                    
                                     value.thumbnail ?
                                         <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
                                         <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
+                                }
+                                {
+                                    props.contentType ==='live' && props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && 
+                                    <div className='pl2 relative'>
+                                        <IconStyle coloricon='orange' id='liveStreamRowFreeTrialToolTip'>warning_outlined</IconStyle>
+                                        <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">This Live Stream has restrictions. Contact us to know more</Tooltip>
+                                    </div>
                                 }
                             </div>,
                         <TitleContainer>
@@ -374,7 +384,7 @@ export const ContentListPage = (props: ContentListProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
                 </div>
-                <div className="flex items-center" >
+                <div className="flex items-center relative" >
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
                     }
@@ -397,7 +407,20 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "live" &&
-                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                        <div className='flex items-end'>
+                            <Button disabled={props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0} onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                            {
+                                props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0 &&
+                                <>
+                                    <IconStyle className='pl1' id='createLiveStreamButtonllToolTip'>info_outlined</IconStyle>
+                                    <Tooltip leftPositionValueToZero target='createLiveStreamButtonllToolTip'>
+                                        Free Trial accounts only have 1 Live Stream. Contact us to upgrade
+                                    </Tooltip>
+                                </>
+                            }
+
+                        </div>
+
                     }
                     {
                         props.contentType === "playlist" &&

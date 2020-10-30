@@ -42,7 +42,7 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
 
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-
+    const [errorMessage, setErrorMessage] = React.useState<string>(null)
 
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
@@ -82,7 +82,15 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             setStreamSetupOptions(defaultStreamSetup)
         }).catch((error) => {
             setButtonLoading(false)
-            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
+            let errorMsg = 'There was a problem while creating a channel'
+            console.log('error message: ', error.response.data.error)
+            if(error.response.data.error.indexOf('only 1 channel is allowed for free trials') > -1) {
+                errorMsg = 'Only 1 channel is allowed for free trials'
+            }
+            if(error.response.data.error.indexOf('there was a problem while creating a channel') > -1) {
+                errorMsg = 'There was a problem while creating a channel'
+            }
+            setErrorMessage(errorMsg)
         })
     }
 
@@ -137,6 +145,9 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
                     </div>} */}
+                    <Bubble hidden={!errorMessage} type='error' className='my2'>
+                        {errorMessage}
+                    </Bubble>
 
             </ModalContent>
             <ModalFooter>

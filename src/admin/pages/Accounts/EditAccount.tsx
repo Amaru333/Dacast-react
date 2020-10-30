@@ -130,15 +130,15 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
             </div>
             <div className='flex flex-column'>
-            <Text className='pt2' size={20} weight='med'>Flags</Text>
-            <InputCheckbox 
-                id='bannedFlag' 
-                className='mb2 mt1'
-                defaultChecked={accountDetails.isBanned} 
-                onChange={() => setAccountInfo({...accountInfo, isBanned: accountInfo.isBanned ? !accountInfo.isBanned : !accountDetails.isBanned})} 
-                label='Banned'
-                disabled={accountDetails.isBanned}
-            />
+                <Text className='pt2' size={20} weight='med'>Flags</Text>
+                <InputCheckbox 
+                    id='bannedFlag' 
+                    className='mb2 mt1'
+                    defaultChecked={accountDetails.isBanned} 
+                    onChange={() => setAccountInfo({...accountInfo, isBanned: accountInfo.isBanned ? !accountInfo.isBanned : !accountDetails.isBanned})} 
+                    label='Banned'
+                    disabled={accountDetails.isBanned}
+                />
             </div>
 
             {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>
