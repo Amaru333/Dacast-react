@@ -1,5 +1,9 @@
 import { Promo, Preset } from './types'
-import { GetPromoPresetOutput, PromoPresetDetails, PromoPreset, GetPricePresetOutput, PricePresetDetails, PricePresetEndpoint } from '../../../../../DacastSdk/paywall'
+import { GetPromoPresetOutput, PromoPresetDetails, PromoPreset, GetPricePresetOutput, PricePresetDetails, PricePresetEndpoint, PricePresetId, PromoId } from '../../../../../DacastSdk/paywall'
+
+export const formatGetPromoPresetInput = (qs: string): string => {
+    return qs
+}
 
 export const formatGetPromoPresetOutput = (data: GetPromoPresetOutput): {promos: Promo[]; totalItems: number} => {
     return {
@@ -45,6 +49,15 @@ export const formatPostPromoPresetInput = (data: Promo): PromoPresetDetails => {
     return formattedData
 }
 
+export const formatPostPromoPresetOutput = (endpointResponse: PromoId, dataReact: Promo): Promo => {
+    let formattedData: Promo = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
+}
+
 export const formatPutPromoPresetInput = (data: Promo): PromoPreset => {
     let formattedData: PromoPreset = {
         id: data.id,
@@ -68,6 +81,12 @@ export const formatPutPromoPresetInput = (data: Promo): PromoPreset => {
     }
 
     return formattedData
+}
+
+export const formatDeletePromoPresetInput = (data: Promo): string => data.id
+
+export const formatGetPricePresetInput = (qs: string): string => {
+    return qs
 }
 
 export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: Preset[], totalItems: number} => {
@@ -146,6 +165,15 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
     return formattedData
 }
 
+export const formatPostPricePresetOutput = (endpointResponse: PricePresetId, dataReact: Preset): Preset => {
+    let formattedData: Preset = {
+        ...dataReact,
+        id: endpointResponse.id
+    }
+
+    return formattedData
+}
+
 export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => {
     let formattedData: PricePresetEndpoint = {
         id: data.id,
@@ -189,3 +217,5 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
     }
     return formattedData
 }
+
+export const formatDeletePricePresetInput = (data: Preset): string => data.id

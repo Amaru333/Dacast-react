@@ -8,16 +8,21 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { updateClipboard } from '../../utils/utils';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { isProduction } from '../../utils/services/player/stage';
+import { PreviewModal } from '../Common/PreviewModal';
+import { userToken } from '../../utils/services/token/tokenService';
 
-export const GeneralSharing = (props: {userId: string, contentDetails: ContentDetails, contentType: string, setPreviewModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
-    const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
+export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: string}) => {
     
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id') 
+    const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+
     return (
         <div className='col col-12'>
             <header className="flex justify-between">
                 <Text className='col col-12' size={20} weight='med'>Sharing</Text>
                 { props.contentType !== "expo" &&
-                    <Button sizeButton="xs" typeButton="secondary" onClick={() => props.setPreviewModalOpen(true)}>Preview</Button>
+                    <Button sizeButton="xs" typeButton="secondary" onClick={() => setPreviewModalOpen(true)}>Preview</Button>
                 }
             </header>
             {
@@ -42,9 +47,9 @@ export const GeneralSharing = (props: {userId: string, contentDetails: ContentDe
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">
-                                {`<script id="${props.userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${props.userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
+                                {`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
                             </LinkText>
-                            <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${props.userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${props.userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied') } }>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video js'); updateClipboard(`<script id="${userId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${userId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied') } }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyJSEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -54,9 +59,9 @@ export const GeneralSharing = (props: {userId: string, contentDetails: ContentDe
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">
-                            {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${props.userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
+                            {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
                             </LinkText>
-                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${props.userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => { logAmplitudeEvent('embed video iframe'); updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied')}}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyIframeEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -65,11 +70,14 @@ export const GeneralSharing = (props: {userId: string, contentDetails: ContentDe
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${props.userId}/${props.contentDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${props.userId}/${props.contentDetails.id}`, 'Share Link Copied')} }>file_copy_outlined</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => { logAmplitudeEvent('share video'); updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${userId}/${props.contentDetails.id}`, 'Share Link Copied')} }>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
+                    {
+                        previewModalOpen && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                    }
                 </>
             }
         </div>

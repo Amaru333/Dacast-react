@@ -17,8 +17,7 @@ import { GeneralSharing } from '../../shared/General/Sharing';
 import { GeneralImages } from '../../shared/General/Images';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { userId, handleImageModalFunction } from '../../utils/general';
-import { PreviewModal } from '../../shared/Common/PreviewModal';
+import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../shared/Common/MiscStyle';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 
@@ -29,7 +28,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
     const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
-    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
@@ -64,7 +62,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                     <div className='flex flex-column'>
                         <Card className="col col-12 clearfix">
                             <GeneralDetails
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 localContentDetails={contentDetails}
                                 contentType="expo"
@@ -73,10 +70,8 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
                             <GeneralSharing 
-                                userId={userId}
                                 contentDetails={stateContentDetails}
                                 contentType="expo"
-                                setPreviewModalOpen={setPreviewModalOpen}
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
                             <GeneralImages 
@@ -114,9 +109,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                                 <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                 <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                             </ButtonContainer>
-                        }
-                        {
-                            previewModalOpen && <PreviewModal contentId={userId + '-expo-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                         }
                         <Prompt when={hasChanged} message='' />
                     </div>            
