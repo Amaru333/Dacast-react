@@ -5,14 +5,13 @@ import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
+import ReactTable from "react-table";
 
 export interface AudienceAnalyticsProps {
 
 }
 
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
-
-
 
     React.useEffect(() => {
 
@@ -22,9 +21,9 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <LineChart
                 title="Plays and Impressions by Time"
-                options={ {fill: true, curve: 0} }
-                lines={ [ {data: [26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue}, {data: [42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red} ] }
-                labels={["10/12/20", "10/13/20", "10/14/20", "10/15/20", "10/16/20", "10/17/20"]} />
+                options={ {fill: true, curve: 0, isTime: true, rightYAxes: false} }
+                lines={ [ {data: [45, 12, 19, 12 ,26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue}, {data: [56, 15, 25, 24, 42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red} ] }
+                labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000, 1603894529000, 1603898129000, 1603901789000, 1603905329000]} />
         )
     }
 

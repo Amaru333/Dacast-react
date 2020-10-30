@@ -1,51 +1,101 @@
 import React, { Component } from 'react';
-import { Line, LinearComponentProps } from 'react-chartjs-2';
+import { Line, LinearComponentProps, Scatter } from 'react-chartjs-2';
 import { hexToRgbA, lightenDarkenColor } from '../../utils/utils';
 import { BaseItemAnalytics, LineChartProps } from './AnalyticsType';
+import 'chartjs-plugin-crosshair'
 
 export const LineChart = (props: LineChartProps) => {
-    const createDataset = (line: BaseItemAnalytics) => {
-        return { 
-            data: line.data, 
-            label: line.label, 
-            borderColor: line.color, 
-            pointBackgroundColor: line.color,
-            pointHighlightStroke: line.color,
+
+    const createDataset = (item: BaseItemAnalytics) => {
+
+        var returnLine = {
+            data: item.data.map((element, index) => { return { y: element, x: props.options.isTime ? new Date(props.labels[index]) : props.labels[index] } }),
+            label: item.label,
+            borderColor: item.color,
+            pointBackgroundColor: item.color,
+            pointHighlightStroke: item.color,
             fill: props.options.fill,
-            backgroundColor: props.options.fill && hexToRgbA(lightenDarkenColor(line.color, 50), 0.6),
+            yAxisId: item.yAxisPosition && item.yAxisPosition === "right" ? 'right-y-axis' : 'left-y-axis',
+            backgroundColor: props.options.fill && hexToRgbA(lightenDarkenColor(item.color, 50), 0.6),
             lineTension: props.options.curve,
-            type:line.type ? line.type : 'line'
+            showLine: true,
+            type: item.type ? item.type : 'line',
         };
+
+        return returnLine
     }
 
+
     const lineProps: LinearComponentProps = {
-        data: {
-            labels: props.labels,
-            datasets: props.lines.map(element => createDataset(element))
-        },
+        type: "scatter",
         options: {
             title: {
                 display: true,
                 text: props.title
             },
-            scales: {
-                yAxes: [{
-                    stacked: props.options.stack,
-                }]
+            plugins: {
+                crosshair: {
+                    sync: {
+                        enabled: false
+                    }
+                }
+            },
+            tooltips: {
+                mode: "interpolate",
+                intersect: false,
+                callbacks: {
+                    title: (a, d) => {
+                        return a[0].xLabel.toString()
+                    },
+                    label: (i, d) => {
+                      return (
+                        d.datasets[i.datasetIndex].label + ": " + i.yLabel
+                      );
+                    }
+                }
             },
             animation: {
-                duration: 750,
+                duration: 0
             },
+            scales: {
+                ...( props.options.isTime && {
+                        xAxes: [{
+                            type: 'time',
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20
+                            }
+                        }],
+                    }
+                ),
+                ...( props.options.rightYAxes && {
+                        yAxes: [{
+                            id: 'left-y-axis',
+                            type: 'linear',
+                            position: 'left',
+                        }, {
+                            id: 'right-y-axis',
+                            type: 'linear',
+                            position: 'right',
+                        }]
+                    }
+                )
+            },
+            responsiveAnimationDuration: 0
+        },
+        data: {
+            datasets: props.lines.map(element => createDataset(element))
+
         }
     }
 
+    console.log(lineProps)
     return (
-        <Line
+        <Scatter
             {...lineProps}
         />
 
     );
-
 }
 
-LineChart.defaultProps = { options: {stacked: false, fill: false, curve: true}  }
+LineChart.defaultProps = { options: { stacked: false, fill: false, curve: true, isTime: false, rightYAxes: false } }

@@ -48,6 +48,7 @@ import LiveSecurity from '../containers/Live/Security';
 import LiveTheming  from '../containers/Live/Theming';
 import LivePaywall from '../containers/Live/Paywall';
 import LiveAnalytics from '../containers/Live/Analytics';
+import VodAnalytics from '../containers/Videos/Analytics';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';
@@ -257,6 +258,15 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodRenditions,
+    },
+    {
+        path: '/videos/:liveId/analytics',
+        name: 'Analytics',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-analytics',
+        notDisplayedInNavigation: true,
+        component: VodAnalytics
     },
     {
         path: '/expos/:exposId/general',

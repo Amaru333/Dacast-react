@@ -10,6 +10,7 @@ export const BarChart = (props: BarChartProps) => {
             label: item.label, 
             backgroundColor: item.color,
             type: item.type ? item.type : 'bar',
+            yAxisId: item.yAxisPosition && item.yAxisPosition === "right" ? 'right-y-axis' : 'left-axis-test',
             ...( item.type === 'line' && {
                 fill: false,
                 borderColor: item.color, 
@@ -29,9 +30,46 @@ export const BarChart = (props: BarChartProps) => {
             title: {
                 display: true,
                 text: props.title
+            },
+            plugins: {
+                crosshair: {
+                    zoom: {
+                        enabled: false,  
+                    }  
+                }
+            },
+            tooltips: {
+                mode: "interpolate",
+                intersect: false,
+            },
+            scales: {
+                ...( props.options.isTime && {
+                        xAxes: [{
+                            type: 'time',
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 20
+                            }
+                        }],
+                    }
+                ),
+                ...( props.options.rightYAxes && {
+                        yAxes: [{
+                            id: 'left-y-axis',
+                            type: 'linear',
+                            position: 'left',
+                        }, {
+                            id: 'right-y-axis',
+                            type: 'linear',
+                            position: 'right',
+                        }]
+                    }   
+                )
             }
         }
     }
+
+    console.log(barProps);
 
     if(props.type == 'horizontal') {
         return (
@@ -50,4 +88,4 @@ export const BarChart = (props: BarChartProps) => {
     }
 
 }
-BarChart.defaultProps = {type: "vertical"}
+BarChart.defaultProps = {type: "vertical", options: {}}

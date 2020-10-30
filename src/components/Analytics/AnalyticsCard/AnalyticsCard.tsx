@@ -10,7 +10,7 @@ import { Tab } from '../../Tab/Tab';
 import { Routes } from '../../../app/containers/Navigation/NavigationTypes';
 
 export interface AnalyticsCardProps {
-    tabs: { [name: string]: TabAnalytics },
+    tabs?: { [name: string]: TabAnalytics },
     title: string,
     infoText?: string
 }
@@ -25,10 +25,9 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
     // const exportCsvAnalytics = () => {
     //     exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
     // }
-    const tabsList: Routes[] = Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } })
-
-    const [selectedTab, setSelectedTab] = React.useState<string>(tabsList[0].name)
-
+    const tabsList: Routes[] = props.tabs ? Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } }) : [];
+    const [selectedTab, setSelectedTab] = React.useState<string>(props.tabs? tabsList[0].name : "")
+    
 
     return (
         <AnalyticsCardStyle className={props.className}>
@@ -40,10 +39,10 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     </ActionIcon>
                     <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip> */}
                 </div>
-                <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} />
+                { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
             </AnalyticsCardHeader>
             <AnalyticsCardBody>
-                { props.tabs[selectedTab].content}
+                { props.tabs ? props.tabs[selectedTab].content : props.children}
             </AnalyticsCardBody>
         </AnalyticsCardStyle>
     )
