@@ -323,8 +323,8 @@ export const ContentListPage = (props: ContentListProps) => {
                                 {
                                     props.contentType ==='live' && value.channelType === 'rolling-manifest-transmux' && 
                                     <div className='pl2 relative'>
-                                        <IconStyle coloricon='orange' id='liveStreamRowFreeTrialToolTip'>warning_outlined</IconStyle>
-                                        <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">You can’t create more than one live channel on Trial accounts. Please contact us if you need to create more channels</Tooltip>
+                                        <IconStyle id='liveStreamRowFreeTrialToolTip'>info_outlined</IconStyle>
+                                        <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">You can’t create more than one live channel on Trial accounts. Please <Text color='blue' size={12}><a onClick={() => window.open('mailto:sales@dacast.com')}>contact us</a></Text> if you need to create more channels</Tooltip>
                                     </div>
                                 }
                             </div>,
