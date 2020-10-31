@@ -39,20 +39,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
         setAccountDetails(props.accountInfo)
     }, [props])
 
-    const handleCheckboxChange = (flag: Flag) => {
-        if(accountInfo.accountFlags.indexOf(flag) > -1) {
-            setAccountInfo({...accountInfo, accountFlags: accountInfo.accountFlags.filter(accountFlag => accountFlag !== flag)})
-        } else {
-            setAccountInfo({...accountInfo, accountFlags: [...accountInfo.accountFlags, flag]})
-        }
-    }
-
-    const renderFlags = (flagList: Flag[]) => {
-        return flagList ? flagList.map(flag => {
-            return  <InputCheckbox className='my1' key={flag} id={flag} defaultChecked={accountInfo.accountFlags && accountInfo.accountFlags.indexOf(flag) > -1} onChange={() => handleCheckboxChange(flag)} label={flag.charAt(0).toUpperCase() + flag.substring(1)} />
-        }) : null
-
-    }
+    React.useEffect(() => console.log('account info ', accountInfo))
 
     const handleCreateLegacy = () => {
         setCreatePlatformLoading(true)
@@ -135,9 +122,9 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
                     id='bannedFlag' 
                     className='mb2 mt1'
                     defaultChecked={accountDetails.isBanned} 
-                    onChange={() => setAccountInfo({...accountInfo, isBanned: accountInfo.isBanned ? !accountInfo.isBanned : !accountDetails.isBanned})} 
+                    onChange={() => {setAccountDetails({...accountDetails, isBanned: !accountDetails.isBanned});setAccountInfo({...accountInfo, isBanned: Object.keys(accountInfo).indexOf('isBanned') > -1 ? !accountInfo.isBanned : !accountDetails.isBanned})}}
                     label='Banned'
-                    disabled={accountDetails.isBanned}
+                    disabled={props.accountInfo.isBanned}
                 />
             </div>
 

@@ -57,8 +57,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data (GB)</Text>},
             {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
             // {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
-            {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
             {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
+            {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
             {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
         ]}
     }
@@ -100,8 +100,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
-                    <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
                     <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
+                    <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
                     <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
                 ]}
             })
