@@ -3,18 +3,19 @@ import { Text } from '../../../components/Typography/Text'
 import { Table } from '../../../components/Table/Table'
 import { AccountsComponentProps } from '../../containers/Accounts/Accounts'
 import { Link } from 'react-router-dom'
-import { Flag } from '../../redux-flow/store/Accounts/List/types'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
-import { IconStyle } from '../../../shared/Common/Icon'
+import { IconGreyContainer, IconStyle } from '../../../shared/Common/Icon'
 import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
+import { Tooltip } from '../../../components/Tooltip/Tooltip'
+import { Account } from '../../redux-flow/store/Accounts/List/types'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
@@ -57,15 +58,23 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
             // {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
             {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
-            {cell: <Text key='accountsTableHeaderLogCell' size={14} weight='med'>Log</Text>},
+            {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
             {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
         ]}
     }
 
-    const renderFlags = (flags: Flag[]) => {
-        return flags.map((flag) => {
-            return <Text key={'flag' + flag} size={14}>{flag}</Text>
-        })
+
+    const renderFlags = (item: Account): JSX.Element[] => {
+        var element = []
+        if (item.isBanned) {
+            element.push(
+                <IconGreyContainer key={'bannedFlag' + item.userId} className="mr1" >
+                    <IconStyle fontSize="small" id={"bannedFlag" + item.userId} coloricon='gray-3'>block</IconStyle>
+                    <Tooltip target={"bannedFlag" + item.userId}>Banned</Tooltip>
+                </IconGreyContainer>
+            )
+        }
+        return element
     }
 
     const handleImpersonate = (userIdentifier: string) => {
@@ -92,7 +101,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
                     // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
                     <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
-                    <Link key={'accountsTableBodyLogCell' + key }to={`/accounts/${account.userId}/logs`}>Logs</Link>,
+                    <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
                     <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
                 ]}
             })
