@@ -321,7 +321,7 @@ export const ContentListPage = (props: ContentListProps) => {
                                         </div>
                                 }
                                 {
-                                    props.contentType ==='live' && props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && 
+                                    props.contentType ==='live' && value.channelType === 'rolling-manifest-transmux' && 
                                     <div className='pl2 relative'>
                                         <IconStyle coloricon='orange' id='liveStreamRowFreeTrialToolTip'>warning_outlined</IconStyle>
                                         <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">This Live Stream has restrictions. Contact us to know more</Tooltip>
