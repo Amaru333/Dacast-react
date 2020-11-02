@@ -11,6 +11,9 @@ export const BarChart = (props: BarChartProps) => {
             backgroundColor: item.color,
             type: item.type ? item.type : 'bar',
             yAxisId: item.yAxisPosition && item.yAxisPosition === "right" ? 'right-y-axis' : 'left-axis-test',
+            ...( item.type === 'bar' && props.options && props.options.isTime && {
+                barThickness: 20,
+            } ),
             ...( item.type === 'line' && {
                 fill: false,
                 borderColor: item.color, 
@@ -68,8 +71,6 @@ export const BarChart = (props: BarChartProps) => {
             }
         }
     }
-
-    console.log(barProps);
 
     if(props.type == 'horizontal') {
         return (

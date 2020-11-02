@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react'
-import { HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/pages/Analytics/AnalyticsCommun';
+import { HalfSmFullXs, renderMap, FailedCardAnalytics } from '../app/shared/Analytics/AnalyticsCommun';
 import { DoughnutChart } from '../components/Analytics/DoughnutChart/DoughnutChart';
 import LeafletMap from '../components/Analytics/LeafletMap';
 import { displayBytesForHumans } from '../utils/formatUtils';

@@ -13,7 +13,7 @@ import { DropdownList, DropdownItem, DropdownItemText } from '../FormsComponents
 import { compareValues, useOutsideAlerter } from '../../utils/utils';
 import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
 import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModals';
-import { handleRowIconType } from '../../app/pages/Analytics/AnalyticsCommun';
+import { handleRowIconType } from '../../app/shared/Analytics/AnalyticsCommun';
 import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
 
 export interface ContentSelectorComponentProps {

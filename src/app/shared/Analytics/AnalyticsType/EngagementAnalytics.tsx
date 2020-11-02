@@ -6,6 +6,8 @@ import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
 import ReactTable from "react-table";
+import { fakeData, fakeColumns } from '../FakeData'
+import { TableAnalytics } from '../TableAnalytics'
 
 export interface EngagementAnalyticsProps {
 
@@ -30,6 +32,10 @@ export const EngagementAnalytics = (props: EngagementAnalyticsProps) => {
                     lines={ [ {data: [89, 82, 71, 61, 53, 41], label: "Engagement", color: ThemeAnalyticsColors.blue} ] }
                     labels={["10/12/20", "10/13/20", "10/14/20", "10/15/20", "10/16/20", "10/17/20"]} />
             </AnalyticsCard>
+            <TableAnalytics
+                data={fakeData}
+                header={fakeColumns}
+            />
         </React.Fragment>
 
     )

@@ -4,7 +4,8 @@ import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
-import ReactTable from "react-table";
+import { fakeColumns, fakeData } from '../FakeData'
+import { TableAnalytics } from '../TableAnalytics'
 
 export interface SalesAnalyticsProps {
 
@@ -21,6 +22,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     const returnTimeAnalytics = () => {
         return (
             <BarChart
+                id="uniqueStuff"
                 title="Sales and Revenue by Time"
                 options={ {rightYAxes: true} }
                 type="vertical"
@@ -35,6 +37,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     const returnDeviceAnalytics = () => {
         return (
             <BarChart
+                id="uniqueStuff1"
                 type="vertical"
                 title="Sales and Revenue by Device"
                 dataSets={ [ {data: [26, 12, 9, 12, 14, 24], label: "Sales", color: ThemeAnalyticsColors.blue }, {data: [42, 27, 18, 29, 19, 38], label: "Revenue", color: ThemeAnalyticsColors.red, type: "line" } ] }
@@ -46,12 +49,12 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         return (
             <LeafletMap 
                 markers= {[
-                    {  city: 'New York City', position: { latitude:  40.7808, longitude: -73.9772}, consumedMB: 9392 },
-                    {  city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167}, consumedMB: 7602 },
-                    {  city: 'San Francisco', position: { latitude: 37.6216, longitude:  -122.3929}, consumedMB: 12349 },
-                    {  city: 'Londres', position: { latitude: 51.5073509, longitude:  -0.1277583}, consumedMB: 5402 } 
+                    {  city: 'New York City', position: { latitude:  40.7808, longitude: -73.9772}, value: 9392 },
+                    {  city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167}, value: 7602 },
+                    {  city: 'San Francisco', position: { latitude: 37.6216, longitude:  -122.3929}, value: 12349 },
+                    {  city: 'Londres', position: { latitude: 51.5073509, longitude:  -0.1277583}, value: 5402 } 
                 ]} 
-                markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.consumedMB) } />
+                markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
         )
     }
 
@@ -66,6 +69,10 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                         "Location": { name: 'Location', content: returnLocationAnalytics() },
                     }
                 }
+            />
+            <TableAnalytics 
+                data={fakeData}
+                header={fakeColumns}
             />
         </React.Fragment>
 

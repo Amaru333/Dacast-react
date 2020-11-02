@@ -26,5 +26,6 @@ export interface BarChartProps {
     labels: (string | number)[],
     options?: BaseOptions
     title: string,
-    type?: 'horizontal' | 'vertical'
+    type?: 'horizontal' | 'vertical',
+    id?: string
 }

@@ -45,7 +45,7 @@ export interface LocationItem {
         latitude: number;
         longitude: number;
     };
-    consumedMB: number;
+    value: number;
 }
 export interface AnalyticsDashboardConsumptionPerLocation {
     data: LocationItem[];
