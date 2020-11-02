@@ -18,8 +18,8 @@ export class AxiosClient {
     private baseUrl: string = null
     private userToken: UserTokenService = null
     private refreshTokenUrl: string = null
-    private maxRetries = 3
-    private retryDelay = 4000
+    private maxRetries = 1
+    private retryDelay = 8000
     private axiosInstance: AxiosInstance = null
     private refreshingToken: boolean = false
 
@@ -30,7 +30,7 @@ export class AxiosClient {
                 timeout: 30000,
                 headers: {Authorization: null}
             })
-            // this.axiosInstance.interceptors.response.use(null, this.responseInterceptor)
+            this.axiosInstance.interceptors.response.use(null, this.responseInterceptor)
             this.axiosInstance.interceptors.request.use(this.requestInterceptor, null)
         }
         return this.axiosInstance
