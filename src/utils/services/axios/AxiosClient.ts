@@ -30,7 +30,7 @@ export class AxiosClient {
                 timeout: 30000,
                 headers: {Authorization: null}
             })
-            this.axiosInstance.interceptors.response.use(null, this.responseInterceptor)
+            // this.axiosInstance.interceptors.response.use(null, this.responseInterceptor)
             this.axiosInstance.interceptors.request.use(this.requestInterceptor, null)
         }
         return this.axiosInstance
