@@ -90,12 +90,14 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(!props.ProfileInfo) {
-            props.getProfilePageDetails()
-        }
-
-        if(!props.billingInfo) {
-            props.getBillingInfo()
+        if(location.pathname.indexOf('impersonate') === -1) {
+            if(!props.ProfileInfo) {
+                props.getProfilePageDetails()
+            }
+    
+            if(!props.billingInfo) {
+                props.getBillingInfo()
+            }
         }
     }, [])
 
