@@ -43,6 +43,7 @@ interface UserInfo {
     "privilege-vod": string;
     "privilege-web-download": string;
     "privilege-analytics": string;
+    'privilege-expo': string;
     'custom:dacast_user_id': string;
     'custom:first_name': string;
     'custom:last_name': string;
