@@ -43,7 +43,6 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
-import { BillingPageInfos } from './redux-flow/store/Account/Plan';
 
 // Any additional component props go here.
 interface MainProps {
@@ -196,7 +195,7 @@ const AppContent = (props: { routes: any }) => {
     return (
         <>
             <Toasts />
-            { userToken.isLoggedIn() && window.location.href.indexOf('impersonate') === -1 ?
+            { userToken.isLoggedIn() ?
                 <>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}

@@ -11,8 +11,11 @@ export class DacastSdk {
     constructor(baseUrl: string, userToken: UserTokenService, refreshTokenUrl?: string) {
         this.axiosClient = new AxiosClient(baseUrl, userToken, refreshTokenUrl)
         this.userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        this.baseUrl = baseUrl
+        this.refreshTokenUrl = refreshTokenUrl
     }
-
+    private baseUrl: string = null
+    private refreshTokenUrl: string = null
     private axiosClient: AxiosClient = null
     private userId: string = null
     
@@ -22,6 +25,10 @@ export class DacastSdk {
             return {...responseData.data}
         }
         return responseData
+    }
+
+    public updateToken = (newToken: UserTokenService) => {
+        this.axiosClient = new AxiosClient(this.baseUrl, newToken, this.refreshTokenUrl)
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()

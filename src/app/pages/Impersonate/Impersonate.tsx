@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router'
+import { dacastSdk } from '../../utils/services/axios/axiosClient'
 import { userToken } from '../../utils/services/token/tokenService'
 
 export const Impersonate = () => {
@@ -16,6 +17,7 @@ export const Impersonate = () => {
                 expires: 9999999999999
             })
         }
+        dacastSdk.updateToken(userToken)
         history.push('/dashboard')
     }, [])
 
