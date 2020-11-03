@@ -79,13 +79,14 @@ module.exports = {
         // Build html for the client app
         new HtmlWebpackPlugin({ 
             filename: 'index.html',
-            favicon: 'public/assets/favicon.ico',
+            favicon: process.env.API_BASE_URL.indexOf('universe') === -1 ? 'public/assets/stagingIcon.ico' : 'public/assets/favicon.ico',            
             template: path.resolve(__dirname, 'src/app', 'index.html'),
             excludeAssets: [/admin.*/]
         }),
         // Build html for the admin site
         new HtmlWebpackPlugin({ 
             filename: 'admin.html',
+            favicon: 'public/assets/adminIcon.ico',
             template: path.resolve(__dirname, 'src/admin', 'admin.html'),
             excludeAssets: [/app.*/]
         }),
