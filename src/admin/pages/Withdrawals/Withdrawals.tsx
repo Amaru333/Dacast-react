@@ -139,6 +139,8 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
     return props.withdrawals ? 
         <div className='flex flex-column'>
+            <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
+            <Tab className='my1 col col-3' orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
@@ -146,9 +148,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                 </div>
                 <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit(accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
             </div>
-            <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
-            <Tab className='my1 col col-3' orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
-            <Table contentLoading={contentLoading} className='my1' id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
+            <Table contentLoading={contentLoading} id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
             <Pagination totalResults={props.withdrawals.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
