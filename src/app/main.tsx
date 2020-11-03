@@ -195,7 +195,7 @@ const AppContent = (props: { routes: any }) => {
     return (
         <>
             <Toasts />
-            { userToken.isLoggedIn() && location.pathname.indexOf('impersonate') !== -1 ?
+            { userToken.isLoggedIn() && location.pathname.indexOf('impersonate') === -1 ?
                 <>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
