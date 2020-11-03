@@ -48,6 +48,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
+    const numberOfRenditionsList = [{title: "1 Rendition", data: 1}, {title: "2 Renditions", data: 2}, {title: "3 Renditions", data: 3}, {title: "4 Renditions", data: 4}, {title: "5 Renditions", data: 5}]
+
     const [errorMessage, setErrorMessage] = React.useState<string>(null)
 
     const handleCancel = () => {
@@ -137,8 +139,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                             className='col col-12' 
                             id='numberOfRenditionsDropdown' 
                             dropdownDefaultSelect="1 Rendition"
-                            list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
-                            callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
+                            list={numberOfRenditionsList} 
+                            callback={(item: DropdownSingleListItem) => setRenditionCount(item.data)} 
                         />
                         <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
                         <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
