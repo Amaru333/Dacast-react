@@ -45,7 +45,7 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getEmbedSettingsOptions: async () => {
-            await dispatch(getEmbedSettingsOptionsAction());
+            await dispatch(getEmbedSettingsOptionsAction(undefined));
         },
         saveEmbedSettingsOptions: async (data: EmbedSettingsOptionType) => {
             await dispatch(saveEmbedSettingsOptionsAction(data))
