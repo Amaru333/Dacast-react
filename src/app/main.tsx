@@ -43,6 +43,7 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import { BillingPageInfos } from './redux-flow/store/Account/Plan';
 
 // Any additional component props go here.
 interface MainProps {
@@ -195,7 +196,7 @@ const AppContent = (props: { routes: any }) => {
     return (
         <>
             <Toasts />
-            { userToken.isLoggedIn() && location.pathname.indexOf('impersonate') === -1 ?
+            { userToken.isLoggedIn() && window.location.href.indexOf('impersonate') === -1 ?
                 <>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
@@ -260,7 +261,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 dataLayer: {
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': 'Unknown yet',
+                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
                     'signedUp': 'Unknown yet',
                     'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'userFirstName': userToken.getUserInfoItem('custom:first_name'),

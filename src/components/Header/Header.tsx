@@ -90,7 +90,7 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(location.pathname.indexOf('impersonate') === -1) {
+        if(window.location.href.indexOf('impersonate') === -1) {
             if(!props.ProfileInfo) {
                 props.getProfilePageDetails()
             }
