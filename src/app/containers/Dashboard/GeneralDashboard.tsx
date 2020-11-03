@@ -1,5 +1,5 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemFullWidthContainer, classItemThirdWidthContainer, classItemQuarterWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemThirdWidthContainer } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -7,36 +7,18 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { getPercentage, useMedia } from '../../../utils/utils';
 import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { DashboardGeneral, DashboardPayingPlan, DashboardTrial } from '../../redux-flow/store/Dashboard';
-import { PurchaseStepperCartStep, PurchaseStepperPaymentStep } from './PurchaseStepper';
+import { DashboardGeneral } from '../../redux-flow/store/Dashboard';
 import { useHistory } from 'react-router';
 import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
-import { useLocation } from 'react-router-dom'
 
-interface PlanType {
-    libelle: string;
-    price: number;
-    /** Change to Date maybe later or number for timestamp */
-    nextBill: string;
-    isTrial: boolean;
-    daysLeft?: number;
-    openOverage: (b: boolean) => void;
-}
-
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
     let history = useHistory()
-    
     let smallScreen = useMedia('(max-width: 40em)')
-
-    const mockPaymentMethod = "none"
-
-    const stepList = [PurchaseStepperCartStep, PurchaseStepperPaymentStep]
-
-    const [purchaseStepperOpened, setPurchaseStepperOpened] = React.useState<boolean>(false)
-    const [selectedPurchaseItem, setSelectedPurchaseItem] = React.useState<string>(null)
-
+    let date = new Date(), y = date.getFullYear(), m = date.getMonth()
+    const classItem = classItemThirdWidthContainer
+   
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
         left: props.profile.storage.limit-props.profile.storage.consumed,
@@ -47,18 +29,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         left: props.profile.bandwidth.limit-props.profile.bandwidth.consumed,
         limit: props.profile.bandwidth.limit,
     } 
-    
-    const handlePurchaseStepper = (purchaseItem: string) => {
-        history.push('/account/upgrade');
-
-        // setSelectedPurchaseItem(purchaseItem);
-        // setPurchaseStepperOpened(true);
-    }
-
-    let date = new Date(), y = date.getFullYear(), m = date.getMonth();
-    var lastDay = new Date(y, m + 1, 0);
-
-    
 
     const handleBillingPeriod = () => {
         if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
@@ -68,13 +38,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
     }
 
-    const onSubmitFunctions = () => {
-        setPurchaseStepperOpened(false)
-    }
-
-
-    // const classItem = getPrivilege('privilege-china') ? classItemQuarterWidthContainer : classItemThirdWidthContainer;
-    const classItem = classItemThirdWidthContainer;
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
@@ -90,7 +53,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
-                        {handleButtonToPurchase(bandwidth.percentage, "Data", handlePurchaseStepper)}
+                        {(props.plan.displayName !== "Free" && props.plan.state === "active") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
@@ -115,7 +78,6 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        {handleButtonToPurchase(storage.percentage, "Storage", handlePurchaseStepper)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>
@@ -162,7 +124,7 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
         )
     }
     const handleInfos = () => {
-        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && !props.plan.displayName.includes('Canceled')) {
+        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && props.plan.state === "active") {
             if(props.overage && props.overage.enabled && props.overage.amount > 0) {
                 return (
                     <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>

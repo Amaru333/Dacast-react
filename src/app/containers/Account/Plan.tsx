@@ -2,7 +2,7 @@ import React from 'react';
 import { PlanPage } from '../../pages/Account/Plan/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, deleteBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
+import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
 import { BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -18,7 +18,6 @@ interface PlanContainerProps {
     saveBillingPagePaymentMethod: (data: string) => Promise<void>
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
-    deleteBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     addBillingPageExtras: (data: Extras) => Promise<void>
     getProductDetails: () => Promise<void>;
     purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
@@ -70,9 +69,6 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
              await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
-        },
-        deleteBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
-             await dispatch(deleteBillingPagePaymenPlaybackProtectionAction(data));
         },
         addBillingPageExtras: async (data: Extras) => {
              await dispatch(addBillingPageExtrasAction(data));

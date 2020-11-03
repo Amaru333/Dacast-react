@@ -8,7 +8,7 @@ import { Card } from '../../../components/Card/Card';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components';
-import { AddStreamModal } from '../Navigation/AddStreamModal';
+import AddStreamModal from '../Navigation/AddStreamModal';
 import { userToken } from '../../utils/services/token/tokenService';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { link } from 'fs';

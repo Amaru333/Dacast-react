@@ -271,7 +271,9 @@ export const TagsContainer = styled.div<{noBorder: boolean; greyBackground: bool
 export const TagsInputStyle = styled(InputStyle)`
     border: none;
     width: 100%;
-    padding-left: 6px;
+    padding-left: 12px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     height: 20px;
     background-color: inherit;
     &:focus {

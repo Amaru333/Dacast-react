@@ -82,6 +82,7 @@ export interface ContentItem {
     thumbnail?: string;
     createdAt: number;
     featuresList?: FeaturesList;
+    channelType?: string;
 }
 
 export interface SearchResult {
@@ -98,6 +99,12 @@ export interface SubtitleInfo {
     languageShortName: string;
     url?: string;
     convertToUTF8?: boolean;
+}
+
+export interface DateTimeValue {
+    date: string;
+    time: string;
+    timezone: string;
 }
 
 export const initialContentGeneralState: ContentDetailsState = {};

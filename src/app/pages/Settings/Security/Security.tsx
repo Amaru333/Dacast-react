@@ -58,17 +58,17 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const onSubmit = () => {
         setSubmitLoading(true);
-        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone}`).valueOf() : 0
-        let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone}`).valueOf() : 0
+        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone.split(' ')[0]}`).valueOf() : 0
+        let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone.split(' ')[0]}`).valueOf() : 0
         props.saveSettingsSecurityOptions(
             {
                 ...securityDetails, 
                 passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
                 contentScheduling: {
                     startTime:startTimeTs, 
-                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone : null,
+                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone.split(' ')[0] : null,
                     endTime: endTimeTs,
-                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone : null
+                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone.split(' ')[0] : null
                 } 
             }).then(() => {
                 setSubmitLoading(false);

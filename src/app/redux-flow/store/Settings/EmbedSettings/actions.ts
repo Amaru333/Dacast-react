@@ -1,12 +1,11 @@
 import { ActionTypes, EmbedSettingsOptionType } from "./types";
-import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "../..";
-import { SettingsServices } from './services';
-import { showToastNotification } from '../../Toasts';
+import { formatGetEmbedSettingsOuput, formatPutEmbedSettingsInput } from './viewModel';
+import { applyViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 
 export interface GetEmbedSettingsOptions {
     type: ActionTypes.GET_EMBED_SETTINGS_OPTIONS;
-    payload: {data: EmbedSettingsOptionType};
+    payload: EmbedSettingsOptionType;
 }
 
 export interface SaveEmbedSettingsOptions {
@@ -14,30 +13,8 @@ export interface SaveEmbedSettingsOptions {
     payload: EmbedSettingsOptionType;
 }
 
-//Exemple of Async Action
-export const getEmbedSettingsOptionsAction = (): ThunkDispatch<Promise<void>, {}, GetEmbedSettingsOptions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetEmbedSettingsOptions> ) => {
-        await SettingsServices.getEmbedSettingsOptionsService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_EMBED_SETTINGS_OPTIONS, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const saveEmbedSettingsOptionsAction = (data: EmbedSettingsOptionType): ThunkDispatch<Promise<void>, {}, SaveEmbedSettingsOptions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveEmbedSettingsOptions> ) => {
-        await SettingsServices.saveEmbedSettingsOptionsService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS, payload: data} );
-                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
 export type Action = GetEmbedSettingsOptions | SaveEmbedSettingsOptions;
+
+
+export const getEmbedSettingsOptionsAction = applyViewModel(dacastSdk.getEmbedSettings, undefined, formatGetEmbedSettingsOuput, ActionTypes.GET_EMBED_SETTINGS_OPTIONS, null, 'Couldn\'t get embed settings')
+export const saveEmbedSettingsOptionsAction = applyViewModel(dacastSdk.putEmbedSettings, formatPutEmbedSettingsInput, undefined, ActionTypes.SAVE_EMBED_SETTINGS_OPTIONS, 'Changes have been saved', 'Couldn\'t saved changes')

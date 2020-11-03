@@ -26,16 +26,20 @@ import { SearchResult } from '../../redux-flow/store/Content/General/types';
 import { ThemesData } from '../../redux-flow/store/Settings/Theming';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from './BulkModals';
-import { AddStreamModal } from '../../containers/Navigation/AddStreamModal';
+import AddStreamModal from '../../containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { ContentFiltering, FilteringContentState } from './ContentFiltering';
+import EventHooker from '../../../utils/services/event/eventHooker';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
-import EventHooker from '../../utils/services/event/eventHooker';
+import { PreviewModal } from '../Common/PreviewModal';
+import { userToken } from '../../utils/services/token/tokenService';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 
 interface ContentListProps {
     contentType: 'expo' | 'vod' | 'live' | 'playlist';
     items: SearchResult;
     themesList: ThemesData;
+    billingInfo?: BillingPageInfos;
     getContentList: (qs: string, contentType: string) => Promise<void>;
     deleteContentList: (voidId: string, contentType: string) => Promise<void>;
     getThemesList: () => Promise<void>;
@@ -47,6 +51,8 @@ export const ContentListPage = (props: ContentListProps) => {
     let history = useHistory()
 
     let qs = useQuery()
+
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
     const formatFilters = () => {
         let filters: FilteringContentState = {
@@ -93,6 +99,8 @@ export const ContentListPage = (props: ContentListProps) => {
     const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
+    const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+    const [previewedContent, setPreviewedContent] = React.useState<string>(null)
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -282,6 +290,11 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const handleThumbnailClick = (contentId: string) => {
+        setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
+        setPreviewModalOpen(true)
+    }   
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -297,13 +310,22 @@ export const ContentListPage = (props: ContentListProps) => {
                                     }
                                 }
                                 } />
+
                                 {
+                                    
                                     value.thumbnail ?
-                                        <img className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
                                         <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
+                                }
+                                {
+                                    props.contentType ==='live' && value.channelType === 'rolling-manifest-transmux' && 
+                                    <div className='pl2 relative'>
+                                        <IconStyle id='liveStreamRowFreeTrialToolTip'>info_outlined</IconStyle>
+                                        <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">This is a trial channel. Please <Text color='blue' size={12}><a onClick={() => window.open('mailto:sales@dacast.com')}>contact sales</a></Text> to enable testing of all platform features.</Tooltip>
+                                    </div>
                                 }
                             </div>,
                         <TitleContainer>
@@ -362,7 +384,7 @@ export const ContentListPage = (props: ContentListProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
                 </div>
-                <div className="flex items-center" >
+                <div className="flex items-center relative" >
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
                     }
@@ -385,7 +407,20 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "live" &&
-                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                        <div className='flex items-end'>
+                            <Button disabled={props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0} onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                            {
+                                props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0 &&
+                                <>
+                                    <IconStyle className='pl1' id='createLiveStreamButtonllToolTip'>info_outlined</IconStyle>
+                                    <Tooltip leftPositionValueToZero target='createLiveStreamButtonllToolTip'>
+                                        Free Trial accounts only have 1 Live Stream. Contact us to upgrade
+                                    </Tooltip>
+                                </>
+                            }
+
+                        </div>
+
                     }
                     {
                         props.contentType === "playlist" &&
@@ -425,9 +460,14 @@ export const ContentListPage = (props: ContentListProps) => {
                     <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('deleted')) }} />
                 }
             </Modal>
+            {addStreamModalOpen && 
             <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+            }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
+            {
+                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+            }
         </>
 
     )

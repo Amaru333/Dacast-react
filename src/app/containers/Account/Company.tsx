@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from "../../redux-flow/store";
 import { CompanyPageInfos } from '../../redux-flow/store/Account/Company/types';
 import { ThunkDispatch } from 'redux-thunk';
-import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrlAction, getCompanyPageLogoUrlAction, deleteCompanyLogo } from '../../redux-flow/store/Account/Company/actions';
+import { CompanyAction, getCompanyPageDetailsAction, saveCompanyPageDetailsAction, uploadCompanyLogo, getUploadLogoUrlAction, deleteCompanyLogo } from '../../redux-flow/store/Account/Company/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import {CompanyPage} from '../../pages/Account/Company/Company';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -53,19 +53,19 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, CompanyAction>) {
     return {
         getCompanyPageDetails: async () => {
-            await dispatch(getCompanyPageDetailsAction())
+            await dispatch(getCompanyPageDetailsAction(undefined))
         },
         saveCompanyPageDetails: async (data: CompanyPageInfos) => {
             await dispatch(saveCompanyPageDetailsAction(data))
         },
         getLogoUrlForUploading: async () => {
-            await dispatch(getUploadLogoUrlAction())
+            await dispatch(getUploadLogoUrlAction(undefined))
         },
         uploadCompanyLogo: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadCompanyLogo(data, uploadUrl))
+            await dispatch(uploadCompanyLogo({data: data, uploadUrl: uploadUrl}))
         },
         deleteCompanyLogo: async () => {
-            await dispatch(deleteCompanyLogo())
+            await dispatch(deleteCompanyLogo(undefined))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))

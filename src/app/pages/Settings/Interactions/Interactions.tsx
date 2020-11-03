@@ -254,7 +254,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <DisabledSection settingsEditable={props.interactionsInfos.adsSettings.ads.length > 0}>
                         <Toggle id='advertisingEnabled' defaultChecked={props.interactionsInfos.adsSettings.adsEnabled} onChange={() => { setInteractionsInfos({ ...interactionInfos, adsSettings: {...interactionInfos.adsSettings, adsEnabled: !interactionInfos.adsSettings.adsEnabled }}); setSettingsEdited(true) }} label='Advertising enabled' />
                     </DisabledSection>
-                    <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overriden individuallly. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
+                    <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overridden individually. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex mb2'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>

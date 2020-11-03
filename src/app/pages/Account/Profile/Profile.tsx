@@ -19,8 +19,8 @@ import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
-import EventHooker from '../../../utils/services/event/eventHooker';
 import { timezoneDropdownList } from '../../../../utils/DropdownLists'
+import  EventHooker from '../../../../utils/services/event/eventHooker'
 
 var moment = require('moment-timezone');
 
@@ -44,9 +44,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const { dirty } = formState;
 
     const handleSubmitCleanup = (data: any) => {
-            axiosClient.forceRefresh()
-            setSubmitLoading(false)
-            reset(data)
+        setSubmitLoading(false)
+        reset(data)
     }
 
     React.useEffect(() => {
@@ -151,7 +150,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
 
                     <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></div>
 
-                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {tsToLocaleDate(props.ProfilePageDetails.passwordLastChanged ? props.ProfilePageDetails.passwordLastChanged : Math.round(Date.now()/1000), DateTime.DATETIME_SHORT)}</Text></p>
+                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {props.ProfilePageDetails.passwordLastChanged}</Text></p>
 
                     <p className="mx1"><Text size={14} weight='reg' color='gray-3'>For best security practices you should update your password every 6 months.</Text></p>
 

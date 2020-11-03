@@ -10,7 +10,7 @@ export interface CustomAllowance {
 }
 
 export interface Plan {
-    name: 'Developer' | 'Event' | 'Annual Scale' | 'Monthly Scale';
+    name: 'Starter' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     code: string;
     allownaceCode: string;
     isActive: boolean;
@@ -49,7 +49,7 @@ export interface Price {
 }
 
 export interface Plans {
-    developerPlan: Plan
+    starterPlan: Plan
     eventPlan: Plan
     scalePlanAnnual: Plan;
     scalePlanMonthly: Plan;
@@ -70,7 +70,7 @@ export interface ChangePlan {
 }
 
 export const upgradeInitialState: Plans = {
-    developerPlan: null,
+    starterPlan: null,
     eventPlan: null,
     scalePlanAnnual: null,
     scalePlanMonthly: null,

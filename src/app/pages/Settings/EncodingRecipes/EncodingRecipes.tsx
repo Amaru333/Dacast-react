@@ -32,7 +32,7 @@ export interface EncodingRecipesComponentProps {
 
 export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
-    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "LD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
+    const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "ULD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
 
     const stepList = [settingsStep, presetStep]
    

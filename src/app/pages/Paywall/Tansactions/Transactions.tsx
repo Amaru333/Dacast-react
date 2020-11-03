@@ -9,8 +9,6 @@ import { useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
-import { tsToLocaleDate } from '../../../../utils/formatUtils';
-import { DateTime } from 'luxon';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -140,14 +138,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(props.transactionsInfo.transactionsList) {
             return props.transactionsInfo.transactionsList.map((transaction, i) => {
                 return {data: [
-                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.decimalValue ? transaction.note : transaction.actionType}</Text>,
+                    <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
-                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, DateTime.DATETIME_SHORT) : transaction.date}</Text>,
+                    <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
-                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency || 'USD'}</Text>,
-                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + (transaction.decimalValue ? transaction.decimalValue : transaction.price)}</Text>,
-                    transaction.dacastFee >= 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee)).toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
-                    transaction.dacastFee < 0 ? <Label label={(Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee)).toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
+                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
+                    <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
+                    transaction.credit ? <Label label={transaction.credit.toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
+                    transaction.debit ? <Label label={transaction.debit.toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,
                 ]}
             })
         }

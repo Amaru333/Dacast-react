@@ -28,6 +28,7 @@ export interface Account {
         consumed: number;
     };
     flags: Flag[];
+    isBanned: boolean;
 }
 
 export const accountsListInitialState: {users: Account[]; total: number} | false = false

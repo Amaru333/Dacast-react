@@ -35,13 +35,14 @@ import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
 import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
-import { AddStreamModal } from './containers/Navigation/AddStreamModal';
+import AddStreamModal from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
-import EventHooker from './utils/services/event/eventHooker';
+import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
+import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 
 // Any additional component props go here.
 interface MainProps {
@@ -64,6 +65,17 @@ EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     if(timeoutId === null) { 
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
+})
+
+EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
+    console.log('forcing logout')
+    store.dispatch({type: 'USER_LOGOUT'})
+    userToken.resetUserInfo()
+    location.reload()
+})
+
+EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
+    dacastSdk.forceRefresh()
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
@@ -186,7 +198,7 @@ const AppContent = (props: { routes: any }) => {
             { userToken.isLoggedIn() ?
                 <>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
-                    <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
+                    { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
                     <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
 
@@ -248,7 +260,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 dataLayer: {
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': 'Unknown yet',
+                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
                     'signedUp': 'Unknown yet',
                     'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'userFirstName': userToken.getUserInfoItem('custom:first_name'),

@@ -5,7 +5,7 @@ import { ActionTypes, invoicesInitialState, SearchInvoicesResult  } from "./type
 const reducer: Reducer<SearchInvoicesResult> = (state = invoicesInitialState, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_INVOICES :
-            return action.payload.data
+            return action.payload
         default: 
             return state;
     }

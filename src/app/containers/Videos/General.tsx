@@ -5,13 +5,23 @@ import { connect } from 'react-redux';
 import { SubtitleInfo, ContentDetails, ContentDetailsState } from '../../redux-flow/store/Content/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { useParams } from 'react-router-dom';
+import { useParams, Prompt } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import { ContentGeneralPage } from '../../shared/General/ContentGeneral';
 import { getContentDetailsAction, editContentDetailsAction, getUploadUrlAction, uploadFileAction, uploadImageFromVideoAction, deleteFileAction, deleteSubtitleAction, addSubtitleAction, Action } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Card } from '../../../components/Card/Card';
+import { GeneralDetails } from '../../shared/General/Details';
+import { GeneralSharing } from '../../shared/General/Sharing';
+import { GeneralImages } from '../../shared/General/Images';
+import { GeneralSubtitles } from '../../shared/General/Subtitles';
+import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ButtonContainer } from '../../shared/General/GeneralStyle';
+import { ImageModal } from '../../shared/General/ImageModal';
+import { handleImageModalFunction, userId } from '../../utils/general'
+import { Divider } from '../../shared/Common/MiscStyle';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
@@ -29,13 +39,37 @@ export interface GeneralComponentProps {
 const General = (props: GeneralComponentProps) => {
 
     let { vodId } = useParams()
+
+    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-
-
+    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [hasChanged, setHasChanged] = React.useState<boolean>(false)
+    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
+    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
+    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    
     React.useEffect(() => {
         props.getContentDetails(vodId, "vod")
         .catch(() => setNodataFetched(true))
     }, [])
+
+    React.useEffect(() => {
+        if(props.contentDetailsState['vod']){
+            setStateContentDetails(props.contentDetailsState['vod'][vodId])
+            setContentDetails(props.contentDetailsState['vod'][vodId])
+        }
+    }, [props.contentDetailsState])
+
+    const handleSave = () => {
+        setButtonLoading(true)
+        props.saveContentDetails(contentDetails, "vod").then(() => {
+            setButtonLoading(false)
+            setHasChanged(false)
+        }).catch(() =>
+            setButtonLoading(false)
+        )
+    }
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
@@ -45,23 +79,71 @@ const General = (props: GeneralComponentProps) => {
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.contentDetailsState['vod'] && props.contentDetailsState['vod'][vodId] ?
+                props.contentDetailsState["vod"] && stateContentDetails ?
                     (
                         <div className='flex flex-column'>
-                            <ContentGeneralPage
-                                contentType="vod" 
-                                contentDetails={props.contentDetailsState['vod'][vodId]}
-                                getContentDetails={props.getContentDetails}
-                                saveContentDetails={props.saveContentDetails}
-                                getUploadUrl={props.getUploadUrl}
-                                uploadFile={props.uploadFile}
-                                deleteFile={props.deleteFile}
-                                showToast={props.showToast}
-                                uploadImageFromVideo={props.uploadImageFromVideo}
-                                deleteSubtitle={props.deleteSubtitle}
-                                addSubtitle={props.addSubtitle}
+                            <Card className="col col-12 clearfix">
+                                <GeneralDetails
+                                    contentDetails={stateContentDetails}
+                                    localContentDetails={contentDetails}
+                                    contentType="vod"
+                                    setHasChanged={setHasChanged}
+                                    setLocalContentDetails={setContentDetails}
+                                />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <GeneralSharing 
+                                    contentDetails={stateContentDetails}
+                                    contentType="vod"
+                                />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <GeneralImages 
+                                    contentType="vod"
+                                    localContentDetails={contentDetails}
+                                    setLocalContentDetails={setContentDetails}
+                                    contentDetails={stateContentDetails}
+                                    setHasChanged={setHasChanged}
+                                    setImageModalTitle={setImageModalTitle}
+                                    setSelectedImageName={setSelectedImageName}
+                                    setImageModalOpen={setImageModalOpen}
+                                    deleteFile={props.deleteFile}
+                                />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <GeneralSubtitles 
+                                    contentType="vod"
+                                    contentDetails={stateContentDetails}
+                                    deleteSubtitle={props.deleteSubtitle}
+                                    addSubtitle={props.addSubtitle}
+                                    getUploadUrl={props.getUploadUrl}
+                                />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <GeneralAdvancedLinks contentDetails={stateContentDetails} />
 
-                            />
+                                {
+                                    imageModalOpen &&
+                                        <ImageModal
+                                            imageFileName={selectedImageName}
+                                            imageType={handleImageModalFunction(imageModalTitle, "vod")}
+                                            contentId={stateContentDetails.id}
+                                            contentType="vod"
+                                            uploadFromVideoAction={props.uploadImageFromVideo}
+                                            uploadUrl={stateContentDetails.uploadurl}
+                                            getUploadUrl={props.getUploadUrl}
+                                            title={imageModalTitle}
+                                            toggle={() => setImageModalOpen(false)}
+                                            opened={imageModalOpen === true}
+                                            submit={props.uploadFile}
+                                            getContentDetails={props.getContentDetails}
+                                        />
+                                }
+                            </Card>
+                            {
+                                hasChanged &&
+                                <ButtonContainer>
+                                    <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
+                                    <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
+                                </ButtonContainer>
+                            }
+                            <Prompt when={hasChanged} message='' />
                         </div>
                     )
                     : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -110,3 +192,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(General);
+

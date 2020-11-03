@@ -2,6 +2,7 @@ import { ActionTypes, PlanInfo, PlanInfoPut } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { PlansServices } from './service';
+import { showToastNotification } from '../../Toasts';
 
 export interface GetPlan {
     type: ActionTypes.GET_ACCOUNT_PLAN;
@@ -24,7 +25,7 @@ export const getAccountPlanAction = (accountId: string): ThunkDispatch<Promise<v
             .then( response => {
                 dispatch({type: ActionTypes.GET_ACCOUNT_PLAN, payload: response.data});
             }).catch(() => {
-
+                dispatch(showToastNotification('Couldn\'t fetch plan details' , 'fixed', 'error'))
             })
     }
 }
@@ -33,8 +34,11 @@ export const saveAccountPlanAction = (accountId: string, planInfo: PlanInfoPut):
     return async (dispatch: ThunkDispatch<AdminState, {}, SavePlan>) => {
         await PlansServices.saveAccountPlan(accountId, planInfo)
             .then( response => {
-                dispatch({type: ActionTypes.SAVE_ACCOUNT_PLAN, payload: response.data});
+                dispatch({type: ActionTypes.SAVE_ACCOUNT_PLAN, payload: response.data})
+                dispatch(showToastNotification('Plan details saved' , 'fixed', 'success'))
+
             }).catch(() => {
+                dispatch(showToastNotification('Couldn\'t save plan details' , 'fixed', 'error'))
 
             })
     }

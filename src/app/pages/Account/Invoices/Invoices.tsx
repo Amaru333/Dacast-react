@@ -148,7 +148,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
             data: [
                 <div key='invoicesBodyEmptyTable' className='center'>
                     <Text size={14} weight='reg' color='gray-3'>You have no invoices. </Text>
-                    <Link to='/account/upgrade'  >Click here</Link>
+                    <Text size={14} weight='reg'><Link to='/account/upgrade'  >Click here</Link></Text>
                     <Text size={14} weight='reg' color='gray-3'> to upgrade your plan.</Text>
                 </div>
             ]

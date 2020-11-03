@@ -1,4 +1,4 @@
-export const FeaturesDeveloperPlan =[
+export const FeaturesStarterPlan =[
     "Live Streaming",
     "Video On Demand Streaming",
     "Ad-free streaming",
@@ -127,14 +127,15 @@ export const FeaturesCustomPlan =[
 export const MainFeatures: {name: string; tooltip: string}[] = [
     {name: "Data", tooltip: "Data is consumed when viewers watch your content"},
     {name: "Storage", tooltip: "Storage is consumed by Video on Demand assets"},
-    {name: "24/7 Phone Support", tooltip: "Call us at any time for personalised help and assistance"},
+    {name: "M3U8", tooltip: "A direct M3U8 link allows you to stream to TVs and other smart devices"},
+    {name: "Advertising", tooltip: "Monetise your content with Pre-, Mid- and Post-Roll Ads"},
     {name: "Paywall", tooltip: "Sell your content vie Pay Per View or Subscription"},
-    {name: "Ads", tooltip: "Monetise your content with Pre-, Mid- and Post-Roll Ads"},
+    {name: "24/7 Phone Support", tooltip: "Call us at any time for personalised help and assistance"},
     {name: "China", tooltip: "Our Premium delivery method with increased performance in China"},
 ]
 
 export enum PlansName {
-    "Developer" = "Developer Plan",
+    "Starter" = "Starter Plan",
     "Event" = "Event Plan",
     "Annual Scale" = "Scale Plan",
     'Monthly Scale' = "Scale Plan"

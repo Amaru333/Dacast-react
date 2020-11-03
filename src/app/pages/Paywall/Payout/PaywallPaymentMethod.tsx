@@ -15,7 +15,7 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
-    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'personal' ? 'Personal' : 'Business')
+    const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International"}, {title: "Check"}, {title: "PayPal"}]
@@ -32,29 +32,12 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
     }
 
     const onSubmit = (data: PaymentMethod) => { 
-        let paymentMethod: string = null
-
-        switch(selectedPaymentMethod) {
-            case PaymentMethodType.BankAccountUS: 
-                paymentMethod = 'us-transfer'
-                break;
-            case PaymentMethodType.BankAccountInternational:
-                paymentMethod = 'international-transfer'
-                break;
-            case PaymentMethodType.Check: 
-                paymentMethod = 'check'
-                break;
-            case PaymentMethodType.PayPal:
-                paymentMethod = 'paypal'
-                break;
-        }
         setButtonLoading(true)
         props.addPaymentMethodRequest(
             {
                 ...data, 
-                id: props.selectedPaymentMethod ? props.selectedPaymentMethod.id : null, 
-                paymentMethodType: paymentMethod, 
-                recipientType: paymentMethodRecipientType.toLowerCase() as 'business' | 'personal'
+                paymentMethodType: selectedPaymentMethod, 
+                recipientType: paymentMethodRecipientType
             }
         )
         .then(() => {

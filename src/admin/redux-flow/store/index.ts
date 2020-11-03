@@ -5,6 +5,7 @@ import { WithdrawalsState } from './Withdrawals/types'
 import { PaywallReducer, paywallInitialState, PaywallState } from './Paywall/types'
 import { RegisterState, RegisterInitialState, RegisterReducer } from './Register/types'
 import { PiracyReducer, piracyInitialState, PiracyState } from './Piracy/types'
+import { ToastsState, toastsInitialState, ToastReducer } from './Toasts'
 
 export interface AdminState {
     accounts: AccountsState;
@@ -12,6 +13,7 @@ export interface AdminState {
     paywall: PaywallState;
     register: RegisterState;
     piracy: PiracyState;
+    toasts: ToastsState;
 }
 
 export const globalDefaultState: AdminState = {
@@ -19,7 +21,8 @@ export const globalDefaultState: AdminState = {
     withdrawals: withdrawalsListInitialState,
     paywall: paywallInitialState,
     piracy: piracyInitialState,
-    register: RegisterInitialState
+    register: RegisterInitialState,
+    toasts: toastsInitialState
 }
 
 export const createRootReducer = () => 
@@ -29,4 +32,5 @@ export const createRootReducer = () =>
         paywall: PaywallReducer,
         piracy: PiracyReducer,
         register: RegisterReducer,
+        toasts: ToastReducer
     })
