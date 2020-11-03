@@ -29,6 +29,7 @@ export class DacastSdk {
 
     public updateToken = (newToken: UserTokenService) => {
         this.axiosClient = new AxiosClient(this.baseUrl, newToken, this.refreshTokenUrl)
+        this.userId = newToken.getUserInfoItem('custom:dacast_user_id')
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()
