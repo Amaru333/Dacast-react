@@ -52,7 +52,7 @@ export class DacastSdk {
 
     public getEncodingRecipePresets = async (): Promise<GetEncodingRecipePresetsOutput> => await this.axiosClient.get('/settings/encoding-recipes/presets').then(this.checkExtraData)
     public getEncodingRecipes = async (): Promise<GetEncodingRecipesOutput> => await this.axiosClient.get('/settings/encoding-recipes').then(this.checkExtraData)
-    public postEncodingRecipe = async (input: EncodingRecipeDetails): Promise<EncodingRecipeId> => await this.axiosClient.post('/settings/encoding-recipe', {...input}).then(this.checkExtraData)
+    public postEncodingRecipe = async (input: EncodingRecipeDetails): Promise<EncodingRecipeId> => await this.axiosClient.post('/settings/encoding-recipes', {...input}).then(this.checkExtraData)
     public putEncodingRecipe = async (input: EncodingRecipe): Promise<void> => await this.axiosClient.put('/settings/encoding-recipes/' + input.id, {...input})
     public deleteEncodingRecipe = async (input: string): Promise<void> => await this.axiosClient.delete('/settings/encoding-recipes/' + input)
 
