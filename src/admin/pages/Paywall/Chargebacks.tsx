@@ -27,7 +27,7 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
         <div className='flex flex-column'>
             <Text size={16} weight='med'>Manuel debits create a line item on an Account's paywall balance</Text>
             <Input onChange={(event) => setSubmittedData({...submittedData, salesforceId: event.currentTarget.value})} className='my1 col col-2' id='accountIdInput' placeholder='Account ID' label='Account ID' />
-            <Input onChange={(event) => setSubmittedData({...submittedData, amount: parseInt(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
+            <Input onChange={(event) => setSubmittedData({...submittedData, amount: parseFloat(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
             <DropdownSingle 
                 id='typeDropdown' 
                 className='my1 col col-2'
@@ -35,9 +35,9 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
                 list={{'Credit': false, 'Debit': false, 'Special credit': false, 'Special debit': false, 'Payment by balance': false, 'Bank transfer fee': false, 'Viewer refund':false, 'Dispute/chargeback fee': false}}
                 callback={(value: string) => setSubmittedData({...submittedData, type: value})}
             />
-            <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='my1 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
-            <Text size={14} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>
-            <Text size={14} weight='med'>and a negative Amount will issue a refund</Text>
+            <Text size={16} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>
+            <Text size={16} weight='med'>and a negative Amount will issue a refund</Text>
+            <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='my2 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
             <ConfirmationModal modalButtonLoading={buttonLoading}  submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     )
