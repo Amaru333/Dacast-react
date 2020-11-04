@@ -58,10 +58,9 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
     const associatedGroupDropdownList = props.groupList.map((item: GroupPrice) => {
         let associatedGroupItem: DropdownSingleListItem = {title: null, data: null}
         associatedGroupItem.title = item.name
-        associatedGroupItem.data = props.groupList.filter(n => n.name === item.name)[0].id
+        associatedGroupItem.data = item
+        return associatedGroupItem
     })
-    
-    
     
     
     React.useEffect(() => {
@@ -98,7 +97,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                     dropdownTitle='Associated Group'
                     dropdownDefaultSelect={props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0]).length > 0 ? props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0])[0].name : ''}
                     list={associatedGroupDropdownList} 
-                    callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, assignedGroupIds: item.data})}
+                    callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, assignedGroupIds: [item.data.id]})}
                 />
             </div>
             <div className='col col-12 mb2 clearfix'>

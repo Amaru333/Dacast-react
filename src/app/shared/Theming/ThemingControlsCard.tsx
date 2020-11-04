@@ -12,7 +12,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { usePlayer } from '../../utils/services/player/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/services/token/tokenService';
@@ -99,14 +99,16 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
         if (props.theme.themes.filter(t => t.isCustom).length === 0) {
             let themesList: ThemeOptions[] = [...props.theme.themes, { ...defaultTheme, themeName: 'Custom Theme', isCustom: true }]
             return themesList.map(item => {
-                let themesListDropdownItem: DropdownSingleListItem = {title: null}
+                let themesListDropdownItem: DropdownSingleListItem = {title: null, data: null}
                 themesListDropdownItem.title = item.themeName
+                themesListDropdownItem.data = item
                 return themesListDropdownItem
             })
         }
         return props.theme.themes.map(item => {
-            let themesListDropdownItem: DropdownSingleListItem = {title: null}
+            let themesListDropdownItem: DropdownSingleListItem = {title: null, data: null}
             themesListDropdownItem.title = item.themeName
+            themesListDropdownItem.data = item
             return themesListDropdownItem
         })
     }
@@ -219,7 +221,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             callback={
                                                 (item: DropdownSingleListItem) => {
                                                     setEditedSettings(true);
-                                                    setSelectedTheme(props.theme.themes.filter(theme => theme.themeName === item.title).length === 0 ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : props.theme.themes.filter(theme => theme.themeName === item.title)[0])
+                                                    setSelectedTheme(item.title === "Custom Theme" ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : item.data)
                                                 }} />
                                         <Bubble className="mt25" type="info">
                                             {selectedTheme.isCustom ?

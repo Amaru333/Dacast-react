@@ -7,14 +7,13 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { GeoRestriction, DomainControl, ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Card } from '../../../components/Card/Card';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
-import moment from 'moment'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../Common/MiscStyle';
 import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../utils/DropdownLists';
@@ -61,14 +60,16 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item) => {
-        let geoRestrictionDropdownListItem: DropdownSingleListItem = {title: null}
+        let geoRestrictionDropdownListItem: DropdownSingleListItem = {title: null, data: null}
         geoRestrictionDropdownListItem.title = item.name
+        geoRestrictionDropdownListItem.data = item
         return geoRestrictionDropdownListItem
     })
 
     const domainControlDropdownList = props.globalSecuritySettings.domainControl.map((item) => {
-        let domainControlDropdownListItem: DropdownSingleListItem = {title: null}
+        let domainControlDropdownListItem: DropdownSingleListItem = {title: null, data: null}
         domainControlDropdownListItem.title = item.name
+        domainControlDropdownListItem.data = item
         return domainControlDropdownListItem
     })
 
@@ -342,7 +343,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             dropdownTitle="Select Geo-Restriction Group" 
                             list={geoRestrictionDropdownList} 
                             dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name} 
-                            callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: props.globalSecuritySettings.geoRestriction.find(f => f.name === item.title).id})}} 
+                            callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: item.data.id})}} 
                         />
                     </div>
 
@@ -363,7 +364,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 dropdownTitle="Select Domain Control Group" 
                                 list={domainControlDropdownList} 
                                 dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name} 
-                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: props.globalSecuritySettings.domainControl.find(f => f.name === item.title).id})}} 
+                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: item.data.id})}} 
                             />
                         </div>
                     </div>

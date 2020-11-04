@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../..//components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../..//components/FormsComponents/Button/Button';
-import { DropdownListType, DropdownSingleListItem } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../..//components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../..//components/Typography/Text';
 import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
@@ -62,8 +62,9 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = {title: null}
+        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
         presetDropdownListItem.title = item.name
+        presetDropdownListItem.data = item
         return presetDropdownListItem
     })
 
@@ -106,7 +107,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     dropdownTitle='Preset'
                     dropdownDefaultSelect='Custom Promo'
                     list={props.presetList ? presetDropdownList : []}
-                    callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({...props.presetList.find(preset => preset.name === item.title), alphanumericCode: ''}) }}
+                    callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({...item.data, alphanumericCode: ''}) }}
                 />
                 {
                     newPromoPreset.id === "custom" &&

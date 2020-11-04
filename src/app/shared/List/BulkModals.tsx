@@ -5,8 +5,8 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { Modal } from '../../../components/Modal/Modal';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentType, SearchResult } from '../../redux-flow/store/Folders/types';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ContentType } from '../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService';
@@ -73,8 +73,9 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const themesListDropdown = themesList.map((item) => {
-        let themesListDropdownItem: DropdownSingleListItem = {title: null}
+        let themesListDropdownItem: DropdownSingleListItem = {title: null, data: null}
         themesListDropdownItem.title = item.themeName
+        themesListDropdownItem.data = item
         return themesListDropdownItem
     })
 
@@ -124,7 +125,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
                             id='thumbnailPositionDropdown' 
                             list={themesListDropdown}
                             isInModal={true} 
-                            callback={(item: DropdownSingleListItem) => {setSelectedTheme(themesList.filter(theme => theme.themeName === item.title)[0].id)}} 
+                            callback={(item: DropdownSingleListItem) => {setSelectedTheme(item.data.id)}} 
                         />
                     </>
 

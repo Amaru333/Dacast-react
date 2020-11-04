@@ -3,14 +3,13 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Preset } from '../../redux-flow/store/Paywall/Presets/types';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
-import { CURRENCY } from '../../constants/Currencies';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 
 var moment = require('moment-timezone');
@@ -59,8 +58,9 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = {title: null}
+        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
         presetDropdownListItem.title = item.name
+        presetDropdownListItem.data = item
         return presetDropdownListItem
     })
 
@@ -143,7 +143,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                         dropdownTitle='Preset'
                         dropdownDefaultSelect='Custom Price'
                         list={props.presetList ? presetDropdownList : []}
-                        callback={(item: DropdownSingleListItem) => { return setNewPricePreset(props.presetList.find(preset => preset.name === item.title)); }}
+                        callback={(item: DropdownSingleListItem) => { return setNewPricePreset(item.data); }}
                     />
                     {
                         newPricePreset.id === "custom" &&
