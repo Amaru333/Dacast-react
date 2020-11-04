@@ -409,53 +409,56 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     return (
         <div>
-            <div className='mb2 col col-12 flex items-center sm-show'>
-                <div className='col col-9 flex items-center'>
-                    <div className={'flex items-center'}>
-                        <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
-                        <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
-                            New Folder
-                        </Button>
-                    </div>
-                    <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
-                        <div className='col col-12 pl2 flex flex-auto items-center '>
-                            <BreadcrumbDropdown
-                                options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ?currentFolder.fullPath : selectedFolder}
-                                callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
-                                dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
-                                dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
-                            />
-                            <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
-                            <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
+            {  
+                !smallScreen && 
+                    <div style={{height:55}} className='mb2 col col-12 items-center flex'>
+                        <div className='col col-9 flex items-center'>
+                            <div className={'flex items-center'}>
+                                <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
+                                <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
+                                    New Folder
+                                </Button>
+                            </div>
+                            <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
+                                <div className='col col-12 pl2 flex flex-auto items-center '>
+                                    <BreadcrumbDropdown
+                                        options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ?currentFolder.fullPath : selectedFolder}
+                                        callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
+                                        dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
+                                        dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
+                                    />
+                                    <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
+                                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="relative flex justify-end items-center col col-3">
+                            {
+                                selectedFolder !== 'Trash' &&
+                                    <>
+                                        {checkedItems.length > 0 &&
+                                            <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
+                                        }
+                                        <div className='relative'>
+                                            <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+
+                                            <DropdownList  hasSearch={false} style={{width: 167, left: 16}} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                                {renderList()}
+                                            </DropdownList>
+                                        </div>
+
+                                        <SeparatorHeader className="mx2 inline-block" />
+                                    </>
+                            }
+                            <FoldersFiltering className="right relative" setSelectedFilter={setSelectedFilter} />
+                            {selectedFolder === 'Trash' &&
+                                <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
+                            }
                         </div>
                     </div>
-
-                </div>
-                <div className="relative flex justify-end items-center col col-3">
-                    {
-                        selectedFolder !== 'Trash' &&
-                            <>
-                                {checkedItems.length > 0 &&
-                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
-                                }
-                                <div className='relative'>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
-
-                                    <DropdownList  hasSearch={false} style={{width: 167, left: 16}} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
-                                        {renderList()}
-                                    </DropdownList>
-                                </div>
-
-                                <SeparatorHeader className="mx2 inline-block" />
-                            </>
-                    }
-                    <FoldersFiltering className="right relative" setSelectedFilter={setSelectedFilter} />
-                    {selectedFolder === 'Trash' &&
-                        <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
-                    }
-                </div>
-            </div>
+            }
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
