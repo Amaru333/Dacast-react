@@ -553,6 +553,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             className='my2 pl1 col col-4'
                             label='Brand Text Link'
                             value={engagementSettings.brandTextSettings.brandTextLink || ""}
+                            tooltip='Enter a URL starting with "https://".'
                             onChange={(event) => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, brandTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                     </div>
                     <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.brandTextSettings.isBrandTextAsTitle} onChange={() => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, isBrandTextAsTitle: !engagementSettings.brandTextSettings.isBrandTextAsTitle }}); setSettingsEdited(true) }} />
@@ -581,6 +582,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         <Input
                             className='my2 pl1 col col-4'
                             label='End Screen Text Link'
+                            tooltip='Enter a URL starting with "https://".'
                             value={engagementSettings.endScreenSettings.endScreenTextLink || ""}
                             onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenSettings: {...engagementSettings.endScreenSettings, endScreenTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                     </div>

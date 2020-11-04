@@ -175,6 +175,7 @@ export class FolderTree {
             node.name = newName
             this.changeSubfoldersPaths(node.fullPath, node.path + newName, node)
             this.setTree({...this.tree})
+            node.fullPath = node.fullPath + "/";
             return newName
         }).catch(error => {
             throw new Error(error)
