@@ -36,3 +36,44 @@ export interface GetEncodingRecipesOutput {
     recipes: EncodingRecipe[]
 }
 
+export interface AdEnpoint {
+    "ad-type": string;
+    timestamp: number;
+    url: string;
+}
+
+export interface AdsSettingsEndpoint {
+    adsEnabled: boolean
+    ads: AdEnpoint[]
+    locked: boolean
+}
+
+export interface BrandTextEndpoint {
+    brandText: string;
+    brandTextLink: string;
+    isBrandTextAsTitle: boolean;
+    locked: boolean;
+}
+
+export interface BrandImageEndpoint {
+    brandImagePadding: number;
+    brandImageSize: number;
+    brandImagePosition: string;
+    brandImageLink: string;
+    locked: boolean;
+    brandImageURL: string;
+}
+
+export interface EndScreenEndpoint {
+    endScreenText: string;
+    endScreenTextLink: string;
+    locked: boolean;
+}
+
+export interface EngagementSettingsEndoint {
+    adsSettings: AdsSettingsEndpoint
+    brandTextSettings: BrandTextEndpoint
+    brandImageSettings: BrandImageEndpoint
+    endScreenSettings: EndScreenEndpoint
+}
+
