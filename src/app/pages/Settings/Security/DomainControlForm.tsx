@@ -47,7 +47,7 @@ export const DomainControlForm = (props: {item: DomainControl; toggle: (b: boole
                     className='col col-12 py1'
                     defaultTags={domainControlItem.values} 
                     callback={(domainControls: string[]) => setDomainControlItem({...domainControlItem, values: domainControls})}
-                    placeholder="Type URL" 
+                    placeholder="Type URL and press enter to add" 
                     label="URLs"
                 />
                 <Text size={14} weight="reg">Type a URL and press <strong>Enter</strong> or <strong>Space</strong> to add it to the list.</Text>

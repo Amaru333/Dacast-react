@@ -22,8 +22,11 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?:
     }, [props.minDate])
 
     const handleDateChange = (date: any) => {
+        console.log("triggeres", date)
         if (props.callback && date) {
             props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
+        } else {
+            props.callback(false, false)
         }
         setDate(date)
     }

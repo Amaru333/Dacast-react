@@ -316,15 +316,15 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         associatePrivilege: 'privilege-paywall'
     },
-    {
-        path: '/playlists/:playlistId/engagement',
-        name: 'Engagement',
-        iconName: null,
-        isExact: true,
-        associatePrivilege: 'privilege-playlists',
-        notDisplayedInNavigation: true,
-        component: Engagement
-    },
+    // {
+    //     path: '/playlists/:playlistId/engagement',
+    //     name: 'Engagement',
+    //     iconName: null,
+    //     isExact: true,
+    //     associatePrivilege: 'privilege-playlists',
+    //     notDisplayedInNavigation: true,
+    //     component: Engagement
+    // },
     {
         path: '/playlists/:playlistId/security',
         name: 'Security',
