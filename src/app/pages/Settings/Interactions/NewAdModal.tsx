@@ -6,6 +6,8 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
 
 
 export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (b: boolean) => void; selectedAd: number}) => {
@@ -22,6 +24,8 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
     React.useEffect(() => {
         setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
+
+    
 
     const defineAdAction = () => {
         setButtonLoading(true)
@@ -49,7 +53,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(value: string) => setAdData({...adData, "ad-type": value.toLocaleLowerCase()})} list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={adData["ad-type"] ? capitalizeFirstLetter(adData["ad-type"]) : 'Pre-roll'} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(item: DropdownSingleListItem) => setAdData({...adData, "ad-type": item.title.toLocaleLowerCase()})} list={adPlacementDropdownList} dropdownDefaultSelect={adData["ad-type"] ? capitalizeFirstLetter(adData["ad-type"]) : 'Pre-roll'} /> 
                 {
                     adData["ad-type"] === 'mid-roll' &&
                         <Input type='video-time' 

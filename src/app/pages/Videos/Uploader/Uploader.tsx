@@ -16,6 +16,7 @@ import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -35,6 +36,13 @@ export const UploaderPage = (props: UploaderProps) => {
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
     const [selectedRecipe, setSelectedRecipe] = React.useState<string>(props.encodingRecipe.recipes.find(r => r.isDefault).id)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+
+    const encodingRecipeList = Object.keys(props.encodingRecipe.recipes).map((item) => {
+        let encodingRecipeListItem: DropdownSingleListItem = {title: null}
+        encodingRecipeListItem.title = props.encodingRecipe.recipes[item].name
+        encodingRecipeListItem.data = props.encodingRecipe.recipes[item]
+        return encodingRecipeListItem
+    })
 
     React.useEffect(() => {
         if (!isOnline) {
@@ -245,7 +253,6 @@ export const UploaderPage = (props: UploaderProps) => {
     React.useEffect(() => {
     }, [uploadingList]);
 
-    var list = Object.keys(props.encodingRecipe.recipes).reduce((reduced, item) => { return { ...reduced, [props.encodingRecipe.recipes[item].name]: false } }, {})
     var defaultRecipe = props.encodingRecipe.recipes.find(recipe => recipe.isDefault === true)
 
     return (
@@ -257,10 +264,10 @@ export const UploaderPage = (props: UploaderProps) => {
                         className='col col-5 mr1 pb2 '
                         dropdownTitle='Encoding Recipe'
                         dropdownDefaultSelect={defaultRecipe ? defaultRecipe.name : ""}
-                        list={list}
+                        list={encodingRecipeList}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
-                        callback={(value: string) => { setSelectedRecipe(props.encodingRecipe.recipes.find(recipe => recipe.name === value).id) }}
+                        callback={(item: DropdownSingleListItem) => { setSelectedRecipe(item.data.id) }}
                     />
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>

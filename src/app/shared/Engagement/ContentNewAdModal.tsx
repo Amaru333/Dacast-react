@@ -6,6 +6,8 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementComponentProps } from './ContentEngagement';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../utils/formatUtils';
+import { adPlacementDropdownList } from '../../../utils/DropdownLists';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 
 export const ContentNewAdModal = (props: ContentEngagementComponentProps & {toggle: (b: boolean) => void; selectedAd: Ad}) => {
@@ -42,7 +44,7 @@ export const ContentNewAdModal = (props: ContentEngagementComponentProps & {togg
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(value: string) => setAdData({...adData, "ad-type": value.toLowerCase()})} dropdownTitle='Ad Placement' list={{'Pre-roll': false, 'Mid-roll': false, 'Post-roll': false}} dropdownDefaultSelect={capitalizeFirstLetter(adData["ad-type"])} />              
+                <DropdownSingle className='mr1 my1 col col-6' id='adPlacementDropdown' callback={(item: DropdownSingleListItem) => setAdData({...adData, "ad-type": item.title.toLowerCase()})} dropdownTitle='Ad Placement' list={adPlacementDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(adData["ad-type"])} />              
                 {
                     adData["ad-type"] === 'mid-roll' &&
                         <Input className='ml1 mt1 col col-6' id='adPosition' placeholder="hh:mm:ss" label='Position' type='video-time' 

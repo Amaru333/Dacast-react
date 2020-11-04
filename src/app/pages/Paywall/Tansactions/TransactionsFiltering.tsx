@@ -7,6 +7,7 @@ import { Badge } from '../../../../components/Badge/Badge';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export interface FilteringTransactionsState {
     type: string;
@@ -41,6 +42,8 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
 
+    const filterDropdownList = [{title: "Pay Per View"}, {title: "Subscription"}, {title: "External Payment"}, {title: "Special Chargeback"}, {title: "Viewer Refund"}, {title: "Request Payment"}, {title: "Payment With Balance"}]
+
     const checkActiveFilter = () => {
         var counter = 0;
         filteringState.type? counter++ : null;
@@ -74,8 +77,8 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
                         <DropdownSingle id='filterType' 
                             dropdownTitle='Type'
                             dropdownDefaultSelect={filteringState.type}
-                            list={{'Pay Per View': false, 'Subscription': false, 'External Payment': false, 'Special Chargeback': false, 'Viewer Refund': false, 'Request Payment': false, 'Payment With Balance': false}}
-                            callback={(value: string) => setFilteringState({...filteringState, type: value})}
+                            list={filterDropdownList}
+                            callback={(item: DropdownSingleListItem) => setFilteringState({...filteringState, type: item.title})}
                         />
                     </div>
                     <div className="mb3" id="transactionFilterCurrency">

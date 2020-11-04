@@ -12,6 +12,7 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { ApplicationState } from '../../redux-flow/store';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
@@ -45,6 +46,10 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
+    const numberOfRenditionsList = [{title: "1 Rendition", data: 1}, {title: "2 Renditions", data: 2}, {title: "3 Renditions", data: 3}, {title: "4 Renditions", data: 4}, {title: "5 Renditions", data: 5}]
+
     const [errorMessage, setErrorMessage] = React.useState<string>(null)
 
     const handleCancel = () => {
@@ -118,8 +123,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                         className='col col-12' 
                         id='channelRegionTypeDropdown' 
                         dropdownDefaultSelect={streamSetupOptions.region}
-                        list={{'Australia & Asia Pacific': false, 'Europe, Middle East & Africa': false, 'Americas': false}} 
-                        callback={(value: string) => setStreamSetupOptions({...streamSetupOptions, region: value})} 
+                        list={regionDropdownList} 
+                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
                     />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
@@ -134,8 +139,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                             className='col col-12' 
                             id='numberOfRenditionsDropdown' 
                             dropdownDefaultSelect="1 Rendition"
-                            list={{'1 Rendition': false, '2 Renditions': false, '3 Renditions': false, '4 Renditions': false, '5 Renditions': false}} 
-                            callback={(value: string) => setRenditionCount(parseInt(value.charAt(0)))} 
+                            list={numberOfRenditionsList} 
+                            callback={(item: DropdownSingleListItem) => setRenditionCount(item.data)} 
                         />
                         <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
                         <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
