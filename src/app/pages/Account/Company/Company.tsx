@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -44,6 +44,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     const [edited, setEdited] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
+
+    const countryDropdownList = Object.keys(countries).map((item) => {
+        let countryItem: DropdownSingleListItem = {title: null}
+        countryItem.title = countries[item].name
+        return countryItem
+    })
 
     let companyLogoBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -325,10 +331,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
                         <DropdownSingle hasSearch 
                             direction='up'
-                            callback={(value: string) => {setEdited(true);setSelectedCountry(value)}}
+                            callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.title)}}
                             dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='countryDropdown' dropdownTitle='Country' 
-                            list={Object.keys(countries).reduce((reduced: DropdownListType, item: string)=> {return {...reduced, [countries[item].name]: false}},{})} />
+                            list={countryDropdownList} />
                     </div>
                 </form>
             </Card>            

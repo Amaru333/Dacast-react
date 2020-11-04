@@ -6,14 +6,17 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { AccountAllowancesComponentProps } from '../../containers/Accounts/Allowances'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Allowances } from '../../redux-flow/store/Accounts/Allowances/types'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {accountId: string}) => {
 
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
-    const [selectedAllowance, setSelectedAllowance] = React.useState<'Data' | 'Storage' | 'Encoding'>('Data')
+    const [selectedAllowance, setSelectedAllowance] = React.useState<string>('Data')
     const [allowanceValue, setAllowanceValue] = React.useState<string>(null)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [allowances, setAllowances] = React.useState<Allowances>(props.accountAllowances)
+
+    const allowancesDropdownList = [{title: "Data"}, {title: "Encoding"}, {title: "Storage"}]
 
     React.useEffect(() => setAllowances(props.accountAllowances), [props.accountAllowances])
 
@@ -41,7 +44,7 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
                 <Text className='pr2' size={14} weight='reg'>Storage</Text>
                 <Text size={14} weight='reg'>{allowances ? (allowances.storage.allocated - allowances.storage.consumed) / 1000000000 : ''} GB</Text>
             </div>
-            <DropdownSingle className='my1 col col-3' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(value: 'Data' | 'Storage' | 'Encoding') => setSelectedAllowance(value)} dropdownTitle='Allowance' list={{'Data': false, 'Encoding': false, 'Storage': false}} />
+            <DropdownSingle className='my1 col col-3' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(item: DropdownSingleListItem) => setSelectedAllowance(item.title)} dropdownTitle='Allowance' list={allowancesDropdownList} />
             <Input className='my1 col col-3' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />
             <Button className='my1 col col-1' onClick={() => setOpenConfirmationModal(true)} typeButton='primary' sizeButton='large' buttonColor='blue'>Submit</Button>
             <Text size={14}>A positive Amount adds the allowance</Text>

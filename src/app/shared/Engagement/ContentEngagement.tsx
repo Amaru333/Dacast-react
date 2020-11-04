@@ -11,7 +11,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
 import { Ad, MailCatcher, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -25,6 +25,7 @@ import { ImageStyle, ButtonStyle } from '../../pages/Account/Company/CompanyStyl
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;
@@ -519,8 +520,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                         </div>
                         <div className="col col-6">
-                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={{ 'Top Right': false, 'Top Left': false, 'Bottom Right': false, 'Bottom Left': false }} dropdownDefaultSelect={engagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
-                            callback={(value: string) => {setEngagementSettings({...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePosition: value }});setSettingsEdited(true)}}
+                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={imagePlacementDropdownList} dropdownDefaultSelect={engagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
+                            callback={(item: DropdownSingleListItem) => {setEngagementSettings({...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePosition: item.title }});setSettingsEdited(true)}}
                             />
                             <Input className="col col-4 pr2" value={engagementSettings.brandImageSettings.brandImageSize ? engagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                             <Input className="col col-4" label="Padding (px)" value={engagementSettings.brandImageSettings.brandImagePadding ? engagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {setEngagementSettings({ ...engagementSettings, brandImageSettings: {...engagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});setSettingsEdited(true)}} />
