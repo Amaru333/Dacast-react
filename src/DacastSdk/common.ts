@@ -3,12 +3,13 @@ export interface GetCompanyLogoUploadUrl {
 }
 
 export type PostUploadUrlInput = {
-    uploadType: 'company-logo'
+    uploadType: 'company-logo' | 'transcoding-watermark'
     uploadRequestBody: GetCompanyLogoUploadUrl | null
 }
 
 export interface PostUploadUrlOutput {
     presignedURL: string
+    fileID?: string
 }
 
 export interface PutUploadFileInput {

@@ -47,7 +47,7 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getPaywallSettingsInfos: async () => {
-            await dispatch(getPaywallSettingsInfosAction())
+            await dispatch(getPaywallSettingsInfosAction(undefined))
         },
         savePaywallSettingsInfos: async (data: PaywallSettingsInfos) => {
             await dispatch(savePaywallSettingsInfosAction(data))

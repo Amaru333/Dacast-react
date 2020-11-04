@@ -54,7 +54,7 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getPaywallThemes: async () => {
-            await dispatch(getPaywallThemesAction())
+            await dispatch(getPaywallThemesAction(undefined))
         },
         savePaywallTheme: async (data: PaywallTheme) => {
             await dispatch(savePaywallThemeAction(data))
@@ -66,7 +66,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(deletePaywallThemeAction(data))
         },
         getCompanyState: async () => {
-            await dispatch(getCompanyPageDetailsAction())
+            await dispatch(getCompanyPageDetailsAction(undefined))
         },
     }
 }
