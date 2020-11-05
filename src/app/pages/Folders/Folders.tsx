@@ -29,6 +29,7 @@ import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/
 import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
+import { Divider } from '../../shared/Common/MiscStyle'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -390,11 +391,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length - 3
+        let singleFolder = node.fullPath.split('/').length === 3
         return (
             <div key={node.id}>
                 {
                     node.id && 
-                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 16 }} className='py1 pr1 flex items-center' onClick={() => { foldersTree.navigateToFolder(node)}}>
+                    <FolderRow isSelected={node.id === selectedFolder} style={{marginLeft: node.subfolders === 0 && singleFolder ? 24 : depth * 24 }} className={'py1 pr1 flex items-center'} onClick={() => { foldersTree.navigateToFolder(node)}}>
                         { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                     </FolderRow>
@@ -499,15 +501,16 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <ContentSection>
                 <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
                     <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
-                    <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Library'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
                         <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className=' ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Trash'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
                     </FolderRow>
+                    <Divider />
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
