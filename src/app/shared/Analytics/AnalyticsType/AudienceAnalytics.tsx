@@ -8,9 +8,10 @@ import { displayBytesForHumans, tsToLocaleDate } from '../../../../utils/formatU
 import ReactTable from "react-table";
 import { TableAnalytics } from '../TableAnalytics'
 import {fakeData, fakeColumns} from '../FakeData'
+import { AudienceAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 
 export interface AudienceAnalyticsProps {
-
+    data: AudienceAnalyticsState
 }
 
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
@@ -23,9 +24,9 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <LineChart
                 title="Audience by Time"
-                options={{ fill: true, curve: 0, isTime: true, rightYAxes: false }}
-                lines={[{ data: [45, 12, 19, 12, 26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue }, { data: [56, 15, 25, 24, 42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red }]}
-                labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000, 1603894529000, 1603898129000, 1603901789000, 1603905329000]} />
+                options={{ fill: true, curve: 0, rightYAxes: false }}
+                lines={[{ data: props.data.playsImpressionsByTime.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByTime.impressions, label: "Impressions", color: ThemeAnalyticsColors.red }]}
+                labels={props.data.playsImpressionsByTime.labels} />
         )
     }
 
@@ -34,20 +35,15 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
             <BarChart
                 type="vertical"
                 title="Audience by device"
-                dataSets={[{ data: [26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue }, { data: [42, 27, 18, 29, 19, 38], label: "Impressions", color: ThemeAnalyticsColors.red }]}
-                labels={["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"]} />
+                dataSets={[{ data: props.data.playsImpressionsByDevice.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByDevice.impressions, label: "Impressions", color: ThemeAnalyticsColors.red }]}
+                labels={props.data.playsImpressionsByDevice.labels} />
         )
     }
 
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap
-                markers={[
-                    { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
-                    { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },
-                    { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
-                    { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
-                ]}
+                markers={props.data.playsImpressionsByLocation}
                 markerNameTranform={(element) => element.city + ": " + displayBytesForHumans(element.value)} />
         )
     }

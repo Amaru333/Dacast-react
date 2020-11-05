@@ -1,25 +1,26 @@
 import React from 'react'
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentAnalyticsState } from '../../redux-flow/store/Content/Analytics';
+import { GetContentAnalyticsInput } from '../../../DacastSdk/analytics';
+import { ContentAnalyticsFinalState } from '../../redux-flow/store/Content/Analytics';
 import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
 import { EngagementAnalytics } from './AnalyticsType/EngagementAnalytics';
 import { RealTimeAnalytics } from './AnalyticsType/RealTimeAnalytics';
 import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
-import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
+import { DataUsageAnalytics } from './AnalyticsType/DataUsageAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 
 export interface ContentAnalyticsProps {
     contentId: string,
     contentType: ContentAnalyticsTypes,
-    getContentAnalytics: (contentId: string, contentType: string) => void,
-    contentAnalyticsData: ContentAnalyticsState
+    getContentAnalytics: (options: GetContentAnalyticsInput) => void,
+    contentAnalyticsData: ContentAnalyticsFinalState
 }
 
 export type ContentAnalyticsTypes = 'live' | 'vod' | 'all';
 
-export type ContentAnalyticsDropdownValues = 'audience' | 'watch-duration' | 'sales' | 'engagement' | 'real-time';
+export type ContentAnalyticsDropdownValues = 'audience' | 'data-usage' | 'sales' | 'engagement' | 'real-time';
 
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
@@ -33,7 +34,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const handleExtraSettings = () => {
         switch (currentTab) {
             case 'audience':
-            case 'watch-duration':
+            case 'data-usage':
             case 'sales':
             case 'engagement':
                 return (
@@ -58,15 +59,15 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         switch (currentTab) {
             case 'audience':
                 return (
-                    <AudienceAnalytics />
+                    <AudienceAnalytics data={props.contentAnalyticsData.audience} />
                 )
-            case 'watch-duration':
+            case 'data-usage':
                 return (
-                    <WatchDurationAnalytics />
+                    <DataUsageAnalytics data={props.contentAnalyticsData.data} />
                 )
             case 'sales':
                 return (
-                    <SalesAnalytics />
+                    <SalesAnalytics data={props.contentAnalyticsData.sales} />
                 )
             case 'engagement':
                 return (
@@ -83,9 +84,9 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
-        { title: "Watch Time", data: "watch-duration" },
+        { title: "Data Usage", data: "data-usage" },
         { title: "Sales & Revenue", data: "sales" },
-        { title: "Engagement", data: "engagement" },
+        // { title: "Engagement", data: "engagement" },
         ...(props.contentType === "live" || props.contentType === "all" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
 

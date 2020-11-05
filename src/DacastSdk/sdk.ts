@@ -5,6 +5,7 @@ import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetProm
 import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
 import { EmbedSettings } from './settings'
+import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
 
 export class DacastSdk {
 
@@ -86,6 +87,11 @@ export class DacastSdk {
     public postPaywallTheme = async (input: PaywallThemeDetails): Promise<PaywallThemeId> => await this.axiosClient.post('/paywall/themes', input).then(this.checkExtraData)
     public putPaywallTheme = async (input: PaywallThemeEndpoints): Promise<void> => await this.axiosClient.put('/paywall/themes/'+ input.id, input)
     public deletePaywallTheme = async (input: string): Promise<void> => await this.axiosClient.delete('/paywall/themes/' + input)
+
+    //Real one here
+    //public getContentAnalytics = async (options: GetContentAnalyticsInput, type: string): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(type+'/'+options.id+'/analytics', {params: options}).then(this.checkExtraData)
+    //Fake in the meantime
+    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
 

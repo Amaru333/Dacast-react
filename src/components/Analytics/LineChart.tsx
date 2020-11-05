@@ -9,7 +9,7 @@ export const LineChart = (props: LineChartProps) => {
     const createDataset = (item: BaseItemAnalytics) => {
 
         var returnLine = {
-            data: item.data.map((element, index) => { return { y: element, x: props.options.isTime ? new Date(props.labels[index]) : props.labels[index] } }),
+            data: item.data.map((element, index) => element),
             label: item.label,
             borderColor: item.color,
             pointBackgroundColor: item.color,
@@ -28,6 +28,7 @@ export const LineChart = (props: LineChartProps) => {
 
     const lineProps: LinearComponentProps = {
         type: "scatter",
+        labels: props.labels,
         options: {
             title: {
                 display: true,
@@ -36,6 +37,9 @@ export const LineChart = (props: LineChartProps) => {
             plugins: {
                 crosshair: {
                     sync: {
+                        enabled: false
+                    },
+                    zoom: {
                         enabled: false
                     }
                 }
@@ -85,13 +89,12 @@ export const LineChart = (props: LineChartProps) => {
         },
         data: {
             datasets: props.lines.map(element => createDataset(element))
-
         }
     }
 
     console.log(lineProps)
     return (
-        <Scatter
+        <Line
             {...lineProps}
         />
 
