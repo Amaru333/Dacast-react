@@ -6,11 +6,11 @@ import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { HalfSmFullXs } from '../AnalyticsCommun'
 
-export interface EngagementAnalyticsProps {
+export interface RealTimeAnalyticsProps {
 
 }
 
-export const RealTimeAnalytics = (props: EngagementAnalyticsProps) => {
+export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
 
 
 
@@ -28,7 +28,7 @@ export const RealTimeAnalytics = (props: EngagementAnalyticsProps) => {
                     <LineChart
                         title="Concurrent Viewers"
                         options={{ fill: false, curve: 0, isTime: true }}
-                        lines={[{ data: [89, 82, 71, 61, 53, 41], label: "Viewers", color: ThemeAnalyticsColors.red }]}
+                        lines={[{ data: [89, 82, 71, 61, 53, 41], label: "Viewers", color: ThemeAnalyticsColors.yellow }]}
                         labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000]} />
 
                 </AnalyticsCard>
@@ -40,7 +40,7 @@ export const RealTimeAnalytics = (props: EngagementAnalyticsProps) => {
                     <LineChart
                         title="Plays"
                         options={{ fill: false, curve: 0, isTime: true }}
-                        lines={[{ data: [13, 22, 32, 43, 91, 59], label: "Plays", color: ThemeAnalyticsColors.red }]}
+                        lines={[{ data: [13, 22, 32, 43, 91, 59], label: "Plays", color: ThemeAnalyticsColors.yellow }]}
                         labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000]} />
 
                 </AnalyticsCard>

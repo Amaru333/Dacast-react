@@ -4,17 +4,17 @@ import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
-import { displayBytesForHumans, tsToLocaleDate } from '../../../../utils/formatUtils'
+import { displayBytesForHumans } from '../../../../utils/formatUtils'
 import ReactTable from "react-table";
 import { TableAnalytics } from '../TableAnalytics'
 import {fakeData, fakeColumns} from '../FakeData'
-import { AudienceAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
+import { DataAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 
-export interface AudienceAnalyticsProps {
-    data: AudienceAnalyticsState
+export interface DataUsageAnalyticsProps {
+    data: DataAnalyticsState
 }
 
-export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
+export const DataUsageAnalytics = (props: DataUsageAnalyticsProps) => {
 
     React.useEffect(() => {
 
@@ -22,11 +22,11 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
 
     const returnTimeAnalytics = () => {
         return (
-            <LineChart
-                title="Audience by Time"
-                options={{ fill: true, curve: 0, rightYAxes: false }}
-                lines={[{ data: props.data.playsImpressionsByTime.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByTime.impressions, label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
-                labels={props.data.playsImpressionsByTime.labels} />
+            <BarChart
+                title="Data Usage by Time"
+                dataSets={ [ {data: props.data.dataByTime.data, label: "Data Usage", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                labels={props.data.dataByTime.labels}
+                unit="GBs" />
         )
     }
 
@@ -34,24 +34,24 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <BarChart
                 type="vertical"
-                title="Audience by device"
-                dataSets={[{ data: props.data.playsImpressionsByDevice.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByDevice.impressions, label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
-                labels={props.data.playsImpressionsByDevice.labels} />
+                title="Data Usage by device"
+                dataSets={ [ {data: props.data.dataByDevice.data, label: "Data Usage", color: ThemeAnalyticsColors.blue } ] }
+                labels={props.data.dataByDevice.labels} />
         )
     }
-
+    
     const returnLocationAnalytics = () => {
         return (
-            <LeafletMap
-                markers={props.data.playsImpressionsByLocation}
-                markerNameTranform={(element) => element.city + ": "+element.value+" Plays"} />
+            <LeafletMap 
+                markers={props.data.dataByLocation} 
+                markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
         )
     }
 
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Plays & Impressions by"
+                title="Data Usage by"
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics() },

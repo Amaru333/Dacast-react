@@ -4,23 +4,25 @@ import { BarChartProps, BaseItemAnalytics } from './AnalyticsType';
 
 export const BarChart = (props: BarChartProps) => {
 
-    const createDataset = (item: BaseItemAnalytics) => { 
-        return { 
-            data: item.data, 
-            label: item.label, 
+    const createDataset = (item: BaseItemAnalytics) => {
+        return {
+            data: item.data,
+            label: item.label,
             backgroundColor: item.color,
             type: item.type ? item.type : 'bar',
-            yAxisId: item.yAxisPosition && item.yAxisPosition === "right" ? 'right-y-axis' : 'left-axis-test',
-            ...( item.type === 'bar' && props.options && props.options.isTime && {
+            yAxisID: item.yAxisPosition && item.yAxisPosition === "right" ? 'B' : 'A',
+            ...(item.type === 'bar' && props.options && props.options.isTime && {
                 barThickness: 20,
-            } ),
-            ...( item.type === 'line' && {
+            }),
+            order: 1,
+            ...(item.type === 'line' && {
+                order:0,
                 fill: false,
-                borderColor: item.color, 
+                borderColor: item.color,
                 pointBackgroundColor: item.color,
                 pointHighlightStroke: item.color,
                 lineTension: 0,
-            } )
+            })
         };
     }
 
@@ -37,56 +39,78 @@ export const BarChart = (props: BarChartProps) => {
             plugins: {
                 crosshair: {
                     zoom: {
-                        enabled: false,  
-                    }  
+                        enabled: false,
+                    }
                 }
             },
             tooltips: {
                 mode: "interpolate",
                 intersect: false,
+                ...(props.unit && {
+                    callbacks: {
+                        label: (tooltipItems, data) => {
+                            return tooltipItems.yLabel + " " + props.unit;
+                        }
+                    }
+                })
             },
             scales: {
-                ...( props.options.isTime && {
-                        xAxes: [{
-                            type: 'time',
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 20
-                            }
-                        }],
-                    }
+                ...(props.options.isTime && {
+                    xAxes: [{
+                        type: 'time',
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 20
+                        }
+                    }],
+                }
                 ),
-                ...( props.options.rightYAxes && {
-                        yAxes: [{
-                            id: 'left-y-axis',
-                            type: 'linear',
-                            position: 'left',
-                        }, {
-                            id: 'right-y-axis',
-                            type: 'linear',
-                            position: 'right',
-                        }]
-                    }   
-                )
+                yAxes: [{
+                    ...(props.unit && {
+                        ticks: {
+                            callback: (value) => {
+                                return value + " " + props.unit;
+                            }
+                        }
+                    }),
+                    id: 'A',
+                    type: 'linear',
+                    position: 'left',
+                },
+                ...(props.options.rightYAxes ? [{
+                    id: 'B',
+                    ...(props.unitRight && {
+                        ticks: {
+                            callback:  (value) => {
+                                return value + " " + props.unitRight;
+                            }
+                        }
+                    }),
+                    type: 'linear',
+                    position: 'right',
+                }] : [])
+                ]
             }
         }
     }
+    
 
+    console.log(barProps)
     if(props.type == 'horizontal') {
-        return (
-            <HorizontalBar
-                {...barProps}
-            />
-    
-        );
-    } else {
-        return (
-            <Bar
-                {...barProps}
-            />
-    
-        );
+            return (
+                <HorizontalBar
+                    {...barProps}
+                />
+
+            );
+} else {
+    return (
+        <Bar
+            {...barProps}
+        />
+
+    );
     }
 
 }
-BarChart.defaultProps = {type: "vertical", options: {}}
+BarChart.defaultProps = { type: "vertical", options: {} }

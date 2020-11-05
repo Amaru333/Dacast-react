@@ -27,9 +27,10 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 title="Sales and Revenue by Time"
                 options={ {rightYAxes: true} }
                 type="vertical"
-                dataSets={ [ 
+                unitRight="$"
+                dataSets={ [
                         {data: props.data.salesRevenuesByTime.sales, label: "Sales", color: ThemeAnalyticsColors.blue, type: 'bar' }, 
-                        {data: props.data.salesRevenuesByTime.revenues, label: "Revenues", color: ThemeAnalyticsColors.red, type: "line", yAxisPosition: "right" } 
+                        {data: props.data.salesRevenuesByTime.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } 
                 ] }
                 labels={props.data.salesRevenuesByTime.labels} />
         )
@@ -41,7 +42,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 id="uniqueStuff1"
                 type="vertical"
                 title="Sales and Revenue by Device"
-                dataSets={ [ {data: props.data.salesRevenuesByDevice.sales, label: "Sales", color: ThemeAnalyticsColors.blue }, {data: props.data.salesRevenuesByDevice.revenues, label: "Revenue", color: ThemeAnalyticsColors.red, type: "line" } ] }
+                dataSets={ [ {data: props.data.salesRevenuesByDevice.sales, label: "Sales", color: ThemeAnalyticsColors.blue }, {data: props.data.salesRevenuesByDevice.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } ] }
                 labels={props.data.salesRevenuesByDevice.labels} />
         )
     }
@@ -57,7 +58,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Slaes & Revenue by"
+                title="Sales & Revenue by"
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics() },

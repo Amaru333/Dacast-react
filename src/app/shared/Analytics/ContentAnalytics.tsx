@@ -24,7 +24,7 @@ export type ContentAnalyticsDropdownValues = 'audience' | 'data-usage' | 'sales'
 
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
-    const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
+    const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('sales')
 
 
     React.useEffect(() => {
@@ -99,7 +99,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     id='content-analytics-dropdown'
                     list={contentAnalyticsDropdownItems}
                     dropdownTitle=""
-                    dropdownDefaultSelect={"Audience"}
+                    dropdownDefaultSelect={"Sales & Revenue"}
                     callback={(item: DropdownSingleListItem) => setCurrentTab(item.data)}
                 />
                 {handleExtraSettings()}

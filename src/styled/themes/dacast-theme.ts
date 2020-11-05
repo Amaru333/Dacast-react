@@ -59,7 +59,8 @@ const Theme: DefaultTheme = {
 
 const ThemeAnalyticsColors = {
     "blue": "#4285F4",
-    "red": "#EA4435"
+    "red": "#EA4435",
+    "yellow": "#FFB75E"
 }
 
 export { Theme, ThemeAnalyticsColors };

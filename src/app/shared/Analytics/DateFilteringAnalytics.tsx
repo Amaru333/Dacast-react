@@ -45,7 +45,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div {...other}>
             {renderDatePresets()}
-            <DateRangePickerWrapper callback={(dates) => props.callback(formateDateFromDatepicker(dates))} disabled dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" presets={presets} />
+            <DateRangePickerWrapper disabled callback={(dates) => props.callback(formateDateFromDatepicker(dates))} dates={{ startDate: moment().subtract(1, 'week'), endDate: moment()}} className="inline" presets={presets} />
         </div>
     )
 }

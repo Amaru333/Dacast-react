@@ -27,5 +27,7 @@ export interface BarChartProps {
     options?: BaseOptions
     title: string,
     type?: 'horizontal' | 'vertical',
-    id?: string
+    id?: string,
+    unit?:string,
+    unitRight?: string
 }

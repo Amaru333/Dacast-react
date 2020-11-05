@@ -16,7 +16,7 @@ export const LineChart = (props: LineChartProps) => {
             pointHighlightStroke: item.color,
             fill: props.options.fill,
             yAxisId: item.yAxisPosition && item.yAxisPosition === "right" ? 'right-y-axis' : 'left-y-axis',
-            backgroundColor: props.options.fill && hexToRgbA(lightenDarkenColor(item.color, 50), 0.6),
+            backgroundColor: props.options.fill && hexToRgbA(item.color, 0.6),
             lineTension: props.options.curve,
             showLine: true,
             type: item.type ? item.type : 'line',
@@ -88,7 +88,8 @@ export const LineChart = (props: LineChartProps) => {
             responsiveAnimationDuration: 0
         },
         data: {
-            datasets: props.lines.map(element => createDataset(element))
+            datasets: props.lines.map(element => createDataset(element)),
+            labels: props.labels
         }
     }
 
