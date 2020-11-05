@@ -5,7 +5,7 @@ export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibilityProp:
     background-color: ${props => props.theme.colors["gray-10"] };
     border: 1px solid ${props => props.theme.colors["gray-7"] };
     border-radius: ${props => props.theme.borderRadius };
-    display: inline-block;
+    display: ${props => props.visibilityProp ? "inline-block" : "none"};
     visibility: ${props => props.visibilityProp ? "visible" : "hidden"};
     padding: 4px 8px;
     position:absolute;
@@ -15,4 +15,8 @@ export const ToolTipContainerStyle = styled.div<TooltipProps  & {visibilityProp:
     max-width: 500px;
     box-shadow: 0px 2px 4px ${props => props.theme.colors.overlay20 };
     z-index: 10;
+    &:hover {
+        visibility: visible;
+        display: inline-block;
+    }
 `;

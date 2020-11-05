@@ -6,7 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { ColorsApp } from '../../../../styled/types';
 import { WithdrawalRequest, PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (wr: WithdrawalRequest) => Promise<void>; toggle: (b: boolean) => void }) => {
     const [withdrawalRequest, setwithdrawalRequest] = React.useState<WithdrawalRequest>({
@@ -22,7 +22,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
     const paymentMethodDropdownList = props.paymentList.map((item: PaymentMethod) => {
         let paymentMethodDropdownItem: DropdownSingleListItem = {title: null, data: null}
         paymentMethodDropdownItem.title = item.paymentMethodName
-        paymentMethodDropdownItem.data = props.paymentList.find(p => p.paymentMethodName === item.paymentMethodName).id
+        paymentMethodDropdownItem.data = item
         return paymentMethodDropdownItem
     })
 
@@ -58,7 +58,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
                     id='widthdrawalModalPaymentMethodDropdown'
                     dropdownTitle='Choose Method'
                     list={paymentMethodDropdownList}
-                    callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data}) }}
+                    callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data.id}) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
                 <Input className='col xs-no-gutter col-12 sm-col-5 mt2 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />

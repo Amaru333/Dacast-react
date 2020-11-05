@@ -92,9 +92,10 @@ export const formatGetPricePresetInput = (qs: string): string => {
 export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: Preset[], totalItems: number} => {
     let formattedData = {
         totalItems: data.totalItems,
-        prices: data.presets.map((preset: any) => {
+        prices: data.presets.map((preset: PricePresetEndpoint): Preset => {
             return {
                 id: preset.id,
+                type: preset.type,
                 name: preset.name,
                 prices: preset.preset.prices,
                 settings: {
@@ -113,7 +114,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                     } 
                     : null
                 },
-                type: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
+                priceType: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
 
             }
         })
@@ -128,7 +129,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
         name: data.name,
         preset: null
     }
-    if(data.type === 'Subscription') {
+    if(data.priceType === 'Subscription') {
         formattedData.preset = {
             prices: data.prices.map((p) => {return {...p, description: 'price'}}),
             settings: {
@@ -181,7 +182,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
         name: data.name,
         preset: null
     }
-    if(data.type === 'Subscription') {
+    if(data.priceType === 'Subscription') {
         formattedData.preset = {
             prices: data.prices.map((p) => {return {...p, description: 'price'}}),
             settings: {

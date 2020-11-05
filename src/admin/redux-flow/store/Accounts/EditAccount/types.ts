@@ -21,6 +21,7 @@ export interface AccountInfo {
     emailVerified: boolean;
     preferredPlatform: string;
     accountFlags: Flag[];
+    isBanned: boolean;
 }
 
 export interface PutAccountInfo {
@@ -39,6 +40,7 @@ export interface PutAccountInfo {
     forceVerifyEmail?: boolean;
     preferredPlatform?: string;
     accountFlags?: Flag[];
+    isBanned?: boolean;
 }
 
 export const editAccountDefaultState: AccountInfo = null;

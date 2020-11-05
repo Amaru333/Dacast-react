@@ -5,7 +5,7 @@ export enum ActionTypes {
 
 
 export interface EmbedSettingsOptionType {
-    ['embed-type']:  'iframe' | 'script'; 
-    ['embed-scaling']: 'fixed' | 'responsive';
-    'embed-size': number;
+    type:  'iframe' | 'script'; 
+    scaling: 'fixed' | 'responsive';
+    size: number;
 }

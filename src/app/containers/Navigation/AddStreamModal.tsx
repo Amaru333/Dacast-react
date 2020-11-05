@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal, ModalContent, ModalFooter } from "../../../components/Modal/Modal"
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { StreamTypeSelector, StreamTypeSelectorContainer, StreamTypeSelectorContents } from './NavigationStyle';
 import { StreamSetupOptions } from './NavigationTypes';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
@@ -13,12 +12,15 @@ import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeServi
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { Bubble } from '../../../components/Bubble/Bubble';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { ApplicationState } from '../../redux-flow/store';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { connect } from 'react-redux';
 
 const moment = require('moment-timezone')
 
-export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) => {
+const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
     let history = useHistory()
 
@@ -46,9 +48,9 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
-    const renditionDrodownList = [ { title: '1 Rendition'}, { title: '2 Renditions'}, { title: '3 Renditions'}, { title: '4 Renditions'}, { title: '5 Renditions'}, ]
+    const numberOfRenditionsList = [{title: "1 Rendition", data: 1}, {title: "2 Renditions", data: 2}, {title: "3 Renditions", data: 3}, {title: "4 Renditions", data: 4}, {title: "5 Renditions", data: 5}]
 
-    
+    const [errorMessage, setErrorMessage] = React.useState<string>(null)
 
     const handleCancel = () => {
         setStreamSetupOptions(defaultStreamSetup)
@@ -88,7 +90,15 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
             setStreamSetupOptions(defaultStreamSetup)
         }).catch((error) => {
             setButtonLoading(false)
-            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
+            let errorMsg = 'There was a problem while creating a channel'
+            console.log('error message: ', error.response.data.error)
+            if(error.response.data.error.indexOf('only 1 channel is allowed for free trials') > -1) {
+                errorMsg = 'Only 1 channel is allowed for free trials'
+            }
+            if(error.response.data.error.indexOf('there was a problem while creating a channel') > -1) {
+                errorMsg = 'There was a problem while creating a channel'
+            }
+            setErrorMessage(errorMsg)
         })
     }
 
@@ -113,27 +123,32 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         className='col col-12'
                         id='channelRegionTypeDropdown'
                         dropdownDefaultSelect={streamSetupOptions.region}
-                        list={regionDropdownList}
-                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({ ...streamSetupOptions, region: item.title })} />
+                        list={regionDropdownList} 
+                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
+                    />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
                         The region your stream will broadcast from. Select the one closest to your encoder for best performance.
                     </Tooltip>
                 </div>
-                <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle
-                        dropdownTitle='Number of Renditions'
-                        className='col col-12'
-                        id='numberOfRenditionsDropdown'
-                        dropdownDefaultSelect="1 Rendition"
-                        list={renditionDrodownList}
-                        callback={(value: DropdownSingleListItem) => setRenditionCount(parseInt(value.title.charAt(0)))}
-                    />
-                    <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
-                    <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
-                        For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
-                    </Tooltip>
-                </div>
+                {
+                    !(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') &&
+                    <div className='col col-12 mt1 flex relative' >
+                        <DropdownSingle 
+                            dropdownTitle='Number of Renditions' 
+                            className='col col-12' 
+                            id='numberOfRenditionsDropdown' 
+                            dropdownDefaultSelect="1 Rendition"
+                            list={numberOfRenditionsList} 
+                            callback={(item: DropdownSingleListItem) => setRenditionCount(item.data)} 
+                        />
+                        <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
+                        <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
+                            For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
+                        </Tooltip>
+                    </div>
+                }
+
                 {/* {(getPrivilege('privilege-dvr') && selectedStreamType === 'standard') &&
                     <div className="flex col col-12 mt2 items-baseline">
                         <div className="col col-4">
@@ -142,6 +157,9 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
                         <IconStyle id="rewindTooltip">info_outlined</IconStyle>
                         <Tooltip target="rewindTooltip">30 Minute Rewind</Tooltip>
                     </div>} */}
+                    <Bubble hidden={!errorMessage} type='error' className='my2'>
+                        {errorMessage}
+                    </Bubble>
 
             </ModalContent>
             <ModalFooter>
@@ -151,3 +169,11 @@ export const AddStreamModal = (props: { toggle: () => void; opened: boolean }) =
         </Modal>
     )
 }
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        billingInfo: state.account.plan
+    };
+}
+
+export default connect(mapStateToProps, null)(AddStreamModal);

@@ -18,8 +18,8 @@ export class AxiosClient {
     private baseUrl: string = null
     private userToken: UserTokenService = null
     private refreshTokenUrl: string = null
-    private maxRetries = 3
-    private retryDelay = 4000
+    private maxRetries = 1
+    private retryDelay = 8000
     private axiosInstance: AxiosInstance = null
     private refreshingToken: boolean = false
 

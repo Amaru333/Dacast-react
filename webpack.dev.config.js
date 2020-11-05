@@ -11,15 +11,21 @@ const entries = {
     admin: ['@babel/polyfill', './src/admin/index.tsx'],
     vendor: ['react', 'react-dom']
 }
+console.log('test base url check ', process.env.API_BASE_URL.indexOf('universe') === -1)
 
+const faviconApp = process.env.API_BASE_URL.indexOf('universe') === -1 ? 'public/assets/stagingIcon.ico' : 'public/assets/favicon.ico'
+
+console.log('favicon ', faviconApp)
 const plugins = {
     app: { 
         filename: 'index.html',
+        favicon: 'public/assets/stagingIcon.ico',
         template: path.resolve(__dirname, 'src/app', 'index.html'),
         excludeAssets: [/admin.*/]
     },
     admin: { 
         filename: 'index.html',
+        favicon: 'public/assets/adminIcon.ico',
         template: path.resolve(__dirname, 'src/admin', 'admin.html'),
         excludeAssets: [/app.*/]
     }

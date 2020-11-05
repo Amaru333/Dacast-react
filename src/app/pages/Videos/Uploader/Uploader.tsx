@@ -16,7 +16,6 @@ import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
 import EventHooker from '../../../../utils/services/event/eventHooker';
-
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 
@@ -41,6 +40,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const encodingRecipeList = Object.keys(props.encodingRecipe.recipes).map((item) => {
         let encodingRecipeListItem: DropdownSingleListItem = {title: null}
         encodingRecipeListItem.title = props.encodingRecipe.recipes[item].name
+        encodingRecipeListItem.data = props.encodingRecipe.recipes[item]
         return encodingRecipeListItem
     })
 
@@ -267,7 +267,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         list={encodingRecipeList}
                         isWhiteBackground={true}
                         id='dropdownUploaderEncoding'
-                        callback={(item: DropdownSingleListItem) => { setSelectedRecipe(props.encodingRecipe.recipes.find(recipe => recipe.name === item.title).id) }}
+                        callback={(item: DropdownSingleListItem) => { setSelectedRecipe(item.data.id) }}
                     />
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
                     <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>

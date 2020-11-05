@@ -17,14 +17,17 @@ import { ProfilePageInfos } from '../../app/redux-flow/store/Account/Profile';
 import { userToken } from '../../app/utils/services/token/tokenService';
 import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
+import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flow/store/Account/Plan';
 
 export interface HeaderProps {
     isOpen: boolean;
     isMobile: boolean;
     title: string;
     ProfileInfo: ProfilePageInfos;
+    billingInfo: BillingPageInfos;
     contentGeneralState: ContentDetailsState;
     setOpen: (b: boolean) => void;
+    getBillingInfo: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
     getContentDetails: (contentId: string, contentType: string) => Promise<void>;
 }
@@ -87,12 +90,22 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(userToken.isLoggedIn()) {
-            setAvatarFirstName(userToken.getUserInfoItem('custom:first_name'))
-            setAvatarLastName(userToken.getUserInfoItem('custom:last_name'))
+            if(!props.ProfileInfo) {
+                props.getProfilePageDetails()
+            }
+    
+            if(!props.billingInfo) {
+                props.getBillingInfo()
+            }
+    }, [])
+
+    React.useEffect(() => {
+        if(props.ProfileInfo) {
+            setAvatarFirstName(props.ProfileInfo.firstName)
+            setAvatarLastName(props.ProfileInfo.lastName)
         }
-        console.log('token has changed')
-    }, [userToken])
+
+    }, [props.ProfileInfo])
 
     const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
 
@@ -185,6 +198,7 @@ export function mapStateToProps(state: ApplicationState) {
     return {
         title: state.title,
         ProfileInfo: state.account.profile,
+        billingInfo: state.account.plan,
         contentGeneralState: state.content.general,
     };
 }
@@ -193,11 +207,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 
     return {
         getProfilePageDetails: () => {
-            dispatch(getProfilePageDetailsAction());
+            dispatch(getProfilePageDetailsAction(undefined));
         },
         getContentDetails: (contentId: string, contentType: string) => {
             dispatch(getContentDetailsAction(contentId, contentType));
         },
+        getBillingInfo: () => {
+            dispatch(getBillingPageInfosAction())
+        }
     }
 
 }

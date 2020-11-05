@@ -11,8 +11,9 @@ import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 
-export const LiveList = (props: ContentListProps) => {
+export const LiveList = (props: ContentListProps & {billingInfo: BillingPageInfos}) => {
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
@@ -37,6 +38,7 @@ export const LiveList = (props: ContentListProps) => {
             deleteContentList={props.deleteContentList}
             getThemesList={props.getThemesList}
             showToast={props.showToast}
+            billingInfo={props.billingInfo}
          />
         : <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
 }
@@ -44,7 +46,8 @@ export const LiveList = (props: ContentListProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
-        themesList: state.settings.theming
+        themesList: state.settings.theming,
+        billingInfo: state.account.plan
     };
 }
 

@@ -33,7 +33,7 @@ import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
 import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
-import { AddStreamModal } from './containers/Navigation/AddStreamModal';
+import AddStreamModal from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import { store } from '.';
@@ -260,7 +260,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 dataLayer: {
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': 'Unknown yet',
+                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
                     'signedUp': 'Unknown yet',
                     'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'userFirstName': userToken.getUserInfoItem('custom:first_name'),

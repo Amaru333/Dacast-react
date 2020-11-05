@@ -19,8 +19,8 @@ import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
-import EventHooker from '../../../../utils/services/event/eventHooker';
 import { timezoneDropdownList } from '../../../../utils/DropdownLists'
+import  EventHooker from '../../../../utils/services/event/eventHooker'
 
 var moment = require('moment-timezone');
 

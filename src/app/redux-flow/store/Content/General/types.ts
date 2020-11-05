@@ -82,6 +82,7 @@ export interface ContentItem {
     thumbnail?: string;
     createdAt: number;
     featuresList?: FeaturesList;
+    channelType?: string;
 }
 
 export interface SearchResult {

@@ -4,14 +4,18 @@ import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
 import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
+import { EmbedSettings } from './settings'
 
 export class DacastSdk {
 
     constructor(baseUrl: string, userToken: UserTokenService, refreshTokenUrl?: string) {
         this.axiosClient = new AxiosClient(baseUrl, userToken, refreshTokenUrl)
         this.userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        this.baseUrl = baseUrl
+        this.refreshTokenUrl = refreshTokenUrl
     }
-
+    private baseUrl: string = null
+    private refreshTokenUrl: string = null
     private axiosClient: AxiosClient = null
     private userId: string = null
     
@@ -21,6 +25,11 @@ export class DacastSdk {
             return {...responseData.data}
         }
         return responseData
+    }
+
+    public updateToken = (newToken: UserTokenService) => {
+        this.axiosClient = new AxiosClient(this.baseUrl, newToken, this.refreshTokenUrl)
+        this.userId = newToken.getUserInfoItem('custom:dacast_user_id')
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()
@@ -37,6 +46,9 @@ export class DacastSdk {
     public getProfileDetails = async (): Promise<ProfileDetails> => await this.axiosClient.get('/accounts/' + this.userId + '/profile').then(this.checkExtraData)
     public putProfileDetails = async (input: PutProfileDetailsInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/profile', {...input})
     public postUserPassword = async (input: PostUserPasswordInput): Promise<void> => await this.axiosClient.post('/accounts/' + this.userId + '/change-password', {...input})
+
+    public getEmbedSettings = async (): Promise<EmbedSettings> => await this.axiosClient.get('/settings/embed').then(this.checkExtraData)
+    public putEmbedSettings = async (input: EmbedSettings): Promise<void> => await this.axiosClient.put('/settings/embed', {...input})
     
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => await this.axiosClient.post('/paywall/promos/presets', {...input}).then(this.checkExtraData)

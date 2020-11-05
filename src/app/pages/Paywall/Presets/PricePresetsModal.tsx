@@ -3,7 +3,7 @@ import {Input} from '../../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Preset } from '../../../redux-flow/store/Paywall/Presets/types';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
@@ -24,7 +24,8 @@ const pricesList = [
 const defaultPreset: Preset = {
     id: '-1',
     name: '',
-    type: 'Pay Per View',
+    type: '',
+    priceType: 'Pay Per View',
     prices: pricesList,
     settings: {
         duration: {value: NaN, unit: 'Hours'},
@@ -113,8 +114,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     id='pricePresetTypeDropdown' 
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
-                    dropdownDefaultSelect={presetsList.type}
-                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, type: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    dropdownDefaultSelect={presetsList.priceType}
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
                     list={presetTypeDropdownList} 
                 />
             </div>
@@ -123,7 +124,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             </div>
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
-                    presetsList.type === 'Subscription' ?
+                    presetsList.priceType === 'Subscription' ?
                         <DropdownSingle id='pricePresetRecurrenceDropdown' 
                             dropdownDefaultSelect={presetsList.settings.recurrence ? presetsList.settings.recurrence.unit : 'Weekly'} 
                             dropdownTitle='Recurrence' 
@@ -144,10 +145,10 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     dropdownDefaultSelect={presetsList.settings.startMethod} 
                     className={ClassHalfXsFullMd + ' pr1'} 
                     callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: item.title, startDate: 0 }})} 
-                    list={startMethodDropdownList} dropdownTitle='Start Method' disabled={presetsList.type === 'Subscription'}
+                    list={startMethodDropdownList} dropdownTitle='Start Method' disabled={presetsList.priceType === 'Subscription'}
                 />
                 {
-                    (presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View') &&
+                    (presetsList.settings.startMethod === 'Schedule' && presetsList.priceType === 'Pay Per View') &&
                         <DropdownSingle 
                             hasSearch 
                             id='pricePresetTimezoneDropdown' 
@@ -161,7 +162,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                 }
             </div>
             {  
-                (presetsList.settings.startMethod === 'Schedule' && presetsList.type === 'Pay Per View') &&
+                (presetsList.settings.startMethod === 'Schedule' && presetsList.priceType === 'Pay Per View') &&
                     <div className='col col-12 mb2'>
 
                         <DateSinglePickerWrapper
@@ -181,7 +182,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     </div>
             }
             <div className='col col-12 mt3'>
-        <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.type === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.preset ? "Save" : "Create"}</Button>
+        <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.priceType === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.preset ? "Save" : "Create"}</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>
