@@ -513,7 +513,6 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
-                {console.log(currentFolder ? currentFolder.fullPath : null)}
                 {
                     newFolderModalOpened && 
                     <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />

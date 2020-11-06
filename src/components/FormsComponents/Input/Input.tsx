@@ -36,6 +36,20 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
         props.onChange(returnValue)    
     }
 
+    const returnTooltip = () => {
+        if(!tooltip) {
+            return;
+        } else {
+            var id = '_' + Math.random().toString(36).substr(2, 9)
+            return (
+                <div>
+                    <IconStyle fontSize="small" id={id}>info_outlined</IconStyle>
+                    <Tooltip target={id}>{tooltip}</Tooltip>
+                </div> 
+            )
+        }
+    }
+
     return (
         <ContainerStyle hidden={props.hidden} className={className} >
             {
@@ -44,14 +58,7 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                         <Text color={props.disabled ? "gray-4" : "gray-1"} size={14} weight="med" >
                             {props.label}
                         </Text>
-                        {
-                            tooltip ?
-                                <div>
-                                    <IconStyle fontSize="small" id={tooltip}>info_outlined</IconStyle>
-                                    <Tooltip target={tooltip}>{tooltip}</Tooltip>
-                                </div> : null
-
-                        }
+                        {returnTooltip()}
                         {
                             indicationLabel ?
                                 <IndicationLabelStyle>
