@@ -3,10 +3,13 @@ import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { interactionsServices } from './services';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetEngagementOutput } from './viewModel';
+import { applyViewModel } from '../../../../utils/utils';
 
 export interface GetSettingsInteractionsInfos {
     type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS;
-    payload: {data: EngagementInfo};
+    payload: EngagementInfo;
 }
 
 export interface SaveSettingsInteractionsInfos {
@@ -59,18 +62,12 @@ export interface DeleteImage {
     payload: {file: File};
 }
 
+export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEngagementSettings, undefined, formatGetEngagementOutput, ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, null, 'Couldn\'t get engagement settings')
 
-export const getSettingsInteractionsInfosAction = (): ThunkDispatch<Promise<void>, {}, GetSettingsInteractionsInfos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetSettingsInteractionsInfos> ) => {
-        await interactionsServices.getInteractionsInfos()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, payload: response.data} );
-            }).catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+// export const getEncodingRecipesAction = applyViewModel(dacastSdk.getEncodingRecipes, undefined, formatGetEncodingRecipesOutput, ActionTypes.GET_ENCODING_RECIPES, null, 'Couldn\'t get encoding recipes')
+
+export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, undefined, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
+
 
 export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveSettingsInteractionsInfos> ) => {
@@ -78,19 +75,6 @@ export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): Thunk
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, payload: data} );
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const saveAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, SaveAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveAd> ) => {
-        await interactionsServices.saveAd(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_AD, payload: data} );
-                dispatch(showToastNotification("Ad saved", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()

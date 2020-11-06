@@ -37,7 +37,7 @@ export interface GetEncodingRecipesOutput {
 }
 
 export interface AdEnpoint {
-    "ad-type": string;
+    "ad-type": 'pre-roll' | 'mid-roll' | 'post-roll';
     timestamp: number;
     url: string;
 }
@@ -75,5 +75,9 @@ export interface EngagementSettingsEndoint {
     brandTextSettings: BrandTextEndpoint
     brandImageSettings: BrandImageEndpoint
     endScreenSettings: EndScreenEndpoint
+}
+
+export interface PutAdInput {
+    ads: AdEnpoint[]
 }
 
