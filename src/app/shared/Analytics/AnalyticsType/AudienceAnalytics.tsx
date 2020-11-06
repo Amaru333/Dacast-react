@@ -4,8 +4,6 @@ import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
-import { displayBytesForHumans, tsToLocaleDate } from '../../../../utils/formatUtils'
-import ReactTable from "react-table";
 import { TableAnalytics } from '../TableAnalytics'
 import {fakeData, fakeColumns} from '../FakeData'
 import { AudienceAnalyticsState } from '../../../redux-flow/store/Content/Analytics'

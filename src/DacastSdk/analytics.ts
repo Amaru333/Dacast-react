@@ -21,3 +21,13 @@ export interface GetContentAnalyticsInput {
 
 export type AnalyticsDimensionChannel = 'PLAYS_BY_TIME' | 'PLAYS_BY_DEVICE' | 'PLAYS_BY_COUNTRY' | 'IMPRESSIONS_BY_TIME' 
 | 'IMPRESSIONS_BY_DEVICE' | 'IMPRESSIONS_BY_COUNTRY' | 'SALES_BY_TIME' | 'SALES_BY_COUNTRY' | 'REVENUES_BY_TIME' | 'REVENUES_BY_COUNTRY'
+
+//TODO: Find type for these
+export type GetRevenueAnalyticsOutput = any;
+export type GetRevenueAnalyticsInput = any;
+
+export type GetDataAnalyticsOutput = any;
+export type GetDataAnalyticsInput = any;
+
+export type GetAudienceAnalyticsOutput = any;
+export type GetAudienceAnalyticsInput = any;

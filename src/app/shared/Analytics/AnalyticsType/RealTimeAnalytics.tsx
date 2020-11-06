@@ -7,7 +7,7 @@ import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { HalfSmFullXs } from '../AnalyticsCommun'
 
 export interface RealTimeAnalyticsProps {
-
+        
 }
 
 export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {

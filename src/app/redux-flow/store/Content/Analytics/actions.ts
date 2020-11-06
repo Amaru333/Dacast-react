@@ -8,6 +8,6 @@ export interface GetContentAnalytics {
     payload: {contentId: string; contentType: string; data: ContentAnalyticsState };
 }
 
-export const getContentAnalyticsAction = applyViewModel(dacastSdk.getContentAnalytics, formatGetContentAnalyticsInput, formatGetContentAnalyticsOutput, ActionTypes.GET_CONTENT_ANALYTICS, null, 'Couldn\'t get analytcics for this content')
+export const getContentAnalyticsAction = applyViewModel(dacastSdk.getContentAnalytics, formatGetContentAnalyticsInput, formatGetContentAnalyticsOutput, ActionTypes.GET_CONTENT_ANALYTICS, null, 'Couldn\'t get analytics for this content')
 
 export type Action = GetContentAnalytics;

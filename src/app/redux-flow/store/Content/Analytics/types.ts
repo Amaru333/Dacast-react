@@ -9,13 +9,18 @@ export interface AudienceAnalyticsState {
         labels: string[];
         plays: number[];
         impressions: number[];
+        table: {plays: number; impressions: number; label: string}[]
     };
     playsImpressionsByDevice: {
         labels: string[];
         plays: number[];
         impressions: number[];
+        table: {plays: number; impressions: number; label: string}[]
     };
-    playsImpressionsByLocation: LocationItem[];
+    playsImpressionsByLocation: {
+        data: LocationItem[];
+        table: {plays: number; label: string}[];
+    }
 }
 
 export interface SalesAnalyticsState {
@@ -23,11 +28,13 @@ export interface SalesAnalyticsState {
         labels: string[];
         sales: number[];
         revenues: number[];
+        table: {sales: number; revenues: number; label: string}[]
     };
     salesRevenuesByDevice: {
         labels: string[];
         sales: number[];
         revenues: number[];
+        table: {sales: number; revenues: number; label: string}[]
     };
     salesRevenuesByLocation: LocationItem[];
 }
