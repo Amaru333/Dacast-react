@@ -11,7 +11,6 @@ import { InputTags } from '../../../../components/FormsComponents/Input/InputTag
 import { useHistory } from 'react-router';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { exportCSVFile } from '../../../../utils/services/csv/csvService';
-import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -162,8 +161,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
 
     // const handleExportClick = async () => {
     //     try {
-    //         let response = await dacastSdk.getPaywallTransactionsCsv()
-    //         exportCSVFile(response, 'transactions')
+    //         let response = await axiosClient.get('/paywall/transactions/csv')
+
+    //         exportCSVFile(response.data as string, 'transactions')
 
     //     }catch(error) {
     //         throw Error(error)

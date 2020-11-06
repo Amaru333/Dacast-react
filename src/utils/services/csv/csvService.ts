@@ -22,11 +22,12 @@ export const exportCSVFile = (items: Object[] | string, fileTitle: string, heade
     }
 
     // Convert Object to JSON
-    var jsonObject = JSON.stringify(items);
-    var csv = jsonObject
-
+    var csv = null
     if (typeof items !== 'string') {
+        var jsonObject = JSON.stringify(items);
         csv = convertToCSV(jsonObject);
+    } else {
+        csv = items as string
     }
 
     var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
