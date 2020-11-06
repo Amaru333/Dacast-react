@@ -11,6 +11,7 @@ import { ExpandableContainer } from './GeneralStyle';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { languages } from 'countries-list';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 
 export const GeneralSubtitles = (props: {contentType: string, contentDetails: ContentDetails, deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>, addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>, getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;}) => {
@@ -135,9 +136,9 @@ export const GeneralSubtitles = (props: {contentType: string, contentDetails: Co
                                 className="col col-12"
                                 id="subtitleLanguage"
                                 dropdownTitle="Subtitle Language"
-                                list={Object.keys(languages).reduce((reduced, language) => { return { ...reduced, [languages[language].name]: false } }, {})}
+                                list={Object.keys(languages).map(language => { return { title: languages[language].name, data: {shortName: language}} }, {})}
                                 dropdownDefaultSelect={uploadedSubtitleFile.languageLongName}
-                                callback={(value: string) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value, languageShortName: Object.keys(languages).find(l => languages[l].name === value) })}
+                                callback={(value: DropdownSingleListItem) => setUploadedSubtitleFile({ ...uploadedSubtitleFile, languageLongName: value.title, languageShortName: value.data.shortName })}
                             />
                             <input type='file' ref={subtitleBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButtonSubtitle' />
                             <Button onClick={() => { subtitleBrowseButtonRef.current.click() }} className="mt25" typeButton="secondary" sizeButton="xs">
