@@ -68,7 +68,11 @@ export class FolderTree {
     private async loadChildren(node: FolderTreeNode) {
         node.loadingStatus = 'loading'
         let children: SubFolder  = await this.fetchChildren(node.id)
-        node.children = {...children}
+        let orderedChildren = {}
+        Object.keys(children).sort().forEach(function(key) {
+            orderedChildren[key] = children[key];
+          });
+        node.children = {...orderedChildren}
         node.isExpanded = true
         node.loadingStatus = 'loaded'
         this.setTree({...this.tree})
