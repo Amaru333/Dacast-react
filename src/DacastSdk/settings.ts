@@ -30,22 +30,24 @@ export interface EncodingRecipeId {
     id: string;
 }
 
-export type EncodingRecipe = EncodingRecipeDetails & EncodingRecipeId
+export type EncodingRecipe = EncodingRecipeDetails & EncodingRecipeId;
 
 export interface GetEncodingRecipesOutput {
     recipes: EncodingRecipe[]
 }
 
+export type AdTypeEndpoint = 'pre-roll' | 'mid-roll' | 'post-roll';
+
 export interface AdEnpoint {
-    "ad-type": 'pre-roll' | 'mid-roll' | 'post-roll';
+    "ad-type": AdTypeEndpoint;
     timestamp: number;
     url: string;
 }
 
 export interface AdsSettingsEndpoint {
-    adsEnabled: boolean
-    ads: AdEnpoint[]
-    locked: boolean
+    adsEnabled: boolean;
+    ads: AdEnpoint[];
+    locked: boolean;
 }
 
 export interface BrandTextEndpoint {
@@ -71,13 +73,13 @@ export interface EndScreenEndpoint {
 }
 
 export interface EngagementSettingsEndoint {
-    adsSettings: AdsSettingsEndpoint
-    brandTextSettings: BrandTextEndpoint
-    brandImageSettings: BrandImageEndpoint
-    endScreenSettings: EndScreenEndpoint
+    adsSettings: AdsSettingsEndpoint;
+    brandTextSettings: BrandTextEndpoint;
+    brandImageSettings: BrandImageEndpoint;
+    endScreenSettings: EndScreenEndpoint;
 }
 
 export interface PutAdInput {
-    ads: AdEnpoint[]
+    ads: AdEnpoint[];
 }
 

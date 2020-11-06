@@ -16,15 +16,18 @@ const convertToCSV = (objArray: any) => {
     return str;
 }
 
-export const exportCSVFile = (headers: Object, items: Object[], fileTitle: string) => {
-    if (headers) {
+export const exportCSVFile = (items: Object[] | string, fileTitle: string, headers?: Object) => {
+    if (headers && typeof items !== 'string') {
         items.unshift(headers);
     }
 
     // Convert Object to JSON
     var jsonObject = JSON.stringify(items);
+    var csv = jsonObject
 
-    var csv = convertToCSV(jsonObject);
+    if (typeof items !== 'string') {
+        csv = convertToCSV(jsonObject);
+    }
 
     var exportedFilenmae = fileTitle + '.csv' || 'export.csv';
 

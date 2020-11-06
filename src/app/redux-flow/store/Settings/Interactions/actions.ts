@@ -4,7 +4,7 @@ import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { interactionsServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetEngagementOutput } from './viewModel';
+import { formatGetEngagementOutput, formatPutAdsSettingsInput } from './viewModel';
 import { applyViewModel } from '../../../../utils/utils';
 
 export interface GetSettingsInteractionsInfos {
@@ -66,7 +66,7 @@ export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEn
 
 // export const getEncodingRecipesAction = applyViewModel(dacastSdk.getEncodingRecipes, undefined, formatGetEncodingRecipesOutput, ActionTypes.GET_ENCODING_RECIPES, null, 'Couldn\'t get encoding recipes')
 
-export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, undefined, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
+export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
 
 
 export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {

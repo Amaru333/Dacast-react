@@ -1,4 +1,4 @@
-import { AdEnpoint, EngagementSettingsEndoint } from '../../../../../DacastSdk/settings';
+import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndoint, PutAdInput } from '../../../../../DacastSdk/settings';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 import { Ad, AdType, EngagementInfo } from './types';
 
@@ -16,6 +16,20 @@ export const formatGetEngagementOutput = (data: EngagementSettingsEndoint): Enga
                 }
             })
         }
+    }
+
+    return formattedData
+}
+
+export const formatPutAdsSettingsInput = (data: Ad[]): PutAdInput => {
+    let formattedData: PutAdInput = {
+        ads: data.map(ad => {
+            return {
+                "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
+                timestamp: ad.timestamp,
+                url: ad.url
+            }
+        })
     }
 
     return formattedData
