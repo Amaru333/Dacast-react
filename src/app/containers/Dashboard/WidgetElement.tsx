@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from '../../../components/Card/Card'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { FailedCardAnalytics } from '../../pages/Analytics/AnalyticsCommun';
+import { FailedCardAnalytics } from '../../shared/Analytics/AnalyticsCommun';
 
 export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement> & {loading? : boolean; failed?: boolean} ) => {
     

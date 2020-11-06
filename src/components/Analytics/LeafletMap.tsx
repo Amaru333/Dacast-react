@@ -1,102 +1,75 @@
-import React, { useEffect } from 'react';
-// import * as Leaflet from 'leaflet';
-import JSInjector from '../../utils/services/injectors/JSInjector';
-import CSSInjector from '../../utils/services/injectors/CSSInjector';
-import { lerpColor, logScale } from '../../app/pages/Analytics/AnalyticsCommun';
-
-const LeafletMap = (props: any) => {
-
-    const getDivRef = React.useRef<HTMLDivElement>(null);
-
-    const [leafletDiv, setLeafletDiv] = React.useState<any>(getDivRef);
-    const [leafletMap, setLeafletMap] = React.useState<any>(null);
-    const [loadedScript, setLoadedScript] = React.useState<any>(false);
-    const [markers, setMarkers] = React.useState<any>([]);
-
-    
-
-    const updateMap = () => {
-        if (!leafletDiv || !loadedScript) {
-            return;
-        }
-
-        if (leafletMap === null) {
-            //bounds of the entire planet 
-            let bounds = new L.LatLngBounds(new L.LatLng(-90, -180), new L.LatLng(90, 180));
-            var map = L.map(props.idMap ? props.idMap : "defaultMapId", {
-                center: bounds.getCenter(),
-                maxBounds: bounds,
-                maxBoundsViscosity: 1.0
-            }).setView([51.505, -0.09], 1);
-            setLeafletMap(map);
-
-            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 9,
-                minZoom: 1,
-                noWrap: true,
-                id: 'mapbox.light',
-                accessToken: 'pk.eyJ1IjoicGxlbnRpdXciLCJhIjoiY2poY2F6MXoxMGFwYzM2bnlicDVsNHEwNyJ9.x52xNZWzRhsaWoHCl_5d3Q'
-            }).addTo(map);
-        }
-
-        if (!props.markers) {
-            return;
-        }
-        let max = Math.max(...props.markers.map(k => k.consumedMB));
-
-        markers.forEach(m => leafletMap.removeLayer(m));
-        setMarkers([]);
-
-        var newMarkersTable = [];
-        for (let i = 0; i < props.markers.length; i++) {
-            let propMarker = props.markers[i];
-            if (propMarker.consumedMB === 0 || !propMarker.position.latitude || !propMarker.position.longitude) {
-                continue;
-            }
-            let lerpPercent = logScale(propMarker.consumedMB, 0, max, 100, 1000);
-            lerpPercent -= 100;
-            lerpPercent /= 1000;
-
-            let circle = L.circleMarker([propMarker.position.latitude, propMarker.position.longitude], { radius: 10 })
-                .bindPopup(props.markerNameTranform ? props.markerNameTranform(propMarker.city, propMarker.consumedMB, props.datasetName) : propMarker.city + ': ' + propMarker.value + ' ' + props.datasetName)
-                .addTo(map);
-            circle.setStyle({
-                color: lerpColor('#93d5ed', '#2f5ec4', lerpPercent),
-                fillOpacity: 0.5,
-                stroke: false
-            })
-            circle.on('mouseover', function (e) {
-                //openPopup();
-            });
-            circle.on('mouseout', function (e) {
-                //closePopup();
-            });
-            newMarkersTable.push(circle);
-        }
-        setMarkers(newMarkersTable);
-
-    }
-
-    const loadScript = async () => {
-        CSSInjector.injectCss('https://unpkg.com/leaflet@1.3.1/dist/leaflet.css');
-        await JSInjector.injectJs('https://unpkg.com/leaflet@1.3.1/dist/leaflet.js');
-        setLoadedScript(true);
-    }
 
 
-    useEffect(() => {
-        if (!loadedScript) {
-            loadScript();
-        }
-        updateMap();
-    }, [loadedScript]);
+import React from 'react';
+import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
+import { LatLngTuple } from 'leaflet';
+import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
+
+const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
+const zoom: number = 2;
 
 
+const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem) => string }) => {
 
-    return (
-        <div style={{ height: props.height ? props.height : '100%', width: props.width ? props.width : '100%' }} id={props.idMap ? props.idMap : "defaultMapId"} ref={getDivRef}></div>
-    );
+  const logScale = (value: number, minp: number, maxp: number, minv: number, maxv: number) => {
+    var minv = Math.log(minv);
+    var maxv = Math.log(maxv);
+    var scale = (maxv - minv) / (maxp - minp);
+    return Math.exp(minv + scale * (value - minp));
+  }
+
+  const lerpColor = (a: string, b: string, amount: number) => {
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+      ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+      bh = parseInt(b.replace(/#/g, ''), 16),
+      br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+      rr = ar + amount * (br - ar),
+      rg = ag + amount * (bg - ag),
+      rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+  }
+
+  let max = Math.max(...props.markers.map(k => k.value));
+  let min = Math.min(...props.markers.map(k => k.value));
+
+  const renderMarkers = () => {
+    return props.markers.map((element, index) => {
+      let lerpPercent = logScale(element.value, 0, max, 100, 1000);
+      lerpPercent -= 100;
+      lerpPercent /= 1000;
+
+      return (
+        <CircleMarker
+          weight={1} radius={12} center={[element.position.latitude, element.position.longitude]}
+          color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
+        >
+          <Popup>
+            {props.markerNameTranform(element)}
+          </Popup>
+        </CircleMarker>)
+    })
+  }
+
+  return (
+    <>
+      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }}>
+        <TileLayer
+          attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
+        //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+        />
+        {renderMarkers()}
+      </Map>
+      <div className="flex mt2 justify-center">
+        <a className="mr2">{min}</a>
+        <div style={{ backgroundColor: '#93d5ed', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#45a5f5', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#4285f4', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#2f5ec4', height: '20px', width: '30px' }}></div>
+        <a className="ml2">{max}</a>
+      </div>
+    </>)
 
 }
 

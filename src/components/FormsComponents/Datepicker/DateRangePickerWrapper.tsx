@@ -7,14 +7,16 @@ import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = (props: {presets?: any; callback?: Function; dates: any} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: any} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+    
+    const {presets, callback,  ...other} = props;
 
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>(props.dates ? props.dates : {startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
-        props.callback ? props.callback(dates) : null;
+        callback ? callback(dates) : null;
     }, [dates])
 
     React.useEffect(() => {
@@ -22,7 +24,6 @@ export const DateRangePickerWrapper = (props: {presets?: any; callback?: Functio
             setDates(props.dates)
         }
     }, [props.dates])
-    const {presets,  ...other} = props;
 
     const renderDatePresets = () => {    
         return props.presets ?(

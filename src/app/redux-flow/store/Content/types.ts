@@ -18,6 +18,7 @@ import { RenditionsListState } from './Renditions/types';
 import { RenditionsReducer } from './Renditions/reducer';
 import { ContentSetupState } from './Setup/types';
 import { ContentSetupReducer } from './Setup/reducer';
+import { ContentAnalyticsReducer, ContentAnalyticsState } from './Analytics';
 
 
 export const contentInitialState: ContentState = {
@@ -29,7 +30,8 @@ export const contentInitialState: ContentState = {
     security: {},
     chapters: {},
     renditions: {},
-    setup: {}
+    setup: {},
+    analytics: {}
 };
 
 export interface  ContentState {
@@ -41,7 +43,8 @@ export interface  ContentState {
     security: ContentSecuritySettingsState,
     chapters: ChapterMarkerInfosState,
     renditions: RenditionsListState,
-    setup: ContentSetupState
+    setup: ContentSetupState,
+    analytics: ContentAnalyticsState
 }
 
 export const ContentReducer: Reducer<ContentState> = combineReducers({
@@ -53,6 +56,6 @@ export const ContentReducer: Reducer<ContentState> = combineReducers({
     security: ContentSecurityReducer,
     chapters: ChaptersReducer, 
     renditions: RenditionsReducer,
-    setup: ContentSetupReducer
-
+    setup: ContentSetupReducer,
+    analytics: ContentAnalyticsReducer
 })
