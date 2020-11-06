@@ -1,114 +1,115 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import { displayTimeForHumans, displayBytesForHumans } from '../../utils/formatUtils';
+import { Bar, HorizontalBar, Line, LinearComponentProps } from 'react-chartjs-2';
+import { BarChartProps, BaseItemAnalytics } from './AnalyticsType';
 
-export const BarChart = (props: any) => {
+export const BarChart = (props: BarChartProps) => {
 
-    if(props.hidden) {
-        return<></>;
+    const createDataset = (item: BaseItemAnalytics) => {
+        return {
+            data: item.data,
+            label: item.label,
+            backgroundColor: item.color,
+            type: item.type ? item.type : 'bar',
+            yAxisID: item.yAxisPosition && item.yAxisPosition === "right" ? 'B' : 'A',
+            ...(item.type === 'bar' && props.options && props.options.isTime && {
+                barThickness: 20,
+            }),
+            order: 1,
+            ...(item.type === 'line' && {
+                order:0,
+                fill: false,
+                borderColor: item.color,
+                pointBackgroundColor: item.color,
+                pointHighlightStroke: item.color,
+                lineTension: 0,
+            })
+        };
     }
-    const {
-        title,
-        labels,
-        datasetName,
-        data,
-        beginAtZero,
-        displayBytes,
-        displayTime,
-        displayBytesFromGB,
-        displayFromMb,
-        yAxesName,
-        truncateName,
-        ...other
-    } = props;
 
-    let displayLabels = labels
-    if (truncateName) {
-        displayLabels = labels.map(d => d.length > 10 ? d.slice(0, 10) + '...' : d)
-    }
-    let options = {
-        responsive: true,
-        title: {
-            fontFamily: 'Arial',
-            fontColor: '#000',
-            fontSize: 17,
-            display: true,
-            position: title ? 'top' : 'none',
-            text: title
+    const barProps: LinearComponentProps = {
+        data: {
+            labels: props.labels,
+            datasets: props.dataSets.map(element => createDataset(element))
         },
-        scales: {
-            yAxes: [
-                {
-                    ticks: {
-                        beginAtZero
-                    },
-                    scaleLabel: {
-                        display: !!yAxesName,
-                        labelString: yAxesName
+        options: {
+            title: {
+                display: true,
+                text: props.title
+            },
+            plugins: {
+                crosshair: {
+                    zoom: {
+                        enabled: false,
                     }
                 }
-            ]
-        }
-    }
-    if (displayBytes) {
-        options.tooltips = {
-            callbacks: {
-                label: (tooltipItem, data) => { 
-                    var data = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return displayBytesForHumans(data);
-                },
-            }
-        }
-    } else if (displayBytesFromGB) {
-        options.tooltips = {
-            callbacks: {
-                label: (tooltipItem, data) => {
-                    var label = data.labels[tooltipItem.index];
-                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return label + ': ' + displayBytesForHumans(value, true);
-                },
-            }
-        }
-    } else if (displayFromMb) {
-        options.tooltips = {
-            callbacks: {
-                label: (tooltipItem, data) => {
-                    var label = data.labels[tooltipItem.index];
-                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return label + ': ' + displayBytesForHumans(value, 2, true);
-                },
-            }
-        }
-    }else if (displayTime) {
-        options.tooltips = {
-            callbacks: {
-                label: (tooltipItem, data) => {
-                    var data = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return displayTimeForHumans(data);
-                },
-            }
-        }
-    }
-    let line = {
-        labels: displayLabels,
-        datasets: [
-            {
-                label: datasetName,
-                backgroundColor: '#3366CC',
-                data,
             },
-        ],
-    };
-
-    if(displayFromMb) {
-        if(line.datasets[0] && line.datasets[0].data){
-            var  newDatasets = line.datasets[0].data.map(element => element / 1000)
-            line.datasets[0].data = newDatasets;
+            tooltips: {
+                mode: "interpolate",
+                intersect: false,
+                ...(props.unit && {
+                    callbacks: {
+                        label: (tooltipItems, data) => {
+                            return tooltipItems.yLabel + " " + props.unit;
+                        }
+                    }
+                })
+            },
+            scales: {
+                ...(props.options.isTime && {
+                    xAxes: [{
+                        type: 'time',
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 20
+                        }
+                    }],
+                }
+                ),
+                yAxes: [{
+                    ...(props.unit && {
+                        ticks: {
+                            callback: (value) => {
+                                return value + " " + props.unit;
+                            }
+                        }
+                    }),
+                    id: 'A',
+                    type: 'linear',
+                    position: 'left',
+                },
+                ...(props.options.rightYAxes ? [{
+                    id: 'B',
+                    ...(props.unitRight && {
+                        ticks: {
+                            callback:  (value) => {
+                                return value + " " + props.unitRight;
+                            }
+                        }
+                    }),
+                    type: 'linear',
+                    position: 'right',
+                }] : [])
+                ]
+            }
         }
     }
+    
 
+    if(props.type == 'horizontal') {
+            return (
+                <HorizontalBar
+                    {...barProps}
+                />
+
+            );
+} else {
     return (
-        <Bar hidden={props.hidden} {...other} data = { line } options = { options } />
-    )
+        <Bar
+            {...barProps}
+        />
+
+    );
+    }
 
 }
+BarChart.defaultProps = { type: "vertical", options: {} }

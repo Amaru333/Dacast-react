@@ -8,7 +8,8 @@ import { PaywallState, paywallInitialState, PaywallReducer } from './Paywall/typ
 import { TitleReducer } from './Title/logic';
 import { FoldersState, foldersInitialState } from './Folders/types';
 import { FoldersReducer } from './Folders/reducer';
-import { AnalyticsState, analyticsInitialState, AnalyticsReducer } from './Analytics';
+import { AnalyticsState, analyticsInitialState } from './Analytics';
+import { AnalyticsReducer } from './Analytics/reducer';
 import { ContentState, contentInitialState, ContentReducer } from './Content/types';
 
 

@@ -5,6 +5,7 @@ import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetProm
 import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput } from './settings'
+import { GetAudienceAnalyticsInput, GetAudienceAnalyticsOutput, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetDataAnalyticsInput, GetDataAnalyticsOutput, GetRevenueAnalyticsInput, GetRevenueAnalyticsOutput } from './analytics'
 
 export class DacastSdk {
 
@@ -100,4 +101,17 @@ export class DacastSdk {
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
     public getPaywallTransactionsCsv = async (): Promise<string> => await this.axiosClient.get('paywall/transactions/csv').then(this.checkExtraData)
+
+    //Real one here
+    //public getContentAnalytics = async (options: GetContentAnalyticsInput, type: string): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(type+'/'+options.id+'/analytics', {params: options}).then(this.checkExtraData)
+    //public getRevenueAnalytics = async (options: GetRevenueAnalyticsInput): Promise<GetRevenueAnalyticsOutput> => await this.axiosClient.get('/analytics/revenue', {params: options}).then(this.checkExtraData)
+    //public getDataAnalytics = async (options: GetDataAnalyticsInput): Promise<GetDataAnalyticsOutput> => await this.axiosClient.get('/analytics/data', {params: options}).then(this.checkExtraData)
+    //public getAudienceAnalytics = async (options: GetAudienceAnalyticsInput): Promise<GetAudienceAnalyticsOutput> => await this.axiosClient.get('/analytics/audience', {params: options}).then(this.checkExtraData)
+
+    //Fake in the meantime
+    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
+    public getRevenueAnalytics = async (options: GetRevenueAnalyticsInput): Promise<GetRevenueAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
+    public getDataAnalytics = async (options: GetDataAnalyticsInput): Promise<GetDataAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
+    public getAudienceAnalytics = async (options: GetAudienceAnalyticsInput): Promise<GetAudienceAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
+
 }
