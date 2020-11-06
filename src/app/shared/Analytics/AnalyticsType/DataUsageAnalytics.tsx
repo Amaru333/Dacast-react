@@ -2,12 +2,9 @@ import React from 'react'
 import { AnalyticsCard } from '../../../../components/Analytics/AnalyticsCard/AnalyticsCard'
 import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
-import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
-import ReactTable from "react-table";
-import { TableAnalytics } from '../TableAnalytics'
-import {fakeData, fakeColumns} from '../FakeData'
+import {HeaderDataTime, HeaderDataDevice, HeaderDataLocation} from '../TableHeaders'
 import { DataAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 
 export interface DataUsageAnalyticsProps {
@@ -43,7 +40,7 @@ export const DataUsageAnalytics = (props: DataUsageAnalyticsProps) => {
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
-                markers={props.data.dataByLocation} 
+                markers={props.data.dataByLocation.data} 
                 markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
         )
     }
@@ -52,17 +49,14 @@ export const DataUsageAnalytics = (props: DataUsageAnalyticsProps) => {
         <React.Fragment>
             <AnalyticsCard
                 title="Data Usage by"
+                showTable={true}
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics() },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics() },
-                        "Location": { name: 'Location', content: returnLocationAnalytics() },
+                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.dataByTime.table, header: HeaderDataTime} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.dataByDevice.table, header: HeaderDataDevice} },
+                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.dataByLocation.table, header: HeaderDataLocation}  },
                     }
                 }
-            />
-            <TableAnalytics
-                data={fakeData}
-                header={fakeColumns}
             />
         </React.Fragment>
 

@@ -5,16 +5,13 @@ import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
 import { SalesAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
-import { fakeColumns, fakeData } from '../FakeData'
-import { TableAnalytics } from '../TableAnalytics'
+import { HeaderSalesDevice, HeaderSalesLocation, HeaderSalesTime } from '../TableHeaders'
 
 export interface SalesAnalyticsProps {
     data: SalesAnalyticsState
 }
 
 export const SalesAnalytics = (props: SalesAnalyticsProps) => {
-
-
 
     React.useEffect(() => {
 
@@ -50,7 +47,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
-                markers= {props.data.salesRevenuesByLocation} 
+                markers={props.data.salesRevenuesByLocation.data} 
                 markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
         )
     }
@@ -59,17 +56,14 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         <React.Fragment>
             <AnalyticsCard
                 title="Sales & Revenue by"
+                showTable={true}
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics() },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics() },
-                        "Location": { name: 'Location', content: returnLocationAnalytics() },
+                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.salesRevenuesByDevice.table, header: HeaderSalesDevice} },
+                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.salesRevenuesByLocation.table, header: HeaderSalesLocation} },
                     }
                 }
-            />
-            <TableAnalytics 
-                data={fakeData}
-                header={fakeColumns}
             />
         </React.Fragment>
 

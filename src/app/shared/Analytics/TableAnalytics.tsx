@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactTable from "react-table";
 
-interface TableAnalyticsProps {
+export interface TableAnalyticsProps {
     data: Object[];
     header: { Header: string; accessor: string; Cell?: (item: Object) => JSX.Element }[];
+    className: string;
 }
 
 export const TableAnalytics = (props: TableAnalyticsProps) => {
 
-    console.log(props)
     return (
         <ReactTable 
+            {...props}
             data={props.data}
             columns={props.header}
         />

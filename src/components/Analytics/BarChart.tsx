@@ -95,7 +95,6 @@ export const BarChart = (props: BarChartProps) => {
     }
     
 
-    console.log(barProps)
     if(props.type == 'horizontal') {
             return (
                 <HorizontalBar

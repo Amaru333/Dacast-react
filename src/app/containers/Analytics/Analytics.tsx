@@ -3,7 +3,6 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { useHistory } from 'react-router';
 import { ContentAnalytics } from '../../shared/Analytics/ContentAnalytics';
 import { Action, getAudienceAnalyticsAction, getDataAnalyticsAction } from '../../redux-flow/store/Analytics/actions';
@@ -28,9 +27,9 @@ const Analytics = (props: AnalyticsProps) => {
 
     React.useEffect(() => {
         if(!Object.keys(props.analyticsData).length) {
+            props.getAudienceAnalytics({});
             props.getRevenueAnalytics({})
             props.getDataAnalytics({});
-            props.getAudienceAnalytics({});
         }
     }, [])
 

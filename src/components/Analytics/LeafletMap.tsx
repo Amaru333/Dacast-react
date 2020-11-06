@@ -3,7 +3,7 @@
 import React from 'react';
 import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
-import { LocationItem } from '../../app/redux-flow/store/Analytics/Dashboard';
+import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 2;

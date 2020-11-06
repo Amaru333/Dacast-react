@@ -93,7 +93,6 @@ export const LineChart = (props: LineChartProps) => {
         }
     }
 
-    console.log(lineProps)
     return (
         <Line
             {...lineProps}
