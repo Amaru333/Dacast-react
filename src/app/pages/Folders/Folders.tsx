@@ -365,7 +365,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' ? {    isExpanded: true,
+                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
+                                    isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
                                     path: row.path,
@@ -374,7 +375,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     nbChildren: 0,
                                     fullPath: row.path + row.title,
                                     loadingStatus: 'not-loaded',
-                                    children: {}} : null)}
+                                    children: {}
+                                })}
                             >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
@@ -397,7 +399,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 {
                     node.id && 
                     <FolderRow isSelected={node.id === selectedFolder} style={{marginLeft: node.subfolders === 0 && singleFolder ? 24 : depth * 24 }} className={'py1 pr1 flex items-center'} onClick={() => { foldersTree.navigateToFolder(node)}}>
-                        { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
+                        { node.subfolders > 0 && <IconStyle onClick={() => foldersTree.expandFolder(node)} coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                     </FolderRow>
                 }

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { FolderTreeNode, SubFolder, ContentType } from '../../../redux-flow/store/Folders/types';
 import { axiosClient } from '../axios/axiosClient';
 
@@ -106,19 +105,23 @@ export class FolderTree {
         return await this.getNode(this.tree, searchedFolder);
     }
 
+    public expandFolder = (node: FolderTreeNode) => {
+        if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
+            this.loadChildren(node)
+            return
+        }
+        node.isExpanded = !node.isExpanded
+        this.setTree({...this.tree})
+    }
+
     public navigateToFolder(node: FolderTreeNode) {
         this.setSelectedFolder(node)
         if(!node.subfolders) {
             return
         }
-        if (node.loadingStatus === 'not-loaded' && !node.isExpanded) {
-            this.loadChildren(node)
-            return
-        }
         if (node.loadingStatus === 'loading') {
             return
         }
-        node.isExpanded = !node.isExpanded
         this.setTree({ ...this.tree });
     }
 
