@@ -9,6 +9,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import moment from 'moment';
 import { ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/General/types';
+import { timezoneDropdownList } from '../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')
 
@@ -90,7 +91,7 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                                             dropdownDefaultSelect={startDateTimeValue.timezone}
                                             id='dropdownTimezone'
                                             callback={(value: DropdownSingleListItem) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.title.split(' ')[0]});props.setHasChanged(true)}} 
-                                            list={momentTZ.tz.names().map((item: string): DropdownSingleListItem => { return {title: item + ' (' + momentTZ.tz(item).format('Z z') + ')', data: null } }, {})}
+                                            list={timezoneDropdownList}
                                         />
                                     </div>
                             }
