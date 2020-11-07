@@ -20,10 +20,8 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
             paymentMethods.splice(
                 paymentMethods.length, 
                 0, 
-                {
-                    ...action.payload,
-                    paymentMethodType: action.payload.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : action.payload.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : action.payload.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
-                 });
+                action.payload
+            );
             return {
                 ...state,
                 paymentMethods: paymentMethods
@@ -38,8 +36,7 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                     else {
                         return {
                             ...item,
-                            ...action.payload,
-                            paymentMethodType: action.payload.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : action.payload.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : action.payload.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal
+                            ...action.payload
                         }
                     }
                 })

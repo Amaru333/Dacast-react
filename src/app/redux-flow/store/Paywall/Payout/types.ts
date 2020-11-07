@@ -47,6 +47,13 @@ export interface PaymentMethod {
     bankCountry?: string;
     emailAddress?: string;
     comments?: string;
+
+    checkAddress?: string;
+    checkAddressLine2?: string;
+    checkState?: string;
+    checkTown?: string;
+    checkZipCode?: string;
+    checkCountry?: string;
 }
 
 export interface WithdrawalRequest {
