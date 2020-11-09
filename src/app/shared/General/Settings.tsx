@@ -6,9 +6,10 @@ import { ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import moment from 'moment';
 import { ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/General/types';
+import { timezoneDropdownList } from '../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')
 
@@ -89,8 +90,8 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                                             dropdownTitle='Timezone'
                                             dropdownDefaultSelect={startDateTimeValue.timezone}
                                             id='dropdownTimezone'
-                                            callback={(value: string) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.split(' ')[0]});props.setHasChanged(true)}} 
-                                            list={momentTZ.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + momentTZ.tz(item).format('Z z') + ')']: false } }, {})}
+                                            callback={(value: DropdownSingleListItem) => {setStartDateTimeValue({...startDateTimeValue, timezone: value.title.split(' ')[0]});props.setHasChanged(true)}} 
+                                            list={timezoneDropdownList}
                                         />
                                     </div>
                             }

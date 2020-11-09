@@ -10,12 +10,15 @@ import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { useForm } from 'react-hook-form';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International"}, {title: "Check"}, {title: "PayPal"}]
 
     const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
         reValidateMode: 'onChange',
@@ -30,6 +33,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
 
     const onSubmit = (data: PaymentMethod) => { 
         setButtonLoading(true)
+        debugger
         props.addPaymentMethodRequest(
             {
                 ...data, 
@@ -83,14 +87,14 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col sm-col-3 col-12 px1 xs-mb2 clearfix xs-no-gutter'
                         id='paywallNewPaymentDropdown' 
                         dropdownTitle='Payout Type' 
-                        list={{'Bank Account (US)': false, 'Bank Account (International)': false, 'Check': false, 'PayPal': false}} 
-                        callback={(value: string) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(value)}}
+                        list={payoutTypeDropdownList} 
+                        callback={(item: DropdownSingleListItem) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(item.title)}}
                         dropdownDefaultSelect={selectedPaymentMethod}
                     />
                     {
                         (selectedPaymentMethod === PaymentMethodType.BankAccountUS || selectedPaymentMethod === PaymentMethodType.BankAccountInternational) &&
                             <div style={{marginTop: 2}} className="col col-4 pl1 xs-no-gutter">
-                                <Tab className='col col-12' tabDefaultValue={paymentMethodRecipientType === 'Business' ? 0 : 1} orientation='horizontal' list={tabsList} callback={setPaymentMethodRecipientType} label="Recipient Type" />
+                                <Tab className='col col-12' tabDefaultValue={paymentMethodRecipientType === 'Business' ? 0 : 1} orientation='horizontal' list={tabsList} callback={(value: string) => setPaymentMethodRecipientType(value as 'Business' | 'Personal')} label="Recipient Type" />
                             </div>
                     }   
                 </div>
@@ -598,7 +602,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Address' 
                         {...handleValidationForm('checkAddress', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('address', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('checkAddress', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
@@ -608,7 +612,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}                            
-                        onChange={(event) => handleChange('address2', event.currentTarget.value)} 
+                        onChange={(event) => handleChange('checkAddressLine2', event.currentTarget.value)} 
                     />
                 </div>
                 <div className='col col-12 my2'>
@@ -620,7 +624,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='State/Province' 
                         {...handleValidationForm('checkState', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('state', event.currentTarget.value)}                    
+                        onChange={(event) =>  handleChange('checkState', event.currentTarget.value)}                    
                     />
                     <Input 
                         className='col col-6 sm-col-2 sm-pl1 pr1' 
@@ -630,7 +634,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Town/City' 
                         {...handleValidationForm('checkTown', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('town', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('checkTown', event.currentTarget.value)}                     
                     />
                     <Input 
                         className='col col-6 sm-col-2 sm-pr1 pl1 xs-mb2' 
@@ -640,7 +644,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Zip/Postal Code' 
                         {...handleValidationForm('checkZipCode', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('checkZipCode', event.currentTarget.value)}                     
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-3 pl1' 
@@ -650,7 +654,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         placeholder='Country' 
                         {...handleValidationForm('checkCountry', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('country', event.currentTarget.value)}                     
+                        onChange={(event) =>  handleChange('checkCountry', event.currentTarget.value)}                     
                     />
                 </div>
             </div>

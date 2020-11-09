@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../..//components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../..//components/FormsComponents/Button/Button';
-import { DropdownListType } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from '../../..//components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../..//components/Typography/Text';
 import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
@@ -10,6 +10,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
+import { availableStartDropdownList, availableEndDropdownList, timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 var moment = require('moment-timezone');
 
 const defaultPromo: Promo = {
@@ -60,6 +61,13 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const [endDateTime, setEndDateTime] = React.useState<string>(newPromoPreset.endDate > 0 ? 'Set Date and Time' : 'Forever')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    const presetDropdownList = props.presetList.map((item) => {
+        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
+        presetDropdownListItem.title = item.name
+        presetDropdownListItem.data = item
+        return presetDropdownListItem
+    })
+
 
 
     const handleSubmit = () => {
@@ -98,8 +106,8 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     className='col col-6'
                     dropdownTitle='Preset'
                     dropdownDefaultSelect='Custom Promo'
-                    list={props.presetList ? props.presetList.reduce((reduced: DropdownListType, preset: Promo) => { return { ...reduced, [preset.name]: false } }, {}) : {}}
-                    callback={(selectedPreset: string) => { return setNewPromoPreset({...props.presetList.find(preset => preset.name === selectedPreset), alphanumericCode: ''}) }}
+                    list={props.presetList ? presetDropdownList : []}
+                    callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({...item.data, alphanumericCode: ''}) }}
                 />
                 {
                     newPromoPreset.id === "custom" &&
@@ -119,7 +127,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 <Input className='col sm-col-3 col-6 px1' value={newPromoPreset.limit ? newPromoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, limit: parseInt(event.currentTarget.value) })} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-            <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={{ 'Always': false, "Set Date and Time": false }} callback={(value: string) => {setStartDateTime(value)}} />
+            <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => {setStartDateTime(item.title)}} />
                 {startDateTime === "Set Date and Time" &&
                     <>
                         <DateSinglePickerWrapper
@@ -140,7 +148,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 }
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={{ 'Forever': false, "Set Date and Time": false }} callback={(value: string) => {setEndDateTime(value)}} />
+                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => {setEndDateTime(item.title)}} />
                 {
                     endDateTime === "Set Date and Time" &&
                     <>
@@ -171,10 +179,10 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                         dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className={ClassHalfXsFullMd + ' pr1'} 
                         dropdownTitle='Timezone' 
-                        callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, timezone: value.split(' ')[0] })} list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => { return { ...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false } }, {})} />
+                        callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 
-                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(value: string) => setNewPromoPreset({ ...newPromoPreset, discountApplied: value })} list={{ 'Once': false, 'Forever': false }} />
+                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.title })} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 mb2'>
                 <Button
