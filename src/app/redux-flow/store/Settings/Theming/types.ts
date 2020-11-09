@@ -39,6 +39,7 @@ export interface ThemeOptions {
     offlineMessagePosition: string;
     deliveryMethod: DeliveryMethod;
     regionSettings: RegionSetting;
+    showFullTimeCode: boolean;
 }
 
 export interface MailCatcher {
@@ -59,8 +60,8 @@ export interface ContentTheme {
 
 export interface ContentThemeState { 
     [contentType: string]: {
-        [key: string]: ContentTheme
-    } 
+        [key: string]: ContentTheme;
+    }; 
 }
 
 export const defaultStateThemesType: ThemesData = {
