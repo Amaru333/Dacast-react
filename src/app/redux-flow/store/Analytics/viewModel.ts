@@ -1,5 +1,5 @@
 import { GetRevenueAnalyticsOutput, GetRevenueAnalyticsInput, GetDataAnalyticsOutput, GetAudienceAnalyticsOutput, GetAudienceAnalyticsInput } from '../../../../DacastSdk/analytics'
-import { AudienceAnalyticsState, DataAnalyticsState, SalesAnalyticsState } from '../Content/Analytics'
+import { AudienceAnalyticsState, WatchAnalyticsState, SalesAnalyticsState } from '../Content/Analytics'
 
 export const formatGetRevenueAnalyticsOutput = (response: GetRevenueAnalyticsOutput): { data: SalesAnalyticsState } => {
     return {
@@ -23,13 +23,13 @@ export const formatGetRevenueAnalyticsOutput = (response: GetRevenueAnalyticsOut
                 ],
                 table: [{ revenues: 9392, label: 'New York City' }, { revenues: 7602, label: "Annecy" }, { revenues: 12349, label: 'San Francisco' }, { revenues: 5402, label: 'Londres' }]
             },
-            salesRevenuesByDevice: {
-                labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
-                sales: [810, 345, 144, 1539, 1353, 672],
-                revenues: [11021, 2133, 2711, 10239, 3313, 9742],
-                table: [{ sales: 810, revenues: 11021, label: "Firefox on Windows" }, { sales: 345, revenues: 2133, label: "Chrome on Mac" }, { sales: 144, revenues: 2711, label: "Safari on Mac" }, { sales: 1539, revenues: 10239, label: "Opera on Windows" }
-                    , { sales: 1353, revenues: 3313, label: "Chrome on Linux" }, { sales: 672, revenues: 9742, label: "Edge on Windows" },]
-            }
+            // salesRevenuesByDevice: {
+            //     labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
+            //     sales: [810, 345, 144, 1539, 1353, 672],
+            //     revenues: [11021, 2133, 2711, 10239, 3313, 9742],
+            //     table: [{ sales: 810, revenues: 11021, label: "Firefox on Windows" }, { sales: 345, revenues: 2133, label: "Chrome on Mac" }, { sales: 144, revenues: 2711, label: "Safari on Mac" }, { sales: 1539, revenues: 10239, label: "Opera on Windows" }
+            //         , { sales: 1353, revenues: 3313, label: "Chrome on Linux" }, { sales: 672, revenues: 9742, label: "Edge on Windows" },]
+            // }
         }
     }
 }
@@ -38,10 +38,10 @@ export const formatGetRevenueAnalyticsInput = (data: any): GetRevenueAnalyticsIn
     return data
 }
 
-export const formatGetDataAnalyticsOutput = (response: GetDataAnalyticsOutput): { data: DataAnalyticsState } => {
+export const formatGetDataAnalyticsOutput = (response: GetDataAnalyticsOutput): { data: WatchAnalyticsState } => {
     return {
         data: {
-            dataByTime: {
+            watchByTime: {
                 labels: ["01-01-2020", "01-02-2020", "01-03-2020", "01-04-2020", "01-05-2020", "01-06-2020", "01-06-2020", "01-07-2020", "01-08-2020", "01-09-2020", "01-10-2020", "01-11-2020", "01-12-2020", "01-13-2020"],
                 data: [510, 213, 271, 1239, 133, 672, 245, 212, 562, 245, 324, 592, 912, 134],
                 table: [{ data: 510, label: "01-01-2020" }, { data: 213, label: "01-02-2020" },
@@ -50,12 +50,12 @@ export const formatGetDataAnalyticsOutput = (response: GetDataAnalyticsOutput): 
                 { data: 592, label: "01-12-2020" }, { data: 912, label: "01-13-2020" }, { data: 134, label: "01-14-2020" }]
 
             },
-            dataByDevice: {
+            watchByDevice: {
                 labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
                 data: [8120, 3435, 1424, 1539, 4353, 6724],
                 table: [{ data: 8120, label: "Firefox on Windows" }, { data: 3435, label: "Chrome on Mac" }, { data: 1424, label: "Safari on Mac" }, { data: 1539, label: "Opera on Windows" }, { data: 4353, label: "Chrome on Linux" }, { data: 6724, label: "Edge on Windows" }]
             },
-            dataByLocation: {
+            watchByLocation: {
                 data: [
                     { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
                     { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },

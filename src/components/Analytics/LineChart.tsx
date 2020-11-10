@@ -1,10 +1,17 @@
-import React, { Component } from 'react';
-import { Line, LinearComponentProps, Scatter } from 'react-chartjs-2';
-import { hexToRgbA, lightenDarkenColor } from '../../utils/utils';
+import React from 'react';
+import { Line, LinearComponentProps } from 'react-chartjs-2';
+import { hexToRgbA } from '../../utils/utils';
 import { BaseItemAnalytics, LineChartProps } from './AnalyticsType';
 import 'chartjs-plugin-crosshair'
+import { EmptyAnalytics } from './EmptyAnalytics';
 
 export const LineChart = (props: LineChartProps) => {
+
+    if(!props.lines.length) {
+        return (
+            <EmptyAnalytics />
+        )
+    }
 
     const createDataset = (item: BaseItemAnalytics) => {
 

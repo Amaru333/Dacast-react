@@ -37,30 +37,30 @@ export interface SalesAnalyticsState {
         revenues: number[];
         table: {sales: number; revenues: number; label: string}[]
     };
-    salesRevenuesByDevice: {
-        labels: string[];
-        sales: number[];
-        revenues: number[];
-        table: {sales: number; revenues: number; label: string}[]
-    };
+    // salesRevenuesByDevice: {
+    //     labels: string[];
+    //     sales: number[];
+    //     revenues: number[];
+    //     table: {sales: number; revenues: number; label: string}[]
+    // };
     salesRevenuesByLocation: { 
         data: LocationItem[];
         table: {revenues: number; label: string}[]
     }
 }
 
-export interface DataAnalyticsState {
-    dataByTime: {
+export interface WatchAnalyticsState {
+    watchByTime: {
         labels: string[];
         data: number[];
         table: {data: number; label: string}[];
     },
-    dataByDevice: {
+    watchByDevice: {
         labels: string[];
         data: number[];
         table: {data: number; label: string}[];
     },
-    dataByLocation: { 
+    watchByLocation: { 
         data: LocationItem[];
         table: {data: number; label: string}[];
     }
@@ -69,7 +69,7 @@ export interface DataAnalyticsState {
 export interface ContentAnalyticsFinalState { 
     audience: AudienceAnalyticsState,
     sales: SalesAnalyticsState,
-    data: DataAnalyticsState
+    watch: WatchAnalyticsState
 }
 
 export type ContentAnalyticsState = {} | {'channel'?: ContentAnalyticsFinalState, 'vod'?: ContentAnalyticsFinalState } ;

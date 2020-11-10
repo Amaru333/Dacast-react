@@ -1,8 +1,16 @@
 import React from 'react';
 import { Bar, HorizontalBar, Line, LinearComponentProps } from 'react-chartjs-2';
 import { BarChartProps, BaseItemAnalytics } from './AnalyticsType';
+import { EmptyAnalytics } from './EmptyAnalytics';
 
 export const BarChart = (props: BarChartProps) => {
+
+
+    if(!props.dataSets.length) {
+        return (
+            <EmptyAnalytics />
+        )
+    }
 
     const createDataset = (item: BaseItemAnalytics) => {
         return {

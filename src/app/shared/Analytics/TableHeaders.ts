@@ -91,7 +91,7 @@ export const HeaderSalesLocation = [
         Header: 'Country',
         accessor: 'label',
     }, {
-        Header: 'Sales',
-        accessor: 'sales'
+        Header: 'Revenue',
+        accessor: 'revenues'
     }
 ]

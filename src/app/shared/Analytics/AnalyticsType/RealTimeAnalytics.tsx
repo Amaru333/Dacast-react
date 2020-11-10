@@ -28,7 +28,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                     <LineChart
                         title="Concurrent Viewers"
                         options={{ fill: false, curve: 0, isTime: true }}
-                        lines={[{ data: [89, 82, 71, 61, 53, 41], label: "Viewers", color: ThemeAnalyticsColors.yellow }]}
+                        lines={[]}
                         labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000]} />
 
                 </AnalyticsCard>
@@ -70,7 +70,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                             { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
                             { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
                         ]}
-                        markerNameTranform={(element) => element.city + ": " + element.value + "Plays"} />
+                        markerNameTranform={(element) => element.city + ": " + element.value + " Plays"} />
                 </AnalyticsCard>
             </div>
         </div>

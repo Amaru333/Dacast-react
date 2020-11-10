@@ -7,7 +7,7 @@ import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
 import { EngagementAnalytics } from './AnalyticsType/EngagementAnalytics';
 import { RealTimeAnalytics } from './AnalyticsType/RealTimeAnalytics';
 import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
-import { DataUsageAnalytics } from './AnalyticsType/DataUsageAnalytics';
+import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 
@@ -20,7 +20,7 @@ export interface ContentAnalyticsProps {
 
 export type ContentAnalyticsTypes = 'live' | 'vod' | 'all';
 
-export type ContentAnalyticsDropdownValues = 'audience' | 'data-usage' | 'sales' | 'engagement' | 'real-time';
+export type ContentAnalyticsDropdownValues = 'audience' | 'watch-duration' | 'sales' | 'engagement' | 'real-time';
 
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
@@ -34,7 +34,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const handleExtraSettings = () => {
         switch (currentTab) {
             case 'audience':
-            case 'data-usage':
+            case 'watch-duration':
             case 'sales':
             case 'engagement':
                 return (
@@ -61,9 +61,9 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 return (
                     <AudienceAnalytics data={props.contentAnalyticsData.audience} />
                 )
-            case 'data-usage':
+            case 'watch-duration':
                 return (
-                    <DataUsageAnalytics data={props.contentAnalyticsData.data} />
+                    <WatchDurationAnalytics data={props.contentAnalyticsData.watch} />
                 )
             case 'sales':
                 return (
@@ -84,7 +84,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
-        { title: "Data Usage", data: "data-usage" },
+        { title: "Watch Duration", data: "watch-duration" },
         { title: "Sales & Revenue", data: "sales" },
         // { title: "Engagement", data: "engagement" },
         ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
