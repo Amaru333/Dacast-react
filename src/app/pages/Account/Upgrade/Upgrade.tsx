@@ -139,8 +139,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         </div>
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].bandwidth} GB&nbsp;</Text>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.starterPlan.allowances[0].bandwidth * 12).toLocaleString()} GB&nbsp;</Text>
+                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} GB</Text>
 
@@ -221,8 +221,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
                                         </div>
                                         <div className='flex items-center'>
-                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB</Text>
-                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/mo</Text>
+                                            <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth * 12).toLocaleString()} GB</Text>
+                                            <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
