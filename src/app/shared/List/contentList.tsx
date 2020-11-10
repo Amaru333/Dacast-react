@@ -320,13 +320,6 @@ export const ContentListPage = (props: ContentListProps) => {
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
                                 }
-                                {
-                                    props.contentType ==='live' && value.channelType === 'rolling-manifest-transmux' && 
-                                    <div className='pl2 relative'>
-                                        <IconStyle id='liveStreamRowFreeTrialToolTip'>info_outlined</IconStyle>
-                                        <Tooltip style={{ width: 330 }} target="liveStreamRowFreeTrialToolTip">This is a trial channel. Please <Text color='blue' size={12}><a onClick={() => window.open('mailto:sales@dacast.com')}>contact sales</a></Text> to enable testing of all platform features.</Tooltip>
-                                    </div>
-                                }
                             </div>,
                         <TitleContainer>
                             <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
@@ -407,20 +400,7 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "live" &&
-                        <div className='flex items-end'>
-                            <Button disabled={props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0} onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
-                            {
-                                props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.items.totalResults > 0 &&
-                                <>
-                                    <IconStyle className='pl1' id='createLiveStreamButtonllToolTip'>info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target='createLiveStreamButtonllToolTip'>
-                                        Free Trial accounts only have 1 Live Stream. Contact us to upgrade
-                                    </Tooltip>
-                                </>
-                            }
-
-                        </div>
-
+                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
                     }
                     {
                         props.contentType === "playlist" &&
