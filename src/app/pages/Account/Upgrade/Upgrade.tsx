@@ -131,7 +131,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                         <>
                             <PlanContainer className={marginBlocks}>
                                 <Text size={16} weight='med' color='gray-1'>Starter</Text>
-                                <PlanCard className='mt1' isSelected={currentPlan === 'Starter'}>
+                                <PlanCard className='mt1' isSelected={currentPlan === 'Annual Starter'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
                                             <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.starterPlan.price.usd / 100) / 12).toFixed(0)}</Text>
@@ -155,7 +155,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
                                                 <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
-                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Annual Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Annual Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
 
