@@ -12,7 +12,4 @@ export const EmptyAnalytics = (props: {}) => {
         <Text size={16} weight="reg" >Please come back later</Text>
     </div>
    )
-        
-
-
 }

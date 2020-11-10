@@ -4,7 +4,7 @@ import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { displayBytesForHumans } from '../../../../utils/formatUtils'
-import {HeaderDataTime, HeaderDataDevice, HeaderDataLocation} from '../TableHeaders'
+import {HeaderWatchTime, HeaderWatchDevice, HeaderWatchLocation} from '../TableHeaders'
 import { WatchAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 
 export interface WatchDurationAnalyticsProps {
@@ -36,12 +36,11 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 labels={props.data.watchByDevice.labels} />
         )
     }
-    
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
                 markers={props.data.watchByLocation.data} 
-                markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
+                markerNameTranform={ (element) => element.city+": "+(element.value)+" s" } />
         )
     }
 
@@ -52,13 +51,13 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 showTable={true}
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.watchByTime.table, header: HeaderDataTime} },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.watchByDevice.table, header: HeaderDataDevice} },
-                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.watchByLocation.table, header: HeaderDataLocation}  },
+                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.watchByDevice.table, header: HeaderWatchDevice} },
+                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.watchByLocation.table, header: HeaderWatchLocation}  },
                     }
                 }
             />
         </React.Fragment>
 
     )
-}
+} 
