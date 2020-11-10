@@ -48,6 +48,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     }
 
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
+    console.log(selectedTheme)
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
@@ -186,7 +187,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <Text size={20} weight='med'>Region Settings</Text>
                                     <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href = "/help"}>
                                         Contact Us
-                                </Button>
+                                    </Button>
                                 </TitleSection>
                                 <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
                                 <RadioButtonContainer className="mt2">
@@ -362,6 +363,27 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Toggle className={togglePadding} label='View Counter' checked={selectedTheme.isViewerCounterEnabled} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled }); }} />
                                             <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
                                             <Tooltip target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
+                                        </ControlToggleContainer>
+                                        {
+                                            selectedTheme.isViewerCounterEnabled &&
+                                            <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value) }); }} />
+                                        }
+                                    </DisabledSection>
+                                </>
+                            }
+
+                            {
+                                (props.contentType === 'live' || props.contentType === 'settings') &&
+                                <>
+                                    <Divider className="p1" />
+
+                                    <DisabledSection enabled={liveEnabled}>
+                                        <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
+
+                                        <ControlToggleContainer>
+                                            <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
+                                            <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
+                                            <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
                                         </ControlToggleContainer>
                                         {
                                             selectedTheme.isViewerCounterEnabled &&
