@@ -56,7 +56,8 @@ interface TokenInfo {
     accessToken?: string;
     refresh: string;
     expires: number;
-    userInfo?: UserInfo
+    userInfo?: UserInfo;
+    impersonatedUserIdentifier?: string;
 }
 
 export class UserTokenService {
@@ -84,13 +85,18 @@ export class UserTokenService {
         return this.setTokenInfo() 
     }
 
-    public getUserInfoItem = (item: Privilege | ExtraUserInfo) => {
+    public getUserInfoItem = (item: Privilege | ExtraUserInfo | 'impersonatedUserIdentifier') => {
         if(!this.tokenInfo  || !this.tokenInfo.userInfo) {
             this.setTokenInfo()
         } 
         if(!this.tokenInfo) {
             return ''
         }
+
+        if(item === 'impersonatedUserIdentifier') {
+            return this.tokenInfo.impersonatedUserIdentifier
+        }
+        
         return this.tokenInfo.userInfo[item] || ''
     
     }

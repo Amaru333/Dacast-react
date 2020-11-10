@@ -170,11 +170,18 @@ const Header = (props: HeaderProps) => {
 
     return (
         <HeaderStyle>
-            {props.isMobile ? <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} /> : null}
+            {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
             <BreadcrumbContainer className="mr-auto flex ml2 sm-show" >
                 {renderHeaderBreadcrumb()}
             </BreadcrumbContainer>
+            {
+                userToken.getUserInfoItem('impersonatedUserIdentifier') && 
+                <div>
+                    <Text> Impersonating user: {userToken.getUserInfoItem('impersonatedUserIdentifier')}</Text>
+                </div>
+            }
+
             <IconContainerStyle>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
