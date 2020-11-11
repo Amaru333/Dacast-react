@@ -69,6 +69,8 @@ export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEn
 // export const getEncodingRecipesAction = applyViewModel(dacastSdk.getEncodingRecipes, undefined, formatGetEncodingRecipesOutput, ActionTypes.GET_ENCODING_RECIPES, null, 'Couldn\'t get encoding recipes')
 
 export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
+export const createAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.CREATE_AD, 'Ad created', 'Couldn\'t create ad')
+export const deleteAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.DELETE_AD, 'Ad deleted', 'Couldn\'t delete ad')
 
 
 export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {
@@ -77,32 +79,6 @@ export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): Thunk
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, payload: data} );
                 dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, CreateAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateAd> ) => {
-        await interactionsServices.saveAd(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.CREATE_AD, payload: data} );
-                dispatch(showToastNotification("Ad created", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const deleteAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteAd> ) => {
-        await interactionsServices.saveAd(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.DELETE_AD, payload: data} );
-                dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
             }).catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()
