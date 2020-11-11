@@ -62,6 +62,8 @@ export interface DeleteImage {
     payload: {file: File};
 }
 
+export type Action = GetSettingsInteractionsInfos | SaveSettingsInteractionsInfos | SaveAd | CreateAd | DeleteAd | SaveMailCatcher | CreateMailCatcher | DeleteMailCatcher | GetUploadUrl | UploadImage | DeleteImage
+
 export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEngagementSettings, undefined, formatGetEngagementOutput, ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, null, 'Couldn\'t get engagement settings')
 
 // export const getEncodingRecipesAction = applyViewModel(dacastSdk.getEncodingRecipes, undefined, formatGetEncodingRecipesOutput, ActionTypes.GET_ENCODING_RECIPES, null, 'Couldn\'t get encoding recipes')
@@ -187,18 +189,3 @@ export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>,
             })
     }
 }
-
-
-export type Action = GetSettingsInteractionsInfos 
-| SaveSettingsInteractionsInfos
-| SaveAd 
-| CreateAd
-| DeleteAd
-| SaveMailCatcher
-| CreateMailCatcher
-| DeleteMailCatcher
-| GetUploadUrl
-| UploadImage
-| DeleteImage
-
-
