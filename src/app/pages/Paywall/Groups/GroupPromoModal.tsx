@@ -157,8 +157,8 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                         dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className='col col-6 pr2' 
                         dropdownTitle='Timezone' 
-                        callback={(value: string) => setGroupPromo({...groupPromo, timezone: value.split(' ')[0]})} 
-                        list={moment.tz.names().reduce((reduced: DropdownListType, item: string) => {return {...reduced, [item + ' (' + moment.tz(item).format('Z z') + ')']: false}}, {})} 
+                        callback={(value: DropdownSingleListItem) => setGroupPromo({...groupPromo, timezone: value.data })} 
+                        list={moment.tz.names().map((item: string) => {return { title:  (item + ' (' + moment.tz(item).format('Z z') + ')'), value: item.split(' ')[0] } } )} 
                     />
                 }
 
