@@ -61,6 +61,7 @@ export class DacastSdk {
     public putEngagementSettings = async (input: EngagementSettingsEndoint) => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement', {...input})
 
     public putAdsSettings = async (input: PutAdInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement/ads', {...input})
+    public deleteUserBrandImage = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/engagement/brand-image')
     
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => await this.axiosClient.post('/paywall/promos/presets', {...input}).then(this.checkExtraData)
