@@ -80,16 +80,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         id: '',
         name: '',
         isDefault: false,
-        values: [],
-        restrictionType: 'domain-restriction'
+        values: []
     }
 
     const geoRestrictionEmptyValues: GeoRestriction = {
         id: '',
         name: '',
         isDefault: false,
-        values: [],
-        restrictionType: 'geo-restriction'
+        values: []
     };
 
     const handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {

@@ -4,7 +4,7 @@ import { Text } from '../Typography/Text';
 import { TabProps } from './TabTypes';
 import { TabContainer, TabHeaderContainer, TabStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
+import { DropdownListType, DropdownSingleListItem } from '../FormsComponents/Dropdown/DropdownTypes';
 import { useMedia } from '../../utils/utils';
 
 export const Tab = (props: TabProps) => {
@@ -48,10 +48,8 @@ export const Tab = (props: TabProps) => {
     }, [selectedTab])
 
     const renderTabs = () => {
-        const dropdownList: DropdownListType = {}
-        list.forEach((item) => dropdownList[item.name] = false )
         return mobile && !props.callback ?
-            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
+            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={list.map((item) => { return {title: item.name} })} isNavigation dropdownTitle="" />
             : !mobile && !props.callback ?
                 list.map((tab, i) => {
                     return (
