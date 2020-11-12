@@ -160,7 +160,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                     <Bubble hidden={!errorMessage} type='error' className='my2'>
                         {errorMessage}
                         {
-                            (errorMessage && errorMessage.indexOf('1 channel') === -1) &&
+                            (errorMessage && errorMessage.indexOf('1 channel') !== -1) &&
                             <a href='/upgrade'> Upgrade</a>
                         }
                     </Bubble>
