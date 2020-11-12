@@ -1,11 +1,12 @@
 import { UserTokenService } from '../utils/services/token/token'
 import { AxiosClient } from '../utils/services/axios/AxiosClient'
-import { AxiosResponse } from 'axios'
+import Axios, { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
 import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
 import { EmbedSettings } from './settings'
-import { GetAudienceAnalyticsInput, GetAudienceAnalyticsOutput, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetDataAnalyticsInput, GetDataAnalyticsOutput, GetRevenueAnalyticsInput, GetRevenueAnalyticsOutput } from './analytics'
+import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
+var qs = require('qs');
 
 export class DacastSdk {
 
@@ -90,16 +91,6 @@ export class DacastSdk {
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
 
-    //Real one here
-    //public getContentAnalytics = async (options: GetContentAnalyticsInput, type: string): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(type+'/'+options.id+'/analytics', {params: options}).then(this.checkExtraData)
-    //public getRevenueAnalytics = async (options: GetRevenueAnalyticsInput): Promise<GetRevenueAnalyticsOutput> => await this.axiosClient.get('/analytics/revenue', {params: options}).then(this.checkExtraData)
-    //public getDataAnalytics = async (options: GetDataAnalyticsInput): Promise<GetDataAnalyticsOutput> => await this.axiosClient.get('/analytics/data', {params: options}).then(this.checkExtraData)
-    //public getAudienceAnalytics = async (options: GetAudienceAnalyticsInput): Promise<GetAudienceAnalyticsOutput> => await this.axiosClient.get('/analytics/audience', {params: options}).then(this.checkExtraData)
-
-    //Fake in the meantime
-    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
-    public getRevenueAnalytics = async (options: GetRevenueAnalyticsInput): Promise<GetRevenueAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
-    public getDataAnalytics = async (options: GetDataAnalyticsInput): Promise<GetDataAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
-    public getAudienceAnalytics = async (options: GetAudienceAnalyticsInput): Promise<GetAudienceAnalyticsOutput> => { return await setTimeout(() => {}, 2000) }
+    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get('https://5tge6p1m2e.execute-api.us-east-1.amazonaws.com/dev/'+options.type+'/'+options.id+'/analytics', {params: { time_range: options.timeRange,  dimension: options.dimension }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
 }

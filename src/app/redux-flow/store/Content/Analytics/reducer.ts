@@ -5,15 +5,16 @@ import { ActionTypes, ContentAnalyticsState, defaultStateContentAnalytics } from
 const reducer: Reducer<ContentAnalyticsState> = (state = defaultStateContentAnalytics, action: Action) => {
     switch (action.type) {
         case ActionTypes.GET_CONTENT_ANALYTICS:
+            console.log(state);
             return {
                 ...state,
                 [action.payload.contentType]: {
-                    ...(state[action.payload.contentType] ? state[action.payload.contentType][action.payload.contentId]: []),
+                    ...(state[action.payload.contentType]),
                     [action.payload.contentId] : {
+                        ...(state[action.payload.contentType] ? state[action.payload.contentType][action.payload.contentId] : []),
                         ...action.payload.data
                     }
                 }
-
             }
         default:
             return state;

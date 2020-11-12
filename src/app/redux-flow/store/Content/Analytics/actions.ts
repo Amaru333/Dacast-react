@@ -5,7 +5,7 @@ import { formatGetContentAnalyticsOutput, formatGetContentAnalyticsInput } from 
 
 export interface GetContentAnalytics {
     type: ActionTypes.GET_CONTENT_ANALYTICS;
-    payload: {contentId: string; contentType: string; data: ContentAnalyticsState };
+    payload: {contentId: string ; contentType: 'live' | 'vod' ; data: ContentAnalyticsState };
 }
 
 export const getContentAnalyticsAction = applyViewModel(dacastSdk.getContentAnalytics, formatGetContentAnalyticsInput, formatGetContentAnalyticsOutput, ActionTypes.GET_CONTENT_ANALYTICS, null, 'Couldn\'t get analytics for this content')

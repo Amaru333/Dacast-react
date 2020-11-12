@@ -72,6 +72,6 @@ export interface ContentAnalyticsFinalState {
     watch: WatchAnalyticsState
 }
 
-export type ContentAnalyticsState = {} | {'channel'?: ContentAnalyticsFinalState, 'vod'?: ContentAnalyticsFinalState } ;
+export type ContentAnalyticsState = {'live'?: { [index:string] : ContentAnalyticsFinalState }, 'vod'?: { [index:string] : ContentAnalyticsFinalState } } ;
 
-export const defaultStateContentAnalytics: ContentAnalyticsState = {};
+export const defaultStateContentAnalytics: ContentAnalyticsState = {'live': {}, 'vod': {} };

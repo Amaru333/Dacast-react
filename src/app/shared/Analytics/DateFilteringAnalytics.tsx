@@ -3,10 +3,11 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper'
 import { presets } from '../../constants/DatepickerPresets'
 import moment from 'moment'
+import { TimeRangeAnalytics } from '../../../DacastSdk/analytics'
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
-    callback?: (dates: {startDate: number; endDate: number}) => void,
+    callback?: (dates: {startDate?: number; endDate?: number, value?: TimeRangeAnalytics}) => void,
     showPreset?: boolean
 }
 
@@ -23,7 +24,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     const renderDatePresets = () => {
         return showPreset ? (
             <div>
-                {presets.map(({ text, start, end }) => {
+                {presets.map(({ text, start, end, value }) => {
                     return (
                         <Button
                             key={text}
@@ -31,7 +32,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             typeButton='secondary'
                             buttonColor='blue'
                             sizeButton='small'
-                            onClick={() => setDates({ start, end })}
+                            onClick={() => { setDates({ start, end }); props.callback({ value })  } }
                         >
                             {text}
                         </Button>

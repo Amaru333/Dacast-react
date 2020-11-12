@@ -57,7 +57,6 @@ import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
 import ExposSetup from '../containers/Expos/Setup';
-import Analytics from '../containers/Analytics/Analytics';
 import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
@@ -260,7 +259,7 @@ export const AppRoutes: Routes[] = [
         component: VodRenditions,
     },
     {
-        path: '/videos/:liveId/analytics',
+        path: '/videos/:vodId/analytics',
         name: 'Analytics',
         iconName: null,
         isExact: true,

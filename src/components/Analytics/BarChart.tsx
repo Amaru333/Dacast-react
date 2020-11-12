@@ -6,7 +6,7 @@ import { EmptyAnalytics } from './EmptyAnalytics';
 export const BarChart = (props: BarChartProps) => {
 
 
-    if(!props.dataSets.length) {
+    if(!props.labels.length) {
         return (
             <EmptyAnalytics />
         )

@@ -3,9 +3,16 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
+import { AnalyticsDimensions } from '../../../DacastSdk/analytics';
 
-export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
-export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
+export const ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
+export const HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
+
+export const AllDimensions: AnalyticsDimensions[] = ['PLAYS_BY_DEVICE', 'PLAYS_BY_TIME', 'PLAYS_BY_COUNTRY', 'WATCHTIME_BY_TIME', 'WATCHTIME_BY_DEVICE', 'WATCHTIME_BY_COUNTRY', 'IMPRESSIONS_BY_TIME', 'IMPRESSIONS_BY_DEVICE', 'IMPRESSIONS_BY_COUNTRY', 'SALES_BY_TIME', 'SALES_BY_COUNTRY', 'REVENUES_BY_TIME', 'REVENUES_BY_COUNTRY'];
+export const AudienceDimension: AnalyticsDimensions[] = ['PLAYS_BY_DEVICE', 'PLAYS_BY_TIME', 'PLAYS_BY_COUNTRY', 'IMPRESSIONS_BY_TIME', 'IMPRESSIONS_BY_DEVICE', 'IMPRESSIONS_BY_COUNTRY'];
+export const WatchDurationDimension: AnalyticsDimensions[] = ['WATCHTIME_BY_TIME', 'WATCHTIME_BY_DEVICE', 'WATCHTIME_BY_COUNTRY'];
+export const SalesDimension: AnalyticsDimensions[] = ['SALES_BY_TIME', 'SALES_BY_COUNTRY', 'REVENUES_BY_TIME', 'REVENUES_BY_COUNTRY'];
+
 
 
 export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>) => {
