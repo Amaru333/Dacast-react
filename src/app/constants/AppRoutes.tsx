@@ -59,6 +59,7 @@ import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
 import ExposSetup from '../containers/Expos/Setup';
+import ActivatedAccount from '../containers/Register/ActivatedAccount';
 
 
 export const AppRoutes: Routes[] = [   
@@ -95,7 +96,7 @@ export const AppRoutes: Routes[] = [
         name: 'account-activated',
         notDisplayedInNavigation: true,
         isPublic: true,
-        component: ActivatedAccountPage
+        component: ActivatedAccount
     },
     {
         path:'/forgot-password',
