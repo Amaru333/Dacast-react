@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
 import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
-import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput } from './settings'
+import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput } from './settings'
 import { GetAudienceAnalyticsInput, GetAudienceAnalyticsOutput, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetDataAnalyticsInput, GetDataAnalyticsOutput, GetRevenueAnalyticsInput, GetRevenueAnalyticsOutput } from './analytics'
 
 export class DacastSdk {
@@ -63,7 +63,15 @@ export class DacastSdk {
     public putAdsSettings = async (input: PutAdInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement/ads', {...input})
     public deleteUserBrandImage = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/engagement/brand-image')
     
-    public getSecuritySettings = async (): Promise<void> => await this.axiosClient.get()
+    public getSecuritySettings = async (): Promise<GetSecuritySettingsOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/security').then(this.checkExtraData)
+    public putSecuritySettings = async (input: PutSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/security', {...input})
+    public postGeoRestriction = async (input: GeoRestrictionDetails): Promise<GeoRestrictionId> => await this.axiosClient.post('/accounts/' + this.userId + '/settings/security/restrictions', {...input}).then(this.checkExtraData)
+    public putGeoRestriction = async (input: GeoRestrictionEndpoint): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/security/restrictions/' + input.id, {...input})
+    public deleteGeoRestriction = async (input: string): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/security/restrictions/' + input)
+    public postDomainControl = async (input: DomainControlDetails): Promise<DomainControlId> => await this.axiosClient.post('/accounts/' + this.userId + '/settings/security/restrictions', {...input}).then(this.checkExtraData)
+    public putDomainControl = async (input: DomainControlEndpoint): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/security/restrictions/' + input.id, {...input})
+    public deleteDomainControl = async (input: string): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/security/restrictions/' + input)
+    
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => await this.axiosClient.post('/paywall/promos/presets', {...input}).then(this.checkExtraData)
     public putPromoPreset = async (input: PromoPreset): Promise<void> => await this.axiosClient.put('/paywall/promos/presets/' + input.id, {...input})
