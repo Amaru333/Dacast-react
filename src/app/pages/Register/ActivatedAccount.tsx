@@ -33,14 +33,14 @@ export const ActivatedAccountPage = (props: {activationError: string}) => {
                 </div>
                 <ModalContent className="clearfix mt3">
                     <div className="col col-12 flex justify-center">
-                        <Text size={14} weight="reg" color="gray-3">{accountActive ? "Your email has been confirmed and your account is activated." : "We couldn’t find an account associated with this email address."}</Text>
+                        <Text size={14} weight="reg" color="gray-1">{accountActive ? "Your email has been confirmed and your account is activated." : "We couldn’t find an account associated with this email address."}</Text>
                     </div>
                     <div className="col col-12 mt25 flex justify-center">
-                        <Text size={14} weight="reg" color="gray-3">{accountActive ? "Log in to get started" : "Need help? Contact Us."}</Text>
+                        <Text size={14} weight="reg" color="gray-1">{accountActive ? "Log in to get started." : "Need help? Contact Us."}</Text>
                     </div>
                 </ModalContent>
                 <ModalFooter className="flex justify-center">
-                    <Button onClick={() => { accountActive ? history.push('/login') : console.log('something')}} sizeButton="large" typeButton="primary">{accountActive ? "Login" : "Contact Us"}</Button>
+                    <Button onClick={() => { accountActive ? history.push('/login') : console.log('something')}} sizeButton="large" typeButton="primary">{accountActive ? "Log In" : "Contact Us"}</Button>
                 </ModalFooter>
             </ModalCard>
         </LoginContainer>
