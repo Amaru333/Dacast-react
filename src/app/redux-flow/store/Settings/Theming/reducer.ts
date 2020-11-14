@@ -1,17 +1,14 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, defaultStateThemesType, ThemesData, defaultTheme } from "./types";
+import { ActionTypes, defaultStateThemesType, ThemesData } from "./types";
 
 const reducer: Reducer<ThemesData> = (state = defaultStateThemesType, action: Action) => {
     let themes = null;
     switch (action.type) {
         case ActionTypes.GET_SETTING_THEMING_LIST :
-            let standardTheme = action.payload.data.themes.filter(t => t.themeName === 'Standard')[0] || defaultTheme
             return {
                 ...state,
-                themes: [
-                    standardTheme, 
-                    ...action.payload.data.themes.filter(t => t.themeName !== 'Standard')],
+                ...action.payload
             }
         case ActionTypes.CREATE_SETTING_THEME :
             themes = state.themes.slice()

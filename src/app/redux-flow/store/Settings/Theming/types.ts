@@ -8,9 +8,9 @@ export enum ActionTypes {
 }
 type ThemeType = 'vod' | 'live' | 'playlist';
 
-type DeliveryMethod = 'compatible' | 'secure';
+export type DeliveryMethod = 'compatible' | 'secure';
 
-type RegionSetting = 'standard' | 'premium';
+export type RegionSetting = 'standard' | 'premium';
 
 export interface ThemeOptions {
     id: string;
@@ -18,7 +18,6 @@ export interface ThemeOptions {
     isDefault: boolean;
     isCustom: boolean;
     createdDate: number;
-    themeType: ThemeType;
     playerControls: boolean;
     bigPlayButton: 'visible' | 'hidden';
     scrubbingThumbnail: boolean;
@@ -40,6 +39,7 @@ export interface ThemeOptions {
     deliveryMethod: DeliveryMethod;
     regionSettings: RegionSetting;
     showFullTimeCode: boolean;
+    themeType?: ThemeType;
 }
 
 export interface MailCatcher {
@@ -94,7 +94,8 @@ export const defaultTheme: ThemeOptions = {
     offlineMessage: 'Sorry this media is offline',
     offlineMessagePosition: 'Top',
     deliveryMethod: 'compatible',
-    regionSettings: 'standard'
+    regionSettings: 'standard',
+    showFullTimeCode: false
 }
 
 export const defaultStateContentTheme: ContentThemeState = {}

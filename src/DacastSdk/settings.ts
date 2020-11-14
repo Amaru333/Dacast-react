@@ -132,3 +132,41 @@ export interface PutSecuritySettingsInput {
     contentScheduling: ContentScheduling;
 }
 
+export interface ThemeSettings {
+    themeName: string;
+    isDefault: boolean;
+    isCustom: boolean;
+    playerControls: boolean;
+    bigPlayButton: 'visible' | 'hidden';
+    scrubbingThumbnail: boolean;
+    thumbnailPosition: string;
+    isViewerCounterEnabled: boolean;
+    viewerCounterLimit: number;
+    downloadButton: boolean;
+    socialSharing: boolean;
+    embedCode: boolean;
+    customOverlayColor: string;
+    customMenuColor: string;
+    autoplay: boolean;
+    startVideoMuted: boolean;
+    looping: boolean;
+    continuousPlay: boolean;
+    skipVideos: boolean;
+    offlineMessage: string;
+    offlineMessagePosition: string;
+    showFullTimeCode: boolean;
+    createdDate: number;
+    // deliveryMethod: 'compatible' | 'secure';
+    // regionSettings: 'standard' | 'premium';
+}
+
+export interface ThemeId {
+    id: string;
+}
+
+export type ThemeEndpoint = ThemeSettings & ThemeId
+
+export interface GetThemeSettingsOutput {
+    themes: ThemeEndpoint[]
+}
+
