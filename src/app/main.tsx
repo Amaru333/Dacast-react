@@ -43,6 +43,7 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import { segmentService } from './utils/services/segment/segmentService';
 
 // Any additional component props go here.
 interface MainProps {
@@ -120,14 +121,8 @@ export const updateStateTitle = (pathname: string) => {
     }
 }
 
-let prevPath: string = null;
-
 history.listen((location) => {
     updateStateTitle(location.pathname)
-    if (location.pathname !== prevPath) {
-        prevPath = location.pathname;
-        window.analytics.page('App');
-      }
 });
 
 class ErrorBoundary extends React.Component {
@@ -168,6 +163,7 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
+            segmentService.page()
         }
     }, [location])
 
@@ -180,7 +176,9 @@ const AppContent = (props: { routes: any }) => {
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
+        segmentService.load()
     }, [])
+
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
             setOpen(true)

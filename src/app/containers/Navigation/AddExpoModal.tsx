@@ -9,6 +9,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts'
 import { useHistory } from 'react-router'
 import { axiosClient } from '../../utils/services/axios/axiosClient'
 import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook'
+import { segmentService } from '../../utils/services/segment/segmentService'
 
 export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
 
@@ -34,6 +35,11 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             showToastNotification(`Expos ${data.title} created!`, 'fixed', 'success')
             props.toggle();
             history.push(`/expos/${response.data.id}/general`)
+            segmentService.track('Expo Created', {
+                action: 'Create Expo',
+                location: null,
+                step: 1,
+            })
         }).catch((error) => {
             setButtonLoading(false)
             showToastNotification('Error while creating your expos.', 'fixed', 'error')
