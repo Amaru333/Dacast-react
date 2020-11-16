@@ -6,13 +6,14 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
-import { ContentAnalytics, ContentAnalyticsProps } from '../../shared/Analytics/ContentAnalytics';
+import { ContentAnalytics } from '../../shared/Analytics/ContentAnalytics';
 import { ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
 import { Action } from '../../redux-flow/store/Content/Analytics';
 import { GetContentAnalyticsInput } from '../../../DacastSdk/analytics';
+import { AudienceDimension } from '../../shared/Analytics/AnalyticsCommun';
 
 
-const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => void, contentAnalyticsData: ContentAnalyticsState }) => {
+const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
 
     let { liveId } = useParams<{liveId: string}>()
 
@@ -24,7 +25,7 @@ const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyti
     React.useEffect(() => {
         if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object) {
             setIsFetching(true);
-            props.getContentAnalytics({ id: liveId, timeRange: 'LAST_WEEK', type: "live", dimension: ['IMPRESSIONS_BY_COUNTRY'] }).then(() => setIsFetching(false))
+            props.getContentAnalytics({ id: liveId, timeRange: 'LAST_WEEK', type: "live", dimension: AudienceDimension }).then(() => setIsFetching(false))
         }
     }, [])
         

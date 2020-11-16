@@ -91,6 +91,6 @@ export class DacastSdk {
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
 
-    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get('https://5tge6p1m2e.execute-api.us-east-1.amazonaws.com/dev/'+options.type+'/'+options.id+'/analytics', {params: { time_range: options.timeRange,  dimension: options.dimension }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
+    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get('https://api-singularity.dacast.com/v3/'+options.type+'/'+options.id+'/analytics', {params: { time_range: options.timeRange,  dimension: options.dimension }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
 }

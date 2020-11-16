@@ -5,16 +5,14 @@ export interface GetContentAnalyticsResultItemOutput {
 }
 
 export interface GetContentAnalyticsOutputItem {
-    dimension: AnalyticsDimensionsOutput;
+    dimension: AnalyticsDimensions;
     data: GetContentAnalyticsOutputDataItem[]
 }
 
 export interface GetContentAnalyticsOutputDataItem {
     dimensionSum : number;
-    dimensionType: { type: DimensionItemType; value: string; }
+    dimensionType: { type: DimensionItemType; value: string | number; }
 }
-
-export type AnalyticsDimensionsOutput = 'plays' | 'watchtime' | 'impressions' | 'sales' | 'revenues';
 
 export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTRY';
 
