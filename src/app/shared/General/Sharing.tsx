@@ -24,7 +24,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
             segmentService.track('Expo Created', {
                 action: 'Sharing Expo',
                 expoId: props.contentDetails.id, 
-                step: 2,
+                step: 3,
             })        
         }
     }
