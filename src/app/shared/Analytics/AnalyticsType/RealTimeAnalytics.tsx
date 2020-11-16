@@ -4,10 +4,11 @@ import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
+import { RealTimeAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 import { HalfSmFullXs } from '../AnalyticsCommun'
 
 export interface RealTimeAnalyticsProps {
-        
+    data: RealTimeAnalyticsState
 }
 
 export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {

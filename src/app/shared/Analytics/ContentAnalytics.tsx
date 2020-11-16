@@ -3,9 +3,9 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsDimensions, GetContentAnalyticsInput, TimeRangeAnalytics } from '../../../DacastSdk/analytics';
+import { AnalyticsDimensions, GetContentAnalyticsInput, RealTimeRange, TimeRangeAnalytics } from '../../../DacastSdk/analytics';
 import { ContentAnalyticsFinalState } from '../../redux-flow/store/Content/Analytics';
-import { AudienceDimension, SalesDimension, WatchDurationDimension } from './AnalyticsCommun';
+import { AudienceDimension, RealTimeDimension, SalesDimension, WatchDurationDimension } from './AnalyticsCommun';
 import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
 import { EngagementAnalytics } from './AnalyticsType/EngagementAnalytics';
 import { RealTimeAnalytics } from './AnalyticsType/RealTimeAnalytics';
@@ -28,23 +28,25 @@ export type ContentAnalyticsDropdownValues = 'audience' | 'watch-duration' | 'sa
 const TabsDimensionLink: { [key: string] : AnalyticsDimensions[] } = {
     'audience': AudienceDimension,
     'watch-duration': WatchDurationDimension,
-    'sales': SalesDimension
+    'sales': SalesDimension,
+    'real-time': RealTimeDimension
 }
 
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [timeRangePick, setTimeRangePick] = React.useState<TimeRangeAnalytics>('LAST_WEEK')
+    const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_15_MINUTES')
 
     
     React.useEffect(() => {
         props.getContentAnalytics({ 
             id: props.contentId,
             dimension: TabsDimensionLink[currentTab],
-            timeRange: timeRangePick,
+            timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick,
             type: props.contentType
         })
-    }, [currentTab, timeRangePick])
+    }, [currentTab, timeRangePick, realTimeRangePick])
     
     const handleExtraSettings = () => {
         switch (currentTab) {
@@ -62,7 +64,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
             case 'real-time':
                 return (
                     <RealTimeDropdown
-                        callback={(value) => console.log(value)}
+                        callback={(value) => setRealTimeRangePick(value)}
                     />
                 )
             default:
@@ -85,11 +87,11 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     <SalesAnalytics data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'engagement':
                 return (
-                    <EngagementAnalytics />
+                    <EngagementAnalytics  />
                 )
             case 'real-time':
                 return (
-                    <RealTimeAnalytics />
+                    <RealTimeAnalytics data={props.contentAnalyticsData.realtime} />
                 )
             default:
                 break;

@@ -12,8 +12,7 @@ export const AllDimensions: AnalyticsDimensions[] = ['PLAYS_BY_DEVICE', 'PLAYS_B
 export const AudienceDimension: AnalyticsDimensions[] = ['PLAYS_BY_DEVICE', 'PLAYS_BY_TIME', 'PLAYS_BY_COUNTRY', 'IMPRESSIONS_BY_TIME', 'IMPRESSIONS_BY_COUNTRY', 'IMPRESSIONS_BY_DEVICE'];
 export const WatchDurationDimension: AnalyticsDimensions[] = ['WATCHTIME_BY_TIME', 'WATCHTIME_BY_DEVICE', 'WATCHTIME_BY_COUNTRY'];
 export const SalesDimension: AnalyticsDimensions[] = ['SALES_BY_TIME', 'SALES_BY_COUNTRY', 'REVENUES_BY_TIME', 'REVENUES_BY_COUNTRY'];
-
-
+export const RealTimeDimension: AnalyticsDimensions[] = ['IMPRESSIONS_BY_TIME', 'PLAYS_BY_TIME', 'WATCHTIME_BY_DEVICE', 'PLAYS_BY_COUNTRY'];
 
 export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>) => {
     if (props.hidden) {

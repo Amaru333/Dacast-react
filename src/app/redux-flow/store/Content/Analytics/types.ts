@@ -67,10 +67,29 @@ export interface WatchAnalyticsState {
     }
 }
 
+export interface RealTimeAnalyticsState {
+    viewersByTime: {
+        labels: string[];
+        data: number[];
+    },
+    playsByTime: {
+        labels: string[];
+        data: number[];
+    },
+    watchByDevice: { 
+        labels: string[];
+        data: number[];
+    },
+    playsByLocation: { 
+        data: LocationItem[];
+    },
+}
+
 export interface ContentAnalyticsFinalState { 
     audience: AudienceAnalyticsState,
     sales: SalesAnalyticsState,
-    watch: WatchAnalyticsState
+    watch: WatchAnalyticsState,
+    realtime?: RealTimeAnalyticsState
 }
 
 export type ContentAnalyticsState = {'live'?: { [index:string] : ContentAnalyticsFinalState }, 'vod'?: { [index:string] : ContentAnalyticsFinalState } } ;

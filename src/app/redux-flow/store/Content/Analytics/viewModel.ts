@@ -1,7 +1,7 @@
 import { AudienceAnalyticsState, ContentAnalyticsFinalState, ContentAnalyticsState } from '.'
 import { AnalyticsDimensions, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput } from '../../../../../DacastSdk/analytics'
 import { CountriesDetail } from '../../../../constants/CountriesDetails';
-import { SalesAnalyticsState, WatchAnalyticsState } from './types';
+import { RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
 
 
 export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOutput, data: GetContentAnalyticsInput): { contentId: string; contentType: string; data: ContentAnalyticsFinalState } => {
@@ -9,7 +9,71 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var audienceData: AudienceAnalyticsState = {};
     var salesData: SalesAnalyticsState = {};
     var watchData: WatchAnalyticsState = {};
+    var realTimeData: RealTimeAnalyticsState = {};
 
+    const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
+        element.results.forEach(metric => {
+            switch(metric.dimension) {
+                case "PLAYS_BY_TIME":
+                    if(!metric.data.length) {
+                        realTimeData.playsByTime = {data: [], labels: []}
+                    } else {
+                        metric.data.forEach(data => {
+                            realTimeData.playsByTime = {
+                                labels: [...(realTimeData.playsByTime ? realTimeData.playsByTime.labels : []), ...(!realTimeData.playsByTime || realTimeData.playsByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                data: [...(realTimeData.playsByTime ? realTimeData.playsByTime.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case "IMPRESSIONS_BY_TIME":
+                    if(!metric.data.length) {
+                        realTimeData.viewersByTime = {data: [], labels: []}
+                    } else {
+                        metric.data.forEach(data => {
+                            realTimeData.viewersByTime = {
+                                labels: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.labels : []), ...(!realTimeData.viewersByTime || realTimeData.viewersByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                data: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case "WATCHTIME_BY_DEVICE":
+                    if(!metric.data.length) {
+                        realTimeData.watchByDevice = {data: [], labels: []}
+                    } else {
+                        metric.data.forEach(data => {
+                            realTimeData.watchByDevice = {
+                                labels: [...(realTimeData.watchByDevice ? realTimeData.watchByDevice.labels : []), ...(!realTimeData.watchByDevice || realTimeData.watchByDevice.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                data: [...(realTimeData.watchByDevice ? realTimeData.watchByDevice.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case 'PLAYS_BY_COUNTRY':
+                    if(!metric.data.length) {
+                        realTimeData.playsByLocation = {data: []}
+                    } else {
+                        metric.data.forEach(data => {
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimensionType.value);
+                            if (assosiatedCountry) {
+                                realTimeData.playsByLocation = {
+                                    data: [...(realTimeData.playsByLocation ? realTimeData.playsByLocation.data : []), {
+                                        city: assosiatedCountry["\"Country\""],
+                                        position: {
+                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        },
+                                        value: data.dimensionSum
+                                    }],
+                                }
+                            }
+                        })
+                    }
+                    break;
+            }
+        })
+    }
     const handleResultItem = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
             if (metric.dimension.includes("PLAYS") || metric.dimension.includes("IMPRESSIONS")) {
@@ -181,9 +245,16 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         )
     }
 
-    response.forEach((element) => {
-        handleResultItem(element)
-    })
+    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {
+        response.forEach((element) => {
+            handleResultRealTime(element)
+        })
+    } else {
+        response.forEach((element) => {
+            handleResultItem(element)
+        })
+    }
+ 
 
     return {
         contentId: data.id,
