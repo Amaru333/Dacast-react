@@ -23,8 +23,8 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
         if(props.contentType === 'expo') {
             segmentService.track('Expo Created', {
                 action: 'Sharing Expo',
-                location: null, 
-                step: 2,
+                expoId: props.contentDetails.id, 
+                step: 3,
             })        
         }
     }

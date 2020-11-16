@@ -5,6 +5,7 @@ import { ContentSelector } from '../../../components/ContentSelector/ContentSele
 import { userToken } from '../../utils/services/token/tokenService';
 import { Content, ContentSetupObject } from '../../redux-flow/store/Content/Setup/types';
 import { removePrefix } from '../../utils/utils';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {
@@ -42,7 +43,14 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
         newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom';
         newData.id = undefined;
         props.saveContentSetup(newData, props.contentId, props.contentType)
-        .then(() => setSaveLoading(false))
+        .then(() => {
+            setSaveLoading(false)
+            segmentService.track('Expo Created', {
+                action: 'Setup Expo',
+                expoId: props.contentId, 
+                step: 2,
+            })  
+        })
         .catch(() => setSaveLoading(false))
     }
 
