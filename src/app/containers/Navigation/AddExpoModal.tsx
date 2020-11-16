@@ -37,7 +37,7 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             history.push(`/expos/${response.data.id}/general`)
             segmentService.track('Expo Created', {
                 action: 'Create Expo',
-                location: null,
+                'expo_id': response.data.id,
                 step: 1,
             })
         }).catch((error) => {

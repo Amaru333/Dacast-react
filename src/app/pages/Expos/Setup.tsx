@@ -47,7 +47,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
             setSaveLoading(false)
             segmentService.track('Expo Created', {
                 action: 'Setup Expo',
-                expoId: props.contentId, 
+                'expo_id': props.contentId, 
                 step: 2,
             })  
         })
