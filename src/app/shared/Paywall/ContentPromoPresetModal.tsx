@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
 import { availableStartDropdownList, availableEndDropdownList, timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
+import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 var moment = require('moment-timezone');
 
 const defaultPromo: Promo = {
@@ -30,14 +31,14 @@ const defaultPromo: Promo = {
 export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset()*60
+        let offset = moment.tz(timezoneName).utcOffset() * 60
         let splitValue = value.split(':')
         let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
+        if (isNaN(hours)) {
             hours = 0
         }
         let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
+        if (isNaN(min)) {
             min = 0
         }
         let total = hours + min - offset
@@ -50,19 +51,14 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
-    let startTimestamp = moment.tz((newPromoPreset.startDate && newPromoPreset.startDate > 0 ? newPromoPreset.startDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
-    let endTimestamp = moment.tz((newPromoPreset.endDate && newPromoPreset.endDate > 0 ? newPromoPreset.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
-
-    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endTime, setEndTime] = React.useState<number>(endTimestamp.clone().valueOf()/1000 - endTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startDateTime, setStartDateTime] = React.useState<string>(newPromoPreset.startDate > 0 ? 'Set Date and Time' : 'Always')
-    const [endDateTime, setEndDateTime] = React.useState<string>(newPromoPreset.endDate > 0 ? 'Set Date and Time' : 'Forever')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    const [startDate, setStartDate] = React.useState<number>(newPromoPreset.startDate);
+    const [endDate, setEndDate] = React.useState<number>(newPromoPreset.endDate);
+
+
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
+        let presetDropdownListItem: DropdownSingleListItem = { title: null, data: null }
         presetDropdownListItem.title = item.name
         presetDropdownListItem.data = item
         return presetDropdownListItem
@@ -71,21 +67,18 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
 
 
     const handleSubmit = () => {
-
-        let startDate = startDateTime === 'Set Date and Time' ? moment.utc((startDay + startTime)*1000).valueOf()/1000 : 0
-        let endDate = endDateTime === 'Set Date and Time' ? moment.utc((endDay + endTime)*1000).valueOf()/1000 : 0
-        
         setButtonLoading(true)
-        if (savePreset) { 
-            props.savePresetGlobally({...newPromoPreset, startDate: startDate, endDate: endDate}) 
-        } 
+        if (savePreset) {
+            props.savePresetGlobally({ ...newPromoPreset, startDate: startDate, endDate: endDate })
+        }
         const userId = userToken.getUserInfoItem('custom:dacast_user_id')
         props.action(
-            {...newPromoPreset, 
-                startDate: startDate, 
+            {
+                ...newPromoPreset,
+                startDate: startDate,
                 endDate: endDate,
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
-                assignedContentIds:[`${userId}-${props.contentType}-${props.contentId}`],
+                assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
                 id: props.actionButton === 'Create' ? null : newPromoPreset.id
@@ -107,11 +100,11 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     dropdownTitle='Preset'
                     dropdownDefaultSelect='Custom Promo'
                     list={props.presetList ? presetDropdownList : []}
-                    callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({...item.data, alphanumericCode: ''}) }}
+                    callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({ ...item.data, alphanumericCode: '' }) }}
                 />
                 {
                     newPromoPreset.id === "custom" &&
-                        <InputCheckbox defaultChecked={savePreset} className="ml2 mt25" id='pricePresetSaveCheckbox' label='Save as Promo Preset' onChange={() => setSavePreset(!savePreset)} />
+                    <InputCheckbox defaultChecked={savePreset} className="ml2 mt25" id='pricePresetSaveCheckbox' label='Save as Promo Preset' onChange={() => setSavePreset(!savePreset)} />
                 }
 
             </PresetSelectRow>
@@ -127,58 +120,35 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 <Input className='col sm-col-3 col-6 px1' value={newPromoPreset.limit ? newPromoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, limit: parseInt(event.currentTarget.value) })} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-            <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => {setStartDateTime(item.title)}} />
-                {startDateTime === "Set Date and Time" &&
-                    <>
-                        <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(newPromoPreset.timezone || moment.tz.guess())}
-                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-6 md-col-4 mr2' />
-                        <Input
-                            type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(newPromoPreset.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, newPromoPreset.timezone || 'UTC'))}
-                            className='col col-6 md-col-3'
-                            disabled={false}
-                            id='endTime'
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            
-                        />
-                    </>
-                }
+                <DateTimePicker
+                    defaultTs={newPromoPreset.startDate}
+                    timezone={newPromoPreset.timezone}
+                    callback={(ts: number) => setStartDate(ts)}
+                    hideOption="Always"
+                    id="startDate"
+                    dropdownTitle="Available"
+                />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => {setEndDateTime(item.title)}} />
-                {
-                    endDateTime === "Set Date and Time" &&
-                    <>
-                        <DateSinglePickerWrapper
-                            date={moment.utc((endDay + endTime)*1000).tz(newPromoPreset.timezone || moment.tz.guess())}
-                            callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-4 md-col-4 mr2' />
-                        <Input
-                            type='time'
-                            value={moment.utc((endDay + endTime)*1000).tz(newPromoPreset.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, newPromoPreset.timezone || 'UTC'))}
-                            className='col col-3 md-col-3'
-                            disabled={false}
-                            id='endTime'
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            
-                        />
-                    </>
-                }
+                <DateTimePicker 
+                    defaultTs={newPromoPreset.startDate}
+                    timezone={newPromoPreset.timezone}
+                    callback={(ts: number) => setEndDate(ts)}
+                    hideOption="Forever"
+                    id="endDate"
+                    dropdownTitle="Until"
+                />
             </div>
-            
+
             <div className=' col col-12 mb25'>
                 {
-                    (endDateTime === 'Set Date and Time' || startDateTime === 'Set Date and Time') &&
-                    <DropdownSingle 
-                        hasSearch 
-                        id='newPromoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
-                        className={ClassHalfXsFullMd + ' pr1'} 
-                        dropdownTitle='Timezone' 
+                    (endDate >  0 || startDate > 0) &&
+                    <DropdownSingle
+                        hasSearch
+                        id='newPromoPresetTimezoneDropdown'
+                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
+                        className={ClassHalfXsFullMd + ' pr1'}
+                        dropdownTitle='Timezone'
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 
@@ -188,7 +158,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 <Button
                     isLoading={buttonLoading}
                     disabled={(!newPromoPreset.name && newPromoPreset.id !== 'custom' && !props.promo) || Number.isNaN(newPromoPreset.discount) || newPromoPreset.alphanumericCode.length < 5 || Number.isNaN(newPromoPreset.limit)}
-                    onClick={() =>  handleSubmit()}
+                    onClick={() => handleSubmit()}
                     className='mr2'
                     typeButton='primary'
                     sizeButton='large' buttonColor='blue'>{props.actionButton}</Button>

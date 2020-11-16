@@ -9,6 +9,7 @@ import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
+import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 var moment = require('moment-timezone');
 
 const defaultPromo: GroupPromo = {
@@ -44,16 +45,10 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
 
     const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess()} : defaultPromo)
 
-    let startTimestamp = moment.tz((groupPromo.startDate && groupPromo.startDate > 0 ? groupPromo.startDate :  Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
-    let endTimestamp = moment.tz((groupPromo.endDate && groupPromo.endDate > 0 ? groupPromo.endDate : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
-
-    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endTime, setEndTime] = React.useState<number>(endTimestamp.clone().valueOf()/1000 - endTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startDateTime, setStartDateTime] = React.useState<string>(groupPromo.startDate > 0 ? 'Set Date and Time' : 'Always')
-    const [endDateTime, setEndDateTime] = React.useState<string>(groupPromo.endDate > 0 ? 'Set Date and Time' : 'Forever')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+
+    const [startDate, setStartDate] = React.useState<number>(groupPromo.startDate);
+    const [endDate, setEndDate] = React.useState<number>(groupPromo.endDate);
 
     const associatedGroupDropdownList = props.groupList.map((item: GroupPrice) => {
         let associatedGroupItem: DropdownSingleListItem = {title: null, data: null}
@@ -74,8 +69,6 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        let startDate = startDateTime === 'Set Date and Time' ? moment.utc((startDay + startTime)*1000).valueOf()/1000 : 0
-        let endDate = endDateTime === 'Set Date and Time' ? moment.utc((endDay + endTime)*1000).valueOf()/1000 : 0
         props.action({...groupPromo, startDate: startDate, endDate: endDate})
         .then(() => {
             props.toggle(false)
@@ -105,52 +98,28 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                 <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DropdownSingle className='col col-12 md-col-4 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={startDateTime} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => {setStartDateTime(item.title)}} />
-                {startDateTime === "Set Date and Time" &&
-                    <>
-                        <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess())}
-                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-6 md-col-4 mr2' />
-                        <Input
-                            type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(groupPromo.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
-                            className='col col-6 md-col-3'
-                            disabled={false}
-                            id='endTime'
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            
-                        />
-                    </>
-                }
+                <DateTimePicker 
+                    defaultTs={groupPromo.startDate}
+                    timezone={groupPromo.timezone}
+                    callback={(ts: number) => setStartDate(ts)}
+                    hideOption="Always"
+                    id="startDate"
+                    dropdownTitle="Available"
+                /> 
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DropdownSingle className='col col-4 md-col-4 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={endDateTime} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => {setEndDateTime(item.title)}} />
-
-                {
-                    endDateTime === "Set Date and Time" &&
-                    <>
-                        <DateSinglePickerWrapper
-                            date={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess())}
-                            callback={(_, timestamp: string) => setEndDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-4 md-col-4 mr2' />
-                        <Input
-                            type='time'
-                            value={moment.utc((endDay + endTime)*1000).tz(groupPromo.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setEndTime(inputTimeToTs(event.currentTarget.value, groupPromo.timezone || 'UTC'))}
-                            className='col col-3 md-col-3'
-                            disabled={false}
-                            id='endTime'
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            
-                        />
-                    </>
-                }
+                <DateTimePicker 
+                    defaultTs={groupPromo.startDate}
+                    timezone={groupPromo.timezone}
+                    callback={(ts: number) => setEndDate(ts)}
+                    hideOption="Forever"
+                    id="endDate"
+                    dropdownTitle="Until"
+                /> 
             </GroupPromoDateContainer>
             <div className=' col col-12 mb2'> 
                 {
-                    (endDateTime === 'Set Date and Time' || startDateTime === 'Set Date and Time') &&
+                   (endDate >  0 || startDate > 0) &&
                     <DropdownSingle 
                         hasSearch 
                         id='groupPromoTimezoneDropdown' 
