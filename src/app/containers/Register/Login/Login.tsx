@@ -23,6 +23,10 @@ const Login = (props: LoginComponentProps) => {
             userToken.addTokenInfo(props.loginInfos);
             // history.push('/dashboard');
             location.reload()
+            window.analytics.identify(userToken.getUserInfoItem('custom:dacast_user_id'), {
+                name: userToken.getUserInfoItem('custom:first_name') + ' ' + userToken.getUserInfoItem('custom:last_name'),
+                email: userToken.getUserInfoItem('email')
+            })
         }
     }, [props.loginInfos])
 
