@@ -163,7 +163,7 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
-            segmentService.page()
+            segmentService.page('App')
         }
     }, [location])
 
