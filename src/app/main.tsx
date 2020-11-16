@@ -126,7 +126,7 @@ history.listen((location) => {
     updateStateTitle(location.pathname)
     if (location.pathname !== prevPath) {
         prevPath = location.pathname;
-        window.analytics.page();
+        window.analytics.page('App');
       }
 });
 
