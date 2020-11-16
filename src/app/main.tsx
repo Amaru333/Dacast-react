@@ -120,8 +120,14 @@ export const updateStateTitle = (pathname: string) => {
     }
 }
 
+let prevPath: string = null;
+
 history.listen((location) => {
     updateStateTitle(location.pathname)
+    if (location.pathname !== prevPath) {
+        prevPath = location.pathname;
+        window.analytics.page();
+      }
 });
 
 class ErrorBoundary extends React.Component {
