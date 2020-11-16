@@ -71,9 +71,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 break;
         }
     }
-
-    console.log(props.contentAnalyticsData);
-
+    
     const handleAnalyticsType = () => {
         switch (currentTab) {
             case 'audience':

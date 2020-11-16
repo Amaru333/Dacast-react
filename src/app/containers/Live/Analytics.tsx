@@ -20,7 +20,6 @@ const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyti
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
-    console.log(liveId);
     
     React.useEffect(() => {
         if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object) {
@@ -28,10 +27,6 @@ const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyti
             props.getContentAnalytics({ id: liveId, timeRange: 'LAST_WEEK', type: "live", dimension: AudienceDimension }).then(() => setIsFetching(false))
         }
     }, [])
-        
-
-    console.log(props, "les props")
-
 
     return !isFetching || (props.contentAnalyticsData.live && props.contentAnalyticsData.live[liveId]) ?
         <div className='flex flex-column'>

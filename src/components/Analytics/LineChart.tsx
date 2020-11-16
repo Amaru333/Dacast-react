@@ -7,7 +7,6 @@ import { EmptyAnalytics } from './EmptyAnalytics';
 
 export const LineChart = (props: LineChartProps) => {
 
-    console.log(props)
     if(!props.labels.length) {
         return (
             <EmptyAnalytics />
