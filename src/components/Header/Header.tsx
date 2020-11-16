@@ -18,6 +18,7 @@ import { userToken } from '../../app/utils/services/token/tokenService';
 import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/types';
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
 import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flow/store/Account/Plan';
+import { segmentService } from '../../app/utils/services/segment/segmentService';
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -82,6 +83,10 @@ const Header = (props: HeaderProps) => {
         let removedSpace = breadcrumbNames.shift()
         setBreadcrumbItems(breadcrumbNames)
     }, [location, props.contentGeneralState])
+
+    React.useEffect(() => {
+        segmentService.page('App')
+    }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
     const userOptionsDropdownListRef = React.useRef<HTMLUListElement>(null);
