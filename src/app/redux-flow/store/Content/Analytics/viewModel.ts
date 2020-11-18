@@ -12,8 +12,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var watchData: WatchAnalyticsState = {};
     var realTimeData: RealTimeAnalyticsState = {};
 
-    console.log(data, "data")
-
     const formateTimestampAnalytics = (value: number) => {
         switch(data.timeRange) {
             case 'YEAR_TO_DATE':
@@ -63,8 +61,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     }
 
     let labels = labelsFormate(data.timeRange);
-    console.log(labels)
-
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
