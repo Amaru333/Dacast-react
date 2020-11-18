@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { Action, confirmEmailAction } from '../../redux-flow/store/Register/ConfirmEmail/actions';
+import { Action, confirmEmailAction, resendEmailAction } from '../../redux-flow/store/Register/ConfirmEmail/actions';
 import { connect } from 'react-redux';
 import { ConfirmEmailPage } from '../../pages/Register/ConfirmEmail/ConfirmEmail';
 import { ConfirmEmailInfo } from '../../redux-flow/store/Register/ConfirmEmail/types';
@@ -13,6 +13,7 @@ import { useQuery } from '../../../utils/utils';
 export interface ConfirmEmailComponentProps {
     userInfos?: UserInfo;
     email?: string;
+    resendEmail: (email: string) => Promise<void>;
 }
 
 const ConfirmEmail = (props: ConfirmEmailComponentProps) => {
@@ -40,8 +41,9 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        
-
+        resendEmail: async (email: string) => {
+            await dispatch(resendEmailAction(email));
+        }, 
     };
 }
 
