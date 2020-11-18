@@ -6,8 +6,8 @@ import Main from "./main";
 import configureStore from "./redux-flow/configureStore";
 import { globalDefaultState } from "./redux-flow/store";
 import "react-table/react-table.css";
-import * as Sentry from '@sentry/react';
-import { datadogRum } from '@datadog/browser-rum'
+// import * as Sentry from '@sentry/react';
+import { datadogRum } from '@datadog/browser-rum';
 import { userToken } from './utils/services/token/tokenService';
 
 
@@ -24,9 +24,8 @@ datadogRum.init({
     sampleRate: 100,
     trackInteractions: true
 });
-  
 
-Sentry.init({dsn: "https://2e329011118c44b5a76d3670883a6535@o362894.ingest.sentry.io/5319748"});
+// Sentry.init({dsn: "https://2e329011118c44b5a76d3670883a6535@o362894.ingest.sentry.io/5319748"});
 
 if(location.href.indexOf('impersonate') !== -1) {
     store.dispatch({type: 'USER_LOGOUT'})

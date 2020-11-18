@@ -10,12 +10,24 @@ import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { isProduction } from '../../utils/services/player/stage';
 import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: string}) => {
     
     const userId = userToken.getUserInfoItem('custom:dacast_user_id') 
     const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
+
+    const handleShareLinkClick = () => {
+        updateClipboard(`${expoBaseUrl}?id=${props.contentDetails.id}`, 'Share Link Copied')
+        if(props.contentType === 'expo') {
+            segmentService.track('Expo Created', {
+                action: 'Sharing Expo',
+                'expo_id': props.contentDetails.id, 
+                step: 3,
+            })        
+        }
+    }
 
     return (
         <div className='col col-12'>
@@ -33,7 +45,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{`${expoBaseUrl}?id=${props.contentDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkExpoTooltip" onClick={() => updateClipboard(`${expoBaseUrl}?id=${props.contentDetails.id}`, 'Share Link Copied') }>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkExpoTooltip" onClick={handleShareLinkClick}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyShareExpoLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>

@@ -48,6 +48,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     }
 
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
+    console.log(selectedTheme)
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
@@ -165,7 +166,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'compatible' }); }} />
                                     <div>
                                         <IconStyle id="compatibleDeliveryTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="compatibleDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatibility</Tooltip>
+                                        <Tooltip leftPositionValueToZero target="compatibleDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatibility</Tooltip>
                                     </div>
                                 </RadioButtonContainer>
 
@@ -173,7 +174,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'secure' }); }} />
                                     <div>
                                         <IconStyle id="secureDeliveryTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="secureDeliveryTooltip">Encrypts playback with AES, which increases security at the cost of compatibility with older devices/browsers/OSs</Tooltip>
+                                        <Tooltip leftPositionValueToZero target="secureDeliveryTooltip">Encrypts playback with AES, which increases security at the cost of compatibility with older devices/browsers/OSs</Tooltip>
                                     </div>
                                 </RadioButtonContainer>
 
@@ -186,21 +187,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <Text size={20} weight='med'>Region Settings</Text>
                                     <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href = "/help"}>
                                         Contact Us
-                                </Button>
+                                    </Button>
                                 </TitleSection>
                                 <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
                                 <RadioButtonContainer className="mt2">
                                     <InputRadio name='region-settings' value='standard' label='Standard PoPs' defaultChecked={selectedTheme.regionSettings === 'standard'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, regionSettings: 'standard' }) }} />
                                     <div>
                                         <IconStyle id="standardPoPsTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="standardPoPsTooltip">Our standard delivery method that may be slow in China</Tooltip>
+                                        <Tooltip leftPositionValueToZero target="standardPoPsTooltip">Our standard delivery method that may be slow in China</Tooltip>
                                     </div>
                                 </RadioButtonContainer>
                                 <RadioButtonContainer className="mt1">
                                     <InputRadio name='region-settings' value='premium' label='Premium PoPs' defaultChecked={selectedTheme.regionSettings === 'premium'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, regionSettings: 'premium' }) }} />
                                     <div>
                                         <IconStyle id="premiumPoPsTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="premiumPoPsTooltip">Our premium delivery method with increased performance in China</Tooltip>
+                                        <Tooltip leftPositionValueToZero target="premiumPoPsTooltip">Our premium delivery method with increased performance in China</Tooltip>
                                     </div>
                                 </RadioButtonContainer>
                             </DisabledSection>
@@ -245,17 +246,17 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Player Controls' checked={selectedTheme.playerControls} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, playerControls: !selectedTheme.playerControls }); }} />
                                     <IconStyle id="playerControlsTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="playerControlsTooltip">The controls at the bottom of the player</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="playerControlsTooltip">The controls at the bottom of the player</Tooltip>
                                 </ControlToggleContainer>
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Big Play Button' checked={selectedTheme.bigPlayButton === 'visible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, bigPlayButton: selectedTheme.bigPlayButton === 'visible' ? 'hidden' : 'visible' }); }} />
                                     <IconStyle id="bigPlayTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="bigPlayTooltip">The big button in the middle before playback starts</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="bigPlayTooltip">The big button in the middle before playback starts</Tooltip>
                                 </ControlToggleContainer>
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' checked={selectedTheme.scrubbingThumbnail} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail }); }} />
                                     <IconStyle id="scrubberThumbnailTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="scrubberThumbnailTooltip">Thumbnails when hovering over the video scrubber (time bar)</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="scrubberThumbnailTooltip">Thumbnails when hovering over the video scrubber (time bar)</Tooltip>
                                 </ControlToggleContainer>
 
 
@@ -269,21 +270,21 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
                                             <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
                                         </ControlToggleContainer>
                                 }
                                 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Social Sharing' checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
                                     <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="socialSharingTooltip">Whether viewers can see links to share content on social media</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="socialSharingTooltip">Whether viewers can see links to share content on social media</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Embed Code' checked={selectedTheme.embedCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, embedCode: !selectedTheme.embedCode }); }} />
                                     <Divider className="p1" />
                                     <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="embedCodeTooltip">Whether viewers can see and copy the embed code for the content</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="embedCodeTooltip">Whether viewers can see and copy the embed code for the content</Tooltip>
                                 </ControlToggleContainer>
 
                                 <Divider className="p1" />
@@ -294,7 +295,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <Text size={14} weight='med'>Overlay Color</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="overlayColorTooltip">The primary colour of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary colour of the player</Tooltip>
                                         </div>
                                     </div>
                                     <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, customOverlayColor: value }); }} />
@@ -304,7 +305,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <Text size={14} weight='med'>Menu Color</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="menuColorTooltip">The secondary colour of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary colour of the player</Tooltip>
                                         </div>
                                     </div>
 
@@ -318,19 +319,19 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Autoplay' checked={selectedTheme.autoplay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, autoplay: !selectedTheme.autoplay }); }} />
                                     <IconStyle id="autoplayTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="autoplayTooltip">Whether the content starts automatically</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="autoplayTooltip">Whether the content starts automatically</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Start Video Muted' checked={selectedTheme.startVideoMuted} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted }); }} />
                                     <IconStyle id="startMutedTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="startMutedTooltip">Whether the content is muted by default</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="startMutedTooltip">Whether the content is muted by default</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Looping' checked={selectedTheme.looping} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, looping: !selectedTheme.looping }); }} />
                                     <IconStyle id="loopingTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="loopingTooltip">Whether the content will start again when it reaches the end</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="loopingTooltip">Whether the content will start again when it reaches the end</Tooltip>
                                 </ControlToggleContainer>
 
                             </DisabledSection>
@@ -341,7 +342,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <div><Text size={20} weight='med'>Offline Message</Text></div>
                                     <div>
                                         <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                        <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
                                     </div>
                                 </div>
 
@@ -361,7 +362,28 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='View Counter' checked={selectedTheme.isViewerCounterEnabled} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled }); }} />
                                             <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
+                                        </ControlToggleContainer>
+                                        {
+                                            selectedTheme.isViewerCounterEnabled &&
+                                            <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value) }); }} />
+                                        }
+                                    </DisabledSection>
+                                </>
+                            }
+
+                            {
+                                (props.contentType === 'live' || props.contentType === 'settings') &&
+                                <>
+                                    <Divider className="p1" />
+
+                                    <DisabledSection enabled={liveEnabled}>
+                                        <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
+
+                                        <ControlToggleContainer>
+                                            <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
+                                            <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
+                                            <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
                                         </ControlToggleContainer>
                                         {
                                             selectedTheme.isViewerCounterEnabled &&
@@ -384,13 +406,13 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
                                             <IconStyle id="continuousPlayTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="continuousPlayTooltip">Whether the next piece of content will start automatically when the current one finishes</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="continuousPlayTooltip">Whether the next piece of content will start automatically when the current one finishes</Tooltip>
                                         </ControlToggleContainer>
 
                                         <ControlToggleContainer>
                                             <Toggle className={togglePadding} label='Skip Content' checked={selectedTheme.skipVideos} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, skipVideos: !selectedTheme.skipVideos }); }} />
                                             <IconStyle id="skipVideosTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
                                     
@@ -399,7 +421,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
                                             <div>
                                                 <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                                <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                                <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
                                             </div>
                                         </div>
 

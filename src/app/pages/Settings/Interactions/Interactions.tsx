@@ -116,7 +116,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(interactionInfos.brandImageSettings.brandImageURL).then(() => {
+        props.deleteFile().then(() => {
             setTimeout(() => {
                 props.getInteractionsInfos()
             }, 3000)

@@ -4,8 +4,10 @@ import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
 import { interactionsServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetEngagementOutput } from './viewModel';
+import { formatGetEngagementOutput, formatPostUserBrandImageUrlInput, formatPutAdsSettingsInput, formatPutEngagementInput } from './viewModel';
 import { applyViewModel } from '../../../../utils/utils';
+import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
+import { formatPutUploadFileInput } from '../../Common/viewModel';
 
 export interface GetSettingsInteractionsInfos {
     type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS;
@@ -49,7 +51,7 @@ export interface DeleteMailCatcher {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {data:  {presignedURL: string }};
+    payload: {presignedURL: string };
 }
 
 export interface UploadImage {
@@ -62,51 +64,18 @@ export interface DeleteImage {
     payload: {file: File};
 }
 
+export type Action = GetSettingsInteractionsInfos | SaveSettingsInteractionsInfos | SaveAd | CreateAd | DeleteAd | SaveMailCatcher | CreateMailCatcher | DeleteMailCatcher | GetUploadUrl | UploadImage | DeleteImage
+
 export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEngagementSettings, undefined, formatGetEngagementOutput, ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, null, 'Couldn\'t get engagement settings')
+export const saveSettingsInteractionsInfosAction = applyViewModel(dacastSdk.putEngagementSettings, formatPutEngagementInput, undefined, ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, 'Engagement settings saved', 'Couldn\'t save engagement settings')
 
-// export const getEncodingRecipesAction = applyViewModel(dacastSdk.getEncodingRecipes, undefined, formatGetEncodingRecipesOutput, ActionTypes.GET_ENCODING_RECIPES, null, 'Couldn\'t get encoding recipes')
+export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
+export const createAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.CREATE_AD, 'Ad created', 'Couldn\'t create ad')
+export const deleteAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.DELETE_AD, 'Ad deleted', 'Couldn\'t delete ad')
 
-export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, undefined, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
-
-
-export const saveSettingsInteractionsInfosAction = (data: EngagementInfo): ThunkDispatch<Promise<void>, {}, SaveSettingsInteractionsInfos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveSettingsInteractionsInfos> ) => {
-        await interactionsServices.saveInteractionsInfos(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, payload: data} );
-                dispatch(showToastNotification("Engagement settings saved", "fixed", "success"))
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const createAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, CreateAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateAd> ) => {
-        await interactionsServices.saveAd(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.CREATE_AD, payload: data} );
-                dispatch(showToastNotification("Ad created", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const deleteAdAction = (data: Ad[]): ThunkDispatch<Promise<void>, {}, DeleteAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteAd> ) => {
-        await interactionsServices.saveAd(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.DELETE_AD, payload: data} );
-                dispatch(showToastNotification("Ad deleted", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+export const getUploadUrlAction = applyViewModel(dacastSdk.postUploadUrl, formatPostUserBrandImageUrlInput, (data: PostUploadUrlOutput) => data, ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+export const uploadFileAction = applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, undefined, ActionTypes.UPLOAD_IMAGE, 'Brand image has been uploaded', 'Couldn\'t upload brand image')
+export const deleteFileAction = applyViewModel(dacastSdk.deleteUserBrandImage, undefined, undefined, ActionTypes.DELETE_IMAGE, 'Brand image has been deleted', 'Couldn\'t delete brand image')
 
 export const saveMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<void>, {}, SaveMailCatcher> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveMailCatcher> ) => {
@@ -146,59 +115,3 @@ export const deleteMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
             })
     };
 }
-
-export const getUploadUrlAction = (uploadType: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await interactionsServices.getUploadUrl(uploadType)
-            .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {data: response.data.data} })
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    }
-}
-
-export const uploadFileAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
-        await interactionsServices.uploadFile(data, uploadUrl)
-            .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
-                dispatch(showToastNotification("File has been successfully uploaded", 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    }
-}
-
-export const deleteFileAction = (targetId: string): ThunkDispatch<Promise<void>, {}, DeleteImage> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteImage>) => {
-        await interactionsServices.deleteFile()
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
-                dispatch(showToastNotification("Brand Image has been successfully deleted", 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    }
-}
-
-
-export type Action = GetSettingsInteractionsInfos 
-| SaveSettingsInteractionsInfos
-| SaveAd 
-| CreateAd
-| DeleteAd
-| SaveMailCatcher
-| CreateMailCatcher
-| DeleteMailCatcher
-| GetUploadUrl
-| UploadImage
-| DeleteImage
-
-

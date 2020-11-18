@@ -9,6 +9,8 @@ import { useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
+import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { exportCSVFile } from '../../../../utils/services/csv/csvService';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -102,6 +104,12 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         }
     }, [fetchContent])
 
+    React.useEffect(() => {
+        if(props.transactionsInfo.csvString) {
+            exportCSVFile(props.transactionsInfo.csvString, 'transactions')
+        }
+    }, [props.transactionsInfo.csvString])
+
     const transactionsTableHeader = () => {
         return {
             data: [
@@ -150,6 +158,18 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             })
         }
     }
+
+    // const handleExportClick = async () => {
+    //     try {
+    //         let response = await axiosClient.get('/paywall/transactions/csv')
+
+    //         exportCSVFile(response.data as string, 'transactions')
+
+    //     }catch(error) {
+    //         throw Error(error)
+    //     }
+    // }
+
     return (
         <div className='flex flex-column'>
             <div style={{alignItems: 'center'}} className='col col-12 flex justify-end'>
@@ -157,7 +177,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />   
                 </div>
-                {/* <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button> */}
+                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray' onClick={props.getTransactionsCsv}>Export </Button>
                 <TransactionsFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} />
             </div>
 

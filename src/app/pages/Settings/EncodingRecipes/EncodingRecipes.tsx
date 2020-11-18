@@ -34,6 +34,8 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "ULD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
 
+    const recipeOrder: string[] = ["4K", "2K", "FHD", "HD", "SD", "LD", "ULD", "Magic", "DNE"]
+
     const stepList = [settingsStep, presetStep]
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
@@ -52,6 +54,10 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const newRecipe = () => {
         setSelectedRecipe(emptyRecipe);
         FunctionRecipe(true);
+    }
+
+    const sortRecipes = (a, b) => {
+        return recipeOrder.indexOf(a) - recipeOrder.indexOf(b)
     }
 
     const recipesHeaderElement = (newRecipe: () => void) => {
@@ -80,7 +86,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                         {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{value.name}</Text>,
                             <IconStyle key={'encodingRecipesPage_isDefaultIcon'} coloricon='green'>{value.isDefault ? "check" : null}</IconStyle>,
                             <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
-                                {    value.recipePresets.map((recipe, key) => {
+                                {    value.recipePresets.sort(sortRecipes).map((recipe, key) => {
                                     return (
                                         <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                                     )

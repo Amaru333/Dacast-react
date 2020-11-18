@@ -201,7 +201,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
 
-    const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
+    const isFirstPurchase = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const [featuresTotal, setFeaturesTotal] = React.useState<number>(props.stepperData.privilegesTotal)
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
@@ -229,7 +229,7 @@ export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperDa
 React.useEffect(() => {
     let subTotal = 0
     newSelectedPrivileges.map((item: Privilege) => {
-        if(props.stepperData.name !== "Starter" || !isFreeAddOnTrial) {
+        if(props.stepperData.name !== "Starter" || !isFirstPurchase) {
             subTotal += (item.price.usd / 100)
         }
         setFeaturesTotal(subTotal)
@@ -253,7 +253,7 @@ React.useEffect(() => {
                 {
                     data: [
                         <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.paymentTerm === 12) ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.price.usd/100) + ' /mo'}</Text>
+                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{'$' + (props.stepperData.price.usd/100) + ' /yr'}</Text>
                     ]
                 },
                 {
@@ -268,7 +268,7 @@ React.useEffect(() => {
                 {
                     data: [
                         <Text key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.paymentTerm === 12) ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.price.usd/100) + ' /mo'}</Text>
+                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.name === "Starter") ? '$' + (props.stepperData.price.usd/100) + ' /yr' : '$' + (props.stepperData.paymentTerm === 1 ? props.stepperData.price.usd/100 : (props.stepperData.price.usd/12)/100) + ' /mo'}</Text>
                     ]
                 }]
         }
@@ -291,7 +291,7 @@ React.useEffect(() => {
                     ]
                 }
             ]
-        } else {
+        } else if (props.stepperData.paymentTerm === 1 && props.stepperData.commitment === 3) {
             return [
                 {
                     data: [
@@ -309,6 +309,22 @@ React.useEffect(() => {
                     data: [
                         <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {moment().add(3, 'months').format('DD MMMM YYYY')} </Text>,
                         <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? '$' + ((planPrice) + (featuresTotal)) : '$' + (planPrice)}</Text>
+                    ]
+                }
+
+            ]
+        } else {
+            return [
+                {
+                    data: [
+                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Billed</Text>,
+                        props.stepperData.name.includes("Scale") ?
+                            <div >
+
+                                <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Monthly"} />
+                            </div>
+                            :
+                            <Text className='right pr2' key="cartTableBilledFrequency" size={14} weight="med" color="gray-1">Annually</Text>,
                     ]
                 }
 

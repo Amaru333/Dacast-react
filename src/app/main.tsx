@@ -43,6 +43,7 @@ import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
+import { segmentService } from './utils/services/segment/segmentService';
 
 // Any additional component props go here.
 interface MainProps {
@@ -162,6 +163,7 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
+            segmentService.page('App')
         }
     }, [location])
 
@@ -174,7 +176,9 @@ const AppContent = (props: { routes: any }) => {
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
+        segmentService.load()
     }, [])
+
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
             setOpen(true)

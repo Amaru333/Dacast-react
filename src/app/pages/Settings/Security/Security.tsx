@@ -17,7 +17,7 @@ import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/
 import { Prompt } from 'react-router';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../../utils/DropdownLists';
@@ -80,16 +80,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         id: '',
         name: '',
         isDefault: false,
-        values: [],
-        restrictionType: 'domain-restriction'
+        values: []
     }
 
     const geoRestrictionEmptyValues: GeoRestriction = {
         id: '',
         name: '',
         isDefault: false,
-        values: [],
-        restrictionType: 'geo-restriction'
+        values: []
     };
 
     const handlePasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
