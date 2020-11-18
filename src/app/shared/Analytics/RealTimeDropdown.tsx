@@ -1,10 +1,11 @@
 import React from 'react';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import {  DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { RealTimeRange } from '../../../DacastSdk/analytics';
 
-export const RealTimeDropdown = (props: {callback?: (value: number) => void }) => {
+export const RealTimeDropdown = (props: {callback?: (value: RealTimeRange) => void }) => {
 
-    const timePeriodDropdownList = [{title: "5 Minutes", data: 5}, {title: "15 Minutes", data: 15}, {title: "30 Minutes", data: 30}, {title: "45 Minutes", data: 45}, {title: "1 Hour", data: 60}, {title: "1.5 Hours", data: 90}]
+    const timePeriodDropdownList: {title: string, data: RealTimeRange}[] = [{title: "15 Minutes", data: 'LAST_15_MINUTES'}, {title: "30 Minutes", data: 'LAST_30_MINUTES'}, {title: "45 Minutes", data: 'LAST_45_MINUTES'}, {title: "1 Hour", data: 'LAST_HOUR'},  {title: "1.5 Hours", data: 'LAST_90_MINUTES'},  {title: "2 Hours", data: 'LAST_2_HOURS'}]
     
     return (
         <DropdownSingle

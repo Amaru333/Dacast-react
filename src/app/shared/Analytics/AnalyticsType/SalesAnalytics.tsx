@@ -33,22 +33,22 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         )
     }
 
-    const returnDeviceAnalytics = () => {
-        return (
-            <BarChart
-                id="uniqueStuff1"
-                type="vertical"
-                title="Sales and Revenue by Device"
-                dataSets={ [ {data: props.data.salesRevenuesByDevice.sales, label: "Sales", color: ThemeAnalyticsColors.blue }, {data: props.data.salesRevenuesByDevice.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } ] }
-                labels={props.data.salesRevenuesByDevice.labels} />
-        )
-    }
+    // const returnDeviceAnalytics = () => {
+    //     return (
+    //         <BarChart
+    //             id="uniqueStuff1"
+    //             type="vertical"
+    //             title="Sales and Revenue by Device"
+    //             dataSets={ [ {data: props.data.salesRevenuesByDevice.sales, label: "Sales", color: ThemeAnalyticsColors.blue }, {data: props.data.salesRevenuesByDevice.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } ] }
+    //             labels={props.data.salesRevenuesByDevice.labels} />
+    //     )
+    // }
     
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
                 markers={props.data.salesRevenuesByLocation.data} 
-                markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.value) } />
+                markerNameTranform={ (element) => element.city+": $"+element.value } />
         )
     }
 
@@ -60,7 +60,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.salesRevenuesByDevice.table, header: HeaderSalesDevice} },
+                        // "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.salesRevenuesByDevice.table, header: HeaderSalesDevice} },
                         "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.salesRevenuesByLocation.table, header: HeaderSalesLocation} },
                     }
                 }
