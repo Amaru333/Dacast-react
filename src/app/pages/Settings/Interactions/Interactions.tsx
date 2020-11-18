@@ -340,6 +340,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         className='pl1 col col-12 md-col-4 xs-no-gutter'
                         label='Brand Text Link'
+                        tooltip='Enter a URL starting with "https://".'
                         value={interactionInfos.brandTextSettings.brandTextLink || ""}
                         onChange={(event) => { setInteractionsInfos({ ...interactionInfos, brandTextSettings: {...interactionInfos.brandTextSettings, brandTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                 </div>
@@ -359,6 +360,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                     <Input
                         className='xs-no-gutter pl1 col col-12 md-col-4'
                         label='End Screen Text Link'
+                        tooltip='Enter a URL starting with "https://".'
                         value={interactionInfos.endScreenSettings.endScreenTextLink || ""}
                         onChange={(event) => { setInteractionsInfos({ ...interactionInfos, endScreenSettings: {...interactionInfos.endScreenSettings, endScreenTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                 </div>
