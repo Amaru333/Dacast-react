@@ -57,7 +57,10 @@ import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
 import ExposSetup from '../containers/Expos/Setup';
-import Analytics from '../containers/Analytics/Analytics';
+import Viewership from '../containers/Analytics/Viewership';
+import Revenue from '../containers/Analytics/Revenue';
+import DashboardAnalytics from '../containers/Analytics/Dashboard';
+import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
 
 
@@ -258,7 +261,7 @@ export const AppRoutes: Routes[] = [
         component: VodRenditions,
     },
     {
-        path: '/videos/:liveId/analytics',
+        path: '/videos/:vodId/analytics',
         name: 'Analytics',
         iconName: null,
         isExact: true,
@@ -366,7 +369,28 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: 'bar_chart',
         associatePrivilege: 'privilege-analytics',
-        component: Analytics
+        slug: [
+            {
+                path: '/analytics/dashboard',
+                name: 'Dashboard',
+                component: DashboardAnalytics
+            },
+            {
+                path: '/analytics/real-time',
+                name: 'Real Time',
+                component: RealTime
+            },
+            {
+                path: '/analytics/viewership',
+                name: 'Viewership',
+                component: Viewership
+            },
+            {
+                path: '/analytics/revenue',
+                name: 'Revenue',
+                component: Revenue
+            }
+        ]
     },
     {
         path: '/paywall',

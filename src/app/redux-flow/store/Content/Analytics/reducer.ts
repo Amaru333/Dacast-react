@@ -8,12 +8,12 @@ const reducer: Reducer<ContentAnalyticsState> = (state = defaultStateContentAnal
             return {
                 ...state,
                 [action.payload.contentType]: {
-                    ...(state[action.payload.contentType] ? state[action.payload.contentType][action.payload.contentId]: []),
+                    ...(state[action.payload.contentType]),
                     [action.payload.contentId] : {
+                        ...(state[action.payload.contentType] ? state[action.payload.contentType][action.payload.contentId] : []),
                         ...action.payload.data
                     }
                 }
-
             }
         default:
             return state;

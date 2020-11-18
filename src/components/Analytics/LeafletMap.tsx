@@ -4,6 +4,7 @@ import React from 'react';
 import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
+import { EmptyAnalytics } from './EmptyAnalytics';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 2;
@@ -11,6 +12,11 @@ const zoom: number = 2;
 
 const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem) => string }) => {
 
+  if(!props.markers.length) {
+    return (
+        <EmptyAnalytics />
+    )
+}
   const logScale = (value: number, minp: number, maxp: number, minv: number, maxv: number) => {
     var minv = Math.log(minv);
     var maxv = Math.log(maxv);

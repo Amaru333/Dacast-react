@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import { ModalCard, ModalContent, ModalFooter } from '../../../components/Modal/ModalCard'
 import { Text } from '../../../components/Typography/Text'
 import { Button } from '../../../components/FormsComponents/Button/Button'
-import { Card } from '../../../components/Card/Card'
 import { LoginContainer, ImageStyle } from '../../shared/Register/RegisterStyle'
 
 const logo = require("../../../../public/assets/logo.png");
@@ -40,7 +39,7 @@ export const ActivatedAccountPage = (props: {activationError: string}) => {
                     </div>
                 </ModalContent>
                 <ModalFooter className="flex justify-center">
-                    <Button onClick={() => { accountActive ? history.push('/login') : console.log('something')}} sizeButton="large" typeButton="primary">{accountActive ? "Log In" : "Contact Us"}</Button>
+                    <Button onClick={() => { accountActive ? history.push('/login') : window.open('https://www.dacast.com/contact/')}} sizeButton="large" typeButton="primary">{accountActive ? "Log In" : "Contact Us"}</Button>
                 </ModalFooter>
             </ModalCard>
         </LoginContainer>
