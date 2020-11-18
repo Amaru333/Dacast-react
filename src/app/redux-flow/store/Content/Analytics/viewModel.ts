@@ -1,5 +1,6 @@
 import { AudienceAnalyticsState, ContentAnalyticsFinalState, ContentAnalyticsState } from '.'
-import { AnalyticsDimensions, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput } from '../../../../../DacastSdk/analytics'
+import { AnalyticsDimensions, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput, TimeRangeAnalytics } from '../../../../../DacastSdk/analytics'
+import { tsToLocaleDate } from '../../../../../utils/formatUtils';
 import { CountriesDetail } from '../../../../constants/CountriesDetails';
 import { RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
 
@@ -11,6 +12,60 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var watchData: WatchAnalyticsState = {};
     var realTimeData: RealTimeAnalyticsState = {};
 
+    console.log(data, "data")
+
+    const formateTimestampAnalytics = (value: number) => {
+        switch(data.timeRange) {
+            case 'YEAR_TO_DATE':
+            case 'LAST_6_MONTHS':
+            case 'LAST_MONTH':
+            case 'LAST_WEEK':
+                return tsToLocaleDate(value);
+            case 'LAST_DAY':
+                return tsToLocaleDate(value,{hour: '2digit', minute: '2digit'} );
+        }
+    }
+    
+    const getLabels = (startDate: Date, stopDate: Date) => {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(formateTimestampAnalytics(new Date (currentDate).getTime()/1000));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dateArray;
+    }
+
+    const labelsFormate = (dimension: TimeRangeAnalytics) => {
+        switch(dimension) {
+            case 'YEAR_TO_DATE':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), 0, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_6_MONTHS':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() -6, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_MONTH':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() - 1, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_WEEK':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() , stopDate.getDay() - 7);
+                return getLabels(current, stopDate)
+            case 'LAST_DAY':
+                var stopDate = new Date();
+                var current = new Date();
+                current.setHours(current.getHours() - 24)
+                return getLabels(current, stopDate)
+        }
+    }
+
+    let labels = labelsFormate(data.timeRange);
+    console.log(labels)
+
+
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
             switch(metric.dimension) {
@@ -20,7 +75,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     } else {
                         metric.data.forEach(data => {
                             realTimeData.playsByTime = {
-                                labels: [...(realTimeData.playsByTime ? realTimeData.playsByTime.labels : []), ...(!realTimeData.playsByTime || realTimeData.playsByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                labels: [...(realTimeData.playsByTime ? realTimeData.playsByTime.labels : []), ...(!realTimeData.playsByTime || realTimeData.playsByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
                                 data: [...(realTimeData.playsByTime ? realTimeData.playsByTime.data : []), data.dimensionSum ]                        
                             }
                         })
@@ -32,7 +87,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     } else {
                         metric.data.forEach(data => {
                             realTimeData.viewersByTime = {
-                                labels: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.labels : []), ...(!realTimeData.viewersByTime || realTimeData.viewersByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                labels: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.labels : []), ...(!realTimeData.viewersByTime || realTimeData.viewersByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
                                 data: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.data : []), data.dimensionSum ]                        
                             }
                         })
@@ -97,10 +152,10 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 audienceData.playsImpressionsByTime = { labels: [], plays: [], impressions: [], table: [] }
                             }
                             audienceData.playsImpressionsByTime = {
-                                labels: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.labels : []), ...(!audienceData.playsImpressionsByTime || audienceData.playsImpressionsByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                labels: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.labels : []), ...(!audienceData.playsImpressionsByTime || audienceData.playsImpressionsByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
                                 plays: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.plays : []), ...(metric.dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
                                 impressions: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.impressions : []), ...(metric.dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
-                                table: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.table : [])]
+                                table: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.table : []), { plays: metric.dimension.includes("PLAYS") ? data.dimensionSum : null, impressions: metric.dimension.includes("IMPRESSIONS") ? data.dimensionSum : null, label: formateTimestampAnalytics(data.dimensionType.value) } ]
                             }
                             break;
                         case 'DEVICE':
@@ -157,7 +212,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 watchData.watchByTime = { labels: [], data: [], table: [] }
                             }
                             watchData.watchByTime = {
-                                labels: [...(watchData.watchByTime ? watchData.watchByTime.labels : []), ...(!watchData.watchByTime || watchData.watchByTime.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                labels: [...(watchData.watchByTime ? watchData.watchByTime.labels : []), ...(!watchData.watchByTime || watchData.watchByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
                                 data: [...(watchData.watchByTime ? watchData.watchByTime.data : []), data.dimensionSum],
                                 table: [...(watchData.watchByTime ? watchData.watchByTime.table : [])]
                             }

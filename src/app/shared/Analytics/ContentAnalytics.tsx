@@ -56,6 +56,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
             case 'engagement':
                 return (
                     <DateFilteringAnalytics
+                        selectedPreset={timeRangePick}
                         className='col col-9'
                         defaultDates={{ start: 0, end: 0 }}
                         callback={(info) => setTimeRangePick(info.value)}

@@ -20,7 +20,7 @@ const VodAnalytics = (props: { getContentAnalytics: (options: GetContentAnalytic
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     
     React.useEffect(() => {
-        if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object) {
+        if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object && !isFetching) {
             setIsFetching(true);
             props.getContentAnalytics({ id: vodId, timeRange: 'LAST_WEEK', type: "vod", dimension: AudienceDimension }).then(() => setIsFetching(false))
         }
