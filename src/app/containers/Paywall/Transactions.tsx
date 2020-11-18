@@ -12,7 +12,7 @@ import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 export interface TransactionsComponentProps {
     transactionsInfo: TransactionsInfo;
     getTransactions: (qs:string) => Promise<void>;
-    getTransactionsCsv: () => Promise<void>;
+    getTransactionsCsv: (qs: string) => Promise<void>;
 }
 
 const Transactions = (props: TransactionsComponentProps) => {
@@ -49,8 +49,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getTransactions: async (qs:string) => {
             await dispatch(getTransactionsAction(qs))
         },
-        getTransactionsCsv: async () => {
-            await dispatch(getTransactionsCsvAction(undefined))
+        getTransactionsCsv: async (qs: string) => {
+            await dispatch(getTransactionsCsvAction(qs))
         }
     }
 }
