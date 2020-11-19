@@ -1,12 +1,26 @@
-import { ContentAnalyticsFinalState } from '../Content/Analytics';
+import { combineReducers, Reducer } from 'redux';
+import { AnalyticsDashboardReducer, AnalyticsDashboardState, AnalyticsDashboardInitialState } from './Dashboard';
+import { AnalyticsRealTimeState, AnalyticsRealTimeReducer, AnalyticsRealTimeInitialState } from './RealTime';
+import { AnalyticsViewershipReducer, AnalyticsViewershipState, AnalyticsViewershipInitialState } from './Viewership';
+import { AnalyticsRevenueInfos, AnalyticsRevenueReducer, AnalyticsRevenueInitialState } from './Revenue';
 
-
-export enum ActionTypes {
-    GET_REVENUE_ANALYTICS = "@@analytics/GET_REVENUE_ANALYTICS",
-    GET_DATA_ANALYTICS = "@@analytics/GET_DATA_ANALYTICS",
-    GET_AUDIENCE_ANALYTICS = "@@analytics/GET_AUDIENCE_ANALYTICS",
+export interface  AnalyticsState {
+    dashboard: AnalyticsDashboardState;
+    realTime: AnalyticsRealTimeState;
+    viewership: AnalyticsViewershipState;
+    revenue: AnalyticsRevenueInfos;
 }
 
-export type AnalyticsState = {} | ContentAnalyticsFinalState ;
+export const analyticsInitialState: AnalyticsState = {
+    dashboard: AnalyticsDashboardInitialState,
+    realTime: AnalyticsRealTimeInitialState,
+    viewership: AnalyticsViewershipInitialState,
+    revenue: AnalyticsRevenueInitialState
+}
 
-export const analyticsInitialState: AnalyticsState = {};
+export const AnalyticsReducer: Reducer<AnalyticsState> = combineReducers({
+    dashboard: AnalyticsDashboardReducer,
+    realTime: AnalyticsRealTimeReducer,
+    viewership: AnalyticsViewershipReducer,
+    revenue: AnalyticsRevenueReducer
+})

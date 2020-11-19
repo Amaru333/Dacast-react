@@ -92,17 +92,17 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
                         <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, usd: !prevState.currency.usd } } }) }}
                             id='transactionFilterUSD' label="USD" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.currency.usd}
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.currency.eur}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, currency: { ...prevState.currency, eur: !prevState.currency.eur } } }) }}
                             id='transactionFilterEUR' label="EUR" labelWeight="reg" />
                     </div>
                     <div className="mb3" id="transactionFilterStartDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Start Date</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="transactionFilterEndDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >End Date</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
                     </div>
                 </div>
                 

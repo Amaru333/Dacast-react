@@ -2,9 +2,13 @@ export interface GetCompanyLogoUploadUrl {
     userID: string
 }
 
+export interface GetUserBrandImageUploadUrl {
+    userID: string
+}
+
 export type PostUploadUrlInput = {
-    uploadType: 'company-logo' | 'transcoding-watermark'
-    uploadRequestBody: GetCompanyLogoUploadUrl | null
+    uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark'
+    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | null
 }
 
 export interface PostUploadUrlOutput {

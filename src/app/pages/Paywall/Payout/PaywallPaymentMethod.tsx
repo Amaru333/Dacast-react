@@ -18,7 +18,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
-    const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International"}, {title: "Check"}, {title: "PayPal"}]
+    const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International)"}, {title: "Check"}, {title: "PayPal"}]
 
     const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
         reValidateMode: 'onChange',

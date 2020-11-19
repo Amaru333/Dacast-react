@@ -33,30 +33,30 @@ export const HeaderAudienceLocation = [
 ]
 
 
-export const HeaderDataTime = [
+export const HeaderWatchTime = [
     {
         Header: 'Date',
         accessor: 'label',
     }, {
-        Header: 'Data (GBs)',
+        Header: 'Watch Duration (s)',
         accessor: 'data'
     }
 ]
-export const HeaderDataDevice = [
+export const HeaderWatchDevice = [
     {
         Header: 'Device',
         accessor: 'label',
     }, {
-        Header: 'Data (GBs)',
+        Header: 'Watch Duration (s)',
         accessor: 'data'
     }
 ]
-export const HeaderDataLocation = [
+export const HeaderWatchLocation = [
     {
         Header: 'Country',
         accessor: 'label',
     }, {
-        Header: 'Data (GBs)',
+        Header: 'Watch Duration (s)',
         accessor: 'data'
     }
 ]
@@ -91,7 +91,7 @@ export const HeaderSalesLocation = [
         Header: 'Country',
         accessor: 'label',
     }, {
-        Header: 'Sales',
-        accessor: 'sales'
+        Header: 'Revenue',
+        accessor: 'revenues'
     }
 ]

@@ -1,95 +1,349 @@
-import { ContentAnalyticsFinalState, ContentAnalyticsState } from '.'
-import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from '../../../../../DacastSdk/analytics'
+import { AudienceAnalyticsState, ContentAnalyticsFinalState, ContentAnalyticsState } from '.'
+import { AnalyticsDimensions, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput, TimeRangeAnalytics } from '../../../../../DacastSdk/analytics'
+import { tsToLocaleDate } from '../../../../../utils/formatUtils';
+import { CountriesDetail } from '../../../../constants/CountriesDetails';
+import { RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
 
 
 export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOutput, data: GetContentAnalyticsInput): { contentId: string; contentType: string; data: ContentAnalyticsFinalState } => {
+
+    var audienceData: AudienceAnalyticsState = {};
+    var salesData: SalesAnalyticsState = {};
+    var watchData: WatchAnalyticsState = {};
+    var realTimeData: RealTimeAnalyticsState = {};
+
+    const formateTimestampAnalytics = (value: number) => {
+        switch(data.timeRange) {
+            case 'YEAR_TO_DATE':
+            case 'LAST_6_MONTHS':
+            case 'LAST_MONTH':
+            case 'LAST_WEEK':
+                return tsToLocaleDate(value);
+            case 'LAST_DAY':
+            case 'LAST_15_MINUTES':
+            case 'LAST_30_MINUTES':
+            case 'LAST_45_MINUTES':
+            case 'LAST_HOUR':
+            case 'LAST_2_HOURS':
+            case 'LAST_5_MINUTES':
+            case 'LAST_90_MINUTES':
+                return tsToLocaleDate(value,{hour: '2digit', minute: '2digit'} );
+        }
+    }
+    
+    const getLabels = (startDate: Date, stopDate: Date) => {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(formateTimestampAnalytics(new Date (currentDate).getTime()/1000));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dateArray;
+    }
+
+    const labelsFormate = (dimension: TimeRangeAnalytics) => {
+        switch(dimension) {
+            case 'YEAR_TO_DATE':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), 0, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_6_MONTHS':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() -6, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_MONTH':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() - 1, 1);
+                return getLabels(current, stopDate)
+            case 'LAST_WEEK':
+                var stopDate = new Date();
+                var current = new Date(stopDate.getFullYear(), stopDate.getMonth() , stopDate.getDay() - 7);
+                return getLabels(current, stopDate)
+            case 'LAST_DAY':
+                var stopDate = new Date();
+                var current = new Date();
+                current.setHours(current.getHours() - 24)
+                return getLabels(current, stopDate)
+            case 'LAST_2_HOURS': 
+                var stopDate = new Date();
+                var current = new Date();
+                current.setHours(current.getHours() - 24)
+                return getLabels(current, stopDate)
+        }
+    }
+
+    let labels = labelsFormate(data.timeRange);
+
+    const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
+        element.results.forEach(metric => {
+            switch(metric.dimension) {
+                case "PLAYS_BY_TIME":
+                    if(!metric.data.length) {
+                        realTimeData.playsByTime = {data: [], labels: []}
+                    } else {
+                        realTimeData.playsByTime = {data: [].fill(0, 0, labels.length), labels: labels}
+                        metric.data.forEach(data => {
+                            realTimeData.playsByTime = {
+                                labels: [...(realTimeData.playsByTime ? realTimeData.playsByTime.labels : []), ...(!realTimeData.playsByTime || realTimeData.playsByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                data: [...(realTimeData.playsByTime ? realTimeData.playsByTime.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case "IMPRESSIONS_BY_TIME":
+                    if(!metric.data.length) {
+                        realTimeData.viewersByTime = {data: [], labels: []}
+                    } else {
+                        realTimeData.viewersByTime = {data: [].fill(0, 0, labels.length), labels: labels};
+                        metric.data.forEach(data => {
+                            realTimeData.viewersByTime = {
+                                labels: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.labels : []), ...(!realTimeData.viewersByTime || realTimeData.viewersByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                data: [...(realTimeData.viewersByTime ? realTimeData.viewersByTime.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case "WATCHTIME_BY_DEVICE":
+                    if(!metric.data.length) {
+                        realTimeData.watchByDevice = {data: [], labels: []}
+                    } else {
+                        realTimeData.watchByDevice = {data: [].fill(0, 0, labels.length), labels: labels}
+                        metric.data.forEach(data => {
+                            realTimeData.watchByDevice = {
+                                labels: [...(realTimeData.watchByDevice ? realTimeData.watchByDevice.labels : []), ...(!realTimeData.watchByDevice || realTimeData.watchByDevice.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                data: [...(realTimeData.watchByDevice ? realTimeData.watchByDevice.data : []), data.dimensionSum ]                        
+                            }
+                        })
+                    }
+                    break;
+                case 'PLAYS_BY_COUNTRY':
+                    if(!metric.data.length) {
+                        realTimeData.playsByLocation = {data: []}
+                    } else {
+                        metric.data.forEach(data => {
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimensionType.value);
+                            if (assosiatedCountry) {
+                                realTimeData.playsByLocation = {
+                                    data: [...(realTimeData.playsByLocation ? realTimeData.playsByLocation.data : []), {
+                                        city: assosiatedCountry["\"Country\""],
+                                        position: {
+                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        },
+                                        value: data.dimensionSum
+                                    }],
+                                }
+                            }
+                        })
+                    }
+                    break;
+            }
+        })
+    }
+    const handleResultItem = async (element: GetContentAnalyticsResultItemOutput) => {
+        element.results.forEach(metric => {
+            if (metric.dimension.includes("PLAYS") || metric.dimension.includes("IMPRESSIONS")) {
+                if(!metric.data.length) {
+                    if(metric.dimension.includes("TIME")) {
+                        audienceData.playsImpressionsByTime = { labels: [], plays: [], impressions: [], table: [] }
+                    }
+                    if(metric.dimension.includes("DEVICE")) {
+                        audienceData.playsImpressionsByDevice = { labels: [], plays: [], impressions: [], table: [] }
+                    }
+                    if(metric.dimension.includes("COUNTRY")) {
+                        audienceData.playsImpressionsByLocation = { data: [], table: [] }
+                    }
+                }
+                metric.data.forEach(data => {
+                    switch (data.dimensionType.type) {
+                        case 'HOURLY':
+                        case 'MONTH':
+                        case 'DAY':
+                            if (!audienceData || !audienceData.playsImpressionsByTime) {
+                                audienceData.playsImpressionsByTime = { labels: [], plays: [], impressions: [], table: [] }
+                            } else {
+                                audienceData.playsImpressionsByTime  = {plays: [].fill(0, 0, labels.length), impressions: [].fill(0, 0, labels.length), labels: labels, table: []}
+                                audienceData.playsImpressionsByTime = {
+                                    labels: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.labels : []), ...(!audienceData.playsImpressionsByTime || audienceData.playsImpressionsByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                    plays: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.plays : []), ...(metric.dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
+                                    impressions: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.impressions : []), ...(metric.dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
+                                    table: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.table : []), { plays: metric.dimension.includes("PLAYS") ? data.dimensionSum : null, impressions: metric.dimension.includes("IMPRESSIONS") ? data.dimensionSum : null, label: formateTimestampAnalytics(data.dimensionType.value) } ]
+                                }
+                            }
+                            break;
+                        case 'DEVICE':
+                            if (!audienceData || !audienceData.playsImpressionsByDevice) {
+                                audienceData.playsImpressionsByDevice = { labels: [], plays: [], impressions: [], table: [] }
+                            } else {
+                                audienceData.playsImpressionsByDevice  = {plays: [].fill(0, 0, labels.length), impressions: [].fill(0, 0, labels.length), labels: labels, table: []}
+                                audienceData.playsImpressionsByDevice = {
+                                    labels: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.labels : []), ...(!audienceData.playsImpressionsByDevice || audienceData.playsImpressionsByDevice.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
+                                    plays: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.plays : []), ...(metric.dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
+                                    impressions: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.impressions : []), ...(metric.dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
+                                    table: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.table : [])]
+                                }
+                            }
+                            
+                            break;
+                        case 'COUNTRY':
+                            if (!audienceData || !audienceData.playsImpressionsByLocation) {
+                                audienceData.playsImpressionsByLocation = { data: [], table: [] }
+                            }
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimensionType.value);
+                            if (assosiatedCountry) {
+                                audienceData.playsImpressionsByLocation = {
+                                    data: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.data : []), {
+                                        city: assosiatedCountry["\"Country\""],
+                                        position: {
+                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        },
+                                        value: data.dimensionSum
+                                    }],
+                                    table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : [])]
+                                }
+                            }
+                            break;
+                    }
+                })
+            }
+            if (metric.dimension.includes("WATCHTIME")) {
+                if(!metric.data.length) {
+                    if(metric.dimension.includes("TIME")) {
+                        watchData.watchByTime = { labels: [], data: [], table: [] }
+                    }
+                    if(metric.dimension.includes("DEVICE")) {
+                        watchData.watchByDevice = { labels: [], data: [], table: [] }
+                    }
+                    if(metric.dimension.includes("COUNTRY")) {
+                        watchData.watchByLocation = { data: [], table: [] }
+                    }
+                }
+                metric.data.forEach(data => {
+                    switch (data.dimensionType.type) {
+                        case 'HOURLY':
+                        case 'MONTH':
+                        case 'DAY':
+                            if (!watchData || !watchData.watchByTime) {
+                                watchData.watchByTime = { labels: [], data: [], table: [] }
+                            } else {
+                                watchData.watchByTime  = {data: [].fill(0, 0, labels.length), labels: labels, table: []}
+                                watchData.watchByTime = {
+                                    labels: [...(watchData.watchByTime ? watchData.watchByTime.labels : []), ...(!watchData.watchByTime || watchData.watchByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                    data: [...(watchData.watchByTime ? watchData.watchByTime.data : []), data.dimensionSum],
+                                    table: [...(watchData.watchByTime ? watchData.watchByTime.table : [])]
+                                }
+                            }
+                            break;
+                        case 'DEVICE':
+                            if (!watchData || !watchData.watchByDevice) {
+                                watchData.watchByDevice = { labels: [], data: [], table: [] }
+                            } else {
+                                watchData.watchByDevice  = {data: [].fill(0, 0, labels.length), labels: labels, table: []}
+                                watchData.watchByDevice = {
+                                    labels: [...(watchData.watchByDevice ? watchData.watchByDevice.labels : []), data.dimensionType.value],
+                                    data: [...(watchData.watchByDevice ? watchData.watchByDevice.data : []), data.dimensionSum],
+                                    table: [...(watchData.watchByDevice ? watchData.watchByDevice.table : [])]
+                                }
+                            }
+                           
+                            break;
+                        case 'COUNTRY':
+                            if (!watchData || !watchData.watchByLocation) {
+                                watchData.watchByLocation = { data: [], table: [] }
+                            } else {
+                                const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimensionType.value);
+                                if (assosiatedCountry) {
+                                    watchData.watchByLocation = {
+                                        data: [...(watchData.watchByLocation ? watchData.watchByLocation.data : []), {
+                                            city: assosiatedCountry["\"Country\""],
+                                            position: {
+                                                latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                                longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            },
+                                            value: data.dimensionSum
+                                        }],
+                                        table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : [])]
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                })
+            }
+            if (metric.dimension.includes("SALES") || metric.dimension.includes("REVENUES")) {
+                if(!metric.data.length) {
+                    if(metric.dimension.includes("TIME")) {
+                        salesData.salesRevenuesByTime = { labels: [], sales: [], revenues: [], table: [] }
+                    }
+                    if(metric.dimension.includes("COUNTRY")) {
+                        salesData.salesRevenuesByLocation = { data: [], table: [] }
+                    }
+                }
+                metric.data.forEach(data => {
+                    switch (data.dimensionType.type) {
+                        case 'HOURLY':
+                        case 'MONTH':
+                        case 'DAY':
+                            if (!salesData || !salesData.salesRevenuesByTime) {
+                                salesData.salesRevenuesByTime = { labels: [], sales: [], revenues: [], table: [] }
+                            } else {
+                                salesData.salesRevenuesByTime  = {sales: [].fill(0, 0, labels.length), revenues: [].fill(0, 0, labels.length), labels: labels, table: []}
+                                salesData.salesRevenuesByTime = {
+                                    labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                    sales: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.sales : []), ...(metric.dimension.includes("SALES")  ? [data.dimensionSum] : [])],
+                                    revenues: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.revenues : []), ...(metric.dimension.includes("REVENUES")  ? [data.dimensionSum] : [])],
+                                    table: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : [])]
+                                }
+                            }
+                            
+                            break;
+                        case 'COUNTRY':
+                            if (!salesData || !salesData.salesRevenuesByLocation) {
+                                salesData.salesRevenuesByLocation = { data: [], table: [] }
+                            } else {
+                                const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimensionType.value);
+                                if (assosiatedCountry) {
+                                    salesData.salesRevenuesByLocation = {
+                                        data: [...(salesData.salesRevenuesByLocation ? salesData.salesRevenuesByLocation.data : []), {
+                                            city: assosiatedCountry["\"Country\""],
+                                            position: {
+                                                latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                                longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            },
+                                            value: data.dimensionSum
+                                        }],
+                                        table: [...(salesData.salesRevenuesByLocation ? salesData.salesRevenuesByLocation.table : [])]
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                })
+            }
+
+        }
+        )
+    }
+
+    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {
+        response.forEach((element) => {
+            handleResultRealTime(element)
+        })
+    } else {
+        response.forEach((element) => {
+            handleResultItem(element)
+        })
+    }
+ 
+
     return {
         contentId: data.id,
         contentType: data.type,
         data: {
-            audience: {
-                playsImpressionsByTime: {
-                    labels: ["01-01-2020", "01-02-2020", "01-03-2020", "01-04-2020", "01-05-2020", "01-06-2020", "01-07-2020", "01-08-2020", "01-09-2020", "01-10-2020", "01-11-2020", "01-12-2020", "01-13-2020", "01-14-2020"],
-                    plays: [45, 12, 19, 12, 26, 12, 9, 12, 14, 24, 37, 45, 58, 41],
-                    impressions: [51, 23, 27, 19, 34, 17, 16, 21, 25, 39, 48, 45, 67, 52],
-                    table: [{ plays: 45, impressions: 51, label: "01-01-2020" }, { plays: 12, impressions: 23, label: "01-02-2020" },
-                    { plays: 19, impressions: 27, label: "01-03-2020" }, { plays: 12, impressions: 19, label: "01-04-2020" }, { plays: 26, impressions: 34, label: "01-05-2020" },
-                    { plays: 12, impressions: 17, label: "01-06-2020" }, { plays: 9, impressions: 16, label: "01-07-2020" }, { plays: 12, impressions: 21, label: "01-08-2020" },
-                    { plays: 14, impressions: 25, label: "01-09-2020" }, { plays: 24, impressions: 39, label: "01-10-2020" }, { plays: 37, impressions: 48, label: "01-11-2020" },
-                    { plays: 45, impressions: 45, label: "01-12-2020" }, { plays: 58, impressions: 67, label: "01-13-2020" }, { plays: 41, impressions: 52, label: "01-14-2020" }]
-                },
-                playsImpressionsByDevice: {
-                    labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
-                    plays: [26, 12, 9, 12, 14, 24],
-                    impressions: [42, 27, 18, 29, 19, 38],
-                    table: [{ plays: 26, impressions: 42, label: "Firefox on Windows" }, { plays: 12, impressions: 27, label: "Chrome on Mac" }, { plays: 9, impressions: 27, label: "Safari on Mac" },
-                    { plays: 12, impressions: 29, label: "Opera on Windows" }, { plays: 14, impressions: 19, label: "Chrome on Linux" }, { plays: 24, impressions: 38, label: "Chrome on Linux" }
-                    ]
-                },
-                playsImpressionsByLocation:
-                {
-                    data: [
-                        { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
-                        { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },
-                        { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
-                        { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
-                    ],
-                    table: [{ plays: 93, label: 'New York City' }, { plays: 762, label: "Annecy" }, { plays: 123, label: 'San Francisco' }, { plays: 19, label: 'Londres' }]
-                }
-            },
-            sales: {
-                salesRevenuesByTime: {
-                    labels: ["01-01-2020", "01-02-2020", "01-03-2020", "01-04-2020", "01-05-2020", "01-06-2020", "01-07-2020", "01-08-2020", "01-09-2020", "01-10-2020", "01-11-2020", "01-12-2020", "01-13-2020", "01-14-2020"],
-                    sales: [510, 213, 271, 1239, 133, 672, 245, 212, 562, 245, 324, 592, 912, 134],
-                    revenues: [5101, 2113, 2721, 10239, 1313, 6742, 2425, 2112, 5644, 2435, 3244, 5932, 9122, 1343],
-                    table: [{ sales: 510, revenues: 5101, label: "01-01-2020" }, { sales: 213, revenues: 2721, label: "01-02-2020" },
-                    { sales: 271, revenues: 2721, label: "01-03-2020" }, { sales: 1239, revenues: 10239, label: "01-04-2020" }, { sales: 133, revenues: 1313, label: "01-05-2020" },
-                    { sales: 672, revenues: 6742, label: "01-06-2020" }, { sales: 245, revenues: 2425, label: "01-07-2020" }, { sales: 212, revenues: 2112, label: "01-08-2020" },
-                    { sales: 562, revenues: 5644, label: "01-09-2020" }, { sales: 245, revenues: 2435, label: "01-10-2020" }, { sales: 324, revenues: 5932, label: "01-11-2020" },
-                    { sales: 912, revenues: 9122, label: "01-12-2020" }, { sales: 134, revenues: 1343, label: "01-13-2020" }, { sales: 134, revenues: 1343, label: "01-14-2020" }]
-                },
-                salesRevenuesByLocation: {
-                    data: [
-                        { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
-                        { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },
-                        { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
-                        { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
-                    ],
-                    table: [{ revenues: 9392, label: 'New York City' }, { revenues: 7602, label: "Annecy" }, { revenues: 12349, label: 'San Francisco' }, { revenues: 5402, label: 'Londres' }]
-                },
-                salesRevenuesByDevice: {
-                    labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
-                    sales: [810, 345, 144, 1539, 1353, 672],
-                    revenues: [11021, 2133, 2711, 10239, 3313, 9742],
-                    table: [{ sales: 810, revenues: 11021, label: "Firefox on Windows" }, { sales: 345, revenues: 2133, label: "Chrome on Mac" }, { sales: 144, revenues: 2711, label: "Safari on Mac" }, { sales: 1539, revenues: 10239, label: "Opera on Windows" }
-                        , { sales: 1353, revenues: 3313, label: "Chrome on Linux" }, { sales: 672, revenues: 9742, label: "Edge on Windows" },]
-                }
-            },
-            data: {
-                dataByTime: {
-                    labels: ["01-01-2020", "01-02-2020", "01-03-2020", "01-04-2020", "01-05-2020", "01-06-2020", "01-06-2020", "01-07-2020", "01-08-2020", "01-09-2020", "01-10-2020", "01-11-2020", "01-12-2020", "01-13-2020"],
-                    data: [510, 213, 271, 1239, 133, 672, 245, 212, 562, 245, 324, 592, 912, 134],
-                    table: [{ data: 510, label: "01-01-2020" }, { data: 213, label: "01-02-2020" },
-                    { data: 271, label: "01-03-2020" }, { data: 1239, label: "01-04-2020" }, { data: 133, label: "01-05-2020" }, { data: 672, label: "01-06-2020" },
-                    { data: 245, label: "01-07-2020" }, { data: 212, label: "01-08-2020" }, { data: 562, label: "01-09-2020" }, { data: 245, label: "01-10-2020" }, { data: 324, label: "01-11-2020" },
-                    { data: 592, label: "01-12-2020" }, { data: 912, label: "01-13-2020" }, { data: 134, label: "01-14-2020" }]
-
-                },
-                dataByDevice: {
-                    labels: ["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"],
-                    data: [8120, 3435, 1424, 1539, 4353, 6724],
-                    table: [{ data: 8120, label: "Firefox on Windows" }, { data: 3435, label: "Chrome on Mac" }, { data: 1424, label: "Safari on Mac" }, { data: 1539, label: "Opera on Windows" }, { data: 4353, label: "Chrome on Linux" }, { data: 6724, label: "Edge on Windows" }]
-                },
-                dataByLocation: {
-                    data: [
-                        { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
-                        { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },
-                        { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
-                        { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
-                    ],
-                    table: [{ data: 9392, label: 'New York City' }, { data: 7602, label: "Annecy" }, { data: 12349, label: 'San Francisco' }, { data: 5402, label: 'Londres' }]
-                }
-            }
+            audience: Object.keys(audienceData).length === 0 && audienceData.constructor === Object ? undefined : audienceData,
+            sales: Object.keys(salesData).length === 0 && salesData.constructor === Object ? undefined : salesData,
+            watch: Object.keys(watchData).length === 0 && watchData.constructor === Object ? undefined : watchData,
         }
     }
 }

@@ -93,7 +93,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
             let errorMsg = 'There was a problem while creating a channel'
             console.log('error message: ', error.response.data.error)
             if(error.response.data.error.indexOf('only 1 channel is allowed for free trials') > -1) {
-                errorMsg = 'Only 1 channel is allowed for free trials'
+                errorMsg = 'Only 1 channel is allowed for free trials. Please click here to'
             }
             if(error.response.data.error.indexOf('there was a problem while creating a channel') > -1) {
                 errorMsg = 'There was a problem while creating a channel'
@@ -159,6 +159,10 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                     </div>} */}
                     <Bubble hidden={!errorMessage} type='error' className='my2'>
                         {errorMessage}
+                        {
+                            (errorMessage && errorMessage.indexOf('1 channel') !== -1) &&
+                            <a href='/upgrade'> Upgrade</a>
+                        }
                     </Bubble>
 
             </ModalContent>

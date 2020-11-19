@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChartComponentProps, Doughnut, Pie } from 'react-chartjs-2';
 import { randDarkColor } from '../../utils/utils';
+import { EmptyAnalytics } from './EmptyAnalytics';
 
 
 interface PieChartProps {
@@ -12,6 +13,12 @@ interface PieChartProps {
 }
 
 export const PieChart = (props: PieChartProps) => {
+
+    if(!props.data.length) {
+        return (
+            <EmptyAnalytics />
+        )
+    }
 
     const pieProps: ChartComponentProps = {
         data: {

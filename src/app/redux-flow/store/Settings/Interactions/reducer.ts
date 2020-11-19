@@ -25,7 +25,7 @@ const reducer: Reducer<EngagementInfo> = (state = interactionsDefaultState, acti
         case ActionTypes.GET_UPLOAD_URL:
             return {
                 ...state,
-               uploadurl: action.payload.data.presignedURL
+               uploadurl: action.payload.presignedURL
             }
         case ActionTypes.UPLOAD_IMAGE:
             return state

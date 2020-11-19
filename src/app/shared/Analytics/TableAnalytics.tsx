@@ -4,7 +4,7 @@ import ReactTable from "react-table";
 export interface TableAnalyticsProps {
     data: Object[];
     header: { Header: string; accessor: string; Cell?: (item: Object) => JSX.Element }[];
-    className: string;
+    className?: string;
 }
 
 export const TableAnalytics = (props: TableAnalyticsProps) => {

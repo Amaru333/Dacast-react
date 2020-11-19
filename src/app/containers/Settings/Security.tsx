@@ -53,7 +53,7 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getSettingsSecurityOptions: async () => {
-            await dispatch(getSettingsSecurityOptionsAction());
+            await dispatch(getSettingsSecurityOptionsAction(undefined));
         },
         saveSettingsSecurityOptions: async (data: SecuritySettings) => {
             await dispatch(saveSettingsSecurityOptionsAction(data));

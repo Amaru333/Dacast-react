@@ -41,7 +41,7 @@ export const interactionsDefaultState: EngagementInfo = {
 interface BrandTextSettings {
     brandText: string;
     brandTextLink: string;
-    isBrandTextAsTitle?: boolean;
+    isBrandTextAsTitle: boolean;
     locked: boolean;
 }
 

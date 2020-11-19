@@ -10,18 +10,19 @@ import { ContentAnalytics } from '../../shared/Analytics/ContentAnalytics';
 import { ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
 import { Action } from '../../redux-flow/store/Content/Analytics';
 import { GetContentAnalyticsInput } from '../../../DacastSdk/analytics';
+import { AllDimensions, AudienceDimension } from '../../shared/Analytics/AnalyticsCommun';
 
-const VodAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => void, contentAnalyticsData: ContentAnalyticsState }) => {
+const VodAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
 
     const [isFetching, setIsFetching] = React.useState<boolean>(false)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     
     React.useEffect(() => {
-        if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object) {
+        if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object && !isFetching) {
             setIsFetching(true);
-            props.getContentAnalytics({ id: vodId, timeRange: 'LAST_WEEK', type: "vod", dimension: ['IMPRESSIONS_BY_COUNTRY'] }).then(() => setIsFetching(false))
+            props.getContentAnalytics({ id: vodId, timeRange: 'LAST_WEEK', type: "vod", dimension: AudienceDimension }).then(() => setIsFetching(false))
         }
     }, [])
     

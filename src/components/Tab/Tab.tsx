@@ -4,7 +4,6 @@ import { Text } from '../Typography/Text';
 import { TabProps } from './TabTypes';
 import { TabContainer, TabHeaderContainer, TabStyle, TabsLabel } from './TabStyle';
 import { DropdownSingle } from '../FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType } from '../FormsComponents/Dropdown/DropdownTypes';
 import { useMedia } from '../../utils/utils';
 
 export const Tab = (props: TabProps) => {
@@ -48,10 +47,8 @@ export const Tab = (props: TabProps) => {
     }, [selectedTab])
 
     const renderTabs = () => {
-        const dropdownList: DropdownListType = {}
-        list.forEach((item) => dropdownList[item.name] = false )
         return mobile && !props.callback ?
-            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={dropdownList} isNavigation dropdownTitle="" />
+            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={list.map(item => {return {title: item.name}})} isNavigation dropdownTitle="" />
             : !mobile && !props.callback ?
                 list.map((tab, i) => {
                     return (
@@ -74,7 +71,7 @@ export const Tab = (props: TabProps) => {
                             key={tab.name}                              
                             orientation={orientation} 
                             selected={selectedTab === tab.name} 
-                            onClick={() => {; setSelectedTab(tab.name);props.callback(tab.name)}}
+                            onClick={() => {setSelectedTab(tab.name);props.callback(tab.name)}}
                         >
                             <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.name ? 'med' : 'reg'}  color={selectedTab === tab.name ? "dark-violet" : "gray-1"}>{tab.name}</Text>
                         </TabStyle>
@@ -84,10 +81,10 @@ export const Tab = (props: TabProps) => {
 
     return (
         <TabContainer className={mobile ? 'col col-12' : ''} mobile={mobile}>
-            {props.label ? 
+            {props.label &&
                 <TabsLabel>
                     <Text size={14} weight="med" >{props.label}</Text>
-                </TabsLabel> : null
+                </TabsLabel>
             }
             <TabHeaderContainer className={mobile ? 'col col-12' : ''}  mobile={mobile} {...props}>
                 {renderTabs()}

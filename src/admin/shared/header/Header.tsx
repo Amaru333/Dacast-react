@@ -22,7 +22,7 @@ const Header = (props: {logout: () => void}) => {
         AccountsServices.impersonate(userIdentifier)
         .then((response) => {
             setIsLoading(false)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}`}).click()
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click()
         })
         .catch(() => setIsLoading(false))
     }
