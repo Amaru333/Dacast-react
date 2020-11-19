@@ -235,9 +235,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     stepperHeader="Purchase Data"
                     stepTitles={["Cart", "Payment"]}
                     stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     lastStepButton="Purchase"
                     finalFunction={() => {}}
                     stepperData={purchaseDataStepperData}

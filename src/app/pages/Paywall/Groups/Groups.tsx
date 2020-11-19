@@ -229,9 +229,6 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     opened={groupPricesStepperOpened}
                     stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
                     stepList={groupPriceSteps}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     stepTitles={['Group Details', 'Content Selection']}
                     lastStepButton={selectedGroupPrice ? "Save" : "Create"}
                     stepperData={stepperData}

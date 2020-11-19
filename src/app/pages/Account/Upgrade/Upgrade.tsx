@@ -408,9 +408,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 opened={stepperPlanOpened}
                                 stepperHeader='Upgrade Plan'
                                 stepList={stepList}
-                                nextButtonProps={{ typeButton: "primary", sizeButton: "large", buttonText: "Next" }}
-                                backButtonProps={{ typeButton: "secondary", sizeButton: "large", buttonText: "Back" }}
-                                cancelButtonProps={{ typeButton: "primary", sizeButton: "large", buttonText: "Cancel" }}
                                 stepTitles={stepTitles}
                                 lastStepButton="Purchase"
                                 stepperData={stepperData}

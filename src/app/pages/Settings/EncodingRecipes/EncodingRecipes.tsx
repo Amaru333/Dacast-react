@@ -161,9 +161,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
                     stepList={stepList}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", isLoading: submitLoading, buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    isLoading={submitLoading}
                     stepTitles={["Settings", "Presets"]}
                     lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
                     functionCancel={FunctionRecipe}

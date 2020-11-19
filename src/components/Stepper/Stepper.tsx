@@ -73,13 +73,13 @@ export const CustomStepper = (props: StepperProps) => {
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData, props.finalFunction)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
-                    <StepperNextButton id='stepperNextButton' {...props.nextButtonProps} isLoading={props.isLoading} disabled={!stepValidated} onClick={nextStep}>
-                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                    <StepperNextButton id='stepperNextButton' typeButton="primary" sizeButton="large" isLoading={props.isLoading} disabled={!stepValidated} onClick={nextStep}>
+                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : "Next"}
                     </StepperNextButton>
-                    {stepIndex !== 0 ?
-                        <Button {...props.backButtonProps}  onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
+                    {stepIndex !== 0 &&
+                        <Button typeButton="secondary" sizeButton="large"  onClick={previousStep}>Back</Button>
                     }
-                    <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                    <Button onClick={() => props.functionCancel(false)} sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </StepperFooterStyle>
             </StepperContainerStyle>
             <OverlayStyle opened={props.opened}/>
