@@ -46,9 +46,8 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
             return props.theme.themes.filter(t => t.themeName === 'default')[0]
         }
     }
-
+    
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
-    console.log(selectedTheme)
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
@@ -337,19 +336,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             </DisabledSection>
                             <Divider className="p1" />
 
-                            <DisabledSection enabled={customEnabled}>
-                                <div className="pt25 flex justify-between">
-                                    <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                    <div>
-                                        <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                    </div>
-                                </div>
-
-                                <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
-
-                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
-                            </DisabledSection>
 
                             {
                                 (props.contentType === 'live' || props.contentType === 'settings') &&
@@ -381,7 +367,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
 
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
+                                            <xptToggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
                                             <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
                                             <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
                                         </ControlToggleContainer>
