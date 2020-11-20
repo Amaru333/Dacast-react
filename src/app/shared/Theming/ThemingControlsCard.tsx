@@ -142,14 +142,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 }
                             </Text>
                         </div>
-                        <Button
-                            className='right flex items-center'
-                            sizeButton='xs'
-                            typeButton='tertiary'
-                            buttonColor='blue'
-                            onClick={() => { setShowAdvancedPanel(!showAdvancedPanel) }}>
-                            {showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></> : 'Advanced'}
-                        </Button>
+            
                     </TitleSection>
                     {showAdvancedPanel ?
                         <>
@@ -313,7 +306,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 <Divider className="p1" />
 
-                                <div className="py2" ><Text size={20} weight='med'>Behaviour</Text></div>
+                                <div className="py2" ><Text size={20} weight='med'>Behavior</Text></div>
 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Autoplay' checked={selectedTheme.autoplay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, autoplay: !selectedTheme.autoplay }); }} />
@@ -334,7 +327,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                             </DisabledSection>
-                            <Divider className="p1" />
 
 
                             {
@@ -401,14 +393,17 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip leftPositionValueToZero target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
+
+                                    <Divider className="p1" />
+
                                     
                                     <DisabledSection enabled={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                            <div>
+                                            <ControlToggleContainer>
                                                 <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
                                                 <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                            </div>
+                                            </ControlToggleContainer>
                                         </div>
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
