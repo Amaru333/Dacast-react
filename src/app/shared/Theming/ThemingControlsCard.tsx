@@ -400,10 +400,10 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <DisabledSection enabled={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                            <div>
+                                            <ControlToggleContainer>
                                                 <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
                                                 <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                            </div>
+                                            </ControlToggleContainer>
                                         </div>
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
