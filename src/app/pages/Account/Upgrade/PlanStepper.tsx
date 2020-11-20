@@ -371,8 +371,9 @@ React.useEffect(() => {
 //PAYMENT
 export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
 
+
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
-    const featuresTotal: number = (props.stepperData.privilegesTotal)
+    const featuresTotal: number = (props.stepperData.privilegesTotal || 0)
     const totalPrice: number = calculateDiscount((props.stepperData.price.usd / 100) + featuresTotal, props.stepperData.discount)
 
     // let annualTotalPrice: number = null
@@ -399,23 +400,6 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         }
     }
 
-    const step2CreditCardTableHeader = () => {
-        return {
-            data: [
-                { cell: <Text key={"step2PCardTableHeaderText"} size={14} weight="med" color="gray-1">Paying by Card</Text> },
-                { cell: <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} /> }
-            ]
-        }
-    }
-    const step2CreditCardTableBody = () => {
-        return [{
-            data: [
-                <Text key={"step2PCreditCardBodyText"} size={14} weight="med" color="gray-1">Card ending with 0009</Text>,
-                <Text className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14} weight="med" color="gray-1">03/2020</Text>,
-
-            ]
-        }]
-    }
 
     return (
         <div>
