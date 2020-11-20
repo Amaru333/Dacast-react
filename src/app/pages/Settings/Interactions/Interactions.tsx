@@ -17,7 +17,6 @@ import { NewAdModal } from './NewAdModal';
 import { Prompt } from 'react-router';
 import { dataToTimeVideo } from '../../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../../utils/utils';
-import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle } from '../../Account/Company/CompanyStyle';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -29,6 +28,7 @@ import { userToken } from '../../../utils/services/token/tokenService';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { imagePlacementDropdownList } from '../../../../utils/DropdownLists';
+import { DisabledSection } from '../../../shared/Common/MiscStyle';
 
 export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 

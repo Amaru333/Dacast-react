@@ -5,13 +5,13 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { IconStyle, IconContainer, ActionIcon } from '../../../shared/Common/Icon';
 import { Table } from '../../../components/Table/Table';
-import { Header, DisabledSection, AdTableURLContainer } from './EngagementStyle';
+import { Header, AdTableURLContainer } from './EngagementStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Modal } from '../../../components/Modal/Modal';
-import { Ad, MailCatcher, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentNewAdModal } from './ContentNewAdModal';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
@@ -26,6 +26,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
+import { DisabledSection } from '../Common/MiscStyle';
 
 export interface ContentEngagementComponentProps {
     contentEngagementSettings: ContentEngagementSettings;

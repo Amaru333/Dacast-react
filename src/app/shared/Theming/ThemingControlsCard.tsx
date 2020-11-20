@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlsCard, TitleSection, ControlToggleContainer, DisabledSection, PlayerSection, PlayerContainer, RadioButtonContainer } from './ThemingStyle';
+import { ControlsCard, TitleSection, ControlToggleContainer, PlayerSection, PlayerContainer, RadioButtonContainer } from './ThemingStyle';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Text } from '../../../components/Typography/Text';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -16,7 +16,7 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { usePlayer } from '../../utils/services/player/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/services/token/tokenService';
-import { Divider } from '../Common/MiscStyle';
+import { DisabledSection, Divider } from '../Common/MiscStyle';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 
 export interface ControlCardThemingComponentProps {
@@ -158,7 +158,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <Divider className="p1" />
 
 
-                            <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-aes')}>
+                            <DisabledSection settingsEditable={customEnabled && userToken.getPrivilege('privilege-aes')}>
                                 <div className="my2" ><Text size={20} weight='med'>Delivery Method</Text></div>
                                 <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
                                 <RadioButtonContainer className="mt2">
@@ -181,7 +181,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                             <Divider className="p1" />
 
-                            <DisabledSection enabled={customEnabled && userToken.getPrivilege('privilege-china')}>
+                            <DisabledSection settingsEditable={customEnabled && userToken.getPrivilege('privilege-china')}>
                                 <TitleSection className="my2">
                                     <Text size={20} weight='med'>Region Settings</Text>
                                     <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href = "/help"}>
@@ -240,7 +240,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                             <Divider className="p1" />
 
-                            <DisabledSection enabled={customEnabled}>
+                            <DisabledSection settingsEditable={customEnabled}>
                                 <div className='py2'><Text size={20} weight='med'>Controls</Text></div>
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Player Controls' checked={selectedTheme.playerControls} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, playerControls: !selectedTheme.playerControls }); }} />
@@ -336,7 +336,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             </DisabledSection>
                             <Divider className="p1" />
 
-                            <DisabledSection enabled={customEnabled}>
+                            <DisabledSection settingsEditable={customEnabled}>
                                 <div className="pt25 flex justify-between">
                                     <div><Text size={20} weight='med'>Offline Message</Text></div>
                                     <div>
@@ -355,7 +355,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <>
                                     <Divider className="p1" />
 
-                                    <DisabledSection enabled={liveEnabled}>
+                                    <DisabledSection settingsEditable={liveEnabled}>
                                         <div className="py2" ><Text size={20} weight='med'>Live Streams</Text></div>
 
                                         <ControlToggleContainer>
@@ -377,7 +377,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 <>
                                     <Divider className="p1" />
 
-                                    <DisabledSection enabled={playlistEnabled}>
+                                    <DisabledSection settingsEditable={playlistEnabled}>
                                         <div className="py2" ><Text size={20} weight='med'>Playlists</Text></div>
                                         <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={thumbnailPositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.thumbnailPosition)} callback={(item: DropdownSingleListItem) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: item.title }); } }} tooltip="The position of the links to other content in the Playlist" />
 
@@ -394,7 +394,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         </ControlToggleContainer>
                                     </DisabledSection>
                                     
-                                    <DisabledSection enabled={customEnabled}>
+                                    <DisabledSection settingsEditable={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
                                             <div>
