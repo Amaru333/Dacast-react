@@ -1,11 +1,11 @@
-import { AudienceAnalyticsState, ContentAnalyticsFinalState, ContentAnalyticsState } from '.'
-import { AnalyticsDimensions, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput, TimeRangeAnalytics } from '../../../../../DacastSdk/analytics'
+import { AudienceAnalyticsState, ContentAnalyticsFinalState } from '.'
+import { GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsResultItemOutput } from '../../../../../DacastSdk/analytics'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils';
 import { CountriesDetail } from '../../../../constants/CountriesDetails';
-import { RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
+import { ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, TimeRangeAnalytics, WatchAnalyticsState } from './types';
 
 
-export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOutput, data: GetContentAnalyticsInput): { contentId: string; contentType: string; data: ContentAnalyticsFinalState } => {
+export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOutput, data: ContentAnalyticsParameters): { contentId: string; contentType: string; data: ContentAnalyticsFinalState } => {
 
     var audienceData: AudienceAnalyticsState = {};
     var salesData: SalesAnalyticsState = {};
@@ -13,7 +13,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var realTimeData: RealTimeAnalyticsState = {};
 
     const formateTimestampAnalytics = (value: number) => {
-        switch(data.time_range) {
+        switch(data.timeRange) {
             case 'YEAR_TO_DATE':
             case 'LAST_6_MONTHS':
             case 'LAST_MONTH':
@@ -72,7 +72,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         }
     }
 
-    let labels = labelsFormate(data.time_range);
+    let labels = labelsFormate(data.timeRange);
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
@@ -326,7 +326,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         )
     }   
     console.log('response', response)
-    if(data.time_range.includes('MINUTE') || data.time_range.includes('HOUR')) {   
+    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {   
         handleResultRealTime(response)
     } else {
         handleResultItem(response)
@@ -344,7 +344,13 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     }
 }
 
-export const formatGetContentAnalyticsInput = (data: GetContentAnalyticsInput): GetContentAnalyticsInput => {
-    return data
+export const formatGetContentAnalyticsInput = (data: ContentAnalyticsParameters): GetContentAnalyticsInput => {
+    let formattedData: GetContentAnalyticsInput = {
+        id: data.id,
+        dimension: data.dimension,
+        time_range: data.timeRange,
+        type: data.type
+    }
+    return formattedData
 }
 

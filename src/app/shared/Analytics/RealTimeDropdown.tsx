@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import {  DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { RealTimeRange } from '../../../DacastSdk/analytics';
+import { RealTimeRange } from '../../redux-flow/store/Content/Analytics/types';
 
 export const RealTimeDropdown = (props: {callback?: (value: RealTimeRange) => void }) => {
 

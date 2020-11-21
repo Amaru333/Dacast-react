@@ -7,12 +7,11 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router';
 import { ContentAnalytics } from '../../shared/Analytics/ContentAnalytics';
-import { ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
+import { ContentAnalyticsParameters, ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
 import { Action } from '../../redux-flow/store/Content/Analytics';
-import { GetContentAnalyticsInput } from '../../../DacastSdk/analytics';
-import { AllDimensions, AudienceDimension } from '../../shared/Analytics/AnalyticsCommun';
+import { AudienceDimension } from '../../shared/Analytics/AnalyticsCommun';
 
-const VodAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
+const VodAnalytics = (props: { getContentAnalytics: (options: ContentAnalyticsParameters) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
 
     let { vodId } = useParams<{vodId: string}>()
 
@@ -42,7 +41,7 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentAnalytics: async (options: GetContentAnalyticsInput) => {
+        getContentAnalytics: async (options: ContentAnalyticsParameters) => {
             await dispatch(getContentAnalyticsAction(options));
         },
     }

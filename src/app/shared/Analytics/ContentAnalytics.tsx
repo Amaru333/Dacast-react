@@ -3,8 +3,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { AnalyticsDimensions, GetContentAnalyticsInput, RealTimeRange, TimeRangeAnalytics } from '../../../DacastSdk/analytics';
-import { ContentAnalyticsFinalState } from '../../redux-flow/store/Content/Analytics';
+import { AnalyticsDimensions, ContentAnalyticsFinalState, ContentAnalyticsParameters, RealTimeRange, TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics';
 import { AudienceDimension, RealTimeDimension, SalesDimension, WatchDurationDimension } from './AnalyticsCommun';
 import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
 import { EngagementAnalytics } from './AnalyticsType/EngagementAnalytics';
@@ -17,7 +16,7 @@ import { RealTimeDropdown } from './RealTimeDropdown';
 export interface ContentAnalyticsProps {
     contentId: string,
     contentType: ContentAnalyticsTypes,
-    getContentAnalytics: (options: GetContentAnalyticsInput) => Promise<void>,
+    getContentAnalytics: (options: ContentAnalyticsParameters) => Promise<void>,
     contentAnalyticsData: ContentAnalyticsFinalState
 }
 
