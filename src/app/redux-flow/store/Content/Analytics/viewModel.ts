@@ -13,7 +13,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var realTimeData: RealTimeAnalyticsState = {};
 
     const formateTimestampAnalytics = (value: number) => {
-        switch(data.timeRange) {
+        switch(data.time_range) {
             case 'YEAR_TO_DATE':
             case 'LAST_6_MONTHS':
             case 'LAST_MONTH':
@@ -72,7 +72,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         }
     }
 
-    let labels = labelsFormate(data.timeRange);
+    let labels = labelsFormate(data.time_range);
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
@@ -290,7 +290,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else {
                                 salesData.salesRevenuesByTime  = {sales: [].fill(0, 0, labels.length), revenues: [].fill(0, 0, labels.length), labels: labels, table: []}
                                 salesData.salesRevenuesByTime = {
-                                    labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
+                                    labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimension_type.value as number)) < 0 ? [formateTimestampAnalytics(data.dimension_type.value as number)] : [])],
                                     sales: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.sales : []), ...(metric.data_dimension.includes("SALES")  ? [data.dimension_sum] : [])],
                                     revenues: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.revenues : []), ...(metric.data_dimension.includes("REVENUES")  ? [data.dimension_sum] : [])],
                                     table: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : [])]
@@ -326,7 +326,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         )
     }   
     console.log('response', response)
-    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {   
+    if(data.time_range.includes('MINUTE') || data.time_range.includes('HOUR')) {   
         handleResultRealTime(response)
     } else {
         handleResultItem(response)
