@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { presets } from '../../constants/DatepickerPresets'
-import { TimeRangeAnalytics } from '../../../DacastSdk/analytics'
+import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 

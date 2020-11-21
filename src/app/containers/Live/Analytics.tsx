@@ -7,18 +7,16 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { ContentAnalytics } from '../../shared/Analytics/ContentAnalytics';
-import { ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
+import { ContentAnalyticsParameters, ContentAnalyticsState, getContentAnalyticsAction } from '../../redux-flow/store/Content/Analytics';
 import { Action } from '../../redux-flow/store/Content/Analytics';
-import { GetContentAnalyticsInput } from '../../../DacastSdk/analytics';
 import { AudienceDimension } from '../../shared/Analytics/AnalyticsCommun';
 
 
-const LiveAnalytics = (props: { getContentAnalytics: (options: GetContentAnalyticsInput) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
+const LiveAnalytics = (props: { getContentAnalytics: (options: ContentAnalyticsParameters) => Promise<void>, contentAnalyticsData: ContentAnalyticsState }) => {
 
     let { liveId } = useParams<{liveId: string}>()
 
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
-    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     
     React.useEffect(() => {
@@ -44,7 +42,7 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentAnalytics: async (options: GetContentAnalyticsInput) => {
+        getContentAnalytics: async (options: ContentAnalyticsParameters) => {
             await dispatch(getContentAnalyticsAction(options));
         },
     }

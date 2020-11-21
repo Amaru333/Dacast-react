@@ -3,7 +3,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
-import { AnalyticsDimensions } from '../../../DacastSdk/analytics';
+import { AnalyticsDimensions } from '../../redux-flow/store/Content/Analytics/types';
 
 export const ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export const HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
