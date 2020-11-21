@@ -18,8 +18,8 @@ export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTR
 
 export interface GetContentAnalyticsInput {
     id: string;
-    dimension: AnalyticsDimensionsEndpoint[];
-    time_range: TimeRangeAnalyticsEndpoint,
+    dimension: AnalyticsDimensions[];
+    time_range: TimeRangeAnalytics,
     type: 'live' | 'vod'
 }
 
