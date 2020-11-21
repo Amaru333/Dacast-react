@@ -1,11 +1,11 @@
-export type GetContentAnalyticsOutput = GetContentAnalyticsResultItemOutput[]
+export type GetContentAnalyticsOutput = GetContentAnalyticsResultItemOutput
 
 export interface GetContentAnalyticsResultItemOutput {
     results: GetContentAnalyticsOutputItem[]
 }
 
 export interface GetContentAnalyticsOutputItem {
-    dimension: AnalyticsDimensions;
+    data_dimension: AnalyticsDimensions;
     data: GetContentAnalyticsOutputDataItem[]
 }
 

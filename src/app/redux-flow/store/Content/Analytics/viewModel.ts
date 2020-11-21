@@ -76,7 +76,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
-            switch(metric.dimension) {
+            switch(metric.data_dimension) {
                 case "PLAYS_BY_TIME":
                     if(!metric.data.length) {
                         realTimeData.playsByTime = {data: [], labels: []}
@@ -142,15 +142,15 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     }
     const handleResultItem = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
-            if (metric.dimension.includes("PLAYS") || metric.dimension.includes("IMPRESSIONS")) {
+            if (metric.data_dimension.includes("PLAYS") || metric.data_dimension.includes("IMPRESSIONS")) {
                 if(!metric.data.length) {
-                    if(metric.dimension.includes("TIME")) {
+                    if(metric.data_dimension.includes("TIME")) {
                         audienceData.playsImpressionsByTime = { labels: [], plays: [], impressions: [], table: [] }
                     }
-                    if(metric.dimension.includes("DEVICE")) {
+                    if(metric.data_dimension.includes("DEVICE")) {
                         audienceData.playsImpressionsByDevice = { labels: [], plays: [], impressions: [], table: [] }
                     }
-                    if(metric.dimension.includes("COUNTRY")) {
+                    if(metric.data_dimension.includes("COUNTRY")) {
                         audienceData.playsImpressionsByLocation = { data: [], table: [] }
                     }
                 }
@@ -165,9 +165,9 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 audienceData.playsImpressionsByTime  = {plays: [].fill(0, 0, labels.length), impressions: [].fill(0, 0, labels.length), labels: labels, table: []}
                                 audienceData.playsImpressionsByTime = {
                                     labels: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.labels : []), ...(!audienceData.playsImpressionsByTime || audienceData.playsImpressionsByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
-                                    plays: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.plays : []), ...(metric.dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
-                                    impressions: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.impressions : []), ...(metric.dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
-                                    table: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.table : []), { plays: metric.dimension.includes("PLAYS") ? data.dimensionSum : null, impressions: metric.dimension.includes("IMPRESSIONS") ? data.dimensionSum : null, label: formateTimestampAnalytics(data.dimensionType.value) } ]
+                                    plays: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.plays : []), ...(metric.data_dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
+                                    impressions: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.impressions : []), ...(metric.data_dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
+                                    table: [...(audienceData.playsImpressionsByTime ? audienceData.playsImpressionsByTime.table : []), { plays: metric.data_dimension.includes("PLAYS") ? data.dimensionSum : null, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimensionSum : null, label: formateTimestampAnalytics(data.dimensionType.value) } ]
                                 }
                             }
                             break;
@@ -178,8 +178,8 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 audienceData.playsImpressionsByDevice  = {plays: [].fill(0, 0, labels.length), impressions: [].fill(0, 0, labels.length), labels: labels, table: []}
                                 audienceData.playsImpressionsByDevice = {
                                     labels: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.labels : []), ...(!audienceData.playsImpressionsByDevice || audienceData.playsImpressionsByDevice.labels.indexOf(data.dimensionType.value) < 0 ? [data.dimensionType.value] : [])],
-                                    plays: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.plays : []), ...(metric.dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
-                                    impressions: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.impressions : []), ...(metric.dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
+                                    plays: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.plays : []), ...(metric.data_dimension.includes("PLAYS") ? [data.dimensionSum] : [])],
+                                    impressions: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.impressions : []), ...(metric.data_dimension.includes("IMPRESSIONS") ? [data.dimensionSum] : [])],
                                     table: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.table : [])]
                                 }
                             }
@@ -207,15 +207,15 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     }
                 })
             }
-            if (metric.dimension.includes("WATCHTIME")) {
+            if (metric.data_dimension.includes("WATCHTIME")) {
                 if(!metric.data.length) {
-                    if(metric.dimension.includes("TIME")) {
+                    if(metric.data_dimension.includes("TIME")) {
                         watchData.watchByTime = { labels: [], data: [], table: [] }
                     }
-                    if(metric.dimension.includes("DEVICE")) {
+                    if(metric.data_dimension.includes("DEVICE")) {
                         watchData.watchByDevice = { labels: [], data: [], table: [] }
                     }
-                    if(metric.dimension.includes("COUNTRY")) {
+                    if(metric.data_dimension.includes("COUNTRY")) {
                         watchData.watchByLocation = { data: [], table: [] }
                     }
                 }
@@ -271,12 +271,12 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     }
                 })
             }
-            if (metric.dimension.includes("SALES") || metric.dimension.includes("REVENUES")) {
+            if (metric.data_dimension.includes("SALES") || metric.data_dimension.includes("REVENUES")) {
                 if(!metric.data.length) {
-                    if(metric.dimension.includes("TIME")) {
+                    if(metric.data_dimension.includes("TIME")) {
                         salesData.salesRevenuesByTime = { labels: [], sales: [], revenues: [], table: [] }
                     }
-                    if(metric.dimension.includes("COUNTRY")) {
+                    if(metric.data_dimension.includes("COUNTRY")) {
                         salesData.salesRevenuesByLocation = { data: [], table: [] }
                     }
                 }
@@ -291,8 +291,8 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 salesData.salesRevenuesByTime  = {sales: [].fill(0, 0, labels.length), revenues: [].fill(0, 0, labels.length), labels: labels, table: []}
                                 salesData.salesRevenuesByTime = {
                                     labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
-                                    sales: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.sales : []), ...(metric.dimension.includes("SALES")  ? [data.dimensionSum] : [])],
-                                    revenues: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.revenues : []), ...(metric.dimension.includes("REVENUES")  ? [data.dimensionSum] : [])],
+                                    sales: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.sales : []), ...(metric.data_dimension.includes("SALES")  ? [data.dimensionSum] : [])],
+                                    revenues: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.revenues : []), ...(metric.data_dimension.includes("REVENUES")  ? [data.dimensionSum] : [])],
                                     table: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : [])]
                                 }
                             }
@@ -324,16 +324,12 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
 
         }
         )
-    }
-
-    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {
-        response.forEach((element) => {
-            handleResultRealTime(element)
-        })
+    }   
+    console.log('response', response)
+    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {   
+        handleResultRealTime(response)
     } else {
-        response.forEach((element) => {
-            handleResultItem(element)
-        })
+        handleResultItem(response)
     }
  
 
