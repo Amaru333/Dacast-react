@@ -5,7 +5,7 @@ export interface GetContentAnalyticsResultItemOutput {
 }
 
 export interface GetContentAnalyticsOutputItem {
-    data_dimension: AnalyticsDimensionsEndpoint;
+    data_dimension: AnalyticsDimensions;
     data: GetContentAnalyticsOutputDataItem[]
 }
 

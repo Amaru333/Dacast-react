@@ -290,7 +290,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else {
                                 salesData.salesRevenuesByTime  = {sales: [].fill(0, 0, labels.length), revenues: [].fill(0, 0, labels.length), labels: labels, table: []}
                                 salesData.salesRevenuesByTime = {
-                                    labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimension_type.value as number)) < 0 ? [formateTimestampAnalytics(data.dimension_type.value as number)] : [])],
+                                    labels: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.labels : []), ...(!salesData.salesRevenuesByTime || salesData.salesRevenuesByTime.labels.indexOf(formateTimestampAnalytics(data.dimensionType.value)) < 0 ? [formateTimestampAnalytics(data.dimensionType.value)] : [])],
                                     sales: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.sales : []), ...(metric.data_dimension.includes("SALES")  ? [data.dimension_sum] : [])],
                                     revenues: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.revenues : []), ...(metric.data_dimension.includes("REVENUES")  ? [data.dimension_sum] : [])],
                                     table: [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : [])]
