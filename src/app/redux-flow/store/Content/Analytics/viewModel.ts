@@ -13,7 +13,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     var realTimeData: RealTimeAnalyticsState = {};
 
     const formateTimestampAnalytics = (value: number) => {
-        switch(data.time_range) {
+        switch(data.timeRange) {
             case 'YEAR_TO_DATE':
             case 'LAST_6_MONTHS':
             case 'LAST_MONTH':
@@ -72,7 +72,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         }
     }
 
-    let labels = labelsFormate(data.time_range);
+    let labels = labelsFormate(data.timeRange);
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
@@ -326,7 +326,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         )
     }   
     console.log('response', response)
-    if(data.time_range.includes('MINUTE') || data.time_range.includes('HOUR')) {   
+    if(data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {   
         handleResultRealTime(response)
     } else {
         handleResultItem(response)

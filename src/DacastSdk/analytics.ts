@@ -5,7 +5,7 @@ export interface GetContentAnalyticsResultItemOutput {
 }
 
 export interface GetContentAnalyticsOutputItem {
-    data_dimension: AnalyticsDimensions;
+    data_dimension: AnalyticsDimensionsEndpoint;
     data: GetContentAnalyticsOutputDataItem[]
 }
 
@@ -18,8 +18,8 @@ export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTR
 
 export interface GetContentAnalyticsInput {
     id: string;
-    dimension: AnalyticsDimensions[];
-    time_range: TimeRangeAnalytics,
+    dimension: AnalyticsDimensionsEndpoint[];
+    time_range: TimeRangeAnalyticsEndpoint,
     type: 'live' | 'vod'
 }
 
