@@ -10,8 +10,8 @@ export interface GetContentAnalyticsOutputItem {
 }
 
 export interface GetContentAnalyticsOutputDataItem {
-    dimensionSum : number;
-    dimensionType: { type: DimensionItemType; value: string | number; }
+    dimension_sum : number;
+    dimension_type: { type: DimensionItemType; value: string | number; }
 }
 
 export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTRY';
@@ -19,7 +19,7 @@ export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTR
 export interface GetContentAnalyticsInput {
     id: string;
     dimension: AnalyticsDimensions[];
-    timeRange: TimeRangeAnalytics,
+    time_range: TimeRangeAnalytics,
     type: 'live' | 'vod'
 }
 
