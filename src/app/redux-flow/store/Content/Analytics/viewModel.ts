@@ -152,7 +152,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         realTimeData.playsByTime = { data: Array(labels.length).fill(0, 0, labels.length), labels: labels }
 
                         metric.data.forEach(data => {
-                            let label = formateTimestampAnalytics(parseInt(metric.dimension_type.value));
+                            let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
                             let indexLabel = labels.indexOf(label);
                             realTimeData.playsByTime.data[indexLabel] = data.dimension_sum;
                         })
