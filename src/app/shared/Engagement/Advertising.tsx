@@ -16,7 +16,7 @@ import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
 
-export const EngagementAdvertising = (props: {stateEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[]) => Promise<void>, handleSectionRevert?: (section: string) => void, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
+export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[]) => Promise<void>, handleSectionRevert?: (section: string) => void, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
 
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -60,7 +60,7 @@ export const EngagementAdvertising = (props: {stateEngagementSettings: Engagemen
     }
 
     const advertisingTableHeader = () => {
-        if (props.stateEngagementSettings.adsSettings.ads.length > 0) {
+        if (props.globalEngagementSettings.adsSettings.ads.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -87,7 +87,7 @@ export const EngagementAdvertising = (props: {stateEngagementSettings: Engagemen
     }
 
     const advertisingTableBody = () => {
-        return props.stateEngagementSettings.adsSettings.ads.map((item, i) => {
+        return props.globalEngagementSettings.adsSettings.ads.map((item, i) => {
             return {
                 data: [
                     <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item["ad-type"])}</Text>,
@@ -97,7 +97,7 @@ export const EngagementAdvertising = (props: {stateEngagementSettings: Engagemen
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
-                            <IconStyle id={'adTableCopy' + i} onClick={() => props.deleteAd(props.stateEngagementSettings.adsSettings.ads.filter(ad => ad !== item))} >delete</IconStyle>
+                            <IconStyle id={'adTableCopy' + i} onClick={() => props.deleteAd(props.globalEngagementSettings.adsSettings.ads.filter(ad => ad !== item))} >delete</IconStyle>
                             <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>
@@ -122,8 +122,8 @@ export const EngagementAdvertising = (props: {stateEngagementSettings: Engagemen
                         </IconStyle>
                         <Tooltip target="unlockAdSectionTooltip">{!props.localEngagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                     </Header>
-                    <DisabledSection settingsEditable={props.stateEngagementSettings.adsSettings.ads.length > 0}>
-                        <Toggle id='advertisingEnabled' defaultChecked={props.stateEngagementSettings.adsSettings.adsEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, adsEnabled: !props.localEngagementSettings.adsSettings.adsEnabled }}); props.setSettingsEdited(true) }} label='Advertising enabled' />
+                    <DisabledSection settingsEditable={props.globalEngagementSettings.adsSettings.ads.length > 0}>
+                        <Toggle id='advertisingEnabled' defaultChecked={props.globalEngagementSettings.adsSettings.adsEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, adsEnabled: !props.localEngagementSettings.adsSettings.adsEnabled }}); props.setSettingsEdited(true) }} label='Advertising enabled' />
                     </DisabledSection>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overridden individually. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex mb2'>
@@ -133,7 +133,7 @@ export const EngagementAdvertising = (props: {stateEngagementSettings: Engagemen
                     <div className="clearfix mb2">
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
                     </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.stateEngagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.globalEngagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
                 </Card>
                 <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
