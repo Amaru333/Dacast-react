@@ -12,6 +12,7 @@ import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
 import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
+import moment from 'moment';
 
 export interface ContentAnalyticsProps {
     contentId: string,
@@ -24,7 +25,7 @@ export type ContentAnalyticsTypes = 'live' | 'vod';
 
 export type ContentAnalyticsDropdownValues = 'audience' | 'watch-duration' | 'sales' | 'engagement' | 'real-time';
 
-const TabsDimensionLink: { [key: string] : AnalyticsDimensions[] } = {
+const TabsDimensionLink: { [key: string]: AnalyticsDimensions[] } = {
     'audience': AudienceDimension,
     'watch-duration': WatchDurationDimension,
     'sales': SalesDimension,
@@ -36,17 +37,24 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [timeRangePick, setTimeRangePick] = React.useState<TimeRangeAnalytics>('LAST_WEEK')
     const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_15_MINUTES')
+    const [customTimeRange, setCustomTimeRange] = React.useState<{ start: number; end: number }>({ start: moment().valueOf(), end: moment().subtract(1, 'week').valueOf() })
+    const [loading, setLoading] = React.useState<boolean>(false)
 
-    
+
     React.useEffect(() => {
-        props.getContentAnalytics({ 
+        setLoading(true)
+        props.getContentAnalytics({
             id: props.contentId,
             dimension: TabsDimensionLink[currentTab],
             timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick,
-            type: props.contentType
+            type: props.contentType,
+            start: timeRangePick === 'CUSTOM' ? customTimeRange.start : undefined,
+            end: timeRangePick === 'CUSTOM' ? customTimeRange.end : undefined,
+        }).then(() => {
+            setLoading(false)
         })
     }, [currentTab, timeRangePick, realTimeRangePick])
-    
+
     const handleExtraSettings = () => {
         switch (currentTab) {
             case 'audience':
@@ -57,8 +65,8 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     <DateFilteringAnalytics
                         selectedPreset={timeRangePick}
                         className='col col-9'
-                        defaultDates={{ start: 0, end: 0 }}
-                        callback={(info) => setTimeRangePick(info.value)}
+                        defaultDates={{ start: customTimeRange.start, end: customTimeRange.end }}
+                        callback={(info) => { info.value ? setTimeRangePick(info.value) : (setTimeRangePick('CUSTOM'), setCustomTimeRange({ start: info.startDate, end: info.endDate })) }}
                     />
                 )
             case 'real-time':
@@ -71,26 +79,25 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 break;
         }
     }
-    
+
     const handleAnalyticsType = () => {
         switch (currentTab) {
             case 'audience':
-                return props.contentAnalyticsData.audience ? 
+                return props.contentAnalyticsData.audience ?
                     <AudienceAnalytics data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'watch-duration':
-                return  props.contentAnalyticsData.watch &&  Object.keys(props.contentAnalyticsData.watch).length !== 0 ? 
+                return props.contentAnalyticsData.watch && Object.keys(props.contentAnalyticsData.watch).length !== 0 ?
                     <WatchDurationAnalytics data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'sales':
-                    return  props.contentAnalyticsData.sales ? 
+                return props.contentAnalyticsData.sales ?
                     <SalesAnalytics data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'engagement':
                 return (
-                    <EngagementAnalytics  />
+                    <EngagementAnalytics />
                 )
             case 'real-time':
-                return (
-                    <RealTimeAnalytics data={props.contentAnalyticsData.realtime} />
-                )
+                return props.contentAnalyticsData.realtime ?
+                    <RealTimeAnalytics data={props.contentAnalyticsData.realtime} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             default:
                 break;
         }
@@ -103,6 +110,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         // { title: "Engagement", data: "engagement" },
         ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
+
 
     return (
         <React.Fragment>
@@ -118,9 +126,13 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 />
                 {handleExtraSettings()}
             </div>
-            <div>
-                {handleAnalyticsType()}
-            </div>
+            {
+                loading ? <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer> :
+                    <div>
+                        {handleAnalyticsType()}
+                    </div>
+            }
+
         </React.Fragment>
 
     )

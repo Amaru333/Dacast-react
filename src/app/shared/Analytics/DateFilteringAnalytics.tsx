@@ -1,7 +1,9 @@
 import React from 'react'
 import { Button } from '../../../components/FormsComponents/Button/Button'
+import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
+import moment from 'moment';
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
@@ -26,12 +28,20 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             buttonColor='blue'
                             sizeButton='small'
                             focusState={props.selectedPreset === value}
-                            onClick={() => { callback({ value })  } }
+                            onClick={() => { callback({ value: value, end: props.defaultDates.end, start: props.defaultDates.start })  } }
                         >
                             {text}
                         </Button>
                     );
                 })}
+                { props.selectedPreset === "CUSTOM" &&  
+                    <div className="col col-12 mt2 clearfix">
+                        <DateRangePickerWrapper 
+                            dates={{ startDate: moment(props.defaultDates.start), endDate: moment(props.defaultDates.end) }} 
+                            callback={(dates) => { console.log("trigger"); callback({ startDate: dates.startDate, endDate: dates.endDate }) }} 
+                            className="inline" />
+                    </div> 
+                }
             </div>
         )
             : null;

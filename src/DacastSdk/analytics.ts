@@ -14,16 +14,18 @@ export interface GetContentAnalyticsOutputDataItem {
     dimension_type: { type: DimensionItemType; value: string | number; }
 }
 
-export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTRY';
+export type DimensionItemType = 'HOURLY' | 'DAY' | 'MONTH' | 'DEVICE' | 'COUNTRY' | '5_MINUTES';
 
 export interface GetContentAnalyticsInput {
     id: string;
     dimension: AnalyticsDimensionsEndpoint[];
     time_range: TimeRangeAnalyticsEndpoint,
-    type: 'live' | 'vod'
+    type: 'live' | 'vod',
+    start?: number,
+    end?: number
 }
 
-export type TimeRangeAnalyticsEndpoint = 'LAST_DAY' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' | RealTimeRangeEndpoint
+export type TimeRangeAnalyticsEndpoint = 'LAST_DAY' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' |  'CUSTOM' | RealTimeRangeEndpoint
 
 
 export type RealTimeRangeEndpoint = 'LAST_5_MINUTES' | 'LAST_15_MINUTES' | 'LAST_30_MINUTES' | 'LAST_45_MINUTES' | 'LAST_HOUR' | 'LAST_90_MINUTES' | 'LAST_2_HOURS';

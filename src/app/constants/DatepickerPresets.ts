@@ -35,5 +35,11 @@ export const presets = [
     start: moment().date(1).month(0).year(thisYear),
     end: today,
     value: 'YEAR_TO_DATE'
+},
+{
+    text: 'Custom',
+    start: moment().date(1).month(0).year(thisYear),
+    end: today,
+    value: 'CUSTOM'
 }
 ]

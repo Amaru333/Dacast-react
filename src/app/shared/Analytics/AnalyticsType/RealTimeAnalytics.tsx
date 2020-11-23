@@ -28,9 +28,9 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                 >
                     <LineChart
                         title="Concurrent Viewers"
-                        options={{ fill: false, curve: 0, isTime: true }}
-                        lines={[]}
-                        labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000]} />
+                        options={{ fill: false, curve: 0 }}
+                        lines={[{ data: props.data.viewersByTime.data, label: "Viewers", color: ThemeAnalyticsColors.blue }]}
+                        labels={props.data.viewersByTime.labels} />
 
                 </AnalyticsCard>
             </div>
@@ -40,9 +40,9 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                 >
                     <LineChart
                         title="Plays"
-                        options={{ fill: false, curve: 0, isTime: true }}
-                        lines={[{ data: [13, 22, 32, 43, 91, 59], label: "Plays", color: ThemeAnalyticsColors.yellow }]}
-                        labels={[1603869329000, 1603872929000, 1603876529000, 1603880129000, 1603887352000, 1603890929000]} />
+                        options={{ fill: false, curve: 0 }}
+                        lines={[{ data: props.data.playsByTime.data, label: "Plays", color: ThemeAnalyticsColors.blue }]}
+                        labels={props.data.playsByTime.labels} />
 
                 </AnalyticsCard>
             </div>
@@ -55,8 +55,8 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                     <BarChart
                         type="vertical"
                         title="Watch Duration by device"
-                        dataSets={[{ data: [26, 12, 9, 12, 14, 24], label: "Plays", color: ThemeAnalyticsColors.blue }]}
-                        labels={["Firefox on Windows", "Chrome on Mac", "Safari on Mac", "Opera on Windows", "Chrome on Linux", "Edge on Windows"]} />
+                        dataSets={[{ data: props.data.watchByDevice.data, label: "Plays", color: ThemeAnalyticsColors.blue }]}
+                        labels={props.data.watchByDevice.labels} />
                 </AnalyticsCard>
             </div>
             <div className={HalfSmFullXs}>
@@ -65,12 +65,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                     title="Plays by Location"
                 >
                     <LeafletMap
-                        markers={[
-                            { city: 'New York City', position: { latitude: 40.7808, longitude: -73.9772 }, value: 9392 },
-                            { city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167 }, value: 7602 },
-                            { city: 'San Francisco', position: { latitude: 37.6216, longitude: -122.3929 }, value: 12349 },
-                            { city: 'Londres', position: { latitude: 51.5073509, longitude: -0.1277583 }, value: 5402 }
-                        ]}
+                        markers={props.data.playsByLocation.data}
                         markerNameTranform={(element) => element.city + ": " + element.value + " Plays"} />
                 </AnalyticsCard>
             </div>
