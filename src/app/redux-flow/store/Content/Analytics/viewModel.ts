@@ -229,17 +229,20 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         case 'MONTH':
                         case 'DAY':
                             if (!audienceData || !audienceData.playsImpressionsByTime) {
-                                audienceData.playsImpressionsByTime = { plays: Array(labels.length).fill(0, 0, labels.length), impressions: Array(labels.length).fill(0, 0, labels.length), labels: labels, table: [] }
+                                audienceData.playsImpressionsByTime = { plays: Array(labels.length).fill(0, 0, labels.length), impressions: Array(labels.length).fill(0, 0, labels.length), labels: labels, table: labels.map(label => { return { label: label, plays: 0, impressions: 0 } }) }
                             }
                             let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
                             let indexLabel = labels.indexOf(label);
 
                             if (metric.data_dimension.includes("PLAYS")) {
                                 audienceData.playsImpressionsByTime.plays[indexLabel] = data.dimension_sum;
+                                let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                                audienceData.playsImpressionsByTime.table[index].plays = data.dimension_sum;
                             } else if (metric.data_dimension.includes("IMPRESSIONS")) {
                                 audienceData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
+                                let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                                audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum;
                             }
-                            audienceData.playsImpressionsByTime.table = [...(audienceData.playsImpressionsByTime.table), { plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : null, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : null, label: label }]
 
                             break;
                         case 'DEVICE':
@@ -250,7 +253,18 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 labels: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.labels : []), ...(!audienceData.playsImpressionsByDevice || audienceData.playsImpressionsByDevice.labels.indexOf(data.dimension_type.value.toString()) < 0 ? [data.dimension_type.value.toString()] : [])],
                                 plays: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.plays : []), ...(metric.data_dimension.includes("PLAYS") ? [data.dimension_sum] : [])],
                                 impressions: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.impressions : []), ...(metric.data_dimension.includes("IMPRESSIONS") ? [data.dimension_sum] : [])],
-                                table: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.table : []), { plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : null, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : null, label: data.dimension_type.value.toString() }]
+                                table: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.table : [])]
+                            }
+                            var index = audienceData.playsImpressionsByDevice.table.findIndex(obj => obj.label === data.dimension_type.value.toString() );
+                            console.log(index);
+                            if(index > -1) {
+                                if(metric.data_dimension.includes("PLAYS")) {
+                                    audienceData.playsImpressionsByDevice.table[index].plays = data.dimension_sum;
+                                } else {
+                                    audienceData.playsImpressionsByDevice.table[index].impressions = data.dimension_sum;
+                                }
+                            } else {
+                                audienceData.playsImpressionsByDevice.table.push( {label: data.dimension_type.value.toString(), plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : 0, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : 0} )
                             }
                             break;
                         case 'COUNTRY':
@@ -268,7 +282,17 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                         },
                                         value: data.dimension_sum
                                     }],
-                                    table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : []), { plays: data.dimension_sum, label: assosiatedCountry["\"Country\""] }]
+                                    table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : [])]
+                                }
+                                var index = audienceData.playsImpressionsByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""] );
+                                if(index > -1) {
+                                    if(metric.data_dimension.includes("PLAYS")) {
+                                        audienceData.playsImpressionsByLocation.table[index].plays = data.dimension_sum;
+                                    } else {
+                                        audienceData.playsImpressionsByLocation.table[index].impressions = data.dimension_sum;
+                                    }
+                                } else {
+                                    audienceData.playsImpressionsByLocation.table.push( {label: assosiatedCountry["\"Country\""], plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : 0, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : 0} )
                                 }
                             }
                             break;

@@ -26,7 +26,7 @@ export interface AudienceAnalyticsState {
     };
     playsImpressionsByLocation: {
         data: LocationItem[];
-        table: {plays: number; label: string}[];
+        table: {plays: number; impressions: number; label: string}[];
     },
     error?: boolean
 }
