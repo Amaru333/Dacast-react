@@ -8,7 +8,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups/types';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
+import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 var moment = require('moment-timezone');
 
@@ -126,12 +126,10 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
                         dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
                         className='col col-6 pr2' 
                         dropdownTitle='Timezone' 
-                        callback={(value: DropdownSingleListItem) => setGroupPromo({...groupPromo, timezone: value.data })} 
-                        list={moment.tz.names().map((item: string) => {return { title:  (item + ' (' + moment.tz(item).format('Z z') + ')'), value: item.split(' ')[0] } } )} 
+                        callback={(value: DropdownSingleListItem) => { console.log(value.title.split(' ')[0]); setGroupPromo({...groupPromo, timezone: value.title.split(' ')[0] }) } } 
+                        list={timezoneDropdownList} 
                     />
                 }
-
-
                 <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, discountApplied: item.title})} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 py2'>
