@@ -53,9 +53,9 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
                 showTable={true}
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.playsImpressionsByTime.table, header: HeaderAudienceTime} },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.playsImpressionsByDevice.table, header: HeaderAudienceDevice} },
-                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.playsImpressionsByLocation.table, header: HeaderAudienceLocation } },
+                        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.playsImpressionsByTime.table, header: HeaderAudienceTime} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.playsImpressionsByDevice.table, header: HeaderAudienceDevice} },
+                        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.playsImpressionsByLocation.table, header: HeaderAudienceLocation } },
                     }
                 }
             />

@@ -101,7 +101,7 @@ export interface ContentAnalyticsParameters {
     end?: number
 }
 
-export type TimeRangeAnalytics = 'LAST_DAY' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' | 'CUSTOM' | RealTimeRange
+export type TimeRangeAnalytics = 'LAST_24_HOURS' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' | 'CUSTOM' | RealTimeRange
 
 
 export type RealTimeRange = 'LAST_5_MINUTES' | 'LAST_15_MINUTES' | 'LAST_30_MINUTES' | 'LAST_45_MINUTES' | 'LAST_HOUR' | 'LAST_90_MINUTES' | 'LAST_2_HOURS';

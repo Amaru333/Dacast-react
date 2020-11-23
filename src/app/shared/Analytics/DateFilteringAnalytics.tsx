@@ -4,6 +4,8 @@ import { DateRangePickerWrapper } from '../../../components/FormsComponents/Date
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 import moment from 'moment';
+import { DateRangePicker } from 'react-dates';
+import Icon from '@material-ui/core/Icon';
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
@@ -15,6 +17,7 @@ interface DateFilteringAnalyticsProps {
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & DateFilteringAnalyticsProps) => {
 
     var { showPreset, callback, defaultDates, ...other } = props;
+    const [focusedInput, setFocusedInput] = React.useState<any>(null)
 
     const renderDatePresets = () => {
         return showPreset ? (
@@ -28,7 +31,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             buttonColor='blue'
                             sizeButton='small'
                             focusState={props.selectedPreset === value}
-                            onClick={() => { callback({ value: value, end: props.defaultDates.end, start: props.defaultDates.start })  } }
+                            onClick={() => { callback({ value: value, endDate: props.defaultDates.end, startDate: props.defaultDates.start })  } }
                         >
                             {text}
                         </Button>
@@ -36,10 +39,27 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                 })}
                 { props.selectedPreset === "CUSTOM" &&  
                     <div className="col col-12 mt2 clearfix">
-                        <DateRangePickerWrapper 
-                            dates={{ startDate: moment(props.defaultDates.start), endDate: moment(props.defaultDates.end) }} 
-                            callback={(dates) => { callback({ startDate: dates.startDate.valueOf(), endDate: dates.endDate.valueOf() }) }} 
-                            className="inline" />
+                        <div className='noTransition inline' >
+                            <DateRangePicker 
+                                isOutsideRange={() => false} 
+                                isDayHighlighted= {() => false}
+                                navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
+                                navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
+                                showDefaultInputIcon={false}
+                                showClearDates
+                                inputIconPosition='after'
+                                startDatePlaceholderText='Select date'
+                                endDatePlaceholderText='Select date'
+                                horizontalMargin={8}             
+                                startDate={moment(props.defaultDates.start)} // momentPropTypes.momentObj or null,
+                                startDateId="dateFiletringAnalyticsStart" // PropTypes.string.isRequired,
+                                endDate={moment(props.defaultDates.end)} // momentPropTypes.momentObj or null,
+                                endDateId="dateFiletringAnalyticsEnd" // PropTypes.string.isRequired,
+                                onDatesChange={({ startDate, endDate }) => callback({ value: "CUSTOM", startDate: startDate.valueOf(), endDate: endDate.valueOf() }) } // PropTypes.func.isRequired,
+                                focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                                onFocusChange={(focusedInput) => {setFocusedInput(focusedInput)}} // PropTypes.func.isRequired,
+                            />
+                        </div>
                     </div> 
                 }
             </div>

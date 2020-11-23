@@ -10,7 +10,7 @@ export const presets = [
     text: 'Yesterday',
     start: moment().subtract(1, 'day').startOf('day'),
     end: moment().subtract(1, 'day').endOf('day'),
-    value: 'LAST_DAY'
+    value: 'LAST_24_HOURS'
 },
 {
     text: 'Last 7 days',
