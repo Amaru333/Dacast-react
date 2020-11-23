@@ -13,18 +13,11 @@ export interface RealTimeAnalyticsProps {
 
 export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
 
-
-
-    React.useEffect(() => {
-
-    }, [])
-
     return (
         <div className="clearfix mxn2">
             <div className={HalfSmFullXs}>
                 <AnalyticsCard
                     title="Concurrent Viewers"
-
                 >
                     <LineChart
                         title="Concurrent Viewers"
