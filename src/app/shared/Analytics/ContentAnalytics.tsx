@@ -40,19 +40,26 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const [customTimeRange, setCustomTimeRange] = React.useState<{ start: number; end: number }>({ start: moment().valueOf(), end: moment().subtract(1, 'week').valueOf() })
     const [loading, setLoading] = React.useState<boolean>(false)
 
+    const loaded = React.useRef(false);
+
 
     React.useEffect(() => {
-        setLoading(true)
-        props.getContentAnalytics({
-            id: props.contentId,
-            dimension: TabsDimensionLink[currentTab],
-            timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick,
-            type: props.contentType,
-            start: timeRangePick === 'CUSTOM' ? customTimeRange.start : undefined,
-            end: timeRangePick === 'CUSTOM' ? customTimeRange.end : undefined,
-        }).then(() => {
-            setLoading(false)
-        })
+        if(loaded) {
+            setLoading(true)
+            props.getContentAnalytics({
+                id: props.contentId,
+                dimension: TabsDimensionLink[currentTab],
+                timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick,
+                type: props.contentType,
+                start: timeRangePick === 'CUSTOM' ? customTimeRange.start : undefined,
+                end: timeRangePick === 'CUSTOM' ? customTimeRange.end : undefined,
+            }).then(() => {
+                setLoading(false)
+            })
+        } else {
+            loaded.current = true;
+        }
+        
     }, [currentTab, timeRangePick, realTimeRangePick])
 
     const handleExtraSettings = () => {
@@ -122,7 +129,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     list={contentAnalyticsDropdownItems}
                     dropdownTitle=""
                     dropdownDefaultSelect={"Audience"}
-                    callback={(item: DropdownSingleListItem) => setCurrentTab(item.data)}
+                    callback={(item: DropdownSingleListItem) => { setCurrentTab(item.data) }}
                 />
                 {handleExtraSettings()}
             </div>
