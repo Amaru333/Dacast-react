@@ -256,7 +256,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 table: [...(audienceData.playsImpressionsByDevice ? audienceData.playsImpressionsByDevice.table : [])]
                             }
                             var index = audienceData.playsImpressionsByDevice.table.findIndex(obj => obj.label === data.dimension_type.value.toString() );
-                            console.log(index);
                             if(index > -1) {
                                 if(metric.data_dimension.includes("PLAYS")) {
                                     audienceData.playsImpressionsByDevice.table[index].plays = data.dimension_sum;
