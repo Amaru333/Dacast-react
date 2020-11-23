@@ -159,7 +159,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         })
                     }
                     break;
-                case "IMPRESSIONS_BY_TIME":
+                case "VIEWERS_BY_TIME":
                     if (!metric.data.length) {
                         realTimeData.viewersByTime = { data: [], labels: [] }
                     } else {
