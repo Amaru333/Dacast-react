@@ -69,6 +69,11 @@ export const LineChart = (props: LineChartProps) => {
                 duration: 0
             },
             scales: {
+                xAxes: [{
+                    ticks: {
+                        maxTicksLimit: 10
+                    }
+                }],
                 ...( props.options.isTime && {
                         xAxes: [{
                             type: 'time',
