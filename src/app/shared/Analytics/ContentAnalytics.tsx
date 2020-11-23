@@ -35,24 +35,24 @@ const TabsDimensionLink: { [key: string]: AnalyticsDimensions[] } = {
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
-    const [timeRangePick, setTimeRangePick] = React.useState<TimeRangeAnalytics>('LAST_WEEK')
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: moment().valueOf(), start: moment().subtract(1, 'week').valueOf() } } )
     const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_15_MINUTES')
-    const [customTimeRange, setCustomTimeRange] = React.useState<{ start: number; end: number }>({ start: moment().valueOf(), end: moment().subtract(1, 'week').valueOf() })
+
     const [loading, setLoading] = React.useState<boolean>(false)
 
     const loaded = React.useRef(false);
 
 
     React.useEffect(() => {
-        if(loaded) {
+        if(loaded.current) {
             setLoading(true)
             props.getContentAnalytics({
                 id: props.contentId,
                 dimension: TabsDimensionLink[currentTab],
-                timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick,
+                timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick.timeRange,
                 type: props.contentType,
-                start: timeRangePick === 'CUSTOM' ? customTimeRange.start : undefined,
-                end: timeRangePick === 'CUSTOM' ? customTimeRange.end : undefined,
+                start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
+                end: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.end : undefined,
             }).then(() => {
                 setLoading(false)
             })
@@ -70,10 +70,10 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
             case 'engagement':
                 return (
                     <DateFilteringAnalytics
-                        selectedPreset={timeRangePick}
+                        selectedPreset={timeRangePick.timeRange}
                         className='col col-9'
-                        defaultDates={{ start: customTimeRange.start, end: customTimeRange.end }}
-                        callback={(info) => { info.value ? setTimeRangePick(info.value) : (setTimeRangePick('CUSTOM'), setCustomTimeRange({ start: info.startDate, end: info.endDate })) }}
+                        defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
+                        callback={(info) => { setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) } }
                     />
                 )
             case 'real-time':

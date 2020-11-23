@@ -19,28 +19,6 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
         callback ? callback(dates) : null;
     }, [dates])
 
-    const renderDatePresets = () => {    
-        return props.presets ?(
-            <div>
-                {props.presets.map(({ text, start, end }) => {
-                    return (
-                        <Button
-                            key={text}
-                            className='ml1 mb2'
-                            typeButton='secondary'
-                            buttonColor='blue'
-                            sizeButton='small'
-                            onClick={() => setDates({ startDate: start, endDate: end })}
-                        >
-                            {text}
-                        </Button>
-                    );
-                })}
-            </div>
-        )
-            : null;
-    }
-
     return (
         <div className='noTransition' {...other}>
             <DateRangePicker 
@@ -51,7 +29,6 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}
                 showClearDates
-                renderCalendarInfo={() => renderDatePresets()}
                 orientation={mobile ? 'vertical' : 'horizontal'}
                 withFullScreenPortal={mobile}
                 inputIconPosition='after'

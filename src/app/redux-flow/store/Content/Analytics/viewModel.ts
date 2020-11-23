@@ -18,8 +18,9 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_6_MONTHS':
             case 'LAST_MONTH':
             case 'LAST_WEEK':
+            case 'CUSTOM':
                 return tsToLocaleDate(value);
-            case 'LAST_DAY':
+            case 'LAST_24_HOURS':
             case 'LAST_15_MINUTES':
             case 'LAST_30_MINUTES':
             case 'LAST_45_MINUTES':
@@ -103,7 +104,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 var stopDate = new Date();
                 var current =  dateAdd(stopDate, 'day', -7);
                 return getLabels(current, stopDate, 'DAY')
-            case 'LAST_DAY':
+            case 'LAST_24_HOURS':
                 var stopDate = new Date();
                 var current =  dateAdd(stopDate, 'day', -1);
                 return getLabels(current, stopDate, 'HOURLY')
@@ -241,7 +242,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("IMPRESSIONS")) {
                                 audienceData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                                 let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
-
                                 audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum;
                             }
 
@@ -317,12 +317,14 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         case 'MONTH':
                         case 'DAY':
                             if (!watchData || !watchData.watchByTime) {
-                                watchData.watchByTime = { labels: labels, data: Array(labels.length).fill(0, 0, labels.length), table: [] }
+                                watchData.watchByTime = { labels: labels, data: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, data: 0 } }) }
                             }
                             let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
                             let indexLabel = labels.indexOf(label);
                             watchData.watchByTime.data[indexLabel] = data.dimension_sum;
-                            watchData.watchByTime.table = [...(watchData.watchByTime.table), { data: data.dimension_sum, label: label }]
+
+                            let index = watchData.watchByTime.table.findIndex(obj => obj.label === label);
+                            watchData.watchByTime.table[index].data = data.dimension_sum;
 
                             break;
                         case 'DEVICE':
@@ -332,7 +334,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             watchData.watchByDevice = {
                                 labels: [...(watchData.watchByDevice ? watchData.watchByDevice.labels : []), data.dimension_type.value.toString()],
                                 data: [...(watchData.watchByDevice ? watchData.watchByDevice.data : []), data.dimension_sum],
-                                table: [...(watchData.watchByDevice ? watchData.watchByDevice.table : []), { data: data.dimension_sum, label: data.dimension_type.value.toString() }]
+                                table: [...(watchData.watchByDevice ? watchData.watchByDevice.table : []), { label: data.dimension_type.value.toString(), data: data.dimension_sum,  }]
                             }
                             break;
                         case 'COUNTRY':
@@ -411,7 +413,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         )
     }
 
-    if (data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) {
+    if ( (data.timeRange.includes('MINUTE') || data.timeRange.includes('HOUR')) &&  data.timeRange !== 'LAST_24_HOURS' ) {
         handleResultRealTime(response)
     } else {
         handleResultItem(response)
@@ -436,8 +438,8 @@ export const formatGetContentAnalyticsInput = (data: ContentAnalyticsParameters)
         dimension: data.dimension,
         time_range: data.timeRange,
         type: data.type,
-        start: data.start,
-        end: data.end
+        start: data.start ? Math.floor(data.start / 1000) : undefined,
+        end: data.end ? Math.floor(data.end / 1000) : undefined
     }
     return formattedData
 }

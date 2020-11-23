@@ -45,15 +45,10 @@ export const BarChart = (props: BarChartProps) => {
                 text: props.title
             },
             plugins: {
-                crosshair: {
-                    zoom: {
-                        enabled: false,
-                    }
-                }
+                crosshair: false
             },
             tooltips: {
-                mode: "interpolate",
-                intersect: false,
+                mode: "nearest",
                 ...(props.unit && {
                     callbacks: {
                         label: (tooltipItems, data) => {
