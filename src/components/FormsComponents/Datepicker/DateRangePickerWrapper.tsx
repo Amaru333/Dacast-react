@@ -7,7 +7,7 @@ import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: any} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: {startDate: any; endDate: any}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
     
     const {presets, callback,  ...other} = props;
 
@@ -18,12 +18,6 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
     React.useEffect(() => {
         callback ? callback(dates) : null;
     }, [dates])
-
-    React.useEffect(() => {
-        if(props.dates) {
-            setDates(props.dates)
-        }
-    }, [props.dates])
 
     const renderDatePresets = () => {    
         return props.presets ?(
