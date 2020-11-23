@@ -38,7 +38,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                     <div className="col col-12 mt2 clearfix">
                         <DateRangePickerWrapper 
                             dates={{ startDate: moment(props.defaultDates.start), endDate: moment(props.defaultDates.end) }} 
-                            callback={(dates) => { console.log("trigger"); callback({ startDate: dates.startDate, endDate: dates.endDate }) }} 
+                            callback={(dates) => { callback({ startDate: dates.startDate.valueOf(), endDate: dates.endDate.valueOf() }) }} 
                             className="inline" />
                     </div> 
                 }
