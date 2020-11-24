@@ -16,17 +16,17 @@ const LiveAnalytics = (props: { getContentAnalytics: (options: ContentAnalyticsP
 
     let { liveId } = useParams<{liveId: string}>()
 
-    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [isFetching, setIsFetching] = React.useState<boolean>(false)
 
     
     React.useEffect(() => {
-        if(Object.keys(props.contentAnalyticsData).length === 0 && props.contentAnalyticsData.constructor === Object) {
+        if(!isFetching && (!props.contentAnalyticsData.live || !props.contentAnalyticsData.live[liveId]) ) {
             setIsFetching(true);
             props.getContentAnalytics({ id: liveId, timeRange: 'LAST_WEEK', type: "live", dimension: AudienceDimension }).then(() => setIsFetching(false))
         }
     }, [])
 
-    return !isFetching || (props.contentAnalyticsData.live && props.contentAnalyticsData.live[liveId]) ?
+    return !isFetching && (props.contentAnalyticsData.live && props.contentAnalyticsData.live[liveId]) ?
         <div className='flex flex-column'>
             <LiveTabs liveId={liveId} />
             <ContentAnalytics {...props} contentAnalyticsData={props.contentAnalyticsData.live[liveId]} contentType="live" contentId={liveId} />
