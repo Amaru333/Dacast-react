@@ -90,12 +90,14 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         switch (dimension) {
             case 'YEAR_TO_DATE':
                 var stopDate = new Date();
-                var current =  dateAdd(stopDate, 'year', -1);
+                var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
+                var current =  dateAdd(firstDay, 'year', -1);
                 return getLabels(current, stopDate, 'MONTH')
             case 'LAST_6_MONTHS':
                 var stopDate = new Date();
-                var current =  dateAdd(stopDate, 'month', -6);
-                return getLabels(current, stopDate, 'MONTH')
+                var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
+                var current =  dateAdd(firstDay, 'month', -6);
+                return getLabels(current, firstDay, 'MONTH')
             case 'LAST_MONTH':
                 var stopDate = new Date();
                 var current =  dateAdd(stopDate, 'month', -1);
