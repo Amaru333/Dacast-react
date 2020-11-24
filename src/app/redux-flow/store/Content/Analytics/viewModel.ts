@@ -106,10 +106,12 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return getLabels(current, stopDate, 'DAY')
             case 'LAST_24_HOURS':
                 var stopDate = new Date();
+                stopDate.setDate(stopDate.setHours( stopDate.getHours(), 0, 0 ) )
                 var current =  dateAdd(stopDate, 'day', -1);
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_2_HOURS':
                 var stopDate = new Date();
+                stopDate.setDate(stopDate.setHours( stopDate.getHours(), 0, 0 ) )
                 var current =  dateAdd(stopDate, 'hour', -2);
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_15_MINUTES':
@@ -238,11 +240,11 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             if (metric.data_dimension.includes("PLAYS")) {
                                 audienceData.playsImpressionsByTime.plays[indexLabel] = data.dimension_sum;
                                 let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
-                                audienceData.playsImpressionsByTime.table[index].plays = data.dimension_sum;
+                                audienceData.playsImpressionsByTime.table[index] ? audienceData.playsImpressionsByTime.table[index].plays = data.dimension_sum : null;
                             } else if (metric.data_dimension.includes("IMPRESSIONS")) {
                                 audienceData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                                 let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
-                                audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum;
+                                audienceData.playsImpressionsByTime.table[index] ? audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum : null;
                             }
 
                             break;
@@ -324,7 +326,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             watchData.watchByTime.data[indexLabel] = data.dimension_sum;
 
                             let index = watchData.watchByTime.table.findIndex(obj => obj.label === label);
-                            watchData.watchByTime.table[index].data = data.dimension_sum;
+                            watchData.watchByTime.table[index] ? watchData.watchByTime.table[index].data = data.dimension_sum : null;
 
                             break;
                         case 'DEVICE':
