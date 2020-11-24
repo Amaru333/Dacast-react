@@ -377,7 +377,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
                             let indexLabel = labels.indexOf(label);
 
-                            if (!salesData || !salesData.salesRevenuesByTime) {
+                            if (!salesData || !salesData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !salesData.salesRevenuesByTime.sales.length ) || ( metric.data_dimension.includes("REVENUES") && !salesData.salesRevenuesByTime.revenues.length)  ) {
                                 salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, revenues: 0, sales: 0 } }) }
                             }
 
