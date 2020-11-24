@@ -7,7 +7,7 @@ const thisYear = moment().year()
 
 export const presets = [
 {
-    text: 'Yesterday',
+    text: 'Last 24 hours',
     start: moment().subtract(1, 'day').startOf('day'),
     end: moment().subtract(1, 'day').endOf('day'),
     value: 'LAST_24_HOURS'
