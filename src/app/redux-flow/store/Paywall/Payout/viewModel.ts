@@ -69,12 +69,12 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethod): PaymentMet
                 paymentMethodName: data.paymentMethodName,
                 payee: data.payee,
                 companyName: data.companyName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                country: data.country
+                address: data.checkAddress,
+                address2: data.checkAddressLine2,
+                state: data.checkState,
+                town: data.checkTown,
+                zipCode: data.checkZipCode,
+                country: data.checkCountry
             }            
             return check
         case PaymentMethodType.PayPal:
