@@ -112,7 +112,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                         <Label color={color} backgroundColor={BackgroundColor} label={item.status} />,
                         <IconContainer className="iconAction" key={'withdrawalRequestTableBodyDeleteButton' + i}>
                             <ActionIcon>
-                                <IconStyle id={"deleteTooltip" + i} onClick={() => props.cancelWithdrawalRequest(item)}>delete</IconStyle>
+                                <IconStyle id={"deleteTooltip" + i} onClick={() => props.cancelWithdrawalRequest({...item, status: 'Cancelled'})}>delete</IconStyle>
                                 <Tooltip target={"deleteTooltip" + i}></Tooltip>
                             </ActionIcon>
                         </IconContainer>

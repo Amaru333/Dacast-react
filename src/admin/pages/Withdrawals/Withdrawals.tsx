@@ -26,7 +26,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         AccountsServices.impersonate(userIdentifier)
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}`}).click();
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click();
         })
     }
 

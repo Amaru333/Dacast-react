@@ -24,6 +24,7 @@ import { Divider } from '../../../shared/Common/MiscStyle';
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
     widgetData: DashboardInfos;
+    getWidgetData: () => Promise<void>;
     saveBillingPagePaymentMethod: (data: string) => Promise<void>
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
@@ -55,6 +56,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             } else {
                 setPurchaseDataOpen(false)
                 setDataPaymentSuccessOpen(true)
+                props.getWidgetData()
             }
         }).catch((error) => {
             setIsLoading(false);
