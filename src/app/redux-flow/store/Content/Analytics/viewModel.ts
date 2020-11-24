@@ -276,14 +276,16 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                             if (assosiatedCountry) {
                                 audienceData.playsImpressionsByLocation = {
-                                    data: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.data : []), {
+                                    data: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.data : []), 
+                                    ...(metric.data_dimension.includes("PLAYS")) ? 
+                                    [{
                                         city: assosiatedCountry["\"Country\""],
                                         position: {
                                             latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                             longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
                                         },
                                         value: data.dimension_sum
-                                    }],
+                                    }] : []],
                                     table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : [])]
                                 }
                                 var index = audienceData.playsImpressionsByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""] );
@@ -380,7 +382,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             let indexLabel = labels.indexOf(label);
 
                             if (!salesData || !salesData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !salesData.salesRevenuesByTime.sales.length ) || ( metric.data_dimension.includes("REVENUES") && !salesData.salesRevenuesByTime.revenues.length)  ) {
-                                salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: [] }
+                                salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, sales: 0, revenues: 0 } }) }
                             }
 
                             if (metric.data_dimension.includes("SALES")) {
@@ -388,8 +390,13 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("REVENUES")) {
                                 salesData.salesRevenuesByTime.revenues[indexLabel] = data.dimension_sum;
                             }
-                            
-                            salesData.salesRevenuesByTime.table = [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : []), { sales: metric.data_dimension.includes("SALES") ? data.dimension_sum : null, revenues: metric.data_dimension.includes("REVENUES") ? data.dimension_sum : null, label: label }]
+                            let index = salesData.salesRevenuesByTime.table.findIndex(obj => obj.label === label);
+                            if(metric.data_dimension.includes("SALES") ) {
+                                salesData.salesRevenuesByTime.table[index] ? salesData.salesRevenuesByTime.table[index].sales = data.dimension_sum : null;
+                            } else {
+                                salesData.salesRevenuesByTime.table[index] ? salesData.salesRevenuesByTime.table[index].revenues = data.dimension_sum : null;
+                            }
+
 
                             break;
                         case 'COUNTRY':
