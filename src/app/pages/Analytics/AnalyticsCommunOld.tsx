@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
-import LeafletMap from '../../../components/Analytics/LeafletMap';
+import LeafletMapOld from '../../../components/Analytics/AnalyticsOld/LeafletMapOld';
 import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
@@ -113,7 +113,7 @@ export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
 
     return (
         <div>
-            <LeafletMap
+            <LeafletMapOld
                 height="400px"
                 markerNameTranform={isGb ? mapMarkerNameTranformBytesFromGB : (name: string, value: string) => { return name+" : "+value }}
                 markers={dataRepo}

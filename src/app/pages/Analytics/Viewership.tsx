@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChartOld } from '../../../components/Analytics/AnalyticsOld/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
-import { CheeseChart } from '../../../components/Analytics/CheeseChart'; 
+import DoubleLineChartOld from '../../../components/Analytics/AnalyticsOld/DoubleLineChartOld';
+import { CheeseChartOld } from '../../../components/Analytics/AnalyticsOld/CheeseChartOld'; 
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, HalfSmFullXs } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, handleRowIconType, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, HalfSmFullXs } from './AnalyticsCommunOld';
 import { ViewershipComponentProps } from '../../containers/Analytics/Viewership';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
@@ -162,7 +162,7 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                                 viewershipAnalytics.playtimePerDevices ?
                                     viewershipAnalytics.playtimePerDevices.failed ?
                                         <FailedCardAnalytics /> :
-                                        <CheeseChart
+                                        <CheeseChartOld
                                             displayBytesFromGB={true}
                                             data={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.data : [0]}
                                             labels={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.labels : ["No Data"]} />

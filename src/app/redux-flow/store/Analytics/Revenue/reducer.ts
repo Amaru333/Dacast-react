@@ -21,4 +21,3 @@ const reducer: Reducer<AnalyticsRevenueInfos> = (state = AnalyticsRevenueInitial
 };
 
 export { reducer as AnalyticsRevenueReducer };
-

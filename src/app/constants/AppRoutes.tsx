@@ -22,10 +22,6 @@ import Presets from '../containers/Paywall/Presets';
 import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
-import Viewership from '../containers/Analytics/Viewership';
-import Revenue from '../containers/Analytics/Revenue';
-import DashboardAnalytics from '../containers/Analytics/Dashboard';
-import RealTime from '../containers/Analytics/RealTime';
 import Login from '../containers/Register/Login/Login';
 import SignUp from '../containers/Register/SignUp/SignUp';
 import ConfirmEmail from '../containers/Register/ConfirmEmail';
@@ -47,6 +43,8 @@ import LiveEngagement  from '../containers/Live/Engagement';
 import LiveSecurity from '../containers/Live/Security';
 import LiveTheming  from '../containers/Live/Theming';
 import LivePaywall from '../containers/Live/Paywall';
+import LiveAnalytics from '../containers/Live/Analytics';
+import VodAnalytics from '../containers/Videos/Analytics';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
 import Engagement from '../containers/Playlists/Engagement';
@@ -59,7 +57,10 @@ import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
 import ExposSetup from '../containers/Expos/Setup';
-
+import Viewership from '../containers/Analytics/Viewership';
+import Revenue from '../containers/Analytics/Revenue';
+import DashboardAnalytics from '../containers/Analytics/Dashboard';
+import RealTime from '../containers/Analytics/RealTime';
 
 export const AppRoutes: Routes[] = [   
     {
@@ -178,6 +179,15 @@ export const AppRoutes: Routes[] = [
         component: LiveTheming
     },
     {
+        path: '/livestreams/:liveId/analytics',
+        name: 'Analytics',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-analytics',
+        notDisplayedInNavigation: true,
+        component: LiveAnalytics
+    },
+    {
         path: '/videos',
         name: 'Videos',
         isExact: true,
@@ -247,6 +257,15 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-vod',
         notDisplayedInNavigation: true,
         component: VodRenditions,
+    },
+    {
+        path: '/videos/:vodId/analytics',
+        name: 'Analytics',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-analytics',
+        notDisplayedInNavigation: true,
+        component: VodAnalytics
     },
     {
         path: '/expos/:exposId/general',
@@ -347,7 +366,6 @@ export const AppRoutes: Routes[] = [
         path: '/analytics',
         name: 'Analytics',
         iconName: 'bar_chart',
-        component: null,
         associatePrivilege: 'privilege-analytics',
         slug: [
             {

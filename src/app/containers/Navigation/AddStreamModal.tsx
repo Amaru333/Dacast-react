@@ -27,19 +27,19 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
     const localeTimezone: string = moment.tz.guess()
 
     const handleLocaleCountry = (): string => {
-        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
+        if (localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
             return 'Australia & Asia Pacific'
-        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
+        } else if (localeTimezone.toLowerCase().indexOf('europe') > -1) {
             return 'Europe, Middle East & Africa'
-        } 
+        }
         return 'Americas'
     }
 
     const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
     const defaultStreamSetup: StreamSetupOptions = {
-        rewind: false, 
-        title: '', 
+        rewind: false,
+        title: '',
         region: handleLocaleCountry(),
         renditionCount: renditionCount
     }
@@ -57,22 +57,22 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         props.toggle()
     }
 
-    const handleRegionParse =(region: string): string => {
-        switch(region) {
+    const handleRegionParse = (region: string): string => {
+        switch (region) {
             case 'Americas':
                 return 'north-america'
             case 'Australia & Asia Pacific':
                 return 'asia-pacific'
             case 'Europe, Middle East & Africa':
                 return 'europe'
-            default: 
+            default:
                 return ''
         }
     }
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
-        
+
         await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
@@ -109,19 +109,19 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 <Bubble className="mt1" type="info">
                     Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>
                 </Bubble>
-                <Input 
-                    placeholder="My Live Stream" 
-                    id='liveStreamModalInput' 
-                    className='col col-12 mt1' 
-                    value={streamSetupOptions.title} 
-                    onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} 
-                    label='Title' 
+                <Input
+                    placeholder="My Live Stream"
+                    id='liveStreamModalInput'
+                    className='col col-12 mt1'
+                    value={streamSetupOptions.title}
+                    onChange={(event) => { setStreamSetupOptions({ ...streamSetupOptions, title: event.currentTarget.value }) }}
+                    label='Title'
                 />
                 <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle 
-                        dropdownTitle='Source Region' 
-                        className='col col-12' 
-                        id='channelRegionTypeDropdown' 
+                    <DropdownSingle
+                        dropdownTitle='Source Region'
+                        className='col col-12'
+                        id='channelRegionTypeDropdown'
                         dropdownDefaultSelect={streamSetupOptions.region}
                         list={regionDropdownList} 
                         callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
@@ -167,7 +167,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} typeButton="primary" >Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>

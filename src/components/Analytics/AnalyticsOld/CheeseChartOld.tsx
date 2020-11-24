@@ -1,13 +1,13 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
-import { lerpColor } from '../../app/pages/Analytics/AnalyticsCommun';
-import { displayTimeForHumans, displayBytesForHumans } from '../../utils/formatUtils';
+import { lerpColor } from '../../../app/pages/Analytics/AnalyticsCommunOld';
+import { displayTimeForHumans, displayBytesForHumans } from '../../../utils/formatUtils';
 
 const startColor = '#eff3ff';
 const endColor = '#08519c';
 
 
-export const CheeseChart = (props: any) => {
+export const CheeseChartOld = (props: any) => {
 
     const {
         title,
@@ -30,6 +30,9 @@ export const CheeseChart = (props: any) => {
             display: true,
             position: title ? 'top' : 'none',
             text: title
+        },
+        plugins: {
+            crosshair: false
         }
     }
     if (displayBytes) {
