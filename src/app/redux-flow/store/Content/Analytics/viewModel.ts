@@ -378,7 +378,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             let indexLabel = labels.indexOf(label);
 
                             if (!salesData || !salesData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !salesData.salesRevenuesByTime.sales.length ) || ( metric.data_dimension.includes("REVENUES") && !salesData.salesRevenuesByTime.revenues.length)  ) {
-                                salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, revenues: 0, sales: 0 } }) }
+                                salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: [] }
                             }
 
                             if (metric.data_dimension.includes("SALES")) {
@@ -386,9 +386,9 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("REVENUES")) {
                                 salesData.salesRevenuesByTime.revenues[indexLabel] = data.dimension_sum;
                             }
-                            let index = watchData.watchByTime.table.findIndex(obj => obj.label === label);
-                            salesData.salesRevenuesByTime.table[index] ? salesData.salesRevenuesByTime.table[index][metric.data_dimension.includes("SALES") ? 'sales' : 'revenues'] = data.dimension_sum : null;
                             
+                            salesData.salesRevenuesByTime.table = [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : []), { sales: metric.data_dimension.includes("SALES") ? data.dimension_sum : null, revenues: metric.data_dimension.includes("REVENUES") ? data.dimension_sum : null, label: label }]
+
                             break;
                         case 'COUNTRY':
                             if (!salesData || !salesData.salesRevenuesByLocation) {
