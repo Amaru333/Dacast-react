@@ -113,7 +113,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
         { title: "Watch Duration", data: "watch-duration" },
-        // { title: "Sales & Revenue", data: "sales" },
+        { title: "Sales & Revenue", data: "sales" },
         // { title: "Engagement", data: "engagement" },
         ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
