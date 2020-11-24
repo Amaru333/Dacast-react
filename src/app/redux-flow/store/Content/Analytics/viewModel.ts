@@ -386,8 +386,9 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("REVENUES")) {
                                 salesData.salesRevenuesByTime.revenues[indexLabel] = data.dimension_sum;
                             }
-                            salesData.salesRevenuesByTime.table = [...(salesData.salesRevenuesByTime ? salesData.salesRevenuesByTime.table : []), { sales: metric.data_dimension.includes("SALES") ? data.dimension_sum : null, revenues: metric.data_dimension.includes("REVENUES") ? data.dimension_sum : null, label: label }]
-
+                            let index = watchData.watchByTime.table.findIndex(obj => obj.label === label);
+                            salesData.salesRevenuesByTime.table[index] ? salesData.salesRevenuesByTime.table[index][metric.data_dimension.includes("SALES") ? 'sales' : 'revenues'] = data.dimension_sum : null;
+                            
                             break;
                         case 'COUNTRY':
                             if (!salesData || !salesData.salesRevenuesByLocation) {
