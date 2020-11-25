@@ -115,7 +115,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         { title: "Watch Duration", data: "watch-duration" },
         { title: "Sales & Revenue", data: "sales" },
         // { title: "Engagement", data: "engagement" },
-        ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
+        // ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
 
 
