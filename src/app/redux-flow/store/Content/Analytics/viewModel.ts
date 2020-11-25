@@ -286,6 +286,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             if (!audienceData || !audienceData.playsImpressionsByLocation) {
                                 audienceData.playsImpressionsByLocation = { data: [], table: [] }
                             }
+                            if(metric.data_dimension === "IMPRESSIONS_BY_COUNTRY" ) break;
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                             if (assosiatedCountry) {
                                 audienceData.playsImpressionsByLocation = {
