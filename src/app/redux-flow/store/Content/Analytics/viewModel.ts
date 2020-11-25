@@ -1,3 +1,4 @@
+import { element } from 'prop-types';
 import { AudienceAnalyticsState, ContentAnalyticsFinalState } from '.'
 import { DimensionItemType, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsResultItemOutput } from '../../../../../DacastSdk/analytics'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils';
@@ -92,11 +93,21 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 var stopDate = new Date();
                 var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
                 var current =  dateAdd(firstDay, 'year', -1);
-                return getLabels(current, stopDate, 'MONTH')
+                if(response.results[0]) {
+                    if( response.results[0].data_dimension.includes("SALES") || response.results[0].data_dimension.includes("REVENUES") ) {
+                        return getLabels(current, stopDate, 'DAY') 
+                    }
+                }
+                return getLabels(current, firstDay, 'MONTH')
             case 'LAST_6_MONTHS':
                 var stopDate = new Date();
                 var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
                 var current =  dateAdd(firstDay, 'month', -6);
+                if(response.results[0]) {
+                    if( response.results[0].data_dimension.includes("SALES") || response.results[0].data_dimension.includes("REVENUES") ) {
+                        return getLabels(current, stopDate, 'DAY') 
+                    }
+                }
                 return getLabels(current, firstDay, 'MONTH')
             case 'LAST_MONTH':
                 var stopDate = new Date();
@@ -307,7 +318,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             }
             if (metric.data_dimension.includes("WATCHTIME")) {
                 if (!metric.data.length) {
-                    if (metric.data_dimension.includes("TIME")) {
+                    if (metric.data_dimension.includes("TIME") && !watchData.watchByTime) {
                         watchData.watchByTime = { labels: [], data: [], table: [] }
                     }
                     if (metric.data_dimension.includes("DEVICE")) {
@@ -367,8 +378,9 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 })
             }
             if (metric.data_dimension.includes("SALES") || metric.data_dimension.includes("REVENUES")) {
+                console.log(labels);
                 if (!metric.data.length) {
-                    if (metric.data_dimension.includes("TIME")) {
+                    if (metric.data_dimension.includes("TIME") && !salesData.salesRevenuesByTime) {
                         salesData.salesRevenuesByTime = { labels: [], sales: [], revenues: [], table: [] }
                     }
                     if (metric.data_dimension.includes("COUNTRY")) {
@@ -383,9 +395,11 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
                             let indexLabel = labels.indexOf(label);
 
+                            console.log(label, indexLabel);
                             if (!salesData || !salesData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !salesData.salesRevenuesByTime.sales.length ) || ( metric.data_dimension.includes("REVENUES") && !salesData.salesRevenuesByTime.revenues.length)  ) {
                                 salesData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, sales: 0, revenues: 0 } }) }
                             }
+
 
                             if (metric.data_dimension.includes("SALES")) {
                                 salesData.salesRevenuesByTime.sales[indexLabel] = data.dimension_sum;
@@ -435,6 +449,8 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         handleResultItem(response)
     }
 
+
+    console.log(salesData);
 
     return {
         contentId: data.id,
