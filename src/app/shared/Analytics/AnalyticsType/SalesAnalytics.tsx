@@ -61,7 +61,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },
                         // "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.salesRevenuesByDevice.table, header: HeaderSalesDevice} },
-                        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.salesRevenuesByLocation.table, header: HeaderSalesLocation} },
+                        //"Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.salesRevenuesByLocation.table, header: HeaderSalesLocation} },
                     }
                 }
             />

@@ -119,12 +119,12 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return getLabels(current, stopDate, 'DAY')
             case 'LAST_24_HOURS':
                 var stopDate = new Date();
-                stopDate.setDate(stopDate.setHours( stopDate.getHours(), 0, 0 ) )
+                stopDate.setHours( stopDate.getHours(), 0, 0 );
                 var current =  dateAdd(stopDate, 'day', -1);
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_2_HOURS':
                 var stopDate = new Date();
-                stopDate.setDate(stopDate.setHours( stopDate.getHours(), 0, 0 ) )
+                stopDate.setHours( stopDate.getHours(), 0, 0 );
                 var current =  dateAdd(stopDate, 'hour', -2);
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_15_MINUTES':
@@ -157,6 +157,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
     }
 
     let labels = labelsFormate(data.timeRange);
+
 
     const handleResultRealTime = async (element: GetContentAnalyticsResultItemOutput) => {
         element.results.forEach(metric => {
@@ -286,6 +287,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             if (!audienceData || !audienceData.playsImpressionsByLocation) {
                                 audienceData.playsImpressionsByLocation = { data: [], table: [] }
                             }
+                            if(metric.data_dimension === "IMPRESSIONS_BY_COUNTRY" ) break;
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                             if (assosiatedCountry) {
                                 audienceData.playsImpressionsByLocation = {
@@ -357,22 +359,22 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         case 'COUNTRY':
                             if (!watchData || !watchData.watchByLocation) {
                                 watchData.watchByLocation = { data: [], table: [] }
-                            } else {
-                                const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                                if (assosiatedCountry) {
-                                    watchData.watchByLocation = {
-                                        data: [...(watchData.watchByLocation ? watchData.watchByLocation.data : []), {
-                                            city: assosiatedCountry["\"Country\""],
-                                            position: {
-                                                latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                                longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
-                                            },
-                                            value: data.dimension_sum
-                                        }],
-                                        table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : []), { data: data.dimension_sum, label: assosiatedCountry["\"Country\""] }]
-                                    }
+                            } 
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
+                            if (assosiatedCountry) {
+                                watchData.watchByLocation = {
+                                    data: [...(watchData.watchByLocation ? watchData.watchByLocation.data : []), {
+                                        city: assosiatedCountry["\"Country\""],
+                                        position: {
+                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        },
+                                        value: data.dimension_sum
+                                    }],
+                                    table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : []), { data: data.dimension_sum, label: assosiatedCountry["\"Country\""] }]
                                 }
                             }
+                        
                             break;
                     }
                 })
