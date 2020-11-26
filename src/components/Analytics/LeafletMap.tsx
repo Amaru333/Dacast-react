@@ -10,7 +10,7 @@ const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 2;
 
 
-const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem) => string }) => {
+const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem, index: number) => string }) => {
 
   if(!props.markers.length) {
     return (
@@ -36,12 +36,12 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
   }
 
-  let max = Math.max(...props.markers.map(k => k.value));
-  let min = Math.min(...props.markers.map(k => k.value));
+  let max = Math.max(...props.markers.map(k => k.value[0]));
+  let min = Math.min(...props.markers.map(k => k.value[0]));
 
   const renderMarkers = () => {
     return props.markers.map((element, index) => {
-      let lerpPercent = logScale(element.value, 0, max, 100, 1000);
+      let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
       lerpPercent -= 100;
       lerpPercent /= 1000;
 
@@ -51,7 +51,7 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
           color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
         >
           <Popup>
-            {props.markerNameTranform(element)}
+            {props.markerNameTranform(element, index)}
           </Popup>
         </CircleMarker>)
     })

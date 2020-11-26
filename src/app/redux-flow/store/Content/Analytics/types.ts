@@ -8,7 +8,8 @@ export type LocationItem = {
         latitude: number;
         longitude: number;
     };
-    value: number;
+    value: number[];
+    label?: string[];
 }
 
 export interface AudienceAnalyticsState {
@@ -46,7 +47,7 @@ export interface SalesAnalyticsState {
     // };
     salesRevenuesByLocation: { 
         data: LocationItem[];
-        table: {revenues: number; label: string}[]
+        table: {revenues: number; sales: number; label: string}[]
     }
 }
 

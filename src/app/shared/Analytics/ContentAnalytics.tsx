@@ -18,7 +18,7 @@ export interface ContentAnalyticsProps {
     contentId: string,
     contentType: ContentAnalyticsTypes,
     getContentAnalytics: (options: ContentAnalyticsParameters) => Promise<void>,
-    contentAnalyticsData: ContentAnalyticsFinalState
+    contentAnalyticsData: ContentAnalyticsFinalState;
 }
 
 export type ContentAnalyticsTypes = 'live' | 'vod';
@@ -71,6 +71,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 return (
                     <DateFilteringAnalytics
                         selectedPreset={timeRangePick.timeRange}
+                        isDisabled={loading}
                         className='col col-9'
                         defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                         callback={(info) => { setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) } }

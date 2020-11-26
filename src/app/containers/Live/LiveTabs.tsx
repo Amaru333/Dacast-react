@@ -7,7 +7,7 @@ import { TabsContainer } from '../../shared/TabsStyle';
 import { AppRoutes } from '../../constants/AppRoutes';
 import { userToken } from '../../utils/services/token/tokenService';
 
-export const LiveTabs = (props: {liveId: string}) => {
+export const LiveTabs = (props: {liveId: string; }) => {
     let history = useHistory()
 
     const handleLiveSubRoutes = () => {

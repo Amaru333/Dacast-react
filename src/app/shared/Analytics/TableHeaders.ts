@@ -30,6 +30,10 @@ export const HeaderAudienceLocation = [
         Header: 'Plays',
         accessor: 'plays'
     }
+    ,{
+        Header: 'Impressions',
+        accessor: 'impressions'
+    }
 ]
 
 

@@ -41,7 +41,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <LeafletMap
                 markers={props.data.playsImpressionsByLocation.data}
-                markerNameTranform={(element) => element.city + ": "+element.value+" Plays"} />
+                markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value+" "+element.label[index] }).join() } />
         )
     }
 

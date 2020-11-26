@@ -11,7 +11,8 @@ interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
     callback?: (dates: {startDate?: number; endDate?: number, value?: TimeRangeAnalytics}) => void,
     showPreset?: boolean,
-    selectedPreset?: TimeRangeAnalytics
+    selectedPreset?: TimeRangeAnalytics;
+    isDisabled?: boolean;
 }
 
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & DateFilteringAnalyticsProps) => {
@@ -30,6 +31,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             typeButton='secondary'
                             buttonColor='blue'
                             sizeButton='small'
+                            disabled={props.isDisabled}
                             focusState={props.selectedPreset === value}
                             onClick={() => { callback({ value: value, endDate: props.defaultDates.end, startDate: props.defaultDates.start })  } }
                         >

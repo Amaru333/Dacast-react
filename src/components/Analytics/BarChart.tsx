@@ -63,7 +63,7 @@ export const BarChart = (props: BarChartProps) => {
                         type: 'time',
                         ticks: {
                             autoSkip: true,
-                            maxTicksLimit: 20
+                            maxTicksLimit: 20,
                         }
                     }],
                 }
@@ -79,6 +79,10 @@ export const BarChart = (props: BarChartProps) => {
                     id: 'A',
                     type: 'linear',
                     position: 'left',
+                    ticks: {
+                        min: 0,
+                        stepSize: 5
+                    }
                 },
                 ...(props.options.rightYAxes ? [{
                     id: 'B',

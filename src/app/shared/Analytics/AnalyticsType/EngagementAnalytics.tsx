@@ -1,7 +1,5 @@
 import React from 'react'
 import { AnalyticsCard } from '../../../../components/Analytics/AnalyticsCard/AnalyticsCard'
-import { BarChart } from '../../../../components/Analytics/BarChart'
-import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 
