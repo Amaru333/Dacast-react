@@ -70,10 +70,6 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Bubble hidden={!props.loginInfos || (props.loginInfos && !props.loginInfos.error)} type='error' className='my2'>
                         Unable to sign in. Please check your details and try again.
                     </Bubble>
-                    {/* REMOVE THE FOLLOWING BUBBLE WHEN AWS OUTAGE RESOLVES */}
-                    <Bubble  type='warning' className='my2'>
-                        There is an intermittent AWS outage that is affecting this site. If you are unable to log in, please check back again later.
-                    </Bubble>
                     <ModalFooter>
                         <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large"  type="submit" typeButton="primary">Log In</Button>
                     </ModalFooter>
