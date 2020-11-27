@@ -80,8 +80,15 @@ export const BarChart = (props: BarChartProps) => {
                     type: 'linear',
                     position: 'left',
                     ticks: {
-                        min: 0,
-                        stepSize: 5
+                        ...(props.unit && {
+                            callback: (value) => {
+                                return value + " " + props.unit;
+                            }
+                        }),
+                        ...(props.step && {
+                            stepSize: props.step,
+                            suggestedMin: 0
+                        }),
                     }
                 },
                 ...(props.options.rightYAxes ? [{

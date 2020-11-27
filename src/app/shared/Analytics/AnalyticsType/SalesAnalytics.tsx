@@ -25,6 +25,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 options={ {rightYAxes: true} }
                 type="vertical"
                 unitRight="$"
+                step={1}
                 dataSets={ [
                         {data: props.data.salesRevenuesByTime.sales, label: "Sales", color: ThemeAnalyticsColors.blue, type: 'bar' }, 
                         {data: props.data.salesRevenuesByTime.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } 

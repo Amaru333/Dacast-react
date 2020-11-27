@@ -29,5 +29,6 @@ export interface BarChartProps {
     type?: 'horizontal' | 'vertical',
     id?: string,
     unit?:string,
-    unitRight?: string
+    unitRight?: string,
+    step?: number
 }

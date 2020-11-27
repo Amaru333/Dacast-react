@@ -15,7 +15,6 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
 
 
     const returnTimeAnalytics = () => {
-        console.log([ {data: props.data.watchByTime.data, label: "Watch Duration", type:"bar", color: ThemeAnalyticsColors.blue}])
         return (
             <BarChart
                 title="Watch Duration by Time"
