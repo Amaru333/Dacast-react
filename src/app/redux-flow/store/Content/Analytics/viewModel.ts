@@ -21,6 +21,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return tsToLocaleDate(value, { month: '2-digit', year: '2-digit' });
             case 'LAST_MONTH':
             case 'LAST_WEEK':
+                return tsToLocaleDate(value);
             case 'CUSTOM':
                 let index = response.results.findIndex(obj => obj.data_dimension.includes("TIME"));
 
@@ -269,7 +270,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         case 'HOURLY':
                         case 'MONTH':
                         case 'DAY':
-                            if (!audienceData || !audienceData.playsImpressionsByTime) {
+                            if (!audienceData || !audienceData.playsImpressionsByTime || (metric.data_dimension.includes("PLAYS") && !audienceData.playsImpressionsByTime.plays.length) || (metric.data_dimension.includes("IMPRESSIONS") && !audienceData.playsImpressionsByTime.impressions.length)) {
                                 audienceData.playsImpressionsByTime = { plays: Array(labels.length).fill(0, 0, labels.length), impressions: Array(labels.length).fill(0, 0, labels.length), labels: labels, table: labels.map(label => { return { label: label, plays: 0, impressions: 0 } }) }
                             }
                             let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
@@ -282,6 +283,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("IMPRESSIONS")) {
                                 audienceData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                                 let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                                console.log(index, label)
                                 audienceData.playsImpressionsByTime.table[index] ? audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum : null;
                             }
 
@@ -334,7 +336,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                             label: [type]
                                         }
                                         ],
-                                        table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : []), { label: assosiatedCountry["\"Country\""],  impressions: type === 'plays' ? 0 : data.dimension_sum, plays: type === 'plays' ? data.dimension_sum : 0 }  ]
+                                        table: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.table : []), { label: assosiatedCountry["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
                                     }
                                 } else {
                                     audienceData.playsImpressionsByLocation.data[index].value.push(data.dimension_sum)
