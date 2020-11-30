@@ -45,17 +45,22 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     React.useEffect(() => {
         if(loaded.current) {
-            setLoading(true)
-            props.getContentAnalytics({
-                id: props.contentId,
-                dimension: TabsDimensionLink[currentTab],
-                timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick.timeRange,
-                type: props.contentType,
-                start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
-                end: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.end : undefined,
-            }).then(() => {
-                setLoading(false)
-            })
+            if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
+
+            } else {
+                setLoading(true)
+                props.getContentAnalytics({
+                    id: props.contentId,
+                    dimension: TabsDimensionLink[currentTab],
+                    timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick.timeRange,
+                    type: props.contentType,
+                    start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
+                    end: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.end : undefined,
+                }).then(() => {
+                    setLoading(false)
+                })
+            }
+            
         } else {
             loaded.current = true;
         }

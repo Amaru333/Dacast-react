@@ -43,12 +43,12 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                     <div className="col col-12 mt2 clearfix">
                         <div className='noTransition inline' >
                             <DateRangePicker 
+                                readOnly={true}
                                 isOutsideRange={() => false} 
                                 isDayHighlighted= {() => false}
                                 navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
                                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                                 showDefaultInputIcon={false}
-                                showClearDates
                                 inputIconPosition='after'
                                 startDatePlaceholderText='Select date'
                                 endDatePlaceholderText='Select date'
@@ -57,7 +57,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                                 startDateId="dateFiletringAnalyticsStart" // PropTypes.string.isRequired,
                                 endDate={moment(props.defaultDates.end)} // momentPropTypes.momentObj or null,
                                 endDateId="dateFiletringAnalyticsEnd" // PropTypes.string.isRequired,
-                                onDatesChange={({ startDate, endDate }) => callback({ value: "CUSTOM", startDate: startDate.valueOf(), endDate: endDate.valueOf() }) } // PropTypes.func.isRequired,
+                                onDatesChange={({ startDate, endDate }) => callback({ value: "CUSTOM", startDate: startDate && startDate.valueOf() , endDate: endDate && endDate.valueOf() }) } // PropTypes.func.isRequired,
                                 focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                                 onFocusChange={(focusedInput) => {setFocusedInput(focusedInput)}} // PropTypes.func.isRequired,
                             />

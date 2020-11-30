@@ -22,7 +22,21 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_MONTH':
             case 'LAST_WEEK':
             case 'CUSTOM':
-                return tsToLocaleDate(value);
+                let index = response.results.findIndex(obj => obj.data_dimension.includes("TIME"));
+
+                if(index >= 0) {
+                    if(response.results[index].data.length) {
+                        if(response.results[index].data[0].dimension_type.type === "HOURLY") {
+                            return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit' });
+                        } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
+                            return tsToLocaleDate(value, { month: '2-digit', year: '2-digit' });
+                        } else {
+                            return tsToLocaleDate(value);
+                        }
+                    }
+                } else {
+                    return tsToLocaleDate(value);
+                }
             case 'LAST_24_HOURS':
             case 'LAST_15_MINUTES':
             case 'LAST_30_MINUTES':
@@ -144,7 +158,25 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'CUSTOM':
                 var stopDate = new Date(data.end);
                 var current = new Date(data.start);
-                return getLabels(current, stopDate, 'DAY')
+                let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
+                let type: DimensionItemType = 'DAY';
+                console.log(index);
+                if(index >= 0) {
+                    console.log(response.results[index]);
+                    if(response.results[index].data.length) {
+                        if(response.results[index].data[0].dimension_type.type === "HOURLY") {
+                            type = 'HOURLY'
+                        } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
+                            type = 'MONTH'
+                        } else {
+                            type = 'DAY'
+                        }
+                    }
+                } else {
+                    type = 'DAY';
+                }
+                console.log(type);
+                return getLabels(current, stopDate, type)
         }
     }
 
