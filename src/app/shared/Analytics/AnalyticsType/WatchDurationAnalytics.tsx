@@ -18,7 +18,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
         return (
             <BarChart
                 title="Watch Duration by Time"
-                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.watchByTime.labels}
                 unit="s" />
         )

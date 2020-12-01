@@ -4,7 +4,7 @@ import { DateRangePickerWrapper } from '../../../components/FormsComponents/Date
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 import moment from 'moment';
-import { DateRangePicker } from 'react-dates';
+import { DateRangePicker, isInclusivelyBeforeDay } from 'react-dates';
 import Icon from '@material-ui/core/Icon';
 
 interface DateFilteringAnalyticsProps {
@@ -20,6 +20,18 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     var { showPreset, callback, defaultDates, ...other } = props;
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
 
+    const handleOutsideRange = (day: any): boolean => {
+        let isDateOutOfRange: boolean = false
+        if(props.allowOustsideDate) {
+            return isDateOutOfRange
+        }
+        if(props.minDate) {
+            isDateOutOfRange = props.minDate.diff(day) > 0
+            return isDateOutOfRange
+        }
+        isDateOutOfRange = moment().diff(day) > 0
+        return isDateOutOfRange
+    }
     const renderDatePresets = () => {
         return showPreset ? (
             <div>
@@ -44,7 +56,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                         <div className='noTransition inline' >
                             <DateRangePicker 
                                 readOnly={true}
-                                isOutsideRange={() => false} 
+                                isOutsideRange={day => !isInclusivelyBeforeDay(day, moment())} 
                                 isDayHighlighted= {() => false}
                                 navPrev={<Icon style={{color:'#58606E', position: 'absolute', top: 23, left: 26}}>keyboard_arrow_left</Icon>}
                                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}

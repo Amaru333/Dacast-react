@@ -31,7 +31,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <BarChart
                 type="vertical"
-                title="Audience by device"
+                title="Audience by Device"
                 dataSets={[{ data: props.data.playsImpressionsByDevice.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByDevice.impressions, label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
                 labels={props.data.playsImpressionsByDevice.labels} />
         )
@@ -51,6 +51,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
             <AnalyticsCard
                 title="Plays & Impressions by"
                 showTable={true}
+                csvType="Audience"
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.playsImpressionsByTime.table, header: HeaderAudienceTime} },

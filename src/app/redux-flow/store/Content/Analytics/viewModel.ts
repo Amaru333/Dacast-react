@@ -18,22 +18,23 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         switch (data.timeRange) {
             case 'YEAR_TO_DATE':
             case 'LAST_6_MONTHS':
-                return tsToLocaleDate(value, { month: '2-digit', year: '2-digit' });
+                return tsToLocaleDate(value, { month: '2-digit', year: 'numeric' });
             case 'LAST_MONTH':
             case 'LAST_WEEK':
                 return tsToLocaleDate(value);
             case 'CUSTOM':
                 let index = response.results.findIndex(obj => obj.data_dimension.includes("TIME"));
-
                 if(index >= 0) {
                     if(response.results[index].data.length) {
                         if(response.results[index].data[0].dimension_type.type === "HOURLY") {
                             return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit' });
                         } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
-                            return tsToLocaleDate(value, { month: '2-digit', year: '2-digit' });
+                            return tsToLocaleDate(value, { month: '2-digit', year: '4-digit' });
                         } else {
                             return tsToLocaleDate(value);
                         }
+                    } else {
+                        return tsToLocaleDate(value);
                     }
                 } else {
                     return tsToLocaleDate(value);
@@ -46,7 +47,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_2_HOURS':
             case 'LAST_5_MINUTES':
             case 'LAST_90_MINUTES':
-                return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit' });
+                return tsToLocaleDate(value, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         }
     }
 
@@ -114,20 +115,20 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_6_MONTHS':
                 var stopDate = new Date();
                 var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
-                var current = dateAdd(firstDay, 'month', -6);
+                var current = dateAdd(firstDay, 'month', -5);
                 return getLabels(current, firstDay, 'MONTH')
             case 'LAST_MONTH':
-                var stopDate = new Date();
-                var current = dateAdd(stopDate, 'month', -1);
+                var stopDate = ( d => new Date(d.setDate(d.getDate()-1)) )(new Date);
+                var current = dateAdd(stopDate, 'day', -29);
                 return getLabels(current, stopDate, 'DAY')
             case 'LAST_WEEK':
-                var stopDate = new Date();
-                var current = dateAdd(stopDate, 'day', -7);
+                var stopDate = ( d => new Date(d.setDate(d.getDate()-1)) )(new Date);
+                var current = dateAdd(stopDate, 'day', -6);
                 return getLabels(current, stopDate, 'DAY')
             case 'LAST_24_HOURS':
                 var stopDate = new Date();
                 stopDate.setHours(stopDate.getHours(), 0, 0);
-                var current = dateAdd(stopDate, 'day', -1);
+                var current = dateAdd(stopDate, 'hour', -23);
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_2_HOURS':
                 var stopDate = new Date();
@@ -161,9 +162,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 var current = new Date(data.start);
                 let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
                 let type: DimensionItemType = 'DAY';
-                console.log(index);
                 if(index >= 0) {
-                    console.log(response.results[index]);
                     if(response.results[index].data.length) {
                         if(response.results[index].data[0].dimension_type.type === "HOURLY") {
                             type = 'HOURLY'
@@ -176,7 +175,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 } else {
                     type = 'DAY';
                 }
-                console.log(type);
                 return getLabels(current, stopDate, type)
         }
     }
@@ -283,7 +281,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             } else if (metric.data_dimension.includes("IMPRESSIONS")) {
                                 audienceData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                                 let index = audienceData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
-                                console.log(index, label)
                                 audienceData.playsImpressionsByTime.table[index] ? audienceData.playsImpressionsByTime.table[index].impressions = data.dimension_sum : null;
                             }
 
@@ -402,7 +399,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                         },
                                         value: [data.dimension_sum]
                                     }],
-                                    table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : []), { data: data.dimension_sum, label: assosiatedCountry["\"Country\""] }]
+                                    table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : []), {  label: assosiatedCountry["\"Country\""], data: data.dimension_sum }]
                                 }
                             }
 
@@ -449,15 +446,15 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             if (!salesData || !salesData.salesRevenuesByLocation) {
                                 salesData.salesRevenuesByLocation = { data: [], table: [] }
                             }
-                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-3code\""] === data.dimension_type.value);
                             if (assosiatedCountry) {
-                                let index = audienceData.playsImpressionsByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
-                                let indexTable = audienceData.playsImpressionsByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
+                                let index = salesData.salesRevenuesByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
+                                let indexTable = salesData.salesRevenuesByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
 
                                 let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
                                 if(index === -1 ) {
                                     salesData.salesRevenuesByLocation = {
-                                        data: [...(audienceData.playsImpressionsByLocation ? audienceData.playsImpressionsByLocation.data : []),
+                                        data: [...(salesData.salesRevenuesByLocation ? salesData.salesRevenuesByLocation.data : []),
                                         {
                                             city: assosiatedCountry["\"Country\""],
                                             position: {
@@ -468,7 +465,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                             label: [type]
                                         }
                                         ],
-                                        table: [...( salesData.salesRevenuesByLocation ?  salesData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  sales: type === 'sales' ? 0 : data.dimension_sum, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
+                                        table: [...( salesData.salesRevenuesByLocation ?  salesData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  revenues: type === 'revenues' ? data.dimension_sum : 0, sales: type === 'sales' ? data.dimension_sum : 0 }  ]
                                     }
                                 } else {
                                     salesData.salesRevenuesByLocation.data[index].value.push(data.dimension_sum)

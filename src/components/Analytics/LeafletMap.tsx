@@ -7,7 +7,7 @@ import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 import { EmptyAnalytics } from './EmptyAnalytics';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
-const zoom: number = 2;
+const zoom: number = 1;
 
 
 const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem, index: number) => string }) => {
@@ -59,8 +59,9 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
 
   return (
     <>
-      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }}>
+      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }} minZoom={2}  >
         <TileLayer
+          noWrap={true}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
         //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
