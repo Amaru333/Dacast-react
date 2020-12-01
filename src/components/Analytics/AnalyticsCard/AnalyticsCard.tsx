@@ -1,8 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
-import { ActionIcon, IconStyle } from '../../../shared/Common/Icon';
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
-import { Tooltip } from '../../Tooltip/Tooltip';
 import { Text } from '../../../components/Typography/Text';
 import styled from 'styled-components';
 import { Card } from '../../Card/Card';
@@ -15,19 +12,20 @@ export interface AnalyticsCardProps {
     tabs?: { [name: string]: TabAnalytics },
     title: string,
     infoText?: string,
-    showTable?: boolean
+    showTable?: boolean,
+    csvType?: string
 }
 
 type TabAnalytics = {
     name: string,
-    content: JSX.Element,
+    content: () => JSX.Element,
     table?: TableAnalyticsProps,
 }
 
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & AnalyticsCardProps) => {
 
     const exportCsvAnalytics = () => {
-        exportCSVFile(props.tabs[selectedTab].table.header.map(element => element.Header).reverse(), props.tabs[selectedTab].table.data, selectedTab);
+        exportCSVFile(props.tabs[selectedTab].table.header.map(element => element.Header), props.tabs[selectedTab].table.data, props.csvType+'-'+selectedTab);
     }
     const tabsList: Routes[] = props.tabs ? Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } }) : [];
     const [selectedTab, setSelectedTab] = React.useState<string>(props.tabs? tabsList[0].name : "")
@@ -47,7 +45,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
                 <AnalyticsCardBody>
-                    { props.tabs ? props.tabs[selectedTab].content : props.children}
+                    { props.tabs ? props.tabs[selectedTab].content() : props.children}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
             {props.showTable && 

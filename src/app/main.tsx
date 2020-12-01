@@ -10,7 +10,7 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
-TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
+// TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
 
 import { loadReCaptcha } from 'react-recaptcha-v3'
 
@@ -259,8 +259,9 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     }, [])
 
     if (userToken.isLoggedIn()) {
-        TagManager.dataLayer(
+        TagManager.initialize(
             {
+                gtmId: 'GTM-PHZ3Z7F',
                 dataLayer: {
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),

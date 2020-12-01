@@ -13,15 +13,12 @@ export interface WatchDurationAnalyticsProps {
 
 export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
 
-    React.useEffect(() => {
-
-    }, [])
 
     const returnTimeAnalytics = () => {
         return (
             <BarChart
                 title="Watch Duration by Time"
-                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.watchByTime.labels}
                 unit="s" />
         )
@@ -30,10 +27,10 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
     const returnDeviceAnalytics = () => {
         return (
             <BarChart
-                type="vertical"
-                title="Watch Duration by device"
-                dataSets={ [ {data: props.data.watchByDevice.data, label: "Watch Duration", color: ThemeAnalyticsColors.blue } ] }
-                labels={props.data.watchByDevice.labels} />
+                title="Watch Duration by Device"
+                dataSets={ [ {data: props.data.watchByDevice.data, label: "Watch Duration (device)", color: ThemeAnalyticsColors.blue } ] }
+                labels={props.data.watchByDevice.labels} 
+                unit="s"/>
         )
     }
     const returnLocationAnalytics = () => {
@@ -49,11 +46,12 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
             <AnalyticsCard
                 title="Watch Duration by"
                 showTable={true}
+                csvType='WatchDuration'
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics(), table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics(), table: {data: props.data.watchByDevice.table, header: HeaderWatchDevice} },
-                        "Location": { name: 'Location', content: returnLocationAnalytics(), table: {data: props.data.watchByLocation.table, header: HeaderWatchLocation}  },
+                        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.watchByDevice.table, header: HeaderWatchDevice} },
+                        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.watchByLocation.table, header: HeaderWatchLocation}  },
                     }
                 }
             />
