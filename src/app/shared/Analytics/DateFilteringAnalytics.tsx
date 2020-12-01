@@ -3,6 +3,9 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
+import moment from 'moment';
+import { DateRangePicker } from 'react-dates';
+import Icon from '@material-ui/core/Icon';
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
