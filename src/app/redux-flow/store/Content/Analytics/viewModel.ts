@@ -29,7 +29,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         if(response.results[index].data[0].dimension_type.type === "HOURLY") {
                             return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit' });
                         } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
-                            return tsToLocaleDate(value, { month: '2-digit', year: '4-digit' });
+                            return tsToLocaleDate(value, { month: '2-digit', year: 'numeric' });
                         } else {
                             return tsToLocaleDate(value);
                         }
