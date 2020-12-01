@@ -46,6 +46,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
             <AnalyticsCard
                 title="Watch Duration by"
                 showTable={true}
+                csvType='WatchDuration'
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },

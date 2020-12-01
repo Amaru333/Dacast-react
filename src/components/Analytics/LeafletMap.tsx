@@ -69,12 +69,12 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
         {renderMarkers()}
       </Map>
       <div className="flex mt2 justify-center">
-        <a className="mr2">{min}</a>
+        <span className="mr2">{min}</span>
         <div style={{ backgroundColor: '#93d5ed', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#45a5f5', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#4285f4', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#2f5ec4', height: '20px', width: '30px' }}></div>
-        <a className="ml2">{max}</a>
+        <span className="ml2">{max}</span>
       </div>
     </>)
 
