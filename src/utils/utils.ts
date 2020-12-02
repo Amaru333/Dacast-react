@@ -180,3 +180,10 @@ export const hexToRgbA = (hex: string, alpha: number) => {
     }
     throw new Error('Bad Hex');
 }
+
+export function getUrlParam(param: string) {
+    param = param.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
+    const regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
+    const results = regex.exec(window.location.search);
+    return results === null ? "" : decodeURIComponent(results[1]);
+  }
