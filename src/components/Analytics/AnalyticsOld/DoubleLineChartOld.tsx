@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 
-export const DoubleLineChart = (props: any) => {
+export const DoubleLineChartOld = (props: any) => {
 
 
     const {
@@ -112,4 +112,4 @@ export const DoubleLineChart = (props: any) => {
 
 }
 
-export default DoubleLineChart;
+export default DoubleLineChartOld;

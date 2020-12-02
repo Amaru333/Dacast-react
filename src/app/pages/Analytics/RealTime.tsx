@@ -1,7 +1,7 @@
 import React from 'react';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChartOld } from '../../../components/Analytics/AnalyticsOld/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import { AnalyticsCard, renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, HalfSmFullXs, FailedCardAnalytics } from './AnalyticsCommunOld';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
@@ -68,7 +68,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                             props.realTimeAnalytics.data.concurentViewersPerTime ?
                                 props.realTimeAnalytics.data.concurentViewersPerTime.failed ?
                                     <FailedCardAnalytics /> :
-                                    <BarChart
+                                    <BarChartOld
                                         beginAtZero={true}
                                         data={props.realTimeAnalytics.data.concurentViewersPerTime.data}
                                         yAxesName="Concurent Viewers"
@@ -85,7 +85,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                             props.realTimeAnalytics.data.playsPerRealTime ?
                                 props.realTimeAnalytics.data.playsPerRealTime.failed ?
                                     <FailedCardAnalytics /> :
-                                    <BarChart
+                                    <BarChartOld
                                         beginAtZero={true}
                                         data={props.realTimeAnalytics.data.playsPerRealTime.data}
                                         datasetName="Plays"
@@ -102,7 +102,7 @@ export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
                             props.realTimeAnalytics.data.playtimePerTime && props.realTimeAnalytics.data.playtimePerTime.data ?
                                 props.realTimeAnalytics.data.playtimePerTime.failed ?
                                     <FailedCardAnalytics /> :
-                                    <BarChart
+                                    <BarChartOld
                                         datasetName="Seconds"
                                         beginAtZero={true}
                                         data={props.realTimeAnalytics.data.playtimePerTime.data}

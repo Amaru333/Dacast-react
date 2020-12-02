@@ -14,7 +14,8 @@ export const Impersonate = () => {
                 token: query.get('token'),
                 accessToken: null,
                 refresh: null,
-                expires: 9999999999999
+                expires: 9999999999999,
+                impersonatedUserIdentifier: query.get('identifier')
             })
         }
         dacastSdk.updateToken(userToken)

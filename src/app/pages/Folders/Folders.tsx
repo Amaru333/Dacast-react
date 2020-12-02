@@ -29,6 +29,7 @@ import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/
 import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
+import { Divider } from '../../shared/Common/MiscStyle'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -364,7 +365,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' ? {    isExpanded: true,
+                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
+                                    isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
                                     path: row.path,
@@ -373,7 +375,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     nbChildren: 0,
                                     fullPath: row.path + row.title,
                                     loadingStatus: 'not-loaded',
-                                    children: {}} : null)}
+                                    children: {}
+                                })}
                             >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
@@ -390,12 +393,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     const renderNode = (node: FolderTreeNode) => {
         let depth = node.fullPath.split('/').length - 3
+        let singleFolder = node.fullPath.split('/').length === 3
         return (
             <div key={node.id}>
                 {
                     node.id && 
-                    <FolderRow isSelected={node.id === selectedFolder} style={{ paddingLeft: depth * 16 }} className='py1 pr1 flex items-center' onClick={() => { foldersTree.navigateToFolder(node)}}>
-                        { node.subfolders > 0 && <IconStyle coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
+                    <FolderRow isSelected={node.id === selectedFolder} style={{marginLeft: node.subfolders === 0 && singleFolder ? 24 : depth * 24 }} className={'py1 pr1 flex items-center'} onClick={() => { foldersTree.navigateToFolder(node)}}>
+                        { node.subfolders > 0 && <IconStyle onClick={() => foldersTree.expandFolder(node)} coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
                     </FolderRow>
                 }
@@ -409,53 +413,56 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     return (
         <div>
-            <div className='mb2 col col-12 flex items-center sm-show'>
-                <div className='col col-9 flex items-center'>
-                    <div className={'flex items-center'}>
-                        <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
-                        <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
-                            New Folder
-                        </Button>
-                    </div>
-                    <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
-                        <div className='col col-12 pl2 flex flex-auto items-center '>
-                            <BreadcrumbDropdown
-                                options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ?currentFolder.fullPath : selectedFolder}
-                                callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
-                                dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
-                                dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
-                            />
-                            <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
-                            <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
+            {  
+                !smallScreen && 
+                    <div style={{height:55}} className='mb2 col col-12 items-center flex'>
+                        <div className='col col-9 flex items-center'>
+                            <div className={'flex items-center'}>
+                                <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
+                                <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
+                                    New Folder
+                                </Button>
+                            </div>
+                            <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
+                                <div className='col col-12 pl2 flex flex-auto items-center '>
+                                    <BreadcrumbDropdown
+                                        options={FIXED_FOLDERS.indexOf(selectedFolder) === -1 && currentFolder ?currentFolder.fullPath : selectedFolder}
+                                        callback={(value: string) => foldersTree.goToNode(value).then((response) => setCurrentFolder(response))}
+                                        dropdownOptions={['Rename', 'Move', 'New Folder', 'Delete']}
+                                        dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
+                                    />
+                                    <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
+                                    <IconStyle coloricon='gray-3'>search</IconStyle>
+                                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="relative flex justify-end items-center col col-3">
+                            {
+                                selectedFolder !== 'Trash' &&
+                                    <>
+                                        {checkedItems.length > 0 &&
+                                            <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
+                                        }
+                                        <div className='relative'>
+                                            <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+
+                                            <DropdownList  hasSearch={false} style={{width: 167, left: 16}} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
+                                                {renderList()}
+                                            </DropdownList>
+                                        </div>
+
+                                        <SeparatorHeader className="mx2 inline-block" />
+                                    </>
+                            }
+                            <FoldersFiltering className="right relative" setSelectedFilter={setSelectedFilter} />
+                            {selectedFolder === 'Trash' &&
+                                <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
+                            }
                         </div>
                     </div>
-
-                </div>
-                <div className="relative flex justify-end items-center col col-3">
-                    {
-                        selectedFolder !== 'Trash' &&
-                            <>
-                                {checkedItems.length > 0 &&
-                                    <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
-                                }
-                                <div className='relative'>
-                                    <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
-
-                                    <DropdownList  hasSearch={false} style={{width: 167, left: 16}} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
-                                        {renderList()}
-                                    </DropdownList>
-                                </div>
-
-                                <SeparatorHeader className="mx2 inline-block" />
-                            </>
-                    }
-                    <FoldersFiltering className="right relative" setSelectedFilter={setSelectedFilter} />
-                    {selectedFolder === 'Trash' &&
-                        <Button className='ml2' onClick={() => setEmptyTrashModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>Empty Trash</Button>
-                    }
-                </div>
-            </div>
+            }
             <div className='mb2 col col-12 clearfix xs-show'>
                 <div className='col flex items-center mb2 col-12'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -496,15 +503,16 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <ContentSection>
                 <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
                     <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
-                    <FolderRow isSelected={selectedFolder === 'Library'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Library'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
                         <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Unsorted'} className=' ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
                     </FolderRow>
-                    <FolderRow isSelected={selectedFolder === 'Trash'} className='p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
+                    <FolderRow isSelected={selectedFolder === 'Trash'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
                         <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
                     </FolderRow>
+                    <Divider />
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>

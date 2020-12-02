@@ -34,5 +34,3 @@ export interface GetAnalyticsRevenueOptions {
     endDate: number;
     selectedContents: string[];
 }
-
-

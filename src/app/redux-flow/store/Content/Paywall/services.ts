@@ -20,7 +20,6 @@ const getContentPaywallPrices = async (contentId: string, contentType: string) =
 }
 
 const createContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
-    debugger
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     let parsedPrice = null
     if(data.priceType === 'Subscription') {

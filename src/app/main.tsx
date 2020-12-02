@@ -10,7 +10,7 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
-TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
+// TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
 
 import { loadReCaptcha } from 'react-recaptcha-v3'
 
@@ -26,8 +26,6 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/custom-hooks/reponsiveNavHook';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -43,6 +41,9 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import ScrollToTop, { useMedia } from '../utils/utils';
+import { updateTitleApp } from './utils/utils';
+import { segmentService } from './utils/services/segment/segmentService';
 
 // Any additional component props go here.
 interface MainProps {
@@ -162,6 +163,7 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
+            segmentService.page('App')
         }
     }, [location])
 
@@ -174,7 +176,9 @@ const AppContent = (props: { routes: any }) => {
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
+        segmentService.load()
     }, [])
+
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
             setOpen(true)
@@ -255,8 +259,9 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     }, [])
 
     if (userToken.isLoggedIn()) {
-        TagManager.dataLayer(
+        TagManager.initialize(
             {
+                gtmId: 'GTM-PHZ3Z7F',
                 dataLayer: {
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),

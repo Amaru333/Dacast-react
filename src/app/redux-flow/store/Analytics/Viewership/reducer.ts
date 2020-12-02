@@ -52,4 +52,3 @@ const reducer: Reducer<AnalyticsViewershipState> = (state = AnalyticsViewershipI
 };
 
 export { reducer as AnalyticsViewershipReducer };
-

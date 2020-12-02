@@ -8,7 +8,20 @@ import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, Stepper
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
-import { useStepperFinalStepAction } from '../../app/utils/utils';
+
+export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
+    const doAThing = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
+        callback()
+    }}
+    React.useEffect(() => {
+        document.getElementById(buttonId).addEventListener('click', doAThing)
+
+        return () => {
+            document.getElementById(buttonId).removeEventListener('click', doAThing)
+        }
+
+    }, [callback])
+}
 
 export const CustomStepper = (props: StepperProps) => {
 

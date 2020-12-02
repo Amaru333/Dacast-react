@@ -8,8 +8,6 @@ import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { CURRENCY } from '../../../constants/Currencies';
-import { presets } from '../../../constants/DatepickerPresets';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 
 var moment = require('moment-timezone');
