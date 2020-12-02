@@ -58,6 +58,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker 
+                    showTimezone={false}
                     defaultTs={promoPreset.startDate}
                     timezone={promoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
@@ -68,7 +69,9 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker 
-                    defaultTs={promoPreset.startDate}
+                    showTimezone={false}
+                    minDate={startDate}
+                    defaultTs={promoPreset.endDate}
                     timezone={promoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"

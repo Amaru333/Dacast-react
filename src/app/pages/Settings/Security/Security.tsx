@@ -201,7 +201,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         
                             
-                                <div className='col col-12 flex items-center'>
+                                <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
                                         dropdownTitle="Available"
                                         id="dateStart"
@@ -212,10 +212,12 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         showTimezone={true}
                                     />
                                 </div>
-                                <div className='col col-12 flex items-center'>
+                                {console.log(startTime)}
+                                <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
                                         dropdownTitle="Until"
-                                        id="dateStart"
+                                        id="dateEnd"
+                                        minDate={startTime ? startTime : undefined}
                                         hideOption="Forever"
                                         callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setEndTime(ts); setEndTimezone(tz) }}
                                         defaultTs={props.securityDetails.contentScheduling.endTime}

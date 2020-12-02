@@ -99,6 +99,7 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
                 <DateTimePicker 
+                    showTimezone={false}
                     defaultTs={groupPromo.startDate}
                     timezone={groupPromo.timezone}
                     callback={(ts: number) => setStartDate(ts)}
@@ -109,7 +110,9 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
                 <DateTimePicker 
-                    defaultTs={groupPromo.startDate}
+                     showTimezone={false}
+                     defaultTs={groupPromo.endDate}
+                     minDate={startDate}
                     timezone={groupPromo.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
