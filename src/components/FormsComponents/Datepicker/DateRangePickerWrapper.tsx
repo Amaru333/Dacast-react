@@ -19,6 +19,9 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
         callback ? callback(dates) : null;
     }, [dates])
 
+    React.useEffect(() => {
+        props.dates ? setDates(props.dates) : null
+    }, [props.dates])
     return (
         <div className='noTransition' {...other}>
             <DateRangePicker 
