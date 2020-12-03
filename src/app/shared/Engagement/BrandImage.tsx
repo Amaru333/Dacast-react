@@ -67,10 +67,6 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
         props.deleteContentImage(props.contentId, props.contentType);
     }
 
-    React.useEffect(() => {
-        props.setLocalEngagementSettings({...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, ads: props.contentEngagementSettings.engagementSettings.adsSettings.ads}})
-    }, [props.contentType ? props.contentEngagementSettings.engagementSettings.adsSettings.ads : props.globalEngagementSettings.adsSettings.ads])
-
     const handleBrandImageLockChange = () => {
         if (!props.localEngagementSettings.brandImageSettings.locked) {
             props.handleSectionRevert('brandImage')
