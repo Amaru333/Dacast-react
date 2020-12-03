@@ -23,8 +23,8 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                         title="Concurrent Viewers"
                         options={{ fill: false, curve: 0 }}
                         lines={[{ data: props.data.viewersByTime.data, label: "Viewers", color: ThemeAnalyticsColors.blue }]}
-                        labels={props.data.viewersByTime.labels} />
-
+                        labels={props.data.viewersByTime.labels}
+                        step={1} />
                 </AnalyticsCard>
             </div>
             <div className={HalfSmFullXs}>
@@ -35,8 +35,8 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                         title="Plays"
                         options={{ fill: false, curve: 0 }}
                         lines={[{ data: props.data.playsByTime.data, label: "Plays", color: ThemeAnalyticsColors.blue }]}
-                        labels={props.data.playsByTime.labels} />
-
+                        labels={props.data.playsByTime.labels} 
+                        step={1}/>
                 </AnalyticsCard>
             </div>
 
@@ -47,9 +47,10 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
                 >
                     <BarChart
                         type="vertical"
-                        title="Watch Duration by device"
-                        dataSets={[{ data: props.data.watchByDevice.data, label: "Plays", color: ThemeAnalyticsColors.blue }]}
-                        labels={props.data.watchByDevice.labels} />
+                        title="Play Duration by device"
+                        dataSets={[{ data: props.data.watchByDevice.data, label: "Time (seconds)", color: ThemeAnalyticsColors.blue }]}
+                        labels={props.data.watchByDevice.labels} 
+                        />
                 </AnalyticsCard>
             </div>
             <div className={HalfSmFullXs}>

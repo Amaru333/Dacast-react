@@ -23,7 +23,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_WEEK':
                 return tsToLocaleDate(value);
             case 'CUSTOM':
-                let index = response.results.findIndex(obj => obj.data_dimension.includes("TIME"));
+                let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
                 if(index >= 0) {
                     if(response.results[index].data.length) {
                         if(response.results[index].data[0].dimension_type.type === "HOURLY") {
@@ -39,16 +39,17 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 } else {
                     return tsToLocaleDate(value);
                 }
+            case 'LAST_5_MINUTES':
             case 'LAST_24_HOURS':
             case 'LAST_15_MINUTES':
             case 'LAST_30_MINUTES':
             case 'LAST_45_MINUTES':
             case 'LAST_HOUR':
-            case 'LAST_2_HOURS':
-            case 'LAST_5_MINUTES':
-            case 'LAST_90_MINUTES':
                 return tsToLocaleDate(value, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-        }
+            case 'LAST_2_HOURS':
+            case 'LAST_90_MINUTES':
+                return tsToLocaleDate(value, { hour: '2-digit' });
+            }
     }
 
     /**
@@ -137,26 +138,29 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_15_MINUTES':
                 var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -30);
+                var current = dateAdd(stopDate, 'minute', -15);
+                return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_30_MINUTES':
                 var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -45);
+                var current = dateAdd(stopDate, 'minute', -30);
+                return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_45_MINUTES':
                 var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -60);
+                stopDate = dateAdd(stopDate, 'minute', (stopDate.getMinutes() % 5)* -1 );
+                var current = dateAdd(stopDate, 'minute', -45);
+                return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_HOUR':
                 var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -90);
-            case 'LAST_2_HOURS':
-                var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -135);
+                var current = dateAdd(stopDate, 'hour', -1);
+                return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_5_MINUTES':
                 var stopDate = new Date();
                 var current = dateAdd(stopDate, 'minute', -15);
             case 'LAST_90_MINUTES':
                 var stopDate = new Date();
-                var current = dateAdd(stopDate, 'minute', -105);
-                return getLabels(current, stopDate, '5_MINUTES')
+                stopDate = dateAdd(stopDate, 'minute', (stopDate.getMinutes() % 5)* -1 );
+                var current = dateAdd(stopDate, 'minute', -90);
+                return getLabels(current, stopDate, 'HOURLY' )
             case 'CUSTOM':
                 var stopDate = new Date(data.end);
                 var current = new Date(data.start);
@@ -175,6 +179,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 } else {
                     type = 'DAY';
                 }
+                console.log(type)
                 return getLabels(current, stopDate, type)
         }
     }
@@ -215,7 +220,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     if (!metric.data.length) {
                         realTimeData.watchByDevice = { data: [], labels: [] }
                     } else {
-                        realTimeData.watchByDevice = { data: [], labels: labels }
+                        realTimeData.watchByDevice = { data: [], labels: [] }
                         metric.data.forEach(data => {
                             realTimeData.watchByDevice = {
                                 labels: [...(realTimeData.watchByDevice ? realTimeData.watchByDevice.labels : []), ...(!realTimeData.watchByDevice || realTimeData.watchByDevice.labels.indexOf(data.dimension_type.value.toString()) < 0 ? [data.dimension_type.value.toString()] : [])],
@@ -225,26 +230,24 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                     }
                     break;
                 case 'PLAYS_BY_COUNTRY':
-                    if (!metric.data.length) {
+                    if (!metric.data.length || !realTimeData.playsByLocation) {
                         realTimeData.playsByLocation = { data: [] }
-                    } else {
-                        metric.data.forEach(data => {
-                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                            if (assosiatedCountry) {
-                                realTimeData.playsByLocation = {
-                                    data: [...(realTimeData.playsByLocation ? realTimeData.playsByLocation.data : []), {
-                                        city: assosiatedCountry["\"Country\""],
-                                        position: {
-                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
-                                        },
-                                        value: data.dimension_sum
-                                    }],
-                                }
+                    } 
+                    metric.data.forEach(data => {
+                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
+                        if (assosiatedCountry) {
+                            realTimeData.playsByLocation = {
+                                data: [...(realTimeData.playsByLocation ? realTimeData.playsByLocation.data : []), {
+                                    city: assosiatedCountry["\"Country\""],
+                                    position: {
+                                        latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
+                                        longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                    },
+                                    value: [data.dimension_sum]
+                                }],
                             }
-                        })
-
-                    }
+                        }
+                    })
                     break;
             }
         })
