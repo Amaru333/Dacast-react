@@ -9,12 +9,9 @@ import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
-import TagManager from 'react-gtm-module'
 
 const history = createBrowserHistory();
-import {
-    isMobile
-} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 // Import Main styles for this application
 import "../scss/style.scss";
@@ -250,43 +247,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             </React.Fragment>
         )
     }
-
-    if (userToken.isLoggedIn()) {
-        TagManager.initialize(
-            {
-                gtmId: 'GTM-PHZ3Z7F',
-                dataLayer: {
-                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
-                    'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                    'userEmail': userToken.getUserInfoItem('email'),
-                }, 
-                // dataLayerName: 'Uapp'
-            });
-    }
-
-    React.useEffect(() => {
-        if(store.getState().account.plan) {
-            TagManager.dataLayer(
-                {
-                    dataLayer: {
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                    }, 
-                    // dataLayerName: 'Uapp'
-                });
-        }
-    }, [store.getState().account.plan])
 
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
