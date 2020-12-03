@@ -16,7 +16,7 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?:
     }, [props.date])
 
     React.useEffect(() => {
-        if(props.minDate && props.minDate.diff(props.date) > 0) {
+        if(props.minDate && props.minDate.diff(date) > 0 && !isNaN(props.minDate.diff(date)) ) {
             setDate(props.minDate)
         }
     }, [props.minDate])

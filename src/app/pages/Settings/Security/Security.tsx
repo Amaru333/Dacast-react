@@ -21,29 +21,23 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../../utils/DropdownLists';
-
-var momentTZ = require('moment-timezone')
+import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
-
-    const initTimestampValues = (ts: number, timezone: string): {date: string; time: string} => {
-        if(ts > 0 ) {
-            return {date: momentTZ(ts).tz(timezone).format('YYYY-MM-DD'), time: momentTZ(ts).tz(timezone).format('HH:mm:ss')}
-        } 
-        return {date: moment().toString(), time: '00:00'}
-    }
 
     const [geoRestrictionModalOpened, setGeoRestrictionModalOpened] = React.useState<boolean>(false)
     const [domainControlModalOpened, setDomainControlModalOpened] = React.useState<boolean>(false)
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.securityDetails.passwordProtection && props.securityDetails.passwordProtection.password ? true : false)
-    const [startDateTime, setStartDateTime] = React.useState<string>(props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Until');
-    const [endDateTime, setEndDateTime] = React.useState<string>(props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever');
     const [securityDetails, setSecurityDetails] = React.useState<SecuritySettings>(props.securityDetails)
     const [displayFormActionButtons, setDisplayformActionButtons] = React.useState<boolean>(false)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
-    const [startDateTimeValue, setStartDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.startTime, props.securityDetails.contentScheduling.startTimezone).date, time: initTimestampValues(props.securityDetails.contentScheduling.startTime, props.securityDetails.contentScheduling.startTimezone).time, timezone: props.securityDetails.contentScheduling.startTimezone ? props.securityDetails.contentScheduling.startTimezone : momentTZ.tz.guess()})
-    const [endDateTimeValue, setEndDateTimeValue] = React.useState<{date: string; time: string; timezone: string;}>({date: initTimestampValues(props.securityDetails.contentScheduling.endTime, props.securityDetails.contentScheduling.endTimezone).date, time: initTimestampValues(props.securityDetails.contentScheduling.endTime, props.securityDetails.contentScheduling.endTimezone).time, timezone: props.securityDetails.contentScheduling.endTimezone ? props.securityDetails.contentScheduling.endTimezone : momentTZ.tz.guess()})
+
+    const [startTime, setStartTime] = React.useState<number>(props.securityDetails.contentScheduling.startTime)
+    const [startTimezone, setStartTimezone] = React.useState<string>(props.securityDetails.contentScheduling.startTimezone)
+
+    const [endTime, setEndTime] = React.useState<number>(props.securityDetails.contentScheduling.endTime)
+    const [endTimezone, setEndTimezone] = React.useState<string>(props.securityDetails.contentScheduling.endTimezone)
 
     React.useEffect(() => {
         if (props.securityDetails !== securityDetails) {
@@ -58,17 +52,15 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const onSubmit = () => {
         setSubmitLoading(true);
-        let startTimeTs = (startDateTime === 'Set Date and Time') ?  momentTZ.tz(`${startDateTimeValue.date} ${startDateTimeValue.time}`, `${startDateTimeValue.timezone.split(' ')[0]}`).valueOf() : 0
-        let endTimeTs = (endDateTime === 'Set Date and Time') ? momentTZ.tz(`${endDateTimeValue.date} ${endDateTimeValue.time}`, `${endDateTimeValue.timezone.split(' ')[0]}`).valueOf() : 0
         props.saveSettingsSecurityOptions(
             {
                 ...securityDetails, 
                 passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
                 contentScheduling: {
-                    startTime:startTimeTs, 
-                    startTimezone: startDateTime === 'Set Date and Time' ? startDateTimeValue.timezone.split(' ')[0] : null,
-                    endTime: endTimeTs,
-                    endTimezone: endDateTime === 'Set Date and Time' ? endDateTimeValue.timezone.split(' ')[0] : null
+                    startTime: startTime, 
+                    startTimezone: startTimezone,
+                    endTime: endTime,
+                    endTimezone: endTimezone
                 } 
             }).then(() => {
                 setSubmitLoading(false);
@@ -207,68 +199,29 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         
                             
-                                <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-12 md-col-3 mb2 mr2' id="availableStart" dropdownTitle="Available" dropdownDefaultSelect={props.securityDetails.contentScheduling.startTime > 0 ? 'Set Date and Time' : 'Always'} list={availableStartDropdownList} callback={(item: DropdownSingleListItem) => { setDisplayformActionButtons(true);setStartDateTime(item.title) }} />
-                                    {startDateTime === "Set Date and Time" &&
-                                        <>
-                                            <DateSinglePickerWrapper
-                                                date={moment(startDateTimeValue.date)}
-                                                callback={(date: string) => { setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, date: date}) }}
-                                                className='col col-6 md-col-3 mr2 mt2' />
-                                            <Input
-                                                type='time'
-                                                defaultValue={startDateTimeValue.time}
-                                                onChange={(event) =>{ setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, time: event.currentTarget.value})} }
-                                                className='col col-6 md-col-2 mt2'
-                                                disabled={false}
-                                                id='endTime'
-                                                pattern="[0-9]{2}:[0-9]{2}"
-                                                required
-                                            />
-
-                                            <DropdownSingle 
-                                                hasSearch 
-                                                id='startDateTimezoneDropdown' 
-                                                dropdownDefaultSelect={startDateTimeValue.timezone} 
-                                                className='col col-3 px2 mb2' 
-                                                dropdownTitle='Timezone' 
-                                                callback={(item: DropdownSingleListItem) => {setDisplayformActionButtons(true);setStartDateTimeValue({...startDateTimeValue, timezone: item.title.split(' ')[0]})}} 
-                                                list={timezoneDropdownList} 
-                                            />  
-                                        </>
-                                    }
+                                <div className='col col-12 mb2 flex items-end'>
+                                    <DateTimePicker 
+                                        dropdownTitle="Available"
+                                        id="dateStart"
+                                        hideOption="Always"
+                                        callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setStartTime(ts); setStartTimezone(tz) }}
+                                        defaultTs={props.securityDetails.contentScheduling.startTime}
+                                        timezone={props.securityDetails.contentScheduling.startTimezone}
+                                        showTimezone={true}
+                                    />
                                 </div>
-                                <div className='col col-12 flex items-center'>
-                                    <DropdownSingle className='col col-4 md-col-3 mb2 mr2' id="availableEnd" dropdownTitle="Until" dropdownDefaultSelect={props.securityDetails.contentScheduling.endTime > 0 ? 'Set Date and Time' : 'Forever'} list={availableEndDropdownList} callback={(item: DropdownSingleListItem) => { setDisplayformActionButtons(true);setEndDateTime(item.title) }} />
-
-                                    {
-                                        endDateTime === "Set Date and Time" &&
-                                        <>
-                                            <DateSinglePickerWrapper
-                                                date={moment(endDateTimeValue.date)}
-                                                callback={(date: string) => { setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, date: date}) }}
-                                                className='col col-4 md-col-3 mr2 mt2' />
-                                            <Input
-                                                type='time'
-                                                defaultValue={endDateTimeValue.time}
-                                                onChange={(event) => {setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, time: event.currentTarget.value})}}
-                                                className='col col-3 md-col-2 mt2'
-                                                disabled={false}
-                                                id='endTime'
-                                                pattern="[0-9]{2}:[0-9]{2}"
-                                                required
-                                            />
-                                            <DropdownSingle 
-                                                hasSearch 
-                                                id='endDateTimezoneDropdown' 
-                                                dropdownDefaultSelect={endDateTimeValue.timezone} 
-                                                className='col col-3 px2 mb2' 
-                                                dropdownTitle='Timezone' 
-                                                callback={(item: DropdownSingleListItem) => {setDisplayformActionButtons(true);setEndDateTimeValue({...endDateTimeValue, timezone: item.title.split(' ')[0]})}} 
-                                                list={timezoneDropdownList} 
-                                            />
-                                        </>
-                                    }
+                                {console.log(startTime)}
+                                <div className='col col-12 mb2 flex items-end'>
+                                    <DateTimePicker 
+                                        dropdownTitle="Until"
+                                        id="dateEnd"
+                                        minDate={startTime ? startTime : undefined}
+                                        hideOption="Forever"
+                                        callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setEndTime(ts); setEndTimezone(tz) }}
+                                        defaultTs={props.securityDetails.contentScheduling.endTime}
+                                        timezone={props.securityDetails.contentScheduling.startTimezone}
+                                        showTimezone={true}
+                                    />
                                 </div>
                             
                         
