@@ -10,9 +10,6 @@ import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 import TagManager from 'react-gtm-module'
-// TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
-
-import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
 import {
@@ -254,10 +251,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         )
     }
 
-    React.useEffect(() => {
-        loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
-    }, [])
-
     if (userToken.isLoggedIn()) {
         TagManager.initialize(
             {
@@ -275,6 +268,25 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 // dataLayerName: 'Uapp'
             });
     }
+
+    React.useEffect(() => {
+        if(store.getState().account.plan) {
+            TagManager.dataLayer(
+                {
+                    dataLayer: {
+                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'companyName': userToken.getUserInfoItem('custom:website'),
+                        'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
+                        'signedUp': 'Unknown yet',
+                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                        'userEmail': userToken.getUserInfoItem('email'),
+                    }, 
+                    // dataLayerName: 'Uapp'
+                });
+        }
+    }, [store.getState().account.plan])
 
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')

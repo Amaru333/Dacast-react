@@ -13,6 +13,7 @@ import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 import moment from 'moment';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface ContentAnalyticsProps {
     contentId: string,
@@ -36,7 +37,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: moment().valueOf(), start: moment().subtract(1, 'week').valueOf() } } )
-    const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_15_MINUTES')
+    const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_45_MINUTES')
 
     const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -121,7 +122,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         { title: "Watch Duration", data: "watch-duration" },
         { title: "Sales & Revenue", data: "sales" },
         // { title: "Engagement", data: "engagement" },
-        // ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
+        ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
 
 

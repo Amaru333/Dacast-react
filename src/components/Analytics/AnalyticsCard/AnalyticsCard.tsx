@@ -44,7 +44,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     </div>
                     { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
-                <AnalyticsCardBody>
+                <AnalyticsCardBody table={props.showTable}>
                     { props.tabs ? props.tabs[selectedTab].content() : props.children}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
@@ -75,9 +75,10 @@ const AnalyticsCardHeader = styled.div<{}>`
     justify-content: space-between;
 `
 
-const AnalyticsCardBody = styled.div<{}>`
+const AnalyticsCardBody = styled.div<{table: boolean}>`
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    
+    width: ${props => props.table ? '80%' : '100%'};
     position: relative;
 `

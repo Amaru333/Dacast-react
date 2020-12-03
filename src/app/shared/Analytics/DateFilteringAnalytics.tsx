@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from '../../../components/FormsComponents/Button/Button'
-import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 import moment from 'moment';
@@ -20,18 +19,6 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     var { showPreset, callback, defaultDates, ...other } = props;
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
 
-    const handleOutsideRange = (day: any): boolean => {
-        let isDateOutOfRange: boolean = false
-        if(props.allowOustsideDate) {
-            return isDateOutOfRange
-        }
-        if(props.minDate) {
-            isDateOutOfRange = props.minDate.diff(day) > 0
-            return isDateOutOfRange
-        }
-        isDateOutOfRange = moment().diff(day) > 0
-        return isDateOutOfRange
-    }
     const renderDatePresets = () => {
         return showPreset ? (
             <div>

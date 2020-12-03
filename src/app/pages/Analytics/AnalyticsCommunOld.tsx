@@ -149,27 +149,34 @@ export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>)
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: { end: number; start: number }, refreshData: Function }) => {
 
     const [dates, setDates] = React.useState<{ start: any; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
+    const [selectedPreset, setSelectedPreset] = React.useState<string>('Last 24 Hours')
 
     const formateDateFromDatepicker = (dates: { startDate: any; endDate: any }) => {
         return { startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x') }
     }
 
+
+
     const renderDatePresets = () => {
         return presets ? (
             <div>
                 {presets.map(({ text, start, end }) => {
-                    return (
-                        <Button
-                            key={text}
-                            className='ml1 mb2'
-                            typeButton='secondary'
-                            buttonColor='blue'
-                            sizeButton='small'
-                            onClick={() => setDates({ start, end })}
-                        >
-                            {text}
-                        </Button>
-                    );
+                    if(text !== 'Custom') {
+                        return (
+                            <Button
+                                key={text}
+                                className='ml1 mb2'
+                                typeButton='secondary'
+                                buttonColor='blue'
+                                sizeButton='small'
+                                focusState={selectedPreset === text}
+                                onClick={() => { setSelectedPreset(text); setDates({ start, end })} }
+                            >
+                                {text}
+                            </Button>
+                        );
+                    }
+                    
                 })}
             </div>
         )
@@ -179,7 +186,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div className="col col-12 mb25 clearfix">
             {renderDatePresets()}
-            <DateRangePickerWrapper disabled dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" presets={presets} />
+            <DateRangePickerWrapper disabled dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" />
             <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )

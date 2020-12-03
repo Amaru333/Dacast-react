@@ -18,7 +18,8 @@ export interface LineChartProps {
     lines: BaseItemAnalytics[],
     labels: (string | number)[],
     title: string,
-    options?: BaseOptions
+    options?: BaseOptions;
+    step?: number;
 }
 
 export interface BarChartProps {
