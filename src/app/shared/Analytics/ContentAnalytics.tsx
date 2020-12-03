@@ -13,6 +13,7 @@ import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 import moment from 'moment';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface ContentAnalyticsProps {
     contentId: string,
@@ -121,7 +122,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         { title: "Watch Duration", data: "watch-duration" },
         { title: "Sales & Revenue", data: "sales" },
         // { title: "Engagement", data: "engagement" },
-        // ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
+        ...(props.contentType === "live" &&  userToken.getUserInfoItem('impersonatedUserIdentifier') ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
 
 
