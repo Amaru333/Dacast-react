@@ -446,7 +446,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                             if (!salesData || !salesData.salesRevenuesByLocation) {
                                 salesData.salesRevenuesByLocation = { data: [], table: [] }
                             }
-                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-3code\""] === data.dimension_type.value);
+                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                             if (assosiatedCountry) {
                                 let index = salesData.salesRevenuesByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
                                 let indexTable = salesData.salesRevenuesByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
@@ -465,7 +465,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                             label: [type]
                                         }
                                         ],
-                                        table: [...( salesData.salesRevenuesByLocation ?  salesData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  revenues: type === 'revenues' ? data.dimension_sum : 0, sales: type === 'sales' ? data.dimension_sum : 0 }  ]
+                                        table: [...( salesData.salesRevenuesByLocation ?  salesData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
                                     }
                                 } else {
                                     salesData.salesRevenuesByLocation.data[index].value.push(data.dimension_sum)
