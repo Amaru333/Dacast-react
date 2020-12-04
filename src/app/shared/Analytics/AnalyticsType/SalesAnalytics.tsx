@@ -25,6 +25,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 options={ {rightYAxes: true} }
                 type="vertical"
                 unitRight="$"
+                step={1}
                 dataSets={ [
                         {data: props.data.salesRevenuesByTime.sales, label: "Sales", color: ThemeAnalyticsColors.blue, type: 'bar' }, 
                         {data: props.data.salesRevenuesByTime.revenues, label: "Revenue", color: ThemeAnalyticsColors.yellow, type: "line", yAxisPosition: "right" } 
@@ -48,7 +49,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         return (
             <LeafletMap 
                 markers={props.data.salesRevenuesByLocation.data} 
-                markerNameTranform={ (element) => element.city+": $"+element.value } />
+                markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value + (element.label[index] === "revenues" ? "$" : "") +" "+element.label[index] }).join() } />
         )
     }
 
@@ -57,6 +58,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
             <AnalyticsCard
                 title="Sales & Revenue by"
                 showTable={true}
+                csvType="Sales&Revenues"
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },

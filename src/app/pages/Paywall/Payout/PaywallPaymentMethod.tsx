@@ -332,11 +332,11 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         <div className='col col-12 sm-col-11 mt2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' 
-                                id='swiftBic' 
+                                id='swift' 
                                 defaultValue={paymentMethodData ? paymentMethodData.swift : ''} 
                                 label='SWIFT/BIC' 
                                 placeholder='SWIFT/BIC' 
-                                {...handleValidationForm('swiftBic', errors)}
+                                {...handleValidationForm('swift', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('swift', event.currentTarget.value)} 
                             />

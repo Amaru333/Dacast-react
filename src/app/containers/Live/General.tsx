@@ -164,7 +164,7 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                                     </LinkBoxLabel>
                                                     <LinkBox>
                                                         <LinkText size={14} weight="reg">{stateContentDetails.primaryPublishURL}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => { logAmplitudeEvent("setup encoder"); updateClipboard(stateContentDetails.primaryPublishURL, "Copied to clipboard") } }>file_copy</IconStyle>
+                                                        <IconStyle className='pointer' onClick={() => {updateClipboard(stateContentDetails.primaryPublishURL, "Copied to clipboard");logAmplitudeEvent("setup encoder") } }>file_copy</IconStyle>
                                                     </LinkBox>
                                                 </LinkBoxContainer>
                                                 <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>

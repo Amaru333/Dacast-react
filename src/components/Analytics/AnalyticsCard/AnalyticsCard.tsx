@@ -1,8 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
-import { ActionIcon, IconStyle } from '../../../shared/Common/Icon';
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
-import { Tooltip } from '../../Tooltip/Tooltip';
 import { Text } from '../../../components/Typography/Text';
 import styled from 'styled-components';
 import { Card } from '../../Card/Card';
@@ -15,7 +12,8 @@ export interface AnalyticsCardProps {
     tabs?: { [name: string]: TabAnalytics },
     title: string,
     infoText?: string,
-    showTable?: boolean
+    showTable?: boolean,
+    csvType?: string
 }
 
 type TabAnalytics = {
@@ -27,7 +25,7 @@ type TabAnalytics = {
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & AnalyticsCardProps) => {
 
     const exportCsvAnalytics = () => {
-        exportCSVFile(props.tabs[selectedTab].table.data, selectedTab, props.tabs[selectedTab].table.header.map(element => element.Header));
+        exportCSVFile(props.tabs[selectedTab].table.header.map(element => element.Header), props.tabs[selectedTab].table.data, props.csvType+'-'+selectedTab);
     }
     const tabsList: Routes[] = props.tabs ? Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } }) : [];
     const [selectedTab, setSelectedTab] = React.useState<string>(props.tabs? tabsList[0].name : "")
@@ -46,7 +44,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     </div>
                     { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
-                <AnalyticsCardBody>
+                <AnalyticsCardBody table={props.showTable}>
                     { props.tabs ? props.tabs[selectedTab].content() : props.children}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
@@ -77,9 +75,10 @@ const AnalyticsCardHeader = styled.div<{}>`
     justify-content: space-between;
 `
 
-const AnalyticsCardBody = styled.div<{}>`
+const AnalyticsCardBody = styled.div<{table: boolean}>`
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    
+    width: ${props => props.table ? '80%' : '100%'};
     position: relative;
 `

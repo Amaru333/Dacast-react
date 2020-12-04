@@ -7,10 +7,10 @@ import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 import { EmptyAnalytics } from './EmptyAnalytics';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
-const zoom: number = 2;
+const zoom: number = 1;
 
 
-const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem) => string }) => {
+const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem, index: number) => string }) => {
 
   if(!props.markers.length) {
     return (
@@ -36,12 +36,12 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
     return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
   }
 
-  let max = Math.max(...props.markers.map(k => k.value));
-  let min = Math.min(...props.markers.map(k => k.value));
+  let max = Math.max(...props.markers.map(k => k.value[0]));
+  let min = Math.min(...props.markers.map(k => k.value[0]));
 
   const renderMarkers = () => {
     return props.markers.map((element, index) => {
-      let lerpPercent = logScale(element.value, 0, max, 100, 1000);
+      let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
       lerpPercent -= 100;
       lerpPercent /= 1000;
 
@@ -51,7 +51,7 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
           color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
         >
           <Popup>
-            {props.markerNameTranform(element)}
+            {props.markerNameTranform(element, index)}
           </Popup>
         </CircleMarker>)
     })
@@ -59,8 +59,9 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
 
   return (
     <>
-      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }}>
+      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }} minZoom={2}  >
         <TileLayer
+          noWrap={true}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
         //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
@@ -68,12 +69,12 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
         {renderMarkers()}
       </Map>
       <div className="flex mt2 justify-center">
-        <a className="mr2">{min}</a>
+        <span className="mr2">{min}</span>
         <div style={{ backgroundColor: '#93d5ed', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#45a5f5', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#4285f4', height: '20px', width: '30px' }}></div>
         <div style={{ backgroundColor: '#2f5ec4', height: '20px', width: '30px' }}></div>
-        <a className="ml2">{max}</a>
+        <span className="ml2">{max}</span>
       </div>
     </>)
 

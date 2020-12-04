@@ -13,12 +13,13 @@ import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 import moment from 'moment';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface ContentAnalyticsProps {
     contentId: string,
     contentType: ContentAnalyticsTypes,
     getContentAnalytics: (options: ContentAnalyticsParameters) => Promise<void>,
-    contentAnalyticsData: ContentAnalyticsFinalState
+    contentAnalyticsData: ContentAnalyticsFinalState;
 }
 
 export type ContentAnalyticsTypes = 'live' | 'vod';
@@ -36,7 +37,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: moment().valueOf(), start: moment().subtract(1, 'week').valueOf() } } )
-    const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_15_MINUTES')
+    const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_45_MINUTES')
 
     const [loading, setLoading] = React.useState<boolean>(false)
 
@@ -45,17 +46,22 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     React.useEffect(() => {
         if(loaded.current) {
-            setLoading(true)
-            props.getContentAnalytics({
-                id: props.contentId,
-                dimension: TabsDimensionLink[currentTab],
-                timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick.timeRange,
-                type: props.contentType,
-                start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
-                end: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.end : undefined,
-            }).then(() => {
-                setLoading(false)
-            })
+            if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
+
+            } else {
+                setLoading(true)
+                props.getContentAnalytics({
+                    id: props.contentId,
+                    dimension: TabsDimensionLink[currentTab],
+                    timeRange: currentTab === 'real-time' ? realTimeRangePick : timeRangePick.timeRange,
+                    type: props.contentType,
+                    start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
+                    end: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.end : undefined,
+                }).then(() => {
+                    setLoading(false)
+                })
+            }
+            
         } else {
             loaded.current = true;
         }
@@ -71,6 +77,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 return (
                     <DateFilteringAnalytics
                         selectedPreset={timeRangePick.timeRange}
+                        isDisabled={loading}
                         className='col col-9'
                         defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                         callback={(info) => { setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) } }

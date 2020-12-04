@@ -15,11 +15,10 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
 
 
     const returnTimeAnalytics = () => {
-        console.log([ {data: props.data.watchByTime.data, label: "Watch Duration", type:"bar", color: ThemeAnalyticsColors.blue}])
         return (
             <BarChart
                 title="Watch Duration by Time"
-                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.watchByTime.labels}
                 unit="s" />
         )
@@ -47,6 +46,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
             <AnalyticsCard
                 title="Watch Duration by"
                 showTable={true}
+                csvType='WatchDuration'
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },
