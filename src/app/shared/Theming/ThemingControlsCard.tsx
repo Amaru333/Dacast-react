@@ -121,7 +121,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
-
+    console.log(props.contentType)
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
@@ -350,27 +350,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </>
                             }
 
-                            {
-                                (props.contentType === 'live' || props.contentType === 'settings') &&
-                                <>
-                                    <Divider className="p1" />
-
-                                    <DisabledSection enabled={liveEnabled}>
-                                        <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
-
-                                        <ControlToggleContainer>
-                                            <xptToggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
-                                            <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
-                                            <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
-                                        </ControlToggleContainer>
-                                        {
-                                            selectedTheme.isViewerCounterEnabled &&
-                                            <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value) }); }} />
-                                        }
-                                    </DisabledSection>
-                                </>
-                            }
-
 
                             {
                                 (props.contentType === 'playlist' || props.contentType === 'settings') &&
@@ -393,10 +372,31 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip leftPositionValueToZero target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
+                                    
+            
+                                </>
+                            }
 
+                            {
+                                
+                                <>
                                     <Divider className="p1" />
 
-                                    
+                                    <DisabledSection enabled={liveEnabled}>
+                                        <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
+
+                                        <ControlToggleContainer>
+                                            <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
+                                            <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
+                                            <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
+                                        </ControlToggleContainer>
+                                        {
+                                            selectedTheme.isViewerCounterEnabled &&
+                                            <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value) }); }} />
+                                        }
+                                    </DisabledSection>
+
+                                    <Divider className="p1" />
                                     <DisabledSection enabled={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
@@ -410,6 +410,8 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                         <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
                                     </DisabledSection>
+
+
                                 </>
                             }
 
