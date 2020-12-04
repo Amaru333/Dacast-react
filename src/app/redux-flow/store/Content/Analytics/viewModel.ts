@@ -138,10 +138,12 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return getLabels(current, stopDate, 'HOURLY')
             case 'LAST_15_MINUTES':
                 var stopDate = new Date();
+                stopDate = dateAdd(stopDate, 'minute', (stopDate.getMinutes() % 5)* -1 );
                 var current = dateAdd(stopDate, 'minute', -15);
                 return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_30_MINUTES':
                 var stopDate = new Date();
+                stopDate = dateAdd(stopDate, 'minute', (stopDate.getMinutes() % 5)* -1 );
                 var current = dateAdd(stopDate, 'minute', -30);
                 return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_45_MINUTES':
@@ -151,6 +153,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_HOUR':
                 var stopDate = new Date();
+                stopDate = dateAdd(stopDate, 'minute', (stopDate.getMinutes() % 5)* -1 );
                 var current = dateAdd(stopDate, 'hour', -1);
                 return getLabels(current, stopDate, '5_MINUTES' )
             case 'LAST_5_MINUTES':
