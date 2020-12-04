@@ -113,8 +113,8 @@ const Header = (props: HeaderProps) => {
                         'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
                     }, 
                     // dataLayerName: 'Uapp'
@@ -144,6 +144,20 @@ const Header = (props: HeaderProps) => {
         if(props.ProfileInfo) {
             setAvatarFirstName(props.ProfileInfo.firstName)
             setAvatarLastName(props.ProfileInfo.lastName)
+            TagManager.dataLayer(
+                {
+                    dataLayer: {
+                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'companyName': userToken.getUserInfoItem('custom:website'),
+                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'signedUp': 'Unknown yet',
+                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userFirstName': props.ProfileInfo.firstName,
+                        'userLastName': props.ProfileInfo.lastName,
+                        'userEmail': userToken.getUserInfoItem('email'),
+                    }, 
+                    // dataLayerName: 'Uapp'
+                });
         }
 
     }, [props.ProfileInfo])
