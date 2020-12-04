@@ -131,8 +131,8 @@ const Header = (props: HeaderProps) => {
                         'plan': props.billingInfo.currentPlan.displayName,
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
                     }, 
                     // dataLayerName: 'Uapp'
