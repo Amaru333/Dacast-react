@@ -9,7 +9,7 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (value: PlaybackProtection) => void; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<string>('50');
 
-    const playbackProtectionDropdownList = [{title: "50"}, {title: "100"}, {title: "250"}, {title: "500"}, {title: "1000"}, {title: "2000"}, {title: "5000"}]
+    const playbackProtectionDropdownList = [{title: "Disable Protection"}, {title: "50"}, {title: "100"}, {title: "250"}, {title: "500"}, {title: "1000"}, {title: "2000"}, {title: "5000"}]
 
     const ProtectionModalTableData = [
         {
