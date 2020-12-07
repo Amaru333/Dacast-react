@@ -253,7 +253,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             </RecurlyProvider>
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <DisableProtectionModal
-                    billingInfos={props.billingInfos}
+                    price={props.billingInfos.playbackProtection.price}
                     editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
                     setDisableProtectionModalOpened={setDisableProtectionModalOpened}
                     setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 

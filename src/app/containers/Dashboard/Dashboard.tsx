@@ -14,6 +14,7 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction } from '../../redux-flow/store/Account/Plan';
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
+import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -33,6 +34,24 @@ const Dashboard = (props: DashboardProps) => {
     }, [])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
+    const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
+
+    const handlePlaybackProtectionValue = (value: string) => {
+
+        let playbackProtectionData: PlaybackProtection = {enabled: true, amount: parseInt(value), price: props.infos.playbackProtection.price}
+
+        if(value === "Disable Protection"){
+            setProtectionModalOpened(false);
+            setDisableProtectionModalOpened(true);
+        } else {
+            if(props.infos.playbackProtection.enabled){
+                props.editBillingPagePaymenPlaybackProtection(playbackProtectionData);
+            } else {
+                props.addBillingPagePaymenPlaybackProtection(playbackProtectionData)
+            }
+
+        }
+    }
 
 
     const renderDashboard = () => {
@@ -45,9 +64,16 @@ const Dashboard = (props: DashboardProps) => {
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={props.infos.playbackProtection.enabled ? props.editBillingPagePaymenPlaybackProtection : props.addBillingPagePaymenPlaybackProtection} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
+                            <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
                         </Modal>
-                    } 
+                    }
+                    <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
+                <DisableProtectionModal
+                    price={props.infos.playbackProtection.price}
+                    editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                    setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                />
+            </Modal>
                     <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
                 </>
             )
