@@ -122,14 +122,31 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
             </div>
             <div className='flex flex-column'>
                 <Text className='pt2' size={20} weight='med'>Flags</Text>
+                <div className='flex mb2 mt1'>
                 <InputCheckbox 
                     id='bannedFlag' 
-                    className='mb2 mt1'
+                    className='mx1'
                     defaultChecked={accountDetails.isBanned} 
                     onChange={() => {setAccountDetails({...accountDetails, isBanned: !accountDetails.isBanned});setAccountInfo({...accountInfo, isBanned: Object.keys(accountInfo).indexOf('isBanned') > -1 ? !accountInfo.isBanned : !accountDetails.isBanned})}}
                     label='Banned'
                     disabled={props.accountInfo.isBanned}
                 />
+                <InputCheckbox 
+                    id='adultFlag' 
+                    className='mx1'
+                    defaultChecked={accountDetails.isAdult} 
+                    onChange={() => {setAccountDetails({...accountDetails, isAdult: !accountDetails.isAdult});setAccountInfo({...accountInfo, isAdult: Object.keys(accountInfo).indexOf('isAdult') > -1 ? !accountInfo.isAdult : !accountDetails.isAdult})}}
+                    label='Adult'
+                />
+                <InputCheckbox 
+                    id='testFlag' 
+                    className='mx1'
+                    defaultChecked={accountDetails.isTest} 
+                    onChange={() => {setAccountDetails({...accountDetails, isTest: !accountDetails.isTest});setAccountInfo({...accountInfo, isTest: Object.keys(accountInfo).indexOf('isTest') > -1 ? !accountInfo.isTest : !accountDetails.isTest})}}
+                    label='Test'
+                />
+                </div>
+
             </div>
 
             {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>
