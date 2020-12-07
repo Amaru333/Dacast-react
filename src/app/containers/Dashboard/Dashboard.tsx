@@ -11,13 +11,15 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction } from '../../redux-flow/store/Account/Plan';
+import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction, getBillingPageInfosAction, BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
 
 export interface DashboardProps {
     infos: DashboardInfos;
+    billingInfo: BillingPageInfos;
+    getBillingPageInfos: () => Promise<void>
     getDashboardDetails: () => Promise<void>;
     getDashboardVodPlayRate: (jobID: string) => Promise<void>;
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
@@ -26,11 +28,11 @@ export interface DashboardProps {
 
 const Dashboard = (props: DashboardProps) => {
 
-    const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [profileDataisFetching, setProfileDataIsFetching] = React.useState<boolean>(true)
+    const [billingDataisFetching, setBillingDataIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
-        props.getDashboardDetails()
-        .then(() => setIsFetching(false))
+        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
     }, [])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
@@ -58,7 +60,7 @@ const Dashboard = (props: DashboardProps) => {
         if (props.infos.currentPlan.displayName !== "Free" && props.infos.currentPlan.displayName !== "30 Day Trial") {
             return (
                 <>
-                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
+                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.billingInfo.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
                     {
@@ -91,7 +93,7 @@ const Dashboard = (props: DashboardProps) => {
     return (
         <>
             {
-                !isFetching ?
+                (props.infos && props.billingInfo) ?
                     <>
                         {renderDashboard()}
                         <div className="clearfix"></div>
@@ -105,7 +107,8 @@ const Dashboard = (props: DashboardProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        infos: state.dashboard.data
+        infos: state.dashboard.data,
+        billingInfo: state.account.plan
     };
 }
 
@@ -113,6 +116,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getDashboardDetails: async () => {
             await dispatch(getDashboardDetailsAction());
+        },
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction());
         },
         getDashboardVodPlayRate: async (jobID: string) => {
             await dispatch(getDashboardVodPlayRateAction(jobID));

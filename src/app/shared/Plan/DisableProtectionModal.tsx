@@ -9,7 +9,7 @@ export const DisableProtectionModal = (props: {price: number; editBillingPagePay
     const handleConfirm = () => {
         props.editBillingPagePaymenPlaybackProtection({enabled: false, amount: null, price: props.price}).then(() => {
             props.setDisableProtectionModalOpened(false)
-            props.setPlaybackProtectionEnabled(false)
+            props.setPlaybackProtectionEnabled && props.setPlaybackProtectionEnabled(false)
         })
         
     }
