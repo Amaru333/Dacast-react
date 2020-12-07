@@ -18,7 +18,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
         switch (data.timeRange) {
             case 'YEAR_TO_DATE':
             case 'LAST_6_MONTHS':
-                return tsToLocaleDate(value, { month: '2-digit', year: 'numeric' });
+                return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
             case 'LAST_MONTH':
             case 'LAST_WEEK':
                 return tsToLocaleDate(value);
@@ -27,17 +27,17 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 if(index >= 0) {
                     if(response.results[index].data.length) {
                         if(response.results[index].data[0].dimension_type.type === "HOURLY") {
-                            return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit' });
+                            return tsToLocaleDate(value, { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
                         } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
-                            return tsToLocaleDate(value, { month: '2-digit', year: 'numeric' });
+                            return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                         } else {
                             return tsToLocaleDate(value);
                         }
                     } else {
-                        return tsToLocaleDate(value);
+                        return tsToLocaleDate(value, {timeZone: 'UTC'});
                     }
                 } else {
-                    return tsToLocaleDate(value);
+                    return tsToLocaleDate(value, {timeZone: 'UTC'});
                 }
             case 'LAST_5_MINUTES':
             case 'LAST_24_HOURS':
@@ -45,10 +45,10 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_30_MINUTES':
             case 'LAST_45_MINUTES':
             case 'LAST_HOUR':
-                return tsToLocaleDate(value, { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+                return tsToLocaleDate(value, { timeZone: 'UTC', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
             case 'LAST_2_HOURS':
             case 'LAST_90_MINUTES':
-                return tsToLocaleDate(value, { hour: '2-digit' });
+                return tsToLocaleDate(value, { hour: '2-digit', timeZone: 'UTC' });
             }
     }
 
