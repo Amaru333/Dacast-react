@@ -27,8 +27,10 @@ export interface Account {
         allocated: number;
         consumed: number;
     };
-    flags: Flag[];
-    isBanned: boolean;
+    isBanned: boolean | null;
+    isAdult: boolean | null;
+    isTest: boolean | null;
+    isPlaybackBlocked: boolean | null;
 }
 
 export const accountsListInitialState: {users: Account[]; total: number} | false = false

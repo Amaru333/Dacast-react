@@ -13,7 +13,7 @@ import { GroupsReducer } from './Groups/reducer';
 
 export const paywallInitialState: PaywallState = {
     payout: false,
-    transactions: false,
+    transactions: null,
     paywallSettings: false, 
     presets: false,
     theming: false,
@@ -22,7 +22,7 @@ export const paywallInitialState: PaywallState = {
 
 export interface PaywallState {
     payout: false | PayoutInfos;
-    transactions: false | TransactionsInfo;
+    transactions: TransactionsInfo;
     paywallSettings: false | PaywallSettingsInfos;
     presets: false | PresetsPageInfos;
     theming: false | PaywallThemingData;

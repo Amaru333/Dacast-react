@@ -6,34 +6,15 @@ const reducer: Reducer<SecuritySettings> = (state = defaultStateSettingsSecurity
     let geoRestrictionsList: GeoRestriction[] = []
     let domainControlsList: DomainControl[] = []
     switch (action.type) {
-        case ActionTypes.GET_SETTINGS_SECURITY_OPTIONS :
-            geoRestrictionsList.push(defaultGeoRestriction)
-            if(action.payload.data.geoRestriction) {
-                geoRestrictionsList.push(...action.payload.data.geoRestriction)
-                if(geoRestrictionsList.filter(g => g.isDefault).length > 1) {
-                    geoRestrictionsList[0].isDefault = false
-                }
-            }
-            domainControlsList.push(defaultDomainControl)
-            if(action.payload.data.geoRestriction) {
-                domainControlsList.push(...action.payload.data.domainControl)
-                if(domainControlsList.filter(g => g.isDefault).length > 1) {
-                    domainControlsList[0].isDefault = false
-                }
-            }
+        case ActionTypes.GET_SETTINGS_SECURITY_OPTIONS:
             return {
                 ...state,
-                ...action.payload.data,
-                passwordProtection: {
-                    password: action.payload.data.passwordProtection.password ? action.payload.data.passwordProtection.password : ""
-                },
-                geoRestriction: geoRestrictionsList,
-                domainControl: domainControlsList
+                ...action.payload
             }
         case ActionTypes.SAVE_SETTINGS_SECURITY_OPTIONS:
             return {
                 ...state,
-                ...action.payload,
+                ...action.payload
             }
         case ActionTypes.CREATE_GEO_RESTRICTION_GROUP:
             geoRestrictionsList = state.geoRestriction

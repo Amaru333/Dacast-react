@@ -71,7 +71,7 @@ export const Tab = (props: TabProps) => {
                             key={tab.name}                              
                             orientation={orientation} 
                             selected={selectedTab === tab.name} 
-                            onClick={() => {; setSelectedTab(tab.name);props.callback(tab.name)}}
+                            onClick={() => {setSelectedTab(tab.name);props.callback(tab.name)}}
                         >
                             <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.name ? 'med' : 'reg'}  color={selectedTab === tab.name ? "dark-violet" : "gray-1"}>{tab.name}</Text>
                         </TabStyle>

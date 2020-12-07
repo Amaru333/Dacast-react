@@ -61,6 +61,8 @@ import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
+import ActivatedAccount from '../containers/Register/ActivatedAccount';
+
 
 export const AppRoutes: Routes[] = [   
     {
@@ -96,7 +98,7 @@ export const AppRoutes: Routes[] = [
         name: 'account-activated',
         notDisplayedInNavigation: true,
         isPublic: true,
-        component: ActivatedAccountPage
+        component: ActivatedAccount
     },
     {
         path:'/forgot-password',

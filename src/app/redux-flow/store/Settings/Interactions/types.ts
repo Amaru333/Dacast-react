@@ -19,12 +19,16 @@ export interface MailCatcher {
     position: string;
 }
 
+export type AdType = 'Pre-roll' | 'Mid-roll' | 'Post-roll' 
+
 export interface Ad {
     id?: string;
-    "ad-type": string;
+    "ad-type"?: string;
     timestamp: number;
     url: string;
+    type?: AdType
 }
+
 
 export const interactionsDefaultState: EngagementInfo = {
     brandTextSettings: null,
@@ -37,7 +41,7 @@ export const interactionsDefaultState: EngagementInfo = {
 interface BrandTextSettings {
     brandText: string;
     brandTextLink: string;
-    isBrandTextAsTitle?: boolean;
+    isBrandTextAsTitle: boolean;
     locked: boolean;
 }
 

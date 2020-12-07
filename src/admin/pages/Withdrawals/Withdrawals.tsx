@@ -12,6 +12,9 @@ import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
+import { Input } from '../../../components/FormsComponents/Input/Input'
+import { IconStyle } from '../../../shared/Common/Icon'
+import { Button } from '../../../components/FormsComponents/Button/Button'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -22,6 +25,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const [status, setStatus] = React.useState<string>(qs.get('status') ? capitalizeFirstLetter(qs.get('status')) : 'All')
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
 
     const handleImpersonate = (userIdentifier: string) => {
         AccountsServices.impersonate(userIdentifier)
@@ -116,11 +120,35 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
         }
     }
 
+    const handleSubmit = (salesforceId: string) => {
+        if(!contentLoading) {
+            setContentLoading(true)
+            const previousPagination = pagination
+            setPagination({page: 1, nbResults: pagination.nbResults})
+            props.getWithdrawals(`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : ''))
+            .then(() => {
+                query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : ''))
+                setContentLoading(false)
+            })
+            .catch(() => {
+                setPagination(previousPagination)
+                setContentLoading(false)
+            })
+        }
+    }
+
     return props.withdrawals ? 
         <div className='flex flex-column'>
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
             <Tab className='my1 col col-3' orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
-            <Table contentLoading={contentLoading} className='my1' id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
+            <div className='flex my1'>
+                <div className='relative flex items-center mr2'>
+                    <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('')}}><IconStyle>close</IconStyle></div>
+                </div>
+                <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit(accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+            </div>
+            <Table contentLoading={contentLoading} id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
             <Pagination totalResults={props.withdrawals.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>

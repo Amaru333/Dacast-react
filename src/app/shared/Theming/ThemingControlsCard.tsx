@@ -46,7 +46,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
             return props.theme.themes.filter(t => t.themeName === 'default')[0]
         }
     }
-
+    
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
 
     let playerRef = React.useRef<HTMLDivElement>(null)
@@ -121,7 +121,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
-
+    console.log(props.contentType)
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
@@ -142,14 +142,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 }
                             </Text>
                         </div>
-                        <Button
-                            className='right flex items-center'
-                            sizeButton='xs'
-                            typeButton='tertiary'
-                            buttonColor='blue'
-                            onClick={() => { setShowAdvancedPanel(!showAdvancedPanel) }}>
-                            {showAdvancedPanel ? <><IconStyle fontSize='small' coloricon="dark-violet">keyboard_arrow_left</IconStyle><Text size={12} color='dark-violet' weight='reg'>Back</Text></> : 'Advanced'}
-                        </Button>
+            
                     </TitleSection>
                     {showAdvancedPanel ?
                         <>
@@ -186,7 +179,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <Text size={20} weight='med'>Region Settings</Text>
                                     <Button sizeButton='xs' typeButton='secondary' buttonColor='blue' onClick={() => location.href = "/help"}>
                                         Contact Us
-                                </Button>
+                                    </Button>
                                 </TitleSection>
                                 <Text size={14} weight='reg'>Select the PoPs that will cover the countries where your videos will be played.</Text>
                                 <RadioButtonContainer className="mt2">
@@ -313,7 +306,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 <Divider className="p1" />
 
-                                <div className="py2" ><Text size={20} weight='med'>Behaviour</Text></div>
+                                <div className="py2" ><Text size={20} weight='med'>Behavior</Text></div>
 
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Autoplay' checked={selectedTheme.autoplay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, autoplay: !selectedTheme.autoplay }); }} />
@@ -334,21 +327,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                             </DisabledSection>
-                            <Divider className="p1" />
 
-                            <DisabledSection enabled={customEnabled}>
-                                <div className="pt25 flex justify-between">
-                                    <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                    <div>
-                                        <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                        <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                    </div>
-                                </div>
-
-                                <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
-
-                                <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
-                            </DisabledSection>
 
                             {
                                 (props.contentType === 'live' || props.contentType === 'settings') &&
@@ -394,19 +373,45 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         </ControlToggleContainer>
                                     </DisabledSection>
                                     
+            
+                                </>
+                            }
+
+                            {
+                                
+                                <>
+                                    <Divider className="p1" />
+
+                                    <DisabledSection enabled={liveEnabled}>
+                                        <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
+
+                                        <ControlToggleContainer>
+                                            <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />
+                                            <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
+                                            <Tooltip target="viewCounterTooltip">Displays a full timecode in the player, including milliseconds.</Tooltip>
+                                        </ControlToggleContainer>
+                                        {
+                                            selectedTheme.isViewerCounterEnabled &&
+                                            <Input id='viewerCounterInput' type='number' label="Counter Limit" className='' value={selectedTheme.viewerCounterLimit ? selectedTheme.viewerCounterLimit.toString() : ''} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, viewerCounterLimit: parseInt(event.currentTarget.value) }); }} />
+                                        }
+                                    </DisabledSection>
+
+                                    <Divider className="p1" />
                                     <DisabledSection enabled={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>
-                                            <div>
+                                            <ControlToggleContainer>
                                                 <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
                                                 <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
-                                            </div>
+                                            </ControlToggleContainer>
                                         </div>
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
                                         <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
                                     </DisabledSection>
+
+
                                 </>
                             }
 

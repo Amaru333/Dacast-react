@@ -9,6 +9,10 @@ import { useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
+import { Button } from '../../../../components/FormsComponents/Button/Button';
+import { exportCSVFile } from '../../../../utils/services/csv/csvService';
+import { formatGetPaywallTransactionsCsvInput } from '../../../redux-flow/store/Paywall/Transactions/viewModel';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -48,7 +52,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             }
 
             if(filters.currency) {
-                returnedString += '&currency=' + (filters.currency.aud ? 'aud' : '') + (filters.currency.gbp ? ',gbp' : '') + (filters.currency.usd ? ',usd' : '') + (filters.currency.eur ? ',eur&' : '')
+                returnedString += '&currency=' + (filters.currency.aud ? 'aud' : '') + (filters.currency.gbp ? ',gbp' : '') + (filters.currency.usd ? ',usd' : '') + (filters.currency.eur ? ',eur' : '')
             }
 
             if(filters.startDate) {
@@ -72,7 +76,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
 
         if(returnedString.indexOf('currency=&') > -1) {
             returnedString = returnedString.replace('currency=&','')
+            
         }
+        returnedString = returnedString.replace('currency=,','currency=')
 
         // if(returnedString.indexOf('currency') === -1) {
         //     returnedString += 'currency=aud,gbp,usd,eur'
@@ -150,6 +156,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             })
         }
     }
+
+    const handleExportClick = () => {
+        dacastSdk.getPaywallTransactionsCsv(formatGetPaywallTransactionsCsvInput(qsParams))
+        .then((response) => {
+            exportCSVFile(response as string, 'transactions')
+        })
+    }
+
     return (
         <div className='flex flex-column'>
             <div style={{alignItems: 'center'}} className='col col-12 flex justify-end'>
@@ -157,7 +171,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />   
                 </div>
-                {/* <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray'>Export </Button> */}
+                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray' onClick={handleExportClick}>Export </Button>
                 <TransactionsFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} />
             </div>
 

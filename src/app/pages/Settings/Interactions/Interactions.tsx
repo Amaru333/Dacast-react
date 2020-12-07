@@ -16,7 +16,6 @@ import { MailCatcher } from '../../../redux-flow/store/Settings/Interactions';
 import { NewAdModal } from './NewAdModal';
 import { Prompt } from 'react-router';
 import { dataToTimeVideo } from '../../../../utils/formatUtils';
-import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { DisabledSection } from '../../../shared/Security/SecurityStyle';
 import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { ImageStyle, ButtonStyle } from '../../Account/Company/CompanyStyle';
@@ -117,7 +116,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(interactionInfos.brandImageSettings.brandImageURL).then(() => {
+        props.deleteFile().then(() => {
             setTimeout(() => {
                 props.getInteractionsInfos()
             }, 3000)
@@ -142,9 +141,9 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
     }, [props.interactionsInfos])
 
     const handleAdPosition = (ad: Ad) => {
-        if(ad["ad-type"] === "pre-roll"){
+        if(ad.type === "Pre-roll"){
             return "Start"
-        } else if(ad["ad-type"] === "post-roll"){
+        } else if(ad.type === "Post-roll"){
             return "End"
         } else {
             return dataToTimeVideo(ad.timestamp).toString()
@@ -183,7 +182,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item["ad-type"])}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item.type + i} size={14} weight='med'>{item}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>

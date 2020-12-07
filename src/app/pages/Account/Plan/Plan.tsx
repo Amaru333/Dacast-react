@@ -20,6 +20,7 @@ import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataSte
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import { Divider } from '../../../shared/Common/MiscStyle';
+import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -173,7 +174,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     
     return (
         <div>
-            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.overage : false} dataButtonFunction={() => setPurchaseDataOpen(true)} />
+            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.profile} plan={props.plan} overage={props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
             <Card>
                 <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
@@ -251,16 +252,12 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             </Elements>
             </RecurlyProvider>
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
-                <ModalContent>
-                    <div className="mt1">
-                        <Text size={14} weight="reg">If you disable Playback Protection then your content will no longer be viewable if you run out of data.</Text>
-                    </div>
-                    
-                </ModalContent>
-                <ModalFooter>
-                <Button onClick={() => {props.editBillingPagePaymenPlaybackProtection({enabled: false, amount: null, price: props.billingInfos.playbackProtection.price});setDisableProtectionModalOpened(false);setPlaybackProtectionEnabled(false)}}>Confirm</Button>
-                    <Button typeButton="tertiary" onClick={()=> setDisableProtectionModalOpened(false)}>Cancel</Button>
-                </ModalFooter>
+                <DisableProtectionModal
+                    price={props.billingInfos.playbackProtection.price}
+                    editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                    setDisableProtectionModalOpened={setDisableProtectionModalOpened}
+                    setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
+                />
             </Modal>
             {purchaseDataStepperData &&
                 <>

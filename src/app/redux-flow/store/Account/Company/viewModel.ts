@@ -1,6 +1,6 @@
 import { CompanyPageInfos } from './types';
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints } from '../../../../../DacastSdk/account';
-import { PostUploadUrlInput, PostUploadUrlOutput } from '../../../../../DacastSdk/common';
+import { PostUploadUrlInput } from '../../../../../DacastSdk/common';
 import { userToken } from '../../../../utils/services/token/tokenService';
 
 export const formatGetCompanyDetailsOutput = (data: GetCompanyRequestOutput): CompanyPageInfos => {

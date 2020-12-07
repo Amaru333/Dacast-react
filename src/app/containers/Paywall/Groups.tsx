@@ -69,10 +69,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getGroupPrices: async () => {
-            await dispatch(getGroupPricesAction());
+            await dispatch(getGroupPricesAction(undefined));
         },
         getGroupPromos: async () => {
-            await dispatch(getGroupPromosAction());
+            await dispatch(getGroupPromosAction(undefined));
         },
         createGroupPrice: async (data: GroupPrice) => {
             await dispatch(createGroupPriceAction(data));
