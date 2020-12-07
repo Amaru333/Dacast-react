@@ -13,7 +13,6 @@ import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 import moment from 'moment';
-import { userToken } from '../../utils/services/token/tokenService';
 
 export interface ContentAnalyticsProps {
     contentId: string,
