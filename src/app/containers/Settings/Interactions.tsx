@@ -7,6 +7,11 @@ import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions
 import { getSettingsInteractionsInfosAction, Action, EngagementInfo, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
+import { userToken } from '../../utils/services/token/tokenService';
+import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+
 
 export interface SettingsInteractionComponentProps {
     interactionsInfos: EngagementInfo;
@@ -28,19 +33,55 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(props.interactionsInfos)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         props.getInteractionsInfos()
         .catch(() => setNodataFetched(true))
 
     }, [])
 
+    React.useEffect(() => {
+        if(props.interactionsInfos) {
+            setLocalEngagementSettings(props.interactionsInfos)
+        }
+    }, [props.interactionsInfos])
+
+    React.useEffect(() => {
+        console.log("local engagement settings", localEngagementSettings)
+    }, [localEngagementSettings])
+
+
+
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
 
     return (
-        props.interactionsInfos ?
-            <InteractionsPage {...props} />
+        props.interactionsInfos && localEngagementSettings ?
+            <React.Fragment>
+                <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
+                { userToken.getPrivilege('privilege-advertising') &&
+                    <EngagementAdvertising
+                        globalEngagementSettings={props.interactionsInfos}
+                        localEngagementSettings={localEngagementSettings}
+                        setLocalEngagementSettings={setLocalEngagementSettings}
+                        setSettingsEdited={setSettingsEdited}
+                        deleteAd={props.deleteAd}
+                    />
+                }
+                <EngagementBrandImage 
+                    globalEngagementSettings={props.interactionsInfos}
+                    localEngagementSettings={localEngagementSettings}
+                    setLocalEngagementSettings={setLocalEngagementSettings}
+                    setSettingsEdited={setSettingsEdited}
+                    getUploadUrl={props.getUploadUrl}
+                    deleteFile={props.deleteFile}
+                />
+                <InteractionsPage {...props} /> 
+            </React.Fragment>
+            
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }

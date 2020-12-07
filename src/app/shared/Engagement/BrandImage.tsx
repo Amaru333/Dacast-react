@@ -16,7 +16,7 @@ import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/stor
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 
 
-export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, deleteContentImage: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings}) => {
+export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, deleteFile?: (targetId: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings}) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.localEngagementSettings.brandImageSettings.brandImageURL || null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -64,7 +64,9 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteContentImage(props.contentId, props.contentType);
+        // props.contentId ? 
+        // props.deleteContentImage(props.contentId, props.contentType) :
+        props.deleteFile(props.localEngagementSettings.brandImageSettings.brandImageURL)
     }
 
     const handleBrandImageLockChange = () => {
@@ -109,12 +111,15 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
                     <div> 
                         <Text size={20} weight='med'>Brand Image</Text>
                     </div>
-                    <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {handleBrandImageLockChange()}}>
+                    { props.contentType &&
+                        <IconStyle className='pointer' id="unlockBrandImageSectionTooltip" onClick={() => {handleBrandImageLockChange()}}>
                         {!props.localEngagementSettings.brandImageSettings.locked ? "lock_open" : "lock"}
-                    </IconStyle>
+                        </IconStyle>
+                    }
+                    
                 </Header>
                 
-                <DisabledSection settingsEditable={!props.localEngagementSettings.brandImageSettings.locked}>
+                <DisabledSection settingsEditable={!props.localEngagementSettings.brandImageSettings.locked || !props.contentType}>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className="lg-col lg-col-12 mb1 mt25 flex">
                         <div className="lg-col lg-col-6 mr2">

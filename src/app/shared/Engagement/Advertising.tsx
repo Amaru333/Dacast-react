@@ -117,14 +117,18 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                         <div>
                             <Text size={20} weight='med'>Advertising</Text>
                         </div>
-                        <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
-                            {!props.localEngagementSettings.adsSettings.locked ? "lock_open" : "lock"}
-                        </IconStyle>
-                        <Tooltip target="unlockAdSectionTooltip">{!props.localEngagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                        { props.contentType &&
+                            <>
+                                <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
+                                {!props.localEngagementSettings.adsSettings.locked ? "lock_open" : "lock"}
+                            </IconStyle>
+                            <Tooltip target="unlockAdSectionTooltip">{!props.localEngagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                            </>
+                        }
                     </Header>
-                    <DisabledSection settingsEditable={props.globalEngagementSettings.adsSettings.ads.length > 0}>
+                    <DisabledSection settingsEditable={!props.localEngagementSettings.adsSettings.locked || !props.contentType}>
                         <Toggle id='advertisingEnabled' defaultChecked={props.globalEngagementSettings.adsSettings.adsEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, adsEnabled: !props.localEngagementSettings.adsSettings.adsEnabled }}); props.setSettingsEdited(true) }} label='Advertising enabled' />
-                    </DisabledSection>
+                    
                     <Text className="py2" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overridden individually. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex mb2'>
                         <IconStyle className="mr1">info_outlined</IconStyle>
@@ -134,8 +138,9 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
                     </div>
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.globalEngagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
-
+                    </DisabledSection>
                 </Card>
+                
                 <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened &&

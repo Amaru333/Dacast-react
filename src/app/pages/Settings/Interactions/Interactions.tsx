@@ -247,8 +247,8 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
 
     return (
         <div>
-            <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
-            {userToken.getPrivilege('privilege-advertising') &&
+            {/* <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble> */}
+            {/* {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Text className="pb2" size={20} weight='med'>Advertising</Text>
                     <DisabledSection settingsEditable={props.interactionsInfos.adsSettings.ads.length > 0}>
@@ -260,12 +260,11 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
                         <Text size={14} weight='reg' color='gray-3'>Need help creating Ads? Visit the <a href={getKnowledgebaseLink("Ads")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
                     <div className="clearfix mb2">
-                        {/* <Button className='xs-show col mb1 col-12' typeButton='primary' sizeButton='xs' buttonColor='blue' onClick={(event) => { event.preventDefault(); setPreviewModalOpen(true) }}>Preview</Button> */}
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={(event) => { newAd() }}>New Ad</Button>
                     </div>
                     <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.interactionsInfos.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
 
-                </Card>}
+                </Card>} */}
             {/* TODO: MAIL CATCHER
             <Card className='my2'>
                 <div> <Text size={20} weight='med'>Email Catcher</Text></div>
