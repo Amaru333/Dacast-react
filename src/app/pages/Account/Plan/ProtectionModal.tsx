@@ -6,7 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
-export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (value: string) => void; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
+export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (value: PlaybackProtection) => void; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<string>('50');
 
     const playbackProtectionDropdownList = [{title: "50"}, {title: "100"}, {title: "250"}, {title: "500"}, {title: "1000"}, {title: "2000"}, {title: "5000"}]
@@ -53,14 +53,14 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
                     list={playbackProtectionDropdownList}
                     id='amountDropdown'
                     dropdownDefaultSelect={'50'}
-                    callback={(item: DropdownSingleListItem) => setPlaybackProtectionAmount(parseInt(item.title))}
+                    callback={(item: DropdownSingleListItem) => setPlaybackProtectionAmount(item.title)}
                         
                 />
             </div>
                 <Table id='protectionModalTable' headerBackgroundColor="gray-10" body={protectionModalTableBodyElement()} footer={protectionModalTableFooterElement()}/>
                 <Text size={14}  weight="reg" color="gray-1">You will be billed automatically each time you run out of Data.</Text>
             <div className='col col-12 py1'>
-                <Button sizeButton="large" onClick={() => {props.actionButton(playbackProtectionAmount); props.toggle(false)}} typeButton="primary" buttonColor="blue" >{playbackProtectionAmount === "Disable Protection" ? "Disable" : "Enable"}</Button>
+                <Button sizeButton="large" onClick={() => {props.actionButton({...props.playbackProtection, enabled: true, amount: parseInt(playbackProtectionAmount)}); props.toggle(false)}} typeButton="primary" buttonColor="blue" >{playbackProtectionAmount === "Disable Protection" ? "Disable" : "Enable"}</Button>
                 <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
             </div>
             
