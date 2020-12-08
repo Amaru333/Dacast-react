@@ -38,7 +38,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
             {
                 ...data, 
                 paymentMethodType: selectedPaymentMethod, 
-                recipientType: paymentMethodRecipientType
+                recipientType: paymentMethodRecipientType,
+                id: paymentMethodData.id
             }
         )
         .then(() => {
