@@ -47,12 +47,17 @@ export const EngagementBrandText = (props: {localEngagemntSettings: EngagementIn
                     <div>
                         <Text size={20} weight='med'>Brand Text</Text>
                     </div>
-                    <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {handleBrandTextLockChange()}}>
-                        {!props.localEngagemntSettings.brandTextSettings.locked ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockBrandSectionTooltip">{!props.localEngagemntSettings.brandTextSettings.locked ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
+                    {   props.contentType &&
+                        <>
+                            <IconStyle className='pointer' id="unlockBrandSectionTooltip" onClick={() => {handleBrandTextLockChange()}}>
+                            {!props.localEngagemntSettings.brandTextSettings.locked ? "lock_open" : "lock"}
+                            </IconStyle>
+                            <Tooltip target="unlockBrandSectionTooltip">{!props.localEngagemntSettings.brandTextSettings.locked ? "Click to revert Brand Text Settings" : "Click to edit Brand Text Settings"}</Tooltip>
+                        </>
+                    }
+                    
                 </Header>
-                <DisabledSection settingsEditable={!props.localEngagemntSettings.brandTextSettings.locked}>
+                <DisabledSection settingsEditable={!props.contentType || !props.localEngagemntSettings.brandTextSettings.locked}>
                     <Text size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className='flex'>
                         <Input

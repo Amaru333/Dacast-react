@@ -45,12 +45,16 @@ export const EngagementEndScreenText = (props: {localEngagementSettings: Engagem
                     <div>
                         <Text size={20} weight='med'>End Screen Text</Text>
                     </div>
-                    <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {handleEndScreenTextLockChange()}}>
-                        {!props.localEngagementSettings.endScreenSettings.locked ? "lock_open" : "lock"}
-                    </IconStyle>
-                    <Tooltip target="unlockEndScreenSectionTooltip">{!props.localEngagementSettings.endScreenSettings.locked ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
+                    { props.contentType &&
+                        <>
+                            <IconStyle className='pointer' id="unlockEndScreenSectionTooltip" onClick={() => {handleEndScreenTextLockChange()}}>
+                            {!props.localEngagementSettings.endScreenSettings.locked ? "lock_open" : "lock"}
+                            </IconStyle>
+                            <Tooltip target="unlockEndScreenSectionTooltip">{!props.localEngagementSettings.endScreenSettings.locked ? "Click to revert End Screen Text Settings" : "Click to edit End Screen Text Settings"}</Tooltip>
+                        </>
+                    }
                 </Header>
-                <DisabledSection settingsEditable={!props.localEngagementSettings.endScreenSettings.locked}>
+                <DisabledSection settingsEditable={!props.contentType || !props.localEngagementSettings.endScreenSettings.locked}>
                     <Text size={14} weight='reg' color='gray-3'>This will be displayed when the content ends.</Text>
                     <div className='flex'>
                         <Input

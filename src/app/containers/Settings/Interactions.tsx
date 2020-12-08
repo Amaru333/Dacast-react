@@ -11,6 +11,9 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
 import { userToken } from '../../utils/services/token/tokenService';
 import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+import { EngagementBrandText } from '../../shared/Engagement/BrandText';
+import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 
 export interface SettingsInteractionComponentProps {
@@ -79,7 +82,24 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                     getUploadUrl={props.getUploadUrl}
                     deleteFile={props.deleteFile}
                 />
-                <InteractionsPage {...props} /> 
+                <EngagementBrandText 
+                    localEngagemntSettings={localEngagementSettings}
+                    setLocalEngagementSettings={setLocalEngagementSettings}
+                    setSettingsEdited={setSettingsEdited}
+                />
+                <EngagementEndScreenText 
+                    localEngagementSettings={localEngagementSettings}
+                    setLocalEngagementSettings={setLocalEngagementSettings}
+                    setSettingsEdited={setSettingsEdited}
+                />
+                {
+                settingsEdited &&
+                    <div className="mt1">
+                        <Button onClick={() => { props.saveInteractionsInfos(localEngagementSettings); setSettingsEdited(false) }}>Save</Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => { setLocalEngagementSettings(props.interactionsInfos); setSettingsEdited(false) }}>Discard</Button>
+                    </div>
+            }
+                {/* <InteractionsPage {...props} />  */}
             </React.Fragment>
             
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
