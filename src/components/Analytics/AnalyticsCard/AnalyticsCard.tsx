@@ -25,7 +25,7 @@ type TabAnalytics = {
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & AnalyticsCardProps) => {
 
     const exportCsvAnalytics = () => {
-        exportCSVFile(props.tabs[selectedTab].table.header.map(element => element.Header), props.tabs[selectedTab].table.data, props.csvType+'-'+selectedTab);
+        exportCSVFile(props.tabs[selectedTab].table.data, props.csvType+'-'+selectedTab, props.tabs[selectedTab].table.header.map(element => element.Header));
     }
     const tabsList: Routes[] = props.tabs ? Object.keys(props.tabs).map((value: string, index: number) => { return { name: value, path: value } }) : [];
     const [selectedTab, setSelectedTab] = React.useState<string>(props.tabs? tabsList[0].name : "")
