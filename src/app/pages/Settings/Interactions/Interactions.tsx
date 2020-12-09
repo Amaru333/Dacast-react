@@ -182,7 +182,7 @@ export const InteractionsPage = (props: SettingsInteractionComponentProps) => {
         return props.interactionsInfos.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item.type + i} size={14} weight='med'>{item}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item.type + i} size={14} weight='med'>{item.type}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
