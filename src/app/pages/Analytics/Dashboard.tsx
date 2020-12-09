@@ -1,11 +1,11 @@
 import React from 'react';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChartOld } from '../../../components/Analytics/AnalyticsOld/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
-import { CheeseChart } from '../../../components/Analytics/CheeseChart';
+import DoubleLineChartOld from '../../../components/Analytics/AnalyticsOld/DoubleLineChartOld';
+import { CheeseChartOld } from '../../../components/Analytics/AnalyticsOld/CheeseChartOld';
 import ReactTable from "react-table";
 import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashboard';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommunOld';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import moment from 'moment';
@@ -65,7 +65,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                                 props.dashboardAnalytics.data.playtimePerTime.failed ?
                                     <FailedCardAnalytics />
                                     :
-                                    <BarChart
+                                    <BarChartOld
                                         datasetName="Seconds"
                                         beginAtZero={true}
                                         data={props.dashboardAnalytics.data.playtimePerTime.data}
@@ -82,7 +82,7 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
                             props.dashboardAnalytics.data.playsViewersPerTime ?
                                 props.dashboardAnalytics.data.playsViewersPerTime.failed ?
                                     <FailedCardAnalytics /> :
-                                    <DoubleLineChart
+                                    <DoubleLineChartOld
                                         datasetName="Hits"
                                         noDecimals={false}
                                         beginAtZero={true}

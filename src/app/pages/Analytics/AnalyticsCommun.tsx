@@ -21,7 +21,7 @@ export var HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
 export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & { table?: { data: any; columns: any }; infoText: string; title: string; data?: any; dataName?: string; realTime?: boolean }) => {
 
     const exportCsvAnalytics = () => {
-        exportCSVFile(props.data.header, props.data.data, props.dataName + ".csv");
+        exportCSVFile(props.data.data, props.dataName + ".csv", props.data.header);
     }
 
     const [showTable, setShowTable] = React.useState<boolean>(false)

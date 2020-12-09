@@ -9,15 +9,9 @@ import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
-import TagManager from 'react-gtm-module'
-TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
-
-import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
-import {
-    isMobile
-} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 // Import Main styles for this application
 import "../scss/style.scss";
@@ -26,8 +20,6 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from './utils/custom-hooks/reponsiveNavHook';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -43,6 +35,8 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import ScrollToTop, { useMedia } from '../utils/utils';
+import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
 
 // Any additional component props go here.
@@ -252,27 +246,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 <div className="unsavedChangesOverlay"></div>
             </React.Fragment>
         )
-    }
-
-    React.useEffect(() => {
-        loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
-    }, [])
-
-    if (userToken.isLoggedIn()) {
-        TagManager.dataLayer(
-            {
-                dataLayer: {
-                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
-                    'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                    'userEmail': userToken.getUserInfoItem('email'),
-                }, 
-                // dataLayerName: 'Uapp'
-            });
     }
 
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {

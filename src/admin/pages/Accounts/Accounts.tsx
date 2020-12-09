@@ -74,6 +74,30 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                 </IconGreyContainer>
             )
         }
+        if (item.isPlaybackBlocked) {
+            element.push(
+                <IconGreyContainer key={'playbackBlockedFlag' + item.userId} className="mr1" >
+                    <IconStyle fontSize="small" id={"playbackBlockedFlag" + item.userId} coloricon='gray-3'>videocam_off</IconStyle>
+                    <Tooltip target={"playbackBlockedFlag" + item.userId}>Playback blocked</Tooltip>
+                </IconGreyContainer>
+            )
+        }
+        if (item.isTest) {
+            element.push(
+                <IconGreyContainer key={'testFlag' + item.userId} className="mr1" >
+                    <IconStyle fontSize="small" id={"testFlag" + item.userId} coloricon='gray-3'>build</IconStyle>
+                    <Tooltip target={"testFlag" + item.userId}>Test</Tooltip>
+                </IconGreyContainer>
+            )
+        }
+        if (item.isAdult) {
+            element.push(
+                <IconGreyContainer key={'adultFlag' + item.userId} className="mr1" >
+                    <IconStyle fontSize="small" id={"adultFlag" + item.userId} coloricon='gray-3'>visibility_off</IconStyle>
+                    <Tooltip target={"adultFlag" + item.userId}>Adult</Tooltip>
+                </IconGreyContainer>
+            )
+        }
         return element
     }
 

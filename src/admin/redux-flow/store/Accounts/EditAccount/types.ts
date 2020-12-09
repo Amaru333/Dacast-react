@@ -1,5 +1,3 @@
-import { Flag } from '../List/types';
-
 export enum ActionTypes {
     GET_ACCOUNT_INFO = "@@admin_accounts/GET_ACCOUNT_INFO",
     SAVE_ACCOUNT_INFO = "@@admin_accounts/SAVE_ACCOUNT_INFO"
@@ -20,8 +18,9 @@ export interface AccountInfo {
     };
     emailVerified: boolean;
     preferredPlatform: string;
-    accountFlags: Flag[];
     isBanned: boolean;
+    isTest: boolean;
+    isAdult: boolean;
 }
 
 export interface PutAccountInfo {
@@ -39,8 +38,9 @@ export interface PutAccountInfo {
     };
     forceVerifyEmail?: boolean;
     preferredPlatform?: string;
-    accountFlags?: Flag[];
     isBanned?: boolean;
+    isTest?: boolean;
+    isAdult?: boolean;
 }
 
 export const editAccountDefaultState: AccountInfo = null;

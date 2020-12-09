@@ -2,7 +2,7 @@ var numeral = require('numeral');
 import { DateTime, LocaleOptions } from 'luxon';
 
 export const dataToTimeVideo = (value: number) => {
-    if(!value) {return ''}
+    if(!value) {return '00:00:00'}
     if(typeof value === 'string' || value instanceof String) {return value}
     var hours = Math.floor(value / 3600);
     var minutes = Math.floor((value - (hours * 3600)) / 60);

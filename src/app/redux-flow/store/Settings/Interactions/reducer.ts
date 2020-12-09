@@ -7,11 +7,7 @@ const reducer: Reducer<EngagementInfo> = (state = interactionsDefaultState, acti
     switch (action.type) {
         case ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS:
             return {
-                ...action.payload.data,
-                adsSettings: {
-                    ...action.payload.data.adsSettings,
-                    ads: action.payload.data.adsSettings.ads.map((ad: Ad) => {return {...ad, id: ad.url + ad.timestamp + ad["ad-type"]}}) || [],
-                },
+                ...action.payload,
                 mailCatcher: null
             };
         case ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS:
@@ -29,7 +25,7 @@ const reducer: Reducer<EngagementInfo> = (state = interactionsDefaultState, acti
         case ActionTypes.GET_UPLOAD_URL:
             return {
                 ...state,
-               uploadurl: action.payload.data.presignedURL
+               uploadurl: action.payload.presignedURL
             }
         case ActionTypes.UPLOAD_IMAGE:
             return state

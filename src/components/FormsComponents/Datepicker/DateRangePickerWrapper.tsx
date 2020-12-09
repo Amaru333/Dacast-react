@@ -7,45 +7,21 @@ import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 
-export const DateRangePickerWrapper = (props: {presets?: any; callback?: Function; dates: any} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: {startDate: any; endDate: any}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+    
+    const {presets, callback,  ...other} = props;
 
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>(props.dates ? props.dates : {startDate: null, endDate: null})
     const [focusedInput, setFocusedInput] = React.useState<any>(null)
     let mobile = useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
-        props.callback ? props.callback(dates) : null;
+        callback ? callback(dates) : null;
     }, [dates])
 
     React.useEffect(() => {
-        if(props.dates) {
-            setDates(props.dates)
-        }
+        props.dates ? setDates(props.dates) : null
     }, [props.dates])
-    const {presets,  ...other} = props;
-
-    const renderDatePresets = () => {    
-        return props.presets ?(
-            <div>
-                {props.presets.map(({ text, start, end }) => {
-                    return (
-                        <Button
-                            key={text}
-                            className='ml1 mb2'
-                            typeButton='secondary'
-                            buttonColor='blue'
-                            sizeButton='small'
-                            onClick={() => setDates({ startDate: start, endDate: end })}
-                        >
-                            {text}
-                        </Button>
-                    );
-                })}
-            </div>
-        )
-            : null;
-    }
-
     return (
         <div className='noTransition' {...other}>
             <DateRangePicker 
@@ -56,7 +32,6 @@ export const DateRangePickerWrapper = (props: {presets?: any; callback?: Functio
                 navNext={<Icon style={{color:'#58606E', position: 'absolute', top: 23, right: 26}}>keyboard_arrow_right</Icon>}
                 showDefaultInputIcon={false}
                 showClearDates
-                renderCalendarInfo={() => renderDatePresets()}
                 orientation={mobile ? 'vertical' : 'horizontal'}
                 withFullScreenPortal={mobile}
                 inputIconPosition='after'

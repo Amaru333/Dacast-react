@@ -16,13 +16,12 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?:
     }, [props.date])
 
     React.useEffect(() => {
-        if(props.minDate && props.minDate.diff(props.date) > 0) {
+        if(props.minDate && props.minDate.diff(date) > 0 && !isNaN(props.minDate.diff(date)) ) {
             setDate(props.minDate)
         }
     }, [props.minDate])
 
     const handleDateChange = (date: any) => {
-        console.log("triggeres", date)
         if (props.callback && date) {
             props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
         } else {

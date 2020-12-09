@@ -38,5 +38,3 @@ export interface GetAnalyticsViewershipOptions {
     end: number;
     selectedContents: string[];
 }
-
-

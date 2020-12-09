@@ -13,13 +13,12 @@ import { userToken } from './utils/services/token/tokenService';
 const initialState = globalDefaultState;
 export const store = configureStore(initialState);
 
-
 datadogRum.init({
     applicationId: '5d654f30-a9f9-4d7e-9835-74d4cf7ecc0c',
     clientToken: 'pub3b0982b354b89bee2a7b230c2c62a422',
     site: 'datadoghq.com',
 //  service: 'my-web-application',
-    env: 'production',
+//  env: 'production',
 //  version: '1.0.0',
     sampleRate: 100,
     trackInteractions: true

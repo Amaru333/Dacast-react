@@ -6,7 +6,6 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
 import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
-import { useStepperFinalStepAction } from '../../utils/utils';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos, PaymentDetails, DefaultPaymentDetails } from '../../redux-flow/store/Account/Plan/types';
@@ -17,6 +16,21 @@ import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
+
+
+export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
+    const doAThing = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
+        callback()
+    }}
+    React.useEffect(() => {
+        document.getElementById(buttonId).addEventListener('click', doAThing)
+
+        return () => {
+            document.getElementById(buttonId).removeEventListener('click', doAThing)
+        }
+
+    }, [callback])
+}
 
 export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
 

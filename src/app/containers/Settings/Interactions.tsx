@@ -28,7 +28,7 @@ export interface SettingsInteractionComponentProps {
     deleteMailCatcher: Function;
     getUploadUrl: (uploadType: string) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string) => Promise<void>;
-    deleteFile: (targetId: string) => Promise<void>;
+    deleteFile: () => Promise<void>;
 }
 
 
@@ -117,7 +117,7 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getInteractionsInfos: async () => {
-            await dispatch(getSettingsInteractionsInfosAction());
+            await dispatch(getSettingsInteractionsInfosAction(undefined));
         },
         saveInteractionsInfos: async (data: EngagementInfo) => {
             await dispatch(saveSettingsInteractionsInfosAction(data))
@@ -135,10 +135,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(getUploadUrlAction(uploadType))
         },
         uploadFile: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadFileAction(data, uploadUrl))
+            await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
         },
-        deleteFile: async (targetId: string) => {
-            await dispatch(deleteFileAction(targetId))
+        deleteFile: async () => {
+            await dispatch(deleteFileAction(undefined))
         },
         saveMailCatcher: (data: MailCatcher) => {
             dispatch(saveMailCatcherAction(data))

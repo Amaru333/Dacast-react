@@ -16,7 +16,7 @@ export const defaultGeoRestriction: GeoRestriction = {
     name: 'All Countries',
     isDefault: true,
     values: [],
-    restrictionType: 'geo-restriction'
+    // restrictionType: 'geo-restriction'
 }
 
 export const defaultDomainControl: DomainControl = {
@@ -24,7 +24,7 @@ export const defaultDomainControl: DomainControl = {
     name: 'All Referrers',
     isDefault: true,
     values: [],
-    restrictionType: 'domain-restriction'
+    // restrictionType: 'domain-restriction'
 }
 
 
@@ -33,7 +33,7 @@ export interface GeoRestriction {
     name: string;
     isDefault: boolean;
     values: string[];
-    restrictionType: 'geo-restriction';
+    // restrictionType: 'geo-restriction';
 }
 
 export interface DomainControl {
@@ -41,7 +41,7 @@ export interface DomainControl {
     name: string;
     isDefault: boolean;
     values: string[];
-    restrictionType: 'domain-restriction';
+    // restrictionType: 'domain-restriction';
 }
 
 export interface PasswordProtectedVideo {

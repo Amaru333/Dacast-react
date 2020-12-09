@@ -31,6 +31,10 @@ export const ButtonStyle = styled.button<ButtonProps>`
    cursor: pointer;   
   };
 
+  ${props => (props.focusState) && css`
+      background: ${props => (props.typeButton == "primary") ? props.theme.colors[props.colorObject!.primaryFocusColor] : props.theme.colors[props.colorObject!.focusColor] };
+  `}
+
   &:focus {
     background: ${props => (props.typeButton == "primary") ? props.theme.colors[props.colorObject!.primaryFocusColor] : props.theme.colors[props.colorObject!.focusColor] };
   };
@@ -51,5 +55,8 @@ export const ButtonStyle = styled.button<ButtonProps>`
         background: white;
         color: ${props.theme.colors["gray-5"]};
     `};
+    ${props => (props.focusState) && css`
+        background: ${props => (props.typeButton == "primary") ? props.theme.colors[props.colorObject!.primaryFocusColor] : props.theme.colors[props.colorObject!.focusColor] };
+    `}
     }
 `;
