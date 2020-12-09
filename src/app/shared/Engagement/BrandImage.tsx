@@ -16,7 +16,7 @@ import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/stor
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 
 
-export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, deleteFile?: (targetId: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings}) => {
+export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, uploadFile: (data: File, uploadUrl: string) => Promise<void>, getEngagementSettings: () => Promise<void>, deleteFile?: (targetId: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings}) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.localEngagementSettings.brandImageSettings.brandImageURL || null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -53,6 +53,17 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
             setErrorMessage('File provided was not an image, please retry')
         }
     }
+
+    React.useEffect(() => {
+        if(props.globalEngagementSettings.uploadurl) {
+            props.uploadFile(logoFile, props.globalEngagementSettings.uploadurl).then(() => {
+                setUploadButtonLoading(false)
+                setTimeout(() => {
+                    props.getEngagementSettings()
+                }, 3000)
+            })
+        }
+    }, [props.globalEngagementSettings.uploadurl])
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
