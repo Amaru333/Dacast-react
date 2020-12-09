@@ -1,6 +1,6 @@
 import React from 'react';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { Ad } from '../../../redux-flow/store/Settings/Interactions/types';
+import { Ad, EngagementInfo } from '../../../redux-flow/store/Settings/Interactions/types';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -10,7 +10,7 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
 
 
-export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (b: boolean) => void; selectedAd: number}) => {
+export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[]) => Promise<void>; saveAd: (data: Ad[]) => Promise<void>;}) => {
 
     const emptyAd: Ad = { 
         id: "-1",
@@ -19,17 +19,17 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         url: ""
     }
 
-    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
+    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     React.useEffect(() => {
-        setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
+        setAdData(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
 
     
 
     const defineAdAction = () => {
         setButtonLoading(true)
-        let tempArray: Ad[] = props.interactionsInfos.adsSettings.ads
+        let tempArray: Ad[] = props.localEngagementSettings.adsSettings.ads
         var newAdData: Ad = {...adData};
         newAdData.timestamp = adData["ad-type"] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {

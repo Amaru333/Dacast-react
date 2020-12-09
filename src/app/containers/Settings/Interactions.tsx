@@ -72,6 +72,8 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                         setLocalEngagementSettings={setLocalEngagementSettings}
                         setSettingsEdited={setSettingsEdited}
                         deleteAd={props.deleteAd}
+                        createAd={props.createAd}
+                        saveAd={props.saveAd} 
                     />
                 }
                 <EngagementBrandImage 

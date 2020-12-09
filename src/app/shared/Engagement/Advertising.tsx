@@ -16,7 +16,7 @@ import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
 
-export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[]) => Promise<void>, handleSectionRevert?: (section: string) => void, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
+export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[]) => Promise<void>, createAd: (data: Ad[]) => Promise<void>, saveAd: (data: Ad[]) => Promise<void>, handleSectionRevert?: (section: string) => void, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
 
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -144,7 +144,13 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                 <Modal className='x-visible'  hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd === -1 ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
                     newAdModalOpened &&
-                        <NewAdModal {...props} toggle={setNewAdModalOpened} selectedAd={selectedAd} />
+                        <NewAdModal 
+                            toggle={setNewAdModalOpened} 
+                            selectedAd={selectedAd}
+                            localEngagementSettings={props.localEngagementSettings}
+                            createAd={props.createAd}
+                            saveAd={props.saveAd} 
+                        />
                 }
             </Modal>
             </React.Fragment>
