@@ -21,10 +21,14 @@ export const LoginPage = (props: LoginComponentProps) => {
 
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [migratedUserMessage, setMigratedUserMessage] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if (query.get('email')) {
             props.confirmEmail(query.get('email'))
+        }
+        if (query.get('from') && query.get('from') === 'legacy') {
+            setMigratedUserMessage(true)
         }
     }, [])
 
@@ -70,6 +74,14 @@ export const LoginPage = (props: LoginComponentProps) => {
                     <Bubble hidden={!props.loginInfos || (props.loginInfos && !props.loginInfos.error)} type='error' className='my2'>
                         Unable to sign in. Please check your details and try again.
                     </Bubble>
+                    {
+                        migratedUserMessage && 
+                        <Bubble type='info' className='my2'>
+                            <span>You have been upgraded to our new customer portal.</span>
+                            <br/>
+                            <span>Please login here and start using the new Dashboard</span>                    
+                        </Bubble>
+                    }
                     <ModalFooter>
                         <Button isLoading={buttonLoading} disabled={!enableSubmit()} sizeButton="large"  type="submit" typeButton="primary">Log In</Button>
                     </ModalFooter>
