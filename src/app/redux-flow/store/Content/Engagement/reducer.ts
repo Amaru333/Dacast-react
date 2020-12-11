@@ -15,7 +15,7 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                             ...action.payload.engagementSettings,
                             adsSettings: {
                                 ...action.payload.engagementSettings.adsSettings,
-                                ads: action.payload.engagementSettings.adsSettings.ads.map((ad) => { return { ...ad, id: ad.url + ad.timestamp + ad["ad-type"] } }) || [],
+                                ads: action.payload.engagementSettings.adsSettings.ads.map((ad) => { return { ...ad, id: ad.url + ad.timestamp + ad["ad-type"], type: ad["ad-type"] } }) || [],
                             },
                             mailCatcher: null
                         }
