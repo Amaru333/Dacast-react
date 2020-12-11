@@ -9,7 +9,7 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
 
 
-export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[]) => Promise<void>; saveAd: (data: Ad[]) => Promise<void>;}) => {
+export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, contentType?: string, contentId?: string}) => {
 
     const emptyAd: Ad = { 
         id: "-1",
@@ -27,13 +27,14 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
     
 
     const defineAdAction = () => {
+
         setButtonLoading(true)
         let tempArray: Ad[] = props.localEngagementSettings.adsSettings.ads
         var newAdData: Ad = {...adData};
         newAdData.timestamp = adData.type === 'Mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
             tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData.type})
-            props.createAd(tempArray).then(() => {
+            props.createAd(tempArray, props.contentId, props.contentType).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             }).catch(() => setButtonLoading(false))

@@ -410,8 +410,8 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
     return (
         <div>
-            <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
-            {userToken.getPrivilege('privilege-advertising') &&
+            {/* <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble> */}
+            {/* {userToken.getPrivilege('privilege-advertising') &&
                 <Card className='my2'>
                     <Header className="mb2">
                         <div>
@@ -443,7 +443,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
 
                     </DisabledSection>
                 </Card>
-            }
+            } */}
 
             {/* <Card className='my2'>
                 <Header className="mb2">

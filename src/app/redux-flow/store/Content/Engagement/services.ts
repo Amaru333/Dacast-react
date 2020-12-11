@@ -19,7 +19,9 @@ const lockSection = async (lockedSection: string, contentId: string, contentType
 const saveContentAd = async (data: Ad[], contentId: string, contentType: string) => {
     return await axiosClient.put(`${contentType}/${contentId}/settings/engagement/ads`,
         {
-            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, 
+            url: ad.url, 
+            ["ad-type"]: ad.type.toLowerCase()}}),
         }
     )
 }

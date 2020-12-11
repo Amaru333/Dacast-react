@@ -11,19 +11,30 @@ import { dataToTimeVideo } from '../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { NewAdModal } from '../../pages/Settings/Interactions/NewAdModal';
-import { Ad, EngagementInfo } from '../../redux-flow/store/Settings/Interactions';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions';
 import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
 
-export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[]) => Promise<void>, createAd: (data: Ad[]) => Promise<void>, saveAd: (data: Ad[]) => Promise<void>, handleSectionRevert?: (section: string) => void, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
+export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
 
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
 
+    console.log('local engagement settings', props.localEngagementSettings)
+
     const handleAdsLockChange = () => {
         if (!props.localEngagementSettings.adsSettings.locked) {
-            props.handleSectionRevert('ads')
+            props.lockSection('ads', props.contentId, props.contentType).then(() => {
+                props.setLocalEngagementSettings({
+                    ...props.localEngagementSettings,
+                    adsSettings: {
+                        locked: true,
+                        adsEnabled: props.globalEngagementSettings.adsSettings.adsEnabled, 
+                        ads: props.globalEngagementSettings.adsSettings.ads
+                    }
+                })
+            })
         } else {
             props.setSettingsEdited(true)
             props.lockSection('ads', props.contentId, props.contentType, true).then(() => {
@@ -60,7 +71,7 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
     }
 
     const advertisingTableHeader = () => {
-        if (props.globalEngagementSettings.adsSettings.ads.length > 0) {
+        if (props.localEngagementSettings.adsSettings.ads.length > 0) {
             return {
                 data: [
                     { cell: <Text key='advertisingTableHeaderPlacement' size={14} weight='med'>Placement</Text> },
@@ -87,10 +98,10 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
     }
 
     const advertisingTableBody = () => {
-        return props.globalEngagementSettings.adsSettings.ads.map((item, i) => {
+        return props.localEngagementSettings.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item["ad-type"])}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item.type)}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
@@ -137,7 +148,7 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                     <div className="clearfix mb2">
                         <Button className="xs-show col col-12" typeButton='secondary' sizeButton='xs' buttonColor='blue' onClick={() => { newAd() }}>New Ad</Button>
                     </div>
-                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.globalEngagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
+                    <Table id='advertisingTable' headerBackgroundColor="gray-10" header={advertisingTableHeader()} body={props.localEngagementSettings.adsSettings.ads.length > 0 ? advertisingTableBody() : emptyContentListBody("Create a new Ad before enabling Advertising")} />
                     </DisabledSection>
                 </Card>
                 
@@ -149,7 +160,9 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                             selectedAd={selectedAd}
                             localEngagementSettings={props.localEngagementSettings}
                             createAd={props.createAd}
-                            saveAd={props.saveAd} 
+                            saveAd={props.saveAd}
+                            contentType={props.contentType}
+                            contentId={props.contentId} 
                         />
                 }
             </Modal>

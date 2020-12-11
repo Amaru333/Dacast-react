@@ -3,7 +3,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
@@ -14,21 +14,37 @@ import { Action, getContentEngagementSettingsAction, saveContentEngagementSettin
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
+import { userToken } from '../../utils/services/token/tokenService';
+import RealTime from '../Analytics/RealTime';
 
 export const VodEngagement = (props: ContentEngagementComponentProps) => {
 
     let { vodId } = useParams()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if (!props.globalEngagementSettings){
             props.getGlobalEngagementSettings()
             .catch(() => setNodataFetched(true))
         }
-        props.getContentEngagementSettings(vodId, 'vod')
+        if (!localEngagementSettings) {
+            props.getContentEngagementSettings(vodId, 'vod')
         .catch(() => setNodataFetched(true))
-
+        }
     }, [])
+
+    React.useEffect(() => {
+        if ((props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId])) {
+            setLocalEngagementSettings(props.contentEngagementState['vod'][vodId].engagementSettings)
+        }
+    }, [props.contentEngagementState])
+
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
@@ -38,8 +54,24 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId] && props.globalEngagementSettings?
+                props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId] && props.globalEngagementSettings && localEngagementSettings ?
                     <div className='flex flex-column'>
+                        <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
+                        { userToken.getPrivilege('privilege-advertising') &&
+                            <EngagementAdvertising 
+                            globalEngagementSettings={props.globalEngagementSettings}
+                            localEngagementSettings={localEngagementSettings}
+                            setLocalEngagementSettings={setLocalEngagementSettings}
+                            setSettingsEdited={setSettingsEdited}
+                            deleteAd={props.deleteContentAd}
+                            createAd={props.createContentAd}
+                            saveAd={props.saveContentAd}
+                            lockSection={props.lockSection}
+                            contentId={vodId}
+                            contentType="vod"
+                        />
+                        }
+                        
                         <ContentEngagementPage
                             contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
                             getContentEngagementSettings={props.getContentEngagementSettings}
