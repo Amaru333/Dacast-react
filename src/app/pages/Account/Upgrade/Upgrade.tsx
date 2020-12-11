@@ -23,6 +23,8 @@ import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { segmentService } from '../../../utils/services/segment/segmentService';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -58,7 +60,13 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepperPlanOpened(false)
                 setPaymentSuccessfulModalOpened(true)
                 setCurrentPlan(stepperData.name)
-                EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
+                EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)            
+                segmentService.track('Upgrade Form Completed', {
+                    action: 'Payment Form Submitted',
+                    'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'plan_name': stepperData.name,
+                    step: 4,
+                })  
             }
         })
         .catch((error) => {
@@ -79,6 +87,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             setThreeDSecureActive(false)
             setCurrentPlan(stepperData.name)
             EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
+            segmentService.track('Upgrade Form Completed', {
+                action: 'Payment Form Submitted',
+                'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                'plan_name': stepperData.name,
+                step: 4,
+            })  
         })
         .catch(() => {
             setIsLoading(false);
@@ -102,7 +116,22 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 setStepTitles(['Features', 'Cart', 'Payment'])
                 break;
         }
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Clicked',
+            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'plan_name': plan,
+            step: 1,
+        })  
         setStepperPlanOpened(true)
+    }
+
+    const handleContactUsButtonClick = () => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Contact Us Clicked',
+            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            step: 1,
+        })  
+        history.push('/help')
     }
 
     return (
@@ -154,7 +183,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             {/* <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
                                                 <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Annual Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Annual Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
@@ -191,7 +220,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column">
                                                     {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(fullSteps);setStepperPlanOpened(true)}}>Customize</Button> */}
                                                     <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'Event'} sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.eventPlan }); handleSteps('event') }}>{currentPlan === 'Event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
@@ -266,7 +295,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                         </div>
-                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => history.push('/help')}>Contact Us</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact Us</ButtonStyle>
 
                                     </PlanInfosContainer>
                                 </Card>
@@ -388,7 +417,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                         </>
-                                        <ButtonStyle className='absolute bottom-0 mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { }}>Contact Us</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0 mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact Us</ButtonStyle>
 
                                     </PlanInfosContainer>
                                 </Card>

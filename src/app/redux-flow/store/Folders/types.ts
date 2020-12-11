@@ -44,7 +44,7 @@ export interface FolderAsset {
     createdAt: number;
     duration: string;
     featuresList: FeaturesList;
-    status: 'deleted' | 'offline' | 'online' | 'processing';
+    status: 'deleted' | 'offline' | 'online' | 'processing' | 'restored';
     splitPath?: string[];
     path?: string;
     name?: string;

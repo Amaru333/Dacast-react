@@ -14,9 +14,9 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { useNetwork } from '../../../utils/custom-hooks/networkNavigatorHook';
 import { Toast } from '../../../../components/Toast/Toast';
 import { ToastContainer } from '../../../../components/Toast/ToastStyle';
-import { logAmplitudeEvent } from '../../../utils/services/amplitude/amplitudeService';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { segmentService } from '../../../utils/services/segment/segmentService';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -88,7 +88,10 @@ export const UploaderPage = (props: UploaderProps) => {
                 var etaUnit = ' seconds';
             }
             if(percent >= 100) {
-                logAmplitudeEvent('upload video')
+                segmentService.track('VOD Created', {
+                    action: 'VOD Uploaded',
+                    step: 1
+                })
             }
             return Object.assign([...currentList], {
                 [index]:

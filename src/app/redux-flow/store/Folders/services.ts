@@ -18,7 +18,7 @@ const restoreContent = async (content: ContentType[]) => {
     content.map(async (c) => {
         switch(c.type) {
             case 'vod':
-                return await ContentGeneralServices.restoreContentService(c.id, c.type)
+                return await ContentGeneralServices.restoreContentService(c.id, c.type + 's')
             case 'channel':
             case'playlist':
                 return

@@ -13,7 +13,7 @@ import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
 import { useMedia, useOutsideAlerter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { FolderTreeNode, FolderAsset, ContentType } from '../../redux-flow/store/Folders/types'
+import { FolderTreeNode, FolderAsset, ContentType, SearchResult } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags'
@@ -62,8 +62,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
-    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted'>('online')
-
+    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted' | 'restored'>('online')
+    const [contentList, setContentList] = React.useState<SearchResult>(props.folderData.requestedContent)
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     let foldersTree = new FolderTree(setFoldersTree, setCurrentFolder)
@@ -139,6 +139,28 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }, [fetchContent])
 
     React.useEffect(() => {
+        if (checkedItems.length > 0) {
+            setContentList({
+                ...contentList,
+                results: contentList.results.map((item) => {
+                    if (checkedItems.some(checkedItem => checkedItem.id === item.objectID)) {
+                        return {
+                            ...item,
+                            status: updateList !== 'paywall' ? updateList : item.status,
+                            featuresList: updateList === 'paywall' && item.featuresList.paywall ? { ...item.featuresList, paywall: false } : item.featuresList
+                        }
+                    }
+                    return {
+                        ...item
+                    }
+
+                })
+            })
+        }
+        setCheckedItems([])
+    }, [updateList])
+
+    React.useEffect(() => {
         setFetchContent(true)
     }, [selectedFilters])
 
@@ -167,6 +189,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             setFetchContent(false)
         })
     }, [selectedFolder])
+
+    React.useEffect(() => {
+        setContentList(props.folderData.requestedContent)
+    }, [props.folderData.requestedContent])
 
     const bulkActions = [
         { name: 'Online/Offline', function: setBulkOnlineOpen },
@@ -197,12 +223,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             data: [
                 {
                     cell: <InputCheckbox key='tableHeaderCheckboxCell' id='tableHeaderCheckbox'
-                        indeterminate={checkedItems.length >= 1 && checkedItems.length < props.folderData.requestedContent.results.length}
-                        defaultChecked={checkedItems.length === props.folderData.requestedContent.results.length}
+                        indeterminate={checkedItems.length >= 1 && checkedItems.length < contentList.results.length}
+                        defaultChecked={checkedItems.length === contentList.results.length}
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 let folderCounter = 0
-                                const editedItem: ContentType[] = props.folderData.requestedContent.results.map(item => {
+                                const editedItem: ContentType[] = contentList.results.map(item => {
                                     if (item.type === 'folder') {
                                         folderCounter += 1
                                     }
@@ -293,20 +319,9 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 foldersTree.navigateToFolder(folderNode)
                 break
             case 'Restore':
+                setCheckedItems([asset])
                 props.restoreContent([asset]).then(() => {
-                    setCheckedItems([])
-                    setContentLoading(true)
-                    setTimeout(() => {
-                        setFetchContent(true)
-                        props.getFolderContent(parseFiltersToQueryString(selectedFilters)).then(() => {
-                            setContentLoading(false)
-                            setFetchContent(false)
-                        }).catch(() => {
-                            setContentLoading(false)
-                            setFetchContent(false)
-                        })
-                    }, 4000)
-
+                    setListUpdate('restored')
                 })
                 break
             case 'Rename':
@@ -343,8 +358,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const foldersContentTableBody = () => {
-        if (props.folderData.requestedContent) {
-            return props.folderData.requestedContent.results.map((row) => {
+        if (contentList) {
+            return contentList.results.map((row) => {
                 return {
                     data: [
                         <div key={'foldersTableInputCheckbox' + row.objectID} style={ {paddingTop:8 , paddingBottom: 8 } } className='flex items-center'>
@@ -359,7 +374,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                         <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
-                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' ? 'green' : 'red'} backgroundColor={row.status === 'online' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
+                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' || row.status === 'restored' ? 'green' : 'red'} backgroundColor={row.status === 'online' || row.status === 'restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
                             <DropdownCustom 
@@ -384,7 +399,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             </DropdownCustom>
                         </div>
                     ], callback: (row: FolderAsset) => { handleCheckboxChange({id: row.objectID, type: row.type}, checkedItems.find(value => value.id === row.objectID) ? true : false) }
-                    , callbackData: row
+                    , callbackData: row,
+                    isDisabled: (row.status === 'deleted' && selectedFolder !== 'Trash') || row.status === 'restored',
                 }
             })
         }
@@ -516,8 +532,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table contentLoading={contentLoading} className='col col-12 tableOverflow' customClassName=" tableOverflow" id='folderContentTable' headerBackgroundColor="white" header={props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
-                    <Pagination totalResults={props.folderData.requestedContent ? props.folderData.requestedContent.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
+                    <Table contentLoading={contentLoading} className='col col-12 tableOverflow' customClassName=" tableOverflow" id='folderContentTable' headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Pagination totalResults={contentList ? contentList.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >

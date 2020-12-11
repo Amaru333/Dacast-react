@@ -39,7 +39,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 ...data, 
                 paymentMethodType: selectedPaymentMethod, 
                 recipientType: paymentMethodRecipientType,
-                id: paymentMethodData.id
+                id: paymentMethodData ? paymentMethodData.id : null
             }
         )
         .then(() => {

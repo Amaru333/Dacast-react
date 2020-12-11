@@ -11,6 +11,8 @@ import { calculateDiscount } from '../../../../utils/utils';
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { PlansName } from './FeaturesConst';
 import { capitalizeFirstLetter } from '../../../../utils/utils'
+import { segmentService } from '../../../utils/services/segment/segmentService';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 
 //PLAN
@@ -200,7 +202,14 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 
 export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
-
+    if(props.stepperData.name.indexOf('scale') !== -1) {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Features Form Submitted',
+            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'plan_name': props.stepperData.name,
+            step: 2,
+        })  
+    }
     const isFirstPurchase = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const [featuresTotal, setFeaturesTotal] = React.useState<number>(props.stepperData.privilegesTotal)
@@ -371,7 +380,12 @@ React.useEffect(() => {
 //PAYMENT
 export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
 
-
+    segmentService.track('Upgrade Form Completed', {
+        action: 'Cart Form Submitted',
+        'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+        'plan_name': props.stepperData.name,
+        step: 3,
+    })  
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
     const featuresTotal: number = (props.stepperData.privilegesTotal || 0)
     const totalPrice: number = calculateDiscount((props.stepperData.price.usd / 100) + featuresTotal, props.stepperData.discount)

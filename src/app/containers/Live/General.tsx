@@ -19,7 +19,7 @@ import { GeneralSettings } from '../../shared/General/Settings';
 import { GeneralImages } from '../../shared/General/Images';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { handleImageModalFunction, userId } from '../../utils/general';
+import { handleImageModalFunction } from '../../utils/general';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { BubbleContent } from '../../shared/Security/SecurityStyle';
@@ -27,10 +27,10 @@ import { Text } from '../../../components/Typography/Text'
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText, ButtonContainer } from '../../shared/General/GeneralStyle';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { updateClipboard } from '../../utils/utils';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '../../shared/Common/MiscStyle';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -164,7 +164,7 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                                     </LinkBoxLabel>
                                                     <LinkBox>
                                                         <LinkText size={14} weight="reg">{stateContentDetails.primaryPublishURL}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => {updateClipboard(stateContentDetails.primaryPublishURL, "Copied to clipboard");logAmplitudeEvent("setup encoder") } }>file_copy</IconStyle>
+                                                        <IconStyle className='pointer' onClick={() => {updateClipboard(stateContentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': liveId, step: 2}) } }>file_copy</IconStyle>
                                                     </LinkBox>
                                                 </LinkBoxContainer>
                                                 <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
