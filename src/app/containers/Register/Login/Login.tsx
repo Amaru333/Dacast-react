@@ -8,6 +8,7 @@ import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login
 import { useHistory } from 'react-router-dom'
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { segmentService } from '../../../utils/services/segment/segmentService';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;
@@ -23,10 +24,7 @@ const Login = (props: LoginComponentProps) => {
             userToken.addTokenInfo(props.loginInfos);
             // history.push('/dashboard');
             location.reload()
-            window.analytics.identify(userToken.getUserInfoItem('custom:dacast_user_id'), {
-                name: userToken.getUserInfoItem('custom:first_name') + ' ' + userToken.getUserInfoItem('custom:last_name'),
-                email: userToken.getUserInfoItem('email')
-            })
+            segmentService.identify(userToken.getUserInfoItem('custom:dacast_user_id'), userToken.getUserInfoItem('custom:first_name'), userToken.getUserInfoItem('custom:last_name'), userToken.getUserInfoItem('email'))
         }
     }, [props.loginInfos])
 

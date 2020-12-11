@@ -8,6 +8,7 @@ import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -28,6 +29,11 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
             setButtonLoading(false)
             showToastNotification(`Playlist ${playlistTitle} created!`, 'fixed', 'success')
             props.toggle()
+            segmentService.track('Playlist Created', {
+                action: 'Create Playlist',
+                'playlist_id': response.data.data.id,
+                step: 1,
+            })  
             history.push(`/playlists/${response.data.data.id}/general`)
         }).catch((error) => {
             setButtonLoading(false)

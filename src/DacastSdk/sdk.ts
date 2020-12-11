@@ -7,6 +7,9 @@ import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, Pr
 import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
 var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
+import { isProduction } from '../app/utils/services/player/stage'
+const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
+const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
 export class DacastSdk {
 
@@ -117,6 +120,6 @@ export class DacastSdk {
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
     public getPaywallTransactionsCsv = async (input: string): Promise<string> => await this.axiosClient.get('paywall/transactions/csv?' + input).then(this.checkExtraData)
 
-    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get('https://developer.dacast.com/v3/'+options.type+'/'+options.id+'/analytics', {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
+    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
 }

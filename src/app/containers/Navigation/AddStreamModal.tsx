@@ -8,7 +8,6 @@ import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
@@ -17,6 +16,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { ApplicationState } from '../../redux-flow/store';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { connect } from 'react-redux';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 const moment = require('moment-timezone')
 
@@ -84,10 +84,14 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         ).then((response) => {
             setButtonLoading(false)
             showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
-            logAmplitudeEvent('create live stream');
-            history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
             setStreamSetupOptions(defaultStreamSetup)
+            segmentService.track('Livestream Created', {
+                action: 'Create Livestream',
+                'channel_id': response.data.data.id,
+                step: 1,
+            })    
+            history.push(`/livestreams/${response.data.data.id}/general`)    
         }).catch((error) => {
             setButtonLoading(false)
             let errorMsg = 'There was a problem while creating a channel'

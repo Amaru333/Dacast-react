@@ -7,6 +7,7 @@ import { userToken } from '../../../utils/services/token/tokenService';
 import { ContentSetupObject, Content } from '../../../redux-flow/store/Content/Setup/types';
 import { ContentSelector } from '../../../../components/ContentSelector/ContentSelector';
 import { removePrefix } from '../../../utils/utils';
+import { segmentService } from '../../../utils/services/segment/segmentService';
 
 
 export const SetupPage = (props: SetupComponentProps & { contentId: string; contentType: string }) => {
@@ -54,7 +55,14 @@ export const SetupPage = (props: SetupComponentProps & { contentId: string; cont
         newData.playlistType = selectedTab;
         newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom'
         props.saveContentSetup(newData, props.contentData.id, props.contentType)
-            .then(() => setSaveLoading(false))
+            .then(() => {
+                setSaveLoading(false)
+                segmentService.track('Playlist Created', {
+                    action: 'Paylist Setup',
+                    'playlist': props.contentId, 
+                    step: 2,
+                })  
+            })
             .catch(() => setSaveLoading(false))
     }
 

@@ -34,12 +34,12 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             setButtonLoading(false)
             showToastNotification(`Expos ${data.title} created!`, 'fixed', 'success')
             props.toggle();
-            history.push(`/expos/${response.data.id}/general`)
             segmentService.track('Expo Created', {
                 action: 'Create Expo',
                 'expo_id': response.data.id,
                 step: 1,
             })
+            history.push(`/expos/${response.data.id}/general`)
         }).catch((error) => {
             setButtonLoading(false)
             showToastNotification('Error while creating your expos.', 'fixed', 'error')

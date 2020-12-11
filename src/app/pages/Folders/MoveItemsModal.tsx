@@ -10,6 +10,7 @@ import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const MoveItemModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
 
@@ -61,6 +62,11 @@ export const MoveItemModal = (props: {showToast: (text: string, size: Size, noti
             props.toggle(false)
             props.setMoveModalSelectedFolder(null)
             props.showToast('Items moved succesfully', 'fixed', 'success')
+            segmentService.track('Folder Created', {
+                action: 'Object Added',
+                'folder_id': checkedFolders.map((folder) => {return folder.name}), 
+                step: 2,
+            })  
         }).catch(() => {
             setSaveLoading(false)
             props.showToast('Items couldn\'t be moved', 'fixed', 'error')
