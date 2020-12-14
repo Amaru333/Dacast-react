@@ -533,7 +533,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 </DisabledSection>
             </Card> */}
 
-            <Card className='my2'>
+            {/* <Card className='my2'>
                 <Header className="mb2">
                     <div>
                         <Text size={20} weight='med'>Brand Text</Text>
@@ -561,7 +561,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                     </div>
                     <Toggle className='' label='Use content title as Brand Text' defaultChecked={engagementSettings.brandTextSettings.isBrandTextAsTitle} onChange={() => { setEngagementSettings({ ...engagementSettings, brandTextSettings: {...engagementSettings.brandTextSettings, isBrandTextAsTitle: !engagementSettings.brandTextSettings.isBrandTextAsTitle }}); setSettingsEdited(true) }} />
                 </DisabledSection>
-            </Card>
+            </Card> */}
 
             <Card className='my2'>
                 <Header className="mb2">

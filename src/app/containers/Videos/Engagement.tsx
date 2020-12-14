@@ -20,6 +20,7 @@ import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
 import { userToken } from '../../utils/services/token/tokenService';
 import RealTime from '../Analytics/RealTime';
 import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+import { EngagementBrandText } from '../../shared/Engagement/BrandText';
 
 export const VodEngagement = (props: ContentEngagementComponentProps) => {
 
@@ -85,7 +86,18 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
                             contentId={vodId}
                             contentType="vod"
                             saveContentEngagementSettings={props.saveContentEngagementSettings}
-                />
+                        />
+                        <EngagementBrandText
+                            globalEngagementSettings={props.globalEngagementSettings}
+                            localEngagementSettings={localEngagementSettings}
+                            setLocalEngagementSettings={setLocalEngagementSettings}
+                            setSettingsEdited={setSettingsEdited}
+                            contentId={vodId}
+                            contentType="vod"
+                            lockSection={props.lockSection}
+                            saveContentEngagementSettings={props.saveContentEngagementSettings}
+                        />
+                        
                         <ContentEngagementPage
                             contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
                             getContentEngagementSettings={props.getContentEngagementSettings}

@@ -87,7 +87,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                     getEngagementSettings={props.getInteractionsInfos}
                 />
                 <EngagementBrandText 
-                    localEngagemntSettings={localEngagementSettings}
+                    localEngagementSettings={localEngagementSettings}
                     setLocalEngagementSettings={setLocalEngagementSettings}
                     setSettingsEdited={setSettingsEdited}
                 />
