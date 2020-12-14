@@ -24,8 +24,6 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
         setAdData(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
 
-    
-
     const defineAdAction = () => {
 
         setButtonLoading(true)

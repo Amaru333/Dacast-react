@@ -61,9 +61,9 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
     }
 
     const handleAdPosition = (ad: Ad) => {
-        if(ad["ad-type"] === "pre-roll"){
+        if(ad.type === "Pre-roll"){
             return "Start"
-        } else if(ad["ad-type"] === "post-roll"){
+        } else if(ad.type === "Post-roll"){
             return "End"
         } else {
             return dataToTimeVideo(ad.timestamp).toString()
