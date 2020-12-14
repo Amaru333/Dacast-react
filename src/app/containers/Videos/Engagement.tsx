@@ -21,6 +21,8 @@ import { userToken } from '../../utils/services/token/tokenService';
 import RealTime from '../Analytics/RealTime';
 import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
 import { EngagementBrandText } from '../../shared/Engagement/BrandText';
+import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 export const VodEngagement = (props: ContentEngagementComponentProps) => {
 
@@ -29,6 +31,7 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
 
     const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         if (!props.globalEngagementSettings){
@@ -46,6 +49,21 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
             setLocalEngagementSettings(props.contentEngagementState['vod'][vodId].engagementSettings)
         }
     }, [props.contentEngagementState])
+
+    const handleSubmit = () => {
+        setSaveAllButtonLoading(true)
+        props.saveContentEngagementSettings({ 
+            contentId: vodId, 
+            engagementSettings: Object.keys(localEngagementSettings).filter(f => {return localEngagementSettings[f] && !localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: localEngagementSettings[next]}}, {})
+        }, 'vod').then(() => {
+            setSettingsEdited(false)
+            setSaveAllButtonLoading(false)
+        })
+    }
+
+    const revertSettings = () => {
+        setLocalEngagementSettings(props.contentEngagementState['vod'][vodId].engagementSettings);
+    }
 
 
     if(noDataFetched) {
@@ -97,8 +115,17 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
                             lockSection={props.lockSection}
                             saveContentEngagementSettings={props.saveContentEngagementSettings}
                         />
-                        
-                        <ContentEngagementPage
+                        <EngagementEndScreenText 
+                            globalEngagementSettings={props.globalEngagementSettings}
+                            localEngagementSettings={localEngagementSettings}
+                            setLocalEngagementSettings={setLocalEngagementSettings}
+                            setSettingsEdited={setSettingsEdited}
+                            contentId={vodId}
+                            contentType="vod"
+                            lockSection={props.lockSection}
+                            saveContentEngagementSettings={props.saveContentEngagementSettings}
+                        />
+                        {/* <ContentEngagementPage
                             contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
                             getContentEngagementSettings={props.getContentEngagementSettings}
                             saveContentEngagementSettings={props.saveContentEngagementSettings}
@@ -112,7 +139,19 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
                             contentType='vod'
                             contentId={vodId}
                             globalEngagementSettings={props.globalEngagementSettings}
-                        />
+                        /> */}
+                        {
+                settingsEdited &&
+                    <div className="mt1">
+                        <Button
+                            isLoading={saveAllButtonLoading}
+                            onClick={() => { handleSubmit()}}
+                        >
+                            Save
+                        </Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
+                    </div>
+            }
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             }

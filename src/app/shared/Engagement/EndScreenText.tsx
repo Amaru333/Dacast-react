@@ -8,11 +8,20 @@ import { DisabledSection } from '../Common/MiscStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 
-export const EngagementEndScreenText = (props: {localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, contentType?: string, contentId?: string, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>}) => {
+export const EngagementEndScreenText = (props: {localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, contentType?: string, contentId?: string, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, globalEngagementSettings?: EngagementInfo, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>}) => {
 
     const handleEndScreenTextLockChange = () => {
         if (!props.localEngagementSettings.endScreenSettings.locked) {
-            props.handleSectionRevert('endScreenText')
+            props.lockSection('end-screen-text', props.contentId, props.contentType).then(() => {
+                props.setLocalEngagementSettings({
+                    ...props.localEngagementSettings, 
+                    endScreenSettings: {
+                        locked: true,
+                        endScreenText: props.globalEngagementSettings.endScreenSettings.endScreenText, 
+                        endScreenTextLink: props.globalEngagementSettings.endScreenSettings.endScreenTextLink
+                    }
+                })
+            })
         } else {
             props.saveContentEngagementSettings({
                 contentId: props.contentId,

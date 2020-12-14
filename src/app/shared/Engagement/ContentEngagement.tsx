@@ -563,7 +563,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 </DisabledSection>
             </Card> */}
 
-            <Card className='my2'>
+            {/* <Card className='my2'>
                 <Header className="mb2">
                     <div>
                         <Text size={20} weight='med'>End Screen Text</Text>
@@ -590,9 +590,9 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                             onChange={(event) => { setEngagementSettings({ ...engagementSettings, endScreenSettings: {...engagementSettings.endScreenSettings, endScreenTextLink: event.currentTarget.value }}); setSettingsEdited(true) }} />
                     </div>
                 </DisabledSection>
-            </Card>
+            </Card> */}
 
-            {
+            {/* {
                 settingsEdited &&
                     <div className="mt1">
                         <Button
@@ -603,7 +603,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         </Button>
                         <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
                     </div>
-            }
+            } */}
 
             <Modal className='x-visible' hasClose={false} opened={newAdModalOpened} modalTitle={selectedAd.id === "-1" ? "New Ad" : "Edit Ad"} size='small' toggle={() => setNewAdModalOpened(!newAdModalOpened)}>
                 {
