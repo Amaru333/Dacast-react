@@ -16,7 +16,7 @@ import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/stor
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 
 
-export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, uploadFile: (data: File, uploadUrl: string) => Promise<void>, getEngagementSettings: () => Promise<void>, deleteFile?: (targetId: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings}) => {
+export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, getEngagementSettings: (contentId?: string, contentType?: string) => Promise<void>, deleteFile?: (targetId: string, contentType?: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>, uploadContentBrandImage?: (data: File, uploadUrl: string) => Promise<void>, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>}) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.localEngagementSettings.brandImageSettings.brandImageURL || null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -55,15 +55,23 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
     }
 
     React.useEffect(() => {
-        if(props.globalEngagementSettings.uploadurl) {
-            props.uploadFile(logoFile, props.globalEngagementSettings.uploadurl).then(() => {
+        if(props.localEngagementSettings.uploadurl) {
+            if (!props.contentType) {
+            props.uploadBrandImage(logoFile, props.globalEngagementSettings.uploadurl).then(() => {
                 setUploadButtonLoading(false)
                 setTimeout(() => {
                     props.getEngagementSettings()
                 }, 3000)
-            })
+            })}
+            else {
+            props.uploadContentBrandImage(logoFile, props.localEngagementSettings.uploadurl ).then(() => {
+                setUploadButtonLoading(false)
+                setTimeout(() => {
+                    props.getEngagementSettings(props.contentId, props.contentType)
+                }, 3000)
+            })  }  
         }
-    }, [props.globalEngagementSettings.uploadurl])
+    }, [props.localEngagementSettings.uploadurl])
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -82,7 +90,22 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
 
     const handleBrandImageLockChange = () => {
         if (!props.localEngagementSettings.brandImageSettings.locked) {
-            props.handleSectionRevert('brandImage')
+                if (props.localEngagementSettings.brandImageSettings.brandImageURL) {
+                    props.deleteFile(props.contentId, props.contentType)
+                }
+                props.lockSection('brand-image', props.contentId, props.contentType).then(() => {
+                    props.setLocalEngagementSettings({
+                        ...props.localEngagementSettings, 
+                        brandImageSettings: {
+                            locked: true,
+                            brandImageLink: props.globalEngagementSettings.brandImageSettings.brandImageLink, 
+                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding, 
+                            brandImagePosition: props.globalEngagementSettings.brandImageSettings.brandImagePosition, 
+                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize, 
+                            brandImageURL: props.globalEngagementSettings.brandImageSettings.brandImageURL
+                        }
+                    })
+                })
         } else {
             props.saveContentEngagementSettings({
                 contentId: props.contentId,

@@ -83,7 +83,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                     setSettingsEdited={setSettingsEdited}
                     getUploadUrl={props.getUploadUrl}
                     deleteFile={props.deleteFile}
-                    uploadFile={props.uploadFile}
+                    uploadBrandImage={props.uploadFile}
                     getEngagementSettings={props.getInteractionsInfos}
                 />
                 <EngagementBrandText 

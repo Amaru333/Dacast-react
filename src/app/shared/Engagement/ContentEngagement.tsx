@@ -46,6 +46,7 @@ export interface ContentEngagementComponentProps {
 
 export const ContentEngagementPage = (props: ContentEngagementComponentProps) => {
 
+
     const emptyAd: Ad = {
         id: "-1",
         "ad-type": "",
@@ -479,7 +480,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                 </DisabledSection>
             </Card> */}
 
-            <Card className="my2">
+            {/* <Card className="my2">
                 <Header className="mb2">
                     <div> 
                         <Text size={20} weight='med'>Brand Image</Text>
@@ -530,7 +531,7 @@ export const ContentEngagementPage = (props: ContentEngagementComponentProps) =>
                         </div>
                     </div>
                 </DisabledSection>
-            </Card>
+            </Card> */}
 
             <Card className='my2'>
                 <Header className="mb2">
