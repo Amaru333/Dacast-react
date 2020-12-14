@@ -16,7 +16,7 @@ import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
 
-export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, deleteAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string} ) => {
+export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings, deleteAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, deleteContentAd?: (data: Ad[], contentId: string, contentType: string) => Promise<void>;}  ) => {
 
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -108,7 +108,7 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
-                            <IconStyle id={'adTableCopy' + i} onClick={() => props.deleteAd(props.globalEngagementSettings.adsSettings.ads.filter(ad => ad !== item))} >delete</IconStyle>
+                            <IconStyle id={'adTableCopy' + i} onClick={() => !props.contentType ? props.deleteAd(props.globalEngagementSettings.adsSettings.ads.filter(ad => ad !== item)) : props.deleteContentAd(props.contentEngagementSettings.engagementSettings.adsSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.contentId, props.contentType)} >delete</IconStyle>
                             <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>

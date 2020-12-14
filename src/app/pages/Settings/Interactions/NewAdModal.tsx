@@ -42,7 +42,7 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
             tempArray = tempArray.map(ad => {
                 return ad.id === adData.id ? newAdData : ad
             })
-            props.saveAd(tempArray).then(() => {
+            props.saveAd(tempArray, props.contentId, props.contentType).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             }).catch(() => setButtonLoading(false))

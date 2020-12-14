@@ -83,12 +83,13 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
                             localEngagementSettings={localEngagementSettings}
                             setLocalEngagementSettings={setLocalEngagementSettings}
                             setSettingsEdited={setSettingsEdited}
-                            deleteAd={props.deleteContentAd}
+                            deleteContentAd={props.deleteContentAd}
                             createAd={props.createContentAd}
                             saveAd={props.saveContentAd}
                             lockSection={props.lockSection}
                             contentId={vodId}
                             contentType="vod"
+                            contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
                         />
                         }
                         <EngagementBrandImage 
