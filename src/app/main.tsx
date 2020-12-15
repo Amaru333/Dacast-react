@@ -324,7 +324,6 @@ const Content = styled.div<{ isMobile: boolean }>`
     height: auto;
     min-height: 100vh;
     padding: 24px;
-    overflow: auto;
     ${props => props.isMobile && css`
         overflow-x: hidden;
         padding: 16px;

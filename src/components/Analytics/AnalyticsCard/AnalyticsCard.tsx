@@ -7,6 +7,8 @@ import { Tab } from '../../Tab/Tab';
 import { Routes } from '../../../app/containers/Navigation/NavigationTypes';
 import { TableAnalytics, TableAnalyticsProps } from '../../../app/shared/Analytics/TableAnalytics';
 import { Button } from '../../FormsComponents/Button/Button';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { Tooltip } from '../../Tooltip/Tooltip';
 
 export interface AnalyticsCardProps {
     tabs?: { [name: string]: TabAnalytics },
@@ -35,12 +37,15 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
         <>
             <AnalyticsCardStyle className={props.className}>
                 <AnalyticsCardHeader className='mb2 items-center'>
-                    <div className="">
+                    <div className="flex">
                         <Text  size={16} weight="med" color="gray-1">{props.title + " " + selectedTab}</Text>
-                        {/* <ActionIcon className="ml1" id={"tooltip" + props.title}>
-                            <IconStyle >info_outlined</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip> */}
+                        {
+                            props.infoText && 
+                            <>
+                                <IconStyle className="ml1"  id={"tooltip" + props.title}>info_outlined</IconStyle>
+                                <Tooltip target={"tooltip" + props.title}>{props.infoText}</Tooltip>
+                            </>
+                        }
                     </div>
                     { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
