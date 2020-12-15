@@ -6,8 +6,7 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { RealTimePageProps } from '../../containers/Analytics/RealTime';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentItem } from '../../redux-flow/store/Content/General/types';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const RealTimeAnalyticsPage = (props: RealTimePageProps) => {
 

@@ -97,4 +97,3 @@ export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
         }
     }
 }
-

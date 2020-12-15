@@ -12,11 +12,12 @@ import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface ContentListProps {
     contentListState: ContentListState;
     themesList: ThemesData;
-    getContentList: (qs: string, contentType: string) => Promise<void>;
+    getContentList: (qs: string) => Promise<void>;
     deleteContentList: (voidId: string, contentType: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
@@ -28,7 +29,7 @@ const VideosList = (props: ContentListProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {     
-        props.getContentList(null, 'vod')
+        props.getContentList(null)
         .then(() => setIsFetching(false))
         .catch(() => setNodataFetched(true))
 
@@ -60,14 +61,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentList: async (qs: string, contentType: string) => {
-            await dispatch(getContentListAction(qs, contentType))
+        getContentList: async (qs: string) => {
+            await dispatch(getContentListAction('vod')(qs))
         },
         deleteContentList: async (contentId: string, contentType: string) => {
             await dispatch(deleteContentAction(contentId, contentType))
         },
         getThemesList: async () => {
-            await dispatch(getThemingListAction())
+            await dispatch(getThemingListAction(undefined))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))

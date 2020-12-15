@@ -2,7 +2,7 @@ import { UserTokenService } from '../utils/services/token/token'
 import { AxiosClient } from '../utils/services/axios/AxiosClient'
 import Axios, { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
-import { PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
+import { GetSearchContentOutput, PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
 import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
 var qs = require('qs');
@@ -122,4 +122,15 @@ export class DacastSdk {
 
     public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
+    public getExpos = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/expos?' + input).then(this.checkExtraData)
+    public deleteExpo = async (input: string): Promise<void> => await this.axiosClient.delete('/expos/' + input)
+
+    public getChannels = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/channels?' + input).then(this.checkExtraData)
+    public deleteChannel = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input)
+
+    public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
+    public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
+
+    public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
+    public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
 }

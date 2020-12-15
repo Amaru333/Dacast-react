@@ -1,4 +1,4 @@
-import { ActionTypes, ContentDetails, SubtitleInfo, ContentItem, SearchResult, AssetType } from "./types"
+import { ActionTypes, ContentDetails, SubtitleInfo, AssetType } from "./types"
 import { ThunkDispatch } from "redux-thunk"
 import { ApplicationState } from "../.."
 import { showToastNotification } from '../../Toasts'

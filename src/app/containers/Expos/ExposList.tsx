@@ -21,7 +21,7 @@ const ExposList = (props: ContentListProps) => {
 
     React.useEffect(() => {
         if(!noDataFetched) {
-            props.getContentList(null, 'expo')        
+            props.getContentList(null)        
             .then(() => {
                 setIsFetching(false)
             })
@@ -62,14 +62,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentList: async (qs: string, contentType: string) => {
-            await dispatch(getContentListAction(qs, contentType))
+        getContentList: async (qs: string) => {
+            await dispatch(getContentListAction('expo')(qs))
         },
         deleteContentList: async (contentId: string, contentType: string) => {
             await dispatch(deleteContentAction(contentId, contentType))
         },
         getThemesList: async () => {
-            await dispatch(getThemingListAction())
+            await dispatch(getThemingListAction(undefined))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))

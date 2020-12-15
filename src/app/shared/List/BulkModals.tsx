@@ -10,12 +10,13 @@ import { ContentType } from '../../redux-flow/store/Folders/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService';
+import { ContentStatus } from '../../redux-flow/store/Common/types';
 
 interface PropsBulkModal {
     items?: ContentType[]; 
     open: boolean; 
     toggle: (b: boolean) => void;
-    updateList?: (data: 'online' | 'offline' | 'paywall' | 'deleted') => void;
+    updateList?: (data: ContentStatus | 'paywall') => void;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     isInFolder?: boolean;
 } 
@@ -33,7 +34,7 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
         bulkActionsService(props.items, 'delete').then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.updateList('deleted')
+                props.updateList('Deleted')
                 props.showToast(`${setBulkItemCount(props.items)} have been deleted`, 'fixed', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
@@ -151,7 +152,7 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
         bulkActionsService(props.items, 'online', online).then((response) => {
             if (!response.data.data.errors) {
                 props.toggle(false)
-                props.updateList(online ? 'online' : 'offline')
+                props.updateList(online ? 'Online' : 'Offline')
                 props.showToast(`${setBulkItemCount(props.items)} ${props.items.length === 1 ? "has" : "have"} been turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'success')
             } else {
                 props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
