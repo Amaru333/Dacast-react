@@ -18,6 +18,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
             <div className={HalfSmFullXs}>
                 <AnalyticsCard
                     title="Concurrent Viewers"
+                    infoText='Concurrent Viewers represents an approximative number of active sessions on your stream. It is able to report on large numbers of concurrent viewers, however you may see some discrepancies when the number is unusually low.'
                 >
                     <LineChart
                         title="Concurrent Viewers"
