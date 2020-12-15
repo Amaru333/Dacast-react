@@ -21,8 +21,6 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
 
-    console.log('local engagement settings', props.localEngagementSettings)
-
     const handleAdsLockChange = () => {
         if (!props.localEngagementSettings.adsSettings.locked) {
             props.lockSection('ads', props.contentId, props.contentType).then(() => {
@@ -131,9 +129,9 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                         { props.contentType &&
                             <>
                                 <IconStyle className='pointer' id="unlockAdSectionTooltip" onClick={() => {handleAdsLockChange()}}>
-                                {!props.localEngagementSettings.adsSettings.locked ? "lock_open" : "lock"}
-                            </IconStyle>
-                            <Tooltip target="unlockAdSectionTooltip">{!props.localEngagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
+                                    {!props.localEngagementSettings.adsSettings.locked ? "lock_open" : "lock"}
+                                </IconStyle>
+                                <Tooltip target="unlockAdSectionTooltip">{!props.localEngagementSettings.adsSettings.locked ? "Click to revert Advertising Settings" : "Click to edit Advertising Settings"}</Tooltip>
                             </>
                         }
                     </Header>

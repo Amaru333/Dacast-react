@@ -16,7 +16,7 @@ import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/stor
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 
 
-export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, getEngagementSettings: (contentId?: string, contentType?: string) => Promise<void>, deleteFile?: (targetId: string, contentType?: string) => Promise<void>, deleteContentImage?: (contentId: string, contentType: string) => Promise<void>, handleSectionRevert?: (section: string) => void, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>, uploadContentBrandImage?: (data: File, uploadUrl: string) => Promise<void>, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>}) => {
+export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, getEngagementSettings: (contentId?: string, contentType?: string) => Promise<void>, deleteFile?: (targetId: string, contentType?: string) => Promise<void>, contentId?: string, contentType?: string, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>, uploadContentBrandImage?: (data: File, uploadUrl: string) => Promise<void>, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>}) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.localEngagementSettings.brandImageSettings.brandImageURL || null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -83,8 +83,6 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        // props.contentId ? 
-        // props.deleteContentImage(props.contentId, props.contentType) :
         props.deleteFile(props.localEngagementSettings.brandImageSettings.brandImageURL)
     }
 
@@ -190,7 +188,7 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
                             />
                             <Input className="col col-4 pr2" value={props.localEngagementSettings.brandImageSettings.brandImageSize ? props.localEngagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                             <Input className="col col-4" label="Padding (px)" value={props.localEngagementSettings.brandImageSettings.brandImagePadding ? props.localEngagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} />
-                        <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={props.localEngagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});props.setSettingsEdited(true)}} />
+                            <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={props.localEngagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});props.setSettingsEdited(true)}} />
                         </div>
                     </div>
                 </DisabledSection>
