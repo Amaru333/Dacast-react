@@ -148,7 +148,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         return {data:[
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Plan Type</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Payment</Text>},
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Reccuring</Text>},
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Recurring</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Next Bill</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Status</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Paywall Balance</Text>}
@@ -161,9 +161,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const color = (state === 'active' || state === "") ? 'green' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
-                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "Free" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
-                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
+                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
+                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
