@@ -10,7 +10,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
 import { ContentDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
-import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
+import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction, generateEncoderKeyAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
@@ -31,6 +31,7 @@ import { updateClipboard } from '../../utils/utils';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '../../shared/Common/MiscStyle';
 import { segmentService } from '../../utils/services/segment/segmentService';
+import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -147,76 +148,17 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                         />
                                 }
 
-                                <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={encoderModalOpen} toggle={() => setEncoderModalOpen(!encoderModalOpen)} >
-                                    <ModalContent>
-                                        <div className="col col-12">
-                                            <Bubble type='info' className='my2'>
-                                                <BubbleContent>
-                                                    <Text weight="reg" size={16} >
-                                                        Correct <a href={getKnowledgebaseLink("Encoder Setup")} target="_blank">Encoder Setup</a> is required — <a href='/help'>contact us</a> if you need help.
-                                                        </Text>
-                                                    </BubbleContent>
-                                                </Bubble>
+                                {
+                                    encoderModalOpen && 
+                                        <EncoderSettingsModal 
+                                            toggle={setEncoderModalOpen}
+                                            opened={encoderModalOpen}
+                                            generateEncoderKey={props.generateEncoderKey}
+                                            contentDetails={stateContentDetails}
+                                        />
+                                }
 
-                                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                                    <LinkBoxLabel>
-                                                        <Text size={14} weight="med">Server</Text>
-                                                    </LinkBoxLabel>
-                                                    <LinkBox>
-                                                        <LinkText size={14} weight="reg">{stateContentDetails.primaryPublishURL}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => {updateClipboard(stateContentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': liveId, step: 2}) } }>file_copy</IconStyle>
-                                                    </LinkBox>
-                                                </LinkBoxContainer>
-                                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                                    <LinkBoxLabel>
-                                                        <Text size={14} weight="med">Backup Server</Text>
-                                                    </LinkBoxLabel>
-                                                    <LinkBox>
-                                                        <LinkText size={14} weight="reg">{stateContentDetails.backupPublishURL}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => updateClipboard(stateContentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
-                                                    </LinkBox>
-                                                </LinkBoxContainer>
-                                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                                    <LinkBoxLabel>
-                                                        <Text size={14} weight="med">Username</Text>
-                                                    </LinkBoxLabel>
-                                                    <LinkBox>
-                                                        <LinkText size={14} weight="reg">{stateContentDetails.username}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => updateClipboard(stateContentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
-                                                    </LinkBox>
-                                                </LinkBoxContainer>
-                                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                                                    <LinkBoxLabel>
-                                                        <Text size={14} weight="med">Password</Text>
-                                                    </LinkBoxLabel>
-                                                    <LinkBox>
-                                                        <LinkText size={14} weight="reg">{stateContentDetails.password}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => updateClipboard(stateContentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
-                                                    </LinkBox>
-                                                </LinkBoxContainer>
-                                                {stateContentDetails.streamKeys.map((streamKey, i) => {
-                                                    return(
-                                                    <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
-                                                    <LinkBoxLabel>
-                                                        <Text size={14} weight="med">{"Stream Key " + (i+1)}</Text>
-                                                    </LinkBoxLabel>
-                                                    <LinkBox>
-                                                        <LinkText size={14} weight="reg">{streamKey}</LinkText>
-                                                        <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
-                                                    </LinkBox>
-                                                </LinkBoxContainer>
-                                                    )
-                                                })}
-                                            </div>
-                                            <div className="flex col col-12 mt2">
-                                                <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                                                <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
-                                            </div>
-                                        </ModalContent>
-                                        <ModalFooter className="mt1" >
-                                            <Button onClick={() => setEncoderModalOpen(false)}>Close</Button>
-                                        </ModalFooter>
-                                    </Modal>
+                            
 
                                     {/* UNCOMMENT WHEN REWIND ADDED
                                         <Modal hasClose={false} icon={stepModalRewind === 1 ? { name: 'info_outlined', color: 'yellow' } : { name: 'check', color: 'green' }} size="large" modalTitle={stepModalRewind === 1 ? "Is your Encoder turned off?" : "30 Minute Rewind Enabled"} opened={confirmRewindModal} toggle={() => setConfirmRewindModal(!confirmRewindModal)} >
@@ -290,6 +232,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteFile: async (vodId: string, targetId: string, contentType: string, imageType: string) => {
             await dispatch(deleteFileAction(vodId, targetId, contentType, imageType))
+        },
+        generateEncoderKey: async (liveId: string) => {
+            await dispatch(generateEncoderKeyAction(liveId, 'live'))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

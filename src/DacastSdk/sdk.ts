@@ -8,6 +8,7 @@ import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics
 var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
 import { isProduction } from '../app/utils/services/player/stage'
+import { PostEncoderKeyOutput } from './live'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
@@ -133,4 +134,5 @@ export class DacastSdk {
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
+    public postEncoderKey = async (input: string): Promise<PostEncoderKeyOutput> => await this.axiosClient.post(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}live/${input}/encoder-key`).then(this.checkExtraData)
 }

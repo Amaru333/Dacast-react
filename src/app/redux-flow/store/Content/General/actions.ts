@@ -5,6 +5,7 @@ import { showToastNotification } from '../../Toasts'
 import { ContentGeneralServices } from './services'
 import { parseContentType } from '../../../../utils/utils'
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
 
 export interface GetContentDetails {
     type: ActionTypes.GET_CONTENT_DETAILS;
@@ -51,11 +52,29 @@ export interface DeleteImage {
     payload: {id: string, contentId: string, contentType: string};
 }
 
+export interface GenerateEncoderKey {
+    type: ActionTypes.GENERATE_ENCODER_KEY;
+    payload: {encoderKey: string, contentId: string; contentType: string}
+}
+
 export const getContentDetailsAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentDetails> => {
     return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentDetails>) => {
         await ContentGeneralServices.getContentDetailsService(contentId, parseContentType(contentType))
             .then(response => {
                 dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: contentType === 'expo' ? response.data : response.data.data, contentType: contentType, contentId: contentId} })
+            })
+            .catch((error) => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
+                return Promise.reject()
+            })
+    };
+}
+
+export const generateEncoderKeyAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GenerateEncoderKey> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GenerateEncoderKey>) => {
+        await dacastSdk.postEncoderKey(contentId)
+            .then(response => {
+                dispatch({ type: ActionTypes.GENERATE_ENCODER_KEY, payload: {encoderKey: response.encoder_key, contentType: contentType, contentId: contentId} })
             })
             .catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
@@ -165,4 +184,4 @@ export const deleteSubtitleAction = (contentId: string, targetId: string, fileNa
     }
 }
 
-export type Action = GetContentDetails | EditContentDetails | AddContentSubtitle | EditContentSubtitle | DeleteContentSubtitle | GetUploadUrl | UploadImage | UploadImageFromVideo | DeleteImage
+export type Action = GetContentDetails | EditContentDetails | AddContentSubtitle | EditContentSubtitle | DeleteContentSubtitle | GetUploadUrl | UploadImage | UploadImageFromVideo | DeleteImage | GenerateEncoderKey
