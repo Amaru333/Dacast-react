@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ad, AdType, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, AdType, EngagementInfo } from '../../redux-flow/store/Settings/Engagement/types';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../components/FormsComponents/Button/Button';

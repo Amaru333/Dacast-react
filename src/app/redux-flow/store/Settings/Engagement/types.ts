@@ -1,12 +1,12 @@
 export enum ActionTypes {
-    GET_SETTINGS_INTERACTIONS_INFOS = "@@settings_interactions/GET_SETTINGS_INTERACTIONS_INFOS",
-    SAVE_SETTINGS_INTERACTIONS_INFOS = "@@settings_interactions/SAVE_SETTINGS_INTERACTIONS_INFOS",
-    SAVE_AD = "@@settings_interactions/SAVE_AD",
-    CREATE_AD = "@@settings_interactions/CREATE_AD",
-    DELETE_AD = "@@settings_interactions/DELETE_AD",
-    SAVE_MAIL_CATCHER = "@@settings_interactions/SAVE_MAIL_CATCHER",
-    CREATE_MAIL_CATCHER = "@@settings_interactions/CREATE_MAIL_CATCHER",
-    DELETE_MAIL_CATCHER = "@@settings_interactions/DELETE_MAIL_CATCHER",
+    GET_SETTINGS_ENGAGEMENT_INFOS = "@@settings_engagement/GET_SETTINGS_ENGAGEMENT_INFOS",
+    SAVE_SETTINGS_ENGAGEMENT_INFOS = "@@settings_engagement/SAVE_SETTINGS_ENGAGEMENT_INFOS",
+    SAVE_AD = "@@settings_engagement/SAVE_AD",
+    CREATE_AD = "@@settings_engagement/CREATE_AD",
+    DELETE_AD = "@@settings_engagement/DELETE_AD",
+    SAVE_MAIL_CATCHER = "@@settings_engagement/SAVE_MAIL_CATCHER",
+    CREATE_MAIL_CATCHER = "@@settings_engagement/CREATE_MAIL_CATCHER",
+    DELETE_MAIL_CATCHER = "@@settings_engagement/DELETE_MAIL_CATCHER",
     GET_UPLOAD_URL = "@@live_general/GET_UPLOAD_URL",
     UPLOAD_IMAGE = "@@live_general/UPLOAD_IMAGE",
     DELETE_IMAGE = "@@live_general/DELETE_IMAGE",
@@ -30,7 +30,7 @@ export interface Ad {
 }
 
 
-export const interactionsDefaultState: EngagementInfo = {
+export const engagementDefaultState: EngagementInfo = {
     brandTextSettings: null,
     endScreenSettings: null,
     brandImageSettings: null,

@@ -2,20 +2,20 @@ import { ActionTypes, EngagementInfo, Ad, MailCatcher } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { ApplicationState } from "../..";
 import { showToastNotification } from '../../Toasts';
-import { interactionsServices } from './services';
+import { engagementServices } from './services';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { formatGetEngagementOutput, formatPostUserBrandImageUrlInput, formatPutAdsSettingsInput, formatPutEngagementInput } from './viewModel';
 import { applyViewModel } from '../../../../utils/utils';
 import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
 import { formatPutUploadFileInput } from '../../Common/viewModel';
 
-export interface GetSettingsInteractionsInfos {
-    type: ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS;
+export interface GetSettingsEngagementInfos {
+    type: ActionTypes.GET_SETTINGS_ENGAGEMENT_INFOS;
     payload: EngagementInfo;
 }
 
-export interface SaveSettingsInteractionsInfos {
-    type: ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS;
+export interface SaveSettingsEngagementInfos {
+    type: ActionTypes.SAVE_SETTINGS_ENGAGEMENT_INFOS;
     payload: EngagementInfo;
 }
 
@@ -64,10 +64,10 @@ export interface DeleteImage {
     payload: {file: File};
 }
 
-export type Action = GetSettingsInteractionsInfos | SaveSettingsInteractionsInfos | SaveAd | CreateAd | DeleteAd | SaveMailCatcher | CreateMailCatcher | DeleteMailCatcher | GetUploadUrl | UploadImage | DeleteImage
+export type Action = GetSettingsEngagementInfos | SaveSettingsEngagementInfos | SaveAd | CreateAd | DeleteAd | SaveMailCatcher | CreateMailCatcher | DeleteMailCatcher | GetUploadUrl | UploadImage | DeleteImage
 
-export const getSettingsInteractionsInfosAction = applyViewModel(dacastSdk.getEngagementSettings, undefined, formatGetEngagementOutput, ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS, null, 'Couldn\'t get engagement settings')
-export const saveSettingsInteractionsInfosAction = applyViewModel(dacastSdk.putEngagementSettings, formatPutEngagementInput, undefined, ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS, 'Engagement settings saved', 'Couldn\'t save engagement settings')
+export const getSettingsEngagementInfosAction = applyViewModel(dacastSdk.getEngagementSettings, undefined, formatGetEngagementOutput, ActionTypes.GET_SETTINGS_ENGAGEMENT_INFOS, null, 'Couldn\'t get engagement settings')
+export const saveSettingsEngagementInfosAction = applyViewModel(dacastSdk.putEngagementSettings, formatPutEngagementInput, undefined, ActionTypes.SAVE_SETTINGS_ENGAGEMENT_INFOS, 'Engagement settings saved', 'Couldn\'t save engagement settings')
 
 export const saveAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.SAVE_AD, 'Ad saved', 'Couldn\'t save ad')
 export const createAdAction = applyViewModel(dacastSdk.putAdsSettings, formatPutAdsSettingsInput, undefined, ActionTypes.CREATE_AD, 'Ad created', 'Couldn\'t create ad')
@@ -79,7 +79,7 @@ export const deleteFileAction = applyViewModel(dacastSdk.deleteUserBrandImage, u
 
 export const saveMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<void>, {}, SaveMailCatcher> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveMailCatcher> ) => {
-        await interactionsServices.saveMailCatcher(data)
+        await engagementServices.saveMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.SAVE_MAIL_CATCHER, payload: response.data} );
                 dispatch(showToastNotification("Mail catcher saved", 'fixed', "success"));
@@ -92,7 +92,7 @@ export const saveMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<
 
 export const createMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<void>, {}, CreateMailCatcher> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateMailCatcher> ) => {
-        await interactionsServices.createMailCatcher(data)
+        await engagementServices.createMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.CREATE_MAIL_CATCHER, payload: response.data} );
                 dispatch(showToastNotification("Mail catcher created", 'fixed', "success"));
@@ -105,7 +105,7 @@ export const createMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promis
 
 export const deleteMailCatcherAction = (data: MailCatcher): ThunkDispatch<Promise<void>, {}, DeleteMailCatcher> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteMailCatcher> ) => {
-        await interactionsServices.deleteMailCatcher(data)
+        await engagementServices.deleteMailCatcher(data)
             .then( response => {
                 dispatch( {type: ActionTypes.DELETE_MAIL_CATCHER, payload: response.data} );
                 dispatch(showToastNotification("Mail catcher deleted", 'fixed', "success"));

@@ -11,7 +11,7 @@ import { dataToTimeVideo } from '../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
-import { Ad } from '../../redux-flow/store/Settings/Interactions';
+import { Ad } from '../../redux-flow/store/Settings/Engagement';
 import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';

@@ -1,5 +1,5 @@
 import { NotificationType, Size } from '../../../../../components/Toast/ToastTypes';
-import { Ad, ContentEngagementSettings, EngagementInfo } from '../../Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../Settings/Engagement/types';
 
 export enum ActionTypes {
     GET_CONTENT_ENGAGEMENT_SETTINGS = "@@content_engagement/GET_CONTENT_ENGAGEMENT_SETTINGS",

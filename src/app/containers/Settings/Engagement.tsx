@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getSettingsInteractionsInfosAction, Action, EngagementInfo, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
+import { getSettingsEngagementInfosAction, Action, EngagementInfo, saveSettingsEngagementInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Engagement';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -16,10 +16,10 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
 
-export interface SettingsInteractionComponentProps {
-    interactionsInfos: EngagementInfo;
-    getInteractionsInfos: () => Promise<void>;
-    saveInteractionsInfos: (data: EngagementInfo) => Promise<void>;
+export interface SettingsEngagementContainerProps {
+    engagementSettings: EngagementInfo;
+    getEngagementSettings: () => Promise<void>;
+    saveEngagementSettings: (data: EngagementInfo) => Promise<void>;
     saveAd: (data: Ad[]) => Promise<void>;
     createAd: (data: Ad[]) => Promise<void>;
     deleteAd: (data: Ad[]) => Promise<void>;
@@ -32,31 +32,31 @@ export interface SettingsInteractionComponentProps {
 }
 
 
-const Interactions = (props: SettingsInteractionComponentProps) => {
+const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
-    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(props.interactionsInfos)
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(props.engagementSettings)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
 
     const componentProps: EngagementComponentProps = {
-        globalEngagementSettings: props.interactionsInfos,
+        globalEngagementSettings: props.engagementSettings,
         localEngagementSettings: localEngagementSettings,
         setLocalEngagementSettings: setLocalEngagementSettings,
         setSettingsEdited: setSettingsEdited,
     }
 
     React.useEffect(() => {
-        props.getInteractionsInfos()
+        props.getEngagementSettings()
         .catch(() => setNodataFetched(true))
 
     }, [])
 
     React.useEffect(() => {
-        if(props.interactionsInfos) {
-            setLocalEngagementSettings(props.interactionsInfos)
+        if(props.engagementSettings) {
+            setLocalEngagementSettings(props.engagementSettings)
         }
-    }, [props.interactionsInfos])
+    }, [props.engagementSettings])
 
     React.useEffect(() => {
         console.log("local engagement settings", localEngagementSettings)
@@ -69,7 +69,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
     }
 
     return (
-        props.interactionsInfos && localEngagementSettings ?
+        props.engagementSettings && localEngagementSettings ?
             <React.Fragment>
                 <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
                 { userToken.getPrivilege('privilege-advertising') &&
@@ -84,7 +84,7 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                     {...componentProps}
                     deleteFile={props.deleteFile}
                     uploadBrandImage={props.uploadFile}
-                    getEngagementSettings={props.getInteractionsInfos}
+                    getEngagementSettings={props.getEngagementSettings}
                 />
                 <EngagementBrandText  
                     {...componentProps}
@@ -95,8 +95,8 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                 {
                 settingsEdited &&
                     <div className="mt1">
-                        <Button onClick={() => { props.saveInteractionsInfos(localEngagementSettings); setSettingsEdited(false) }}>Save</Button>
-                        <Button className="ml2" typeButton="tertiary" onClick={() => { setLocalEngagementSettings(props.interactionsInfos); setSettingsEdited(false) }}>Discard</Button>
+                        <Button onClick={() => { props.saveEngagementSettings(localEngagementSettings); setSettingsEdited(false) }}>Save</Button>
+                        <Button className="ml2" typeButton="tertiary" onClick={() => { setLocalEngagementSettings(props.engagementSettings); setSettingsEdited(false) }}>Discard</Button>
                     </div>
             }
             </React.Fragment>
@@ -107,17 +107,17 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        interactionsInfos: state.settings.interactions
+        engagementSettings: state.settings.engagement
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getInteractionsInfos: async () => {
-            await dispatch(getSettingsInteractionsInfosAction(undefined));
+        getEngagementSettings: async () => {
+            await dispatch(getSettingsEngagementInfosAction(undefined));
         },
-        saveInteractionsInfos: async (data: EngagementInfo) => {
-            await dispatch(saveSettingsInteractionsInfosAction(data))
+        saveEngagementSettings: async (data: EngagementInfo) => {
+            await dispatch(saveSettingsEngagementInfosAction(data))
         },
         saveAd: async (data: Ad[]) => {
            await dispatch(saveAdAction(data))
@@ -149,4 +149,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Interactions)
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsEngagement)

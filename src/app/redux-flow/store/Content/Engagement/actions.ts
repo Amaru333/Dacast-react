@@ -3,7 +3,7 @@ import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from './types';
 import { contentEngagementServices } from './services';
-import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
+import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
 import { parseContentType } from '../../../../utils/utils';
 
 export interface GetContentEngagementSettings {

@@ -4,7 +4,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { MailCatcher } from '../../redux-flow/store/Settings/Interactions/types';
-import { SettingsInteractionComponentProps } from '../../containers/Settings/Interactions';
+import { SettingsInteractionComponentProps } from '../../containers/Settings/Engagement';
 
 export const MailCatcherModal = (props: SettingsInteractionComponentProps & {toggle: Function; selectedMailCatcher: MailCatcher}) => {
 

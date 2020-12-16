@@ -3,11 +3,11 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Engagement/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
-import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions/actions';
+import { getSettingsEngagementInfosAction } from '../../redux-flow/store/Settings/Engagement/actions';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
@@ -129,14 +129,14 @@ export const VodEngagement = (props: ContentEngagementContainerProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentEngagementState: state.content.engagement,
-        globalEngagementSettings: state.settings.interactions
+        globalEngagementSettings: state.settings.engagement
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getGlobalEngagementSettings: async () => {
-            await dispatch(getSettingsInteractionsInfosAction());
+            await dispatch(getSettingsEngagementInfosAction());
         },
         getContentEngagementSettings: async (contentId: string, contentType: string) => {
             await dispatch(getContentEngagementSettingsAction(contentId, contentType));
