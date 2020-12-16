@@ -6,7 +6,7 @@ const getContentRenditionsService = async (contentId: string, contentType: strin
 }
 
 const addContentRenditionsService = async (data: string[], contentId: string) => {
-    return await bulkActionsService(data.map(item => {return {name: item, type: 'rendition'}}), 'create', contentId)
+    return await bulkActionsService(data.map(item => {return {name: item, type: 'rendition', id: null}}), 'create', contentId)
 }
 const deleteContentRenditionsService = async (data: string[], contentId: string) => {
     return await bulkActionsService(data.map(item => {return {id: item, type: 'rendition'}}), 'delete', contentId)

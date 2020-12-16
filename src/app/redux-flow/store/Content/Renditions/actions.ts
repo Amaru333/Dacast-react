@@ -4,6 +4,7 @@ import { ApplicationState } from '../..';
 import { RenditionsList, ActionTypes, Rendition } from '../Renditions/types'
 import { ContentRenditionsServices } from './services';
 import { parseContentType } from '../../../../utils/utils';
+import { BulkActionItem } from '../../../../../DacastSdk/common';
 
 export interface GetContentRenditions {
     type: ActionTypes.GET_CONTENT_RENDITIONS;
@@ -38,7 +39,7 @@ export const addContentRenditionsAction = (data: string[], contentId: string, co
         await ContentRenditionsServices.addContentRenditionsService(data, contentId)
             .then(response => {
                 let array: Rendition[] = [] 
-                response.data.data.items.map((item: any, i: number) => {
+                response.items.map((item: BulkActionItem, i: number) => {
                     let rendition: Rendition = {
                         renditionID: item.id,
                         name: data[i],

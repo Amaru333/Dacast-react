@@ -32,12 +32,12 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     const handleSubmit = async () => {
         setButtonLoading(true)
         bulkActionsService(props.items, 'delete').then((response) => {
-            if (!response.data.data.errors) {
+            if (!response.errors) {
                 props.toggle(false)
                 props.updateList('Deleted')
                 props.showToast(`${setBulkItemCount(props.items)} have been deleted`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
+                props.showToast(response.items.find(item => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
@@ -83,11 +83,11 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     const handleSubmit = async () => {
         setButtonLoading(true)
         bulkActionsService(props.items, 'theme', selectedTheme).then((response) => {
-            if (!response.data.data.errors) {
+            if (!response.errors) {
                 props.toggle(false)
                 props.showToast(`Theme has been assigned to ${setBulkItemCount(props.items)} `, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
+                props.showToast(response.items.find(item => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
@@ -150,12 +150,12 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
     const handleSubmit = async () => {
         setButtonLoading(true)
         bulkActionsService(props.items, 'online', online).then((response) => {
-            if (!response.data.data.errors) {
+            if (!response.errors) {
                 props.toggle(false)
                 props.updateList(online ? 'Online' : 'Offline')
                 props.showToast(`${setBulkItemCount(props.items)} ${props.items.length === 1 ? "has" : "have"} been turned ` + (online ? 'Online' : 'Offline'), 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
+                props.showToast(response.items.find(item => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {
@@ -185,12 +185,12 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
     const handleSubmit = async () => {
         setButtonLoading(true)
         bulkActionsService(props.items, 'paywall', false).then((response) => {
-            if (!response.data.data.errors) {
+            if (!response.errors) {
                 props.toggle(false)
                 props.updateList('paywall')
                 props.showToast(`Paywall has been turned Offline for ${setBulkItemCount(props.items)}`, 'fixed', 'success')
             } else {
-                props.showToast(response.data.data.items.find((item: any) => {return item.status === 500}).error, 'fixed', 'error')
+                props.showToast(response.items.find(item => {return item.status === 500}).error, 'fixed', 'error')
             }
             setButtonLoading(false)
         }).catch(() => {

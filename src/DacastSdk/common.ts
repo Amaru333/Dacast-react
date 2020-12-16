@@ -56,3 +56,30 @@ export interface GetSearchContentOutput {
     perPage: number;
     pageNumber: number;
 }
+
+export interface BulkActionItem {
+    id: string;
+    contentType: 'rendition' | 'vod' | 'channel' | 'playlist' | 'expos';
+    name?: string;
+}
+
+export interface PostBulkActionInput {
+    action: 'delete' | 'theme' | 'online' | 'paywall' | 'create';
+    items: BulkActionItem[];
+    targetValue?: string | boolean;
+
+}
+
+interface BulkItemAdditionResponseField {
+    status: number;
+    error?: string;
+}
+
+type BulkActionReponseItem = BulkActionItem & BulkItemAdditionResponseField
+
+export interface PostBulkActionOutput {
+    attempted: number;
+    action: string;
+    errors: boolean;
+    items: BulkActionReponseItem[]
+}
