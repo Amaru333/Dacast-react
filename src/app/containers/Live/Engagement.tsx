@@ -3,23 +3,46 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
-import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
 import { ContentEngagementComponentProps } from '../Playlists/Engagement';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { userToken } from '../../utils/services/token/tokenService';
+import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
+import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+import { EngagementBrandText } from '../../shared/Engagement/BrandText';
+import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 
 export const LiveEngagement = (props: ContentEngagementComponentProps) => {
 
     let { liveId } = useParams()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
+
+    const componentProps: EngagementComponentProps = {
+        globalEngagementSettings: props.globalEngagementSettings,
+        localEngagementSettings: localEngagementSettings,
+        setLocalEngagementSettings: setLocalEngagementSettings,
+        setSettingsEdited: setSettingsEdited,
+        lockSection: props.lockSection,
+        contentId: liveId,
+        contentType: "live",
+        saveContentEngagementSettings: props.saveContentEngagementSettings
+    }
 
 
     React.useEffect(() => {
@@ -32,6 +55,27 @@ export const LiveEngagement = (props: ContentEngagementComponentProps) => {
         }
     }, [])
 
+    React.useEffect(() => {
+        if ((props.contentEngagementState['live'] && props.contentEngagementState['live'][liveId])) {
+            setLocalEngagementSettings(props.contentEngagementState['live'][liveId].engagementSettings)
+        }
+    }, [props.contentEngagementState])
+
+    const handleSubmit = () => {
+        setSaveAllButtonLoading(true)
+        props.saveContentEngagementSettings({ 
+            contentId: liveId, 
+            engagementSettings: Object.keys(localEngagementSettings).filter(f => {return localEngagementSettings[f] && !localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: localEngagementSettings[next]}}, {})
+        }, 'live').then(() => {
+            setSettingsEdited(false)
+            setSaveAllButtonLoading(false)
+        })
+    }
+
+    const revertSettings = () => {
+        setLocalEngagementSettings(props.contentEngagementState['live'][liveId].engagementSettings);
+    }
+
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
@@ -40,24 +84,43 @@ export const LiveEngagement = (props: ContentEngagementComponentProps) => {
         <>
             <LiveTabs liveId={liveId} />
             {
-                props.contentEngagementState['live'] && props.contentEngagementState['live'][liveId] && props.globalEngagementSettings ?
-                    <div className='flex flex-column'>
-                        <ContentEngagementPage
-                            contentEngagementSettings={props.contentEngagementState['live'][liveId]}
-                            getContentEngagementSettings={props.getContentEngagementSettings}
-                            saveContentEngagementSettings={props.saveContentEngagementSettings}
-                            lockSection={props.lockSection}
-                            saveContentAd={props.saveContentAd}
-                            createContentAd={props.createContentAd}
-                            deleteContentAd={props.deleteContentAd}
-                            getUploadUrl={props.getUploadUrl}
-                            uploadContentImage={props.uploadContentImage}
-                            deleteContentImage={props.deleteContentImage}
-                            contentType='live'
-                            contentId={liveId}
-                            globalEngagementSettings={props.globalEngagementSettings}
-                        />
-                    </div>
+                props.contentEngagementState['live'] && props.contentEngagementState['live'][liveId] && props.globalEngagementSettings && localEngagementSettings ?
+                <div className='flex flex-column'>
+                    <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
+                    { userToken.getPrivilege('privilege-advertising') &&
+                    <EngagementAdvertising
+                        {...componentProps} 
+                        deleteAd={props.deleteContentAd}
+                        createAd={props.createContentAd}
+                        saveAd={props.saveContentAd}
+                    />
+                    }
+                    <EngagementBrandImage
+                        {...componentProps}
+                        getUploadUrl={props.getUploadUrl}
+                        deleteFile={props.deleteContentImage}
+                        uploadBrandImage={props.uploadContentImage}
+                        getEngagementSettings={props.getContentEngagementSettings}
+                    />
+                    <EngagementBrandText
+                        {...componentProps}
+                    />
+                    <EngagementEndScreenText
+                        {...componentProps}
+                    />
+                    {
+                        settingsEdited &&
+                            <div className="mt1">
+                                <Button
+                                    isLoading={saveAllButtonLoading}
+                                    onClick={() => { handleSubmit()}}
+                                >
+                                    Save
+                                </Button>
+                                <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
+                            </div>
+                    }
+                </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             }
         </>

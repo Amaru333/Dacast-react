@@ -9,32 +9,38 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
-import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
-import { ContentEngagementContainerProps, ContentEngagementState } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentEngagementContainerProps, ContentEngagementState, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-
-export interface ContentEngagementComponentProps {
-    contentEngagementState: ContentEngagementState;
-    globalEngagementSettings: EngagementInfo;
-    getContentEngagementSettings: (contentId: string, contentType: string) => Promise<void>;
-    lockSection: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>;
-    saveContentEngagementSettings: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
-    saveContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
-    createContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
-    deleteContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>;
-    uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteContentImage: (targetId: string, contentType: string) => Promise<void>;
-    getGlobalEngagementSettings: () => Promise<void>;
-}
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { userToken } from '../../utils/services/token/tokenService';
+import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
+import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+import { EngagementBrandText } from '../../shared/Engagement/BrandText';
+import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 export const PlaylistEngagement = (props: ContentEngagementContainerProps) => {
 
     let { playlistId } = useParams()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
+
+    const componentProps: EngagementComponentProps = {
+        globalEngagementSettings: props.globalEngagementSettings,
+        localEngagementSettings: localEngagementSettings,
+        setLocalEngagementSettings: setLocalEngagementSettings,
+        setSettingsEdited: setSettingsEdited,
+        lockSection: props.lockSection,
+        contentId: playlistId,
+        contentType: "playlist",
+        saveContentEngagementSettings: props.saveContentEngagementSettings
+    }
 
     React.useEffect(() => {
         props.getContentEngagementSettings(playlistId, 'playlist')
@@ -46,6 +52,27 @@ export const PlaylistEngagement = (props: ContentEngagementContainerProps) => {
         }
     }, [])
 
+    React.useEffect(() => {
+        if ((props.contentEngagementState['playlist'] && props.contentEngagementState['playlist'][playlistId])) {
+            setLocalEngagementSettings(props.contentEngagementState['playlist'][playlistId].engagementSettings)
+        }
+    }, [props.contentEngagementState])
+
+    const handleSubmit = () => {
+        setSaveAllButtonLoading(true)
+        props.saveContentEngagementSettings({ 
+            contentId: playlistId, 
+            engagementSettings: Object.keys(localEngagementSettings).filter(f => {return localEngagementSettings[f] && !localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: localEngagementSettings[next]}}, {})
+        }, 'playlist').then(() => {
+            setSettingsEdited(false)
+            setSaveAllButtonLoading(false)
+        })
+    }
+
+    const revertSettings = () => {
+        setLocalEngagementSettings(props.contentEngagementState['playlist'][playlistId].engagementSettings);
+    }
+
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
@@ -54,24 +81,44 @@ export const PlaylistEngagement = (props: ContentEngagementContainerProps) => {
 
         <>
             <PlaylistsTabs playlistId={playlistId} />
-            {props.contentEngagementState['playlist'] && props.contentEngagementState['playlist'][playlistId]  && props.globalEngagementSettings ?
-                <div className='flex flex-column'>
-                    <ContentEngagementPage 
-                        contentEngagementSettings={props.contentEngagementState['playlist'][playlistId]}
-                        getContentEngagementSettings={props.getContentEngagementSettings}
-                        saveContentEngagementSettings={props.saveContentEngagementSettings}
-                        lockSection={props.lockSection}
-                        saveContentAd={props.saveContentAd}
-                        createContentAd={props.createContentAd}
-                        deleteContentAd={props.deleteContentAd}
-                        getUploadUrl={props.getUploadUrl}
-                        uploadContentImage={props.uploadContentImage}
-                        deleteContentImage={props.deleteContentImage}
-                        contentType='playlist'
-                        contentId={playlistId}
-                        globalEngagementSettings={props.globalEngagementSettings}
-                    />            
-                </div>
+            {
+            props.contentEngagementState['playlist'] && props.contentEngagementState['playlist'][playlistId] && props.globalEngagementSettings && localEngagementSettings ?
+                    <div className='flex flex-column'>
+                        <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
+                        { userToken.getPrivilege('privilege-advertising') &&
+                        <EngagementAdvertising
+                            {...componentProps} 
+                            deleteAd={props.deleteContentAd}
+                            createAd={props.createContentAd}
+                            saveAd={props.saveContentAd}
+                        />
+                        }
+                        <EngagementBrandImage
+                            {...componentProps}
+                            getUploadUrl={props.getUploadUrl}
+                            deleteFile={props.deleteContentImage}
+                            uploadBrandImage={props.uploadContentImage}
+                            getEngagementSettings={props.getContentEngagementSettings}
+                        />
+                        <EngagementBrandText
+                            {...componentProps}
+                        />
+                        <EngagementEndScreenText
+                            {...componentProps}
+                        />
+                        {
+                            settingsEdited &&
+                                <div className="mt1">
+                                    <Button
+                                        isLoading={saveAllButtonLoading}
+                                        onClick={() => { handleSubmit()}}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
+                                </div>
+                        }
+                    </div>
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             }
         </>
