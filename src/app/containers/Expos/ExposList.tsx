@@ -1,44 +1,18 @@
 import React from 'react';
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming';
-import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
-import { EmptyCardExpos } from '../../pages/Expos/EmptyCardExpos';
-import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 const ExposList = (props: ContentListProps) => {
 
-    const [isFetching, setIsFetching] = React.useState<boolean>(true)
-
-    const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-
-    React.useEffect(() => {
-        if(!noDataFetched) {
-            props.getContentList(null)        
-            .then(() => {
-                setIsFetching(false)
-            })
-            .catch(() => setNodataFetched(true))
-        } 
-    }, [])
-
-    if(noDataFetched) {
-        return <ErrorPlaceholder />
-    }
     
-    return !isFetching ? 
-        <>
-        {
-            props.contentListState['expo'].countTotal === 0 ? 
-            <EmptyCardExpos /> :
-            <ContentListPage
+    return  <ContentListPage
                 contentType='expo'
                 items={props.contentListState['expo']}
                 themesList={props.themesList}
@@ -46,11 +20,7 @@ const ExposList = (props: ContentListProps) => {
                 deleteContentList={props.deleteContentList}
                 getThemesList={props.getThemesList}
                 showToast={props.showToast}
-            />}
-        </>
-        : <SpinnerContainer><LoadingSpinner size="medium" color="violet" /></SpinnerContainer>
-
-
+            />
 }
 
 export function mapStateToProps(state: ApplicationState) {
@@ -65,8 +35,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getContentList: async (qs: string) => {
             await dispatch(getContentListAction('expo')(qs))
         },
-        deleteContentList: async (contentId: string, contentType: string) => {
-            await dispatch(deleteContentAction(contentId, contentType))
+        deleteContentList: async (contentId: string) => {
+            await dispatch(deleteContentAction('expo')(contentId))
         },
         getThemesList: async () => {
             await dispatch(getThemingListAction(undefined))

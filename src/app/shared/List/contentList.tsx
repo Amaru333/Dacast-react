@@ -42,7 +42,7 @@ interface ContentListProps {
     themesList: ThemesData;
     billingInfo?: BillingPageInfos;
     getContentList: (qs: string) => Promise<void>;
-    deleteContentList: (voidId: string, contentType: string) => Promise<void>;
+    deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
@@ -112,9 +112,6 @@ export const ContentListPage = (props: ContentListProps) => {
         }
         EventHooker.subscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
         foldersTree.initTree()
-        // const interval = setInterval(() => {
-        //     setFetchContent(true)
-        //   }, 60000)
 
         return () => {
             EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
@@ -414,20 +411,20 @@ export const ContentListPage = (props: ContentListProps) => {
                 </div>
 
             </div>
-            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
-            <Pagination totalResults={contentList.totalResults} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
+            <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
+            <Pagination totalResults={contentList ? contentList.totalResults : 0} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
             <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
             <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
 
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
-                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => { return { id: vodId, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => { return { id: vodId, type: props.contentType } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
@@ -438,7 +435,7 @@ export const ContentListPage = (props: ContentListProps) => {
             <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id, props.contentType).then(() => setListUpdate('Deleted')) }} />
+                    <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id).then(() => setListUpdate('Deleted')) }} />
                 }
             </Modal>
             {addStreamModalOpen && 
