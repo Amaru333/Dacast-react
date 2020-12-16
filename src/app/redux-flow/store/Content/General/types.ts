@@ -13,6 +13,7 @@ export enum ActionTypes {
     UPLOAD_IMAGE = "@@content_general/UPLOAD_IMAGE",
     UPLOAD_IMAGE_FROM_VIDEO = "@@content_general/UPLOAD_IMAGE_FROM_VIDEO",
     DELETE_IMAGE = "@@content_general/DELETE_IMAGE",
+    GENERATE_ENCODER_KEY = "@@content_general/GENERATE_ENCODER_KEY"
 }
 
 export interface AssetType {
@@ -54,6 +55,7 @@ export interface ContentDetails {
     rewind?: boolean;
     unsecureM3u8Url?: string;
     appearance?: Appearance;
+    encoderKey?: string;
 }
 
 interface Appearance {
