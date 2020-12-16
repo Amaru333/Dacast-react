@@ -10,12 +10,12 @@ import { ActionIcon, IconContainer, IconStyle } from '../../../shared/Common/Ico
 import { dataToTimeVideo } from '../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { NewAdModal } from '../../pages/Settings/Interactions/NewAdModal';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
-import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions';
+import { Ad } from '../../redux-flow/store/Settings/Interactions';
 import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
+import { NewAdModal } from './NewAdModal';
 
 export const EngagementAdvertising = (props: EngagementComponentProps  ) => {
 

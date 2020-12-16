@@ -1,12 +1,11 @@
 import React from 'react';
-import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { Ad, AdType, EngagementInfo } from '../../../redux-flow/store/Settings/Interactions/types';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils';
-import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
+import { Ad, AdType, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../utils/formatUtils';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { adPlacementDropdownList } from '../../../utils/DropdownLists';
 
 
 export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, contentType?: string, contentId?: string}) => {

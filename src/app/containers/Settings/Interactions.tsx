@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { InteractionsPage } from '../../pages/Settings/Interactions/Interactions';
 import { getSettingsInteractionsInfosAction, Action, EngagementInfo, saveSettingsInteractionsInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Interactions';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
@@ -100,7 +99,6 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                         <Button className="ml2" typeButton="tertiary" onClick={() => { setLocalEngagementSettings(props.interactionsInfos); setSettingsEdited(false) }}>Discard</Button>
                     </div>
             }
-                {/* <InteractionsPage {...props} />  */}
             </React.Fragment>
             
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
