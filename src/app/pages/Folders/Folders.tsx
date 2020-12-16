@@ -30,6 +30,7 @@ import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../shared/Common/MiscStyle'
+import { ContentStatus } from '../../redux-flow/store/Common/types'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -62,7 +63,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
-    const [updateList, setListUpdate] = React.useState<'online' | 'offline' | 'paywall' | 'deleted' | 'restored'>('online')
+    const [updateList, setListUpdate] = React.useState<ContentStatus | 'Restored' | 'paywall'>('Online')
     const [contentList, setContentList] = React.useState<SearchResult>(props.folderData.requestedContent)
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -321,7 +322,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             case 'Restore':
                 setCheckedItems([asset])
                 props.restoreContent([asset]).then(() => {
-                    setListUpdate('restored')
+                    setListUpdate('Restored')
                 })
                 break
             case 'Rename':

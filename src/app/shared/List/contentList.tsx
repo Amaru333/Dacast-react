@@ -413,9 +413,9 @@ export const ContentListPage = (props: ContentListProps) => {
             </div>
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination totalResults={contentList ? contentList.totalResults : 0} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
-            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
-            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
-            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType === 'live' ? 'channel' : props.contentType as 'vod' | 'channel' | 'playlist' } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
+            <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
+            <DeleteBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType }})} open={bulkDeleteOpen} toggle={setBulkDeleteOpen} />
+            <PaywallBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkPaywallOpen} toggle={setBulkPaywallOpen} />
 
             {
                 bulkThemeOpen &&
