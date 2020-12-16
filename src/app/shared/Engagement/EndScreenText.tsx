@@ -6,9 +6,9 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { DisabledSection } from '../Common/MiscStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
-export const EngagementEndScreenText = (props: {localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, contentType?: string, contentId?: string, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, globalEngagementSettings?: EngagementInfo, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>}) => {
+export const EngagementEndScreenText = (props: EngagementComponentProps) => {
 
     const handleEndScreenTextLockChange = () => {
         if (!props.localEngagementSettings.endScreenSettings.locked) {

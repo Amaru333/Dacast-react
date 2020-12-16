@@ -12,11 +12,11 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
 
-export const EngagementBrandImage = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>,  setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>, getEngagementSettings: (contentId?: string, contentType?: string) => Promise<void>, deleteFile?: (targetId: string, contentType?: string) => Promise<void>, contentId?: string, contentType?: string, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>, uploadContentBrandImage?: (data: File, uploadUrl: string) => Promise<void>, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>}) => {
+export const EngagementBrandImage = (props: EngagementComponentProps) => {
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.localEngagementSettings.brandImageSettings.brandImageURL || null)
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
@@ -56,20 +56,13 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
 
     React.useEffect(() => {
         if(props.localEngagementSettings.uploadurl) {
-            if (!props.contentType) {
-            props.uploadBrandImage(logoFile, props.globalEngagementSettings.uploadurl).then(() => {
+            props.uploadBrandImage(logoFile, props.localEngagementSettings.uploadurl).then(() => {
                 setUploadButtonLoading(false)
                 setTimeout(() => {
                     props.getEngagementSettings()
                 }, 3000)
-            })}
-            else {
-            props.uploadContentBrandImage(logoFile, props.localEngagementSettings.uploadurl ).then(() => {
-                setUploadButtonLoading(false)
-                setTimeout(() => {
-                    props.getEngagementSettings(props.contentId, props.contentType)
-                }, 3000)
-            })  }  
+            })
+            
         }
     }, [props.localEngagementSettings.uploadurl])
     
@@ -83,7 +76,11 @@ export const EngagementBrandImage = (props: {globalEngagementSettings: Engagemen
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUploadedFileUrl(null);
-        props.deleteFile(props.localEngagementSettings.brandImageSettings.brandImageURL)
+        if (!props.contentType) {
+            props.deleteFile(props.localEngagementSettings.brandImageSettings.brandImageURL)
+         } else {
+            props.deleteFile(props.contentId, props.contentType) 
+         }
     }
 
     const handleBrandImageLockChange = () => {

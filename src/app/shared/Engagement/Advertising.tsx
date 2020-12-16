@@ -11,12 +11,13 @@ import { dataToTimeVideo } from '../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { NewAdModal } from '../../pages/Settings/Interactions/NewAdModal';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions';
 import { DisabledSection } from '../Common/MiscStyle';
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { AdTableURLContainer, Header } from './EngagementStyle';
 
-export const EngagementAdvertising = (props: {globalEngagementSettings: EngagementInfo, localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>, contentId?: string, contentType?: string, contentEngagementSettings?: ContentEngagementSettings, deleteAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, deleteContentAd?: (data: Ad[], contentId: string, contentType: string) => Promise<void>;}  ) => {
+export const EngagementAdvertising = (props: EngagementComponentProps  ) => {
 
     const [selectedAd, setSelectedAd] = React.useState<number>(-1)
     const [newAdModalOpened, setNewAdModalOpened] = React.useState<boolean>(false);
@@ -34,8 +35,17 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                 })
             })
         } else {
-            props.setSettingsEdited(true)
-            props.lockSection('ads', props.contentId, props.contentType, true).then(() => {
+            props.saveContentEngagementSettings({
+                contentId: props.contentId,
+                engagementSettings: {
+                    ...Object.keys(props.localEngagementSettings).filter(f => {return props.localEngagementSettings[f] && !props.localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: props.localEngagementSettings[next]}}, {}),
+                    adsSettings:{
+                        locked: false,
+                        ads: [],
+                        adsEnabled: false
+                    }
+                }          
+            }, props.contentType).then(() => {
                 props.setLocalEngagementSettings({
                     ...props.localEngagementSettings,
                     adsSettings:{
@@ -106,7 +116,7 @@ export const EngagementAdvertising = (props: {globalEngagementSettings: Engageme
                     </AdTableURLContainer>,
                     <IconContainer className="iconAction" key={'advertisingTableActionButtons' + i.toString()}>
                         <ActionIcon>
-                            <IconStyle id={'adTableCopy' + i} onClick={() => !props.contentType ? props.deleteAd(props.globalEngagementSettings.adsSettings.ads.filter(ad => ad !== item)) : props.deleteContentAd(props.contentEngagementSettings.engagementSettings.adsSettings.ads.filter(ad => ad.id !== item.id ), props.contentEngagementSettings.contentId, props.contentType)} >delete</IconStyle>
+                            <IconStyle id={'adTableCopy' + i} onClick={() => props.deleteAd(!props.contentType ? props.localEngagementSettings.adsSettings.ads.filter(ad => ad !== item) : props.localEngagementSettings.adsSettings.ads.filter(ad => ad.id !== item.id ), props.contentId, props.contentType)}>delete</IconStyle>
                             <Tooltip target={'adTableCopy' + i}>Delete</Tooltip>
                         </ActionIcon>
                         <ActionIcon>

@@ -14,6 +14,7 @@ import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
 import { EngagementBrandText } from '../../shared/Engagement/BrandText';
 import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
 
 export interface SettingsInteractionComponentProps {
@@ -38,6 +39,13 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
 
     const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(props.interactionsInfos)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+
+    const componentProps: EngagementComponentProps = {
+        globalEngagementSettings: props.interactionsInfos,
+        localEngagementSettings: localEngagementSettings,
+        setLocalEngagementSettings: setLocalEngagementSettings,
+        setSettingsEdited: setSettingsEdited,
+    }
 
     React.useEffect(() => {
         props.getInteractionsInfos()
@@ -67,34 +75,23 @@ const Interactions = (props: SettingsInteractionComponentProps) => {
                 <Bubble type='info'>These global settings can be overidden at content level (Video, Live Stream etc.)</Bubble>
                 { userToken.getPrivilege('privilege-advertising') &&
                     <EngagementAdvertising
-                        globalEngagementSettings={props.interactionsInfos}
-                        localEngagementSettings={localEngagementSettings}
-                        setLocalEngagementSettings={setLocalEngagementSettings}
-                        setSettingsEdited={setSettingsEdited}
+                        {...componentProps}
                         deleteAd={props.deleteAd}
                         createAd={props.createAd}
                         saveAd={props.saveAd} 
                     />
                 }
                 <EngagementBrandImage 
-                    globalEngagementSettings={props.interactionsInfos}
-                    localEngagementSettings={localEngagementSettings}
-                    setLocalEngagementSettings={setLocalEngagementSettings}
-                    setSettingsEdited={setSettingsEdited}
-                    getUploadUrl={props.getUploadUrl}
+                    {...componentProps}
                     deleteFile={props.deleteFile}
                     uploadBrandImage={props.uploadFile}
                     getEngagementSettings={props.getInteractionsInfos}
                 />
-                <EngagementBrandText 
-                    localEngagementSettings={localEngagementSettings}
-                    setLocalEngagementSettings={setLocalEngagementSettings}
-                    setSettingsEdited={setSettingsEdited}
+                <EngagementBrandText  
+                    {...componentProps}
                 />
                 <EngagementEndScreenText 
-                    localEngagementSettings={localEngagementSettings}
-                    setLocalEngagementSettings={setLocalEngagementSettings}
-                    setSettingsEdited={setSettingsEdited}
+                    {...componentProps}
                 />
                 {
                 settingsEdited &&

@@ -3,13 +3,13 @@ import { Card } from '../../../components/Card/Card';
 import { Header } from './EngagementStyle';
 import { Text } from '../../../components/Typography/Text';
 import { IconStyle } from '../../../shared/Common/Icon';
-import { ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Interactions/types';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { DisabledSection } from '../Common/MiscStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Toggle } from '../../../components/Toggle/toggle';
+import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
-export const EngagementBrandText = (props: {localEngagementSettings: EngagementInfo, setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>, setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>, contentType?: string, contentId?: string, handleSectionRevert?: (section: string) => void, saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>, globalEngagementSettings?: EngagementInfo, lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void> }) => {
+export const EngagementBrandText = (props: EngagementComponentProps) => {
 
     const handleBrandTextLockChange = () => {
         if (!props.localEngagementSettings.brandTextSettings.locked) {

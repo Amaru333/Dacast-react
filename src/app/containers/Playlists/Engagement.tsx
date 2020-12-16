@@ -11,7 +11,7 @@ import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
-import { ContentEngagementState } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentEngagementContainerProps, ContentEngagementState } from '../../redux-flow/store/Content/Engagement/types';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
@@ -31,7 +31,7 @@ export interface ContentEngagementComponentProps {
     getGlobalEngagementSettings: () => Promise<void>;
 }
 
-export const PlaylistEngagement = (props: ContentEngagementComponentProps) => {
+export const PlaylistEngagement = (props: ContentEngagementContainerProps) => {
 
     let { playlistId } = useParams()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
