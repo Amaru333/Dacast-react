@@ -44,7 +44,7 @@ const deleteContentAd = async (data: Ad[], adsId: string, contentId: string, con
 }
 
 const deleteFile = async (contentId: string, contentType: string) => {
-    return await axiosClient.delete(`${contentType}/${contentId}/settings/brand-image`)
+    return await axiosClient.delete(`${contentType}/${contentId}/settings/engagement/brand-image`)
 }
 
 export const contentEngagementServices = {

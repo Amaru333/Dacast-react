@@ -10,7 +10,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { PlaylistsTabs } from './PlaylistTabs';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
-import { ContentEngagementContainerProps, ContentEngagementState, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentEngagementContainerProps, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Bubble } from '../../../components/Bubble/Bubble';

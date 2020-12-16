@@ -8,12 +8,11 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LiveTabs } from './LiveTabs';
 import { useParams } from 'react-router';
 import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions';
-import { ContentEngagementComponentProps } from '../Playlists/Engagement';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentEngagementContainerProps, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { userToken } from '../../utils/services/token/tokenService';
@@ -24,7 +23,8 @@ import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 
 
-export const LiveEngagement = (props: ContentEngagementComponentProps) => {
+
+export const LiveEngagement = (props: ContentEngagementContainerProps) => {
 
     let { liveId } = useParams()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
