@@ -60,7 +60,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(getBillingPageInfosAction());
         },
         purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string) => {
-            await dispatch(purchasePlanAction(data, recurlyToken, token3Ds))
+            return await dispatch(purchasePlanAction(data, recurlyToken, token3Ds))
         }
     }
 }

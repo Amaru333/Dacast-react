@@ -25,6 +25,7 @@ import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { purchasePlanService } from '../../../redux-flow/store/Account/Upgrade/services';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -48,10 +49,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     let history = useHistory()
 
-    const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+    const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, null)
+        console.log('recurly token', recurlyToken)
+        purchasePlanService(stepperData, recurlyToken, null)
         .then((response) => {
+            console.log('response', response)
             setIsLoading(false);
             if (response && response.data.data.tokenID) {
                 callback(response.data.data.tokenID)
@@ -77,9 +80,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     }
 
-    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
+        console.log("3DS result token", threeDSecureResultToken)
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken)
+        purchasePlanService(stepperData, recurlyToken, threeDSecureResultToken)
         .then(() => {
             setStepperPlanOpened(false)
             setIsLoading(false);
@@ -447,7 +451,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 functionCancel={setStepperPlanOpened}
                                 isLoading={isLoading}
                                 finalFunction={threeDSecureActive ? purchasePlan3Ds : props.purchasePlan}
-                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos, 'planDetails': props.planDetails }}
+                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos, 'planDetails': props.planDetails, 'purchasePlan3Ds': purchasePlan3Ds }}
                             />
 
                         }

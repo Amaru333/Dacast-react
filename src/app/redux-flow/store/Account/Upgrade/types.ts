@@ -10,7 +10,7 @@ export interface CustomAllowance {
 }
 
 export interface Plan {
-    name: 'Starter' | 'Event' | 'Annual Scale' | 'Monthly Scale';
+    name: 'Annual Starter' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     code: string;
     allownaceCode: string;
     isActive: boolean;
@@ -53,7 +53,8 @@ export interface Plans {
     eventPlan: Plan
     scalePlanAnnual: Plan;
     scalePlanMonthly: Plan;
-    activePlan: string  
+    activePlan: string 
+    threeDSecureToken?: string 
 }
 
 export interface PaidPrivilege {

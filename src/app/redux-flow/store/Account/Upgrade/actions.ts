@@ -12,7 +12,7 @@ export interface GetPlanDetails {
 
 export interface ChangeActivePlan {
     type: ActionTypes.CHANGE_ACTIVE_PLAN;
-    payload: Plan;
+    payload: string;
 }
 
 export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlanDetails> => {
@@ -27,11 +27,11 @@ export const getPlanDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetPlan
 }
 
 export const purchasePlanAction = (data: Plan, recurlyToken: string, token3Ds?: string): ThunkDispatch<Promise<any>, {}, ChangeActivePlan> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan> ) => {
+    return async (dispatch: ThunkDispatch<ApplicationState , {}, ChangeActivePlan>) => {
         await UpgradeServices.purchasePlanService(data, recurlyToken, token3Ds)
             .then( response => {
-                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: data} );
                 return response
+                dispatch( {type: ActionTypes.CHANGE_ACTIVE_PLAN, payload: response && response.data.data.tokenID} );
             }).catch((error) => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
                 return Promise.reject()

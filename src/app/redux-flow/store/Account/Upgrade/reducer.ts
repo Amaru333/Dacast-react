@@ -6,7 +6,8 @@ export const reducer = (state = upgradeInitialState, action: UpgradeAction) => {
         case ActionTypes.GET_PLAN_DETAILS:
             return {...action.payload.data}
         case ActionTypes.CHANGE_ACTIVE_PLAN:
-            return state;
+            return {...state, threeDSecureToken: action.payload}
+        
         default:
             return state;
     }

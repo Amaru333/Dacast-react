@@ -32,7 +32,7 @@ export const useStepperFinalStepAction = (buttonId: string, callback: Function) 
     }, [callback])
 }
 
-export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
+export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchasePlan3Ds: Function, callback: Function; actionButton?: Function; handleThreeDSecureFail?: Function; billingInfo?: BillingPageInfos; stepperData?: any; isUpdate?: boolean; setFormValid?: Function }) => {
 
     const [selectedOption, setSelectedOption] = React.useState<string>('creditCard')
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
@@ -86,6 +86,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
         if (threeDSecureActionToken !== null) {
             setHideForm(true);
         }
+        console.log('action token', threeDSecureActionToken)
     }, [threeDSecureActionToken])
 
     React.useEffect(() => {
@@ -329,7 +330,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; callbac
                     <ThreeDSecure
                         style={{ height: 400 }}
                         actionTokenId={threeDSecureActionToken}
-                        onToken={(actionToken) => { props.actionButton(recurlyToken, actionToken.id); setHideForm(false); setThreeDSecureActionToken(null); }}
+                        onToken={(resultToken) => { props.purchasePlan3Ds(recurlyToken, resultToken.id); setHideForm(false); setThreeDSecureActionToken(null) }}
                         onError={(error) => { props.handleThreeDSecureFail(); setHideForm(false); setThreeDSecureActionToken(null); }}
                     />
                 </div>
