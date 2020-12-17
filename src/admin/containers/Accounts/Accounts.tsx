@@ -6,9 +6,6 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { getAccountsAction} from '../../redux-flow/store/Accounts/List/actions';
 import { Account } from '../../redux-flow/store/Accounts/List/types'
-import { useQuery } from '../../../utils/utils';
-import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AccountsComponentProps {
     accounts: {users: Account[]; total: number} | false;
