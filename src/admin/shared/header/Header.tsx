@@ -1,7 +1,5 @@
 import React from 'react'
-import { Tab } from '../../../components/Tab/Tab'
 import { IconStyle } from '../../../shared/Common/Icon'
-import { AdminRoutes } from '../../constants/AdminRoutes'
 import { LogoutAction, Action } from '../../redux-flow/store/Register/Login'
 import { connect } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk'
@@ -30,7 +28,6 @@ const Header = (props: {logout: () => void}) => {
     return (
         <div className='flex items-center my2'>
             <div className='flex col col-12 items-end'>
-                <Tab className='flex col col-12' orientation='horizontal' list={AdminRoutes.filter(r => r.displayedInHeadertab)}/>
                 <div className='flex ml2 items-end'>
                     <Input type='text' id='impersonateInput' label='Impersonate' placeholder='Impersonate...' value={userIdentifier} onChange={(event) => setUserIdentifier(event.currentTarget.value)} />
                     <div className='ml2'>

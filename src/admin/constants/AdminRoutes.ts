@@ -16,71 +16,73 @@ export const AdminRoutes = [
         name: 'Accounts',
         component: Accounts,
         exactPath: true,
-        displayedInHeadertab: true
+        
     },
     {
         path: '/accounts/:accountId/plan',
         name: 'Edit Plan',
         component: EditPlan,
-        exactPath: true
+        exactPath: true,
+        notDisplayedInNavigation: true
     },
     {
         path: "/accounts/:accountId/edit",
         name: 'Edit Account',
         component: EditAccount,
-        exactPath: true
+        exactPath: true,
+        notDisplayedInNavigation: true
     },
     {
         path: "/accounts/:accountId/logs",
         name: 'Logs',
         component: AccountLogs,
-        exactPath: true
+        exactPath: true,
+        notDisplayedInNavigation: true
     },
     {
         path: "/accounts/:accountId/allowances",
         name: 'Allowances',
         component: AccountAllowances,
-        exactPath: true
+        exactPath: true,
+        notDisplayedInNavigation: true
     },
     {
         path: '/withdrawals',
         name: 'Withdrawals',
         component: Withdrawals,
         exactPath: true,
-        displayedInHeadertab: true
     },
     {
         path: '/withdrawals/:withdrawalId/edit',
         name: 'EditStatus',
         component: EditStatus,
-        exactPath: true
+        exactPath: true,
+        notDisplayedInNavigation: true
     },
     {
         path: '/balances',
         name: 'Balances',
         component: Balances,
         exactPath: true,
-        displayedInHeadertab: true
     },
     {
         path: '/debits',
         name: 'Debits',
         component: Chargebacks,
         exactPath: true,
-        displayedInHeadertab: true
     },
     {
         path: '/piracy',
         name: 'Piracy',
         component: Piracy,
         exactPath: true,
-        displayedInHeadertab: true
     },
     {
         path: '/login',
         name: 'Login',
         component: Login,
         exactPath: true,
-        isPublic: true
+        isPublic: true,
+        notDisplayedInNavigation: true
     },
 ]
