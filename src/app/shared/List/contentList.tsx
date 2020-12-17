@@ -111,7 +111,6 @@ export const ContentListPage = (props: ContentListProps) => {
             console.log('vod was uploaded!')
         }
         EventHooker.subscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
-        foldersTree.initTree()
 
         return () => {
             EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
@@ -419,12 +418,12 @@ export const ContentListPage = (props: ContentListProps) => {
 
             {
                 bulkThemeOpen &&
-                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+                <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map(contentId => { return { id: contentId, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
-                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} submit={async (folderIds: string[]) => { await foldersTree.moveToFolder(folderIds, selectedContent.map(vodId => { return { id: vodId, type: props.contentType } })) }} initialSelectedFolder={currentFolder.fullPath} goToNode={foldersTree.goToNode} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
+                    <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} movedContent={selectedContent.map( contentId => { return { id: contentId, type: props.contentType } })} initialSelectedFolder={currentFolder.fullPath} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
