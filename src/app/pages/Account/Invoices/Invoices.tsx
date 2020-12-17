@@ -120,18 +120,21 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     }
 
     const invoicesTableBody = () => {
-        return props.invoicesInfo.invoices.map((item, i) => {
-            const color = item.status === 'paid' ? 'green' : item.status === 'failed' ? 'red' : 'yellow';
-            const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
-            return {data: [
-                <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
-                <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
-                <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
-                <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)}  />,
-                <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><a className="noTransition" href={item.downloadLink} target='_blank'><IconStyle>print</IconStyle></a><IconStyle onClick={() => saveFile(item.downloadLink, item.id + '.pdf')}>get_app</IconStyle></IconContainer>
-
-            ]}
-        })
+        if(props.invoicesInfo) {
+            return props.invoicesInfo.invoices.map((item, i) => {
+                const color = item.status === 'paid' ? 'green' : item.status === 'failed' ? 'red' : 'yellow';
+                const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
+                return {data: [
+                    <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
+                    <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
+                    <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
+                    <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)}  />,
+                    <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><a className="noTransition" href={item.downloadLink} target='_blank'><IconStyle>print</IconStyle></a><IconStyle onClick={() => saveFile(item.downloadLink, item.id + '.pdf')}>get_app</IconStyle></IconContainer>
+    
+                ]}
+            })
+        }
+        return null
     }
 
     const emptyInvoicesTableHeader = () => {
@@ -166,7 +169,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
 
             }
-            <Pagination totalResults={props.invoicesInfo.total} defaultPage={props.invoicesInfo.page} defaultDisplayedOption={props.invoicesInfo.perPage} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort)}} />
+            <Pagination totalResults={props.invoicesInfo ? props.invoicesInfo.total : 0} defaultPage={props.invoicesInfo ? props.invoicesInfo.page : 0} defaultDisplayedOption={props.invoicesInfo ? props.invoicesInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort)}} />
         </div>
         : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
 

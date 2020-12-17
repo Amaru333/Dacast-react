@@ -141,7 +141,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     }
 
     const transactionsTableBody = () => {
-        if(props.transactionsInfo.transactionsList) {
+        if(props.transactionsInfo && props.transactionsInfo.transactionsList) {
             return props.transactionsInfo.transactionsList.map((transaction, i) => {
                 return {data: [
                     <Text key={'transactionsTableBodyType' + i} size={14} weight='reg'>{transaction.type}</Text>,
@@ -176,7 +176,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             </div>
 
             <Table id='transactionTable' contentLoading={contentLoading} headerBackgroundColor="white" header={transactionsTableHeader()} body={transactionsTableBody()} />
-            <Pagination totalResults={props.transactionsInfo.total} defaultPage={props.transactionsInfo.page} defaultDisplayedOption={props.transactionsInfo.perPage} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
+            <Pagination totalResults={props.transactionsInfo ? props.transactionsInfo.total : 0} defaultPage={props.transactionsInfo ? props.transactionsInfo.page : 1} defaultDisplayedOption={props.transactionsInfo ? props.transactionsInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
         </div>
     )
 }
