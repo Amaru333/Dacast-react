@@ -83,7 +83,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     }, [fetchContent])
 
     function saveFile(url: string, filename: string) {
-        axiosClient.get(url, {authRequired: false}
+        axiosClient.get(url, {authRequired: false, responseType: 'arraybuffer'}
         ).then((response) => {
             const blob = new Blob([response.data], { type: 'application/pdf' });
             if (navigator.msSaveBlob) {
