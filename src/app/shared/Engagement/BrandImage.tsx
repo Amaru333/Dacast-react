@@ -14,6 +14,7 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { imagePlacementDropdownList } from '../../../utils/DropdownLists';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { isMobile } from 'react-device-detect';
 
 
 export const EngagementBrandImage = (props: EngagementComponentProps) => {
@@ -150,7 +151,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                 
                 <DisabledSection settingsEditable={!props.localEngagementSettings.brandImageSettings.locked || !props.contentType}>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
-                    <div className="lg-col lg-col-12 mb1 mt25 flex">
+                    <div className={"lg-col lg-col-12 mb1 mt25 flex " + (isMobile && "flex-column")}>
                         <div className="lg-col lg-col-6 mr2">
                             <DragAndDrop className="flex flex-column" hasError={false} handleDrop={() => { }}>
                                 {uploadedFileUrl ?
@@ -179,12 +180,15 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                             </DragAndDrop>
                             <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                         </div>
-                        <div className="col col-6">
-                            <DropdownSingle className="col col-4 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={imagePlacementDropdownList} dropdownDefaultSelect={props.localEngagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
+                        <div className="sm-col sm-col-6 col-12">
+                            <DropdownSingle className="sm-col sm-col-4 col-12 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={imagePlacementDropdownList} dropdownDefaultSelect={props.localEngagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
                             callback={(item: DropdownSingleListItem) => {props.setLocalEngagementSettings({...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePosition: item.title }});props.setSettingsEdited(true)}}
                             />
-                            <Input className="col col-4 pr2" value={props.localEngagementSettings.brandImageSettings.brandImageSize ? props.localEngagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                            <Input className="col col-4" label="Padding (px)" value={props.localEngagementSettings.brandImageSettings.brandImagePadding ? props.localEngagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} />
+                            <div className={isMobile && "col col-12 flex pr2 pt2"}>
+                            <Input className="sm-col sm-col-4 col-6 pr2" value={props.localEngagementSettings.brandImageSettings.brandImageSize ? props.localEngagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                            <Input className="sm-col sm-col-4 col-6" label="Padding (px)" value={props.localEngagementSettings.brandImageSettings.brandImagePadding ? props.localEngagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} />
+                            </div>
+                            
                             <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={props.localEngagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});props.setSettingsEdited(true)}} />
                         </div>
                     </div>
