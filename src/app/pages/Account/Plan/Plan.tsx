@@ -21,6 +21,7 @@ import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import { Divider } from '../../../shared/Common/MiscStyle';
 import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
+import { purchaseProductsService } from '../../../redux-flow/store/Account/Plan/services';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -48,7 +49,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        await props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
+        purchaseProductsService(purchaseDataStepperData, recurlyToken, null).then(
             (response) => {
             setIsLoading(false);
             if (response && response.data.data.tokenID) {
@@ -59,11 +60,31 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 setDataPaymentSuccessOpen(true)
                 props.getWidgetData()
             }
-        }).catch((error) => {
+        }).catch(() => {
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
+    }
+
+    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
+        setIsLoading(true);
+        purchaseProductsService(purchaseDataStepperData, recurlyToken, threeDSecureResultToken).then(
+            () => {
+            setIsLoading(false);
+            setPurchaseDataOpen(false)
+            setDataPaymentSuccessOpen(true)
+            props.getWidgetData()
+            }
+        ).catch(() => {
+            setIsLoading(false);
+            setPurchaseDataOpen(false)
+            setDataPaymentFailedOpen(true)
+        })
+    }
+
+    const handleThreeDSecureFail = () => {
+        setDataPaymentFailedOpen(true)
     }
 
     const handlePlaybackProtectionValue = (value: string) => {
@@ -240,11 +261,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     lastStepButton="Purchase"
-                    finalFunction={() => {}}
+                    finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
                     updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
                     functionCancel={setPurchaseDataOpen}
-                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts, 'purchaseProducts3Ds': purchaseProducts3Ds, 'handleThreeDSecureFail': handleThreeDSecureFail}}
                     isLoading={isLoading}
                 />
             }

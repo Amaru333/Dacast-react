@@ -45,7 +45,7 @@ const getProductDetailsService = async () => {
     return await axiosClient.get('/accounts/' + userId + '/products')
 }
 
-const purchaseProductsService = async (data: Extras, recurlyToken: string, token3Ds?: string) => {
+export const purchaseProductsService = async (data: Extras, recurlyToken: string, token3Ds?: string) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
     return await axiosClient.post('/accounts/' + userId + '/products/purchase',
         {
