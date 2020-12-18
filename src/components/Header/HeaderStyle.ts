@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { DropdownList } from '../FormsComponents/Dropdown/DropdownStyle';
 import { Avatar } from '../Avatar/Avatar';
 
-export const HeaderStyle = styled.div`
+export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonatedUser'}>`
     border-bottom: 1px solid #D1DBE8;
-    background-color: ${props => props.theme.colors["white"]};
+    background-color: ${props => props.userType === 'user' ? props.theme.colors["white"] : props.userType === 'admin' ? props.theme.colors['yellow80'] : props.theme.colors['red10']};
     width: inherit;
     position: fixed;
     transition: none;

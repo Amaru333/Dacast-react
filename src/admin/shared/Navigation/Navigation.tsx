@@ -61,7 +61,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
             return (
                 <Link to={element.path} onClick={() => {setSelectedElement(element.path)}} key={'MenuElement'+i} >
-                    <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
+                    <ElementMenu isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
                         {element.name} 
                     </ElementMenu>
                 </Link>

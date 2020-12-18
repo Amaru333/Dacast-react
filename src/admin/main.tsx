@@ -18,7 +18,7 @@ import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import Toasts from './containers/Others/Toasts';
 import { MainMenu } from "./shared/Navigation/Navigation";
 import { isMobile } from "react-device-detect";
-import { responsiveMenu } from "../utils/utils";
+import { responsiveMenu, useMedia } from "../utils/utils";
 import { Content, FullContent } from "../shared/Content";
 
 // Any additional component props go here.
@@ -27,7 +27,8 @@ interface AdminMainProps {
 }
 const PrivateRoute = (props: {key: string; component: any; path: string; exact: boolean}) => {  
     const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
-    
+    let mobileWidth = useMedia('(max-width:780px');
+
     const menuHoverOpen = () => {
         if (!isOpen && !menuLocked) {
             setOpen(true)
@@ -65,8 +66,8 @@ const PrivateRoute = (props: {key: string; component: any; path: string; exact: 
                         isMobile={isMobile}
                         navBarWidth={currentNavWidth}
                     >
+                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Content isMobile={isMobile}>
-                            <Header />
                             <ErrorBoundary>
                                 <props.component {...props} />
                             </ErrorBoundary>

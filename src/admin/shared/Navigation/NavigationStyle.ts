@@ -21,10 +21,6 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         background: ${props.theme.colors["violet20"]} !important;
         color: ${props.theme.colors["dark-violet"]};
 
-        ${!props.hasSlugs && css`
-          border-left: 4px solid ${props.theme.colors["dark-violet"]};
-        `}
-
         ${!props.isOpen && css`
         border-left: 4px solid ${props.theme.colors["dark-violet"]} ;
         `}

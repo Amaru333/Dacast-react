@@ -8,9 +8,6 @@ export interface MainMenuSpecificProps {
     navWidth: string;
     menuLocked: boolean;
     setMenuLocked: (b: boolean) => void;
-    openAddStream?: (b: boolean) => void;
-    openPlaylist?: (b: boolean) => void;
-    openExpoCreate?: (b: boolean) => void;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -21,7 +18,6 @@ export interface ElementMenuSpecificProps {
     isOpen: boolean;
     isMobile: boolean;
     arrowIcon?: string;
-    hasSlugs?: boolean;
 }
 ​
 export type ElementMenuProps = ElementMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -35,19 +31,4 @@ export interface Routes {
     exactPath?: boolean;
     isPublic?: boolean;
     notDisplayedInNavigation?: boolean;
-}
-
-export interface UserAccountPrivileges {
-    standard: boolean;
-    compatible: boolean;
-    premium: boolean;
-    rewind: boolean;
-}
-
-export interface StreamSetupOptions {
-    title: string;
-    rewind?: boolean;
-    streamType?: string;
-    region: string;
-    renditionCount: number;
 }

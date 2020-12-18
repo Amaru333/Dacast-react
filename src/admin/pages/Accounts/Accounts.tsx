@@ -16,6 +16,8 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
 import { Account } from '../../redux-flow/store/Accounts/List/types'
+import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
+import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/DropdownCheckbox'
 
 
 export const AccountsPage = (props: AccountsComponentProps) => {
@@ -23,14 +25,40 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     let query = useHistory()
 
     let qs = useQuery()
-
+    const tableColumnsDefault = {
+        account: true,
+        company: true,
+        name: true,
+        phone: true,
+        email: true,
+        plan: true,
+        date: true,
+        data: true,
+        storage: true,
+        flags: true,
+        edit: true,
+        allowances: true
+    }
 
 
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [keyword, setKeyword] = React.useState<string>(qs.get('search') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
-
+    const [tableColumn, setTableColumn] = React.useState<{
+        account: boolean;
+        company: boolean;
+        name: boolean;
+        phone: boolean;
+        email: boolean;
+        plan: boolean;
+        date: boolean;
+        data: boolean;
+        storage: boolean;
+        flags: boolean;
+        edit: boolean;
+        allowances: boolean;
+    }>(tableColumnsDefault)
 
     React.useEffect(() => {
         if(!contentLoading) {
@@ -46,21 +74,19 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
     const accountsTableHeader = () => {
         return {data: [
-            {cell: <Text key='accountsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
-            {cell: <Text key='accountsTableHeaderCompanyCell' size={14} weight='med'>Company</Text>},
-            {cell: <Text key='accountsTableHeaderNameCell' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='accountsTableHeaderPhoneCell' size={14} weight='med'>Phone</Text>},
-            {cell: <Text key='accountsTableHeaderEmailCell' size={14} weight='med'>Email</Text>},
-            {cell: <Text key='accountsTableHeaderPlanCell' size={14} weight='med'>Plan</Text>},
-            // {cell: <Text key='accountsTableHeader12MonthsCell' size={14} weight='med'>12 Months</Text>},
-            {cell: <Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
-            {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data (GB)</Text>},
-            {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
-            // {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
-            {cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
-            {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
-            {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
-        ]}
+            tableColumn.account && {cell: <Text key='accountsTableHeaderAccountCell' size={14} weight='med'>Account</Text>},
+            tableColumn.company && {cell: <Text key='accountsTableHeaderCompanyCell' size={14} weight='med'>Company</Text>},
+            tableColumn.name && {cell: <Text key='accountsTableHeaderNameCell' size={14} weight='med'>Name</Text>},
+            tableColumn.phone && {cell: <Text key='accountsTableHeaderPhoneCell' size={14} weight='med'>Phone</Text>},
+            tableColumn.email &&{cell: <Text key='accountsTableHeaderEmailCell' size={14} weight='med'>Email</Text>},
+            tableColumn.plan && {cell: <Text key='accountsTableHeaderPlanCell' size={14} weight='med'>Plan</Text>},
+            tableColumn.date && {cell: <Text key='accountsTableHeaderRegiteredCell' size={14} weight='med'>Registered Date</Text>},
+            tableColumn.data && {cell: <Text key='accountsTableHeaderDataCell' size={14} weight='med'>Data (GB)</Text>},
+            tableColumn.storage && {cell: <Text key='accountsTableHeaderStorageCell' size={14} weight='med'>Storage (GB)</Text>},
+            tableColumn.flags &&{cell: <Text key='accountsTableHeaderFlagsCell' size={14} weight='med'>Flags</Text>},
+            tableColumn.edit && {cell: <Text key='accountsTableHeaderEditCell' size={14} weight='med'>Edit</Text>},
+            tableColumn.allowances && {cell: <Text key='accountsTableHeaderAllowancesCell' size={14} weight='med'>Allowances</Text>},
+        ].filter(p => p)}
     }
 
 
@@ -112,22 +138,20 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         if(props.accounts) {
             return props.accounts.users.map((account, key) => {
                 return {data: [
-                    <a key={'accountsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(account.salesforceId)}>{account.salesforceId}</a>,
-                    <Text key={'accountsTableBodyCompanyNameCell' + key } size={14}>{account.companyName}</Text>,
-                    <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
-                    <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
-                    <Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
-                    : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>,
-                    // <Text key={'accountsTableBody12MonthsCell' + key } size={14}>${account.annualAmount ? account.annualAmount.toLocaleString() : ''}</Text>,
-                    <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
-                    <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
-                    <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
-                    // <div key={'accountsTableBodyFlagsCell' + key} className='flex'>{account.flags && renderFlags(account.flags)}</div>,
-                    <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
-                    <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
-                    <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
-                ]}
+                    tableColumn.account && <a key={'accountsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(account.salesforceId)}>{account.salesforceId}</a>,
+                    tableColumn.company && <Text key={'accountsTableBodyCompanyNameCell' + key } size={14}>{account.companyName}</Text>,
+                    tableColumn.name && <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
+                    tableColumn.phone && <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
+                    tableColumn.email &&<Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
+                    tableColumn.plan && (account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
+                    : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>),
+                    tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
+                    tableColumn.data && <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
+                    tableColumn.storage && <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
+                    tableColumn.flags && <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
+                    tableColumn.edit && <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
+                    tableColumn.allowances && <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
+                ].filter(p => p)}
             })
         }
     }
@@ -165,17 +189,23 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     return props.accounts ?
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
-            <div className='flex my1'>
-                <div className='relative flex items-center mr2'>
-                    <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
-                    <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
-                </div>
-                <div className='relative flex items-center mr2'>
-                    <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
-                    <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setKeyword('');handleSubmit(accountId, '')}}><IconStyle>close</IconStyle></div>
-                </div>
-                <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+            <div className='flex items-center my1'>
+                    <div className='relative flex items-center mr2'>
+                        <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                        <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
+                    </div>
+                    <div className='relative flex items-center mr2'>
+                        <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
+                        <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setKeyword('');handleSubmit(accountId, '')}}><IconStyle>close</IconStyle></div>
+                    </div>
+                    <div className='flex-auto'>
+                        <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                    </div>
+
+                <DropdownCheckbox id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => setTableColumn(value)} list={tableColumn} />
+
             </div>
+
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
         </div>

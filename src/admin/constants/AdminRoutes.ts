@@ -54,7 +54,7 @@ export const AdminRoutes = [
     },
     {
         path: '/withdrawals/:withdrawalId/edit',
-        name: 'EditStatus',
+        name: 'Edit Status',
         component: EditStatus,
         exactPath: true,
         notDisplayedInNavigation: true

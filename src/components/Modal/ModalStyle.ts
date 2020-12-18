@@ -1,13 +1,5 @@
 import styled, { css } from 'styled-components';
 import { ModalProps, ModalCardProps } from './ModalTypes';
-import { ColorsApp } from '../../styled/types';
-
-export const IconStyle = styled.div<{ iconColor: ColorsApp }>`
-    color: ${props => props.theme.colors[props.iconColor]};
-    float: left;
-    margin-top: 4px;
-    margin-right: 8px;
-`;
 
 export const OverlayStyle = styled.div<{ opened: boolean; index?: number }>`
     display: none;
