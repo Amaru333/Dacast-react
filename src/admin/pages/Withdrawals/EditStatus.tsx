@@ -27,7 +27,7 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.saveWithdrawalStatus(props.withdrawalId, selectedStatus)
+        props.saveWithdrawalStatus(selectedStatus, props.withdrawalId)
         .then(() => {
             setOpenConfirmationModal(false)
             setButtonLoading(false)

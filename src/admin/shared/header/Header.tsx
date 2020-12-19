@@ -7,14 +7,13 @@ import { AdminState } from '../../redux-flow/store'
 import { Link, useHistory } from 'react-router-dom'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
-import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { capitalizeFirstLetter } from '../../../utils/utils'
 import { AdminRoutes } from '../../constants/AdminRoutes'
 import { Text } from '../../../components/Typography/Text'
 import { HeaderStyle, VerticalDivider } from '../../../components/Header/HeaderStyle'
 import Burger from '../Navigation/Burger'
-
-const UUID_REGEX = /^[0-9a-fA-F]{1,12} [0-9a-fA-F]{1,12} [0-9a-fA-F]{1,12} [0-9a-fA-F]{1,12} [0-9a-fA-F]{1,12}/;
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
+import { formatPostImpersonateInput } from '../../utils/utils'
 
 interface AdminHeaderProps {
     isOpen: boolean;
@@ -36,10 +35,10 @@ const Header = (props: AdminHeaderProps) => {
 
     const handleImpersonate = () => {
         setIsLoading(true)
-        AccountsServices.impersonate(userIdentifier)
+        dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
             setIsLoading(false)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click()
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click()
         })
         .catch(() => setIsLoading(false))
     }
@@ -78,7 +77,7 @@ const Header = (props: AdminHeaderProps) => {
                         <Button isLoading={isLoading} onClick={() => handleImpersonate()} sizeButton='large' typeButton='primary' buttonColor='blue'>Impersonate</Button>
                     </div>
                 </div>
-            <VerticalDivider />
+            <VerticalDivider blackBorder />
             <div className='pointer mr2'>
                 <IconStyle onClick={() => {props.logout();history.push('/login')}}>exit_to_app_outlined</IconStyle>
             </div>

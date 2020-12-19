@@ -17,7 +17,7 @@ export interface EditAccountComponentProps {
 
 const EditAccount = (props: EditAccountComponentProps ) => {
 
-    let { accountId } = useParams()
+    let { accountId } = useParams<{accountId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {

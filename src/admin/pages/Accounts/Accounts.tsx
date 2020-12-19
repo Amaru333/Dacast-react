@@ -11,13 +11,14 @@ import { IconGreyContainer, IconStyle } from '../../../shared/Common/Icon'
 import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
 import { Account } from '../../redux-flow/store/Accounts/List/types'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/DropdownCheckbox'
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
+import { formatPostImpersonateInput } from '../../utils/utils'
 
 export const AccountsPage = (props: AccountsComponentProps) => {
 
@@ -127,9 +128,9 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     }
 
     const handleImpersonate = (userIdentifier: string) => {
-        AccountsServices.impersonate(userIdentifier)
+        dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click();
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
         })
     }
 

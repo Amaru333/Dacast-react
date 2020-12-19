@@ -3,11 +3,11 @@ export interface MainMenuSpecificProps {
     routes: Routes[]; 
     history: any;
     isOpen: boolean;
-    setOpen: (b: boolean) => void;
     isMobile: boolean;
     navWidth: string;
     menuLocked: boolean;
     setMenuLocked: (b: boolean) => void;
+    setOpen: (b: boolean) => void;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

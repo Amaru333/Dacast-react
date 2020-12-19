@@ -9,11 +9,13 @@ import Balances from '../containers/Paywall/Balances'
 import Chargebacks from '../containers/Paywall/Chargebacks'
 import Login from '../containers/Register/Login'
 import Piracy from '../containers/Piracy/Piracy'
+import { Routes } from '../shared/Navigation/NavigationTypes'
 
-export const AdminRoutes = [
+export const AdminRoutes: Routes[] = [
     {
         path: '/accounts',
         name: 'Accounts',
+        iconName: 'account_circle',
         component: Accounts,
         exactPath: true,
         
@@ -49,6 +51,7 @@ export const AdminRoutes = [
     {
         path: '/withdrawals',
         name: 'Withdrawals',
+        iconName: 'attach_money',
         component: Withdrawals,
         exactPath: true,
     },
@@ -62,18 +65,21 @@ export const AdminRoutes = [
     {
         path: '/balances',
         name: 'Balances',
+        iconName: 'account_balance',
         component: Balances,
         exactPath: true,
     },
     {
         path: '/debits',
         name: 'Debits',
+        iconName: 'credit_card',
         component: Chargebacks,
         exactPath: true,
     },
     {
         path: '/piracy',
         name: 'Piracy',
+        iconName: 'security',
         component: Piracy,
         exactPath: true,
     },

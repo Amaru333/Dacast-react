@@ -35,8 +35,8 @@ export const HeaderAvatar = styled(Avatar)`
     cursor: pointer;
 `
 
-export const VerticalDivider = styled.div`
-    border-left: 1px solid ${props => props.theme.colors["gray-7"]};
+export const VerticalDivider = styled.div<{blackBorder?: boolean}>`
+    border-left: 1px solid ${props => props.blackBorder ? props.theme.colors['black'] : props.theme.colors["gray-7"]};
     margin: 4px 16px 4px 0;
     height: 80%;
 `

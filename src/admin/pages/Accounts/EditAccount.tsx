@@ -9,9 +9,9 @@ import { EditAccountComponentProps } from '../../containers/Accounts/EditAccount
 import { PutAccountInfo, AccountInfo } from '../../redux-flow/store/Accounts/EditAccount/types'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
-import { AccountServices } from '../../redux-flow/store/Accounts/EditAccount/service'
 import { Toggle } from '../../../components/Toggle/toggle'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 
 const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
 
@@ -47,7 +47,7 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
     const handleCreateLegacy = () => {
         setCreatePlatformLoading(true)
-        AccountServices.createLegacyAccount(props.accountInfo.accountId)
+        dacastSdk.postCreateLegacyAccount(props.accountInfo.accountId)
         .then(() => {
             setCreatePlatformLoading(false)
         }).catch(() => setCreatePlatformLoading(false))

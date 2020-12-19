@@ -9,7 +9,6 @@ import { ThemeProvider } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
-import { Routes } from './utils/utils';
 import { adminToken } from './utils/services/token/tokenService';
 import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
@@ -20,6 +19,7 @@ import { MainMenu } from "./shared/Navigation/Navigation";
 import { isMobile } from "react-device-detect";
 import { responsiveMenu, useMedia } from "../utils/utils";
 import { Content, FullContent } from "../shared/Content";
+import { Routes } from "./shared/Navigation/NavigationTypes";
 
 // Any additional component props go here.
 interface AdminMainProps {

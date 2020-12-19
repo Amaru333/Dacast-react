@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '../../../components/Typography/Text'
 import { Tab } from '../../../components/Tab/Tab'
-import { makeRoute } from '../../utils/utils'
+import { formatPostImpersonateInput, makeRoute } from '../../utils/utils'
 import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
@@ -9,12 +9,12 @@ import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { Button } from '../../../components/FormsComponents/Button/Button'
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -28,9 +28,9 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
 
     const handleImpersonate = (userIdentifier: string) => {
-        AccountsServices.impersonate(userIdentifier)
+        dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click();
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
         })
     }
 

@@ -2,18 +2,8 @@ import { ThunkDispatch } from "redux-thunk"
 import { AdminState } from "../redux-flow/store"
 import { showToastNotification } from "../redux-flow/store/Toasts/actions"
 import { Action as ReduxAction } from 'redux';
-
-export interface Routes {
-    path: string;
-    name: string;
-    iconName?: string;
-    arrowIcon?: string;
-    component?: any;
-    slug?: Routes[];
-    exactPath?: boolean;
-    isPublic?: boolean;
-    displayedInHeadertab?: boolean;
-}
+import { Routes } from "../shared/Navigation/NavigationTypes";
+import { PostImpersonateAccountInput } from "../../DacastSdk/admin";
 
 
 export const makeRoute = (name: string, path?: string, component?: any): Routes => {
@@ -22,6 +12,13 @@ export const makeRoute = (name: string, path?: string, component?: any): Routes 
         name: name,
         component: component
     }
+}
+
+export const formatPostImpersonateInput = (data: string): PostImpersonateAccountInput => {
+    let formattedData: PostImpersonateAccountInput = {
+        userIdentifier: data.replace(/,/g, '').trim()
+    }
+    return formattedData
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
