@@ -18,7 +18,7 @@ import { Prompt } from 'react-router';
 import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';

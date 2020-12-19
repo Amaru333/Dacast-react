@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 export interface EditPlanComponentProps {
     accountPlan: PlanInfo;
     getAccountPlan: (accountId: string) => Promise<void>;
-    saveAccountPlan: (accountId: string, planDetails: PlanInfoPut) => Promise<void>;
+    saveAccountPlan: (planDetails: PlanInfoPut, accountId: string) => Promise<void>;
     switchAccountPlan: Function;
 }
 const EditPlan = (props: EditPlanComponentProps) => {
@@ -40,8 +40,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getAccountPlan: async (accountId: string) => {
             await dispatch(getAccountPlanAction(accountId));
         },
-        saveAccountPlan: async (accountInfo: string, planInfo: PlanInfoPut) => {
-            await dispatch(saveAccountPlanAction(accountInfo, planInfo))
+        saveAccountPlan: async (planInfo: PlanInfoPut, accountInfo: string) => {
+            await dispatch(saveAccountPlanAction(planInfo, accountInfo))
         }
     };
 }

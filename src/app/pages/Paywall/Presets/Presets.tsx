@@ -12,7 +12,7 @@ import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 

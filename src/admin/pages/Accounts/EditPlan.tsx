@@ -29,7 +29,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.saveAccountPlan(props.accountId, planData)
+        props.saveAccountPlan(planData, props.accountId)
         .then(() => {
             setButtonLoading(false)
             setOpenConfirmationModal(false)

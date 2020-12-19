@@ -29,7 +29,7 @@ import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/
 import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
-import { Divider } from '../../shared/Common/MiscStyle'
+import { Divider } from '../../../shared/MiscStyles'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 

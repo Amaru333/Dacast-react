@@ -29,7 +29,7 @@ import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText, B
 import { IconStyle } from '../../../shared/Common/Icon';
 import { updateClipboard } from '../../utils/utils';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { Divider } from '../../shared/Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 

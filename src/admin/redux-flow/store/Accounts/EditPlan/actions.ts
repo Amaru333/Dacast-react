@@ -1,8 +1,10 @@
-import { ActionTypes, PlanInfo, PlanInfoPut } from './types';
+import { ActionTypes, PlanInfo } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../..';
 import { PlansServices } from './service';
-import { showToastNotification } from '../../Toasts';
+import { applyAdminViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/adminAxiosClient';
+import { formatGetAccountPlanInput, formatGetAccountPlanOutput, formatPutAccountPlanInput } from './viewModel';
 
 export interface GetPlan {
     type: ActionTypes.GET_ACCOUNT_PLAN;
@@ -19,30 +21,9 @@ export interface SwitchPlan {
     payload: string;
 }
 
-export const getAccountPlanAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetPlan> => {
-    return async (dispatch: ThunkDispatch<AdminState, {}, GetPlan>) => {
-        await PlansServices.getAccountPlan(accountId)
-            .then( response => {
-                dispatch({type: ActionTypes.GET_ACCOUNT_PLAN, payload: response.data});
-            }).catch(() => {
-                dispatch(showToastNotification('Couldn\'t fetch plan details' , 'fixed', 'error'))
-            })
-    }
-}
+export const getAccountPlanAction = applyAdminViewModel(dacastSdk.getAccountPlan, formatGetAccountPlanInput, formatGetAccountPlanOutput, ActionTypes.GET_ACCOUNT_PLAN, null,  'Couldn\'t get plan details')
+export const saveAccountPlanAction = applyAdminViewModel(dacastSdk.putAccountPlan, formatPutAccountPlanInput, undefined, ActionTypes.SAVE_ACCOUNT_PLAN, 'Plan details saved',  'Couldn\'t save plan details')
 
-export const saveAccountPlanAction = (accountId: string, planInfo: PlanInfoPut): ThunkDispatch<Promise<void>, {}, SavePlan> => {
-    return async (dispatch: ThunkDispatch<AdminState, {}, SavePlan>) => {
-        await PlansServices.saveAccountPlan(accountId, planInfo)
-            .then( response => {
-                dispatch({type: ActionTypes.SAVE_ACCOUNT_PLAN, payload: response.data})
-                dispatch(showToastNotification('Plan details saved' , 'fixed', 'success'))
-
-            }).catch(() => {
-                dispatch(showToastNotification('Couldn\'t save plan details' , 'fixed', 'error'))
-
-            })
-    }
-}
 
 export const switchAccountPLanAction = (accountId: string, newPlan: string): ThunkDispatch<Promise<void>, {}, SwitchPlan> => {
     return async (dispatch: ThunkDispatch<AdminState, {}, SwitchPlan>) => {

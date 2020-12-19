@@ -15,7 +15,7 @@ import { PaywallThemingComponentProps } from '../../../containers/Paywall/Themin
 import styled from 'styled-components';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
