@@ -59,6 +59,11 @@ export interface GetAccountDetailsOutput {
     isBanned: boolean;
     isTest: boolean;
     isAdult: boolean;
+    migration: {
+        legacyUserId: string | null;
+        originPlatform: string | null;
+        status: string | null;
+    }
 }
 
 export interface PutAccountDetailsInput {
