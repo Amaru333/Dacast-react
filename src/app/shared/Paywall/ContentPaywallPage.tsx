@@ -19,7 +19,7 @@ import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { userToken } from '../../utils/services/token/tokenService'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
-import { Divider } from '../Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 
 export interface ContentPaywallComponentProps {
     contentId: string;

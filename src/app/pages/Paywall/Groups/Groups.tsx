@@ -14,7 +14,7 @@ import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 var moment = require('moment-timezone')
 
 interface GroupStepperSecondStepProps {

@@ -8,7 +8,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PaywallSettingsComponentProps } from '../../../containers/Paywall/Settings';
 import { PaywallSettingsInfos } from '../../../redux-flow/store/Paywall/Settings/types';
 import { Prompt } from 'react-router';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 
 export const PaywallSettingsPage = (props: PaywallSettingsComponentProps) => {
     const [settingsInfos, setSettingsInfos] = React.useState<PaywallSettingsInfos>(props.paywallSettingsInfos)

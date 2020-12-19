@@ -4,12 +4,11 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Tab } from '../../../components/Tab/Tab'
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio'
-import { PlanInfo, PlanInfoPut } from '../../redux-flow/store/Accounts/EditPlan/types'
+import { PlanInfoPut } from '../../redux-flow/store/Accounts/EditPlan/types'
 import { EditPlanComponentProps } from '../../containers/Accounts/EditPlan'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { useHistory } from 'react-router'
 import { makeRoute } from '../../utils/utils'
-import { handleFeatures } from '../../../app/shared/Common/Features'
 
 const Plans = [
     'Starter',
@@ -29,7 +28,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.saveAccountPlan(props.accountId, planData)
+        props.saveAccountPlan(planData, props.accountId)
         .then(() => {
             setButtonLoading(false)
             setOpenConfirmationModal(false)

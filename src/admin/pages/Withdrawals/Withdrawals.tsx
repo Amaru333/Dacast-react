@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '../../../components/Typography/Text'
 import { Tab } from '../../../components/Tab/Tab'
-import { makeRoute } from '../../utils/utils'
+import { formatPostImpersonateInput, makeRoute } from '../../utils/utils'
 import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
@@ -9,12 +9,12 @@ import { Link, useRouteMatch, useHistory } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { Button } from '../../../components/FormsComponents/Button/Button'
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -28,9 +28,9 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
 
     const handleImpersonate = (userIdentifier: string) => {
-        AccountsServices.impersonate(userIdentifier)
+        dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click();
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
         })
     }
 
@@ -68,7 +68,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{capitalizeFirstLetter(withdrawal.method)}</Text>,
                     <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://vzaar.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
-                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit`}>{capitalizeFirstLetter(withdrawal.status)}</Link>,
+                    <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit?salesforceId=${withdrawal.accountSalesforceId}`}>{capitalizeFirstLetter(withdrawal.status)}</Link>,
                 ]}
             })
         }
@@ -140,13 +140,15 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     return props.withdrawals ? 
         <div className='flex flex-column'>
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
-            <Tab className='my1 col col-3' orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
                     <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
                     <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('')}}><IconStyle>close</IconStyle></div>
                 </div>
-                <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit(accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                <div className='flex-auto'>
+                    <Button disabled={!accountId ? true : false} onClick={() => {handleSubmit(accountId)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
+                </div>
+                <Tab  orientation='horizontal' tabDefaultValue={handleStatusDefaultValue()} callback={(value: string) => handleStatusChange(value)} list={[makeRoute('All'), makeRoute('Completed'), makeRoute('Pending'), makeRoute('Cancelled')]} />
             </div>
             <Table contentLoading={contentLoading} id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
             <Pagination totalResults={props.withdrawals.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />

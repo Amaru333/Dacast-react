@@ -1,50 +1,38 @@
-import { string } from 'prop-types';
-
 export enum ActionTypes {
     GET_WITHDRAWAL_INFO = "@@admin_accounts/GET_WITHDRAWAL_INFO",
     SAVE_WITHDRAWAL_STATUS = "@@admin_accounts/SAVE_WITHDRAWAL_STATUS"
 }
 
-export interface PaymentMethod {
-    id?: string;
-    accountNumber?: string;
-    paymentMethodType?: string;
-    paymentMethodName?: string;
-    payee?: string;
-    companyName?: string;
-    recipientType?: 'business' | 'personal';
-    swift?: string;
-    iban?: string;
-    routingNumber?: string;
-    firstName?: string;
-    lastName?: string;
-    accountName?: string;
-    address?: string;
-    address2?: string;
-    state?: string;
-    town?: string;
-    zipCode?: string;
-    country?: string;
-    bankName?: string;
-    bankAddress?: string;
-    bankAddress2?: string;
-    bankState?: string;
-    bankTown?: string;
-    bankZipCode?: string;
-    bankCountry?: string;
-    emailAddress?: string;
-    comments?: string;
-}
+type PaymentMethodKeys = 'id' | 'paymentMethodName' | 'accountNumber' | 'payee' | 'companyName' | 'recipientType' | 'swift' | 'iban' | 'routingNumber' | 'firstName' | 'lastName' | 'accountName' | 'address' | 'address2' | 'state' | 'town' | 'zipCode' | 'country' | 'emailAddress' | 'comments'
+
+type PaymentMethodFields = {
+  [key in PaymentMethodKeys]: {
+    value: string;
+    label: string;
+  };
+};
+
+type BankInfoKeys = 'bankName' | 'bankAddress' | 'bankAddress2' | 'bankState' | 'bankTown' | 'bankZipCode' | 'bankCountry'
+
+type BankInfoFields = {
+  [key in BankInfoKeys]: {
+    value: string;
+    label: string;
+  };
+};
+
+export type WithdrawalStatusAdmin = 'Pending' | 'Cancelled' | 'Completed'
 
  export interface WithdrawalInfo {
     amount: number;
     currency: string;
     id: string;
     method: string;
-    paymentMethod: PaymentMethod;
+    paymentMethod: PaymentMethodFields;
+    bankInfo: BankInfoFields | null;
     requestedDate: number;
-    status: string;
-    transferDate: number
+    status: WithdrawalStatusAdmin;
+    transferDate: number;
   }
 
 export const editWithdrawalDefaultState: WithdrawalInfo = null;

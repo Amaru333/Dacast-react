@@ -18,7 +18,7 @@ import { GeneralImages } from '../../shared/General/Images';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleImageModalFunction } from '../../utils/general';
-import { Divider } from '../../shared/Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 
 const GeneralExpos = (props: GeneralComponentProps) => {

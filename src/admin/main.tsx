@@ -9,37 +9,81 @@ import { ThemeProvider } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 // Import Main styles for this application
 import "../scss/style.scss";
-import { Routes } from './utils/utils';
 import { adminToken } from './utils/services/token/tokenService';
 import Login from './containers/Register/Login';
 import Accounts from './containers/Accounts/Accounts';
 import Header from './shared/header/Header';
 import { ErrorPlaceholder } from '../components/Error/ErrorPlaceholder';
 import Toasts from './containers/Others/Toasts';
+import { MainMenu } from "./shared/Navigation/Navigation";
+import { isMobile } from "react-device-detect";
+import { responsiveMenu, useMedia } from "../utils/utils";
+import { Content, FullContent } from "../shared/Content";
+import { Routes } from "./shared/Navigation/NavigationTypes";
+
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
 }
 const PrivateRoute = (props: {key: string; component: any; path: string; exact: boolean}) => {  
+    const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
+    let mobileWidth = useMedia('(max-width:780px');
+
+    const menuHoverOpen = () => {
+        if (!isOpen && !menuLocked) {
+            setOpen(true)
+        }
+    };
+    const menuHoverClose = () => {
+        if (isOpen && !menuLocked) {
+            setOpen(false)
+        }
+    };
+
     return (
         adminToken.isLoggedIn() ?
             <Route 
                 path={props.path}
                 exact={props.exact}
             >
-                <div className='flex flex-column px2' style={{backgroundColor: '#EBEFF5', minHeight: '100vh', height: 'auto'}}>
-                    <Header />
-                    <ErrorBoundary>
-                        <props.component {...props} />
-                    </ErrorBoundary>
-                    <Toasts />
-                </div> 
+                <React.Fragment>
+                    <MainMenu  
+                        menuLocked={menuLocked} 
+                        onMouseEnter={() => menuHoverOpen()} 
+                        onMouseLeave={() => menuHoverClose()} 
+                        navWidth={currentNavWidth} 
+                        isMobile={isMobile} 
+                        isOpen={isOpen} 
+                        setMenuLocked={setMenuLocked} 
+                        setOpen={setOpen} 
+                        className="navigation" 
+                        history={history} 
+                        routes={AdminRoutes} 
+                    />
+                    <FullContent
+                        isOpen={isOpen}
+                        isLocked={menuLocked}
+                        isMobile={isMobile}
+                        navBarWidth={currentNavWidth}
+                    >
+                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                        <Content isMobile={isMobile}>
+                            <ErrorBoundary>
+                                <props.component {...props} />
+                            </ErrorBoundary>
+                            <Toasts />
+                        </Content> 
+                    </FullContent>  
+                </React.Fragment>
+ 
+
 
             </Route>
             : 
             <Redirect to='/' />
     )
 }
+
 
 const returnRouter = (props: Routes[]) => {
     return (

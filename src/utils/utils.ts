@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { isMobile } from 'react-device-detect';
 
 export default function ScrollToTop(): void {
     const { pathname } = useLocation();
@@ -186,4 +187,56 @@ export function getUrlParam(param: string) {
     const regex = new RegExp("[\\?&]" + param + "=([^&#]*)");
     const results = regex.exec(window.location.search);
     return results === null ? "" : decodeURIComponent(results[1]);
-  }
+}
+
+export const responsiveMenu = () => {
+
+    const navBarWidth = "235px";
+    const reduceNavBarWidth = "64px";
+
+    const [isOpen, setOpen] = useState<boolean>(isMobile ? false : window.innerWidth > 1024);
+    const [currentNavWidth, setCurrentNavWidth] = useState<string>(isOpen? navBarWidth : isMobile ? "0px" : reduceNavBarWidth);
+    const [menuLocked, setMenuLocked] = useState(window.innerWidth > 1024);
+    useEffect(() => {
+        if(!isMobile) {
+            window.addEventListener('resize', (event) => {
+                if(window.innerWidth < 1024) {
+                    setOpen(false);
+                    setMenuLocked(false)
+                } else {
+                    setOpen(true);
+                    setMenuLocked(true)
+                }
+            }, true);
+        }
+        return () => {
+            window.removeEventListener('resize', (event) => {
+                if(window.innerWidth < 1024 ) {
+                    setOpen(false);
+                    setMenuLocked(false)
+                } else {
+                    setOpen(true);
+                    setMenuLocked(true)
+                }
+            }, true)
+        }
+    }, [])
+
+
+
+    const calculateNavBarWidth = () => {
+        if (isMobile) {
+            var width = isOpen ? navBarWidth : "0px";
+        } else {
+            var width = isOpen ? navBarWidth : reduceNavBarWidth;
+        }
+        setCurrentNavWidth(width);
+    }
+
+    useEffect(() => {
+        calculateNavBarWidth();
+    }, [isOpen]);
+
+
+    return {isOpen, currentNavWidth, setOpen, menuLocked, setMenuLocked};
+}

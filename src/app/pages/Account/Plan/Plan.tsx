@@ -19,7 +19,7 @@ import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/D
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
 import { purchaseProductsService } from '../../../redux-flow/store/Account/Plan/services';
 

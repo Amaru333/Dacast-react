@@ -16,7 +16,7 @@ export interface AccountLogsComponentProps {
 
 const AccountLogs = (props: AccountLogsComponentProps) => {
 
-    let { accountId } = useParams()
+    let { accountId } = useParams<{accountId: string}>()
     
     React.useEffect(() => {
         if(!props.accountLogs) {

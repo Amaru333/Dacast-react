@@ -17,7 +17,7 @@ export interface AccountAllowancesComponentProps {
 
 const AccountAllowances = (props: AccountAllowancesComponentProps) => {
 
-    let { accountId } = useParams()
+    let { accountId } = useParams<{accountId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {

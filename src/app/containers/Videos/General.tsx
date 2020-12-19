@@ -21,7 +21,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction, userId } from '../../utils/general'
-import { Divider } from '../../shared/Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;

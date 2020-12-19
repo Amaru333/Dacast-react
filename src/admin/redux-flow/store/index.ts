@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/List'
+import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/types'
 import { withdrawalsListInitialState, WithdrawalsReducer } from './Withdrawals/types'
 import { WithdrawalsState } from './Withdrawals/types'
 import { PaywallReducer, paywallInitialState, PaywallState } from './Paywall/types'

@@ -9,7 +9,7 @@ import { Account } from '../../redux-flow/store/Accounts/List/types'
 
 export interface AccountsComponentProps {
     accounts: {users: Account[]; total: number} | false;
-    getAccounts: (accountId: string, qs: string) => Promise<void>;
+    getAccounts: (qs: string) => Promise<void>;
 }
 
 const Accounts = (props: AccountsComponentProps) => {
@@ -24,8 +24,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getAccounts: async (accountId: string, qs: string) => {
-            await dispatch(getAccountsAction(accountId, qs));
+        getAccounts: async (qs: string) => {
+            await dispatch(getAccountsAction(qs));
         }
     };
 }

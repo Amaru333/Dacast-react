@@ -91,7 +91,6 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 navigator.msSaveBlob(blob, filename);
             } else {
                 const link = document.createElement('a');
-                if (link.download !== undefined) {
                     const url = URL.createObjectURL(blob);
                     link.setAttribute('href', url);
                     link.setAttribute('download', filename);
@@ -99,7 +98,6 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
-                }
             }
         })
 
