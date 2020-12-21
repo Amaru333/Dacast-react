@@ -10,6 +10,7 @@ import Chargebacks from '../containers/Paywall/Chargebacks'
 import Login from '../containers/Register/Login'
 import Piracy from '../containers/Piracy/Piracy'
 import { Routes } from '../shared/Navigation/NavigationTypes'
+import Migration from '../containers/Migration/Migration'
 
 export const AdminRoutes: Routes[] = [
     {
@@ -90,5 +91,11 @@ export const AdminRoutes: Routes[] = [
         exactPath: true,
         isPublic: true,
         notDisplayedInNavigation: true
+    },
+    {
+        path: '/migration',
+        name: 'Migration',
+        component: Migration,
+        exactPath: true,
     },
 ]

@@ -240,3 +240,16 @@ export interface GetPirateInfoOutput {
     userId: string;
     liveChannelId: string;
 }
+
+export interface JobInfoEndpoint {
+    id: string
+    platform: string
+    lastUpdateDate: string
+    currentStep: string
+    errorDetails: string
+    userIds: string[]
+}
+
+export interface GetJobsListOutput {
+    jobs: JobInfoEndpoint[]
+}
