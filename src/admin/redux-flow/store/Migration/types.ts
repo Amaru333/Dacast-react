@@ -1,7 +1,8 @@
 export enum ActionTypes {
     GET_JOBS_LIST = "@@admin_migration/GET_JOBS_LIST",
     GET_JOB_DETAILS = "@@admin_migration/GET_JOB_DETAILS",
-    START_JOB = "@@admin_migration/START_JOB"
+    START_JOB = "@@admin_migration/START_JOB",
+    SWITCH_USERS = "@@admin_migration/SWITCH_USERS"
 }
 
 export interface JobInfo {

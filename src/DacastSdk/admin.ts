@@ -285,3 +285,7 @@ export interface PostStartMigrationJobInput {
     platform: 'dacast' | 'vzaar',
     userIds: string[]
 }
+
+export interface PostSwitchOverUsersInput {
+    onlyUserIds: string[]
+}

@@ -1,4 +1,4 @@
-import { GetJobsListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput } from "../../../../DacastSdk/admin";
+import { GetJobsListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
 import { JobDetails, JobInfo } from "./types";
 
 export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => data.jobs
@@ -32,6 +32,14 @@ export const formatPostStartJobInput = (data: {platform: 'Dacast' | 'Vzaar', use
     let formattedData: PostStartMigrationJobInput = {
         platform: data.platform.toLowerCase() as 'dacast' | 'vzaar',
         userIds: data.usersList
+    }
+
+    return formattedData
+}
+
+export const formatPostSwitchOverUsersInput = (data: string[]): PostSwitchOverUsersInput => {
+    let formattedData: PostSwitchOverUsersInput = {
+        onlyUserIds: data
     }
 
     return formattedData

@@ -1,18 +1,17 @@
 import React from 'react'
 import { JobDetails, JobDetailsKey, JobReport } from '../../redux-flow/store/Migration/types'
 import { Text } from '../../../components/Typography/Text'
-import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
-import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Modal } from '../../../components/Modal/Modal'
 import { Table } from '../../../components/Table/Table'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { updateClipboard } from '../../utils/utils'
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox'
 
 interface JobDetailsPannelProps {
     jobId: string
     jobDetails: JobDetails
-    switchUsers?: (jobId: string, usersList: string[]) => Promise<void>
+    switchUsers: (usersList: string[], jobId: string) => Promise<void>
 }
 
 export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
@@ -36,7 +35,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
 
     const handleSwitchButtonClick = () => {
         setButtonLoading(true)
-        props.switchUsers(props.jobId, selectedUsers)
+        props.switchUsers(selectedUsers, props.jobId)
         .then(() => {
             setButtonLoading(false)
             setSwitchModalOpened(false)
@@ -69,6 +68,53 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
         }
     }
 
+    const renderUsersList = () => {
+        return (
+            <div className='flex flex-column'>
+                <div className='flex col col-12'>
+                    <Text weight='med' className='col col-4'>User Id</Text>
+                    <Text weight='med' className='col col-4'>Status</Text>
+                </div>
+                <InputCheckbox 
+                    className='col col-12'
+                    defaultChecked={selectedUsers.length === props.jobDetails.import.reports.length} 
+                    indeterminate={selectedUsers.length >= 1 && selectedUsers.length < props.jobDetails.import.reports.length}
+                    id='selectAllCheckbox' 
+                    label='Select All' 
+                    onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                            setSelectedUsers(props.jobDetails.import.reports.map(report => report.userId))
+                        } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
+                            setSelectedUsers([])
+                        }
+                    }} 
+                />
+                {
+                    props.jobDetails.import.reports.map((report) => {
+                        return (
+                            <div className='flex col col-12' key={'userSection' + report.userId} >
+                                <InputCheckbox 
+                                    id={'userCheckbox' + report.userId} 
+                                    className='col col-4'
+                                    label={report.userId}
+                                    defaultChecked={selectedUsers.indexOf(report.userId) !== -1}
+                                    onChange={(event) => {
+                                        if (event.currentTarget.checked && selectedUsers.length < props.jobDetails.import.reports.length) {
+                                            setSelectedUsers([...selectedUsers, report.userId])
+                                        } else {
+                                            setSelectedUsers(selectedUsers.filter(item => item !== report.userId));
+                                        }
+                                    }}
+                                />
+                                <IconStyle className='col col-4' key={'reportsTableBodySuccessCell' } coloricon={report.success ? 'green' : 'red'}>{report.success ? 'check' : 'clear'}</IconStyle>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+
     return (
         <div style={{backgroundColor: '#DDE3ED', borderRadius: '4px'}} className='flex mx-auto flex-column col col-12 pl2'>
             <div className='flex'>
@@ -99,7 +145,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
                 }
                 {
                     props.jobDetails.switchover.status === 'SUCCESSFULLY_FINISHED' &&
-                    <Button onClick={() => setSwitchModalOpened(true)} typeButton='primary' buttonColor='blue' sizeButton='xs'>Switch users</Button>
+                    <Button className='right mr2 mb2' onClick={() => setSwitchModalOpened(true)} typeButton='primary' buttonColor='blue' sizeButton='xs'>Switch users</Button>
                 }
             </div>
             {
@@ -116,9 +162,10 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
             }
             {
                 switchModalOpened && 
-                <Modal size='large' toggle={() => setSwitchModalOpened(!switchModalOpened)} opened={switchModalOpened} modalTitle='Switch Users' >
+                <Modal size='small' toggle={() => setSwitchModalOpened(!switchModalOpened)} opened={switchModalOpened} modalTitle='Switch Users' >
                     <div className='flex flex-column'>
                         <Text weight='med'>List of users to switch</Text>
+                        {renderUsersList()}
                         <div className='mt2'>
                             <Button className='mr2' disabled={selectedUsers.length === 0} isLoading={buttonLoading} onClick={() => handleSwitchButtonClick()} buttonColor='blue' typeButton='primary' sizeButton='small'>Switch</Button>
                             <Button onClick={() => setSwitchModalOpened(false)} buttonColor='blue' typeButton='tertiary' sizeButton='small'>Cancel</Button>
