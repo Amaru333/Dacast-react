@@ -2,7 +2,8 @@ export enum ActionTypes {
     GET_JOBS_LIST = "@@admin_migration/GET_JOBS_LIST",
     GET_JOB_DETAILS = "@@admin_migration/GET_JOB_DETAILS",
     START_JOB = "@@admin_migration/START_JOB",
-    SWITCH_USERS = "@@admin_migration/SWITCH_USERS"
+    SWITCH_USERS = "@@admin_migration/SWITCH_USERS",
+    GET_MIGRATED_USERS = "@@admin_migration/GET_MIGRATED_USERS"
 }
 
 export interface JobInfo {
@@ -31,9 +32,18 @@ export type JobDetails = {
     }
 }
 
+export interface MigratedUser {
+    legacyUserId: string
+    platform: string
+    lastUpdateDate: string
+    migrationStatus: string
+    uappUserId: string
+}
+
 export interface MigrationData {
     jobsList?: JobInfo[]
     jobDetails?: JobDetails | null
+    usersList?: MigratedUser[] | null
 }
 
 export const migrationInitialState: MigrationData | false = false
