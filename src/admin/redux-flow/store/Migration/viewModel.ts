@@ -1,5 +1,5 @@
-import { GetJobsListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
-import { JobDetails, JobInfo } from "./types";
+import { GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
+import { JobDetails, JobInfo, MigratedUser } from "./types";
 
 export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => data.jobs
 
@@ -44,3 +44,5 @@ export const formatPostSwitchOverUsersInput = (data: string[]): PostSwitchOverUs
 
     return formattedData
 }
+
+export const formatGetMigratedUserListOutput = (data: GetMigratedUsersListOutput): MigratedUser[] => data.users

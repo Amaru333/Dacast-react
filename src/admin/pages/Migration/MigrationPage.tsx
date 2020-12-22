@@ -8,15 +8,25 @@ import { JobDetailsPannel } from './JobDetailsPannel'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { StartJobModal } from './StartJobModal'
+import { Tab } from '../../../components/Tab/Tab'
+import { makeRoute } from '../../utils/utils'
 
 export const MigrationPage = (props: MigrationComponentProps) => {
 
     const [selectedJob, setSelectedJob] = React.useState<string>(null)
     const [startJobModalOpened, setStartJobModalOpened] = React.useState<boolean>(false)
-
+    const [selectedTab, setSelectedTab] = React.useState<'Jobs' | 'Users'>('Jobs')
     React.useEffect(() => {
         props.getJobsList()
     }, [])
+
+    React.useEffect(() => {
+        if(selectedTab === 'Jobs') {
+            props.getJobsList()
+        } else {
+            props.getMigratedUsersList(null)
+        }
+    }, [selectedTab])
 
     const handleArrowClick = (jobId: string) => {
         if(jobId !== selectedJob) {
@@ -35,7 +45,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             {cell: <Text key='jobsTableHeaderCurrentStepCell' size={14} weight='med'>Current Step</Text>},
             {cell: <Text key='jobsTableHeaderNbUsersCell' size={14} weight='med'>Nb Users</Text>},
             {cell: <Text key='jobsTableHeaderErrorStatusCell' size={14} weight='med'>Error Status</Text>},
-            {cell: <Text key='jobsTableHeaderLastUpdateCell' size={14} weight='med'>Las Update</Text>},
+            {cell: <Text key='jobsTableHeaderLastUpdateCell' size={14} weight='med'>Last Update</Text>},
         ]}
     }
 
@@ -73,17 +83,57 @@ export const MigrationPage = (props: MigrationComponentProps) => {
         }
     } 
 
+    const migratedUsersTableHeader = () => {
+        return {data: [
+            {cell: <Text key='migratedUsersTableHeaderLecadyUserIdCell' size={14} weight='med'>Legacy User Id</Text>},
+            {cell: <Text key='migratedUsersTableHeaderPlatformCell' size={14} weight='med'>Platform</Text>},
+            {cell: <Text key='migratedUsersTableHeaderStatusCell' size={14} weight='med'>Status</Text>},
+            {cell: <Text key='migratedUsersTableHeaderUappUserIdCell' size={14} weight='med'>Uapp User Id</Text>},
+            {cell: <Text key='migratedUsersTableHeaderLastUpdateCell' size={14} weight='med'>Last Update</Text>},
+        ]}
+    }
+
+    const migratedUsersTableBody = () => {
+        if(props.migrationData && props.migrationData.usersList) {
+            return props.migrationData.usersList.map((job, key) => {
+                return {
+                    data: [
+                        <Text key={'migratedUsersTableBodyLegacyUserIdCell' + key } size={14}>{job.legacyUserId}</Text>,
+                        <Text key={'migratedUsersTableBodyPlaformCell' + key } size={14}>{job.platform}</Text>,
+                        <Text key={'migratedUsersTableBodyStatusCell' + key } size={14}>{job.migrationStatus}</Text>,
+                        <Text key={'migratedUsersTableBodyUappUserIdCell' + key } size={14}>{job.uappUserId}</Text>,
+                        <Text key={'migratedUsersTableBodyLastUpdateCell' + key } size={14} >{job.lastUpdateDate}</Text>,
+                    ]
+                }
+            })
+        }
+    }
+
     return props.migrationData ?
         <div className='flex flex-column'>
             <h1>Migration</h1>
-            <div>
-                <Button className='right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
-            </div>
-            <Table id='jobsTable' headerBackgroundColor='white' header={jobsTableHeader()} body={jobsTableBody()} />
+            <Tab className='col col-2' orientation='horizontal' list={[makeRoute('Jobs'), makeRoute('Users')]} callback={(value: 'Jobs' | 'Users') => setSelectedTab(value)} />
             {
-                startJobModalOpened && 
-                <StartJobModal startJob={props.startJob} toggle={setStartJobModalOpened} opened={startJobModalOpened} />
+                selectedTab === 'Jobs' &&
+                <React.Fragment>
+                    <div>
+                    <Button className='right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
+                    </div>
+                    <Table id='jobsTable' headerBackgroundColor='white' header={jobsTableHeader()} body={jobsTableBody()} />
+                    {
+                        startJobModalOpened && 
+                        <StartJobModal startJob={props.startJob} toggle={setStartJobModalOpened} opened={startJobModalOpened} />
+                    }
+                </React.Fragment>
             }
+
+            {
+                selectedTab === 'Users' && 
+                <React.Fragment>
+                    <Table id='migratedUsersTable' headerBackgroundColor='white' header={migratedUsersTableHeader()} body={migratedUsersTableBody()} />
+                </React.Fragment>
+            }
+
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }

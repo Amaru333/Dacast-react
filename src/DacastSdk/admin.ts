@@ -289,3 +289,15 @@ export interface PostStartMigrationJobInput {
 export interface PostSwitchOverUsersInput {
     onlyUserIds: string[]
 }
+
+export interface MigratedUserEndpoint {
+    legacyUserId: string
+    platform: string
+    lastUpdateDate: string
+    migrationStatus: string
+    uappUserId: string
+}
+
+export interface GetMigratedUsersListOutput {
+    users: MigratedUserEndpoint[]
+}
