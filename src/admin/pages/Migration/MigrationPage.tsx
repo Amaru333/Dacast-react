@@ -62,23 +62,23 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             })
 
             let subPanelRow = {data: [
-                <JobDetailsPannel jobId={selectedJob} key='subRow' jobDetails={props.migrationData.jobDetails} />
+                <JobDetailsPannel jobId={selectedJob} key='subRow' jobDetails={props.migrationData.jobDetails} switchUsers={props.switchUsers} />
                 
             ], isSubRow: true}
 
             if(selectedJob) {
-                console.log('index', subPanelIndex)
                 returnedData.splice(subPanelIndex, 0, subPanelRow)
             }
-            console.log('returned data:', returnedData)
             return returnedData
         }
     } 
 
     return props.migrationData ?
-        <div>
+        <div className='flex flex-column'>
             <h1>Migration</h1>
-            <Button onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
+            <div>
+                <Button className='right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
+            </div>
             <Table id='jobsTable' headerBackgroundColor='white' header={jobsTableHeader()} body={jobsTableBody()} />
             {
                 startJobModalOpened && 
