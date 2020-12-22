@@ -253,3 +253,35 @@ export interface JobInfoEndpoint {
 export interface GetJobsListOutput {
     jobs: JobInfoEndpoint[]
 }
+
+export interface GetMigrationJobDetailsOutput {
+    currentStep: string
+    errorDetails: string
+    export: {
+        status: string
+        errorDetails: string
+    }
+    import: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
+    switchover: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
+}
+
+export interface PostStartMigrationJobInput {
+    platform: 'dacast' | 'vzaar',
+    userIds: string[]
+}

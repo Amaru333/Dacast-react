@@ -10,6 +10,11 @@ const reducer: Reducer<MigrationData | false> = (state = migrationInitialState, 
                 ...state,
                 jobsList: action.payload
             }
+        case ActionTypes.GET_JOB_DETAILS : 
+            return {
+                ...state,
+                jobDetails: action.payload
+            }
         default :
             return state
     }

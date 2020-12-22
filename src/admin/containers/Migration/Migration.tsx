@@ -5,11 +5,13 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { MigrationPage } from '../../pages/Migration/MigrationPage';
 import { MigrationData } from '../../redux-flow/store/Migration/types';
-import { getJobsListAction } from '../../redux-flow/store/Migration/actions';
+import { getJobDetailsAction, getJobsListAction, startMigrationJobAction } from '../../redux-flow/store/Migration/actions';
 
 export interface MigrationComponentProps {
     migrationData: MigrationData | false;
     getJobsList: () => Promise<void>;
+    getJobDetails: (jobId: string) =>  Promise<void>;
+    startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[]) => Promise<void>
 }
 
 const Migration = (props: MigrationComponentProps) => {
@@ -26,6 +28,12 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
     return {
         getJobsList: async () => {
             await dispatch(getJobsListAction(undefined));
+        },
+        getJobDetails: async (jobId: string) => {
+            await dispatch(getJobDetailsAction(jobId))
+        },
+        startJob: async (platform: 'Dacast' | 'Vzaar', usersList: string[]) => {
+            dispatch(startMigrationJobAction({platform: platform, usersList: usersList}))
         }
     }
 }
