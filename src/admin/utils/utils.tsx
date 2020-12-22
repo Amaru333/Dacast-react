@@ -4,6 +4,7 @@ import { showToastNotification } from "../redux-flow/store/Toasts/actions"
 import { Action as ReduxAction } from 'redux';
 import { Routes } from "../shared/Navigation/NavigationTypes";
 import { PostImpersonateAccountInput } from "../../DacastSdk/admin";
+import { store } from "..";
 
 
 export const makeRoute = (name: string, path?: string, component?: any): Routes => {
@@ -12,6 +13,14 @@ export const makeRoute = (name: string, path?: string, component?: any): Routes 
         name: name,
         component: component
     }
+}
+
+export function updateClipboard(copiedValue: string, toastMessage: string): void {
+    navigator.clipboard.writeText(copiedValue).then(function () {
+        store.dispatch(showToastNotification(toastMessage, 'fixed', "success"));
+    }, function () {
+        store.dispatch(showToastNotification("Failed to copy to clipboard", 'fixed', "error"));
+    });
 }
 
 export const formatPostImpersonateInput = (data: string): PostImpersonateAccountInput => {

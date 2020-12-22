@@ -16,11 +16,11 @@ export const formatGetWithdrawalsDetailsOutput = (data: GetWithdrawalDetailsOutp
             id: {
                 value: data.id,
                 label: 'ID'
-             },
-             paymentMethodName: {
-                 value: data.paymentMethod.paymentMethodName,
-                 label: 'Payment Method Name'
-             },
+            },
+            paymentMethodName: {
+                value: data.paymentMethod.paymentMethodName,
+                label: 'Payment Method Name'
+            },
             accountNumber: {
                 value: data.paymentMethod.accountNumber,
                 label: 'Account Number'

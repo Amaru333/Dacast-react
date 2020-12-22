@@ -44,7 +44,6 @@ const Header = (props: AdminHeaderProps) => {
     }
 
     const renderHeaderBreadcrumb = () => {
-        console.log(breadcrumbItems)
         return breadcrumbItems.map((item, index) => {
             if(index !== breadcrumbItems.length - 1) {
                 return (

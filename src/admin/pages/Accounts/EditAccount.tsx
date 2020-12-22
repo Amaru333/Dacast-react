@@ -13,8 +13,6 @@ import { Toggle } from '../../../components/Toggle/toggle'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 
-const flags: Flag[] = ['admin', 'adult', 'banned', 'cancelled', 'chipped', 'partner', 'paused', 'platinium', 'suspended', 'test']
-
 export const EditAccountPage = (props: EditAccountComponentProps) => {
 
     let history = useHistory()
@@ -42,8 +40,6 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
     React.useEffect(() => {
         setAccountDetails(props.accountInfo)
     }, [props])
-
-    React.useEffect(() => console.log('account info ', accountInfo))
 
     const handleCreateLegacy = () => {
         setCreatePlatformLoading(true)
@@ -149,11 +145,20 @@ export const EditAccountPage = (props: EditAccountComponentProps) => {
 
             </div>
 
-            {/* <Text className='py1' size={16} weight='med'>Account Flags</Text>
-            <div className='flex flex-column mb1'>
-                {renderFlags(flags)}
-            </div> */}
-
+            {
+                props.accountInfo.migration && 
+                <div className='flex flex-column my2'>
+                    <Text size={20} weight='med'>Legacy Platform Info</Text>
+                    <div className='flex my2'>
+                        <Text size={16} weight='med'>Legacy User Id:&nbsp;</Text>
+                        <Text size={14} weight='reg'>{props.accountInfo.migration.legacyUserId}</Text>
+                        <Text className='pl2' size={16} weight='med'>Origin Platform:&nbsp;</Text>
+                        <Text size={14} weight='reg'>{props.accountInfo.migration.originPlatform}</Text>
+                        <Text className='pl2' size={16} weight='med'>status:&nbsp;</Text>
+                        <Text size={14} weight='reg'>{props.accountInfo.migration.status}</Text>
+                    </div>
+                </div>
+            }
             <div className='my1 flex'>
                 <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                 <Button onClick={() => {history.push('/accounts')}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>

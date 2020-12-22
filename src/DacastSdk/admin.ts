@@ -59,6 +59,11 @@ export interface GetAccountDetailsOutput {
     isBanned: boolean;
     isTest: boolean;
     isAdult: boolean;
+    migration: {
+        legacyUserId: string | null;
+        originPlatform: string | null;
+        status: string | null;
+    }
 }
 
 export interface PutAccountDetailsInput {
@@ -234,4 +239,49 @@ export interface GetPirateInfoOutput {
     salesforceId: string;
     userId: string;
     liveChannelId: string;
+}
+
+export interface JobInfoEndpoint {
+    id: string
+    platform: string
+    lastUpdateDate: string
+    currentStep: string
+    errorDetails: string
+    userIds: string[]
+}
+
+export interface GetJobsListOutput {
+    jobs: JobInfoEndpoint[]
+}
+
+export interface GetMigrationJobDetailsOutput {
+    currentStep: string
+    errorDetails: string
+    export: {
+        status: string
+        errorDetails: string
+    }
+    import: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
+    switchover: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
+}
+
+export interface PostStartMigrationJobInput {
+    platform: 'dacast' | 'vzaar',
+    userIds: string[]
 }

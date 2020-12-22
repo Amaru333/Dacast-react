@@ -57,6 +57,18 @@ export const Table = (props: TableProps) => {
     const renderTableBody = () => {
         return props.body ?
             props.body.map((bodyRow, i) => {
+                if(bodyRow.isSubRow) {
+                    return (
+                        <TableBodyRow style={{width: '100%'}} isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
+                            <td colSpan={props.body[i - 1].data.length} style={{width: '100%'}}>
+                            { bodyRow.data.map((bodyCell: any, item) => {
+                                return bodyCell
+                            })}
+                            </td>
+
+                        </TableBodyRow>
+                    )
+                }
                 return (
                     <TableBodyRow isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                         {

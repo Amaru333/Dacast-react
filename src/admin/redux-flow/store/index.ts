@@ -6,6 +6,8 @@ import { PaywallReducer, paywallInitialState, PaywallState } from './Paywall/typ
 import { RegisterState, RegisterInitialState, RegisterReducer } from './Register/types'
 import { PiracyReducer, piracyInitialState, PiracyState } from './Piracy/types'
 import { ToastsState, toastsInitialState, ToastReducer } from './Toasts'
+import { MigrationData, migrationInitialState } from './Migration/types'
+import { MigrationReducer } from './Migration/reducer'
 
 export interface AdminState {
     accounts: AccountsState;
@@ -14,6 +16,7 @@ export interface AdminState {
     register: RegisterState;
     piracy: PiracyState;
     toasts: ToastsState;
+    migration: MigrationData | false
 }
 
 export const globalDefaultState: AdminState = {
@@ -22,7 +25,8 @@ export const globalDefaultState: AdminState = {
     paywall: paywallInitialState,
     piracy: piracyInitialState,
     register: RegisterInitialState,
-    toasts: toastsInitialState
+    toasts: toastsInitialState,
+    migration: migrationInitialState
 }
 
 export const createRootReducer = () => 
@@ -32,5 +36,6 @@ export const createRootReducer = () =>
         paywall: PaywallReducer,
         piracy: PiracyReducer,
         register: RegisterReducer,
-        toasts: ToastReducer
+        toasts: ToastReducer,
+        migration: MigrationReducer
     })
