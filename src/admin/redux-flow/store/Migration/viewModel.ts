@@ -1,7 +1,16 @@
 import { GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
 import { JobDetails, JobInfo, MigratedUser } from "./types";
 
-export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => data.jobs
+export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => {
+    let formattedData: JobInfo[] = data.jobs.map(job => {
+        return {
+            ...job,
+            currentStep: job.currentStep === 'Success' ? 'Switched' : job.currentStep
+        }
+    })
+
+    return formattedData
+}
 
 export const formatGetJobDetailsInput = (data: string): string => data
 
