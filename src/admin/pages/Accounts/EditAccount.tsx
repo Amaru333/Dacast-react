@@ -13,7 +13,7 @@ import { Toggle } from '../../../components/Toggle/toggle'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 
-export const EditAccountPage = (props: EditAccountComponentProps) => {
+export const EditAccountPage = (props: EditAccountComponentProps & {accountId: string}) => {
 
     let history = useHistory()
     const [accountInfo, setAccountInfo] = React.useState<PutAccountInfo>({})
