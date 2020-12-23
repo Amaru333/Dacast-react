@@ -129,16 +129,24 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
                         return (
                             <div key={item} className='flex'>
                                 <Text className='col col-4 py1'>{props.jobDetails[item].label}</Text>
-                                <Text className='col col-4 py1'>{props.jobDetails[item].status}</Text>
-                                <div className='mr2 col col-1 py1 flex justify-start' >
-                                    <Button disabled={props.jobDetails[item].errorDetails ? false : true} onClick={() => handleErrorButtonClick(props.jobDetails[item].errorDetails)} buttonColor='red' sizeButton='xs' typeButton='primary'>Error</Button>
+                                <div className='col col-4 py1 flex flex-column'>
+                                    <Text className='py1'>{props.jobDetails[item].status}</Text>
+                                    {
+                                        props.jobDetails[item].reports && 
+                                        <Text className='py1'>{`(${props.jobDetails[item].reports.length} reports; ${props.jobDetails[item].reports.filter(r => !r.success).length} errors)`}</Text>
+                                    }
                                 </div>
-                                {
-                                    props.jobDetails[item].reports && 
-                                    <div className='mr2 my1' >
-                                        <Button onClick={() => handleReportsModalClick(props.jobDetails[item].reports)} buttonColor='gray' sizeButton='xs' typeButton='secondary'>Reports</Button>
+                                <div className='mr2 col col-4 my1 flex items-center' >
+                                    <div>
+                                        <Button disabled={props.jobDetails[item].errorDetails ? false : true} onClick={() => handleErrorButtonClick(props.jobDetails[item].errorDetails)} buttonColor='red' sizeButton='xs' typeButton='primary'>Error</Button>
                                     </div>
-                                }
+                                    {
+                                        props.jobDetails[item].reports && 
+                                        <div className='mx2' >
+                                            <Button onClick={() => handleReportsModalClick(props.jobDetails[item].reports)} buttonColor='gray' sizeButton='xs' typeButton='secondary'>Reports</Button>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                             
                         )
