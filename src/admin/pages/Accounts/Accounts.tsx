@@ -20,12 +20,33 @@ import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/D
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 import { formatPostImpersonateInput } from '../../utils/utils'
 
+interface UserAccountsPagePreferences {
+    columnsDiplayed: {
+        account: boolean;
+        company: boolean;
+        name: boolean;
+        phone: boolean;
+        email: boolean;
+        plan: boolean;
+        date: boolean;
+        data: boolean;
+        storage: boolean;
+        flags: boolean;
+        edit: boolean;
+        allowances: boolean;
+    }, 
+    perPage: number
+}
+
 export const AccountsPage = (props: AccountsComponentProps) => {
 
     let query = useHistory()
 
     let qs = useQuery()
-    const tableColumnsDefault = {
+
+    let accountPreferences: UserAccountsPagePreferences  = JSON.parse(localStorage.getItem('userAccountsPagePreferences'))
+
+    const tableColumnsDefault = accountPreferences && accountPreferences.columnsDiplayed ? accountPreferences.columnsDiplayed : {
         account: true,
         company: true,
         name: true,
@@ -44,7 +65,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [keyword, setKeyword] = React.useState<string>(qs.get('search') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
     const [tableColumn, setTableColumn] = React.useState<{
         account: boolean;
         company: boolean;
@@ -146,8 +167,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     tableColumn.plan && (account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>),
                     tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
-                    tableColumn.data && <Text key={'accountsTableBodyDataCell' + key } size={14}>{account.data.consumed / 1000000000 + ' / ' + account.data.allocated / 1000000000}</Text>,
-                    tableColumn.storage && <Text key={'accountsTableBodyStorageCell' + key } size={14}>{account.storage.consumed / 1000000000 + ' / ' + account.storage.allocated / 1000000000}</Text>,
+                    tableColumn.data && <Text key={'accountsTableBodyDataCell' + key } size={14}>{(account.data.consumed / 1000000000).toFixed(2) + ' / ' + (account.data.allocated / 1000000000).toFixed(2)}</Text>,
+                    tableColumn.storage && <Text key={'accountsTableBodyStorageCell' + key } size={14}>{(account.storage.consumed / 1000000000).toFixed(2) + ' / ' + (account.storage.allocated / 1000000000).toFixed(2)}</Text>,
                     tableColumn.flags && <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
                     tableColumn.edit && <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
                     tableColumn.allowances && <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
@@ -179,6 +200,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             setContentLoading(true)
             props.getAccounts(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
             .then(() => {
+                localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: tableColumn, perPage: nbResults}))
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
             })
@@ -189,7 +211,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     return props.accounts ?
         <div>
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
-            <div className='flex items-center my1'>
+            <div className='flex items-end my1'>
                     <div className='relative flex items-center mr2'>
                         <Input  
                             id='accountIdInput' 
@@ -214,7 +236,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                         <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                     </div>
 
-                <DropdownCheckbox id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => setTableColumn(value)} list={tableColumn} />
+                <DropdownCheckbox id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => {setTableColumn(value);localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: value, perPage: pagination.nbResults}))}} list={tableColumn} />
 
             </div>
 

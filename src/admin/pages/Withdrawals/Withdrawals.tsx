@@ -21,10 +21,11 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     let {url} = useRouteMatch()
     let qs = useQuery()
     let query = useHistory()
+    let accountPreferences: {perPage: number} = JSON.parse(localStorage.getItem('userWithdrawalsPagePreferences'))
 
     const [status, setStatus] = React.useState<string>(qs.get('status') ? capitalizeFirstLetter(qs.get('status')) : 'All')
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
 
     const handleImpersonate = (userIdentifier: string) => {
@@ -80,6 +81,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             setContentLoading(true)
             props.getWithdrawals(`page=${page - 1}&perPage=${nbResults}` +  (status !== 'All' ? `&requestStatus=${status.toLowerCase()}` : ''))
             .then(() => {
+                localStorage.setItem('userWithdrawalsPagePreferences', JSON.stringify({perPage: nbResults}))
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${page}&perPage=${nbResults}` +  (status !== 'All' ? `&status=${status.toLowerCase()}` : ''))
             })

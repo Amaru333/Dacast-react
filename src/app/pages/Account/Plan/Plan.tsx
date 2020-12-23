@@ -191,7 +191,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             ]}]
         }
 
-    }  
+    } 
     
     return (
         <div>

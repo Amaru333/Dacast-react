@@ -4,8 +4,10 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, BreakStyle, ContainerElementStyle, OverlayMobileStyle } from './NavigationStyle'
-const logo = require('../../../../public/assets/logo.png');
-const logoSmall = require('../../../../public/assets/logo_small.png');
+import { adminToken } from "../../utils/services/token/tokenService";
+import { store } from "../..";
+const logoAdmin = require('../../../../public/assets/logoAdmin.png');
+const logoAdminSmall = require('../../../../public/assets/logoAdminSmall.png');
 
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
@@ -48,6 +50,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedElement(firstSelectedItem());
     }, [location])
 
+    const handleLogout = () => {
+        adminToken.resetUserInfo()
+        store.dispatch({type: 'USER_LOGOUT'})
+        history.push('/login')
+    }
+
     const renderMenu = () => {
         return props.routes.filter(e => !e.notDisplayedInNavigation).map((element, i) => {
 
@@ -73,11 +81,18 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         <>
         {props.isMobile && <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> }
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
-                    <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
+                    <ImageStyle onClick={() => history.push('/')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoAdminSmall : logoAdmin} />
                     <BreakStyle />         
                     <SectionStyle>
                         {renderMenu()}
                     </SectionStyle>
+
+                    <div className='mt4'>
+                        <BreakStyle />         
+                        <ElementMenu onClick={() => handleLogout()} isMobile={props.isMobile}  isOpen={props.isOpen} icon='exit_to_app_outlined' >
+                            Sign out
+                        </ElementMenu>
+                    </div>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>           
             </ContainerStyle>
         </>
