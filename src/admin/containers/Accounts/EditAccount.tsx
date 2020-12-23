@@ -25,7 +25,7 @@ const EditAccount = (props: EditAccountComponentProps ) => {
         .then(() => setIsFetching(false))
     }, [])
     return !isFetching ?
-        <EditAccountPage {...props} />
+        <EditAccountPage {...props} accountId={accountId} />
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }
 
