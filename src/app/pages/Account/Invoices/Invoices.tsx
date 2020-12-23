@@ -83,7 +83,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     }, [fetchContent])
 
     function saveFile(url: string, filename: string) {
-        axiosClient.get(url, {authRequired: false}
+        axiosClient.get(url, {authRequired: false, responseType: 'arraybuffer'}
         ).then((response) => {
             const blob = new Blob([response.data], { type: 'application/pdf' });
             if (navigator.msSaveBlob) {
@@ -91,13 +91,13 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 navigator.msSaveBlob(blob, filename);
             } else {
                 const link = document.createElement('a');
-                    const url = URL.createObjectURL(blob);
-                    link.setAttribute('href', url);
-                    link.setAttribute('download', filename);
-                    link.style.visibility = 'hidden';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
         })
 
