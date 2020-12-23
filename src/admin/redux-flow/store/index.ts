@@ -29,7 +29,7 @@ export const globalDefaultState: AdminState = {
     migration: migrationInitialState
 }
 
-export const createRootReducer = () => 
+export const adminReducer = 
     combineReducers({
         accounts: AccountsReducer,
         withdrawals: WithdrawalsReducer,
@@ -39,3 +39,10 @@ export const createRootReducer = () =>
         toasts: ToastReducer,
         migration: MigrationReducer
     })
+
+    export const createRootReducer = (state: any, action: any) => {
+        if (action.type === 'USER_LOGOUT') {
+            state = globalDefaultState;
+        }
+        return adminReducer(state, action)
+}

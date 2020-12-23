@@ -20,10 +20,11 @@ export const BalancesPage = (props: BalancesComponentProps) => {
 
     let query = useHistory()
     let qs = useQuery()
+    let accountPreferences: {perPage: number} = JSON.parse(localStorage.getItem('userBalancesPagePreferences'))
 
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
 
 
     React.useEffect(() => {
@@ -90,6 +91,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             setContentLoading(true)
             props.getBalances(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : ''))
             .then(() => {
+                localStorage.setItem('userBalancesPagePreferences', JSON.stringify({perPage: nbResults}))
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : ''))
             })
