@@ -40,8 +40,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
         .then(() => {
             setButtonLoading(false)
             setSwitchModalOpened(false)
-        })
-        .catch(() => setButtonLoading(false))
+        }).catch(() => setButtonLoading(false))
     }
 
     const reportsTableHeader = () => {

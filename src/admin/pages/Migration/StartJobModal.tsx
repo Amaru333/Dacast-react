@@ -53,10 +53,10 @@ export const StartJobModal = (props: StartJobModalProps) => {
         setButtonLoading(true)
         props.startJob(selectedPlatform, usersList)
         .then(() => {
+            console.log('reaching success')
             setButtonLoading(false)
             props.toggle(false)
-        })
-        .catch(() => setButtonLoading(false))
+        }).catch(() => setButtonLoading(false))
     }
 
     return (

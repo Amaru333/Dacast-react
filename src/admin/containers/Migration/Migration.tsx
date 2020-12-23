@@ -35,7 +35,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
             await dispatch(getJobDetailsAction(jobId))
         },
         startJob: async (platform: 'Dacast' | 'Vzaar', usersList: string[]) => {
-            dispatch(startMigrationJobAction({platform: platform, usersList: usersList}))
+            await dispatch(startMigrationJobAction({platform: platform, usersList: usersList}))
         },
         switchUsers: async (usersList: string[], jobId: string) => {
             await dispatch(switchOverUsersAction(usersList, jobId))
