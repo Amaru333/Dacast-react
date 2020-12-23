@@ -142,7 +142,13 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
-                    <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                    <Input  
+                        id='accountIdInput' 
+                        value={accountId} 
+                        placeholder='Account ID' 
+                        onChange={(event) => setAccountId(event.currentTarget.value)} 
+                        onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
+                    />
                     <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('')}}><IconStyle>close</IconStyle></div>
                 </div>
                 <div className='flex-auto'>

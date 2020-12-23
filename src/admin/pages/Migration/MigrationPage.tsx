@@ -16,9 +16,6 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     const [selectedJob, setSelectedJob] = React.useState<string>(null)
     const [startJobModalOpened, setStartJobModalOpened] = React.useState<boolean>(false)
     const [selectedTab, setSelectedTab] = React.useState<'Jobs' | 'Users'>('Jobs')
-    React.useEffect(() => {
-        props.getJobsList()
-    }, [])
 
     React.useEffect(() => {
         if(selectedTab === 'Jobs') {
@@ -65,7 +62,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                         <Text key={'jobsTableBodyPlaformCell' + key } size={14}>{job.platform}</Text>,
                         <Text key={'jobsTableBodyCurrenStepCell' + key } size={14}>{job.currentStep}</Text>,
                         <Text key={'jobsTableBodyNbUsersCell' + key } size={14}>{job.userIds.length}</Text>,
-                        <Text key={'jobsTableBodyErrorStatusCell' + key } size={14}>{job.errorDetails}</Text>,
+                        <IconStyle key={'jobsTableBodyErrorDetailsCell' + key } coloricon={!job.errorDetails ? 'green' : 'red'}>{!job.errorDetails ? 'check' : 'clear'}</IconStyle>,
                         <Text key={'jobsTableBodyLastUpdateCell' + key } size={14} >{job.lastUpdateDate}</Text>,
                     ]
                 }
@@ -112,7 +109,9 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     return props.migrationData ?
         <div className='flex flex-column'>
             <h1>Migration</h1>
-            <Tab className='col col-2' orientation='horizontal' list={[makeRoute('Jobs'), makeRoute('Users')]} callback={(value: 'Jobs' | 'Users') => setSelectedTab(value)} />
+            <div className='flex items-end'>
+                <Tab  orientation='horizontal' list={[makeRoute('Jobs'), makeRoute('Users')]} callback={(value: 'Jobs' | 'Users') => setSelectedTab(value)} />
+            </div>
             {
                 selectedTab === 'Jobs' &&
                 <React.Fragment>

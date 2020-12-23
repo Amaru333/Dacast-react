@@ -31,6 +31,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
 
     const handleErrorButtonClick = (error: string) => {
         setErrorDetails(error)
+        setErrorModalOpened(true)
     }
 
     const handleSwitchButtonClick = () => {
@@ -144,7 +145,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
                     })
                 }
                 {
-                    props.jobDetails.switchover.status === 'SUCCESSFULLY_FINISHED' &&
+                    props.jobDetails.overall.status === 'Success' || props.jobDetails.overall.status === 'Ready To Switch' &&
                     <Button className='right mr2 mb2' onClick={() => setSwitchModalOpened(true)} typeButton='primary' buttonColor='blue' sizeButton='xs'>Switch users</Button>
                 }
             </div>
