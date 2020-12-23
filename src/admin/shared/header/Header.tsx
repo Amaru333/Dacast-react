@@ -28,6 +28,18 @@ const Header = (props: AdminHeaderProps) => {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
 
+    // React.useEffect(() => {
+    //     const listener = (event: KeyboardEvent) => {
+    //         if ((event.code === "Enter" || event.code === "NumpadEnter") && event. === ) {
+    //             callback()
+    //         }
+    //     };
+    //     document.addEventListener("keydown", listener);
+    //     return () => {
+    //         document.removeEventListener("keydown", listener);
+    //     };
+    // }, [])
+
     React.useEffect(() => {
         let pathArray = window.location.pathname.split('/')
          setBreadcrumbItems(pathArray.filter(p => p).map(p => capitalizeFirstLetter(p)))
@@ -71,7 +83,14 @@ const Header = (props: AdminHeaderProps) => {
                 {renderHeaderBreadcrumb()}
             </div>
                 <div className='flex mx2 items-end'>
-                    <Input type='text' id='impersonateInput' placeholder='Impersonate...' value={userIdentifier} onChange={(event) => setUserIdentifier(event.currentTarget.value)} />
+                    <Input 
+                        type='text' 
+                        id='impersonateInput' 
+                        placeholder='Impersonate...' 
+                        value={userIdentifier} 
+                        onChange={(event) => setUserIdentifier(event.currentTarget.value)} 
+                        onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleImpersonate()}}}
+                    />
                     <div className='ml2'>
                         <Button isLoading={isLoading} onClick={() => handleImpersonate()} sizeButton='large' typeButton='primary' buttonColor='blue'>Impersonate</Button>
                     </div>

@@ -101,7 +101,13 @@ export const BalancesPage = (props: BalancesComponentProps) => {
         <div>
             <Text className='py1' size={14}>Paywall balances - select an Account to view their transactions and current balance</Text>
             <div className='flex my1 items-center'>
-                <Input id='accountIdInput' placeholder='Account ID' defaultValue={accountId} onChange={(event) => setAccountId(event.currentTarget.value)} />
+                <Input 
+                    id='accountIdInput' 
+                    placeholder='Account ID' 
+                    defaultValue={accountId} 
+                    onChange={(event) => setAccountId(event.currentTarget.value)} 
+                    onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
+                />
                 <Button className='mx2' disabled={!accountId ? true : false} onClick={() => handleSubmit(accountId)} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                 <Text size={14} weight='med'>{props.balanceInfo.balance ? 'Balance: $' + props.balanceInfo.balance : ''}</Text>
             </div>

@@ -191,11 +191,23 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex items-center my1'>
                     <div className='relative flex items-center mr2'>
-                        <Input  id='accountIdInput' value={accountId} placeholder='Account ID' onChange={(event) => setAccountId(event.currentTarget.value)} />
+                        <Input  
+                            id='accountIdInput' 
+                            value={accountId} 
+                            placeholder='Account ID' 
+                            onChange={(event) => setAccountId(event.currentTarget.value)} 
+                            onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId, keyword)}}}    
+                        />
                         <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
                     </div>
                     <div className='relative flex items-center mr2'>
-                        <Input  id='keywordInput' value={keyword} placeholder='Keyword' onChange={(event) => setKeyword(event.currentTarget.value)} />
+                        <Input  
+                            id='keywordInput' 
+                            value={keyword} 
+                            placeholder='Keyword' 
+                            onChange={(event) => setKeyword(event.currentTarget.value)} 
+                            onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId, keyword)}}}    
+                        />
                         <div className={ keyword && keyword.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setKeyword('');handleSubmit(accountId, '')}}><IconStyle>close</IconStyle></div>
                     </div>
                     <div className='flex-auto'>
