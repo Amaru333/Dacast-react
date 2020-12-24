@@ -29,19 +29,23 @@ export const StartJobModal = (props: StartJobModalProps) => {
             console.log('file reader', reader)
             reader.onload = (e) => {
                 let contents = e.target.result;
-                formatCsvData(contents as string);
+                formatCsvData(contents);
             }
             reader.readAsText(file[0])
         }
     }
 
-    const formatCsvData = (contents: string) => {
+    const formatCsvData = (contents: any) => {
+
+        let formattedContent: string = contents.replace(/"/g,"")
         let users: string[] = []
         if(contents.indexOf(',') !== -1) {
-            users = contents.replace(/"/g,"").split(',');
+            users = formattedContent.split(',');
 
         } else {
-            users = contents.replace(/"/g,"").split("\u21b5");
+            console.log('processing csv input:', formattedContent)
+            users = formattedContent.split("\n");
+            console.log('users list: ', users)
         }
         users.shift()
         setUsersList(users)
