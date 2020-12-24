@@ -29,14 +29,20 @@ export const StartJobModal = (props: StartJobModalProps) => {
             console.log('file reader', reader)
             reader.onload = (e) => {
                 let contents = e.target.result;
-                formatCsvData(contents);
+                formatCsvData(contents as string);
             }
             reader.readAsText(file[0])
         }
     }
 
-    const formatCsvData = (contents: any) => {
-        const users: string[] = contents.replace(/"/g,"").split(',');
+    const formatCsvData = (contents: string) => {
+        let users: string[] = []
+        if(contents.indexOf(',') !== -1) {
+            users = contents.replace(/"/g,"").split(',');
+
+        } else {
+            users = contents.replace(/"/g,"").split('/\r?\n/');
+        }
         users.shift()
         users.pop()
         setUsersList(users)
