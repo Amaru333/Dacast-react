@@ -41,10 +41,9 @@ export const StartJobModal = (props: StartJobModalProps) => {
             users = contents.replace(/"/g,"").split(',');
 
         } else {
-            users = contents.replace(/"/g,"").split('/\r?\n/');
+            users = contents.replace(/"/g,"").split("\u21b5");
         }
         users.shift()
-        users.pop()
         setUsersList(users)
     }
     
