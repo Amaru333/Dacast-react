@@ -36,9 +36,18 @@ export const StartJobModal = (props: StartJobModalProps) => {
     }
 
     const formatCsvData = (contents: any) => {
-        const users: string[] = contents.replace(/"/g,"").split(',');
+
+        let formattedContent: string = contents.replace(/"/g,"")
+        let users: string[] = []
+        if(contents.indexOf(',') !== -1) {
+            users = formattedContent.split(',');
+
+        } else {
+            console.log('processing csv input:', formattedContent)
+            users = formattedContent.split("\n");
+            console.log('users list: ', users)
+        }
         users.shift()
-        users.pop()
         setUsersList(users)
     }
     
