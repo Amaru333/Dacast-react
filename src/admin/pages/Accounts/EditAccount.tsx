@@ -43,7 +43,7 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
 
     const handleCreateLegacy = () => {
         setCreatePlatformLoading(true)
-        dacastSdk.postCreateLegacyAccount(props.accountInfo.accountId)
+        dacastSdk.postCreateLegacyAccount(props.accountId)
         .then(() => {
             setCreatePlatformLoading(false)
         }).catch(() => setCreatePlatformLoading(false))
