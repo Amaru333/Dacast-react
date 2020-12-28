@@ -237,7 +237,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             }
 
-            <IconContainerStyle>
+            <IconContainerStyle customColor='red10'>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
                     {avatarFirstName && avatarLastName ?

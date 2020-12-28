@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { DropdownList } from '../FormsComponents/Dropdown/DropdownStyle';
 import { Avatar } from '../Avatar/Avatar';
+import { ColorsApp } from '../../styled/types';
 
 export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonatedUser'}>`
     border-bottom: 1px solid #D1DBE8;
@@ -14,9 +15,9 @@ export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonate
     display: flex;
     justify-content: flex-end;
 `
-export const IconContainerStyle = styled.div`
+export const IconContainerStyle = styled.div<{customColor?: ColorsApp}>`
     display: flex;
-    background-color: ${props => props.theme.colors["white"]};
+    background-color: ${props => props.customColor? props.theme.colors[props.customColor] : props.theme.colors['white']};
     height: 56px;
     width: 100px;
     align-items: center;
