@@ -135,7 +135,7 @@ export const MainFeatures: {name: string; tooltip: string}[] = [
 ]
 
 export enum PlansName {
-    "Annual Starter" = "Starter Plan",
+    "Starter" = "Starter Plan",
     "Event" = "Event Plan",
     "Annual Scale" = "Scale Plan",
     'Monthly Scale' = "Scale Plan"

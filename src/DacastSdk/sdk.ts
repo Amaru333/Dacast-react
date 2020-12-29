@@ -3,7 +3,7 @@ import { AxiosClient } from '../utils/services/axios/AxiosClient'
 import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
 import { GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from './common'
-import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from './account'
+import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput } from './account'
 import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
 var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
@@ -70,6 +70,15 @@ export class DacastSdk {
     public getCompanyDetails = async (): Promise<GetCompanyRequestOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/company').then(this.checkExtraData)
     public putCompanyDetails = async (input: CompanyDetailsEndpoints): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/company', {...input}).then(this.checkExtraData)
     public deleteCompanyLogo = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/company/logo')
+
+    public getPlansList = async (): Promise<GetPlansListOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/plans').then(this.checkExtraData)
+    public postAccountPlan = async (input: PostAccountPlanInput): Promise<PostAccountPlanOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/plans/purchase', input).then(this.checkExtraData)
+    
+    public getProductExtraDataList = async (): Promise<GetProductExtraDataOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/products').then(this.checkExtraData)
+    public postProductExtraData = async (input: PostProductExtraDataInput): Promise<PostProductExtraDataOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/products/purchase', input).then(this.checkExtraData)
+
+    public getBillingInfo = async (): Promise<GetAccountBillingInfoOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/billing').then(this.checkExtraData)
+    public postBillingPaymentMethod = async (input: PostBillingPaymentMethodInput): Promise<PostBillingPaymentMethodOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/billing/payment-method', input).then(this.checkExtraData)
 
     public getInvoices = async (input: string): Promise<GetInvoicesOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/billing/invoices?' + input).then(this.checkExtraData)
 

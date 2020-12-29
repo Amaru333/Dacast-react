@@ -11,6 +11,8 @@ import { BillingContainerProps } from '../../../containers/Account/Billing';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatPostBillingPaymentMethod } from '../../../redux-flow/store/Account/Plan/viewModel';
 
 export const BillingPage = (props: BillingContainerProps) => {
 
@@ -22,6 +24,15 @@ export const BillingPage = (props: BillingContainerProps) => {
     }, [props.billingInfos])
 
     let smScreen = useMedia('(max-width: 780px)');
+
+    const savePaymentMethod = (token: string, threeDSecureActionToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
+        dacastSdk.postBillingPaymentMethod(formatPostBillingPaymentMethod(token))
+        .then(response => {
+            if (response && response.tokenID) {
+                callback(response.tokenID)
+            }
+        })
+    }
 
 
     const paypalTableHeaderElement = () => {
@@ -108,7 +119,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal billingInfo={billingInfo} callback={() => setPaymentMethodModalOpened(false)} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate savePaymentMethod={props.saveBillingPagePaymentMethod} />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={() => setPaymentMethodModalOpened(false)} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate savePaymentMethod={savePaymentMethod} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>

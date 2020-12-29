@@ -45,7 +45,7 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, PlanAction>) {
     return {
         getBillingPageInfos: async () => {
-            await dispatch(getBillingPageInfosAction());
+            await dispatch(getBillingPageInfosAction(undefined));
         },
         saveBillingPagePaymentMethod: async (data: string) => {
             await dispatch(saveBillingPagePaymentMethodAction(data));

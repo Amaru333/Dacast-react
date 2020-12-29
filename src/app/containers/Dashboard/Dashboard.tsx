@@ -118,7 +118,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(getDashboardDetailsAction());
         },
         getBillingPageInfos: async () => {
-            await dispatch(getBillingPageInfosAction());
+            await dispatch(getBillingPageInfosAction(undefined));
         },
         getDashboardVodPlayRate: async (jobID: string) => {
             await dispatch(getDashboardVodPlayRateAction(jobID));

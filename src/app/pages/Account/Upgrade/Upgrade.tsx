@@ -12,20 +12,20 @@ import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
 import { UpgradeContainerProps } from '../../../containers/Account/Upgrade';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
+import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { FeaturesStarterPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
-import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
-import { purchasePlanService } from '../../../redux-flow/store/Account/Upgrade/services';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatPostPlanInput } from '../../../redux-flow/store/Account/Upgrade/viewModel';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -49,15 +49,58 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     let history = useHistory()
 
-    const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+    const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
         console.log('recurly token', recurlyToken)
-        purchasePlanService(stepperData, recurlyToken, null)
+        dacastSdk.postAccountPlan(formatPostPlanInput({
+            code: stepperData.code,
+            currency: 'USD',
+            allowanceCode: stepperData.allowanceCode,
+            privileges: stepperData.privileges,
+            selectedPrivileges: stepperData.selectedPrivileges,
+            token: recurlyToken,
+            token3Ds: threeDSecureToken
+        }))
         .then((response) => {
             console.log('response', response)
             setIsLoading(false);
-            if (response && response.data.data.tokenID) {
-                callback(response.data.data.tokenID)
+            if (response && response.authenticationRequiredFor === 'billing-info') {
+                try {
+                    dacastSdk.postAccountPlan(formatPostPlanInput({
+                        code: stepperData.code,
+                        currency: 'USD',
+                        allowanceCode: stepperData.allowanceCode,
+                        privileges: stepperData.privileges,
+                        selectedPrivileges: stepperData.selectedPrivileges,
+                        token: recurlyToken,
+                        token3Ds: threeDSecureToken
+                    }))
+                    .then((response) => {
+                        console.log('response billing info update', response)
+                        if (response && response.tokenID) {
+                            callback(response.tokenID)
+                            setThreeDSecureActive(true)
+                        } else {
+                            setStepperPlanOpened(false)
+                            setPaymentSuccessfulModalOpened(true)
+                            setCurrentPlan(stepperData.name)
+                            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)            
+                            segmentService.track('Upgrade Form Completed', {
+                                action: 'Payment Form Submitted',
+                                'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                                'plan_name': stepperData.name,
+                                step: 4,
+                            })  
+                        }
+                        return
+                    })
+                }catch {
+                    throw Error('Couldn\'t update billing info')
+                }
+
+            }
+            if (response && response.tokenID) {
+                callback(response.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setStepperPlanOpened(false)
@@ -72,7 +115,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 })  
             }
         })
-        .catch((error) => {
+        .catch(() => {
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -83,7 +126,15 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const purchasePlan3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
         console.log("3DS result token", threeDSecureResultToken)
         setIsLoading(true);
-        purchasePlanService(stepperData, recurlyToken, threeDSecureResultToken)
+        dacastSdk.postAccountPlan(formatPostPlanInput({
+            code: stepperData.code,
+            currency: 'USD',
+            allowanceCode: stepperData.allowanceCode,
+            privileges: stepperData.privileges,
+            selectedPrivileges: stepperData.selectedPrivileges,
+            token: recurlyToken,
+            token3Ds: threeDSecureResultToken
+        }))
         .then(() => {
             setStepperPlanOpened(false)
             setIsLoading(false);

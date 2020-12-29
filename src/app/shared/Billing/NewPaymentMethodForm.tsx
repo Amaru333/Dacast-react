@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { RadioButtonContainer, RadioButtonOption, RecurlyElementStyle } from './BillingStyle';
+import { RadioButtonContainer, RadioButtonOption } from './BillingStyle';
 import { Text } from '../../../components/Typography/Text';
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 const CardLogo = require('../../../../public/assets/credit_card_logo.svg');
 const PaypalLogo = require('../../../../public/assets/paypal_logo.svg');
-import { CardNumberElement, CardCvvElement, CardMonthElement, CardYearElement, useRecurly, ThreeDSecureAction } from '@recurly/react-recurly';
+import { ThreeDSecureAction } from '@recurly/react-recurly';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos, PaymentDetails, DefaultPaymentDetails } from '../../redux-flow/store/Account/Plan/types';
@@ -103,18 +103,18 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                 { display: { displayName: " Dacast " } }
             )
 
-            paypal.on('token', token => {
+            paypal.on('token', (token: any) => {
                 props.recurlyFunction(token.id, null, (token3Ds: string) => {
                     setThreeDSecureActionToken(token3Ds);
                 });
                 props.callback()
             })
 
-            paypal.on('error', error => {
+            paypal.on('error', (error: any) => {
                 props.handleThreeDSecureFail();
             })
 
-            paypal.on('cancel', (e) => {
+            paypal.on('cancel', (e: any) => {
                 props.handleThreeDSecureFail();
             })
 
@@ -330,8 +330,8 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                     <ThreeDSecure
                         style={{ height: 400 }}
                         actionTokenId={threeDSecureActionToken}
-                        onToken={(resultToken) => { props.purchasePlan3Ds(recurlyToken, resultToken.id); setHideForm(false); setThreeDSecureActionToken(null) }}
-                        onError={(error) => { props.handleThreeDSecureFail(); setHideForm(false); setThreeDSecureActionToken(null); }}
+                        onToken={(resultToken: any) => { props.purchasePlan3Ds(recurlyToken, resultToken.id); if (props.billingInfo.paymentMethod.type === "" || props.isUpdate) {setHideForm(false)}; setThreeDSecureActionToken(null) }}
+                        onError={(error: any) => { props.handleThreeDSecureFail(); if(props.billingInfo.paymentMethod.type === "" || props.isUpdate){setHideForm(false)}; setThreeDSecureActionToken(null); }}
                     />
                 </div>
             }

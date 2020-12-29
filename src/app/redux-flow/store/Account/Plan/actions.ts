@@ -3,11 +3,14 @@ import { BillingServices } from './services';
 import { showToastNotification } from '../../Toasts/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from "../..";
+import { applyViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetBillingInfoOutput, formatGetProductExtraDataListOutput } from './viewModel';
 
 
 export interface GetBillingPageInfos {
     type: ActionTypes.GET_BILLING_PAGE_INFOS;
-    payload: {data: BillingPageInfos};
+    payload: BillingPageInfos;
 }
 
 export interface SaveBillingPagePaymentMethod {
@@ -25,14 +28,9 @@ export interface EditBillingPagePlaybackProtection {
     payload: PlaybackProtection;
 }
 
-export interface AddBillingPageExtras {
-    type: ActionTypes.ADD_BILLING_PAGE_EXTRAS;
-    payload: Extras;
-}
-
 export interface GetProductDetails {
     type: ActionTypes.GET_PRODUCT_DETAILS;
-    payload: {data: Products}
+    payload: Products;
 }
 
 export interface PurchaseProducts {
@@ -40,17 +38,7 @@ export interface PurchaseProducts {
     payload: Extras
 }
 
-export const getBillingPageInfosAction = (): ThunkDispatch<Promise<void>, {}, GetBillingPageInfos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetBillingPageInfos> ) => {
-        await BillingServices.getBillingPagePaymentMethodService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_BILLING_PAGE_INFOS, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+export const getBillingPageInfosAction = applyViewModel(dacastSdk.getBillingInfo, undefined, formatGetBillingInfoOutput, ActionTypes.GET_BILLING_PAGE_INFOS, null, 'Couldn\'t get billing info')
 
 export const saveBillingPagePaymentMethodAction = (data: string): ThunkDispatch<Promise<void>, {}, SaveBillingPagePaymentMethod> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveBillingPagePaymentMethod> ) => {
@@ -93,30 +81,8 @@ export const editBillingPagePaymenPlaybackProtectionAction = (data: PlaybackProt
     };
 }
 
-export const addBillingPageExtrasAction = (data: Extras): ThunkDispatch<Promise<void>, {}, AddBillingPageExtras> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, AddBillingPageExtras> ) => {
-        await BillingServices.addBillingPageExtrasService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.ADD_BILLING_PAGE_EXTRAS, payload: response.data} );
-                dispatch(showToastNotification("Data saved!", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+export const getProductDetailsAction = applyViewModel(dacastSdk.getProductExtraDataList, undefined, formatGetProductExtraDataListOutput, ActionTypes.GET_PRODUCT_DETAILS, null, 'Couldn\'t get product details')
 
-export const getProductDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetProductDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetProductDetails> ) => {
-        await BillingServices.getProductDetailsService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_PRODUCT_DETAILS, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
 
 export const purchaseProductsAction = (data: Extras, recurlyToken: string, token3Ds?: string): ThunkDispatch<Promise<void>, {}, PurchaseProducts> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, PurchaseProducts> ) => {
@@ -136,5 +102,4 @@ GetBillingPageInfos
 | SaveBillingPagePaymentMethod 
 | AddBillingPagePlaybackProtection
 | EditBillingPagePlaybackProtection
-| AddBillingPageExtras
 | GetProductDetails

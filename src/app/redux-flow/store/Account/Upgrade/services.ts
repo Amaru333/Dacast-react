@@ -16,7 +16,7 @@ export const purchasePlanService = async (data: Plan, recurlyToken: any, token3D
             token: recurlyToken,
             currency: 'USD',
             couponCode: '',
-            allowances: data.allownaceCode,
+            allowances: data.allowanceCode,
             threeDSecureToken: token3Ds ? token3Ds : undefined,
             paidPrivileges: data.privileges ? data.privileges.map((privilege) => { return data.selectedPrivileges && data.selectedPrivileges.includes(privilege.code) ? { code: privilege.code, quantity: 1 } : null }).filter(f => f) : null
         }

@@ -2,9 +2,9 @@ import React from 'react';
 import { PlanPage } from '../../pages/Account/Plan/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { saveBillingPagePaymentMethodAction, getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, addBillingPageExtrasAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
+import { getBillingPageInfosAction, addBillingPagePaymenPlaybackProtectionAction, editBillingPagePaymenPlaybackProtectionAction, PlanAction, getProductDetailsAction, purchaseProductsAction } from '../../redux-flow/store/Account/Plan/actions';
 import { connect } from 'react-redux';
-import { BillingPageInfos, PlaybackProtection, Extras, Products } from '../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, PlaybackProtection, Extras } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { DashboardInfos, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
@@ -15,10 +15,8 @@ interface PlanContainerProps {
     widgetData: DashboardInfos
     getWidgetData: () => Promise<void>;
     getBillingPageInfos: () => Promise<void>;
-    saveBillingPagePaymentMethod: (data: string) => Promise<void>
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
-    addBillingPageExtras: (data: Extras) => Promise<void>
     getProductDetails: () => Promise<void>;
     purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<void>
 }
@@ -59,10 +57,7 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, PlanAction>) {
     return {
         getBillingPageInfos: async () => {
-            await dispatch(getBillingPageInfosAction());
-        },
-        saveBillingPagePaymentMethod: async (data: string) => {
-            await dispatch(saveBillingPagePaymentMethodAction(data));
+            await dispatch(getBillingPageInfosAction(undefined));
         },
         addBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
              await dispatch(addBillingPagePaymenPlaybackProtectionAction(data));
@@ -70,14 +65,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
              await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
         },
-        addBillingPageExtras: async (data: Extras) => {
-             await dispatch(addBillingPageExtrasAction(data));
-        },
         getWidgetData: async () => {
              await dispatch(getDashboardDetailsAction());
         },
         getProductDetails: async () => {
-             await dispatch(getProductDetailsAction());
+             await dispatch(getProductDetailsAction(undefined));
         },
         purchaseProducts: async (data: Extras, recurlyToken: string, token3Ds?: string) => {
             await dispatch(purchaseProductsAction(data, recurlyToken, token3Ds))

@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan, Privilege } from '../../../redux-flow/store/Account/Upgrade/types';
@@ -10,13 +9,12 @@ import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodFo
 import { calculateDiscount } from '../../../../utils/utils';
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { PlansName } from './FeaturesConst';
-import { capitalizeFirstLetter } from '../../../../utils/utils'
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
 
 
 //PLAN
-export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>, usefulFunctions: { [key: string]: any } }) => {
     const [selectedPlan, setSelectedPlan] = React.useState<string>('ott')
 
     React.useEffect(() => {
@@ -74,9 +72,7 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
 
     return (
         <div>
-
             <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
-
             <div className="col col-12 mt2">
                 <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
                     <ScalePlanSelector onClick={() => { setSelectedPlan("live") }} selected={selectedPlan === "live"}>
@@ -105,22 +101,16 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
                         </ScalePlanSelectorContents>
                     </ScalePlanSelector>
                 </div>
-
-
             </div>
             <div className="col col-12">
                 <Table id='firstStepFooterTotalPrice' className="mt2 tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
             </div>
-
-
-
-
         </div>
     )
 }
 
 //FEATURES
-export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>, usefulFunctions: { [key: string]: any } }) => {
 
     const availableAddOns = ["ads", "paywall", "phone-support"]
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
@@ -200,7 +190,7 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 
 //CART
 
-export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
     if(props.stepperData.name.indexOf('scale') !== -1) {
         segmentService.track('Upgrade Form Completed', {
@@ -378,7 +368,7 @@ React.useEffect(() => {
 }
 
 //PAYMENT
-export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
 
     segmentService.track('Upgrade Form Completed', {
         action: 'Cart Form Submitted',

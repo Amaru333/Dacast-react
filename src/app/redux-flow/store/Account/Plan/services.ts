@@ -36,9 +36,6 @@ const editBillingPagePaymenPlaybackProtectionService = async (enabled: boolean, 
     )
 }
 
-const addBillingPageExtrasService = async (data: Extras) => {
-    return await axiosClient.post('billing/extras', {...data})
-}
 
 const getProductDetailsService = async () => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
@@ -63,7 +60,6 @@ export const BillingServices = {
     saveBillingPagePaymentMethodService,
     addBillingPagePaymenPlaybackProtectionService,
     editBillingPagePaymenPlaybackProtectionService,
-    addBillingPageExtrasService,
     getProductDetailsService,
     purchaseProductsService
 } 
