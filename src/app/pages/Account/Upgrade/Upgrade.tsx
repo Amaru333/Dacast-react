@@ -64,41 +64,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         .then((response) => {
             console.log('response', response)
             setIsLoading(false);
-            if (response && response.authenticationRequiredFor === 'billing-info') {
-                try {
-                    dacastSdk.postAccountPlan(formatPostPlanInput({
-                        code: stepperData.code,
-                        currency: 'USD',
-                        allowanceCode: stepperData.allowanceCode,
-                        privileges: stepperData.privileges,
-                        selectedPrivileges: stepperData.selectedPrivileges,
-                        token: recurlyToken,
-                        token3Ds: threeDSecureToken
-                    }))
-                    .then((response) => {
-                        console.log('response billing info update', response)
-                        if (response && response.tokenID) {
-                            callback(response.tokenID)
-                            setThreeDSecureActive(true)
-                        } else {
-                            setStepperPlanOpened(false)
-                            setPaymentSuccessfulModalOpened(true)
-                            setCurrentPlan(stepperData.name)
-                            EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)            
-                            segmentService.track('Upgrade Form Completed', {
-                                action: 'Payment Form Submitted',
-                                'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
-                                'plan_name': stepperData.name,
-                                step: 4,
-                            })  
-                        }
-                        return
-                    })
-                }catch {
-                    throw Error('Couldn\'t update billing info')
-                }
-
-            }
             if (response && response.tokenID) {
                 callback(response.tokenID)
                 setThreeDSecureActive(true)

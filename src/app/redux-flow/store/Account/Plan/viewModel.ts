@@ -23,11 +23,13 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
     return formattedData
 }
 
-export const formatPostBillingPaymentMethod = (data: string): PostBillingPaymentMethodInput => {
+export const formatPostBillingPaymentMethod = (data: {token: string, threeDSToken?: string}): PostBillingPaymentMethodInput => {
     let formattedData: PostBillingPaymentMethodInput = {
-        token: data
+        token: data.token
     }
-
+    if(data.threeDSToken) {
+        formattedData.threeDSecureToken = data.threeDSToken
+    }
     return formattedData
 }
 

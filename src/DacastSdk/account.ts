@@ -206,6 +206,7 @@ export interface GetAccountBillingInfoOutput {
 
 export interface PostBillingPaymentMethodInput {
     token: string;
+    threeDSecureToken?: string;
 }
 
 export interface PostBillingPaymentMethodOutput {

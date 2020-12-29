@@ -73,7 +73,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input defaultValue={dataAmount} type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
+            <Input defaultValue={dataAmount ? dataAmount.toString() : null} type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>
@@ -105,7 +105,7 @@ export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunction
         <div>
             <Table id='PurchaseDataPayment' headerBackgroundColor="gray-10" header={paymentTableHeaderElement()}/>
             
-            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} purchasePlan3Ds={props.usefulFunctions['purchasePlan3Ds']} stepperData={props.stepperData} />
+            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} purchasePlan3Ds={props.usefulFunctions['purchaseProducts3Ds']} stepperData={props.stepperData} />
         
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

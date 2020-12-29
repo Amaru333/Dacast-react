@@ -131,12 +131,11 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                     }
                     else {
                         setRecurlyToken(token.id);
-                        {props.isUpdate ? 
-                            props.recurlyFunction(token.id) :
                             props.recurlyFunction(token.id, null, (token3Ds: string) => {
-                                setThreeDSecureActionToken(token3Ds);
+                                if(token3Ds) {
+                                    setThreeDSecureActionToken(token3Ds);
+                                }
                             });
-                        }
                         props.callback()
                         setRecurlyError(null)
                     }
@@ -144,7 +143,9 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
             } else {
                 setRecurlyToken("");
                     props.recurlyFunction("", null, (token3Ds: string) => {
-                        setThreeDSecureActionToken(token3Ds);
+                        if(token3Ds) {
+                            setThreeDSecureActionToken(token3Ds);
+                        }
                     });
             }      
         }
