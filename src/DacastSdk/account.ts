@@ -212,3 +212,8 @@ export interface PostBillingPaymentMethodInput {
 export interface PostBillingPaymentMethodOutput {
     tokenID: string;
 }
+
+export interface PutPlaybackProtectionInput {
+    enabled: boolean;
+    amount: number;
+}

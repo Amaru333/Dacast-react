@@ -1,5 +1,5 @@
-import { GetAccountBillingInfoOutput, GetProductExtraDataOutput, PostBillingPaymentMethodInput, PostProductExtraDataInput, ProductExtraDataKey } from "../../../../../DacastSdk/account";
-import { BillingPageInfos, Extras, Products } from "./types";
+import { GetAccountBillingInfoOutput, GetProductExtraDataOutput, PostBillingPaymentMethodInput, PostProductExtraDataInput, ProductExtraDataKey, PutPlaybackProtectionInput } from "../../../../../DacastSdk/account";
+import { BillingPageInfos, Extras, PlaybackProtection, Products } from "./types";
 
 export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): BillingPageInfos => {
     let formattedData: BillingPageInfos = {
@@ -54,5 +54,13 @@ export const formatPostProductExtraInput = (data: Extras): PostProductExtraDataI
         threeDSecureToken: data.threeDSecureToken
     }
 
+    return formattedData
+}
+
+export const formatPutPlaybackProtectionInput = (data: PlaybackProtection): PutPlaybackProtectionInput => {
+    let formattedData: PutPlaybackProtectionInput = {
+        amount: data.amount,
+        enabled: data.enabled
+    }
     return formattedData
 }

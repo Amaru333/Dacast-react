@@ -9,9 +9,6 @@ export const reducer = (state = planInitialState, action: PlanAction): BillingPa
             return {...state, 
                 ...action.payload
             }
-        case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
-            return state;
-            
         case ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
                 playbackProtection: {...state.playbackProtection, ...action.payload}

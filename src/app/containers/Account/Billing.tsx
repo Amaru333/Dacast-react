@@ -1,6 +1,6 @@
 import React from 'react';
 import { BillingPage } from '../../pages/Account/Billing/Billing';
-import { BillingPageInfos, getBillingPageInfosAction, saveBillingPagePaymentMethodAction, PlanAction } from '../../redux-flow/store/Account/Plan';
+import { BillingPageInfos, getBillingPageInfosAction, PlanAction } from '../../redux-flow/store/Account/Plan';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
@@ -11,7 +11,6 @@ import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 export interface BillingContainerProps {
     billingInfos: BillingPageInfos;
     getBillingPageInfos: () => Promise<void>
-    saveBillingPagePaymentMethod: (data: string) => Promise<void>;
 }
 
 const Billing = (props: BillingContainerProps) => {
@@ -46,9 +45,6 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getBillingPageInfos: async () => {
             await dispatch(getBillingPageInfosAction(undefined));
-        },
-        saveBillingPagePaymentMethod: async (data: string) => {
-            await dispatch(saveBillingPagePaymentMethodAction(data));
         }
     };
 }

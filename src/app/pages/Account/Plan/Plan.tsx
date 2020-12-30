@@ -30,7 +30,6 @@ interface PlanComponentProps {
     getWidgetData: () => Promise<void>;
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
-    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<any>
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
