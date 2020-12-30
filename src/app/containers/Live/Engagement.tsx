@@ -26,7 +26,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 
 export const LiveEngagement = (props: ContentEngagementContainerProps) => {
 
-    let { liveId } = useParams()
+    let { liveId } = useParams<{liveId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
@@ -137,7 +137,7 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getGlobalEngagementSettings: async () => {
-            await dispatch(getSettingsEngagementInfosAction());
+            await dispatch(getSettingsEngagementInfosAction(undefined));
         },
         getContentEngagementSettings: async (contentId: string, contentType: string) => {
             await dispatch(getContentEngagementSettingsAction(contentId, contentType));
