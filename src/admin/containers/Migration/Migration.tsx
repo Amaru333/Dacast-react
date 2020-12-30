@@ -6,6 +6,7 @@ import { Action } from 'redux';
 import { MigrationPage } from '../../pages/Migration/MigrationPage';
 import { MigrationData } from '../../redux-flow/store/Migration/types';
 import { getJobDetailsAction, getJobsListAction, getMigratedUsersListAction, startMigrationJobAction, switchOverUsersAction } from '../../redux-flow/store/Migration/actions';
+import { FilteringMigrationState } from '../../pages/Migration/MigrationFilters';
 
 export interface MigrationComponentProps {
     migrationData: MigrationData | false;
@@ -13,7 +14,7 @@ export interface MigrationComponentProps {
     getJobDetails: (jobId: string) =>  Promise<void>;
     startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[]) => Promise<void>
     switchUsers: (usersList: string[], jobId: string) => Promise<void>
-    getMigratedUsersList: (qs: string) => Promise<void>
+    getMigratedUsersList: (filters: FilteringMigrationState) => Promise<void>
 }
 
 const Migration = (props: MigrationComponentProps) => {
@@ -40,8 +41,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         switchUsers: async (usersList: string[], jobId: string) => {
             await dispatch(switchOverUsersAction(usersList, jobId))
         },
-        getMigratedUsersList: async (qs: string) => {
-            await dispatch(getMigratedUsersListAction(qs))
+        getMigratedUsersList: async (filters: FilteringMigrationState) => {
+            await dispatch(getMigratedUsersListAction(filters))
         }
     }
 }

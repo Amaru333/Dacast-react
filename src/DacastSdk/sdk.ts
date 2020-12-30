@@ -62,7 +62,7 @@ export class DacastSdk {
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
     public postSwitchOverUsers = async (input: PostSwitchOverUsersInput, jobId: string) => await this.axiosClient.post('/migration/job/' + jobId + '/switchover', input)
-    public getMigratedUsersList = async (input: string): Promise<GetMigratedUsersListOutput> => await this.axiosClient.get('/migration/users?' + input).then(this.checkExtraData)
+    public getMigratedUsersList = async (input: string): Promise<GetMigratedUsersListOutput> => await this.axiosClient.get('/migration/users' + input).then(this.checkExtraData)
     
     public postUploadUrl = async (input: PostUploadUrlInput): Promise<PostUploadUrlOutput> => await this.axiosClient.post('/uploads/signatures/singlepart/' + input.uploadType, {...input.uploadRequestBody}).then(this.checkExtraData)
     public putUploadFile = async (input: PutUploadFileInput): Promise<void> => await this.axiosClient.put(input.uploadUrl, input.data, {authRequired: false})
