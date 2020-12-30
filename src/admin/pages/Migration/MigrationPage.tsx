@@ -10,12 +10,33 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { StartJobModal } from './StartJobModal'
 import { Tab } from '../../../components/Tab/Tab'
 import { makeRoute } from '../../utils/utils'
+import { FilteringMigrationState, MigrationFiltering } from './MigrationFilters'
 
 export const MigrationPage = (props: MigrationComponentProps) => {
+
+    var filteringDefault: FilteringMigrationState = {
+        status: {
+            "Export In Progress": false,
+            "Error Exporting": false,
+            "Done Exporting": false,
+            "Import In Progress": false,
+            "Error Importing": false,
+            "Migrated But Not Switched": false,
+            "Migrated And Switched": false,
+            "Error Switching": false,
+        },
+        platform: {
+            dacast: false,
+            vzaar: false,
+        },
+        userIds: null,
+        legacyUserIds: null
+    }
 
     const [selectedJob, setSelectedJob] = React.useState<string>(null)
     const [startJobModalOpened, setStartJobModalOpened] = React.useState<boolean>(false)
     const [selectedTab, setSelectedTab] = React.useState<'Jobs' | 'Users'>('Jobs')
+    const [userTableFilters, setUserTableFilters] = React.useState<FilteringMigrationState>(filteringDefault)
 
     React.useEffect(() => {
         if(selectedTab === 'Jobs') {
@@ -34,6 +55,13 @@ export const MigrationPage = (props: MigrationComponentProps) => {
         }
 
     }
+
+    React.useEffect(() => {
+        if(selectedTab === 'Users') {
+            console.log('reaching here')
+            props.getMigratedUsersList(userTableFilters)
+        }
+    }, [userTableFilters])
 
     const jobsTableHeader = () => {
         return {data: [
@@ -129,6 +157,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             {
                 selectedTab === 'Users' && 
                 <React.Fragment>
+                    <MigrationFiltering defaultFilters={userTableFilters} setSelectedFilter={setUserTableFilters} />
                     <Table id='migratedUsersTable' headerBackgroundColor='white' header={migratedUsersTableHeader()} body={migratedUsersTableBody()} />
                 </React.Fragment>
             }

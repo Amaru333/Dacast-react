@@ -1,4 +1,5 @@
 import { GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
+import { FilteringMigrationState } from "../../../pages/Migration/MigrationFilters";
 import { JobDetails, JobInfo, MigratedUser } from "./types";
 
 export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => {
@@ -52,6 +53,39 @@ export const formatPostSwitchOverUsersInput = (data: string[]): PostSwitchOverUs
     }
 
     return formattedData
+}
+
+export const formatGetMigratedUserListInput = (data: FilteringMigrationState): string => {
+    if (data) {
+        let formattedData: string = '?'
+        console.log('raw status:', data.status)
+        if(Object.values(data.status).some(f => f)) {
+            console.log('reaching here, test: ', Object.keys(data.status).filter(key => data.status[key]).join())
+            formattedData += 'status=' + Object.keys(data.status).filter(key => data.status[key]).join()
+        }
+    
+        if(data.platform.dacast) {
+            formattedData += '&platform=dacast'
+        }
+    
+        if(data.platform.vzaar) {
+            formattedData += '&platform=vzaar'
+        }
+    
+        if(data.userIds) {
+            formattedData += '&uappUserIds=' + data.userIds
+        }
+    
+        if(data.legacyUserIds) {
+            formattedData += '&userIds=' + data.legacyUserIds
+        }
+    
+        formattedData = formattedData.replace('?&', '?')
+    
+        return formattedData
+    }
+
+    return ''
 }
 
 export const formatGetMigratedUserListOutput = (data: GetMigratedUsersListOutput): MigratedUser[] => data.users
