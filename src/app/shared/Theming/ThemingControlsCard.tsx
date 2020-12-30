@@ -16,7 +16,7 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { usePlayer } from '../../utils/services/player/player';
 import { Prompt, useHistory } from 'react-router';
 import { userToken } from '../../utils/services/token/tokenService';
-import { Divider } from '../Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 
 export interface ControlCardThemingComponentProps {

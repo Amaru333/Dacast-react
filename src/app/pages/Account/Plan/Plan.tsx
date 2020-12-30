@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from '../../../../components/Table/Table';
-import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
+import { Modal } from '../../../../components/Modal/Modal';
 import { Text } from '../../../../components/Typography/Text';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
@@ -19,18 +19,17 @@ import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/D
 import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatPostProductExtraInput } from '../../../redux-flow/store/Account/Plan/viewModel';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
     widgetData: DashboardInfos;
     getWidgetData: () => Promise<void>;
-    saveBillingPagePaymentMethod: (data: string) => Promise<void>
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>
-    addBillingPageExtras: (data: Extras) => Promise<void>
-    purchaseProducts: (data: Extras, recurlyToken: string, token3Ds?: string) => Promise<any>
 }
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
@@ -48,22 +47,50 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
         setIsLoading(true);
-        await props.purchaseProducts(purchaseDataStepperData, recurlyToken, null).then(
-            (response) => {
+        dacastSdk.postProductExtraData(formatPostProductExtraInput({
+            ...purchaseDataStepperData,
+            token: recurlyToken, 
+            threeDSecureToken: null
+        }))
+        .then((response) => {
             setIsLoading(false);
-            if (response && response.data.data.tokenID) {
-                callback(response.data.data.tokenID)
+            if (response && response.tokenID) {
+                callback(response.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setPurchaseDataOpen(false)
                 setDataPaymentSuccessOpen(true)
                 props.getWidgetData()
             }
-        }).catch((error) => {
+        }).catch(() => {
             setIsLoading(false);
             setPurchaseDataOpen(false)
             setDataPaymentFailedOpen(true)
         })
+    }
+
+    const purchaseProducts3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
+        setIsLoading(true);
+        dacastSdk.postProductExtraData(formatPostProductExtraInput({
+            ...purchaseDataStepperData,
+            token: recurlyToken, 
+            threeDSecureToken: threeDSecureResultToken
+        }))
+        .then(() => {
+            setIsLoading(false);
+            setPurchaseDataOpen(false)
+            setDataPaymentSuccessOpen(true)
+            props.getWidgetData()
+            }
+        ).catch(() => {
+            setIsLoading(false);
+            setPurchaseDataOpen(false)
+            setDataPaymentFailedOpen(true)
+        })
+    }
+
+    const handleThreeDSecureFail = () => {
+        setDataPaymentFailedOpen(true)
     }
 
     const handlePlaybackProtectionValue = (value: string) => {
@@ -148,7 +175,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         return {data:[
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Plan Type</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Payment</Text>},
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Reccuring</Text>},
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Recurring</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Next Bill</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Status</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Paywall Balance</Text>}
@@ -161,16 +188,16 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const color = (state === 'active' || state === "") ? 'green' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
-                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "Free" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
-                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName === "Trial" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
+                <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
+                <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
                 <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
             ]}]
         }
 
-    }  
+    } 
     
     return (
         <div>
@@ -200,11 +227,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                 <DataPricingTable >
                                     {
                                         props.billingInfos.products && 
-                                        Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  parseFloat(a.minQuantity) - parseFloat(b.minQuantity)).map((item) => {
+                                        Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  a.minQuantity - b.minQuantity).map((item) => {
                                             return (
                                                 <DataPricingTableRow key={item.code}>
                                                     <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
-                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{`$${item.unitPrice}/GB`}</Text></PriceCell>
+                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{`$${item.unitPrice.usd}/GB`}</Text></PriceCell>
                                                 </DataPricingTableRow>
                                             )
                                         })
@@ -240,11 +267,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
                     cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                     lastStepButton="Purchase"
-                    finalFunction={() => {}}
+                    finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
                     updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
                     functionCancel={setPurchaseDataOpen}
-                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts}}
+                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts, 'purchaseProducts3Ds': purchaseProducts3Ds, 'handleThreeDSecureFail': handleThreeDSecureFail}}
                     isLoading={isLoading}
                 />
             }

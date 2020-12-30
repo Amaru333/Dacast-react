@@ -1,8 +1,7 @@
-import { ActionTypes, Allowances, PutAllowances } from './types';
-import { ThunkDispatch } from 'redux-thunk';
-import { AdminState } from '../..';
-import { AccountAllowancesServices } from './service';
-import { showToastNotification } from '../../Toasts';
+import { ActionTypes, Allowances } from './types';
+import { applyAdminViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/adminAxiosClient';
+import { formatGetAccountAllowancesInput, formatGetAccountAllowancesOutput, formatPostAccountAllowancesInput } from './viewModel';
 
 export interface GetAccountAllowances {
     type: ActionTypes.GET_ACCOUNT_ALLOWANCES;
@@ -14,28 +13,7 @@ export interface SaveAccountAllowances {
     payload: Allowances;
 }
 
-export const getAccountAllowancesAction = (accountId: string): ThunkDispatch<Promise<void>, {}, GetAccountAllowances> => {
-    return async (dispatch: ThunkDispatch<AdminState, {}, GetAccountAllowances>) => {
-        await AccountAllowancesServices.getAccountAllowances(accountId)
-            .then( response => {
-                dispatch({type: ActionTypes.GET_ACCOUNT_ALLOWANCES, payload: response.data});
-            }).catch(() => {
-                dispatch(showToastNotification('Couldn\'t fetch allowances data' , 'fixed', 'error'))
-            })
-    }
-}
-
-export const saveAccountAllowancesAction = (accountAllocances: PutAllowances, accountId: string): ThunkDispatch<Promise<void>, {}, SaveAccountAllowances> => {
-    return async (dispatch: ThunkDispatch<AdminState, {}, SaveAccountAllowances>) => {
-        await AccountAllowancesServices.saveAccountAllowances(accountAllocances, accountId)
-            .then( response => {
-                dispatch({type: ActionTypes.SAVE_ACCOUNT_ALLOWANCES, payload: response.data});
-                dispatch(showToastNotification('Allowances data saved!' , 'fixed', 'success'))
-
-            }).catch(() => {
-                dispatch(showToastNotification('Couldn\'t save allowances data' , 'fixed', 'error'))
-            })
-    }
-}
+export const getAccountAllowancesAction = applyAdminViewModel(dacastSdk.getAccountAllowances, formatGetAccountAllowancesInput, formatGetAccountAllowancesOutput, ActionTypes.GET_ACCOUNT_ALLOWANCES, null,  'Couldn\'t get account allowances')
+export const saveAccountAllowancesAction = applyAdminViewModel(dacastSdk.postAccountAllowances, formatPostAccountAllowancesInput, undefined, ActionTypes.SAVE_ACCOUNT_ALLOWANCES, 'Allowances data saved!',  'Couldn\'t save allowances')
 
 export type Action = GetAccountAllowances | SaveAccountAllowances

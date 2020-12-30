@@ -1,13 +1,7 @@
-import axios from 'axios'
 import { ContentType } from '../Folders/types'
-import { axiosClient } from '../../../utils/services/axios/axiosClient'
+import { dacastSdk } from '../../../utils/services/axios/axiosClient'
+import { formatPostBulkActionInput } from './viewModel'
 
 export const bulkActionsService = async (data: ContentType[], action: 'delete' | 'theme' | 'online' | 'paywall' | 'create', targetValue?: string | boolean) => {
-    return await axiosClient.post('/bulk', 
-        {
-            action: action,
-            items: data.map((item: any) => {return {id: item.id, contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type, name: item.name}}),
-            targetValue: targetValue
-        }
-    )
+    return await dacastSdk.postBulkAction(formatPostBulkActionInput({items: data, action: action, targetValue: targetValue}))
 }

@@ -11,6 +11,7 @@ import { DashboardGeneral } from '../../redux-flow/store/Dashboard';
 import { useHistory } from 'react-router';
 import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
@@ -78,6 +79,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
+                        <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
+                        <Tooltip target="storageTooltip">Storage consumed include both source file size and sizes of renditions</Tooltip>
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>

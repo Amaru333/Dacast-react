@@ -13,7 +13,7 @@ export enum ActionTypes {
 
 export interface ContentType {
     id: string;
-    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition';
+    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition' | 'expo';
     fullPath?: string;
     name?: string;
 }

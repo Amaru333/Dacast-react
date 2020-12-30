@@ -2,9 +2,9 @@ import * as React from "react";
 import { Text } from "../Typography/Text";
 import Icon from '@material-ui/core/Icon';
 import { ModalProps } from './ModalTypes';
-import { ModalContainerStyle, ModalTitleStyle, IconStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
-import { useOutsideAlerter } from '../../utils/utils';
+import { ModalContainerStyle, ModalTitleStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
 import {isMobile} from "react-device-detect";
+import { IconStyle } from "../../shared/Common/Icon";
 
 export const Modal = (props: ModalProps) => {
 
@@ -16,7 +16,7 @@ export const Modal = (props: ModalProps) => {
         <React.Fragment>
             <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>
                 <ModalTitleStyle>
-                    {icon && <IconStyle  iconColor={icon.color} ><Icon fontSize="large">{icon.name}</Icon></IconStyle>}
+                    {icon && <IconStyle style={{float: 'left', marginTop: '4px', marginRight: '8px'}} fontSize='large'  coloricon={icon.color} >{icon.name}</IconStyle>}
                     <Text color="gray-1" size={24} weight="med">
                         {props.modalTitle}
                     </Text>

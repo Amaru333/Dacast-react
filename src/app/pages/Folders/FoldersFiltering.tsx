@@ -82,9 +82,8 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
             <Button buttonColor="gray" className={props.className} onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
                 Filter
                 {
-                    activeFilter > 0 ?
+                    activeFilter > 0 &&
                         <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
-                        : null
                 }
             </Button>
             <Filtering isOpen={openFilters} >
@@ -125,11 +124,11 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                     </div>
                     <div className="mb3" id="folderFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper id='startDateFolderFilter' date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
+                        <DateSinglePickerWrapper id='endDateFolderFilter' date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterType">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>

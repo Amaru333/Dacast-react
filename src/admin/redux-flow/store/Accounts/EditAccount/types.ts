@@ -3,6 +3,12 @@ export enum ActionTypes {
     SAVE_ACCOUNT_INFO = "@@admin_accounts/SAVE_ACCOUNT_INFO"
 }
 
+interface MigrationInfo {
+    legacyUserId: string;
+    originPlatform: string | null;
+    status: string | null;
+}
+
 export interface AccountInfo {
     accountId: string;
     companyName: string;
@@ -21,6 +27,7 @@ export interface AccountInfo {
     isBanned: boolean;
     isTest: boolean;
     isAdult: boolean;
+    migration: MigrationInfo | null;
 }
 
 export interface PutAccountInfo {

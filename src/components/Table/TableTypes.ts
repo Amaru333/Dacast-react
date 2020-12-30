@@ -13,6 +13,7 @@ interface BodyTable {
     isSelected?: boolean;
     isDisabled?: boolean;
     isProcessing?: boolean;
+    isSubRow?: boolean;
 }
 
 interface HeaderCell {

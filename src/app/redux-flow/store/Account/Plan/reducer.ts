@@ -7,11 +7,8 @@ export const reducer = (state = planInitialState, action: PlanAction): BillingPa
     switch (action.type) {
         case ActionTypes.GET_BILLING_PAGE_INFOS:
             return {...state, 
-                ...action.payload.data
+                ...action.payload
             }
-        case ActionTypes.SAVE_BILLING_PAGE_PAYMENT_METHOD: 
-            return state;
-            
         case ActionTypes.ADD_BILLING_PAGE_PLAYBACK_PROTECTION:          
             return {...state,
                 playbackProtection: {...state.playbackProtection, ...action.payload}
@@ -20,15 +17,9 @@ export const reducer = (state = planInitialState, action: PlanAction): BillingPa
             return {...state,
                 playbackProtection: {...state.playbackProtection, ...action.payload}
             } 
-        case ActionTypes.ADD_BILLING_PAGE_EXTRAS:          
-            let newExtras = state.extras ? state.extras.slice() : [];
-            newExtras.splice(newExtras.length, 0, action.payload )
-            return {...state,
-                extras: newExtras
-            }
         case ActionTypes.GET_PRODUCT_DETAILS:
             return {...state, 
-                ...action.payload.data
+                products: action.payload
             } 
         default:
             return state;

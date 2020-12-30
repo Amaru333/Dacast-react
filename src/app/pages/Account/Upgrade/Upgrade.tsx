@@ -12,19 +12,20 @@ import "react-responsive-carousel/lib/styles/carousel.css";
 import { Carousel } from 'react-responsive-carousel';
 import { UpgradeContainerProps } from '../../../containers/Account/Upgrade';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { Plan, Plans } from '../../../redux-flow/store/Account/Upgrade/types';
+import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { FeaturesStarterPlan, FeaturesScalePlan, FeaturesEventPlan, FeaturesCustomPlan, MainFeatures, PlansName } from './FeaturesConst';
 import { calculateDiscount } from '../../../../utils/utils';
-import { Modal, ModalFooter } from '../../../../components/Modal/Modal';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatPostPlanInput } from '../../../redux-flow/store/Account/Upgrade/viewModel';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -48,13 +49,23 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     let history = useHistory()
 
-    const purchasePlan = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+    const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, null)
+        console.log('recurly token', recurlyToken)
+        dacastSdk.postAccountPlan(formatPostPlanInput({
+            code: stepperData.code,
+            currency: 'USD',
+            allowanceCode: stepperData.allowanceCode,
+            privileges: stepperData.privileges,
+            selectedPrivileges: stepperData.selectedPrivileges,
+            token: recurlyToken,
+            token3Ds: threeDSecureToken
+        }))
         .then((response) => {
+            console.log('response', response)
             setIsLoading(false);
-            if (response && response.data.data.tokenID) {
-                callback(response.data.data.tokenID)
+            if (response && response.tokenID) {
+                callback(response.tokenID)
                 setThreeDSecureActive(true)
             } else {
                 setStepperPlanOpened(false)
@@ -69,7 +80,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 })  
             }
         })
-        .catch((error) => {
+        .catch(() => {
             setIsLoading(false);
             setPaymentDeclinedModalOpened(true)
         })
@@ -77,9 +88,18 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     }
 
-    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureToken: string) => {
+    const purchasePlan3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
+        console.log("3DS result token", threeDSecureResultToken)
         setIsLoading(true);
-        props.purchasePlan(stepperData, recurlyToken, threeDSecureToken)
+        dacastSdk.postAccountPlan(formatPostPlanInput({
+            code: stepperData.code,
+            currency: 'USD',
+            allowanceCode: stepperData.allowanceCode,
+            privileges: stepperData.privileges,
+            selectedPrivileges: stepperData.selectedPrivileges,
+            token: recurlyToken,
+            token3Ds: threeDSecureResultToken
+        }))
         .then(() => {
             setStepperPlanOpened(false)
             setIsLoading(false);
@@ -160,7 +180,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                         <>
                             <PlanContainer className={marginBlocks}>
                                 <Text size={16} weight='med' color='gray-1'>Starter</Text>
-                                <PlanCard className='mt1' isSelected={currentPlan === 'Annual Starter'}>
+                                <PlanCard className='mt1' isSelected={currentPlan === 'Starter'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
                                             <Text className={textClassName} size={32} weight='med' color='gray-1'>${((props.planDetails.starterPlan.price.usd / 100) / 12).toFixed(0)}</Text>
@@ -184,7 +204,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
                                                 <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
-                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Annual Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Annual Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
+                                                <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
 
@@ -446,8 +466,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 updateStepperData={(value: Plan) => setStepperData(value)}
                                 functionCancel={setStepperPlanOpened}
                                 isLoading={isLoading}
-                                finalFunction={threeDSecureActive ? purchasePlan3Ds : props.purchasePlan}
-                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos, 'planDetails': props.planDetails }}
+                                finalFunction={() => {console.log('plan purchased triggered')}}
+                                usefulFunctions={{ 'handleThreeDSecureFail': handleThreeDSecureFail, 'purchasePlan': purchasePlan, 'billingInfo': props.billingInfos, 'planDetails': props.planDetails, 'purchasePlan3Ds': purchasePlan3Ds }}
                             />
 
                         }

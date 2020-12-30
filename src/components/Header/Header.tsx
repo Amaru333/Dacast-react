@@ -128,7 +128,7 @@ const Header = (props: HeaderProps) => {
                     dataLayer: {
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo.currentPlan.displayName,
+                        'plan': props.billingInfo.currentPlan ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
@@ -224,7 +224,7 @@ const Header = (props: HeaderProps) => {
     }
 
     return (
-        <HeaderStyle>
+        <HeaderStyle userType={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'impersonatedUser' : 'user'}>
             {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
             <BreadcrumbContainer className="mr-auto flex ml2 sm-show" >
@@ -237,7 +237,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             }
 
-            <IconContainerStyle>
+            <IconContainerStyle customColor={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'red10' : null}>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
                     {avatarFirstName && avatarLastName ?
@@ -275,7 +275,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getContentDetailsAction(contentId, contentType));
         },
         getBillingInfo: () => {
-            dispatch(getBillingPageInfosAction())
+            dispatch(getBillingPageInfosAction(undefined))
         }
     }
 

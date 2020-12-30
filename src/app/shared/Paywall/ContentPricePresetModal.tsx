@@ -132,6 +132,10 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
         })
     }
 
+    
+    let time = new Date(moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess()).format());
+    time = new Date(time.getTime() - (time.getTimezoneOffset() * 60 * 1000) )
+
     return (
         <div>
            { 
@@ -229,15 +233,15 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                             date={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess())}
                             callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' />
+                        
                         <Input
                             type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(newPricePreset.settings.timezone || moment.tz.guess()).format('HH:mm')}
+                            value={time.getHours()+':'+time.getMinutes()}
                             onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, newPricePreset.settings.timezone || 'UTC'))}
                             className='col col-6 md-col-3'
                             disabled={false}
                             id='endTime'
                             pattern="[0-9]{2}:[0-9]{2}"
-                            
                         />
                     </div>
             }

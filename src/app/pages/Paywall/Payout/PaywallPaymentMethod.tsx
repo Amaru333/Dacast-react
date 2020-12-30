@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { useForm } from 'react-hook-form';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';

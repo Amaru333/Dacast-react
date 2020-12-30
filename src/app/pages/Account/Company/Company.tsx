@@ -19,7 +19,7 @@ import { SpinnerContainer } from '../../../../components/FormsComponents/Progres
 import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 

@@ -1,6 +1,5 @@
 export enum ActionTypes {
-    GET_PLAN_DETAILS = "@@account_upgrade/GET_PLAN_DETAILS",
-    CHANGE_ACTIVE_PLAN = "@@account_upgrade/CHANGE_ACTIVE_PLAN"
+    GET_PLAN_DETAILS = "@@account_upgrade/GET_PLAN_DETAILS"
 }
 
 export interface CustomAllowance {
@@ -12,20 +11,18 @@ export interface CustomAllowance {
 export interface Plan {
     name: 'Starter' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     code: string;
-    allownaceCode: string;
+    allowanceCode: string;
     isActive: boolean;
     discount: number;
     price: Price;
     allowances: Allowances[]
     privileges: Privilege[]
-    selectedPrivileges: string[] // front end only
-    privilegesTotal: number; // front end only
-    termsAndConditions: boolean; // frontend only
     paymentFrequency: string;
     paymentTerm: number;
-    is_customizable: boolean;
     commitment: number;
-    is_available_per_default: boolean;
+    selectedPrivileges: string[]
+    privilegesTotal: number;
+    termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
 }
 
@@ -38,7 +35,7 @@ export interface Allowances {
 export interface Privilege {
     code: string;
     price: Price;
-    checked: boolean; //frontend only
+    checked: boolean;
 }
 
 export interface Price {
@@ -53,7 +50,7 @@ export interface Plans {
     eventPlan: Plan
     scalePlanAnnual: Plan;
     scalePlanMonthly: Plan;
-    activePlan: string  
+    threeDSecureToken?: string 
 }
 
 export interface PaidPrivilege {
@@ -61,18 +58,19 @@ export interface PaidPrivilege {
     quantity: number;
 }
 
-export interface ChangePlan {
-    planCode: string;
-    currency: string;
-    couponCode: string;
-    allowances: string;
-    paidPrivileges: PaidPrivilege[];
+export interface ChangePlanData {
+    code: string;
+    currency: 'USD';
+    allowanceCode: string;
+    privileges: Privilege[];
+    selectedPrivileges: string[];
+    token: string;
+    token3Ds?: string;
 }
 
 export const upgradeInitialState: Plans = {
     starterPlan: null,
     eventPlan: null,
     scalePlanAnnual: null,
-    scalePlanMonthly: null,
-    activePlan: null
+    scalePlanMonthly: null
 }

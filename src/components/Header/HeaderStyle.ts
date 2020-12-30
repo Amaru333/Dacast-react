@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { DropdownList } from '../FormsComponents/Dropdown/DropdownStyle';
 import { Avatar } from '../Avatar/Avatar';
+import { ColorsApp } from '../../styled/types';
 
-export const HeaderStyle = styled.div`
+export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonatedUser'}>`
     border-bottom: 1px solid #D1DBE8;
-    background-color: ${props => props.theme.colors["white"]};
+    background-color: ${props => props.userType === 'user' ? props.theme.colors["white"] : props.userType === 'admin' ? props.theme.colors['yellow80'] : props.theme.colors['red10']};
     width: inherit;
     position: fixed;
     transition: none;
@@ -14,9 +15,9 @@ export const HeaderStyle = styled.div`
     display: flex;
     justify-content: flex-end;
 `
-export const IconContainerStyle = styled.div`
+export const IconContainerStyle = styled.div<{customColor?: ColorsApp}>`
     display: flex;
-    background-color: ${props => props.theme.colors["white"]};
+    background-color: ${props => props.customColor? props.theme.colors[props.customColor] : props.theme.colors['white']};
     height: 56px;
     width: 100px;
     align-items: center;
@@ -35,8 +36,8 @@ export const HeaderAvatar = styled(Avatar)`
     cursor: pointer;
 `
 
-export const VerticalDivider = styled.div`
-    border-left: 1px solid ${props => props.theme.colors["gray-7"]};
+export const VerticalDivider = styled.div<{blackBorder?: boolean}>`
+    border-left: 1px solid ${props => props.blackBorder ? props.theme.colors['black'] : props.theme.colors["gray-7"]};
     margin: 4px 16px 4px 0;
     height: 80%;
 `

@@ -11,11 +11,14 @@ import { BillingContainerProps } from '../../../containers/Account/Billing';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatPostBillingPaymentMethod } from '../../../redux-flow/store/Account/Plan/viewModel';
 
 export const BillingPage = (props: BillingContainerProps) => {
 
     const [paymentMethodModalOpened, setPaymentMethodModalOpened] = React.useState<boolean>(false);
     const [billingInfo, setBillingInfo] = React.useState<BillingPageInfos>(props.billingInfos)
+    const [contentLoading, setContentLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setBillingInfo(props.billingInfos)
@@ -23,6 +26,30 @@ export const BillingPage = (props: BillingContainerProps) => {
 
     let smScreen = useMedia('(max-width: 780px)');
 
+    const savePaymentMethod = (token: string, threeDSecureActionToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
+        dacastSdk.postBillingPaymentMethod(formatPostBillingPaymentMethod({token: token}))
+        .then(response => {
+            if (response && response.tokenID) {
+                callback(response.tokenID)
+            }
+            else {
+                setPaymentMethodModalOpened(false)
+                setContentLoading(true)
+                props.getBillingPageInfos()
+                .then(() => setContentLoading(false))
+            }
+        })
+    }
+
+    const savePaymentMethod3DS = (token: string, threeDSecureActionToken: string) => {
+        dacastSdk.postBillingPaymentMethod(formatPostBillingPaymentMethod({token: token, threeDSToken: threeDSecureActionToken}))
+        .then(response => {
+            setPaymentMethodModalOpened(false)
+            setContentLoading(true)
+            props.getBillingPageInfos()
+            .then(() => setContentLoading(false))
+        })
+    }
 
     const paypalTableHeaderElement = () => {
         return {data: [
@@ -77,8 +104,6 @@ export const BillingPage = (props: BillingContainerProps) => {
         }
     }
 
-
-    
     return (
         <React.Fragment>
             <Card>
@@ -91,15 +116,13 @@ export const BillingPage = (props: BillingContainerProps) => {
                 <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                 {
                     props.billingInfos.paymentMethod.type === "paypal" ? 
-                        <Table className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
+                        <Table contentLoading={contentLoading} className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
                         : props.billingInfos.paymentMethod.type === "card" ?                
-                            <Table className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
+                            <Table contentLoading={contentLoading} className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
                             : 
                             <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowances and Enable Playback Protection')} />
-
-
-                }    
+                }
             </Card>
             <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
                 <Elements>
@@ -108,7 +131,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                         modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
                         toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
                         opened={paymentMethodModalOpened}>
-                        <PaymentMethodModal billingInfo={billingInfo} callback={() => setPaymentMethodModalOpened(false)} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate savePaymentMethod={props.saveBillingPagePaymentMethod} />
+                        <PaymentMethodModal billingInfo={billingInfo} callback={() => {}} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate purchase3DS={savePaymentMethod3DS} savePaymentMethod={savePaymentMethod} />
                     </Modal>
                 </Elements>
             </RecurlyProvider>

@@ -4,7 +4,7 @@ import {ListReducer} from './List/reducer';
 import { PlanInfo } from './EditPlan/types';
 import { PlanReducer } from './EditPlan/reducer';
 import { AccountInfo } from './EditAccount/types';
-import { AccountReducer } from './EditAccount';
+import { AccountReducer } from './EditAccount/reducer';
 import { Logs } from './AccountLogs/types';
 import { AccountLogsReducer } from './AccountLogs/reducer';
 import { Allowances } from './Allowances/types';

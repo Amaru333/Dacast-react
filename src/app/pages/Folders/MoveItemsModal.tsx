@@ -1,5 +1,5 @@
 import React from 'react';
-import { FolderTreeNode } from '../../redux-flow/store/Folders/types';
+import { ContentType, FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../../components/Typography/Text';
@@ -11,13 +11,38 @@ import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { segmentService } from '../../utils/services/segment/segmentService';
+import { FolderTree } from '../../utils/services/folder/folderService';
 
-export const MoveItemModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; submit: Function; initialSelectedFolder: string; goToNode: (searchedFolder: string) => Promise<FolderTreeNode>; toggle: (v: boolean) => void; newFolderModalToggle: (v: boolean) => void; setMoveModalSelectedFolder: (v: string) => void}) => {
+interface MoveItemModalProps {
+    initialSelectedFolder: string;
+    movedContent: ContentType[];
+    showToast: (text: string, size: Size, notificationType: NotificationType) => void; 
+    toggle: React.Dispatch<React.SetStateAction<boolean>>; 
+    newFolderModalToggle: React.Dispatch<React.SetStateAction<boolean>>; 
+    setMoveModalSelectedFolder: React.Dispatch<React.SetStateAction<string>>;
+    foldersTree?: FolderTreeNode;
+    oldFolderId?: string;
+    callback?: Function
+}
+
+export const MoveItemModal = (props: MoveItemModalProps) => {
 
     const [selectedModalFolder, setSelectedModalFolder] = React.useState<string>(props.initialSelectedFolder);
     const [currentNode, setCurrentNode] = React.useState<FolderTreeNode>(null);
     const [checkedFolders, setCheckedFolders] = React.useState<{name: string; id: string}[]>([]);
     const [saveLoading, setSaveLoading] = React.useState<boolean>(false);
+    const [folderTree, setFoldersTree] = React.useState<FolderTreeNode>(props.foldersTree || null)
+
+    let moveModalFolderTree = new FolderTree(setFoldersTree, setCurrentNode, folderTree || null)
+
+    React.useEffect(() => {
+        if(!props.foldersTree) {
+            const wait = async () => {
+                await moveModalFolderTree.initTree()
+            }
+            wait()        
+        }
+    }, [])
 
     
     React.useEffect( () => {
@@ -34,7 +59,7 @@ export const MoveItemModal = (props: {showToast: (text: string, size: Size, noti
             children: {}
         });
         props.setMoveModalSelectedFolder(selectedModalFolder)
-        props.goToNode(selectedModalFolder)
+        moveModalFolderTree.goToNode(selectedModalFolder)
             .then((node) => {
                 setCurrentNode(node);
             })
@@ -56,7 +81,7 @@ export const MoveItemModal = (props: {showToast: (text: string, size: Size, noti
 
     const handleSubmit = () => {
         setSaveLoading(true)
-        props.submit(checkedFolders.map((folder) => {return folder.id}))
+        moveModalFolderTree.moveToFolder(checkedFolders.map((folder) => {return folder.id}), props.movedContent, props.oldFolderId)
         .then(() => {
             setSaveLoading(false)
             props.toggle(false)
@@ -66,7 +91,10 @@ export const MoveItemModal = (props: {showToast: (text: string, size: Size, noti
                 action: 'Object Added',
                 'folder_id': checkedFolders.map((folder) => {return folder.name}), 
                 step: 2,
-            })  
+            })
+            if(props.callback) {
+                props.callback()
+            }
         }).catch(() => {
             setSaveLoading(false)
             props.showToast('Items couldn\'t be moved', 'fixed', 'error')

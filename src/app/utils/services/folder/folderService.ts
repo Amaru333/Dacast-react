@@ -16,7 +16,7 @@ export const rootNode: FolderTreeNode = {
 
 export class FolderTree {
 
-    constructor(setTree: Function, setSelectedFolder: Function, node?: FolderTreeNode) {
+    constructor(setTree: React.Dispatch<React.SetStateAction<FolderTreeNode>>, setSelectedFolder: React.Dispatch<React.SetStateAction<FolderTreeNode>>, node?: FolderTreeNode) {
         this.tree = node ? node : rootNode,
         this.setTree = setTree
         this.setSelectedFolder = setSelectedFolder
@@ -33,9 +33,9 @@ export class FolderTree {
         return this.tree
     }
 
-    public setTree: Function
+    public setTree: React.Dispatch<React.SetStateAction<FolderTreeNode>>
 
-    public setSelectedFolder: Function
+    public setSelectedFolder: React.Dispatch<React.SetStateAction<FolderTreeNode>>
 
     public async initTree() {
         await this.loadChildren(rootNode)
@@ -45,7 +45,7 @@ export class FolderTree {
         let fetchedNode: SubFolder
         return await axiosClient.get('/folders?parentID=' + parentNodeId
         ).then((response) => {
-            fetchedNode = response.data.data.folders.reduce((reduced: any, item: FolderTreeNode) => {
+            fetchedNode = response.data.data.folders.reduce((reduced: SubFolder, item: FolderTreeNode) => {
                 return {
                     ...reduced,
                     [item.name]: {
@@ -68,11 +68,9 @@ export class FolderTree {
     private async loadChildren(node: FolderTreeNode) {
         node.loadingStatus = 'loading'
         let children: SubFolder  = await this.fetchChildren(node.id)
-        let orderedChildren = {}
-        Object.keys(children).sort().forEach(function(key) {
-            orderedChildren[key] = children[key];
-          });
-        node.children = {...orderedChildren}
+        node.children = Object.keys(children).sort().reduce((acc, next) => {
+            return {...acc, [next]: children[next]}
+          }, {})
         node.isExpanded = true
         node.loadingStatus = 'loaded'
         this.setTree({...this.tree})

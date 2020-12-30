@@ -7,7 +7,7 @@ import { Action, AnalyticsRealTimeState, GetAnalyticsRealtimeOptions, getAnalyti
 import { RealTimeAnalyticsPage } from '../../pages/Analytics/RealTime';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { getContentListAction } from '../../redux-flow/store/Content/List/actions';
-import { SearchResult } from '../../redux-flow/store/Content/General/types';
+import { SearchResult } from '../../redux-flow/store/Content/List/types';
 import { ErrorRealTime } from '../../../components/Error/ErrorRealTime';
 import { useHistory } from 'react-router';
 
@@ -64,7 +64,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(getAnalyticsRealTimeAction(options));
         },
         getLiveList: async (qs: string) => {
-            await dispatch(getContentListAction(qs, 'live'));
+            await dispatch(getContentListAction('live')(qs));
         },
     };
 }

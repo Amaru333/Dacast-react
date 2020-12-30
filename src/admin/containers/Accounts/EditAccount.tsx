@@ -17,7 +17,7 @@ export interface EditAccountComponentProps {
 
 const EditAccount = (props: EditAccountComponentProps ) => {
 
-    let { accountId } = useParams()
+    let { accountId } = useParams<{accountId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
@@ -25,7 +25,7 @@ const EditAccount = (props: EditAccountComponentProps ) => {
         .then(() => setIsFetching(false))
     }, [])
     return !isFetching ?
-        <EditAccountPage {...props} />
+        <EditAccountPage {...props} accountId={accountId} />
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }
 

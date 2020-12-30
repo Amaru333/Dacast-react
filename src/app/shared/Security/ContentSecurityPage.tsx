@@ -15,7 +15,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
-import { Divider } from '../Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')

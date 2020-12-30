@@ -124,6 +124,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 }} />},
             {cell: <Text size={14} weight="med">Rendition</Text>},
             {cell: <Text size={14} weight="med">Size (px)</Text>},
+            {cell: <Text size={14} weight="med">Size (Mb)</Text>},
             {cell: <Text size={14} weight="med">Bitrate(Mbps)</Text>},
             {cell: <Text size={14} weight="med">Status</Text>}
         ]}
@@ -145,6 +146,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.width}</Text>,
                 <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
+                <Text size={14} weight="reg">{value.size ? (value.size / 1000000).toFixed(1) : null}</Text>,
                 !value.transcodingJobID ? 
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
                     :

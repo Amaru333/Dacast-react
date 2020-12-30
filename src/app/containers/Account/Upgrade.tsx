@@ -1,9 +1,9 @@
 import React from 'react';
 import { LoadingSpinner} from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { UpgradePage } from '../../pages/Account/Upgrade/Upgrade';
-import { Plans, ChangePlan, Plan } from '../../redux-flow/store/Account/Upgrade/types';
+import { Plans } from '../../redux-flow/store/Account/Upgrade/types';
 import { ApplicationState } from '../../redux-flow/store';
-import { UpgradeAction, getPlanDetailsAction, purchasePlanAction } from '../../redux-flow/store/Account/Upgrade/actions';
+import { UpgradeAction, getPlanDetailsAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -15,7 +15,6 @@ import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 export interface UpgradeContainerProps {
     planDetails: Plans;
     getPlanDetails: () => Promise<void>;
-    purchasePlan: (data: Plan, recurlyToken: string, token3Ds?: string) => Promise<any>;
     billingInfos: BillingPageInfos;
     getBillingPageInfos: () => Promise<void>
 }
@@ -54,13 +53,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
     return {
         getPlanDetails: async () => {
-            await dispatch(getPlanDetailsAction())
+            await dispatch(getPlanDetailsAction(undefined))
         },
         getBillingPageInfos: async () => {
-            await dispatch(getBillingPageInfosAction());
-        },
-        purchasePlan: async (data: Plan, recurlyToken: string, token3Ds?: string) => {
-            await dispatch(purchasePlanAction(data, recurlyToken, token3Ds))
+            await dispatch(getBillingPageInfosAction(undefined));
         }
     }
 }
