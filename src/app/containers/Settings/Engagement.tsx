@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { getSettingsEngagementInfosAction, Action, EngagementInfo, saveSettingsEngagementInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, MailCatcher, saveMailCatcherAction, createMailCatcherAction, deleteMailCatcherAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Engagement';
+import { getSettingsEngagementInfosAction, Action, EngagementInfo, saveSettingsEngagementInfosAction, Ad, saveAdAction, createAdAction, deleteAdAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Settings/Engagement';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -23,9 +23,6 @@ export interface SettingsEngagementContainerProps {
     saveAd: (data: Ad[]) => Promise<void>;
     createAd: (data: Ad[]) => Promise<void>;
     deleteAd: (data: Ad[]) => Promise<void>;
-    saveMailCatcher: Function;
-    createMailCatcher: Function;
-    deleteMailCatcher: Function;
     getUploadUrl: (uploadType: string) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string) => Promise<void>;
     deleteFile: () => Promise<void>;
@@ -136,16 +133,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteFile: async () => {
             await dispatch(deleteFileAction(undefined))
-        },
-        saveMailCatcher: (data: MailCatcher) => {
-            dispatch(saveMailCatcherAction(data))
-        },
-        createMailCatcher: (data: MailCatcher) => {
-            dispatch(createMailCatcherAction(data))
-        },
-        deleteMailCatcher: (data: MailCatcher) => {
-            dispatch(deleteMailCatcherAction(data))
-        },
+        }
     };
 }
 

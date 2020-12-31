@@ -4,7 +4,10 @@ import { showToastNotification } from '../../Toasts';
 import { ActionTypes } from './types';
 import { contentEngagementServices } from './services';
 import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
-import { parseContentType } from '../../../../utils/utils';
+import { applyViewModel, parseContentType } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { ContentType } from '../../Common/types';
+import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput } from './viewModel';
 
 export interface GetContentEngagementSettings {
     type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS;
@@ -51,16 +54,15 @@ export interface DeleteContentImage {
     payload: {file: File};
 }
 
-export const getContentEngagementSettingsAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentEngagementSettings> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentEngagementSettings> ) => {
-        await contentEngagementServices.getContentEngagementSettings(contentId, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS, payload: {contentId: contentId, contentType: contentType, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const getContentEngagementSettingsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.getVodEngagementSettings, formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput(contentType), ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS, null, 'Couldn\'t get engagement settings')
+        case 'live':
+            return applyViewModel(dacastSdk.getChannelEngagementSettings, formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput(contentType), ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS, null, 'Couldn\'t get engagement settings')
+        default:
+            throw new Error('Error applying get content view model')
+    }
 }
 
 export const saveContentEngagementSettingsAction = (data: ContentEngagementSettings, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentEngagementSettings> => {

@@ -162,9 +162,11 @@ export class DacastSdk {
 
     public getChannels = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/channels?' + input).then(this.checkExtraData)
     public deleteChannel = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input)
+    public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
+    public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)

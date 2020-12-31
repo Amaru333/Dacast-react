@@ -1,4 +1,5 @@
 import { NotificationType, Size } from '../../../../../components/Toast/ToastTypes';
+import { ContentType } from '../../Common/types';
 import { Ad, ContentEngagementSettings, EngagementInfo } from '../../Settings/Engagement/types';
 
 export enum ActionTypes {
@@ -36,7 +37,7 @@ export interface EngagementComponentProps {
     setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>;
     lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>;
     contentId?: string;
-    contentType?: string;
+    contentType?: ContentType;
     saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
     createAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
     saveAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;

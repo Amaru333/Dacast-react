@@ -21,6 +21,7 @@ import { EngagementBrandText } from '../../shared/Engagement/BrandText';
 import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementContainerProps, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export const VodEngagement = (props: ContentEngagementContainerProps) => {
 
@@ -138,8 +139,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getGlobalEngagementSettings: async () => {
             await dispatch(getSettingsEngagementInfosAction(undefined));
         },
-        getContentEngagementSettings: async (contentId: string, contentType: string) => {
-            await dispatch(getContentEngagementSettingsAction(contentId, contentType));
+        getContentEngagementSettings: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentEngagementSettingsAction(contentType)(contentId));
         },
         saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
             await dispatch(saveContentEngagementSettingsAction(data, contentType))

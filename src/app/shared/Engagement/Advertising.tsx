@@ -109,7 +109,7 @@ export const EngagementAdvertising = (props: EngagementComponentProps  ) => {
         return props.localEngagementSettings.adsSettings.ads.map((item, i) => {
             return {
                 data: [
-                    <Text key={'advertisingTableBodyPlacement' + item["ad-type"] + i} size={14} weight='med'>{capitalizeFirstLetter(item.type)}</Text>,
+                    <Text key={'advertisingTableBodyPlacement' + item.type + i} size={14} weight='med'>{item.type}</Text>,
                     <Text key={'advertisingTableBodyPosition' + item.timestamp + i} size={14} weight='med'>{handleAdPosition(item)}</Text>,
                     <AdTableURLContainer>
                         <Text key={'advertisingTableBodyUrl' + item.url + i} size={14} weight='med'>{item.url}</Text>
