@@ -12,7 +12,7 @@ import { Action, getContentEngagementSettingsAction, saveContentEngagementSettin
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { ContentEngagementContainerProps, EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentEngagementContainerProps, EngagementComponentProps, EngagementSectionsLock } from '../../redux-flow/store/Content/Engagement/types';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { userToken } from '../../utils/services/token/tokenService';
@@ -21,6 +21,7 @@ import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
 import { EngagementBrandText } from '../../shared/Engagement/BrandText';
 import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 
 
@@ -139,14 +140,14 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getGlobalEngagementSettings: async () => {
             await dispatch(getSettingsEngagementInfosAction(undefined));
         },
-        getContentEngagementSettings: async (contentId: string, contentType: string) => {
-            await dispatch(getContentEngagementSettingsAction(contentId, contentType));
+        getContentEngagementSettings: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentEngagementSettingsAction(contentType)(contentId));
         },
-        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
-            await dispatch(saveContentEngagementSettingsAction(data, contentType))
+        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: ContentType) => {
+            await dispatch(saveContentEngagementSettingsAction(contentType)(data))
         },
-        lockSection: async (section: string, contentId: string, contentType: string, unlock?: boolean) => {
-            await dispatch(lockSectionAction(section, contentId, contentType, unlock))
+        lockSection: async (section: EngagementSectionsLock, contentId: string, contentType: ContentType, unlock?: boolean) => {
+            await dispatch(lockSectionAction(contentType)({section: section, contentId: contentId, action: unlock}))
         },
         saveContentAd: async (data: Ad[], contentId: string, contentType: string) => {
             await dispatch(saveContentAdAction(data, contentId, contentType))

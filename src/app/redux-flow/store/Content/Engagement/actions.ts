@@ -7,7 +7,7 @@ import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
 import { applyViewModel, parseContentType } from '../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { ContentType } from '../../Common/types';
-import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput } from './viewModel';
+import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
 
 export interface GetContentEngagementSettings {
     type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS;
@@ -65,32 +65,27 @@ export const getContentEngagementSettingsAction = (contentType: ContentType) => 
     }
 }
 
-export const saveContentEngagementSettingsAction = (data: ContentEngagementSettings, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentEngagementSettings> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentEngagementSettings> ) => {
-        await contentEngagementServices.saveContentEngagementSettings(data, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS, payload: {...data, contentType: contentType}} );
-                dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const saveContentEngagementSettingsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodEngagementSettings, formatPutContentEngagementInput, formatPutContentEngagementOutput(contentType), ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS, 'Changes have been saved', 'Couldn\'t save changes')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelEngagementSettings, formatPutContentEngagementInput, formatPutContentEngagementOutput(contentType), ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS, 'Changes have been saved', 'Couldn\'t save changes')
+        default:
+            throw new Error('Error applying get content view model')
+    }
 }
 
-export const lockSectionAction = (section: string, contentId: string, contentType: string, unlock?: boolean): ThunkDispatch<Promise<void>, {}, LockSection> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, LockSection> ) => {
-        await contentEngagementServices.lockSection(section, contentId,  parseContentType(contentType), unlock)
-            .then( response => {
-                dispatch( {type: ActionTypes.LOCK_SECTION, payload: null});
-                dispatch(showToastNotification("Changes have been saved", "fixed", "success"))
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const lockSectionAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodLockEngagementSettings, formatPutContentLockEngagementSettingsInput, undefined, ActionTypes.LOCK_SECTION, 'Changes have been saved', 'Couldn\'t save changes')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelLockEngagementSettings, formatPutContentLockEngagementSettingsInput, undefined, ActionTypes.LOCK_SECTION, 'Changes have been saved', 'Couldn\'t save changes')
+        default:
+            throw new Error('Error applying get content view model')
+    }
 }
-
 
 export const saveContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentAd> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentAd> ) => {

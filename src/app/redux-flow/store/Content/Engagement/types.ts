@@ -48,6 +48,8 @@ export interface EngagementComponentProps {
     getEngagementSettings?: (contentId?: string, contentType?: string) => Promise<void>
 }
 
+export type EngagementSectionsLock = 'brand-image' | 'ads' | 'brand-text' | 'end-screen-text';
+
 export interface ContentEngagementState {
     [key: string]: {[key: string]: ContentEngagementSettings}
 }

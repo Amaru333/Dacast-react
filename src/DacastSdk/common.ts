@@ -1,3 +1,5 @@
+import { EngagementSettingsEndoint } from "./settings"
+
 export interface GetCompanyLogoUploadUrl {
     userID: string
 }
@@ -82,4 +84,12 @@ export interface PostBulkActionOutput {
     action: string;
     errors: boolean;
     items: BulkActionReponseItem[]
+}
+
+export type PutContentEngagementSettingsInput = EngagementSettingsEndoint & {id: string}
+
+export interface PutContentLockEngagementSettingsInput {
+    id: string;
+    section: 'brand-image' | 'ads' | 'brand-text' | 'end-screen-text';
+    action: 'lock' | 'unlock';
 }

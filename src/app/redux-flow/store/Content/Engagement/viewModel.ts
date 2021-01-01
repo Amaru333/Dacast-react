@@ -1,7 +1,9 @@
-import { AdEnpoint, EngagementSettingsEndoint } from "../../../../../DacastSdk/settings";
+import { PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput } from "../../../../../DacastSdk/common";
+import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndoint } from "../../../../../DacastSdk/settings";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { ContentType } from "../../Common/types";
-import { Ad, AdType, ContentEngagementSettings } from "../../Settings/Engagement/types";
+import { Ad, AdType, ContentEngagementSettings, EngagementInfo } from "../../Settings/Engagement/types";
+import { EngagementSectionsLock } from "./types";
 
 export const formatGetContentEngagementSettingsInput = (data: string): string => data
 
@@ -25,5 +27,65 @@ export const formatGetContentEngagementSettingsOutput = (contentType: ContentTyp
         contentType: contentType
     }
     // contentId: contentId, contentType: contentType, engagementSettings: {...response.data.data, adsId: response.data.data.adsID}}
+    return formattedData
+}
+
+export const formatPutContentEngagementInput = (data: ContentEngagementSettings): PutContentEngagementSettingsInput => {
+    let formattedData: PutContentEngagementSettingsInput = {
+        adsSettings: {
+            ...data.engagementSettings.adsSettings,
+            ads: data.engagementSettings.adsSettings.ads.map((ad: Ad): AdEnpoint => {
+                return {
+                    timestamp: ad.timestamp,
+                    url: ad.url,
+                    ["ad-type"]: ad.type as AdTypeEndpoint,
+                }
+            })
+        },
+        brandImageSettings: {
+            ...data.engagementSettings.brandImageSettings
+        },
+        brandTextSettings: {
+            ...data.engagementSettings.brandTextSettings
+        },
+        endScreenSettings: {
+            ...data.engagementSettings.endScreenSettings
+        },
+        id: data.contentId
+    }
+
+    return formattedData
+}
+
+export const formatPutContentEngagementOutput = (contentType: ContentType) => (endpointResponse: null, data: ContentEngagementSettings): ContentEngagementSettings & {contentType: ContentType} => {
+    let formattedData: ContentEngagementSettings & {contentType: ContentType} = {
+        ...data,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPutContentLockEngagementSettingsInput = (data: {contentId: string; section: EngagementSectionsLock; action: boolean}): PutContentLockEngagementSettingsInput => {
+    let formattedData: PutContentLockEngagementSettingsInput = {
+        id: data.contentId,
+        section: data.section,
+        action: data.action ? 'unlock' : 'lock'
+    }
+
+    return formattedData
+}
+
+export const formatPutAdsSettingsInput = (data: Ad[]): PutAdInput => {
+    let formattedData: PutAdInput = {
+        ads: data.map(ad => {
+            return {
+                "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
+                timestamp: ad.timestamp,
+                url: ad.url
+            }
+        })
+    }
+
     return formattedData
 }
