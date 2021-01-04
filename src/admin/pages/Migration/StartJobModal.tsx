@@ -44,7 +44,7 @@ export const StartJobModal = (props: StartJobModalProps) => {
 
         } else {
             console.log('processing csv input:', formattedContent)
-            users = formattedContent.split("\n");
+            users = formattedContent.replace(/\r/g,"").split("\n");
             console.log('users list: ', users)
         }
         users.shift()
