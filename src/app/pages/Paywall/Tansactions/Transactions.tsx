@@ -176,7 +176,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             </div>
 
             <Table id='transactionTable' contentLoading={contentLoading} headerBackgroundColor="white" header={transactionsTableHeader()} body={transactionsTableBody()} />
-            <Pagination totalResults={props.transactionsInfo ? props.transactionsInfo.total : 0} defaultPage={props.transactionsInfo ? props.transactionsInfo.page : 1} defaultDisplayedOption={props.transactionsInfo ? props.transactionsInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
+            <Pagination className='mb3' totalResults={props.transactionsInfo ? props.transactionsInfo.total : 0} defaultPage={props.transactionsInfo ? props.transactionsInfo.page : 1} defaultDisplayedOption={props.transactionsInfo ? props.transactionsInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort, searchString)}} />
         </div>
     )
 }

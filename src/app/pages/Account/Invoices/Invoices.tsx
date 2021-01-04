@@ -167,7 +167,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
 
             }
-            <Pagination totalResults={props.invoicesInfo ? props.invoicesInfo.total : 0} defaultPage={props.invoicesInfo ? props.invoicesInfo.page : 0} defaultDisplayedOption={props.invoicesInfo ? props.invoicesInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort)}} />
+            <Pagination className='mb3' totalResults={props.invoicesInfo ? props.invoicesInfo.total : 0} defaultPage={props.invoicesInfo ? props.invoicesInfo.page : 0} defaultDisplayedOption={props.invoicesInfo ? props.invoicesInfo.perPage : 0} displayedItemsOptions={[20, 50, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults});formatFiltersToQueryString(selectedFilters, {page:page,nbResults:nbResults}, sort)}} />
         </div>
         : <Table hasContainer id='invoicesEmptyTable' headerBackgroundColor="white" header={emptyInvoicesTableHeader()} body={emptyInvoicesTableBody()} />
 
