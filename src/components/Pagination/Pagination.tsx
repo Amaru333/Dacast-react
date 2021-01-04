@@ -50,7 +50,7 @@ export const Pagination = (props: PaginationProps) => {
     }
 
     return (    
-        <div className={(isMobile || smallScreen ? 'flex flex-column mx-auto ' : 'flex ') + props.className ? props.className : ''}>
+        <div className={(isMobile || smallScreen ? 'flex flex-column mx-auto ' : 'flex ') + (props.className ? props.className : '')}>
             <div className={'flex items-baseline flex-auto my2' + (isMobile || smallScreen ? ' order-1 mx-auto' : '')}>
                 <Text size={14} weight='reg'>Showing </Text>
                 <DropdownButton
