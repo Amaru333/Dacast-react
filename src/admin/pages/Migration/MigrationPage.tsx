@@ -25,10 +25,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             "Migrated And Switched": false,
             "Error Switching": false,
         },
-        platform: {
-            dacast: false,
-            vzaar: false,
-        },
+        platform: 'none',
         userIds: null,
         legacyUserIds: null
     }
@@ -58,7 +55,6 @@ export const MigrationPage = (props: MigrationComponentProps) => {
 
     React.useEffect(() => {
         if(selectedTab === 'Users') {
-            console.log('reaching here')
             props.getMigratedUsersList(userTableFilters)
         }
     }, [userTableFilters])

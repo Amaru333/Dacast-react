@@ -7,6 +7,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/DropdownCheckbox';
+import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio';
 
 export interface FilteringMigrationState {
     status: {
@@ -19,10 +20,7 @@ export interface FilteringMigrationState {
         "Migrated And Switched": boolean;
         "Error Switching": boolean;
     };
-    platform: {
-        dacast: boolean;
-        vzaar: boolean;
-    };
+    platform: 'dacast' | 'vzaar' | 'none';
     userIds: string;
     legacyUserIds: string;
 }
@@ -40,10 +38,7 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
             "Migrated And Switched": false,
             "Error Switching": false,
         },
-        platform: {
-            dacast: false,
-            vzaar: false,
-        },
+        platform: 'none',
         userIds: null,
         legacyUserIds: null
     }
@@ -54,8 +49,7 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
 
     const checkActiveFilter = () => {
         var counter = 0;
-        Object.entries(filteringState.platform).map(item => item[1] !== false ? counter++ : null)
-        Object.entries(filteringState.status).map(item => item[1] !== false ? counter++ : null)
+        filteringState.platform ? counter++ : null;
         filteringState.userIds ? counter++ : null;
         filteringState.legacyUserIds ? counter++ : null;
         setActiveFilter(counter);
@@ -86,27 +80,33 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
             <Filtering isOpen={openFilters} >
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
+                    <div>
+                     <Input className="col col-12 px2" label="Uapp Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
+                    </div>
+                    <div className="mb3" id="contentFilterFeatures">
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Platform</Text>
+                        <InputRadio className="mb2" name='platform' value='dacast' defaultChecked={filteringState.platform === 'dacast'}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'dacast' }}) }}
+                            id='contentFilterDacast' label="Dacast" labelWeight="reg" /> 
+                        <InputRadio className="mb2" name='platform' value='vzaar' defaultChecked={filteringState.platform === 'vzaar'}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'vzaar' } }) }}
+                            id='contentFilterVzaar' label="Vzaar" labelWeight="reg" /> 
+                        <InputRadio className="mb2" name='platform' value='none' defaultChecked={filteringState.platform === 'none'}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'none' } }) }}
+                            id='contentFilterVzaar' label="None" labelWeight="reg" /> 
+                    </div>
                     <div className="mb3" id="contentFilterStatus">
                         <DropdownCheckbox
                             id='statusesDropdown'
+                            disabled={filteringState.platform === 'none'}
                             dropdownTitle='Status'
                             list={filteringState.status}
                             callback={(value) => setFilteringState({...filteringState, status: value})}
                         />
                     </div>
-                    <div className="mb3" id="contentFilterFeatures">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Platform</Text>
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.platform.dacast}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: { ...prevState.platform, dacast: !prevState.platform.dacast } } }) }}
-                            id='contentFilterDacast' label="Dacast" labelWeight="reg" /> 
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.platform.vzaar}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: { ...prevState.platform, vzaar: !prevState.platform.vzaar } } }) }}
-                            id='contentFilterVzaar' label="Vzaar" labelWeight="reg" /> 
-                    </div>
                         <div className="mb3" id="contentFilterSize">
                                 <div className="mxn2 clearfix">
-                                <Input className="col col-12 px2" label="Uapp Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
-                                <Input className="col col-12 px2" label="Legacy Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.legacyUserIds} onChange={(event) => {handleNumberInputChange(event, 'legacyUserIds')}} />
+                                <Input disabled={filteringState.platform === 'none'} className="col col-12 px2" label="Legacy Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.legacyUserIds} onChange={(event) => {handleNumberInputChange(event, 'legacyUserIds')}} />
                             </div>
                         </div>
                 </div>

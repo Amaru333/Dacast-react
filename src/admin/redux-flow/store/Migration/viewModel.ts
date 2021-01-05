@@ -58,22 +58,16 @@ export const formatPostSwitchOverUsersInput = (data: string[]): PostSwitchOverUs
 export const formatGetMigratedUserListInput = (data: FilteringMigrationState): string => {
     if (data) {
         let formattedData: string = '?'
-        console.log('raw status:', data.status)
         if(Object.values(data.status).some(f => f)) {
-            console.log('reaching here, test: ', Object.keys(data.status).filter(key => data.status[key]).join())
             formattedData += 'status=' + Object.keys(data.status).filter(key => data.status[key]).join()
         }
     
-        if(data.platform.dacast && !data.platform.vzaar) {
+        if(data.platform === 'dacast') {
             formattedData += '&platform=dacast'
         }
     
-        if(data.platform.vzaar && !data.platform.dacast) {
+        if(data.platform === 'vzaar') {
             formattedData += '&platform=vzaar'
-        }
-
-        if(data.platform.vzaar && data.platform.dacast) {
-            formattedData += '&platform=dacast,vzaar'
         }
     
         if(data.userIds) {
