@@ -64,12 +64,16 @@ export const formatGetMigratedUserListInput = (data: FilteringMigrationState): s
             formattedData += 'status=' + Object.keys(data.status).filter(key => data.status[key]).join()
         }
     
-        if(data.platform.dacast) {
+        if(data.platform.dacast && !data.platform.vzaar) {
             formattedData += '&platform=dacast'
         }
     
-        if(data.platform.vzaar) {
+        if(data.platform.vzaar && !data.platform.dacast) {
             formattedData += '&platform=vzaar'
+        }
+
+        if(data.platform.vzaar && data.platform.dacast) {
+            formattedData += '&platform=dacast,vzaar'
         }
     
         if(data.userIds) {
