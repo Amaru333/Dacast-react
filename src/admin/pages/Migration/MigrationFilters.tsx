@@ -81,7 +81,7 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                     <div>
-                     <Input className="col col-12 px2" label="Uapp Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
+                     <Input className="col col-12 mb3" label="Uapp Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
                     </div>
                     <div className="mb3" id="contentFilterFeatures">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Platform</Text>
