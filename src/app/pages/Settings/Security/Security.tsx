@@ -3,7 +3,6 @@ import { Card } from '../../../../components/Card/Card';
 import { Text } from '../../../../components/Typography/Text';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Table } from '../../../../components/Table/Table';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
@@ -13,14 +12,10 @@ import { DomainControlForm } from './DomainControlForm';
 import { SecurityComponentProps } from '../../../containers/Settings/Security';
 import { DomainControl, GeoRestriction, SecuritySettings } from '../../../redux-flow/store/Settings/Security/types';
 import { Bubble } from '../../../../components/Bubble/Bubble';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Prompt } from 'react-router';
-import moment from 'moment';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
-import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Divider } from '../../../../shared/MiscStyles';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
-import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
@@ -197,8 +192,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                        
-                            
                                 <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
                                         dropdownTitle="Available"
@@ -210,7 +203,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         showTimezone={true}
                                     />
                                 </div>
-                                {console.log(startTime)}
                                 <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
                                         dropdownTitle="Until"
@@ -223,8 +215,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         showTimezone={true}
                                     />
                                 </div>
-                            
-                        
                     </div>
                 </div>
 
