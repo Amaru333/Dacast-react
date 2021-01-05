@@ -102,6 +102,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                 let themesListDropdownItem: DropdownSingleListItem = {title: null, data: null}
                 themesListDropdownItem.title = item.themeName
                 themesListDropdownItem.data = item
+                themesListDropdownItem.featureItem = item.isCustom
                 return themesListDropdownItem
             })
         }

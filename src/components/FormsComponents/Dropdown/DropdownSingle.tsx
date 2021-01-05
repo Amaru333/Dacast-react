@@ -14,8 +14,14 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
     const [selectedItem, setSelectedItem] = React.useState<string>(props.defaultSelected ? props.defaultSelected : 'Select');
-    const [itemsList, setItemsList] = React.useState<DropdownSingleListItem[]>(props.list);
+    const [itemsList, setItemsList] = React.useState<DropdownSingleListItem[]>(null);
     const [filteringList, setFilteringList] = React.useState<string>('');
+
+    React.useEffect(() => {
+        let featuredItem = props.list.find(item => item.featureItem)
+        let featureItemsList = props.list.sort(function(x,y){ return x == featuredItem ? -1 : y == featuredItem ? 1 : 0; });
+        setItemsList(featureItemsList)
+    }, [])
 
     useOutsideAlerter(dropdownListRef, () => {
         isOpened &&  setOpen(false)
@@ -52,7 +58,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     const renderList = () => {
         
         return (
-            itemsList.map((item, key) => {
+            itemsList && itemsList.map((item, key) => {
                 return (
                     props.isNavigation ?
                         <Link to={item.title.toLowerCase()} key={props.id + '_' + item.title} >
