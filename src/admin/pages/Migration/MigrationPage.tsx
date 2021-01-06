@@ -139,8 +139,8 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     const handlePageChange = (pageToGo: number) => {
         props.getMigratedUsersList({...userTableFilters, next: tablePagination[pageToGo]})
         .then(() => {
-            if(props.migrationData && Object.keys(tablePagination).find(k => k === pageToGo.toString()) ) {
-                setTablePagination({...tablePagination, [pageToGo]: props.migrationData.usersList.next})
+            if(props.migrationData && Object.keys(tablePagination).find(k => k === (pageToGo + 1).toString()) ) {
+                setTablePagination({...tablePagination, [pageToGo + 1]: props.migrationData.usersList.next})
             }
             setCurrentPage(pageToGo)
         })
