@@ -20,9 +20,8 @@ export interface FilteringMigrationState {
         "Migrated And Switched": boolean;
         "Error Switching": boolean;
     };
-    platform: 'dacast' | 'vzaar' | 'none';
+    platform: 'dacast' | 'vzaar' | 'uapp';
     userIds: string;
-    legacyUserIds: string;
 }
 
 export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationState; setSelectedFilter: React.Dispatch<SetStateAction<FilteringMigrationState>>}) => {
@@ -38,9 +37,8 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
             "Migrated And Switched": false,
             "Error Switching": false,
         },
-        platform: 'none',
-        userIds: null,
-        legacyUserIds: null
+        platform: 'dacast',
+        userIds: null
     }
 
     const [filteringState, setFilteringState] = React.useState<FilteringMigrationState>(props.defaultFilters);
@@ -51,7 +49,6 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
         var counter = 0;
         filteringState.platform ? counter++ : null;
         filteringState.userIds ? counter++ : null;
-        filteringState.legacyUserIds ? counter++ : null;
         setActiveFilter(counter);
     }
 
@@ -80,9 +77,6 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
             <Filtering isOpen={openFilters} >
                 <div>
                     <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
-                    <div>
-                     <Input className="col col-12 mb3" label="Uapp Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
-                    </div>
                     <div className="mb3" id="contentFilterFeatures">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Platform</Text>
                         <InputRadio className="mb2" name='platform' value='dacast' defaultChecked={filteringState.platform === 'dacast'}
@@ -91,14 +85,14 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
                         <InputRadio className="mb2" name='platform' value='vzaar' defaultChecked={filteringState.platform === 'vzaar'}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'vzaar' } }) }}
                             id='contentFilterVzaar' label="Vzaar" labelWeight="reg" /> 
-                        <InputRadio className="mb2" name='platform' value='none' defaultChecked={filteringState.platform === 'none'}
-                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'none' } }) }}
-                            id='contentFilterVzaar' label="None" labelWeight="reg" /> 
+                        <InputRadio className="mb2" name='platform' value='uapp' defaultChecked={filteringState.platform === 'uapp'}
+                            onChange={(e) => { setFilteringState(prevState => { return { ...prevState, platform: 'uapp' } }) }}
+                            id='contentFilterVzaar' label="Uapp" labelWeight="reg" /> 
                     </div>
                     <div className="mb3" id="contentFilterStatus">
                         <DropdownCheckbox
                             id='statusesDropdown'
-                            disabled={filteringState.platform === 'none'}
+                            disabled={filteringState.platform === 'uapp'}
                             dropdownTitle='Status'
                             list={filteringState.status}
                             callback={(value) => setFilteringState({...filteringState, status: value})}
@@ -106,7 +100,7 @@ export const MigrationFiltering = (props: {defaultFilters: FilteringMigrationSta
                     </div>
                         <div className="mb3" id="contentFilterSize">
                                 <div className="mxn2 clearfix">
-                                <Input disabled={filteringState.platform === 'none'} className="col col-12 px2" label="Legacy Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.legacyUserIds} onChange={(event) => {handleNumberInputChange(event, 'legacyUserIds')}} />
+                                <Input className="col col-12 px2" label="User Ids" indicationLabel='Must be separated by ,'  type='textarea' value={filteringState.userIds} onChange={(event) => {handleNumberInputChange(event, 'userIds')}} />
                             </div>
                         </div>
                 </div>

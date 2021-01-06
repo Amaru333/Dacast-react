@@ -25,9 +25,8 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             "Migrated And Switched": false,
             "Error Switching": false,
         },
-        platform: 'none',
-        userIds: null,
-        legacyUserIds: null
+        platform: 'dacast',
+        userIds: null
     }
 
     const [selectedJob, setSelectedJob] = React.useState<string>(null)

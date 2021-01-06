@@ -71,11 +71,11 @@ export const formatGetMigratedUserListInput = (data: FilteringMigrationState): s
         }
     
         if(data.userIds) {
-            formattedData += '&uappUserIds=' + data.userIds
-        }
-    
-        if(data.legacyUserIds) {
-            formattedData += '&userIds=' + data.legacyUserIds
+            if(data.platform === 'uapp') {
+                formattedData += '&uappUserIds=' + data.userIds
+            } else {
+                formattedData += '&userIds=' + data.userIds
+            }
         }
     
         formattedData = formattedData.replace('?&', '?')

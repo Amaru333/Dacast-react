@@ -20,7 +20,7 @@ export const TitleContainer = styled.div<{isWhiteBackground: boolean; isOpened: 
     height: 38px;
     border: 1px solid ${props => props.theme.colors["gray-7"]};
     background-color: ${props => props.isWhiteBackground ? props.theme.colors["white"] : props.theme.colors["gray-10"] };
-    pointer-events: ${props => props.disabled ? "none" : "auto"};
+    pointer-events: ${props => props.disabled ? "not-allowed" : "auto"};
     ${props => props.isNavigation && css`
         background-color: ${props.theme.colors.white};
     `}
