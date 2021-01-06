@@ -98,6 +98,17 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                     }
                 }
             }
+        case ActionTypes.GENERATE_ENCODER_KEY:            
+            return {
+                ...state,
+                [action.payload.contentType]: {
+                    ...state[action.payload.contentType],
+                    [action.payload.contentId] : {
+                        ...state[action.payload.contentType][action.payload.contentId],
+                        encoderKey: action.payload.encoderKey
+                    }
+                }
+            }
         default:
             return state
     }

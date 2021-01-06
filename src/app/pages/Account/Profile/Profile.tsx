@@ -17,7 +17,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { timezoneDropdownList } from '../../../../utils/DropdownLists'
 import  EventHooker from '../../../../utils/services/event/eventHooker'

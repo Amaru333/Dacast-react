@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
-import { ItemNameContainer } from '../../pages/Playlist/Setup/Setup';
 
 export const DeleteContentModal = (props: {showToast: (text: string, size: Size, notificationType: NotificationType) => void; toggle: (b: boolean) => void; contentName: string; deleteContent: () => Promise<void>}) => {
 

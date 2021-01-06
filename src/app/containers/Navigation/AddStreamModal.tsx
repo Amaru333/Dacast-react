@@ -8,7 +8,6 @@ import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { logAmplitudeEvent } from '../../utils/services/amplitude/amplitudeService';
 import { isMobile } from 'react-device-detect';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
@@ -17,6 +16,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { ApplicationState } from '../../redux-flow/store';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { connect } from 'react-redux';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 const moment = require('moment-timezone')
 
@@ -27,19 +27,19 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
     const localeTimezone: string = moment.tz.guess()
 
     const handleLocaleCountry = (): string => {
-        if(localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
+        if (localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
             return 'Australia & Asia Pacific'
-        } else if(localeTimezone.toLowerCase().indexOf('europe') > -1) {
+        } else if (localeTimezone.toLowerCase().indexOf('europe') > -1) {
             return 'Europe, Middle East & Africa'
-        } 
+        }
         return 'Americas'
     }
 
     const [renditionCount, setRenditionCount] = React.useState<number>(1)
 
     const defaultStreamSetup: StreamSetupOptions = {
-        rewind: false, 
-        title: '', 
+        rewind: false,
+        title: '',
         region: handleLocaleCountry(),
         renditionCount: renditionCount
     }
@@ -57,22 +57,22 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         props.toggle()
     }
 
-    const handleRegionParse =(region: string): string => {
-        switch(region) {
+    const handleRegionParse = (region: string): string => {
+        switch (region) {
             case 'Americas':
                 return 'north-america'
             case 'Australia & Asia Pacific':
                 return 'asia-pacific'
             case 'Europe, Middle East & Africa':
                 return 'europe'
-            default: 
+            default:
                 return ''
         }
     }
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
-        
+
         await axiosClient.post('/channels',
             {
                 title: streamSetupOptions.title,
@@ -84,16 +84,20 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         ).then((response) => {
             setButtonLoading(false)
             showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
-            logAmplitudeEvent('create live stream');
-            history.push(`/livestreams/${response.data.data.id}/general`)
             props.toggle()
             setStreamSetupOptions(defaultStreamSetup)
+            segmentService.track('Livestream Created', {
+                action: 'Create Livestream',
+                'channel_id': response.data.data.id,
+                step: 1,
+            })    
+            history.push(`/livestreams/${response.data.data.id}/general`)    
         }).catch((error) => {
             setButtonLoading(false)
             let errorMsg = 'There was a problem while creating a channel'
             console.log('error message: ', error.response.data.error)
             if(error.response.data.error.indexOf('only 1 channel is allowed for free trials') > -1) {
-                errorMsg = 'Only 1 channel is allowed for free trials'
+                errorMsg = 'Only 1 channel is allowed for free trials. Please click here to'
             }
             if(error.response.data.error.indexOf('there was a problem while creating a channel') > -1) {
                 errorMsg = 'There was a problem while creating a channel'
@@ -109,19 +113,19 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 <Bubble className="mt1" type="info">
                     Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>
                 </Bubble>
-                <Input 
-                    placeholder="My Live Stream" 
-                    id='liveStreamModalInput' 
-                    className='col col-12 mt1' 
-                    value={streamSetupOptions.title} 
-                    onChange={(event) => {setStreamSetupOptions({...streamSetupOptions, title: event.currentTarget.value})}} 
-                    label='Title' 
+                <Input
+                    placeholder="My Live Stream"
+                    id='liveStreamModalInput'
+                    className='col col-12 mt1'
+                    value={streamSetupOptions.title}
+                    onChange={(event) => { setStreamSetupOptions({ ...streamSetupOptions, title: event.currentTarget.value }) }}
+                    label='Title'
                 />
                 <div className='col col-12 mt1 flex relative' >
-                    <DropdownSingle 
-                        dropdownTitle='Source Region' 
-                        className='col col-12' 
-                        id='channelRegionTypeDropdown' 
+                    <DropdownSingle
+                        dropdownTitle='Source Region'
+                        className='col col-12'
+                        id='channelRegionTypeDropdown'
                         dropdownDefaultSelect={streamSetupOptions.region}
                         list={regionDropdownList} 
                         callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
@@ -167,7 +171,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => {handleCreateLiveStreams()}} typeButton="primary" >Create</Button>
+                <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >Create</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
             </ModalFooter>
         </Modal>

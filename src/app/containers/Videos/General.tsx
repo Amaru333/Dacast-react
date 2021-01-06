@@ -21,7 +21,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction, userId } from '../../utils/general'
-import { Divider } from '../../shared/Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
@@ -34,7 +34,8 @@ export interface GeneralComponentProps {
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
     deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>;
+    generateEncoderKey?: (liveId: string) => Promise<void>
 }
 const General = (props: GeneralComponentProps) => {
 

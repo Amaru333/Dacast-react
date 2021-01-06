@@ -19,6 +19,7 @@ import { ContentDetailsState } from '../../app/redux-flow/store/Content/General/
 import { getContentDetailsAction } from '../../app/redux-flow/store/Content/General/actions';
 import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flow/store/Account/Plan';
 import { segmentService } from '../../app/utils/services/segment/segmentService';
+import TagManager from 'react-gtm-module'
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -102,12 +103,61 @@ const Header = (props: HeaderProps) => {
             if(!props.billingInfo) {
                 props.getBillingInfo()
             }
+
+            TagManager.initialize(
+                {
+                    gtmId: 'GTM-PHZ3Z7F',
+                    dataLayer: {
+                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'companyName': userToken.getUserInfoItem('custom:website'),
+                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'signedUp': 'Unknown yet',
+                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
+                        'userEmail': userToken.getUserInfoItem('email'),
+                    }, 
+                    // dataLayerName: 'Uapp'
+                });
     }, [])
+
+    React.useEffect(() => {
+        if(props.billingInfo) {
+            TagManager.dataLayer(
+                {
+                    dataLayer: {
+                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'companyName': userToken.getUserInfoItem('custom:website'),
+                        'plan': props.billingInfo.currentPlan ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'signedUp': 'Unknown yet',
+                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
+                        'userEmail': userToken.getUserInfoItem('email'),
+                    }, 
+                    // dataLayerName: 'Uapp'
+                });
+        }
+    }, [props.billingInfo])
 
     React.useEffect(() => {
         if(props.ProfileInfo) {
             setAvatarFirstName(props.ProfileInfo.firstName)
             setAvatarLastName(props.ProfileInfo.lastName)
+            TagManager.dataLayer(
+                {
+                    dataLayer: {
+                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'companyName': userToken.getUserInfoItem('custom:website'),
+                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'signedUp': 'Unknown yet',
+                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userFirstName': props.ProfileInfo.firstName,
+                        'userLastName': props.ProfileInfo.lastName,
+                        'userEmail': userToken.getUserInfoItem('email'),
+                    }, 
+                    // dataLayerName: 'Uapp'
+                });
         }
 
     }, [props.ProfileInfo])
@@ -174,7 +224,7 @@ const Header = (props: HeaderProps) => {
     }
 
     return (
-        <HeaderStyle>
+        <HeaderStyle userType={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'impersonatedUser' : 'user'}>
             {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
             {/* <Text className="mr-auto ml2" color="gray-1" size={14} weight="med" >{props.title}</Text> */}
             <BreadcrumbContainer className="mr-auto flex ml2 sm-show" >
@@ -187,7 +237,7 @@ const Header = (props: HeaderProps) => {
                 </div>
             }
 
-            <IconContainerStyle>
+            <IconContainerStyle customColor={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'red10' : null}>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
                     {avatarFirstName && avatarLastName ?
@@ -225,7 +275,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(getContentDetailsAction(contentId, contentType));
         },
         getBillingInfo: () => {
-            dispatch(getBillingPageInfosAction())
+            dispatch(getBillingPageInfosAction(undefined))
         }
     }
 

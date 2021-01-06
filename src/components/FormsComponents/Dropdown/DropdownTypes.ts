@@ -59,6 +59,22 @@ interface DropdownSelectSpecificProps {
     setValue?: Function;
 }
 
+interface DropdownCheckboxSpecificProps {
+    id: string;
+    dropdownTitle: string;
+    list: DropdownListType;
+    isNavigation?: boolean;
+    ref?: React.Ref<HTMLDivElement>;
+    callback?: Function;
+    hasSearch?: boolean;
+    dropdownDefaultSelect?: string;
+    isInModal?: boolean;
+    disabled?: boolean;
+    isWhiteBackground?: boolean;
+    tooltip?: string
+}
+
+export type DropdownCheckboxProps = DropdownCheckboxSpecificProps & React.HtmlHTMLAttributes<HTMLDivElement>;
 
 export type DropdownProps = DropdownCustomProps & React.HtmlHTMLAttributes<HTMLDivElement> & { defaultSelected?: string; direction?: 'up' | 'down' };
 

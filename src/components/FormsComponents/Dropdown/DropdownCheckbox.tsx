@@ -1,12 +1,12 @@
 import * as React from 'react'
-import Icon from '@material-ui/core/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, IconStyle, DropdownList, DropdownItem, BorderItem } from './DropdownStyle';
-import { DropdownProps, DropdownListType , dropdownIcons} from './DropdownTypes';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, BorderItem, ArrowIconStyle } from './DropdownStyle';
+import { DropdownListType , dropdownIcons, DropdownCheckboxProps} from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
+import { IconStyle } from '../../../shared/Common/Icon';
 
-export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) => {
+export const DropdownCheckbox: React.FC<DropdownCheckboxProps> = (props: DropdownCheckboxProps) => {
 
     /** Commun States/Ref */
     const [isOpened, setOpen] = React.useState<boolean>(false);
@@ -15,7 +15,12 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     const [checkedCheckboxes, setCheckedCheckboxes] = React.useState<DropdownListType>( props.list );
     const [selectAllState, setSelectAllState] = React.useState<'unchecked' | 'checked' | 'undeterminate'>('unchecked');
 
-    useOutsideAlerter(dropdownListRef, () => setOpen(!isOpened));
+    useOutsideAlerter(dropdownListRef, () => {
+        setOpen(!isOpened)
+        if(props.callback) {
+            props.callback(checkedCheckboxes)
+        }
+    });
 
     const handleTitle = () => {
         const numberChecked = Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name]).length;
@@ -42,6 +47,9 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     React.useEffect(() => {
         handleTitle();
         handleSelectAllState();
+        if (props.callback) {
+            props.callback(checkedCheckboxes)
+        }
     }, [checkedCheckboxes, selectedItem])
 
     
@@ -68,7 +76,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
             Object.keys(itemsList).map((name, key) => {
                 return (
                     <>  
-                        {key === 0 ?
+                        {key === 0 &&
                             <>
                                 <DropdownItem isSingle={false} key={key+"selectAll"} isSelected={false}> 
                                     <InputCheckbox 
@@ -81,7 +89,7 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
                                 </DropdownItem>
                                 <BorderItem />
                             </>
-                            : null}
+                            }
                         <DropdownItem isSingle={false} key={props.id + '_' + name} isSelected={false}  > 
                             <InputCheckbox 
                                 id={props.id + '_' + name} 
@@ -99,11 +107,11 @@ export const DropdownCheckbox: React.FC<DropdownProps> = (props: DropdownProps) 
     return (
         <ContainerStyle >
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>
-            <TitleContainer isNavigation={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <TitleContainer disabled={props.disabled ? true : false} isNavigation={false} isWhiteBackground={false} {...props} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 <Title><Text size={14} weight='reg'>{selectedItem}</Text></Title>
-                <IconStyle><Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon></IconStyle>
+                <ArrowIconStyle disabled={props.disabled ? true : false}><IconStyle>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</IconStyle></ArrowIconStyle>
             </TitleContainer>
-            <DropdownList isSingle={false} isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
+            <DropdownList isInModal={false} direction='down' isSingle={false} isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
             </DropdownList>
         </ContainerStyle>

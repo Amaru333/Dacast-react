@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { BarChart } from '../../../components/Analytics/BarChart';
+import { BarChartOld } from '../../../components/Analytics/AnalyticsOld/BarChartOld';
 import { tsToLocaleDate } from '../../../utils/formatUtils';
-import DoubleLineChart from '../../../components/Analytics/DoubleLineChart';
+import DoubleLineChartOld from '../../../components/Analytics/AnalyticsOld/DoubleLineChartOld';
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { Breadcrumb } from '../Folders/Breadcrumb';
 import { FolderAsset, FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
-import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, handleRowIconType } from './AnalyticsCommun';
+import { AnalyticsCard, renderMap, DateFilteringAnalytics, AnalyticsContainerHalfSelector, BreadcrumbContainer, ThirdLgHalfXmFullXs, FailedCardAnalytics, handleRowIconType } from './AnalyticsCommunOld';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RevenueComponentProps } from '../../containers/Analytics/Revenue';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -147,7 +147,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                             props.analyticsRevenueData.salesTime.failed ?
                                     <FailedCardAnalytics />
                                     :
-                                <BarChart
+                                <BarChartOld
                                     datasetName="Sales"
                                     beginAtZero={true}
                                     data={props.analyticsRevenueData.salesTime.data}
@@ -165,7 +165,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                             props.analyticsRevenueData.revenueTime.failed ?
                             <FailedCardAnalytics />
                             :
-                                <BarChart
+                                <BarChartOld
                                     datasetName="Revenue ($)"
                                     beginAtZero={true}
                                     data={props.analyticsRevenueData.revenueTime.data}
@@ -183,7 +183,7 @@ export const RevenueAnalytics = (props: RevenueComponentProps) => {
                             props.analyticsRevenueData.salesCountries.failed ?
                             <FailedCardAnalytics />
                             :
-                            <BarChart
+                            <BarChartOld
                                 datasetName="Countrie"
                                 beginAtZero={true}
                                 data={props.analyticsRevenueData.salesCountries.data}

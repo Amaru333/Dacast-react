@@ -1,23 +1,13 @@
 import { ActionTypes, AccountBalanceInfo } from './types';
-import { ThunkDispatch } from 'redux-thunk';
-import { AdminState } from '../..';
-import { BalancesServices } from './services';
-import { showToastNotification } from '../../Toasts';
+import { applyAdminViewModel } from '../../../../utils/utils';
+import { dacastSdk } from '../../../../utils/services/axios/adminAxiosClient';
+import { formatGetBalancesInput, formatGetBalancesOutput } from './viewModel';
 
 export interface GetBalances {
     type: ActionTypes.GET_BALANCES;
     payload: AccountBalanceInfo;
 }
 
-export const getBalancesAction = (qs: string): ThunkDispatch<Promise<void>, {}, GetBalances> => {
-    return async (dispatch: ThunkDispatch<AdminState, {}, GetBalances>) => {
-        await BalancesServices.getBalances(qs)
-            .then( response => {
-                dispatch({type: ActionTypes.GET_BALANCES, payload: response.data});
-            }).catch(() => {
-                dispatch(showToastNotification('Couldn\'t get balances list' , 'fixed', 'error'))
-            })
-    }
-}
+export const getBalancesAction = applyAdminViewModel(dacastSdk.getAccountsTransactions, formatGetBalancesInput, formatGetBalancesOutput, ActionTypes.GET_BALANCES, null,  'Couldn\'t get balances list')
 
 export type Action = GetBalances

@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
-import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/List'
+import { AccountsState, AccountsReducer, accountsInitialState } from './Accounts/types'
 import { withdrawalsListInitialState, WithdrawalsReducer } from './Withdrawals/types'
 import { WithdrawalsState } from './Withdrawals/types'
 import { PaywallReducer, paywallInitialState, PaywallState } from './Paywall/types'
 import { RegisterState, RegisterInitialState, RegisterReducer } from './Register/types'
 import { PiracyReducer, piracyInitialState, PiracyState } from './Piracy/types'
 import { ToastsState, toastsInitialState, ToastReducer } from './Toasts'
+import { MigrationData, migrationInitialState } from './Migration/types'
+import { MigrationReducer } from './Migration/reducer'
 
 export interface AdminState {
     accounts: AccountsState;
@@ -14,6 +16,7 @@ export interface AdminState {
     register: RegisterState;
     piracy: PiracyState;
     toasts: ToastsState;
+    migration: MigrationData | false
 }
 
 export const globalDefaultState: AdminState = {
@@ -22,15 +25,24 @@ export const globalDefaultState: AdminState = {
     paywall: paywallInitialState,
     piracy: piracyInitialState,
     register: RegisterInitialState,
-    toasts: toastsInitialState
+    toasts: toastsInitialState,
+    migration: migrationInitialState
 }
 
-export const createRootReducer = () => 
+export const adminReducer = 
     combineReducers({
         accounts: AccountsReducer,
         withdrawals: WithdrawalsReducer,
         paywall: PaywallReducer,
         piracy: PiracyReducer,
         register: RegisterReducer,
-        toasts: ToastReducer
+        toasts: ToastReducer,
+        migration: MigrationReducer
     })
+
+    export const createRootReducer = (state: any, action: any) => {
+        if (action.type === 'USER_LOGOUT') {
+            state = globalDefaultState;
+        }
+        return adminReducer(state, action)
+}

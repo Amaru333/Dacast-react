@@ -10,19 +10,21 @@ import { Pagination } from '../../../components/Pagination/Pagination'
 import { DateTime } from 'luxon'
 import { useQuery } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { AccountsServices } from '../../redux-flow/store/Accounts/List/services'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
+import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
+import { formatPostImpersonateInput } from '../../utils/utils'
 
 
 export const BalancesPage = (props: BalancesComponentProps) => {
 
     let query = useHistory()
     let qs = useQuery()
+    let accountPreferences: {perPage: number} = JSON.parse(localStorage.getItem('userBalancesPagePreferences'))
 
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
-    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 10})
+    const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
 
 
     React.useEffect(() => {
@@ -36,9 +38,9 @@ export const BalancesPage = (props: BalancesComponentProps) => {
 
 
     const handleImpersonate = (userIdentifier: string) => {
-        AccountsServices.impersonate(userIdentifier)
+        dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.data.token}&identifier=${userIdentifier}`}).click();
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
         })
     }
 
@@ -89,6 +91,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             setContentLoading(true)
             props.getBalances(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : ''))
             .then(() => {
+                localStorage.setItem('userBalancesPagePreferences', JSON.stringify({perPage: nbResults}))
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${page}&perPage=${nbResults}` + (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : ''))
             })
@@ -100,7 +103,13 @@ export const BalancesPage = (props: BalancesComponentProps) => {
         <div>
             <Text className='py1' size={14}>Paywall balances - select an Account to view their transactions and current balance</Text>
             <div className='flex my1 items-center'>
-                <Input id='accountIdInput' placeholder='Account ID' defaultValue={accountId} onChange={(event) => setAccountId(event.currentTarget.value)} />
+                <Input 
+                    id='accountIdInput' 
+                    placeholder='Account ID' 
+                    defaultValue={accountId} 
+                    onChange={(event) => setAccountId(event.currentTarget.value)} 
+                    onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
+                />
                 <Button className='mx2' disabled={!accountId ? true : false} onClick={() => handleSubmit(accountId)} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                 <Text size={14} weight='med'>{props.balanceInfo.balance ? 'Balance: $' + props.balanceInfo.balance : ''}</Text>
             </div>

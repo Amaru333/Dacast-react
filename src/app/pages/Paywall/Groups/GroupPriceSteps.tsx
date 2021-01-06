@@ -16,7 +16,7 @@ import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { CURRENCY } from '../../../constants/Currencies';
 import { userToken } from '../../../utils/services/token/tokenService';
-import { handleRowIconType } from '../../Analytics/AnalyticsCommun';
+import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
 import { timezoneDropdownList, currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList } from '../../../../utils/DropdownLists';
 
 var moment = require('moment-timezone');

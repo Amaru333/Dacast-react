@@ -25,7 +25,7 @@ export const TitleContainer = styled.div<{isWhiteBackground: boolean; isOpened: 
         background-color: ${props.theme.colors.white};
     `}
     &:hover {
-        cursor: pointer;
+        cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
     }
     &:focus {
         border: 1px solid ${props => props.theme.colors["violet"]};

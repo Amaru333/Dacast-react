@@ -19,7 +19,7 @@ import { PaywallThemingData } from '../../redux-flow/store/Paywall/Theming/types
 import { emptyContentListBody } from '../List/emptyContentListState';
 import { userToken } from '../../utils/services/token/tokenService'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
-import { Divider } from '../Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -207,7 +207,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     list={themeDropdownList}
                     callback={(item: DropdownSingleListItem) => {setContentPaywallSettings({...contentPaywallSettings, selectedTheme: item.data.id});setHasChanged(true)}}
                 />
-                <Text size={16} weight='med'>Intro Video ID</Text>
+                <div className='flex items-center'>
+                    <Text size={16} weight='med'>Intro Video ID</Text>
+                    <IconStyle className='pl1' id='videoIntroTooltip'>info_outlined</IconStyle>
+                    <Tooltip target='videoIntroTooltip'>Preview video must not have a paywall or password applied.</Tooltip>
+                </div>
                 <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
                 <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value});setHasChanged(true)}} />
                         

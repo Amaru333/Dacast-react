@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-const CardLogo = require('../../../../../public/assets/credit_card_logo.svg');
 import { DropdownButton } from '../../../../components/FormsComponents/Dropdown/DropdownButton';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { Plan, Privilege } from '../../../redux-flow/store/Account/Upgrade/types';
@@ -10,11 +9,12 @@ import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodFo
 import { calculateDiscount } from '../../../../utils/utils';
 import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { PlansName } from './FeaturesConst';
-import { capitalizeFirstLetter } from '../../../../utils/utils'
+import { segmentService } from '../../../utils/services/segment/segmentService';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 
 //PLAN
-export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>, usefulFunctions: { [key: string]: any } }) => {
     const [selectedPlan, setSelectedPlan] = React.useState<string>('ott')
 
     React.useEffect(() => {
@@ -72,9 +72,7 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
 
     return (
         <div>
-
             <Text size={14} weight='reg' color='gray-3'>Choose which Scale Plan best suits your needs:</Text>
-
             <div className="col col-12 mt2">
                 <div className="col-12 sm-col-4 col sm-pr1 xs-mb2">
                     <ScalePlanSelector onClick={() => { setSelectedPlan("live") }} selected={selectedPlan === "live"}>
@@ -103,22 +101,16 @@ export const PlanStepperFirstStep = (props: { stepperData: Plan; updateStepperDa
                         </ScalePlanSelectorContents>
                     </ScalePlanSelector>
                 </div>
-
-
             </div>
             <div className="col col-12">
                 <Table id='firstStepFooterTotalPrice' className="mt2 tableOverflow" customClassName=" tableOverflow" headerBackgroundColor="gray-10" footer={totalPriceTableFooter()} />
             </div>
-
-
-
-
         </div>
     )
 }
 
 //FEATURES
-export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function, usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>, usefulFunctions: { [key: string]: any } }) => {
 
     const availableAddOns = ["ads", "paywall", "phone-support"]
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
@@ -198,9 +190,16 @@ export const PlanStepperSecondStep = (props: { stepperData: Plan; updateStepperD
 
 //CART
 
-export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperThirdStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; usefulFunctions: { [key: string]: any } }) => {
     var moment = require('moment')
-
+    if(props.stepperData.name.indexOf('scale') !== -1) {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Features Form Submitted',
+            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'plan_name': props.stepperData.name,
+            step: 2,
+        })  
+    }
     const isFirstPurchase = (props.stepperData.name === "Starter" && !props.usefulFunctions["billingInfo"].currentPlan.planCode)
 
     const [featuresTotal, setFeaturesTotal] = React.useState<number>(props.stepperData.privilegesTotal)
@@ -369,10 +368,16 @@ React.useEffect(() => {
 }
 
 //PAYMENT
-export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
+export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: Function; finalFunction: Function; usefulFunctions: { [key: string]: any } }) => {
 
+    segmentService.track('Upgrade Form Completed', {
+        action: 'Cart Form Submitted',
+        'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+        'plan_name': props.stepperData.name,
+        step: 3,
+    })  
     const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
-    const featuresTotal: number = (props.stepperData.privilegesTotal)
+    const featuresTotal: number = (props.stepperData.privilegesTotal || 0)
     const totalPrice: number = calculateDiscount((props.stepperData.price.usd / 100) + featuresTotal, props.stepperData.discount)
 
     // let annualTotalPrice: number = null
@@ -399,29 +404,12 @@ export const PlanStepperFourthStep = (props: { stepperData: Plan; updateStepperD
         }
     }
 
-    const step2CreditCardTableHeader = () => {
-        return {
-            data: [
-                { cell: <Text key={"step2PCardTableHeaderText"} size={14} weight="med" color="gray-1">Paying by Card</Text> },
-                { cell: <img key={"step2CardTableHeaderImg"} className='right mr2' src={CardLogo} /> }
-            ]
-        }
-    }
-    const step2CreditCardTableBody = () => {
-        return [{
-            data: [
-                <Text key={"step2PCreditCardBodyText"} size={14} weight="med" color="gray-1">Card ending with 0009</Text>,
-                <Text className='right mr2' key={"step2PCreditCardBodyTextExpiry"} size={14} weight="med" color="gray-1">03/2020</Text>,
-
-            ]
-        }]
-    }
 
     return (
         <div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()} />
 
-            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} recurlyFunction={props.usefulFunctions['purchasePlan']} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} stepperData={props.stepperData} billingInfo={props.usefulFunctions['billingInfo']} />
+            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} recurlyFunction={props.usefulFunctions['purchasePlan']} purchasePlan3Ds={props.usefulFunctions['purchasePlan3Ds']} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} stepperData={props.stepperData} billingInfo={props.usefulFunctions['billingInfo']} />
 
             <div className="mt2 mb1">
                 <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>

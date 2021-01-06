@@ -1,10 +1,8 @@
 import { ActionTypes, SearchResult, } from "./types"
-import { ThunkDispatch } from "redux-thunk"
-import { ApplicationState } from "../.."
-import { showToastNotification } from '../../Toasts'
-import { contentListServices } from './services'
-import { parseContentType } from '../../../../utils/utils'
-import { resolve } from 'dns'
+import { applyViewModel } from '../../../../utils/utils'
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
+import { formatDeleteContentInput, formatGetContentListInput, formatGetContentListOutput } from './viewModel'
+import { ContentType } from '../../Common/types'
 
 export interface GetContentList {
     type: ActionTypes.GET_CONTENT_LIST;
@@ -16,30 +14,33 @@ export interface DeleteContent {
     payload: {id: string};
 }
 
-export const getContentListAction = (qs: string , contentType: string): ThunkDispatch<Promise<void>, {}, GetContentList> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentList>) => {
-        await contentListServices.getContentList(qs, parseContentType(contentType))
-            .then(response => {
-                const data = response.data.data ? response.data.data : response.data;
-                dispatch({ type: ActionTypes.GET_CONTENT_LIST, payload: {countTotal: qs ? undefined : data.totalResults, data: data, contentType: contentType} })
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const getContentListAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.getVods, formatGetContentListInput, formatGetContentListOutput(contentType), ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t get vods list')
+        case 'live':
+            return applyViewModel(dacastSdk.getChannels, formatGetContentListInput, formatGetContentListOutput(contentType), ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t get live streams list')
+        case 'playlist':
+            return applyViewModel(dacastSdk.getPlaylists, formatGetContentListInput, formatGetContentListOutput(contentType), ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t get playlists list')
+        case 'expo': 
+            return applyViewModel(dacastSdk.getExpos, formatGetContentListInput, formatGetContentListOutput(contentType), ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t get expos list')
+        default:
+            throw new Error('Error applying get content view model')
     }
 }
 
-export const deleteContentAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContent> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteContent>) => {
-        await contentListServices.deleteContentService(contentId, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_CONTENT, payload: {id: contentId, contentType: contentType} })
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const deleteContentAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.deleteVod, formatDeleteContentInput, undefined, ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t delete vod')
+        case 'live':
+            return applyViewModel(dacastSdk.deleteChannel, formatDeleteContentInput, undefined, ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t delete livestream')
+        case 'playlist':
+            return applyViewModel(dacastSdk.deletePlaylist, formatDeleteContentInput, undefined, ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t delete playlist')
+        case 'expo': 
+            return applyViewModel(dacastSdk.deleteExpo, formatDeleteContentInput, undefined, ActionTypes.GET_CONTENT_LIST, null, 'Couldn\'t delete expo')
+        default:
+            throw new Error('Error applying delete content view model')
     }
 }
 

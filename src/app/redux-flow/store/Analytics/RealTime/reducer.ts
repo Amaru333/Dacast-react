@@ -61,4 +61,3 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
 };
 
 export { reducer as AnalyticsRealTimeReducer };
-

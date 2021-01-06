@@ -1,10 +1,9 @@
 import React from 'react';
 import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { Ad } from '../../../redux-flow/store/Settings/Interactions/types';
+import { Ad, AdType } from '../../../redux-flow/store/Settings/Interactions/types';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { capitalizeFirstLetter } from '../../../../utils/utils';
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
@@ -15,7 +14,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
     const emptyAd: Ad = { 
         id: "-1",
         timestamp: NaN,
-        "ad-type": "pre-roll",
+        type: "Pre-roll",
         url: ""
     }
 
@@ -31,9 +30,9 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         setButtonLoading(true)
         let tempArray: Ad[] = props.interactionsInfos.adsSettings.ads
         var newAdData: Ad = {...adData};
-        newAdData.timestamp = adData["ad-type"] === 'mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
+        newAdData.timestamp = adData.type === 'Mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
-            tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData['ad-type']})
+            tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData.type})
             props.createAd(tempArray).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
@@ -53,9 +52,9 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         <div>
             <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(item: DropdownSingleListItem) => setAdData({...adData, "ad-type": item.title.toLocaleLowerCase()})} list={adPlacementDropdownList} dropdownDefaultSelect={adData["ad-type"] ? capitalizeFirstLetter(adData["ad-type"]) : 'Pre-roll'} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(item: DropdownSingleListItem) => setAdData({...adData, type: item.title as AdType})} list={adPlacementDropdownList} dropdownDefaultSelect={adData.type || 'Pre-roll'} /> 
                 {
-                    adData["ad-type"] === 'mid-roll' &&
+                    adData.type === 'Mid-roll' &&
                         <Input type='video-time' 
                             value={dataToTimeVideo(adData.timestamp).toString()}
                             placeholder="hh:mm:ss"
@@ -64,7 +63,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
                 }             
             </div>
             <div className='mt2 col col-12'>
-                <Button isLoading={buttonLoading} className='mr2' disabled={adData["ad-type"] === "" || adData.url === "" || (adData["ad-type"] === 'mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>Save</Button>
+                <Button isLoading={buttonLoading} className='mr2' disabled={adData.url === "" || (adData.type === 'Mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>Save</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

@@ -7,7 +7,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
-import { Divider } from '../../../shared/Common/MiscStyle';
+import { Divider } from '../../../../shared/MiscStyles';
 import { useForm } from 'react-hook-form';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
@@ -38,7 +38,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
             {
                 ...data, 
                 paymentMethodType: selectedPaymentMethod, 
-                recipientType: paymentMethodRecipientType
+                recipientType: paymentMethodRecipientType,
+                id: paymentMethodData ? paymentMethodData.id : null
             }
         )
         .then(() => {
@@ -332,11 +333,11 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         <div className='col col-12 sm-col-11 mt2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' 
-                                id='swiftBic' 
+                                id='swift' 
                                 defaultValue={paymentMethodData ? paymentMethodData.swift : ''} 
                                 label='SWIFT/BIC' 
                                 placeholder='SWIFT/BIC' 
-                                {...handleValidationForm('swiftBic', errors)}
+                                {...handleValidationForm('swift', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('swift', event.currentTarget.value)} 
                             />

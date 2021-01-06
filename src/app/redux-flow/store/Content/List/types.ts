@@ -1,4 +1,5 @@
 import { FeaturesList } from '../../../../shared/Common/Features';
+import { ContentStatus, ContentType } from '../../Common/types';
 
 export enum ActionTypes {
     DELETE_CONTENT = "@@content_list/DELETE_CONTENT",
@@ -7,16 +8,15 @@ export enum ActionTypes {
 
 
 export interface ContentItem {
-    ownerID: string;
     objectID: string;
-    type: string;
-    status: string;
+    type: ContentType;
+    status: ContentStatus;
     title: string;
-    size: number;
-    views?: number;
-    duration: number;
-    thumbnail?: string;
     createdAt: number;
+    size: number;
+    duration: number;
+    views?: number;
+    thumbnail?: string;
     featuresList?: FeaturesList;
 }
 

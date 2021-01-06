@@ -13,7 +13,7 @@ export enum ActionTypes {
 
 export interface ContentType {
     id: string;
-    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition';
+    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition' | 'expo';
     fullPath?: string;
     name?: string;
 }
@@ -44,7 +44,7 @@ export interface FolderAsset {
     createdAt: number;
     duration: string;
     featuresList: FeaturesList;
-    status: 'deleted' | 'offline' | 'online' | 'processing';
+    status: 'deleted' | 'offline' | 'online' | 'processing' | 'restored';
     splitPath?: string[];
     path?: string;
     name?: string;

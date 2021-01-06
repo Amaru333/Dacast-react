@@ -47,7 +47,7 @@ export function mapStateToProps( state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getThemingList: async () => {
-            await dispatch(getThemingListAction())
+            await dispatch(getThemingListAction(undefined))
         },
         saveTheme: async (theme: ThemeOptions, contentId: string) => {
             await dispatch(saveThemeAction(theme))

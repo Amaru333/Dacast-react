@@ -4,6 +4,13 @@ declare global {
     interface Window { analytics: any; }
 }
 
+const identify = (userId: string, firstName: string, lastName: string, email: string) => {
+    window.analytics.identify(userId, {
+        name: firstName + ' ' + lastName,
+        email: email
+    })
+}
+
 const load = () => {
     window.analytics.load(isProduction() ? 'pyuOKnjfqaObRPBU1Q7Kf9eZ1ZPEHyxs' : 'i6XyHA38sV8B2ubXArU6wTkO4WlhXN29');
 }
@@ -15,6 +22,7 @@ const track = (name: string, properties: any) => {
 }
 
 export const segmentService = {
+    identify,
     load,
     page,
     track

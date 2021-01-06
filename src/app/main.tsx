@@ -9,25 +9,17 @@ import { AppRoutes } from './constants/AppRoutes';
 import styled, { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
-import TagManager from 'react-gtm-module'
-TagManager.initialize({ gtmId: 'GTM-PHZ3Z7F' })
-
-import { loadReCaptcha } from 'react-recaptcha-v3'
 
 const history = createBrowserHistory();
-import {
-    isMobile
-} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 // Import Main styles for this application
 import "../scss/style.scss";
 import { Routes } from './containers/Navigation/NavigationTypes';
 import Header from '../components/Header/Header';
-import { responsiveMenu } from './utils/custom-hooks/reponsiveNavHook';
+import { responsiveMenu } from '../utils/utils';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import { updateTitleApp } from './utils/utils';
-import ScrollToTop, { useMedia } from '../utils/utils'
 import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
@@ -43,7 +35,10 @@ import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import ScrollToTop, { useMedia } from '../utils/utils';
+import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
+import { Content, FullContent } from "../shared/Content";
 
 // Any additional component props go here.
 interface MainProps {
@@ -55,7 +50,7 @@ const refreshEvery = 5000
 let fastRefreshUntil = 0
 let timeoutId: NodeJS.Timeout | null = null
 const timeoutFunc = () => {
-    store.dispatch(getContentListAction(null, 'vod') as any)
+    store.dispatch(getContentListAction(null, 'vod')(null) as any)
     if(new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
@@ -254,27 +249,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         )
     }
 
-    React.useEffect(() => {
-        loadReCaptcha('6LekUrsZAAAAAL3l5GxJ157Yw9qWDwEOyvo_gGCy', ()=>{});
-    }, [])
-
-    if (userToken.isLoggedIn()) {
-        TagManager.dataLayer(
-            {
-                dataLayer: {
-                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': store.getState().account.plan ? store.getState().account.plan.currentPlan.displayName : 'Unknown yet',
-                    'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                    'userEmail': userToken.getUserInfoItem('email'),
-                }, 
-                // dataLayerName: 'Uapp'
-            });
-    }
-
     const getUserConfirmation = (message: string, callback: (ok: boolean) => void) => {
         const holder = document.getElementById('navigationConfirmationModal')
         const confirmAndUnmount = (answer: boolean) => {
@@ -346,27 +320,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     );
 };
 
-const Content = styled.div<{ isMobile: boolean }>`
-    position: relative;
-    height: auto;
-    min-height: 100vh;
-    padding: 24px;
-    overflow: auto;
-    ${props => props.isMobile && css`
-        overflow-x: hidden;
-        padding: 16px;
-    `}
-    padding-top: 81px;
-`
 
-const FullContent = styled.div<{ isOpen: boolean; navBarWidth: string; isMobile: boolean; isLocked: boolean }>`
-    margin-left: ${props => props.isMobile ? 0 : props.isLocked ? '235px' : '64px'};
-    background: rgb(245, 247, 250);
-    position: relative;
-    padding: 0;
-    min-width: 240px;
-    width: ${props => props.isMobile ? "100%" : props.isLocked ? "calc(100% - 235px)" : "calc(100% - 64px)"};
-`
 
 // Normally you wouldn't need any generics here (since types infer from the passed functions).
 // But since we pass some props from the `index.js` file, we have to include them.

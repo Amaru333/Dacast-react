@@ -29,7 +29,7 @@ export const ConfirmEmailPage = (props: ConfirmEmailComponentProps) => {
                 </ModalContent>
                 <ModalFooter>
                     <div className="mt2">
-                        <Text size={12} weight="reg">Didn’t receive an email? <a href='#' onClick={() => props.confirmEmail(props.email)}>Re-send email confirmation.</a></Text>
+                        <Text size={12} weight="reg">Didn’t receive an email? <a href='#' onClick={() => props.resendEmail(props.email)}>Re-send email confirmation.</a></Text>
                     </div>
                     <Button className='mt2' onClick={() => history.push('/login')} buttonColor='blue' typeButton='primary' sizeButton='large'>Back to Log In</Button>
                 </ModalFooter>

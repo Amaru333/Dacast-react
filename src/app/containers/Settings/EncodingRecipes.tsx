@@ -4,7 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
 import { Action, getEncodingRecipesAction, createEncodingRecipesAction, saveEncodingRecipesAction, deleteEncodingRecipesAction, uploadWatermark, deleteWatermark, getUploadWatermarkUrl, getEncodingRecipesPresetsAction } from '../../redux-flow/store/Settings/EncodingRecipes/actions';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { EncodingRecipesData, EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
+import { EncodingRecipeItem } from '../../redux-flow/store/Settings/EncodingRecipes';
 import { EncodingRecipesComponentProps, EncodingRecipesPage } from '../../pages/Settings/EncodingRecipes/EncodingRecipes';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
@@ -44,10 +44,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getEncodingRecipes: async () => {
-            await dispatch(getEncodingRecipesAction());
+            await dispatch(getEncodingRecipesAction(undefined));
         },
         getEncodingRecipesPresets: async () => {
-            await dispatch(getEncodingRecipesPresetsAction());
+            await dispatch(getEncodingRecipesPresetsAction(undefined));
         },
         createEncodingRecipe: async (data: EncodingRecipeItem) => {
             await dispatch(createEncodingRecipesAction(data));
@@ -59,10 +59,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
            await dispatch(deleteEncodingRecipesAction(data))
         },
         getWatermarkUrlForUploading: async () => {
-            await dispatch(getUploadWatermarkUrl());
+            await dispatch(getUploadWatermarkUrl(undefined));
         },
         uploadWatermark: async (data: File, uploadWatermarkUrl: string) => {
-            await dispatch(uploadWatermark(data, uploadWatermarkUrl))
+            await dispatch(uploadWatermark({data: data, uploadUrl: uploadWatermarkUrl}))
         },
         deleteWatermark: async (data: EncodingRecipeItem) => {
             await dispatch(deleteWatermark(data));

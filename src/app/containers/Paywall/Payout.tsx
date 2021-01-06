@@ -58,10 +58,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getPaymentMethods: async () => {
-            await dispatch(getPaymentMethodsAction())
+            await dispatch(getPaymentMethodsAction(undefined))
         },
         getWithdrawalRequests: async () => {
-            await dispatch(getWithdrawalRequestsAction())
+            await dispatch(getWithdrawalRequestsAction(undefined))
         },
         addPaymentMethod: async (data: PaymentMethod) => {
             await dispatch(addPaymentMethodAction(data));

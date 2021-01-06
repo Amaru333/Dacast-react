@@ -4,7 +4,6 @@ export enum ActionTypes {
     ADD_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/ADD_BILLING_PAGE_PLAYBACK_PROTECTION",
     EDIT_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/EDIT_BILLING_PAGE_PLAYBACK_PROTECTION",
     DELETE_BILLING_PAGE_PLAYBACK_PROTECTION = "@@account_plan/DELETE_BILLING_PAGE_PLAYBACK_PROTECTION",
-    ADD_BILLING_PAGE_EXTRAS = "@@account_plan/ADD_BILLING_PAGE_EXTRAS",
     GET_PRODUCT_DETAILS = "@@account_plan/GET_PRODUCT_DETAILS",
     PURCHASE_PRODUCTS = "@@account_plan/PURCHASE_PRODUCTS"
 }
@@ -16,7 +15,7 @@ export interface BillingPageInfos {
     paywallBalance: number;
     playbackProtection?: PlaybackProtection;
     extras?: Extras[];
-    products: Products
+    products?: Products
 }
 
 export interface PlaybackProtection {
@@ -30,10 +29,13 @@ export interface Extras {
     quantity: string;
     price?: string;
     datePurchased?: Date;
+    token?: string;
+    threeDSecureToken?: string
 }
 
 export interface PaymentDetails {
     type: string;
+    billingID: string;
     address?: string;
     address2?: string;
     cardType?: string;
@@ -46,7 +48,6 @@ export interface PaymentDetails {
     firstSix?: string;
     lastFour?: string;
     state?: string;
-    billingID: string;
     email?: string;
     postCode?: string;
 }
@@ -65,21 +66,25 @@ export const DefaultPaymentDetails: PaymentDetails = {
 export interface Products {
     bandwidth: BandWidthProduct
 }
+export type BandwidthProductKey = 'eventBw10to100TB' | 'eventBw1to4TB' | 'eventBw5to10TB';
 
-export interface BandWidthProduct {
-    eventBw10to100TB: Product;
-    eventBw1to4TB: Product;
-    eventBw5to10TB: Product;
+export type BandWidthProduct = {
+    [key in BandwidthProductKey]: Product
 }
 
+export type BandwidthProductCurrency = 'usd' | 'eur' | 'gbp' | 'aud';
+
+type BandwidthProductPrice = {
+    [key in BandwidthProductCurrency]: number
+}
 export interface Product {
-    code: string;
+    code: BandwidthProductKey;
     description: string;
-    type: string;
     minQuantity: number;
     maxQuantity: number;
     nextProductID: string;
-    unitPrice: number;
+    type: 'BW';
+    unitPrice: BandwidthProductPrice;
 }
 
 export interface PlanSummary {
@@ -87,7 +92,6 @@ export interface PlanSummary {
     planCode: string;
     planName: string;
     state: string;
-    overageStorageUnitPrice: string;
     playbackProtectionUnitPrice: string;
     periodStartedAt: number;
     periodEndsAt: number;

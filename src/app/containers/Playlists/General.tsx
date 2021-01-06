@@ -21,7 +21,7 @@ import { ImageModal } from '../../shared/General/ImageModal';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { userId, handleImageModalFunction } from '../../utils/general';
-import { Divider } from '../../shared/Common/MiscStyle';
+import { Divider } from '../../../shared/MiscStyles';
 
 const GeneralPlaylist = (props: GeneralComponentProps) => {
 

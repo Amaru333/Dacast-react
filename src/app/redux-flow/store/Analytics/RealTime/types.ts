@@ -49,5 +49,3 @@ export const AnalyticsRealTimeInitialState: AnalyticsRealTimeState = false;
 export interface AnalyticsRealTimeState {
     readonly data:  AnalyticsRealTimeInfos;
 }
-
-

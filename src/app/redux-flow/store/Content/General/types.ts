@@ -1,5 +1,3 @@
-import { FeaturesList } from '../../../../shared/Common/Features';
-
 export enum ActionTypes {
     GET_CONTENT_DETAILS = "@@content_general/GET_CONTENT_DETAILS",
     POST_CONTENT = "@@content_general/POST_CONTENT",
@@ -13,6 +11,7 @@ export enum ActionTypes {
     UPLOAD_IMAGE = "@@content_general/UPLOAD_IMAGE",
     UPLOAD_IMAGE_FROM_VIDEO = "@@content_general/UPLOAD_IMAGE_FROM_VIDEO",
     DELETE_IMAGE = "@@content_general/DELETE_IMAGE",
+    GENERATE_ENCODER_KEY = "@@content_general/GENERATE_ENCODER_KEY"
 }
 
 export interface AssetType {
@@ -54,6 +53,7 @@ export interface ContentDetails {
     rewind?: boolean;
     unsecureM3u8Url?: string;
     appearance?: Appearance;
+    encoderKey?: string;
 }
 
 interface Appearance {
@@ -68,28 +68,6 @@ interface PLaybackURLs {
 interface LiveStreamCountdown {
     startTime: number;
     timezone?: string;
-}
-
-export interface ContentItem {
-    ownerID: string;
-    objectID: string;
-    type: string;
-    status: string;
-    title: string;
-    size: number;
-    views?: number;
-    duration: number;
-    thumbnail?: string;
-    createdAt: number;
-    featuresList?: FeaturesList;
-    channelType?: string;
-}
-
-export interface SearchResult {
-    results: ContentItem[];
-    perPage: number;
-    totalResults: number;
-    pageNumber: number;
 }
 
 export interface SubtitleInfo {
@@ -108,5 +86,3 @@ export interface DateTimeValue {
 }
 
 export const initialContentGeneralState: ContentDetailsState = {};
-
-export const initialContentList: SearchResult | false = false

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getWithdrawalInfoAction, saveWithdrawalStatusAction, Action } from '../../redux-flow/store/Withdrawals/EditStatus/actions';
 import { AdminState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
-import { WithdrawalInfo } from '../../redux-flow/store/Withdrawals/EditStatus/types';
+import { WithdrawalInfo, WithdrawalStatusAdmin } from '../../redux-flow/store/Withdrawals/EditStatus/types';
 import { useParams } from 'react-router';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -12,12 +12,12 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 export interface EditStatusComponentProps {
     withdrawal: WithdrawalInfo;
     getWithdrawals: (withdrawalId: string) => Promise<void>;
-    saveWithdrawalStatus: (withdrawalId: string, withdrawalStatus: string) => Promise<void>;
+    saveWithdrawalStatus: (withdrawalStatus: WithdrawalStatusAdmin, withdrawalId: string) => Promise<void>;
 }
 
 const EditStatus = (props: EditStatusComponentProps) => {
 
-    let {withdrawalId} = useParams()
+    let { withdrawalId } = useParams<{withdrawalId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
 
     React.useEffect(() => {
@@ -41,8 +41,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getWithdrawals: async (withdrawalId: string) => {
             await dispatch(getWithdrawalInfoAction(withdrawalId));
         },
-        saveWithdrawalStatus: async (withdrawalId: string, withdrawalStatus: string) => {
-            await dispatch(saveWithdrawalStatusAction(withdrawalId, withdrawalStatus));
+        saveWithdrawalStatus: async (withdrawalStatus: WithdrawalStatusAdmin, withdrawalId: string) => {
+            await dispatch(saveWithdrawalStatusAction(withdrawalStatus, withdrawalId));
         }
     };
 }

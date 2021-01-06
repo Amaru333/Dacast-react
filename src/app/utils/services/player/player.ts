@@ -4,6 +4,12 @@ import { isProduction } from './stage';
 // TODO WHILE REFACTORING: MAKE IT A PACKAGE
 export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, contentId: string) => {
     const [player, setPlayer] = React.useState<any>(null);
+    let dacastPlayerRef =   React.useRef()
+
+    React.useEffect(() => {
+        dacastPlayerRef.current = player
+    }, [player])
+
 
     const initPlayer = () => {
         let player = dacast(contentId, playerRef.current, {
@@ -31,9 +37,8 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         return () => {
             // Investigate later why the state variable is null when trying to unmount 
             if(typeof dacast !== 'undefined') {
-                let player = dacast.players[contentId]
-                if(player) {
-                    player.dispose()
+                if(dacastPlayerRef.current) {
+                    dacastPlayerRef.current.dispose()
                 }
             }
         };
