@@ -43,7 +43,7 @@ export interface MigratedUser {
 export interface MigrationData {
     jobsList?: JobInfo[]
     jobDetails?: JobDetails | null
-    usersList?: MigratedUser[] | null
+    usersList?: {users: MigratedUser[]; next: string} | null
 }
 
 export const migrationInitialState: MigrationData | false = false

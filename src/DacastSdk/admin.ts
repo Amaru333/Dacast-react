@@ -300,4 +300,5 @@ export interface MigratedUserEndpoint {
 
 export interface GetMigratedUsersListOutput {
     users: MigratedUserEndpoint[]
+    next: string
 }

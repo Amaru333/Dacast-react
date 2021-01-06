@@ -25,7 +25,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             "Migrated And Switched": false,
             "Error Switching": false,
         },
-        platform: 'dacast',
+        platform: 'uapp',
         userIds: null
     }
 
@@ -33,12 +33,19 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     const [startJobModalOpened, setStartJobModalOpened] = React.useState<boolean>(false)
     const [selectedTab, setSelectedTab] = React.useState<'Jobs' | 'Users'>('Jobs')
     const [userTableFilters, setUserTableFilters] = React.useState<FilteringMigrationState>(filteringDefault)
+    const [tablePagination, setTablePagination] = React.useState<{[key: number]: string}>({0: null})
+    const [currentPage, setCurrentPage] = React.useState<number>(0)
 
     React.useEffect(() => {
         if(selectedTab === 'Jobs') {
             props.getJobsList()
         } else {
             props.getMigratedUsersList(null)
+            .then(() => {
+                if(props.migrationData && props.migrationData.usersList) {
+                    setTablePagination({[currentPage + 1]: props.migrationData.usersList.next})
+                }
+            })
         }
     }, [selectedTab])
 
@@ -54,7 +61,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
 
     React.useEffect(() => {
         if(selectedTab === 'Users') {
-            props.getMigratedUsersList(userTableFilters)
+            props.getMigratedUsersList({...userTableFilters, next: null})
         }
     }, [userTableFilters])
 
@@ -115,7 +122,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
 
     const migratedUsersTableBody = () => {
         if(props.migrationData && props.migrationData.usersList) {
-            return props.migrationData.usersList.map((job, key) => {
+            return props.migrationData.usersList.users.map((job, key) => {
                 return {
                     data: [
                         <Text key={'migratedUsersTableBodyLegacyUserIdCell' + key } size={14}>{job.legacyUserId}</Text>,
@@ -127,6 +134,16 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                 }
             })
         }
+    }
+
+    const handlePageChange = (pageToGo: number) => {
+        props.getMigratedUsersList({...userTableFilters, next: tablePagination[pageToGo]})
+        .then(() => {
+            if(props.migrationData && Object.keys(tablePagination).find(k => k === pageToGo.toString()) ) {
+                setTablePagination({...tablePagination, [pageToGo]: props.migrationData.usersList.next})
+            }
+            setCurrentPage(pageToGo)
+        })
     }
 
     return props.migrationData ?
@@ -154,6 +171,15 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                 <React.Fragment>
                     <MigrationFiltering defaultFilters={userTableFilters} setSelectedFilter={setUserTableFilters} />
                     <Table id='migratedUsersTable' headerBackgroundColor='white' header={migratedUsersTableHeader()} body={migratedUsersTableBody()} />
+                    <div>
+                        {
+                            currentPage > 0 &&
+                            <Button onClick={() => handlePageChange(currentPage - 1)} buttonColor='gray' sizeButton='xs' typeButton='secondary'>Prev</Button>
+                            
+                        }
+                        <Text>{currentPage}</Text>
+                        <Button onClick={() => handlePageChange(currentPage + 1)} buttonColor='gray' sizeButton='xs' typeButton='secondary'>Next</Button>
+                    </div>
                 </React.Fragment>
             }
 
