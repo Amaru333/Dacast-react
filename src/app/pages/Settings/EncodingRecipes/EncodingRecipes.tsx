@@ -8,7 +8,6 @@ import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
@@ -16,6 +15,8 @@ import { isMobile } from 'react-device-detect';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { SetStateAction, Dispatch } from 'react';
+import { RecipeSettingsStep } from './RecipeSettingsStep';
+import { RecipePresetStep } from './RecipePresetsStep';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -36,7 +37,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     const recipeOrder: string[] = ["4K", "2K", "FHD", "HD", "SD", "LD", "ULD", "Magic", "DNE"]
 
-    const stepList = [settingsStep, presetStep]
+    const stepList = [RecipeSettingsStep, RecipePresetStep]
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
