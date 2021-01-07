@@ -34,6 +34,7 @@ export type JobDetails = {
 
 export interface MigratedUser {
     legacyUserId: string
+    salesforceId: string
     platform: string
     lastUpdateDate: string
     migrationStatus: string

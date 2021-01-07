@@ -111,6 +111,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             {cell: <Text key='migratedUsersTableHeaderPlatformCell' size={14} weight='med'>Platform</Text>},
             {cell: <Text key='migratedUsersTableHeaderStatusCell' size={14} weight='med'>Status</Text>},
             {cell: <Text key='migratedUsersTableHeaderUappUserIdCell' size={14} weight='med'>Uapp User Id</Text>},
+            {cell: <Text key='migratedUsersTableHeaderSalesforceIdCell' size={14} weight='med'>BID</Text>},
             {cell: <Text key='migratedUsersTableHeaderLastUpdateCell' size={14} weight='med'>Last Update</Text>},
         ]}
     }
@@ -124,6 +125,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                         <Text key={'migratedUsersTableBodyPlaformCell' + key } size={14}>{job.platform}</Text>,
                         <Text key={'migratedUsersTableBodyStatusCell' + key } size={14}>{job.migrationStatus}</Text>,
                         <Text key={'migratedUsersTableBodyUappUserIdCell' + key } size={14}>{job.uappUserId}</Text>,
+                        <Text key={'migratedUsersTableBodySalesforceIdCell' + key } size={14}>{job.salesforceId}</Text>,
                         <Text key={'migratedUsersTableBodyLastUpdateCell' + key } size={14} >{job.lastUpdateDate}</Text>,
                     ]
                 }
