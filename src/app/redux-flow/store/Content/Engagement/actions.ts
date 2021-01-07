@@ -7,7 +7,9 @@ import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
 import { applyViewModel, parseContentType } from '../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { ContentType } from '../../Common/types';
-import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
+import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPostContentBrandImageUrlOutput, formatPostLiveBrandImageUrlInput, formatPostVodBrandImageUrlInput, formatPutContentAdsSettingsInput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
+import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
+import { formatPutUploadFileInput } from '../../Common/viewModel';
 
 export interface GetContentEngagementSettings {
     type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS;
@@ -72,7 +74,7 @@ export const saveContentEngagementSettingsAction = (contentType: ContentType) =>
         case 'live':
             return applyViewModel(dacastSdk.putChannelEngagementSettings, formatPutContentEngagementInput, formatPutContentEngagementOutput(contentType), ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS, 'Changes have been saved', 'Couldn\'t save changes')
         default:
-            throw new Error('Error applying get content view model')
+            throw new Error('Error applying put content view model')
     }
 }
 
@@ -83,87 +85,64 @@ export const lockSectionAction = (contentType: ContentType) => {
         case 'live':
             return applyViewModel(dacastSdk.putChannelLockEngagementSettings, formatPutContentLockEngagementSettingsInput, undefined, ActionTypes.LOCK_SECTION, 'Changes have been saved', 'Couldn\'t save changes')
         default:
-            throw new Error('Error applying get content view model')
+            throw new Error('Error applying put lock content view model')
     }
 }
 
-export const saveContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, SaveContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.SAVE_CONTENT_AD, payload: {ads: data, contentId: contentId, contentType: contentType}} );
-                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const createContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, CreateContentAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, CreateContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.CREATE_CONTENT_AD, payload: {ads: data, adsId: response.data.data.adsId, contentId: contentId, contentType: contentType}} );
-                dispatch(showToastNotification("Ad has been saved", 'fixed', "success"));
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const deleteContentAdAction = (data: Ad[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContentAd> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteContentAd> ) => {
-        await contentEngagementServices.saveContentAd(data, contentId, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.DELETE_CONTENT_AD, payload: {ads: data, contentId: contentId, contentType: contentType}} );
-                dispatch(showToastNotification("Ad has been deleted", 'fixed', "success"));
-            }).catch((e) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getUploadUrlAction = (uploadType: string, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await contentEngagementServices.getUploadUrl(uploadType, contentId, contentType)
-            .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {presignedURL: response.data.data.presignedURL, contentId: contentId, contentType: contentType} })
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const saveContentAdAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
+        default:
+            throw new Error('Error applying put lock content view model')
     }
 }
 
-export const uploadContentImageAction = (data: File, uploadUrl: string): ThunkDispatch<Promise<void>, {}, UploadContentImage> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadContentImage>) => {
-        await contentEngagementServices.uploadFile(data, uploadUrl)
-            .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: response.data })
-                dispatch(showToastNotification("Brand image successfully uploaded", 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const createContentAdAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
+        default:
+            throw new Error('Error applying put lock content view model')
     }
 }
 
-export const deleteContentImageAction = (targetId: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContentImage> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteContentImage>) => {
-        await contentEngagementServices.deleteFile(targetId, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_IMAGE, payload: response.data })
-                dispatch(showToastNotification("Brand image sucessfully deleted", 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const deleteContentAdAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
+        default:
+            throw new Error('Error applying put lock content view model')
+    }
+}
+
+export const getUploadUrlAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostVodBrandImageUrlInput, formatPostContentBrandImageUrlOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        case 'live':
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostLiveBrandImageUrlInput, formatPostContentBrandImageUrlOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        default:
+            throw new Error('Error applying put lock content view model')
+    }
+}
+
+export const uploadContentImageAction = applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, undefined, ActionTypes.UPLOAD_IMAGE, 'Brand image has been uploaded', 'Couldn\'t upload brand image')
+
+export const deleteContentImageAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.deleteVodBrandImage, (data: string) => data, undefined, ActionTypes.DELETE_IMAGE, 'Brand image has been deleted', 'Couldn\'t delete brand image')
+        case 'live':
+            return applyViewModel(dacastSdk.deleteChannelBrandImage, (data: string) => data, undefined, ActionTypes.DELETE_IMAGE, 'Brand image has been deleted', 'Couldn\'t delete brand image')
+        default:
+            throw new Error('Error applying put lock content view model')
     }
 }
 

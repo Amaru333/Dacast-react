@@ -1,4 +1,6 @@
-import { EngagementSettingsEndoint } from "./settings"
+import { GetLiveBrandImageUrl } from "./live"
+import { EngagementSettingsEndoint, PutAdInput } from "./settings"
+import { GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
     userID: string
@@ -10,7 +12,7 @@ export interface GetUserBrandImageUploadUrl {
 
 export type PostUploadUrlInput = {
     uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark'
-    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | null
+    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | GetVodBrandImageUrl | GetLiveBrandImageUrl |  null
 }
 
 export interface PostUploadUrlOutput {
@@ -93,3 +95,5 @@ export interface PutContentLockEngagementSettingsInput {
     section: 'brand-image' | 'ads' | 'brand-text' | 'end-screen-text';
     action: 'lock' | 'unlock';
 }
+
+export type PutContentAdsInput = PutAdInput & {id: string}

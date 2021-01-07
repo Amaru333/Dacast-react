@@ -148,26 +148,26 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         lockSection: async (section: EngagementSectionsLock, contentId: string, contentType: ContentType, unlock?: boolean) => {
             await dispatch(lockSectionAction(contentType)({section: section, contentId: contentId, action: unlock}))
         },
-        saveContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(saveContentAdAction(data, contentId, contentType))
+        saveContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
-        createContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(createContentAdAction(data, contentId, contentType))
+        createContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(createContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
-        deleteContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(deleteContentAdAction(data, contentId, contentType))
+        deleteContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(deleteContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        getUploadUrl: async (uploadType: string, contentId: string, contentType: string) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, contentType))
+        getUploadUrl: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)(contentId))
         },
         uploadContentImage: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadContentImageAction(data, uploadUrl))
+            await dispatch(uploadContentImageAction({data: data, uploadUrl: uploadUrl}))
         },
-        deleteContentImage: async (targetId: string, contentType: string) => {
-            await dispatch(deleteContentImageAction(targetId, contentType))
+        deleteContentImage: async (targetId: string, contentType: ContentType) => {
+            await dispatch(deleteContentImageAction(contentType)(targetId))
         }
     };
 }

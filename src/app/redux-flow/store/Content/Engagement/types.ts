@@ -24,7 +24,7 @@ export interface ContentEngagementContainerProps {
     createContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
     deleteContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    getUploadUrl: (uploadType: string, contentId: string, contentType: string) => Promise<void>;
+    getUploadUrl: (contentId: string, contentType: string) => Promise<void>;
     uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
     deleteContentImage: (targetId: string, contentType: string) => Promise<void>;
     getGlobalEngagementSettings: () => Promise<void>;
@@ -42,7 +42,7 @@ export interface EngagementComponentProps {
     createAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
     saveAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
     deleteAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
-    getUploadUrl?: (uploadType: string, contentId: string, contentType: string) => Promise<void>;
+    getUploadUrl?: (contentId: string, contentType: string) => Promise<void>;
     uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>
     deleteFile?: (targetId: string, contentType?: string) => Promise<void>
     getEngagementSettings?: (contentId?: string, contentType?: string) => Promise<void>

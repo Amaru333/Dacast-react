@@ -34,23 +34,6 @@ const reducer: Reducer<ContentEngagementState> = (state: ContentEngagementState 
                 
             }
         case ActionTypes.CREATE_CONTENT_AD:
-            return {
-                ...state,
-                [action.payload.contentType]: {
-                    ...state[action.payload.contentType],
-                    [action.payload.contentId]: { 
-                        ...state[action.payload.contentType][action.payload.contentId],
-                        contentId: action.payload.contentId,
-                        engagementSettings: { 
-                            ...state[action.payload.contentType][action.payload.contentId].engagementSettings, 
-                            adsSettings: {
-                                ...state[action.payload.contentType][action.payload.contentId].engagementSettings.adsSettings, 
-                                ads: action.payload.ads
-                            }
-                        }
-                    }
-                }
-            }
         case ActionTypes.SAVE_CONTENT_AD:
         case ActionTypes.DELETE_CONTENT_AD:
             return {

@@ -23,7 +23,7 @@ export interface SettingsEngagementContainerProps {
     saveAd: (data: Ad[]) => Promise<void>;
     createAd: (data: Ad[]) => Promise<void>;
     deleteAd: (data: Ad[]) => Promise<void>;
-    getUploadUrl: (uploadType: string) => Promise<void>;
+    getUploadUrl: () => Promise<void>;
     uploadFile: (data: File, uploadUrl: string) => Promise<void>;
     deleteFile: () => Promise<void>;
 }
@@ -125,8 +125,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         deleteAd: async (data: Ad[]) => {
             await dispatch(deleteAdAction(data))
         },
-        getUploadUrl: async (uploadType: string) => {
-            await dispatch(getUploadUrlAction(uploadType))
+        getUploadUrl: async () => {
+            await dispatch(getUploadUrlAction(undefined))
         },
         uploadFile: async (data: File, uploadUrl: string) => {
             await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))

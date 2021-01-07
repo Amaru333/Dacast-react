@@ -1,4 +1,4 @@
-import { PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput } from "../../../../../DacastSdk/common";
+import { PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput } from "../../../../../DacastSdk/common";
 import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndoint } from "../../../../../DacastSdk/settings";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { ContentType } from "../../Common/types";
@@ -76,15 +76,48 @@ export const formatPutContentLockEngagementSettingsInput = (data: {contentId: st
     return formattedData
 }
 
-export const formatPutAdsSettingsInput = (data: Ad[]): PutAdInput => {
-    let formattedData: PutAdInput = {
-        ads: data.map(ad => {
+export const formatPutContentAdsSettingsInput = (data: {ads: Ad[], contentId: string}): PutContentAdsInput => {
+    let formattedData: PutContentAdsInput = {
+        ads: data.ads.map(ad => {
             return {
                 "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
                 timestamp: ad.timestamp,
                 url: ad.url
             }
-        })
+        }),
+        id: data.contentId
+    }
+
+    return formattedData
+}
+
+export const formatPostVodBrandImageUrlInput = (contentId: string): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: 'player-watermark',
+        uploadRequestBody: {
+            vodID: contentId
+        }
+    }
+    return formattedData
+}
+
+export const formatPostLiveBrandImageUrlInput = (contentId: string): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: 'player-watermark',
+        uploadRequestBody: {
+            channelID: contentId
+        }
+    }
+    return formattedData
+}
+
+export const formatPostContentBrandImageUrlOutput = (contentType: ContentType) => (data: PostUploadUrlOutput, dataReact: string): {presignedURL: string, contentId: string; contentType: string} => {
+    let formattedData: {presignedURL: string, contentId: string; contentType: string} = {
+        presignedURL: data.presignedURL,
+        contentId: dataReact,
+        contentType: contentType
     }
 
     return formattedData

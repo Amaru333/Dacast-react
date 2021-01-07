@@ -42,7 +42,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                     setLogoFile(file[0])
                     setErrorMessage('')
                     setUploadButtonLoading(true)
-                    props.getUploadUrl('player-watermark', props.contentId, props.contentType);
+                    props.getUploadUrl(props.contentId, props.contentType);
                 }
                 else {
                     setErrorMessage('Your image ratio is not 4:1 or its width exceeded the limit.')
