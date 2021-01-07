@@ -41,11 +41,6 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             props.getJobsList()
         } else {
             props.getMigratedUsersList(null)
-            .then(() => {
-                if(props.migrationData && props.migrationData.usersList) {
-                    setTablePagination({[currentPage + 1]: props.migrationData.usersList.next})
-                }
-            })
         }
     }, [selectedTab])
 
@@ -135,6 +130,12 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             })
         }
     }
+
+    React.useEffect(() => {
+        if(props.migrationData && props.migrationData.usersList && !Object.keys(tablePagination).find(k => k === (currentPage + 1).toString()) ) {
+            setTablePagination({...tablePagination, [currentPage + 1]: props.migrationData.usersList.next})
+        }
+    }, [props.migrationData])
 
     const handlePageChange = (pageToGo: number) => {
         props.getMigratedUsersList({...userTableFilters, next: tablePagination[pageToGo]})
