@@ -1,12 +1,12 @@
 import React from "react"
-import { EncodingRecipeItem, RecipePreset } from "../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes"
+import { EncodingRecipeItem, EncodingRecipesData, RecipePreset } from "../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes"
 import { Text } from "../../../../components/Typography/Text"
 import { InputCheckbox } from "../../../../components/FormsComponents/Input/InputCheckbox"
 import { Table } from "../../../../components/Table/Table"
 import { IconStyle } from "../../../../shared/Common/Icon"
 import { getKnowledgebaseLink } from "../../../constants/KnowledgbaseLinks"
 
-export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; staticStepperData: {[key: string]: any}}) => {
+export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; encodingRecipeData: EncodingRecipesData}) => {
 
     const createRecipeHeaderElement = () => {
         return {data: [
@@ -21,8 +21,8 @@ export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; update
         React.useEffect(() => {
             props.setStepValidated(props.stepperData.recipePresets.length > 0)
         }, [])
-        if(props.staticStepperData['recipePresets']) {
-            let presets: RecipePreset[] = props.staticStepperData['recipePresets']
+        if(props.encodingRecipeData.defaultRecipePresets) {
+            let presets: RecipePreset[] = props.encodingRecipeData.defaultRecipePresets
             return presets.map((value, key) => {
     
                 return {data: [

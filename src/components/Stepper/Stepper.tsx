@@ -44,7 +44,6 @@ export const CustomStepper = <ExtraProps extends {}>(props: StepperProps & Extra
                 updateStepperData={updateStepperData}
                 setStepValidated={setStepValidated} 
                 finalFunction={finalFunction} 
-                staticStepperData={props.stepperStaticData}
                 {...props}
             />
         )

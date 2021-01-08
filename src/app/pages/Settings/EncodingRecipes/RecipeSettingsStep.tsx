@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Input } from "../../../../components/FormsComponents/Input/Input";
-import { EncodingRecipeItem } from "../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes";
+import { EncodingRecipeItem, EncodingRecipesData } from "../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes";
 import { isMobile } from "react-device-detect";
 import { InputCheckbox } from "../../../../components/FormsComponents/Input/InputCheckbox";
 import { Text } from "../../../../components/Typography/Text"
@@ -11,7 +11,7 @@ import { LoadingSpinner } from "../../../../components/FormsComponents/Progress/
 import { UploadText } from "../../../shared/General/ImageModal";
 import { IconStyle } from '../../../../shared/Common/Icon';
 
-export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; staticStepperData: {[key: string]: any}; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>;}) => {
+export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>; encodingRecipeData: EncodingRecipesData}) => {
 
     React.useEffect(() => {
         if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0 && !uploadButtonLoading) }
@@ -38,20 +38,20 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
     }
 
     React.useEffect(() => {
-        if(props.staticStepperData['watermarkFileID']) {
-            props.updateStepperData({...props.stepperData, watermarkFileID: props.staticStepperData['watermarkFileID']})
+        if(props.encodingRecipeData.watermarkFileID) {
+            props.updateStepperData({...props.stepperData, watermarkFileID: props.encodingRecipeData.watermarkFileID})
         }
-    }, [props.staticStepperData['watermarkFileID']])
+    }, [props.encodingRecipeData.watermarkFileID])
 
     React.useEffect(() => {
-        if(props.staticStepperData['uploadWatermarkUrl'] && watermarkFileFile) {
-            props.uploadWatermark(watermarkFileFile, props.staticStepperData['uploadWatermarkUrl']).then(() => {
+        if(props.encodingRecipeData.uploadWatermarkUrl && watermarkFileFile) {
+            props.uploadWatermark(watermarkFileFile, props.encodingRecipeData.uploadWatermarkUrl).then(() => {
                 {setUploadButtonLoading(false)}
             }).catch(() => {
                 {setUploadButtonLoading(false)}
             })
         }
-    }, [props.staticStepperData['uploadWatermarkUrl']])
+    }, [props.encodingRecipeData.uploadWatermarkUrl])
 
     return (
         <div className="block clearfix">

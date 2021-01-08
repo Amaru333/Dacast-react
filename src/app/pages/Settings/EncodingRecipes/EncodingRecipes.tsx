@@ -167,7 +167,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     functionCancel={FunctionRecipe}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
-                    stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}
+                    encodingRecipeData={props.encodingRecipeData}
                     getUploadUrl={props.getWatermarkUrlForUploading}
                     uploadWatermark={props.uploadWatermark}
                     deleteWatermark={props.deleteWatermark}
