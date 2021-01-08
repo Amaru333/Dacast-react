@@ -7,6 +7,7 @@ export interface DatePickerProps {
     DatepickerTitle?: string;
     defaultStartDate?: Date;
     defaultEndDate?: string;
+    minDate: number;
 }
 
 interface DatePickerContext {
