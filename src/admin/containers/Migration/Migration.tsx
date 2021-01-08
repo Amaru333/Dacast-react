@@ -14,7 +14,7 @@ export interface MigrationComponentProps {
     getJobDetails: (jobId: string) =>  Promise<void>;
     startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[]) => Promise<void>
     switchUsers: (usersList: string[], jobId: string) => Promise<void>
-    getMigratedUsersList: (filters: FilteringMigrationState) => Promise<void>
+    getMigratedUsersList: (filters: FilteringMigrationState & {next: string}) => Promise<void>
 }
 
 const Migration = (props: MigrationComponentProps) => {
@@ -41,7 +41,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         switchUsers: async (usersList: string[], jobId: string) => {
             await dispatch(switchOverUsersAction(usersList, jobId))
         },
-        getMigratedUsersList: async (filters: FilteringMigrationState) => {
+        getMigratedUsersList: async (filters: FilteringMigrationState & {next: string}) => {
             await dispatch(getMigratedUsersListAction(filters))
         }
     }

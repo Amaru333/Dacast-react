@@ -34,6 +34,7 @@ export type JobDetails = {
 
 export interface MigratedUser {
     legacyUserId: string
+    salesforceId: string
     platform: string
     lastUpdateDate: string
     migrationStatus: string
@@ -43,7 +44,7 @@ export interface MigratedUser {
 export interface MigrationData {
     jobsList?: JobInfo[]
     jobDetails?: JobDetails | null
-    usersList?: MigratedUser[] | null
+    usersList?: {users: MigratedUser[]; next: string} | null
 }
 
 export const migrationInitialState: MigrationData | false = false
