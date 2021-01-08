@@ -36,11 +36,10 @@ export const CustomStepper = (props: StepperProps) => {
 
     useStepperFinalStepAction('stepperNextButton', () => {props.finalFunction()})
 
-    const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {    
-        const Test: React.FC<any> = props.stepList[stepIndex]
+        const Step: React.FC<any> = props.stepList[stepIndex].content
         return  (
-            <Test
+            <Step
                 stepperData={stepperData} 
                 updateStepperData={updateStepperData}
                 setStepValidated={setStepValidated} 
@@ -73,10 +72,10 @@ export const CustomStepper = (props: StepperProps) => {
                 </StepperHeaderStyle>
                 <StepperStyle isMobile={isMobile}>
                     <Stepper activeStep={stepIndex} alternativeLabel>
-                        {steps.map((label) => {
+                        {props.stepList.map((step) => {
                             return (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
+                                <Step key={step.title}>
+                                    <StepLabel>{step.title}</StepLabel>
                                 </Step>
                             );
                         })}

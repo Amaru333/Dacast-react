@@ -1,15 +1,12 @@
-import { Type, Size } from '../FormsComponents/Button/ButtonTypes';
-
 export interface Step {
     title: string;
-    content: () => JSX.Element;
+    content: React.FC<any>;
     extras?: any
 }
 
 export interface StepperSpecificProps {
     stepperHeader: string;
-    stepTitles: string[];
-    stepList: React.FC<any>[];
+    stepList: Step[];
     lastStepButton: string;
     finalFunction: Function;
     opened: boolean;

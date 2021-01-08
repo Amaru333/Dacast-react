@@ -37,7 +37,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     const recipeOrder: string[] = ["4K", "2K", "FHD", "HD", "SD", "LD", "ULD", "Magic", "DNE"]
 
-    const stepList = [RecipeSettingsStep, RecipePresetStep]
+    const stepList = [{title: "Settings", content: RecipeSettingsStep}, {title: "Presets", content: RecipePresetStep}]
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -163,7 +163,6 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
                     stepList={stepList}
                     isLoading={submitLoading}
-                    stepTitles={["Settings", "Presets"]}
                     lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
                     functionCancel={FunctionRecipe}
                     stepperData={selectedRecipe}
