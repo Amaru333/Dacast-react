@@ -168,7 +168,9 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
                     stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}
-                    usefulFunctions={{'getUploadUrl': props.getWatermarkUrlForUploading, 'uploadWatermark': props.uploadWatermark, 'deleteWatermark': props.deleteWatermark}}
+                    getUploadUrl={props.getWatermarkUrlForUploading}
+                    uploadWatermark={props.uploadWatermark}
+                    deleteWatermark={props.deleteWatermark}
                     finalFunction={() => {submitRecipe(selectedRecipe, FunctionRecipe)}}
                 />
                 <Modal size="small" modalTitle="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>

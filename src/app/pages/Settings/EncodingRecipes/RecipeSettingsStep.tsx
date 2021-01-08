@@ -11,7 +11,7 @@ import { LoadingSpinner } from "../../../../components/FormsComponents/Progress/
 import { UploadText } from "../../../shared/General/ImageModal";
 import { IconStyle } from '../../../../shared/Common/Icon';
 
-export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; usefulFunctions: {[key: string]: Function}; staticStepperData: {[key: string]: any}}) => {
+export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; staticStepperData: {[key: string]: any}; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>;}) => {
 
     React.useEffect(() => {
         if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0 && !uploadButtonLoading) }
@@ -23,7 +23,7 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
 
 
     const handleUpload = () => {
-        props.usefulFunctions['getUploadUrl']();        
+        props.getUploadUrl();        
     }
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,7 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
 
     React.useEffect(() => {
         if(props.staticStepperData['uploadWatermarkUrl'] && watermarkFileFile) {
-            props.usefulFunctions['uploadWatermark'](watermarkFileFile, props.staticStepperData['uploadWatermarkUrl']).then(() => {
+            props.uploadWatermark(watermarkFileFile, props.staticStepperData['uploadWatermarkUrl']).then(() => {
                 {setUploadButtonLoading(false)}
             }).catch(() => {
                 {setUploadButtonLoading(false)}
@@ -85,7 +85,7 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
                             <WatermarkFile className="col mt1">
                                 <UploadText className="ml2" color="gray-1" size={14} weight="reg">{props.stepperData.watermarkFilename}</UploadText>
                                 <WatermarkDeleteButton>
-                                    <IconStyle className='pointer' onClick={() => {props.usefulFunctions['deleteWatermark'](props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
+                                    <IconStyle className='pointer' onClick={() => {props.deleteWatermark(props.stepperData);props.updateStepperData({ ...props.stepperData, watermarkFilename: null })}} style={{ fontSize: "14px" }}>close</IconStyle>
                                 </WatermarkDeleteButton>
                             </WatermarkFile>
                         }

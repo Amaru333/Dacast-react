@@ -23,7 +23,7 @@ export const useStepperFinalStepAction = (buttonId: string, callback: Function) 
     }, [callback])
 }
 
-export const CustomStepper = (props: StepperProps) => {
+export const CustomStepper = <ExtraProps extends {}>(props: StepperProps & ExtraProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
     const [stepValidated, setStepValidated] = React.useState<boolean>(true)
@@ -44,8 +44,8 @@ export const CustomStepper = (props: StepperProps) => {
                 updateStepperData={updateStepperData}
                 setStepValidated={setStepValidated} 
                 finalFunction={finalFunction} 
-                usefulFunctions={props.usefulFunctions}
                 staticStepperData={props.stepperStaticData}
+                {...props}
             />
         )
         
