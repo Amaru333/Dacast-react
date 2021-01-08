@@ -10,14 +10,14 @@ import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
 
 export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
-    const doAThing = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
+    const finalStepAction = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
         callback()
     }}
     React.useEffect(() => {
-        document.getElementById(buttonId).addEventListener('click', doAThing)
+        document.getElementById(buttonId).addEventListener('click', finalStepAction)
 
         return () => {
-            document.getElementById(buttonId).removeEventListener('click', doAThing)
+            document.getElementById(buttonId).removeEventListener('click', finalStepAction)
         }
 
     }, [callback])

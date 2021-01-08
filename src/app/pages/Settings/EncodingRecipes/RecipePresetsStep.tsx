@@ -6,7 +6,7 @@ import { Table } from "../../../../components/Table/Table"
 import { IconStyle } from "../../../../shared/Common/Icon"
 import { getKnowledgebaseLink } from "../../../constants/KnowledgbaseLinks"
 
-export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: Function; finalFunction: Function; encodingRecipeData: EncodingRecipesData}) => {
+export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; finalFunction: Function; encodingRecipeData: EncodingRecipesData}) => {
 
     const createRecipeHeaderElement = () => {
         return {data: [
@@ -21,6 +21,7 @@ export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; update
         React.useEffect(() => {
             props.setStepValidated(props.stepperData.recipePresets.length > 0)
         }, [])
+        
         if(props.encodingRecipeData.defaultRecipePresets) {
             let presets: RecipePreset[] = props.encodingRecipeData.defaultRecipePresets
             return presets.map((value, key) => {
