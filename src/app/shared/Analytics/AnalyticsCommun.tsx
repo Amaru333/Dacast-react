@@ -48,8 +48,8 @@ export const handleRowIconType = (item: FolderAsset) => {
         case 'live':
         case 'vod':
         case 'channel':
-            return item.thumbnail ? <img key={"thumbnail" + item.id} width="auto" height={42} src={item.thumbnail} ></img>
-                : <div className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+            return item.thumbnail ? <img key={"thumbnail" + item.id} width={94} height={54} src={item.thumbnail} ></img>
+                : <div className='mr1 relative justify-center flex items-center' style={{ minWidth: 94, height: 54, backgroundColor: '#AFBACC' }}>
                         <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                     </div>
         default:
