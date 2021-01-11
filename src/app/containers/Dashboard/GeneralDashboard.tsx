@@ -123,7 +123,7 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
 
     const handleProgressBar = (percentage: number) => {
         return (
-            <ProgressBar className="mb1" size="large" color={ percentage<= 25 ? 'red' : 'violet' } startingValue={percentage} />
+            <ProgressBar static className="mb1" size="large" color={ percentage<= 25 ? 'red' : 'violet' } startingValue={percentage} />
         )
     }
     const handleInfos = () => {
