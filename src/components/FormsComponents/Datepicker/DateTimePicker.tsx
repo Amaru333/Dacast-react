@@ -4,7 +4,6 @@ import { DropdownSingleListItem } from '../Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
-import { DateSinglePicker } from "./DateSinglePicker";
 var moment = require('moment-timezone');
 
 
@@ -56,8 +55,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
             <DropdownSingle className='col col-12 md-col-4 mr2' id={'dropdown'+props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => {setMethod(item.title)}} />
                 {method === "Set Date and Time" &&
                     <>
-                        <DateSinglePicker
-                            //minDate={moment(props.minDate*1000)}
+                        <DateSinglePickerWrapper
+                            minDate={moment(props.minDate*1000)}
                             callback={(_, timestamp: string) => setDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' 
                             id={'datePicker'+props.id}
