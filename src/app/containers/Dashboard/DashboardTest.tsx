@@ -4,33 +4,35 @@ import { PaywallDashboard } from './PaywallDashboard';
 import { LiveDashboard } from './LiveDashboard';
 import { GeneralDashboard } from './GeneralDashboard';
 import { TrialAdditionalDashboard } from './TrialAdditionalDashboard';
-import { DashboardInfos, Action, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
+import { DashboardInfos, Action, getDashboardGeneralDetailsAction, getDashboardLiveAction, getDashboardPaywallAction, getDashboardVodAction } from '../../redux-flow/store/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction, getBillingPageInfosAction, BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction } from '../../redux-flow/store/Account/Plan';
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
 
 export interface DashboardProps {
     infos: DashboardInfos;
-    billingInfo: BillingPageInfos;
-    getBillingPageInfos: () => Promise<void>
-    getDashboardDetails: () => Promise<void>;
+    getDashboardGeneralDetails: () => Promise<void>;
+    getDashboardLive: () => Promise<void>;
+    getDashboardVod: () => Promise<void>;
+    getDashboardPaywall: () => Promise<void>;
+    getDashboardVodPlayRate: (jobID: string) => Promise<void>;
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
 }
 
-const Dashboard = (props: DashboardProps) => {
-
-    const [profileDataisFetching, setProfileDataIsFetching] = React.useState<boolean>(true)
-    const [billingDataisFetching, setBillingDataIsFetching] = React.useState<boolean>(true)
+const DashboardTest = (props: DashboardProps) => {
 
     React.useEffect(() => {
-        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
+        props.getDashboardGeneralDetails()
+        props.getDashboardLive()
+        props.getDashboardVod()
+        props.getDashboardPaywall()
     }, [])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
@@ -55,43 +57,57 @@ const Dashboard = (props: DashboardProps) => {
 
 
     const renderDashboard = () => {
-        if (props.infos.currentPlan.displayName !== "Free" && props.infos.currentPlan.displayName !== "30 Day Trial") {
             return (
                 <>
-                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.billingInfo.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                    <LiveDashboard profile={props.infos.live} />
-                    <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
+                {
+                    props.infos.currentPlan ?
+                     props.infos.currentPlan.displayName !== "Free" && props.infos.currentPlan.displayName !== "30 Day Trial" ?
+                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
+                    :<GeneralDashboard plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
+                    : null
+                }
+                {
+                    props.infos.live && 
+                        <LiveDashboard profile={props.infos.live} />
+                }
+                {
+                    props.infos.vod && 
+                        <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
+                }
+                {
+                    props.infos.paywall && 
+                        <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                }
+                {
+                    props.infos.isTrial && 
+                        <TrialAdditionalDashboard />
+                }
+                    
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
                             <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
                         </Modal>
                     }
-                    <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
-                <DisableProtectionModal
-                    price={props.infos.playbackProtection.price}
-                    editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                    setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
-                />
-            </Modal>
-                    <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
-                </>
-            )
+                    {
+                        props.infos.playbackProtection && 
+                        <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
+                            <DisableProtectionModal
+                                price={props.infos.playbackProtection.price}
+                                editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                                setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                            />
+                        </Modal>
+                    }
 
-        } else {
-            return (
-                <>
-                    <GeneralDashboard plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                    <TrialAdditionalDashboard />
                 </>
             )
-        }
     }
 
     return (
         <>
             {
-                (props.infos && props.billingInfo) ?
+                props.infos ?
                     <>
                         {renderDashboard()}
                         <div className="clearfix"></div>
@@ -106,17 +122,22 @@ const Dashboard = (props: DashboardProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         infos: state.dashboard.info,
-        billingInfo: state.account.plan
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getDashboardDetails: async () => {
-            await dispatch(getDashboardDetailsAction(undefined));
+        getDashboardGeneralDetails: async () => {
+            await dispatch(getDashboardGeneralDetailsAction(undefined));
         },
-        getBillingPageInfos: async () => {
-            await dispatch(getBillingPageInfosAction(undefined));
+        getDashboardLive: async () => {
+            await dispatch(getDashboardLiveAction(undefined));
+        },
+        getDashboardVod: async () => {
+            await dispatch(getDashboardVodAction(undefined));
+        },
+        getDashboardPaywall: async () => {
+            await dispatch(getDashboardPaywallAction(undefined));
         },
         editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
             await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
@@ -127,5 +148,5 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardTest);
 

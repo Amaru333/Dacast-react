@@ -39,6 +39,7 @@ import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
 import { Content, FullContent } from "../shared/Content";
+import DashboardTest from "./containers/Dashboard/DashboardTest";
 
 // Any additional component props go here.
 interface MainProps {
@@ -204,7 +205,7 @@ const AppContent = (props: { routes: any }) => {
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Switch>
-                            <PrivateRoute key='/' component={Dashboard} exact path='/' />
+                            <PrivateRoute key='/' component={DashboardTest} exact path='/' />
                             {props.routes}
                         </Switch>
                     </FullContent>
