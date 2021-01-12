@@ -291,7 +291,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             </div>
             <Modal size="small" modalTitle="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
                 <ModalContent>
-                    <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? This will come at a cost</Text> 
+                    <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? If so, click <strong>Encode</strong> and encoding will be processed in the background.</Text> 
                 </ModalContent>
                 <ModalFooter>
                     <Button onClick={() => {encodeRenditions();setEncodeRenditionsModalOpen(false)}}>Encode</Button>
