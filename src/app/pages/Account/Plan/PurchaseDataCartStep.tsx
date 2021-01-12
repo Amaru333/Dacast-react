@@ -4,11 +4,12 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { Extras } from '../../../redux-flow/store/Account/Plan';
 
-export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
+export const PurchaseDataCartStep = (props: {stepperData: Extras; updateStepperData: (data: Extras) => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; }) => {
 
-    const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData && props.stepperData.dataPrice)
-    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData && props.stepperData.quantity)
+    const [dataPrice, setDataPrice] = React.useState<number>(0.25)
+    const [dataAmount, setDataAmount] = React.useState<number>(null)
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -16,11 +17,11 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     React.useEffect(() => {
         if(dataAmount <= 4999 ){
-            props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
+            props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", totalPrice: (dataPrice * dataAmount)})
         } else if(dataAmount >= 5000 && dataAmount <= 9999){
-            props.updateStepperData({...props.stepperData, code: "eventBw5to10TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
+            props.updateStepperData({...props.stepperData, code: "eventBw5to10TB", totalPrice: (dataPrice * dataAmount)})
         } else {
-            props.updateStepperData({...props.stepperData, code: "eventBw10to100TB", totalPrice: (dataPrice * dataAmount), dataPrice: dataPrice})
+            props.updateStepperData({...props.stepperData, code: "eventBw10to100TB", totalPrice: (dataPrice * dataAmount)})
         }
     }, [dataAmount])
 
@@ -71,7 +72,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
 
     return (
         <div className="col col-12 flex flex-column">
-            <Input defaultValue={dataAmount ? dataAmount.toString() : null} type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
+            <Input defaultValue={dataAmount && dataAmount.toString()} type="number" className="col col-6 mb1" label="Amount in Gigabytes (GB)" isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} help={handleInputError(dataAmount)} onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value), setDataAmount, setDataPrice);props.updateStepperData({...props.stepperData, quantity: parseInt(event.currentTarget.value)})}} />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />
             </div>

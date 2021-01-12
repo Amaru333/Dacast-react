@@ -6,7 +6,7 @@ import { Table } from "../../../../components/Table/Table"
 import { IconStyle } from "../../../../shared/Common/Icon"
 import { getKnowledgebaseLink } from "../../../constants/KnowledgbaseLinks"
 
-export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: Function; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; finalFunction: Function; encodingRecipeData: EncodingRecipesData}) => {
+export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: (data: EncodingRecipeItem) => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; encodingRecipeData: EncodingRecipesData}) => {
 
     const createRecipeHeaderElement = () => {
         return {data: [
@@ -29,7 +29,8 @@ export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; update
                 return {data: [
                     <InputCheckbox key={key + value.name} label={value.description} defaultChecked={props.stepperData.recipePresets.includes(value.name)} id={value.name} onChange={(event) => {
                         if (event.currentTarget.checked && props.stepperData.recipePresets.length < 6) {
-                            props.updateStepperData({ ...props.stepperData }, props.stepperData.recipePresets.push(value.name))
+                            props.stepperData.recipePresets.push(value.name)
+                            props.updateStepperData({ ...props.stepperData})
                             props.setStepValidated(props.stepperData.recipePresets.length >= 1)
                         } else {
                             const editedRecipePresets = props.stepperData.recipePresets.filter(item => item !== value.name)

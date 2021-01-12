@@ -151,7 +151,7 @@ export type GetProductExtraDataOutput = {
 
 export interface PostProductExtraDataInput {
     code: string;
-    quantity: string;
+    quantity: number;
     token: string;
     threeDSecureToken: string;
 }

@@ -6,7 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia, getPercentage } from '../../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProtectionModal } from './ProtectionModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
@@ -16,13 +16,14 @@ import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
 import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
-import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import { Divider } from '../../../../shared/MiscStyles';
 import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { formatPostProductExtraInput } from '../../../redux-flow/store/Account/Plan/viewModel';
+import { PurchaseDataCartStep } from './PurchaseDataCartStep';
+import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -39,7 +40,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
-    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
+    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<Extras>(null)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
@@ -254,7 +255,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     lastStepButton="Purchase"
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
-                    updateStepperData={(data: any) => {setPurchaseDataStepperData(data)}}
+                    updateStepperData={(data: Extras) => {setPurchaseDataStepperData(data)}}
                     functionCancel={setPurchaseDataOpen}
                     billingInfo={props.billingInfos}
                     purchaseProducts={purchaseProducts}

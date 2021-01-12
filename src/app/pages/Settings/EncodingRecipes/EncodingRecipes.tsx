@@ -57,7 +57,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         FunctionRecipe(true);
     }
 
-    const sortRecipes = (a, b) => {
+    const sortRecipes = (a: string, b: string) => {
         return recipeOrder.indexOf(a) - recipeOrder.indexOf(b)
     }
 

@@ -9,7 +9,7 @@ import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
 
-export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: Function; finalFunction: Function; purchasePlan: (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => void; purchasePlan3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>; handleThreeDSecureFail: () => void; billingInfo: BillingPageInfos }) => {
+export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; finalFunction: Function; purchasePlan: (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => void; purchasePlan3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>; handleThreeDSecureFail: () => void; billingInfo: BillingPageInfos }) => {
 
     segmentService.track('Upgrade Form Completed', {
         action: 'Cart Form Submitted',
