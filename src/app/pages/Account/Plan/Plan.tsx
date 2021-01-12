@@ -45,7 +45,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
 
-    const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+    const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
+
+    const purchaseProducts = async (recurlyToken: string, callback: Function) => {
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
@@ -112,19 +114,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     }
 
     let smScreen = useMedia('(max-width: 780px)');
-
-    const storage = {
-        percentage: getPercentage(props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed, props.widgetData.generalInfos.storage.limit),
-        left: props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed,
-        limit: props.widgetData.generalInfos.storage.limit,
-    } 
-    const bandwidth = {
-        percentage: getPercentage(props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed, props.widgetData.generalInfos.bandwidth.limit),
-        left: props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed,
-        limit: props.widgetData.generalInfos.bandwidth.limit,
-    } 
-
-    
 
     const disabledTableHeader = () => {
         return props.billingInfos.paymentMethod ? {data: [
@@ -261,14 +250,16 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <CustomStepper 
                     opened={purchaseDataOpen}
                     stepperHeader="Purchase Data"
-                    stepTitles={["Cart", "Payment"]}
-                    stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
+                    stepList={purchaseDataStepList}
                     lastStepButton="Purchase"
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
-                    updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
+                    updateStepperData={(data: any) => {setPurchaseDataStepperData(data)}}
                     functionCancel={setPurchaseDataOpen}
-                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts, 'purchaseProducts3Ds': purchaseProducts3Ds, 'handleThreeDSecureFail': handleThreeDSecureFail}}
+                    billingInfo={props.billingInfos}
+                    purchaseProducts={purchaseProducts}
+                    purchaseProducts3Ds={purchaseProducts3Ds}
+                    handleThreeDSecureFail={handleThreeDSecureFail}
                     isLoading={isLoading}
                 />
             }

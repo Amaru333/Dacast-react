@@ -3,14 +3,12 @@ import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { IconStyle } from '../../../../shared/Common/Icon';
-import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
-import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData: Function; setStepValidated: Function; }) => {
 
-    const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData? props.stepperData.dataPrice : null)
-    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData? props.stepperData.quantity : null)
+    const [dataPrice, setDataPrice] = React.useState<number>(props.stepperData && props.stepperData.dataPrice)
+    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData && props.stepperData.quantity)
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -45,7 +43,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
             {
                 data: [
                     <Text size={14}>Price per GB</Text>,
-                    <Text className="right pr2" size={14}>{(dataAmount && dataAmount < 100000) ? `$ ${dataPrice}` : null }</Text>
+                    <Text className="right pr2" size={14}>{(dataAmount && dataAmount < 100000) && `$ ${dataPrice}`}</Text>
                 ]
             }
         ]
@@ -54,7 +52,7 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
     const cartTableFooterElement = () => {
         return [
             <Text size={14} weight="med">Total Pay Now</Text>,
-            <Text className="right pr2" weight="med" size={14}>{(dataAmount && dataAmount < 100000) ? `$ ${(dataPrice * dataAmount).toFixed(2)}` : null }</Text>
+            <Text className="right pr2" weight="med" size={14}>{(dataAmount && dataAmount < 100000) && `$ ${(dataPrice * dataAmount).toFixed(2)}`}</Text>
         ]
     }
 
@@ -82,41 +80,6 @@ export const PurchaseDataCartStep = (props: {stepperData: any; updateStepperData
                 <Text  size={14} weight="reg">Need help with purchasing additional data? Visit the <a href={getKnowledgebaseLink("Data")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
             
-        </div>
-    )
-}
-
-export const PurchaseDataPaymentStep = (props: {stepperData: any; usefulFunctions: { [key: string]: any }; finalFunction: Function;setStepValidated: Function; }) => {
-
-    const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
-
-    React.useEffect(() => {
-        props.setStepValidated(termsAndConditionsChecked)
-    })
-
-    const paymentTableHeaderElement = () => {
-        return {data: [
-            {cell: <Text  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
-            {cell: <Text className="right mr2"  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">${(props.stepperData.totalPrice).toFixed(2)}</Text>}
-        ]}
-    }
-
-    return (
-        <div>
-            <Table id='PurchaseDataPayment' headerBackgroundColor="gray-10" header={paymentTableHeaderElement()}/>
-            
-            <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={props.usefulFunctions['handleThreeDSecureFail']} billingInfo={props.usefulFunctions['billingInfo']} recurlyFunction={props.usefulFunctions['purchaseProducts']} purchasePlan3Ds={props.usefulFunctions['purchaseProducts3Ds']} stepperData={props.stepperData} />
-        
-            <div className="mt2 mb1">
-                <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
-            </div>
-            
-            <div className='py2 col col-12 flex flex-auto'>
-                <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} onChange={() => setTermsAndConditionsChecked(!termsAndConditionsChecked)} />
-                <div className='col col-11 flex'>
-                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/">Terms and Conditions.</a></Text>                   
-                </div>
-            </div>
         </div>
     )
 }
