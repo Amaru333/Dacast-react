@@ -90,8 +90,9 @@ export const StartJobModal = (props: StartJobModalProps) => {
                         <Input 
                             id='copyPasteInput' 
                             label='Paste users here' 
-                            indicationLabel="Users must be separated by a ','"                                type='textarea' 
-                            onChange={(event) => setUsersList(event.currentTarget.value.split(','))}
+                            indicationLabel="Users must be separated by a ','"
+                            type='textarea' 
+                            onChange={(event) => setUsersList(event.currentTarget.value.replace(/\r/g,"").replace(/\n/g,"").split(','))}
                         />
                     </div>
                 }
