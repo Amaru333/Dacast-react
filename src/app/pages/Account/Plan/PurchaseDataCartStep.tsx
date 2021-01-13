@@ -6,7 +6,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Extras } from '../../../redux-flow/store/Account/Plan';
 
-export const PurchaseDataCartStep = (props: {stepperData: Extras; updateStepperData: (data: Extras) => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; }) => {
+export const PurchaseDataCartStep = (props: {stepperData: Extras; updateStepperData: React.Dispatch<React.SetStateAction<Extras>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; }) => {
 
     const [dataPrice, setDataPrice] = React.useState<number>(0.25)
     const [dataAmount, setDataAmount] = React.useState<number>(null)
