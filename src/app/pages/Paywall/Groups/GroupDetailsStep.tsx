@@ -11,7 +11,7 @@ import { timezoneDropdownList, currencyDropdownList, presetTypeDropdownList, rec
 
 var moment = require('moment-timezone');
 
-export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void }) => {
+export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.firststep.name && (props.stepperData.firststep.groupSettings.type === 'Pay Per View' && props.stepperData.firststep.groupSettings.duration && props.stepperData.firststep.groupSettings.duration.value || props.stepperData.firststep.groupSettings.type === 'Subscription') && !props.stepperData.firststep.prices.some(price => !price.price.value))

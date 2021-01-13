@@ -12,7 +12,7 @@ import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
 
-export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: (g: GroupStepperData) => void; setStepValidated: (b: boolean) => void  }) => {
+export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const [selectedFolder, setSelectedFolder] = React.useState<string>(null)
     const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>([])

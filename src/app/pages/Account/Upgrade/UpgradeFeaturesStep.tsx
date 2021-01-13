@@ -40,9 +40,8 @@ export const UpgradeFeaturesStep = (props: { stepperData: Plan; updateStepperDat
                                     privileges: props.stepperData.privileges.map((privilege) => {
                                         if (privilege.code === item.code) {
                                             return { ...privilege, checked: !privilege.checked }
-                                        } else {
-                                            return privilege
                                         }
+                                        return privilege
                                     })
 
                                 })

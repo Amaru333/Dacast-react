@@ -39,9 +39,9 @@ export const UpgradeCartStep = (props: { stepperData: Plan; updateStepperData: R
         props.updateStepperData({...props.stepperData, privileges: props.stepperData.privileges.map((item: Privilege) => {
             if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.indexOf(item.code) > -1){
                 return {...item, checked: true}
-            } else {
-                return item
-            }
+            } 
+            return item
+            
         })})
     }, [props.stepperData.paymentTerm])
 
@@ -82,7 +82,8 @@ React.useEffect(() => {
                     ]
                 }
             ]
-        } else {
+        }
+        {
             return [
                 {
                     data: [
@@ -110,7 +111,9 @@ React.useEffect(() => {
                     ]
                 }
             ]
-        } else if (props.stepperData.paymentTerm === 1 && props.stepperData.commitment === 3) {
+        }
+
+        if (props.stepperData.paymentTerm === 1 && props.stepperData.commitment === 3) {
             return [
                 {
                     data: [
@@ -132,7 +135,9 @@ React.useEffect(() => {
                 }
 
             ]
-        } else {
+        }
+
+        {
             return [
                 {
                     data: [
@@ -164,7 +169,8 @@ React.useEffect(() => {
                 </div>
 
             ]
-        } else {
+        }
+        {
             return [
                 <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now&nbsp;</Text>,
                 <div className="flex items-center right">

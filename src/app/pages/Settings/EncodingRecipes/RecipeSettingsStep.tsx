@@ -11,7 +11,7 @@ import { LoadingSpinner } from "../../../../components/FormsComponents/Progress/
 import { UploadText } from "../../../shared/General/ImageModal";
 import { IconStyle } from '../../../../shared/Common/Icon';
 
-export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: (data: EncodingRecipeItem) => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>; encodingRecipeData: EncodingRecipesData}) => {
+export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: React.Dispatch<React.SetStateAction<EncodingRecipeItem>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>; encodingRecipeData: EncodingRecipesData}) => {
 
     React.useEffect(() => {
         if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0 && !uploadButtonLoading) }

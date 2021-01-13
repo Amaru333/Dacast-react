@@ -6,7 +6,7 @@ import { Table } from "../../../../components/Table/Table"
 import { IconStyle } from "../../../../shared/Common/Icon"
 import { getKnowledgebaseLink } from "../../../constants/KnowledgbaseLinks"
 
-export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: (data: EncodingRecipeItem) => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; encodingRecipeData: EncodingRecipesData}) => {
+export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: React.Dispatch<React.SetStateAction<EncodingRecipeItem>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; encodingRecipeData: EncodingRecipesData}) => {
 
     const createRecipeHeaderElement = () => {
         return {data: [
@@ -35,7 +35,7 @@ export const RecipePresetStep = (props: {stepperData: EncodingRecipeItem; update
                         } else {
                             const editedRecipePresets = props.stepperData.recipePresets.filter(item => item !== value.name)
                             props.setStepValidated(editedRecipePresets.length >= 1)
-                            props.updateStepperData({ ...props.stepperData, ["recipePresets"]: editedRecipePresets })
+                            props.updateStepperData({ ...props.stepperData, recipePresets: editedRecipePresets })
                         }
                     }
                     } />,

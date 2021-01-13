@@ -3,9 +3,9 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
+import { BillingPageInfos, Extras } from '../../../redux-flow/store/Account/Plan';
 
-export const PurchaseDataPaymentStep = (props: {stepperData: any; finalFunction: Function;setStepValidated: Function; handleThreeDSecureFail: () => void; billingInfo: BillingPageInfos; purchaseProducts: (recurlyToken: string, callback: Function) => Promise<void>; purchaseProducts3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>}) => {
+export const PurchaseDataPaymentStep = (props: {stepperData: Extras; finalFunction: () => void; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; handleThreeDSecureFail: () => void; billingInfo: BillingPageInfos; purchaseProducts: (recurlyToken: string, callback: Function) => Promise<void>; purchaseProducts3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>}) => {
 
     const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
 

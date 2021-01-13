@@ -45,16 +45,14 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const [deletedRecipe, setDeletedRecipe] = React.useState<EncodingRecipeItem>(emptyRecipe)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
-    const FunctionRecipe = (value: boolean) => {setCreateRecipeStepperOpen(value)}
-
     const editRecipe = (recipe: EncodingRecipeItem) => {
         setSelectedRecipe(recipe);
-        FunctionRecipe(true);
+        setCreateRecipeStepperOpen(true);
     }
 
     const newRecipe = () => {
         setSelectedRecipe(emptyRecipe);
-        FunctionRecipe(true);
+        setCreateRecipeStepperOpen(true);
     }
 
     const sortRecipes = (a: string, b: string) => {
@@ -122,7 +120,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         )
     }
 
-    const submitRecipe = (submittedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function) => {
+    const submitRecipe = (submittedRecipe: EncodingRecipeItem | false) => {
         setSubmitLoading(true);
         if(submittedRecipe) {
             if (submittedRecipe.id) {
@@ -139,7 +137,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     setSubmitLoading(false)
                 })
             }
-            FunctionRecipe(false)
+            setCreateRecipeStepperOpen(false)
         }
     }
     
@@ -164,14 +162,14 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     stepList={stepList}
                     isLoading={submitLoading}
                     lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
-                    functionCancel={FunctionRecipe}
+                    functionCancel={() => setCreateRecipeStepperOpen(false)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
                     encodingRecipeData={props.encodingRecipeData}
                     getUploadUrl={props.getWatermarkUrlForUploading}
                     uploadWatermark={props.uploadWatermark}
                     deleteWatermark={props.deleteWatermark}
-                    finalFunction={() => {submitRecipe(selectedRecipe, FunctionRecipe)}}
+                    finalFunction={() => {submitRecipe(selectedRecipe)}}
                 />
                 <Modal size="small" modalTitle="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
                     <ModalContent>

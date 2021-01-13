@@ -237,7 +237,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
                                                 <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column">
-                                                    {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(upgradeStepList);setStepperPlanOpened(true)}}>Customize</Button> */}
                                                     <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'Event'} sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.eventPlan }); handleSteps('event') }}>{currentPlan === 'Event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                                 </div>
                                             }
@@ -288,7 +287,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                                 <div className="flex flex-column mb25 col col-8 ">
                                                     <Text className='center' size={10} color='gray-5'>3 Month Minimum</Text>
                                                 </div>}
-                                            {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(upgradeStepList);setStepperPlanOpened(true)}}>Customize</Button> */}
                                             <ButtonStyle className='mt1 col col-12' typeButton='primary' disabled={currentPlan === "Annual Scale" || currentPlan === "Monthly Scale"} sizeButton='large' buttonColor='blue' onClick={() => { { planBillingFrequency === "Annually" ? setStepperData({ ...props.planDetails.scalePlanAnnual, selectedScalePlan: props.planDetails.scalePlanAnnual.allowances[0], paymentTerm: 12 }) : setStepperData({ ...props.planDetails.scalePlanMonthly, selectedScalePlan: props.planDetails.scalePlanMonthly.allowances[0], paymentTerm: 1 }) }; handleSteps('scale') }}>{(currentPlan === "Annual Scale" || currentPlan === "Monthly Scale") ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
 
@@ -374,12 +372,11 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>Ads</Text>
                                         <Text className={textClassName} size={14} weight='med' color='gray-1'>AES</Text>
                                         <div className='flex flex-column absolute bottom-0 col col-12 items-center'>
-                                            {planBillingFrequency === 'Annually' ?
+                                            {planBillingFrequency === 'Annually' &&
                                                 <div className="flex flex-column mb25 col col-8 ">
                                                     <Label className="mb1" color='green' backgroundColor='green20' label='25% Discount' />
                                                 </div>
-                                                : null}
-                                            {/* <Button className='' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.scalePlan, action: 'custom'});setStepList(upgradeStepList);setStepperPlanOpened(true)}}>Customize</Button> */}
+                                            }
                                             <ButtonStyle className='mt1' typeButton='primary' disabled={currentPlan === 'scale'} sizeButton='large' buttonColor='blue' onClick={() => { { planBillingFrequency === "Annually" ? setStepperData({ ...props.planDetails.scalePlanAnnual }) : setStepperData({ ...props.planDetails.scalePlanMonthly }) }; handleSteps('scale') }}>{currentPlan === 'scale' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                         </div>
                                     </PlanInfosContainer>
@@ -409,7 +406,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             {currentPlan === 'scale' ?
                                                 <ButtonStyle disabled typeButton='secondary' sizeButton='large' buttonColor='blue'>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column ">
-                                                    {/* <Button className='my1' typeButton='tertiary' sizeButton='large' buttonColor='blue' onClick={() => {setStepperData({...props.planDetails.eventPlan, action: 'custom'});setStepList(upgradeStepList);setStepperPlanOpened(true)}}>Customize</Button> */}
                                                     <ButtonStyle typeButton='primary' disabled={currentPlan === 'event'} sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.eventPlan }); handleSteps('event') }}>{currentPlan === 'event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                                 </div>
                                             }
@@ -457,7 +453,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 updateStepperData={(value: Plan) => setStepperData(value)}
                                 functionCancel={setStepperPlanOpened}
                                 isLoading={isLoading}
-                                finalFunction={() => {console.log('plan purchased triggered')}}
+                                finalFunction={() => {}}
                                 handleThreeDSecureFail={handleThreeDSecureFail}
                                 purchasePlan={purchasePlan}
                                 billingInfo={props.billingInfos}

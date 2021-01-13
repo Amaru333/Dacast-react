@@ -10,9 +10,9 @@ export interface StepperSpecificProps {
     lastStepButton: string;
     finalFunction: Function;
     opened: boolean;
-    functionCancel?: Function;
+    functionCancel?: () => void;
     stepperData?: any;
-    updateStepperData?: any;
+    updateStepperData?: React.Dispatch<React.SetStateAction<any>>;
     widthSecondStep? : number;
     isLoading?: boolean;
 }

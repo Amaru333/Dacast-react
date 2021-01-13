@@ -26,16 +26,14 @@ export const PurchaseDataCartStep = (props: {stepperData: Extras; updateStepperD
     }, [dataAmount])
 
     const handleInputError = (dataAmount: number) => {
-        if(dataAmount === null) { 
-            return null;
-        }
         if(dataAmount > 99999) {
             return "Contact us for purchases over 100,000 GB"
-        } else if (dataAmount < 1000) {
-            return "Purchases must be over 1TB"
-        } else {
-            return null
         }
+        if (dataAmount < 1000) {
+            return "Purchases must be over 1TB"
+        } 
+            return null
+        
     }
 
 
@@ -57,7 +55,7 @@ export const PurchaseDataCartStep = (props: {stepperData: Extras; updateStepperD
         ]
     }
 
-    const handleDataPrice = (data: number, setDataAmount: Function, setDataPrice: Function) => {
+    const handleDataPrice = (data: number, setDataAmount: React.Dispatch<React.SetStateAction<number>>, setDataPrice: React.Dispatch<React.SetStateAction<number>>) => {
         setDataAmount(data)
         if(data <= 4999 ){
             setDataPrice(0.25)

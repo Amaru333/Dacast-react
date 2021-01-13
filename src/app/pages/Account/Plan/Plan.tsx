@@ -256,7 +256,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
                     updateStepperData={(data: Extras) => {setPurchaseDataStepperData(data)}}
-                    functionCancel={setPurchaseDataOpen}
+                    functionCancel={() => setPurchaseDataOpen(false)}
                     billingInfo={props.billingInfos}
                     purchaseProducts={purchaseProducts}
                     purchaseProducts3Ds={purchaseProducts3Ds}
