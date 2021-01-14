@@ -8,9 +8,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { IconGreyContainer, IconStyle } from '../../../shared/Common/Icon'
-import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
-import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
@@ -166,7 +164,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     tableColumn.email &&<Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
                     tableColumn.plan && (account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>),
-                    tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
+                    tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate}</Text>,
                     tableColumn.data && <Text key={'accountsTableBodyDataCell' + key } size={14}>{(account.data.consumed / 1000000000).toFixed(2) + ' / ' + (account.data.allocated / 1000000000).toFixed(2)}</Text>,
                     tableColumn.storage && <Text key={'accountsTableBodyStorageCell' + key } size={14}>{(account.storage.consumed / 1000000000).toFixed(2) + ' / ' + (account.storage.allocated / 1000000000).toFixed(2)}</Text>,
                     tableColumn.flags && <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
