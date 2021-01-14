@@ -11,6 +11,7 @@ export const formatGetAccountDetailsOutput = (data: GetAccountDetailsOutput): Ac
         website: data.website,
         phone: data.phone,
         email: data.email,
+        country: data.country,
         isPaying: data.isPaying,
         playbackProtection: data.playbackProtection,
         emailVerified: data.emailVerified,
