@@ -80,13 +80,13 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     
         return ( 
             sortedRecipes.map((value: EncodingRecipeItem, key) => {
-            
+                value.recipePresets.sort(sortRecipes)
                 return (
                     key === 0 ? 
                         {data: [<Text key={'encodingRecipesPage_dacastRecipe'} size={14} weight="reg">{value.name}</Text>,
                             <IconStyle key={'encodingRecipesPage_isDefaultIcon'} coloricon='green'>{value.isDefault ? "check" : null}</IconStyle>,
                             <div className="flex flex-row" key={"encodingRecipesPage_labelContainer_default"}>
-                                {    value.recipePresets.sort(sortRecipes).map((recipe, key) => {
+                                {    value.recipePresets.map((recipe, key) => {
                                     return (
                                         <RenditionLabel key={'encodingRecipesPage_renditions_' + key + recipe} size={14} weight="reg" color="gray-1" backgroundColor="gray-8" label={recipe} />
                                     )

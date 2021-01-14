@@ -536,7 +536,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
                     <Table contentLoading={contentLoading} className='col col-12 tableOverflow' customClassName=" tableOverflow" id='folderContentTable' headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
-                    <Pagination totalResults={contentList ? contentList.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
+                    <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >

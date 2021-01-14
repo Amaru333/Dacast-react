@@ -44,11 +44,12 @@ export const StartJobModal = (props: StartJobModalProps) => {
 
         } else {
             console.log('processing csv input:', formattedContent)
-            users = formattedContent.split("\n");
+            users = formattedContent.replace(/\r/g,"").split("\n");
             console.log('users list: ', users)
         }
         users.shift()
-        setUsersList(users)
+        console.log('testing parsed users list: ', users.filter(n => n))
+        setUsersList(users.filter(n => n))
     }
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +80,8 @@ export const StartJobModal = (props: StartJobModalProps) => {
                     list={[{title: 'Dacast'}, {title: 'Vzaar'}]}
                     callback={(value: DropdownSingleListItem) => setSelectedPlatform(value.title as 'Dacast' | 'Vzaar')}
                 />
-                <Text size={20}>Users List</Text>
-                <div className='flex'>
+                <Text className='py1' size={20}>Users List</Text>
+                <div className='flex my1'>
                     <InputRadio defaultChecked={selectedOption === 'copy'} onChange={() => setSelectedOption('copy')} className="col col-6" value="copy" name="usersList" label="Copy Paste" />
                     <InputRadio defaultChecked={selectedOption === 'csv'} onChange={() => setSelectedOption('csv')} className="col col-6" value="csv" name="usersList" label="Upload CSV" />
                 </div>
@@ -89,15 +90,17 @@ export const StartJobModal = (props: StartJobModalProps) => {
                         <Input 
                             id='copyPasteInput' 
                             label='Paste users here' 
-                            indicationLabel="Users must be separated by a ','"                                type='textarea' 
-                            onChange={(event) => setUsersList(event.currentTarget.value.split(','))}
+                            indicationLabel="Users must be separated by a ','"
+                            type='textarea' 
+                            onChange={(event) => setUsersList(event.currentTarget.value.replace(/\r/g,"").replace(/\n/g,"").split(','))}
                         />
                     </div>
                 }
                 { selectedOption === 'csv' && 
-                    <div className="col col-12">
+                    <div className="col col-12 flex-flex-column">
                         <input type='file' ref={inputBrowseButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept='.csv' />
-                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your start a job"}</Text>
+                        <Text className="py1 col col-12" size={14} weight="reg">Upload a file for your start a job</Text>
+                        <Text className="py1 col col-12" size={14} weight="reg">The file must have one column with one user per row and a header (e.g. User ID)</Text>
                         <Button onClick={() => {inputBrowseButtonRef.current.click()} } className="mt2" sizeButton="xs" typeButton="secondary">
                             Upload File
                         </Button>
