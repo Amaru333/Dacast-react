@@ -3,32 +3,78 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Ad, ContentEngagementSettings } from '../../redux-flow/store/Settings/Interactions/types';
+import { Ad, ContentEngagementSettings, EngagementInfo } from '../../redux-flow/store/Settings/Engagement/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
-import { ContentEngagementPage } from '../../shared/Engagement/ContentEngagement';
-import { getSettingsInteractionsInfosAction } from '../../redux-flow/store/Settings/Interactions/actions';
-import { ContentEngagementComponentProps } from '../Playlists/Engagement';
+import { getSettingsEngagementInfosAction } from '../../redux-flow/store/Settings/Engagement/actions';
 import { Action, getContentEngagementSettingsAction, saveContentEngagementSettingsAction, lockSectionAction, saveContentAdAction, createContentAdAction, deleteContentAdAction, uploadContentImageAction, deleteContentImageAction, getUploadUrlAction } from '../../redux-flow/store/Content/Engagement/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Bubble } from '../../../components/Bubble/Bubble';
+import { IconStyle } from '../../../shared/Common/Icon';
+import { EngagementAdvertising } from '../../shared/Engagement/Advertising';
+import { userToken } from '../../utils/services/token/tokenService';
+import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
+import { EngagementBrandText } from '../../shared/Engagement/BrandText';
+import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ContentEngagementContainerProps, EngagementComponentProps, EngagementSectionsLock } from '../../redux-flow/store/Content/Engagement/types';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const VodEngagement = (props: ContentEngagementComponentProps) => {
+export const VodEngagement = (props: ContentEngagementContainerProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+
+    const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(null)
+    const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
+    const [saveAllButtonLoading, setSaveAllButtonLoading] = React.useState<boolean>(false);
+
+    const componentProps: EngagementComponentProps = {
+        globalEngagementSettings: props.globalEngagementSettings,
+        localEngagementSettings: localEngagementSettings,
+        setLocalEngagementSettings: setLocalEngagementSettings,
+        setSettingsEdited: setSettingsEdited,
+        lockSection: props.lockSection,
+        contentId: vodId,
+        contentType: "vod",
+        saveContentEngagementSettings: props.saveContentEngagementSettings
+    }
 
     React.useEffect(() => {
         if (!props.globalEngagementSettings){
             props.getGlobalEngagementSettings()
             .catch(() => setNodataFetched(true))
         }
-        props.getContentEngagementSettings(vodId, 'vod')
+        if (!localEngagementSettings) {
+            props.getContentEngagementSettings(vodId, 'vod')
         .catch(() => setNodataFetched(true))
-
+        }
     }, [])
+
+    React.useEffect(() => {
+        if ((props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId])) {
+            setLocalEngagementSettings(props.contentEngagementState['vod'][vodId].engagementSettings)
+        }
+    }, [props.contentEngagementState])
+
+    const handleSubmit = () => {
+        setSaveAllButtonLoading(true)
+        props.saveContentEngagementSettings({ 
+            contentId: vodId, 
+            engagementSettings: Object.keys(localEngagementSettings).filter(f => {return localEngagementSettings[f] && !localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: localEngagementSettings[next]}}, {})
+        }, 'vod').then(() => {
+            setSettingsEdited(false)
+            setSaveAllButtonLoading(false)
+        })
+    }
+
+    const revertSettings = () => {
+        setLocalEngagementSettings(props.contentEngagementState['vod'][vodId].engagementSettings);
+    }
+
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
@@ -38,23 +84,42 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
         <>
             <VideoTabs videoId={vodId} />
             {
-                props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId] && props.globalEngagementSettings?
+                props.contentEngagementState['vod'] && props.contentEngagementState['vod'][vodId] && props.globalEngagementSettings && localEngagementSettings ?
                     <div className='flex flex-column'>
-                        <ContentEngagementPage
-                            contentEngagementSettings={props.contentEngagementState['vod'][vodId]}
-                            getContentEngagementSettings={props.getContentEngagementSettings}
-                            saveContentEngagementSettings={props.saveContentEngagementSettings}
-                            lockSection={props.lockSection}
-                            saveContentAd={props.saveContentAd}
-                            createContentAd={props.createContentAd}
-                            deleteContentAd={props.deleteContentAd}
-                            getUploadUrl={props.getUploadUrl}
-                            uploadContentImage={props.uploadContentImage}
-                            deleteContentImage={props.deleteContentImage}
-                            contentType='vod'
-                            contentId={vodId}
-                            globalEngagementSettings={props.globalEngagementSettings}
+                        <Bubble className="flex items-center" type='info'>When the section is locked, the settings are inherited from your Global Engagement Settings. Click the <IconStyle>lock</IconStyle> padlock to override these settings. To revert back to your Global Engagement Settings you can click the padlock again.</Bubble>
+                        { userToken.getPrivilege('privilege-advertising') &&
+                        <EngagementAdvertising
+                            {...componentProps} 
+                            deleteAd={props.deleteContentAd}
+                            createAd={props.createContentAd}
+                            saveAd={props.saveContentAd}
                         />
+                        }
+                        <EngagementBrandImage
+                            {...componentProps}
+                            getUploadUrl={props.getUploadUrl}
+                            deleteFile={props.deleteContentImage}
+                            uploadBrandImage={props.uploadContentImage}
+                            getEngagementSettings={props.getContentEngagementSettings}
+                        />
+                        <EngagementBrandText
+                            {...componentProps}
+                        />
+                        <EngagementEndScreenText
+                            {...componentProps}
+                        />
+                        {
+                            settingsEdited &&
+                                <div className="mt1">
+                                    <Button
+                                        isLoading={saveAllButtonLoading}
+                                        onClick={() => { handleSubmit()}}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button className="ml2" typeButton="tertiary" onClick={() => revertSettings()}>Discard</Button>
+                                </div>
+                        }
                     </div>
                     : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
             }
@@ -65,44 +130,44 @@ export const VodEngagement = (props: ContentEngagementComponentProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentEngagementState: state.content.engagement,
-        globalEngagementSettings: state.settings.interactions
+        globalEngagementSettings: state.settings.engagement
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getGlobalEngagementSettings: async () => {
-            await dispatch(getSettingsInteractionsInfosAction());
+            await dispatch(getSettingsEngagementInfosAction(undefined));
         },
-        getContentEngagementSettings: async (contentId: string, contentType: string) => {
-            await dispatch(getContentEngagementSettingsAction(contentId, contentType));
+        getContentEngagementSettings: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentEngagementSettingsAction(contentType)(contentId));
         },
-        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: string) => {
-            await dispatch(saveContentEngagementSettingsAction(data, contentType))
+        saveContentEngagementSettings: async (data: ContentEngagementSettings, contentType: ContentType) => {
+            await dispatch(saveContentEngagementSettingsAction(contentType)(data))
         },
-        lockSection: async (section: string, contentId: string, contentType: string, unlock?: boolean) => {
-            await dispatch(lockSectionAction(section, contentId, contentType, unlock))
+        lockSection: async (section: EngagementSectionsLock, contentId: string, contentType: ContentType, unlock?: boolean) => {
+            await dispatch(lockSectionAction(contentType)({section: section, contentId: contentId, action: unlock}))
         },
-        saveContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(saveContentAdAction(data, contentId, contentType))
+        saveContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
-        createContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(createContentAdAction(data, contentId, contentType))
+        createContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(createContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
-        deleteContentAd: async (data: Ad[], contentId: string, contentType: string) => {
-            await dispatch(deleteContentAdAction(data, contentId, contentType))
+        deleteContentAd: async (data: Ad[], contentId: string, contentType: ContentType) => {
+            await dispatch(deleteContentAdAction(contentType)({ads: data, contentId: contentId}))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        getUploadUrl: async (uploadType: string, contentId: string, contentType: string) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, contentType))
+        getUploadUrl: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)(contentId))
         },
         uploadContentImage: async (data: File, uploadUrl: string) => {
-            await dispatch(uploadContentImageAction(data, uploadUrl))
+            await dispatch(uploadContentImageAction({data: data, uploadUrl: uploadUrl}))
         },
-        deleteContentImage: async (targetId: string, contentType: string) => {
-            await dispatch(deleteContentImageAction(targetId, contentType))
+        deleteContentImage: async (targetId: string, contentType: ContentType) => {
+            await dispatch(deleteContentImageAction(contentType)(targetId))
         }
     };
 }

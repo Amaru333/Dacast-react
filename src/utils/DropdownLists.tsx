@@ -34,4 +34,4 @@ export const discountAppliedDropdownList = [{title: "Once"}, {title: "Forever"}]
 //ENGAGEMENT
 export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
 
-export const adPlacementDropdownList = [{title: "Pre-Roll"}, {title: "Mid-Roll"}, {title: "Post-Roll"}]
+export const adPlacementDropdownList = [{title: "Pre-roll"}, {title: "Mid-roll"}, {title: "Post-roll"}]
