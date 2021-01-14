@@ -85,7 +85,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                             <Text key={'jobsTableBodyJobIdCell' + key } size={14}>{job.id}</Text>
                         </div>,
                         <Text key={'jobsTableBodyPlaformCell' + key } size={14}>{job.platform}</Text>,
-                        <Text key={'jobsTableBodyCurrenStepCell' + key } size={14}>{job.currentStep}</Text>,
+                        <Text key={'jobsTableBodyCurrenStepCell' + key } size={14}>{job.currentStep === 'Errored out' ? 'Failed' : job.currentStep}</Text>,
                         <Text key={'jobsTableBodyNbUsersCell' + key } size={14}>{job.userIds.length}</Text>,
                         <IconStyle key={'jobsTableBodyErrorDetailsCell' + key } coloricon={!job.errorDetails && job.currentStep !== 'Errored out' ? 'green' : 'red'}>{!job.errorDetails && job.currentStep !== 'Errored out' ? 'check' : 'clear'}</IconStyle>,
                         <Text key={'jobsTableBodyLastUpdateCell' + key } size={14} >{job.lastUpdateDate}</Text>,
