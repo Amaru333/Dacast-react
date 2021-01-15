@@ -160,6 +160,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         }
     }
 
+    console.log("rerender");
+    
     return (
         <div>
             <Bubble type='info' className='my2'>
@@ -198,8 +200,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         id="dateStart"
                                         hideOption="Always"
                                         callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setStartTime(ts); setStartTimezone(tz) }}
-                                        defaultTs={props.securityDetails.contentScheduling.startTime}
-                                        timezone={props.securityDetails.contentScheduling.startTimezone}
+                                        defaultTs={startTime}
+                                        timezone={startTimezone}
                                         showTimezone={true}
                                     />
                                 </div>
@@ -210,8 +212,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         minDate={startTime ? startTime : undefined}
                                         hideOption="Forever"
                                         callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setEndTime(ts); setEndTimezone(tz) }}
-                                        defaultTs={props.securityDetails.contentScheduling.endTime}
-                                        timezone={props.securityDetails.contentScheduling.startTimezone}
+                                        defaultTs={endTime}
+                                        timezone={endTimezone}
                                         showTimezone={true}
                                     />
                                 </div>

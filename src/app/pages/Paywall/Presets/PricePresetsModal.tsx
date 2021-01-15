@@ -119,6 +119,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    fullLineTz
                     showTimezone={true}
                     defaultTs={presetsList.settings.startDate}
                     timezone={presetsList.settings.timezone}
