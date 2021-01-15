@@ -23,9 +23,6 @@ interface DateTimePickerProps {
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
-    const ConditionalWrapper = ({ condition, wrapper, children }) =>
-        condition ? wrapper(children) : children;
-
     const inputTimeToTs = (value: string, timezoneName: string) => {
         let offset = moment.tz(timezoneName).utcOffset() * 60
         let splitValue = value.split(':')
@@ -41,25 +38,22 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         return total
     }
 
-    console.log(props.defaultTs && props.defaultTs > 0 ? props.defaultTs : 0, "defaultTs", props.id)
-
     let defaultTimestamp = moment.tz(props.defaultTs && props.defaultTs > 0 ? props.defaultTs : 0, props.timezone ? props.timezone : 'UTC');
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
-    const [time, setTime] = React.useState<number>(defaultTimestamp.clone().valueOf() / 1000 - defaultTimestamp.clone().startOf('day').valueOf() / 1000)
     const [day, setDay] = React.useState<number>(defaultTimestamp.clone().startOf('day').valueOf() / 1000)
+    const [time, setTime] = React.useState<string>(moment.utc((defaultTimestamp.clone().startOf('day').valueOf() / 1000 + defaultTimestamp.clone().valueOf() / 1000 - defaultTimestamp.clone().startOf('day').valueOf() / 1000) * 1000).tz(props.timezone || moment.tz.guess()).format('HH:mm'))
+
     const [timezone, setTimezone] = React.useState<string>(props.timezone)
 
-
+    
     const colClass= props.fullLineTz ? 'col col-4 px1' : 'col col-3 px1';
 
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {
-        console.log(day, time, moment.utc((day + time) * 1000).valueOf())
-        props.callback(method === "Set Date and Time" ? moment.utc((day + time) * 1000).valueOf() : 0, timezone)
+        props.callback(method === "Set Date and Time" ? moment.utc((day + inputTimeToTs(time , props.timezone || 'UTC')) * 1000).valueOf() : 0, timezone)
     }, [time, day, method, timezone])
-
     return (
         <div className="flex flex-wrap items-end col col-12 mxn1">
             <DropdownSingle disabled={props.disabled} className={colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />
@@ -74,12 +68,11 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                     />
                     <Input
                         type='time'
-                        value={moment.utc((day + time) * 1000).tz(props.timezone || moment.tz.guess()).format('HH:mm')}
-                        onChange={(event) => setTime(inputTimeToTs(event.currentTarget.value, props.timezone || 'UTC'))}
+                        value={time}
+                        onChange={(event) => setTime(event.currentTarget.value)}
                         className={colClass}
                         disabled={false}
                         id={'input' + props.id}
-                        pattern="[0-9]{2}:[0-9]{2}"
                     />
                     {
                         props.showTimezone &&
