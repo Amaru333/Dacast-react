@@ -16,6 +16,7 @@ interface DateTimePickerProps {
     dropdownTitle?: string;
     showTimezone?: boolean;
     minDate?: number;
+    disabled?: boolean;
 }
 
 
@@ -60,6 +61,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                             callback={(_, timestamp: string) => setDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
                             className='col col-6 md-col-4 mr2' 
                             id={'datePicker'+props.id}
+                            date={moment(props.defaultTs*1000)}
+                            disabled={props.disabled}
                         />
                         <Input
                             type='time'

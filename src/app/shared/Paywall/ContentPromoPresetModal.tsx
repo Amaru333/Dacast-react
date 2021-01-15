@@ -30,24 +30,6 @@ const defaultPromo: Promo = {
 
 export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset() * 60
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if (isNaN(hours)) {
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if (isNaN(min)) {
-            min = 0
-        }
-        let total = hours + min - offset
-        return total
-    }
-
-
-
-
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 

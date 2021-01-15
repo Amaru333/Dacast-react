@@ -75,6 +75,10 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         setStepperData({...stepperData, secondStep: {...props}})
     }, [props])
 
+    React.useEffect(() => {
+        console.log(stepperData)
+    }, [stepperData])
+
     const groupPricesTableHeader = () => {
         return {data: [
             {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>},

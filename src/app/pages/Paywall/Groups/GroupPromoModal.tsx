@@ -26,22 +26,6 @@ const defaultPromo: GroupPromo = {
 }
 
 export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset()*60
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
-            min = 0
-        }
-        let total = hours + min - offset
-        return total
-    }
-
-
 
     const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess()} : defaultPromo)
 
