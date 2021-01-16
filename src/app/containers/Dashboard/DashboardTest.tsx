@@ -59,13 +59,7 @@ const DashboardTest = (props: DashboardProps) => {
     const renderDashboard = () => {
             return (
                 <>
-                {
-                    props.infos.currentPlan ?
-                     props.infos.currentPlan.displayName !== "Free" && props.infos.currentPlan.displayName !== "30 Day Trial" ?
-                    <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                    :<GeneralDashboard plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                    : null
-                }
+                <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
                 {
                     props.infos.live && 
                         <LiveDashboard profile={props.infos.live} />

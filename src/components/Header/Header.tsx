@@ -110,7 +110,7 @@ const Header = (props: HeaderProps) => {
                     dataLayer: {
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'plan': props.billingInfo && props.billingInfo.currentPlan ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
@@ -149,7 +149,7 @@ const Header = (props: HeaderProps) => {
                     dataLayer: {
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'plan': props.billingInfo && props.billingInfo.currentPlan ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'userFirstName': props.ProfileInfo.firstName,

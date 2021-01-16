@@ -13,7 +13,7 @@ import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
@@ -32,11 +32,47 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     } 
 
     const handleBillingPeriod = () => {
-        if(props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
-            return ;
-        }else {
-            return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
+        if(!props.plan || props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
+            return null
         }
+
+        return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
+    }
+
+    const renderPlanWidget = () => {
+        if(!props.plan) {
+            return (
+                <WidgetHeader className="flex">
+                    <Text size={16} weight="med" color="gray-3">Loading Plan... </Text>
+                </WidgetHeader>
+            )
+        }
+        if(props.plan.displayName === "30 Day Trial") {
+            return (
+            <React.Fragment>
+                <WidgetHeader className="flex">
+                    <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
+                    <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
+                </WidgetHeader>
+                <div className="flex flex-wrap items-baseline mb1">
+                    <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
+                </div>
+                <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
+            </React.Fragment>
+            )
+        }
+        return (
+            <React.Fragment>
+                <WidgetHeader className="flex">
+                    <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
+                    <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                </WidgetHeader>
+                {
+                    props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
+                }
+                <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
+            </React.Fragment>
+        )
     }
 
     return (
@@ -54,7 +90,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
-                        {(props.plan.displayName !== "Free" && props.plan.state === "active") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
+                        {(props.plan && props.plan.displayName !== "Free" && props.plan.state === "active") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
                     </WidgetHeader>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
@@ -87,32 +123,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     </div>
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>
-
-
-                {
-                    props.plan.displayName === "30 Day Trial" ?
-                        <WidgetElement className={classItem}>
-                            <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
-                                <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
-                            </WidgetHeader>
-                            <div className="flex flex-wrap items-baseline mb1">
-                                <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
-                            </div>
-                            <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
-                        </WidgetElement> :
-                        <WidgetElement className={classItem}>
-                            <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                                <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
-                            </WidgetHeader>
-                            {
-                                props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
-
-                            }                            
-                            <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
-                        </WidgetElement>
-                }
+                <WidgetElement className={classItem}>
+                    {renderPlanWidget()}
+                </WidgetElement> 
             </div>
         </section>
     )
@@ -135,7 +148,6 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
                     </div>
                 )
             } else {
-                
                 return (
                     <div color={props.percentage <= 25 ? 'red' : 'gray-1'} className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{props.percentage <= 25 ? "Enable Playback Protection" : "Playback Protection"}</Text>
                         <IconStyle className='pointer' onClick={() => props.openOverage(true)}>settings</IconStyle>

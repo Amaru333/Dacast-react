@@ -10,8 +10,8 @@ export enum ActionTypes {
 
 export interface DashboardInfos {
     vod: DashboardVod;
-    isTrial: false | DashboardTrial;
-    isPayingPlan: false | DashboardPayingPlan;
+    isTrial?: false | DashboardTrial;
+    isPayingPlan?: false | DashboardPayingPlan;
     paywall: DashboardPaywall;
     live:  DashboardLive;
     generalInfos: DashboardGeneral;
@@ -69,7 +69,39 @@ export interface DashboardPaywall {
 }
 
 export const dashboardInitialState: DashboardState = {
-    info: false,
+    info: {
+        generalInfos: {
+            bandwidth: {
+                limit: 0,
+                consumed: 0,
+            },
+            storage: {
+                limit: 0,
+                consumed: 0
+            },
+        },
+        vod: {
+            totalVideos: 0,
+            videoPlays: 0,
+            impressions: 0,
+            topVideos: [],
+            playRate: 0,
+        },
+        live: {
+            activeChannels: 0,
+            totalChannels: 0,
+            liveViewers: 0,
+            topChannels: [],
+        },
+        paywall: {
+            balance: 0,
+            revenue: null
+        },
+        currentPlan: null,
+        playbackProtection: null,
+        isPayingPlan: false,
+        isTrial: false
+    },
 };
 
 export interface DashboardState {
