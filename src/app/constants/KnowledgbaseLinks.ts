@@ -34,6 +34,8 @@ export const getKnowledgebaseLink = (name: string) => {
             return "https://www.dacast.com/support/knowledgebase/can-i-use-local-ads-on-my-content/"
         case 'Encoder Setup':
             return "https://www.dacast.com/support/knowledgebase/live-encoder-configuration/"
+        case 'Google Analytics':
+            return "https://www.dacast.com/support/knowledgebase/how-do-i-link-my-google-analytics-account-to-my-dacast-account/"
         default:
             return "https://www.dacast.com/support/knowledgebase/"
     }

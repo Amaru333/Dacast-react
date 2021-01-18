@@ -72,11 +72,18 @@ export interface EndScreenEndpoint {
     locked: boolean;
 }
 
-export interface EngagementSettingsEndoint {
+export interface GoogleAnalyticsEndpoint {
+    isEnabled: boolean;
+    trackingID: string;
+    locked: boolean;
+}
+
+export interface EngagementSettingsEndpoint {
     adsSettings: AdsSettingsEndpoint;
     brandTextSettings: BrandTextEndpoint;
     brandImageSettings: BrandImageEndpoint;
     endScreenSettings: EndScreenEndpoint;
+    googleAnalyticsSettings: GoogleAnalyticsEndpoint;
 }
 
 export interface PutAdInput {
