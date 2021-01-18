@@ -140,6 +140,7 @@ export interface GetAccountPlanOutput {
     admin: PlanSettingEndpoint;
     expo: PlanSettingEndpoint;
     ultraSecureChannel: PlanSettingEndpoint;
+    phoneSupport: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

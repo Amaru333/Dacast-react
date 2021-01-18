@@ -35,6 +35,7 @@ export interface PlanInfo {
     admin: PlanSetting;
     expo: PlanSetting;
     ultraSecureChannel: PlanSetting;
+    phoneSupport: PlanSetting;
 }
 
 export interface PlanInfoPut {
