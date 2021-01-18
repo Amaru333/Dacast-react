@@ -85,7 +85,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
                 <DateTimePicker
                     fullLineTz
                     showTimezone={false}
-                    defaultTs={groupPromo.startDate}
+                    defaultTs={startDate}
                     timezone={groupPromo.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
@@ -97,7 +97,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
                 <DateTimePicker
                     fullLineTz
                     showTimezone={false}
-                    defaultTs={groupPromo.endDate}
+                    defaultTs={endDate}
                     minDate={startDate}
                     timezone={groupPromo.timezone}
                     callback={(ts: number) => setEndDate(ts)}

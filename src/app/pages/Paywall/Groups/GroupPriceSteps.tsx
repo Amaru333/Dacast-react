@@ -81,13 +81,12 @@ export const GroupPriceStepperFirstStep = (props: { stepperData: GroupStepperDat
 
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                {console.log(props.stepperData.firststep.groupSettings.startDate)}
                 <DateTimePicker
                     fullLineTz
                     showTimezone={true}
                     defaultTs={props.stepperData.firststep.groupSettings.startDate}
                     timezone={props.stepperData.firststep.groupSettings.timezone}
-                    callback={(ts: number, timezone: string) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Upon Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] } } })}
+                    callback={(ts: number, timezone: string) =>  props.updateStepperData( { ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Upon Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] }  }  })}
                     hideOption="Upon Purchase"
                     id="endDate"
                     dropdownTitle="Start Method"

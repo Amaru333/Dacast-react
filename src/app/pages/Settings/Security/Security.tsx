@@ -159,8 +159,6 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             })
         }
     }
-
-    console.log("rerender");
     
     return (
         <div>

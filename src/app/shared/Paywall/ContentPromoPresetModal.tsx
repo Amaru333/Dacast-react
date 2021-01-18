@@ -104,7 +104,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
                     fullLineTz
-                    defaultTs={newPromoPreset.startDate}
+                    defaultTs={startDate}
                     timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
@@ -115,8 +115,8 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker 
                     fullLineTz
-                    minDate={newPromoPreset.startDate}
-                    defaultTs={newPromoPreset.endDate}
+                    minDate={startDate}
+                    defaultTs={endDate}
                     timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
