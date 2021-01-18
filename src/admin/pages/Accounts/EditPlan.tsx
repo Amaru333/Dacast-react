@@ -140,6 +140,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.playerDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.playerDownload.planValue || props.accountPlan.playerDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('playerDownload', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>24/7 Phone Support</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.phoneSupport.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.phoneSupport.planValue || props.accountPlan.phoneSupport.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('phoneSupport', value === 'On' ? true : false)} />
+                    </div>
 
                     <Divider className='pt2' /> 
 
