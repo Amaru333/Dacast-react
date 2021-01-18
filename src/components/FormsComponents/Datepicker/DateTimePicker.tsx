@@ -20,7 +20,6 @@ interface DateTimePickerProps {
     fullLineTz?: boolean;
 }
 
-
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
@@ -38,17 +37,14 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         return total
     }
 
-    let defaultTimestamp = moment.tz(props.defaultTs && props.defaultTs > 0 ? props.defaultTs : 0, props.timezone ? props.timezone : 'UTC');
+    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ?  moment.tz( props.defaultTs, props.timezone ? props.timezone : 'UTC') : moment(null) ;
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
     const [day, setDay] = React.useState<number>(defaultTimestamp.clone().startOf('day').valueOf() / 1000)
     const [time, setTime] = React.useState<string>(moment.utc((defaultTimestamp.clone().startOf('day').valueOf() / 1000 + defaultTimestamp.clone().valueOf() / 1000 - defaultTimestamp.clone().startOf('day').valueOf() / 1000) * 1000).tz(props.timezone || moment.tz.guess()).format('HH:mm'))
 
     const [timezone, setTimezone] = React.useState<string>(props.timezone)
-
-    
     const colClass= props.fullLineTz ? 'col col-4 px1' : 'col col-3 px1';
-
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {

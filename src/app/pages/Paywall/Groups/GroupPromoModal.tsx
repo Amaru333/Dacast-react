@@ -115,7 +115,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
                         dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
                         className='col col-6 pr2'
                         dropdownTitle='Timezone'
-                        callback={(value: DropdownSingleListItem) => { console.log(value.title.split(' ')[0]); setGroupPromo({ ...groupPromo, timezone: value.title.split(' ')[0] }) }}
+                        callback={(value: DropdownSingleListItem) => { setGroupPromo({ ...groupPromo, timezone: value.title.split(' ')[0] }) }}
                         list={timezoneDropdownList}
                     />
                 }
