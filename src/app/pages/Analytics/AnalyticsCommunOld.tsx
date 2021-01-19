@@ -169,7 +169,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             buttonColor='blue'
                             sizeButton='small'
                             focusState={selectedPreset === text}
-                            onClick={() => { setSelectedPreset(text); setDates({ start, end })} }
+                            onClick={() => { setSelectedPreset(text); text !== 'Custom' && setDates({ start, end })} }
                         >
                             {text}
                         </Button>
@@ -183,7 +183,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div className="col col-12 mb25 clearfix">
             {renderDatePresets()}
-            <DateRangePickerWrapper disabled={selectedPreset !== 'Custom'} dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" />
+            <DateRangePickerWrapper callback={(dates) => { setDates({ start: dates.startDate, end: dates.endDate }) }} disabled={selectedPreset !== 'Custom'} dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" />
             <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )
