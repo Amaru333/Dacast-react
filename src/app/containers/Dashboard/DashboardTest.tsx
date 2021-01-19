@@ -58,58 +58,48 @@ const DashboardTest = (props: DashboardProps) => {
 
     const renderDashboard = () => {
             return (
-                <>
+                <React.Fragment>
                 <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                {
-                    props.infos.live && 
-                        <LiveDashboard profile={props.infos.live} />
-                }
-                {
-                    props.infos.vod && 
-                        <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
-                }
-                {
-                    props.infos.paywall && 
-                        <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
-                }
-                {
-                    props.infos.isTrial && 
+                {   props.infos.currentPlan && props.infos.currentPlan.displayName !== '30 Day Trial' ?
+                        <React.Fragment>
+                            <LiveDashboard profile={props.infos.live} />
+                            <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
+                            <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                            {
+                                protectionModalOpened &&
+                                <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+                                    <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
+                                </Modal>
+                            }
+                            {
+                                props.infos.playbackProtection && 
+                                <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
+                                    <DisableProtectionModal
+                                        price={props.infos.playbackProtection.price}
+                                        editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                                        setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                                    />
+                                </Modal>
+                            }
+                        </React.Fragment>
+                    :
                         <TrialAdditionalDashboard />
                 }
-                    
-                    {
-                        protectionModalOpened &&
-                        <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
-                        </Modal>
-                    }
-                    {
-                        props.infos.playbackProtection && 
-                        <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
-                            <DisableProtectionModal
-                                price={props.infos.playbackProtection.price}
-                                editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                                setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
-                            />
-                        </Modal>
-                    }
-
-                </>
+                </React.Fragment>
             )
     }
 
     return (
-        <>
+        <React.Fragment>
             {
                 props.infos ?
-                    <>
+                    <React.Fragment>
                         {renderDashboard()}
                         <div className="clearfix"></div>
-                    </> :
+                    </React.Fragment> :
                     <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
-
             }
-        </>
+        </React.Fragment>
     )
 };
 

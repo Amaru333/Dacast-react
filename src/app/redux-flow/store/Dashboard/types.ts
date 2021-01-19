@@ -81,20 +81,20 @@ export const dashboardInitialState: DashboardState = {
             },
         },
         vod: {
-            totalVideos: 0,
-            videoPlays: 0,
-            impressions: 0,
+            totalVideos: NaN,
+            videoPlays: NaN,
+            impressions: NaN,
             topVideos: [],
             playRate: 0,
         },
         live: {
-            activeChannels: 0,
-            totalChannels: 0,
-            liveViewers: 0,
+            activeChannels: NaN,
+            totalChannels: NaN,
+            liveViewers: NaN,
             topChannels: [],
         },
         paywall: {
-            balance: 0,
+            balance: NaN,
             revenue: null
         },
         currentPlan: null,
