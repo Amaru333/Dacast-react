@@ -34,6 +34,7 @@ export interface PlanInfo {
     emailCatcher: PlanSetting;
     admin: PlanSetting;
     expo: PlanSetting;
+    phoneSupport: PlanSetting;
 }
 
 export interface PlanInfoPut {
