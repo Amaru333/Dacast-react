@@ -57,36 +57,38 @@ const DashboardTest = (props: DashboardProps) => {
 
 
     const renderDashboard = () => {
+
+        if (props.infos.currentPlan && props.infos.currentPlan.displayName !== '30 Day Trial') {
             return (
                 <React.Fragment>
-                <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                {   props.infos.currentPlan && props.infos.currentPlan.displayName !== '30 Day Trial' ?
-                        <React.Fragment>
-                            <LiveDashboard profile={props.infos.live} />
-                            <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
-                            <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
-                            {
-                                protectionModalOpened &&
-                                <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                                    <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
-                                </Modal>
-                            }
-                            {
-                                props.infos.playbackProtection && 
-                                <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
-                                    <DisableProtectionModal
-                                        price={props.infos.playbackProtection.price}
-                                        editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                                        setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
-                                    />
-                                </Modal>
-                            }
-                        </React.Fragment>
-                    :
-                        <TrialAdditionalDashboard />
-                }
+                    <LiveDashboard profile={props.infos.live} />
+                    <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
+                    <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                    {
+                        protectionModalOpened &&
+                        <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
+                            <ProtectionModal actionButton={handlePlaybackProtectionValue} toggle={setProtectionModalOpened} setPlaybackProtectionEnabled={()=>{}} playbackProtection={props.infos.playbackProtection} />
+                        </Modal>
+                    }
+                    {
+                        props.infos.playbackProtection && 
+                        <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
+                            <DisableProtectionModal
+                                price={props.infos.playbackProtection.price}
+                                editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                                setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                            />
+                        </Modal>
+                    }
                 </React.Fragment>
             )
+        }
+
+        if (props.infos.currentPlan && props.infos.currentPlan.displayName === '30 Day Trial') {
+            return <TrialAdditionalDashboard />
+        }
+
+        return null
     }
 
     return (
@@ -94,6 +96,7 @@ const DashboardTest = (props: DashboardProps) => {
             {
                 props.infos ?
                     <React.Fragment>
+                        <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
                         {renderDashboard()}
                         <div className="clearfix"></div>
                     </React.Fragment> :
