@@ -10,8 +10,6 @@ export const HelpPage = () => {
 
     let history = useHistory()
 
-    console.log('phone support', userToken.getPrivilege('privilege-phone-support'))
-
     return (
         <React.Fragment>
 
