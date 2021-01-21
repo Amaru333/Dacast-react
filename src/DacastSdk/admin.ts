@@ -136,7 +136,6 @@ export interface GetAccountPlanOutput {
     emailCatcher: PlanSettingEndpoint;
     admin: PlanSettingEndpoint;
     expo: PlanSettingEndpoint;
-    phoneSupport: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

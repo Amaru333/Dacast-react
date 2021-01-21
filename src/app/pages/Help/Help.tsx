@@ -3,13 +3,9 @@ import { Text } from '../../../components/Typography/Text';
 import { SmallHelpCard, LargeHelpCard, HelpCardHeader, HelpCardContent, CardPlaceholder, HelpPageIcon, ButtonContainer } from "./HelpStyle"
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { userToken } from '../../utils/services/token/tokenService';
-import { useHistory } from 'react-router';
+
 
 export const HelpPage = () => {
-
-    let history = useHistory()
-
     return (
         <React.Fragment>
 
@@ -91,7 +87,7 @@ export const HelpPage = () => {
                 <LargeHelpCard className="mr2 col col-4 p2 flex">
                     <HelpCardContent className="col col-11">
                         <Text size={16} weight="med">Email</Text>
-                        <Text className="mt2" size={12}>Talk to one of our Support Agents by email.</Text>
+                        <Text className="mt2" size={12}>Don’t have access to our Phone Support? Why not contact our support agents by email and they will respond in a timely manner. </Text>
                         <ButtonContainer className="col col-12 mt2">
                             <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/contact/")}>Contact Us</Button>
                         </ButtonContainer>   
@@ -104,7 +100,7 @@ export const HelpPage = () => {
                 <LargeHelpCard className="mr2 col col-4 p2 flex">
                     <HelpCardContent className="col col-11">
                         <Text size={16} weight="med">Web Chat</Text>
-                        <Text className="mt2" size={12}>Talk to one of our Support Agents using our Web Chat.</Text>
+                        <Text className="mt2" size={12}>Talk to one of our Support Agents using our Web Chat</Text>
                         <ButtonContainer className="col col-12 mt2 flex">
                             <Button typeButton="secondary" onClick={()=>{zE('webWidget', 'open');}} sizeButton="xs">Start a Chat</Button>
                         </ButtonContainer>   
@@ -117,25 +113,10 @@ export const HelpPage = () => {
                 <LargeHelpCard className="col col-4 p2 flex">
                     <HelpCardContent className="col col-11">
                         <Text size={16} weight="med">Phone Support</Text>
-                        {
-                            userToken.getPrivilege('privilege-phone-support') ? 
-                                <div className="mt2">
-                                    <Text size={12}>Talk to a Support Agent over the phone.</Text>
-                                    <div className="col col-12 my2">
-                                        <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("tel:+18558969300")}>+1 855 896 9300</Button>
-                                    </div>
-                                    <div>
-                                        <Text size={12}>Dial Extension <strong>#787</strong> when prompted.</Text> 
-                                    </div>
-                                </div>
-                            :
-                                <div className="mt2">
-                                    <Text size={12}>Buy the phone support add-on for an Event plan, or <a href="/account/upgrade">Upgrade</a> to a Scale or Custom plan</Text>
-                                    <ButtonContainer className="col col-12 mt2">
-                                        <Button typeButton="secondary" sizeButton="xs" onClick={() => history.push("/account/upgrade")}>Upgrade Now</Button>
-                                    </ButtonContainer>  
-                                </div>
-                        } 
+                        <Text className="mt2" size={12}>Have a chat with one of our Support Agents over the phone. Only available to our Scale Customers.</Text>
+                        <ButtonContainer className="col col-12 mt2">
+                            <Button typeButton="secondary" sizeButton="xs" onClick={() => window.open("https://www.dacast.com/contact/")}>Call Us</Button>
+                        </ButtonContainer>   
                     </HelpCardContent>
                     <CardPlaceholder className="flex col col-1 items-center">
                         <HelpPageIcon fontSize="large" className="material-icons-two-tone ml2">phone</HelpPageIcon>
