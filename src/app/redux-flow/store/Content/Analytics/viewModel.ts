@@ -427,7 +427,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         case 'HOURLY':
                         case 'MONTH':
                         case 'DAY':
-                            let label = formateTimestampAnalytics(parseInt(data.dimension_type.value));
+                            let label = formateTimestampAnalytics(metric.data_dimension.includes("SALES") ? parseInt( data.dimension_type.value) / 1000 : parseInt(data.dimension_type.value) );
                             let indexLabel = labels.indexOf(label);
 
 
