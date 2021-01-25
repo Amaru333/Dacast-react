@@ -453,11 +453,11 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                 salesData.salesRevenuesByLocation = { data: [], table: [] }
                             }
                             const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
+                            let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
                             if (assosiatedCountry) {
                                 let index = salesData.salesRevenuesByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
                                 let indexTable = salesData.salesRevenuesByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
 
-                                let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
                                 if(index === -1 ) {
                                     salesData.salesRevenuesByLocation = {
                                         data: [...(salesData.salesRevenuesByLocation ? salesData.salesRevenuesByLocation.data : []),
@@ -479,6 +479,13 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                     salesData.salesRevenuesByLocation.table[indexTable][type] = data.dimension_sum;
                                 }
                             
+                            } else {
+                                let indexTable = salesData.salesRevenuesByLocation.table.findIndex(obj => obj.label === data.dimension_type.value.toString());
+                                if(indexTable >= 0) {
+                                    salesData.salesRevenuesByLocation.table[indexTable][type] = data.dimension_sum;
+                                } else {
+                                    salesData.salesRevenuesByLocation.table = [...( salesData.salesRevenuesByLocation ?  salesData.salesRevenuesByLocation.table : []), { label: data.dimension_type.value.toString(),  sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
+                                }
                             }
                             break;
                     }
