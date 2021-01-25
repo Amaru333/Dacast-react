@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bubble } from '../../../components/Bubble/Bubble';
-import { ToggleTextInfo, DisabledSection, Header, BubbleContent } from './SecurityStyle';
+import { ToggleTextInfo, Header, BubbleContent } from './SecurityStyle';
 import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
@@ -16,6 +16,8 @@ import { Prompt } from 'react-router';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../../../shared/MiscStyles';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { DisabledSection } from '../Common/MiscStyle';
+
 
 interface ContentSecurityComponentProps {
     contentType: string

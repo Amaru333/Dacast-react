@@ -10,7 +10,7 @@ import VodList from '../containers/Videos/VideosList';
 import Billing from '../containers/Account/Billing';
 import Folders from '../containers/Folders/Folders';
 import Invoices from '../containers/Account/Invoices';
-import Interactions from '../containers/Settings/Interactions';
+import SettingsEngagement from '../containers/Settings/Engagement';
 import Theming from '../containers/Settings/Theming';
 import UpgradeContainer from '../containers/Account/Upgrade'
 import LiveList from '../containers/Live/List';
@@ -47,7 +47,6 @@ import LiveAnalytics from '../containers/Live/Analytics';
 import VodAnalytics from '../containers/Videos/Analytics';
 import GeneralPlaylist from '../containers/Playlists/General';
 import PlaylistSecurity from '../containers/Playlists/Security';
-import Engagement from '../containers/Playlists/Engagement';
 import PlaylistTheming from '../containers/Playlists/Theming';
 import Setup from '../containers/Playlists/Setup';
 import PlaylistPaywall from '../containers/Playlists/Paywall';
@@ -337,15 +336,6 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         associatePrivilege: 'privilege-paywall'
     },
-    // {
-    //     path: '/playlists/:playlistId/engagement',
-    //     name: 'Engagement',
-    //     iconName: null,
-    //     isExact: true,
-    //     associatePrivilege: 'privilege-playlists',
-    //     notDisplayedInNavigation: true,
-    //     component: Engagement
-    // },
     {
         path: '/playlists/:playlistId/security',
         name: 'Security',
@@ -471,7 +461,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/settings/engagement',
                 name: 'Engagement',
-                component: Interactions
+                component: SettingsEngagement
             }
         ]
     },

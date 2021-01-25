@@ -5,9 +5,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Link, useHistory } from 'react-router-dom'
 import { ConfirmationModal } from '../../shared/modal/ConfirmationModal'
 import { Text } from '../../../components/Typography/Text'
-import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { capitalizeFirstLetter, getUrlParam } from '../../../utils/utils'
-import { DateTime } from 'luxon'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Divider } from '../../../shared/MiscStyles'
 import { Card } from '../../../components/Card/Card'
@@ -51,8 +49,8 @@ export const EditStatusPage = (props: EditStatusComponentProps & {withdrawalId: 
                     data: [
                         <Text key='withdrawalsTableBodyAccountIdCell' size={14}>{salesforceId}</Text>,
                         <Link key='withdrawalsTableBodyAmountCell' to={`/balances?&page=1&perPage=10&salesforceId=${salesforceId}`}>{props.withdrawal.currency + props.withdrawal.amount.toLocaleString()}</Link>,
-                        <Text key='withdrawalsTableBodyRequestedDateCell'size={14}>{tsToLocaleDate(props.withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text key='withdrawalsTableBodyCompletedDateCell' size={14}>{props.withdrawal.transferDate > 0 ? tsToLocaleDate(props.withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
+                        <Text key='withdrawalsTableBodyRequestedDateCell'size={14}>{props.withdrawal.requestedDate}</Text>,
+                        <Text key='withdrawalsTableBodyCompletedDateCell' size={14}>{props.withdrawal.transferDate}</Text>,
                         <Text key='withdrawalsTableBodyMethodCell' size={14}>{capitalizeFirstLetter(props.withdrawal.method)}</Text>,
                     ]
                 }

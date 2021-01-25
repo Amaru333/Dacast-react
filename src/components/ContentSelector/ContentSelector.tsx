@@ -15,6 +15,7 @@ import { Breadcrumb } from '../../app/pages/Folders/Breadcrumb';
 import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModals';
 import { handleRowIconType } from '../../app/shared/Analytics/AnalyticsCommun';
 import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
+import { ListContentTitle } from '../../app/pages/Folders/FoldersStyle';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
@@ -207,7 +208,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     onClick={() => { handleClickFolder(row) }}
                     selected={checkedFolders.includes(row)}>
                     <IconStyle coloricon={"gray-5"}>folder_open</IconStyle>
-                    <Text className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</Text>
+                    <ListContentTitle className="pl2" key={'foldersTableName' + row.id} size={14} weight='reg' color='gray-1'>{row.name}</ListContentTitle>
 
                     {row.hasChild && <div className="flex justify-between  items-center" style={{ flexGrow: 1 }} >
                         <Badge color="gray-5" className='ml2' number={row.nbChildren} />
@@ -235,7 +236,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     }
 
                     {handleRowIconType(element)}
-                    <Text className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</Text>
+                    <ListContentTitle className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</ListContentTitle>
                     {
                         sortSettings.value === "custom" &&
                         <div className="iconAction flex-auto justify-end">
@@ -292,7 +293,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                         />
                     }
                     {handleRowIconType(row)}
-                    <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                    <ListContentTitle className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</ListContentTitle>
                     {
                         row.type === "folder" &&
                         <div className="flex-auto justify-end">

@@ -1,4 +1,4 @@
-import { Ad, ContentEngagementSettings } from '../../Settings/Interactions';
+import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
 import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getContentEngagementSettings = async (contentId: string, contentType: string) => {
@@ -19,7 +19,9 @@ const lockSection = async (lockedSection: string, contentId: string, contentType
 const saveContentAd = async (data: Ad[], contentId: string, contentType: string) => {
     return await axiosClient.put(`${contentType}/${contentId}/settings/engagement/ads`,
         {
-            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, url: ad.url, ["ad-type"]: ad["ad-type"]}}),
+            ads: data.map((ad:Ad) => {return {timestamp: ad.timestamp, 
+            url: ad.url, 
+            ["ad-type"]: ad.type.toLowerCase()}}),
         }
     )
 }
@@ -42,7 +44,7 @@ const deleteContentAd = async (data: Ad[], adsId: string, contentId: string, con
 }
 
 const deleteFile = async (contentId: string, contentType: string) => {
-    return await axiosClient.delete(`${contentType}/${contentId}/settings/brand-image`)
+    return await axiosClient.delete(`${contentType}/${contentId}/settings/engagement/brand-image`)
 }
 
 export const contentEngagementServices = {
