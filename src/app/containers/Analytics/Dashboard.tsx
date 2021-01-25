@@ -4,7 +4,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardAction } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
-import moment from 'moment';
+import { getCurrentTs } from '../../../utils/services/date/dateService';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardState;
@@ -15,7 +15,7 @@ export interface DashboardPageProps {
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        props.getAnalyticsDashboard({ end: Math.round(moment() / 1000), start: Math.round(moment().startOf('day') / 1000) })
+        props.getAnalyticsDashboard({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0)) })
     }, [])
 
     return <DashboardAnalyticsPage {...props} />

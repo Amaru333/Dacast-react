@@ -9,7 +9,6 @@ import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types'
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { GetAnalyticsViewershipOptions, AnalyticsViewershipState, getAnalyticsViewershipAction } from '../../redux-flow/store/Analytics/Viewership';
-import moment from 'moment';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -22,7 +21,7 @@ const Viewership = (props: ViewershipComponentProps) => {
 
     React.useEffect(() => {
         if(!props.viewershipAnalytics) {
-            props.getAnalyticsViewership({ end: Math.round(moment() / 1000), start: Math.round(moment().startOf('day') / 1000) })
+            props.getAnalyticsViewership({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0)), selectedContents: [] })
         }
         
         if(!props.folderData) {

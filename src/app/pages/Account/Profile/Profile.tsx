@@ -8,21 +8,18 @@ import { Card } from '../../../../components/Card/Card';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { AvatarInputContainer, ToggleTextInfo, ToggleContainer } from './ProfileStyle'
 import { Prompt } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import { IconStyle } from '../../../../shared/Common/Icon';
-import { DateTime } from 'luxon';
-import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../../shared/MiscStyles';
-import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { timezoneDropdownList } from '../../../../utils/DropdownLists'
 import  EventHooker from '../../../../utils/services/event/eventHooker'
+import { guessTimezone } from '../../../../utils/services/date/dateService';
 
-var moment = require('moment-timezone');
 
 export const ProfilePage = (props: ProfileComponentProps) => {
 
@@ -140,7 +137,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Timezone'
-                            dropdownDefaultSelect={props.ProfilePageDetails.timezone ? props.ProfilePageDetails.timezone : moment.tz.guess}
+                            dropdownDefaultSelect={props.ProfilePageDetails.timezone ? props.ProfilePageDetails.timezone : guessTimezone()}
                             id='dropdownTimezone'
                             callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
                             list={timezoneDropdownList}

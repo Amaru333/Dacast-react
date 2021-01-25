@@ -2,15 +2,14 @@ import React from 'react';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Text } from '../../../../components/Typography/Text';
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups/types';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
+import { discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-var moment = require('moment-timezone');
+import { guessTimezone } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: GroupPromo = {
     id: '-1',
@@ -19,7 +18,7 @@ const defaultPromo: GroupPromo = {
     limit: 0,
     startDate: 0,
     endDate: 0,
-    timezone: moment.tz.guess(),
+    timezone: guessTimezone(),
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -27,7 +26,7 @@ const defaultPromo: GroupPromo = {
 
 export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[] }) => {
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? { ...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess() } : defaultPromo)
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? { ...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : guessTimezone() } : defaultPromo)
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -112,7 +111,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
                     <DropdownSingle
                         hasSearch
                         id='groupPromoTimezoneDropdown'
-                        dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
+                        dropdownDefaultSelect={groupPromo.timezone || guessTimezone()}
                         className='col col-6 pr2'
                         dropdownTitle='Timezone'
                         callback={(value: DropdownSingleListItem) => { setGroupPromo({ ...groupPromo, timezone: value.title.split(' ')[0] }) }}

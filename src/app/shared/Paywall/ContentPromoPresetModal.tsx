@@ -3,16 +3,15 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../..//components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../..//components/FormsComponents/Button/Button';
 import { DropdownSingleListItem } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../..//components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../..//components/Typography/Text';
 import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
-import { availableStartDropdownList, availableEndDropdownList, timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
+import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-var moment = require('moment-timezone');
+import { guessTimezone } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -22,7 +21,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: moment.tz.guess(),
+    timezone: guessTimezone(),
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -131,7 +130,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     <DropdownSingle
                         hasSearch
                         id='newPromoPresetTimezoneDropdown'
-                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
+                        dropdownDefaultSelect={guessTimezone()}
                         className={ClassHalfXsFullMd + ' pr1'}
                         dropdownTitle='Timezone'
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
