@@ -15,7 +15,7 @@ export interface DashboardPageProps {
 const DashboardAnalytics = (props: DashboardPageProps) => {
 
     React.useEffect(() => {
-        props.getAnalyticsDashboard({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0)) })
+        props.getAnalyticsDashboard({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0) / 1000) })
     }, [])
 
     return <DashboardAnalyticsPage {...props} />

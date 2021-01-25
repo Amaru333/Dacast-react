@@ -11,7 +11,7 @@ import { ScalePlanSelector, ScalePlanSelectorContents } from './Upgrade';
 import { PlansName } from './FeaturesConst';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
-import { addMonths } from '../../../../utils/services/date/dateService';
+import { dateAdd } from '../../../../utils/services/date/dateService';
 
 
 //PLAN
@@ -306,7 +306,7 @@ React.useEffect(() => {
                 },
                 {
                     data: [
-                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {addMonths(new Date(), 3).toLocaleDateString()} </Text>,
+                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {dateAdd(new Date(), 'month', 3).toLocaleDateString()} </Text>,
                         <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? '$' + ((planPrice) + (featuresTotal)) : '$' + (planPrice)}</Text>
                     ]
                 }

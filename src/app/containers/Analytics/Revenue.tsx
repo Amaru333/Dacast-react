@@ -24,7 +24,7 @@ const Revenue = (props: RevenueComponentProps) => {
         }
         wait()
         if(!props.analyticsRevenueData) {
-            props.getAnalyticsRevenue({ endDate: getCurrentTs('s'), startDate: Math.floor(new Date().setHours(0, 0, 0, 0)), selectedContents: [] });
+            props.getAnalyticsRevenue({ endDate: getCurrentTs('s'), startDate: Math.floor(new Date().setHours(0, 0, 0, 0) / 1000), selectedContents: [] });
         }
     }, [])
     return (

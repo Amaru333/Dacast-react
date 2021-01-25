@@ -30,7 +30,7 @@ export interface AnalyticsRevenueSalesPerCountry {
 export const AnalyticsRevenueInitialState: AnalyticsRevenueInfos = null
 
 export interface GetAnalyticsRevenueOptions {
-    startDate: number;
-    endDate: number;
+    startDate?: number;
+    endDate?: number;
     selectedContents: string[];
 }

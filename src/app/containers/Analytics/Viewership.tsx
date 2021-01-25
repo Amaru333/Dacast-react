@@ -4,11 +4,12 @@ import {LoadingSpinner} from '../../../components/FormsComponents/Progress/Loadi
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, deleteContentAction, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
+import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { ViewershipAnalytics } from '../../pages/Analytics/Viewership';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { GetAnalyticsViewershipOptions, AnalyticsViewershipState, getAnalyticsViewershipAction } from '../../redux-flow/store/Analytics/Viewership';
+import { getCurrentTs } from '../../../utils/services/date/dateService';
 
 export interface ViewershipComponentProps {
     folderData: FoldersInfos;
@@ -21,7 +22,7 @@ const Viewership = (props: ViewershipComponentProps) => {
 
     React.useEffect(() => {
         if(!props.viewershipAnalytics) {
-            props.getAnalyticsViewership({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0)), selectedContents: [] })
+            props.getAnalyticsViewership({ end: getCurrentTs('s'), start: Math.floor(new Date().setHours(0, 0, 0, 0) / 1000), selectedContents: [] })
         }
         
         if(!props.folderData) {
