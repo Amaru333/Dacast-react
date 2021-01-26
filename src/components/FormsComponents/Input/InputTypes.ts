@@ -48,6 +48,7 @@ export interface InputSpecificProps {
     min?: string;
     pattern?: string;
     tooltip?: string;
+    backgroundColor?: string;
 }
 
 export interface CheckboxSpecificProps {
