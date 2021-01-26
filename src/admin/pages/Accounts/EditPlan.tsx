@@ -11,6 +11,7 @@ import { useHistory } from 'react-router'
 import { makeRoute } from '../../utils/utils'
 import { Card } from '../../../components/Card/Card'
 import { Divider } from '../../../shared/MiscStyles'
+import { getUrlParam } from '../../../utils/utils'
 
 const Plans = [
     'Starter',
@@ -27,6 +28,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
     const [planData, setPlanData] = React.useState<PlanInfoPut>({privileges: []})
     const [selectedPlan, setSelectedPlan] = React.useState<string>(props.accountPlan.name)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const salesforceId = getUrlParam('salesforceId') || null
 
     const handleSubmit = () => {
         setButtonLoading(true)
@@ -53,7 +55,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
     const EditPlanContent = () => {
         return (
             <div className='flex flex-column'>
-                <Text size={14}>Editing Plan for Account </Text>
+                <Text size={14}>Editing Plan for BID: {salesforceId} </Text>
                 <Card className='my1'>
                     <Text size={20} color='gray-3' weight='med'>Manage Plan </Text>
                     <Text className='pt1' size={16} weight='med'>Current Plan</Text>

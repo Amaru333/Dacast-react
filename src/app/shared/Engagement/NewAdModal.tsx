@@ -1,15 +1,14 @@
 import React from 'react';
-import { SettingsInteractionComponentProps } from '../../../containers/Settings/Interactions';
-import { Ad, AdType } from '../../../redux-flow/store/Settings/Interactions/types';
-import { Input } from '../../../../components/FormsComponents/Input/Input';
-import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils';
-import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { adPlacementDropdownList } from '../../../../utils/DropdownLists';
+import { Ad, AdType, EngagementInfo } from '../../redux-flow/store/Settings/Engagement/types';
+import { Input } from '../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { dataToTimeVideo, inputTimeVideoToTs } from '../../../utils/formatUtils';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { adPlacementDropdownList } from '../../../utils/DropdownLists';
 
 
-export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (b: boolean) => void; selectedAd: number}) => {
+export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, contentType?: string, contentId?: string}) => {
 
     const emptyAd: Ad = { 
         id: "-1",
@@ -18,22 +17,21 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
         url: ""
     }
 
-    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
+    const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     React.useEffect(() => {
-        setAdData(props.selectedAd === -1 ? emptyAd : props.interactionsInfos.adsSettings.ads[props.selectedAd])
+        setAdData(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
 
-    
-
     const defineAdAction = () => {
+
         setButtonLoading(true)
-        let tempArray: Ad[] = props.interactionsInfos.adsSettings.ads
+        let tempArray: Ad[] = props.localEngagementSettings.adsSettings.ads
         var newAdData: Ad = {...adData};
         newAdData.timestamp = adData.type === 'Mid-roll' ? inputTimeVideoToTs(adData.timestamp.toString()) : null;
         if(props.selectedAd === -1) {
             tempArray.push({...newAdData, id: newAdData.url + newAdData.timestamp + newAdData.type})
-            props.createAd(tempArray).then(() => {
+            props.createAd(tempArray, props.contentId, props.contentType).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             }).catch(() => setButtonLoading(false))
@@ -41,7 +39,7 @@ export const NewAdModal = (props: SettingsInteractionComponentProps & {toggle: (
             tempArray = tempArray.map(ad => {
                 return ad.id === adData.id ? newAdData : ad
             })
-            props.saveAd(tempArray).then(() => {
+            props.saveAd(tempArray, props.contentId, props.contentType).then(() => {
                 setButtonLoading(false)
                 props.toggle(false)
             }).catch(() => setButtonLoading(false))

@@ -1,16 +1,16 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, EngagementInfo, interactionsDefaultState, MailCatcher, Ad } from './types';
+import { ActionTypes, EngagementInfo, engagementDefaultState, MailCatcher, Ad } from './types';
 
-const reducer: Reducer<EngagementInfo> = (state = interactionsDefaultState, action: Action) => {
+const reducer: Reducer<EngagementInfo> = (state = engagementDefaultState, action: Action) => {
     let mailCatcherList: MailCatcher[] = [];
     switch (action.type) {
-        case ActionTypes.GET_SETTINGS_INTERACTIONS_INFOS:
+        case ActionTypes.GET_SETTINGS_ENGAGEMENT_INFOS:
             return {
                 ...action.payload,
                 mailCatcher: null
             };
-        case ActionTypes.SAVE_SETTINGS_INTERACTIONS_INFOS:
+        case ActionTypes.SAVE_SETTINGS_ENGAGEMENT_INFOS:
             return {...state, ...action.payload};
         case ActionTypes.SAVE_AD :
         case ActionTypes.CREATE_AD:
@@ -56,4 +56,4 @@ const reducer: Reducer<EngagementInfo> = (state = interactionsDefaultState, acti
 };
 
 // Named export
-export { reducer as InteractionReducer };
+export { reducer as EngagementReducer };

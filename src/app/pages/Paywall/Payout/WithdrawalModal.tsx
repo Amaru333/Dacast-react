@@ -29,15 +29,15 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
     const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
         switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
             case PaymentMethodType.BankAccountUS:
-                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
+                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 10}
             case PaymentMethodType.BankAccountInternational:
                 return {minRequest: '$1,000 USD', fees: '$50 USD', nbDays: 15}
             case PaymentMethodType.Check:
-                return {minRequest: '$250 USD', fees: 'Free', nbDays: 5}
+                return {minRequest: '$250 USD', fees: 'Free', nbDays: 10}
             case PaymentMethodType.PayPal:
-                return {minRequest: '$100 USD', fees: 'Free', nbDays: 5}
+                return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
             default:
-                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 5}
+                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 10}
         }
     }
 
@@ -61,7 +61,7 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
                     callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data.id}) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
-                <Input className='col xs-no-gutter col-12 sm-col-5 mt2 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseInt(event.currentTarget.value) })} />
+                <Input className='col xs-no-gutter col-12 sm-col-5 mt2 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>

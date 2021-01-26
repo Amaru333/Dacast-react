@@ -30,9 +30,9 @@ export type WithdrawalStatusAdmin = 'Pending' | 'Cancelled' | 'Completed'
     method: string;
     paymentMethod: PaymentMethodFields;
     bankInfo: BankInfoFields | null;
-    requestedDate: number;
+    requestedDate: string;
     status: WithdrawalStatusAdmin;
-    transferDate: number;
+    transferDate: string;
   }
 
 export const editWithdrawalDefaultState: WithdrawalInfo = null;

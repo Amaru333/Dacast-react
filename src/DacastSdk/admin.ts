@@ -292,6 +292,7 @@ export interface PostSwitchOverUsersInput {
 
 export interface MigratedUserEndpoint {
     legacyUserId: string
+    salesforceId: string
     platform: string
     lastUpdateDate: string
     migrationStatus: string
@@ -300,4 +301,5 @@ export interface MigratedUserEndpoint {
 
 export interface GetMigratedUsersListOutput {
     users: MigratedUserEndpoint[]
+    next: string
 }

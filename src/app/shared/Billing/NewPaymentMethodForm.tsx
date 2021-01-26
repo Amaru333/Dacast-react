@@ -43,11 +43,11 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
     const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
     const [formState, setFormState] = React.useState<string>(null)
 
-    const countriesArray = Object.keys(countries).map(country => countries[country])
+    const countriesArray = Object.values(countries).map(country => country.name)
 
-    const compareCountries = (a: Country, b: Country) => {
-        const countryA = a.name.toUpperCase();
-        const countryB = b.name.toUpperCase();
+    const compareCountries = (a: string, b: string) => {
+        const countryA = a.toUpperCase();
+        const countryB = b.toUpperCase();
     
         let comparison = 0
         if (countryA > countryB) {
@@ -237,7 +237,7 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                             <option value="">Select</option>
                            {countriesArray.sort(compareCountries).map(country => {
                                return (
-                                <option>{country.name}</option>
+                                <option>{country}</option>
                                )
                            })}
                         </DropdownSelect>

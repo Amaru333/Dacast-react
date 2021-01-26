@@ -55,7 +55,7 @@ export const formatPostSwitchOverUsersInput = (data: string[]): PostSwitchOverUs
     return formattedData
 }
 
-export const formatGetMigratedUserListInput = (data: FilteringMigrationState): string => {
+export const formatGetMigratedUserListInput = (data: FilteringMigrationState & {next: string}): string => {
     if (data) {
         let formattedData: string = '?'
         if(Object.values(data.status).some(f => f)) {
@@ -77,6 +77,10 @@ export const formatGetMigratedUserListInput = (data: FilteringMigrationState): s
                 formattedData += '&userIds=' + data.userIds
             }
         }
+
+        if(data.next) {
+            formattedData += '&next=' + data.next
+        }
     
         formattedData = formattedData.replace('?&', '?')
     
@@ -86,4 +90,4 @@ export const formatGetMigratedUserListInput = (data: FilteringMigrationState): s
     return ''
 }
 
-export const formatGetMigratedUserListOutput = (data: GetMigratedUsersListOutput): MigratedUser[] => data.users
+export const formatGetMigratedUserListOutput = (data: GetMigratedUsersListOutput): {users: MigratedUser[]; next: string} => data

@@ -16,10 +16,6 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
     let mobile = useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
-        callback ? callback(dates) : null;
-    }, [dates])
-
-    React.useEffect(() => {
         props.dates ? setDates(props.dates) : null
     }, [props.dates])
     return (
@@ -42,7 +38,7 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
                 startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
                 endDate={dates.endDate} // momentPropTypes.momentObj or null,
                 endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                onDatesChange={({ startDate, endDate }) => setDates({ startDate, endDate })} // PropTypes.func.isRequired,
+                onDatesChange={({ startDate, endDate }) => { callback({startDate, endDate}); setDates({ startDate, endDate })} } // PropTypes.func.isRequired,
                 focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={(focusedInput) => {setFocusedInput(focusedInput)}} // PropTypes.func.isRequired,
             />

@@ -16,77 +16,79 @@ interface DateTimePickerProps {
     dropdownTitle?: string;
     showTimezone?: boolean;
     minDate?: number;
+    disabled?: boolean;
+    fullLineTz?: boolean;
 }
-
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset()*60
+        let offset = moment.tz(timezoneName).utcOffset() * 60
         let splitValue = value.split(':')
         let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
+        if (isNaN(hours)) {
             hours = 0
         }
         let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
+        if (isNaN(min)) {
             min = 0
         }
         let total = hours + min - offset
         return total
     }
 
-    let defaultTimestamp = moment.tz((props.defaultTs && props.defaultTs > 0 ?  props.defaultTs : Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
+    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ?  moment.tz( props.defaultTs * 1000, props.timezone ? props.timezone : 'UTC') : moment(null) ;
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
-    const [time, setTime] = React.useState<number>(defaultTimestamp.clone().valueOf()/1000 - defaultTimestamp.clone().startOf('day').valueOf()/1000)
-    const [day, setDay] = React.useState<number>(defaultTimestamp.clone().startOf('day').valueOf()/1000)
+    const [day, setDay] = React.useState<number>(defaultTimestamp.clone().startOf('day').valueOf() / 1000)
+    const [time, setTime] = React.useState<string>(moment.utc((defaultTimestamp.clone().startOf('day').valueOf() / 1000 + defaultTimestamp.clone().valueOf() / 1000 - defaultTimestamp.clone().startOf('day').valueOf() / 1000) * 1000).tz(props.timezone || moment.tz.guess()).format('HH:mm'))
+
     const [timezone, setTimezone] = React.useState<string>(props.timezone)
-
-
-    const list = [{title: props.hideOption}, {title: "Set Date and Time"}]
+    const colClass= props.fullLineTz ? 'col col-6 px1 sm-col-4' : 'col col-6 px1 sm-col-3';
+    const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {
-        props.callback(method === "Set Date and Time" ? moment.utc((day + time)*1000).valueOf()/1000 : 0, timezone)
-    }, [ time, day, method, timezone ])
+        props.callback(method === "Set Date and Time" ? moment.utc((day + inputTimeToTs(time , props.timezone || 'UTC')) ).valueOf() : 0, timezone)
+    }, [time, day, method, timezone])
 
     return (
-        <>
-            <DropdownSingle className='col col-12 md-col-4 mr2' id={'dropdown'+props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => {setMethod(item.title)}} />
-                {method === "Set Date and Time" &&
-                    <>
-                        <DateSinglePickerWrapper
-                            minDate={moment(props.minDate*1000)}
-                            callback={(_, timestamp: string) => setDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-6 md-col-4 mr2' 
-                            id={'datePicker'+props.id}
+        <div className="flex flex-wrap items-end col col-12 mxn1">
+            <DropdownSingle disabled={props.disabled} className={colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />
+            {method === "Set Date and Time" &&
+                <>
+                    <DateSinglePickerWrapper
+                        minDate={moment(props.minDate)}
+                        callback={(_, timestamp: string) => setDay(moment.tz(parseInt(timestamp) * 1000, 'UTC').startOf('day').valueOf() / 1000)}
+                        className={colClass}
+                        id={'datePicker' + props.id}
+                        date={day ? moment(props.defaultTs * 1000) : null}
+                    />
+                    <Input
+                        type='time'
+                        value={time}
+                        onChange={(event) => setTime(event.currentTarget.value)}
+                        className={colClass}
+                        disabled={false}
+                        id={'input' + props.id}
+                    />
+                    {
+                        props.showTimezone &&
+                        <DropdownSingle
+                            hasSearch
+                            id={'timezoneDropdown' + props.id}
+                            dropdownDefaultSelect={props.timezone}
+                            className={colClass}
+                            dropdownTitle='Timezone'
+                            callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])}
+                            list={timezoneDropdownList}
                         />
-                        <Input
-                            type='time'
-                            value={moment.utc((day + time)*1000).tz(props.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setTime(inputTimeToTs(event.currentTarget.value, props.timezone || 'UTC'))}
-                            className='col col-6 md-col-3'
-                            disabled={false}
-                            id={'input'+props.id}
-                            pattern="[0-9]{2}:[0-9]{2}"
-                        />
-                        {
-                            props.showTimezone && 
-                                <DropdownSingle 
-                                hasSearch 
-                                id={'timezoneDropdown'+props.id}
-                                dropdownDefaultSelect={props.timezone} 
-                                className='col col-3 px2' 
-                                dropdownTitle='Timezone' 
-                                callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])} 
-                                list={timezoneDropdownList} 
-                            /> 
-                        }
-                        
-                    </>
-                }
-        </>
-     );
+
+                    }
+
+                </>
+            }
+        </div>
+    );
 }
 
 
