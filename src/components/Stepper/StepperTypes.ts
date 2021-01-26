@@ -1,27 +1,18 @@
-import { Type, Size } from '../FormsComponents/Button/ButtonTypes';
-
-interface StepperButtonType {
-    typeButton?: Type;
-    sizeButton?: Size;
-    buttonText: string;
-    isLoading?: boolean
+export interface Step {
+    title: string;
+    content: React.FC<any>;
+    extras?: any
 }
 
 export interface StepperSpecificProps {
     stepperHeader: string;
-    stepTitles: string[];
-    stepList: React.FC<any>[];
+    stepList: Step[];
     lastStepButton: string;
-    nextButtonProps: StepperButtonType;
-    backButtonProps: StepperButtonType;
-    cancelButtonProps: StepperButtonType;
     finalFunction: Function;
     opened: boolean;
-    functionCancel?: Function;
+    functionCancel?: () => void;
     stepperData?: any;
-    updateStepperData?: any;
-    usefulFunctions?: {[key: string]: any};
-    stepperStaticData?: {[key: string]: any};
+    updateStepperData?: React.Dispatch<React.SetStateAction<any>>;
     widthSecondStep? : number;
     isLoading?: boolean;
 }

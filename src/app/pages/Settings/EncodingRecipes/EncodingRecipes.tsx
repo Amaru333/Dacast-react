@@ -8,7 +8,6 @@ import styled, { css } from 'styled-components';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { EncodingRecipeItem, EncodingRecipesData } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { settingsStep, presetStep } from './EncodingRecipesSteps';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { TableContainer } from '../../../../components/Table/TableStyle';
@@ -16,6 +15,8 @@ import { isMobile } from 'react-device-detect';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { SetStateAction, Dispatch } from 'react';
+import { RecipeSettingsStep } from './RecipeSettingsStep';
+import { RecipePresetStep } from './RecipePresetsStep';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -36,7 +37,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     const recipeOrder: string[] = ["4K", "2K", "FHD", "HD", "SD", "LD", "ULD", "Magic", "DNE"]
 
-    const stepList = [settingsStep, presetStep]
+    const stepList = [{title: "Settings", content: RecipeSettingsStep}, {title: "Presets", content: RecipePresetStep}]
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -44,19 +45,17 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const [deletedRecipe, setDeletedRecipe] = React.useState<EncodingRecipeItem>(emptyRecipe)
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
 
-    const FunctionRecipe = (value: boolean) => {setCreateRecipeStepperOpen(value)}
-
     const editRecipe = (recipe: EncodingRecipeItem) => {
         setSelectedRecipe(recipe);
-        FunctionRecipe(true);
+        setCreateRecipeStepperOpen(true);
     }
 
     const newRecipe = () => {
         setSelectedRecipe(emptyRecipe);
-        FunctionRecipe(true);
+        setCreateRecipeStepperOpen(true);
     }
 
-    const sortRecipes = (a, b) => {
+    const sortRecipes = (a: string, b: string) => {
         return recipeOrder.indexOf(a) - recipeOrder.indexOf(b)
     }
 
@@ -121,7 +120,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
         )
     }
 
-    const submitRecipe = (submittedRecipe: EncodingRecipeItem | false, FunctionRecipe: Function) => {
+    const submitRecipe = (submittedRecipe: EncodingRecipeItem | false) => {
         setSubmitLoading(true);
         if(submittedRecipe) {
             if (submittedRecipe.id) {
@@ -138,7 +137,7 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     setSubmitLoading(false)
                 })
             }
-            FunctionRecipe(false)
+            setCreateRecipeStepperOpen(false)
         }
     }
     
@@ -161,17 +160,16 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
                     opened={createRecipeStepperOpen}
                     stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
                     stepList={stepList}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", isLoading: submitLoading, buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                    stepTitles={["Settings", "Presets"]}
+                    isLoading={submitLoading}
                     lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
-                    functionCancel={FunctionRecipe}
+                    functionCancel={() => setCreateRecipeStepperOpen(false)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}
-                    stepperStaticData={{'recipePresets': props.encodingRecipeData.defaultRecipePresets, 'uploadWatermarkUrl': props.encodingRecipeData.uploadWatermarkUrl, 'watermarkFileID': props.encodingRecipeData.watermarkFileID}}
-                    usefulFunctions={{'getUploadUrl': props.getWatermarkUrlForUploading, 'uploadWatermark': props.uploadWatermark, 'deleteWatermark': props.deleteWatermark}}
-                    finalFunction={() => {submitRecipe(selectedRecipe, FunctionRecipe)}}
+                    encodingRecipeData={props.encodingRecipeData}
+                    getUploadUrl={props.getWatermarkUrlForUploading}
+                    uploadWatermark={props.uploadWatermark}
+                    deleteWatermark={props.deleteWatermark}
+                    finalFunction={() => {submitRecipe(selectedRecipe)}}
                 />
                 <Modal size="small" modalTitle="Delete Recipe" icon={{name: "warning", color: "red"}} opened={deleteWarningModalOpen} toggle={() => setDeleteWarningModalOpen(false)} hasClose={false}>
                     <ModalContent>

@@ -9,12 +9,13 @@ import { GroupsComponentProps } from '../../../containers/Paywall/Groups';
 import { GroupPromoModal } from './GroupPromoModal'
 import { GroupPromo, GroupPrice, GroupPriceCreation } from '../../../redux-flow/store/Paywall/Groups/types';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
-import { GroupPriceStepperFirstStep, GroupPriceStepperSecondStep } from './GroupPriceSteps'
 import { FoldersInfos } from '../../../redux-flow/store/Folders/types';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
+import { GroupDetailsStep } from './GroupDetailsStep';
+import { GroupContentStep } from './GroupContentStep';
 var moment = require('moment-timezone')
 
 interface GroupStepperSecondStepProps {
@@ -69,7 +70,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const [stepperLoading, setStepperLoading] = React.useState<boolean>(false)
     const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<GroupPromo>(null);
     const [stepperData, setStepperData] = React.useState<GroupStepperData>({firststep: defaultPrice, secondStep: {...props}});
-    const groupPriceSteps = [GroupPriceStepperFirstStep, GroupPriceStepperSecondStep]
+    const groupPriceSteps = [{title: "Group Details", content: GroupDetailsStep}, {title: "Content Selection", content: GroupContentStep}]
 
     React.useEffect(() => {
         setStepperData({...stepperData, secondStep: {...props}})
@@ -229,10 +230,6 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     opened={groupPricesStepperOpened}
                     stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
                     stepList={groupPriceSteps}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
-                    stepTitles={['Group Details', 'Content Selection']}
                     lastStepButton={selectedGroupPrice ? "Save" : "Create"}
                     stepperData={stepperData}
                     widthSecondStep={60}
