@@ -54,27 +54,28 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
     return (
         <div className='flex flex-column'> 
 
-            <Text size={20} weight='med'>Editing BID: {salesforceId}</Text>
+            <Text size={16} weight='med'>Editing BID: {salesforceId}</Text>
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={accountDetails.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pr1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={accountDetails.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />
 
             </div>
 
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='companyNameInput' defaultValue={accountDetails.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='websiteInput' defaultValue={accountDetails.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pr1 py1' id='companyNameInput' defaultValue={accountDetails.companyName} placeholder='Company Name' label='Company' onChange={(event) => setAccountInfo({...accountInfo, companyName: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pl1 py1' id='websiteInput' defaultValue={accountDetails.website} placeholder='Website' label='Website' onChange={(event) => setAccountInfo({...accountInfo, website: event.currentTarget.value})} />
             </div>
             <div className='flex'>
-                <Input className='col col-3 pr1 py1' id='phoneInput' defaultValue={accountDetails.phone} placeholder='Phone' label='Phone' onChange={(event) => setAccountInfo({...accountInfo, phone: event.currentTarget.value})} />
-                <Input className='col col-3 pl1 py1' id='emailInput' defaultValue={accountDetails.email} placeholder='Email' label='Email' onChange={(event) => setAccountInfo({...accountInfo, email: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pr1 py1' id='phoneInput' defaultValue={accountDetails.phone} placeholder='Phone' label='Phone' onChange={(event) => setAccountInfo({...accountInfo, phone: event.currentTarget.value})} />
+                <Input backgroundColor="white" className='col col-3 pl1 py1' id='emailInput' defaultValue={accountDetails.email} placeholder='Email' label='Email' onChange={(event) => setAccountInfo({...accountInfo, email: event.currentTarget.value})} />
             </div>
 
             <div className='flex'>
-             <Input className='col col-3 pr1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
+             <Input backgroundColor="white" className='col col-3 pr1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
              <DropdownSingle 
                     className='col col-3 pl1 my1' 
-                    id='emailVerifiedDropdown' 
+                    id='emailVerifiedDropdown'
+                    isWhiteBackground 
                     list={verifyEmailDropdownList} 
                     dropdownTitle='Email Verified' 
                     disabled={accountDetails.emailVerified}
@@ -88,6 +89,7 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
                 <DropdownSingle 
                     className='col col-3 pr1 my1' 
                     id='playbackProtectionDropdown' 
+                    isWhiteBackground
                     list={playbackProtectionDropdownList} 
                     dropdownTitle='Playback Protection' 
                     dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'Off'} 
@@ -107,7 +109,8 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
             <div className='flex items-end'>
             <DropdownSingle 
                     className='col col-3 pr1 my1' 
-                    id='preferredDropdown' 
+                    id='preferredDropdown'
+                    isWhiteBackground 
                     list={preferredPlatformDropdownList} 
                     dropdownTitle='Preferred platform' 
                     dropdownDefaultSelect={!accountDetails.preferredPlatform || accountDetails.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 

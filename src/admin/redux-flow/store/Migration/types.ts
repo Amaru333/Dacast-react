@@ -15,7 +15,7 @@ export interface JobInfo {
     userIds: string[]
 }
 
-export type JobDetailsKey = 'export' | 'import' | 'switchover' | 'overall'
+export type JobDetailsKey = 'export' | 'import' | 'validation' | 'switchover' | 'overall'
 
 export interface JobReport {
     userId: string
@@ -27,7 +27,7 @@ export type JobDetails = {
     [key in JobDetailsKey]: {
         status: string
         errorDetails: string
-        label: 'Export' | 'Import' | 'Switch Over' | 'Overall'
+        label: 'Export' | 'Import' | 'Validation' | 'Switch Over' | 'Overall'
         reports?: JobReport[]
     }
 }

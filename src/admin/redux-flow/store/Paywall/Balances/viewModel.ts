@@ -9,7 +9,7 @@ export const formatGetBalancesOutput = (data: GetAccountsTransactionsOutput): Ac
         lines: data.lines.map(line => {
             return {
                 ...line,
-                date: line.date > 0 ? new Date(line.date).toISOString() : ''
+                date: line.date > 0 ? new Date(line.date).toISOString().replace('T', ' T') : ''
             }
         })
     }

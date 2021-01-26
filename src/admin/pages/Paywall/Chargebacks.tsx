@@ -28,19 +28,20 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
 
     return (
         <div className='flex flex-column'>
-            <Text size={16} weight='med'>Manuel debits create a line item on an Account's paywall balance</Text>
-            <Input onChange={(event) => setSubmittedData({...submittedData, salesforceId: event.currentTarget.value})} className='my1 col col-2' id='accountIdInput' placeholder='Account ID' label='Account ID' />
-            <Input onChange={(event) => setSubmittedData({...submittedData, amount: parseFloat(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
-            <DropdownSingle 
+            <Text size={14} weight='reg'>Manual debits create a line item on an Account's paywall balance</Text>
+            <Input backgroundColor="white" onChange={(event) => setSubmittedData({...submittedData, salesforceId: event.currentTarget.value})} className='my1 col col-2' id='accountIdInput' placeholder='Account ID' label='Account ID' />
+            <Input backgroundColor="white" onChange={(event) => setSubmittedData({...submittedData, amount: parseFloat(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
+            <DropdownSingle
+                isWhiteBackground 
                 id='typeDropdown' 
-                className='my1 col col-2'
+                className='mt1 mb25 col col-2'
                 dropdownTitle='Type' 
                 list={chargebackTypeDropdownList}
                 callback={(item: DropdownSingleListItem) => setSubmittedData({...submittedData, type: item.title})}
             />
             <Text size={16} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>
             <Text size={16} weight='med'>and a negative Amount will issue a refund</Text>
-            <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='my2 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
+            <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='mt25 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
             <ConfirmationModal modalButtonLoading={buttonLoading}  submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
     )
