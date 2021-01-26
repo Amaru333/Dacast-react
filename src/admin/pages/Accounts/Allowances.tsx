@@ -47,8 +47,8 @@ export const AccountAllowancesPage = (props: AccountAllowancesComponentProps & {
                 <Text className='pr2' size={14} weight='reg'>Storage</Text>
                 <Text size={14} weight='reg'>{allowances ? (allowances.storage.allocated - allowances.storage.consumed) / 1000000000 : ''} GB</Text>
             </div>
-            <DropdownSingle className='my1 col col-3' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(item: DropdownSingleListItem) => setSelectedAllowance(item.title)} dropdownTitle='Allowance' list={allowancesDropdownList} />
-            <Input className='my1 col col-3' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />
+            <DropdownSingle isWhiteBackground className='my1 col col-3' id='accountAllowancesDropdown' dropdownDefaultSelect={'Data'} callback={(item: DropdownSingleListItem) => setSelectedAllowance(item.title)} dropdownTitle='Allowance' list={allowancesDropdownList} />
+            <Input backgroundColor="white" className='my1 col col-3' onChange={(event) => setAllowanceValue(event.currentTarget.value)} id='accountAllowanceInput' placeholder='Enter Amount' label='Amount (GB)' />
             <Button className='my1 col col-1' onClick={() => setOpenConfirmationModal(true)} typeButton='primary' sizeButton='large' buttonColor='blue'>Submit</Button>
             <Text size={14}>A positive Amount adds the allowance</Text>
             <Text size={14}>whereas a negative Amount susbtracts from it.</Text>

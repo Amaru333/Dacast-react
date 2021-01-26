@@ -9,8 +9,8 @@ export const formatGetWithdrawalsDetailsOutput = (data: GetWithdrawalDetailsOutp
         amount: data.amount,
         currency: data.currency,
         method: data.method,
-        requestedDate: data.requestedDate > 0 ? new Date(data.requestedDate * 1000).toISOString() : '',
-        transferDate: data.transferDate > 0 ? new Date(data.transferDate * 1000).toISOString() : '',
+        requestedDate: data.requestedDate > 0 ? new Date(data.requestedDate * 1000).toISOString().replace('T', ' T') : '',
+        transferDate: data.transferDate > 0 ? new Date(data.transferDate * 1000).toISOString().replace('T', ' T') : '',
         status: capitalizeFirstLetter(data.status) as WithdrawalStatusAdmin,
         paymentMethod: {
             id: {

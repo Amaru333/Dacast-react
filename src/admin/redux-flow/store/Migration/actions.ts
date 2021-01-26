@@ -25,7 +25,7 @@ export interface SwitchUsers {
 
 export interface GetMigratedUsersList {
     type: ActionTypes.GET_MIGRATED_USERS;
-    payload: MigratedUser[];
+    payload: {users: MigratedUser[]; next: string};
 }
 
 export const getJobsListAction = applyAdminViewModel(dacastSdk.getJobsList, undefined, formatGetJobsListOutput, ActionTypes.GET_JOBS_LIST, null,  'Couldn\'t get jobs list')

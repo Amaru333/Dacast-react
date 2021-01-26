@@ -54,7 +54,7 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
     return (
         <div className='flex flex-column'> 
 
-            <Text size={20} weight='med'>Editing BID: {salesforceId}</Text>
+            <Text size={16} weight='med'>Editing BID: {salesforceId}</Text>
             <div className='flex'>
                 <Input backgroundColor="white" className='col col-3 pr1 py1' id='userFirstNameInput' defaultValue={accountDetails.firstName} placeholder='User First Name' label=' User First Name' onChange={(event) => setAccountInfo({...accountInfo, firstName: event.currentTarget.value})} />
                 <Input backgroundColor="white" className='col col-3 pl1 py1' id='userLastNameInput' defaultValue={accountDetails.lastName} placeholder='User Last Name' label='User Last Name' onChange={(event) => setAccountInfo({...accountInfo, lastName: event.currentTarget.value})} />

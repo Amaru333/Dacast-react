@@ -56,11 +56,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
         return (
             <div className='flex flex-column'>
                 <div style={{justifyContent: "space-between", alignItems: "center"}} className="col col-12 mb2 flex">
-                    <Text size={14}>Editing Plan for BID: {salesforceId} </Text>
-                    <div className='flex'>
-                        <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
-                    </div>
+                    <Text size={16} weight='med'>Editing Plan for BID: {salesforceId} </Text>
                 </div>
                 
                 <Card className='my1'>
@@ -167,7 +163,10 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.compatibleStreams.planValue || props.accountPlan.compatibleStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('compatibleStreams', value === 'On' ? true : false)} />
                     </div>
                 </Card>
-               
+                <div className='flex mt2'>
+                    <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
+                </div>
              {/* Not implemented yet */}
                 {/* <Text className='py1' size={14} weight='med'>AES</Text>
                 <div className='flex items-center my1'>
