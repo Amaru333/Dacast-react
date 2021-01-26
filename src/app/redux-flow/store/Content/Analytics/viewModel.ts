@@ -182,7 +182,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 } else {
                     type = 'DAY';
                 }
-                console.log(type)
                 return getLabels(current, stopDate, type)
         }
     }

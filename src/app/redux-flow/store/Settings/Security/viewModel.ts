@@ -20,7 +20,7 @@ export const formatGetSecuritySettingsOutput = (data: GetSecuritySettingsOutput)
         }
     }
     let formattedData: SecuritySettings = {
-        contentScheduling: data.contentScheduling,
+        contentScheduling: {...data.contentScheduling, startTime: data.contentScheduling.startTime / 1000, endTime: data.contentScheduling.endTime / 1000},
         geoRestriction: geoRestrictionsList,
         domainControl: domainControlsList,
         passwordProtection: {
