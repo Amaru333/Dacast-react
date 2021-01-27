@@ -6,6 +6,7 @@ import './datepicker_override.css'
 import { useMedia } from '../../../utils/utils';
 import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
+import { DateRangePickerr } from './DateRangePicker';
 
 export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: {startDate: any; endDate: any}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
     
@@ -18,8 +19,14 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
     React.useEffect(() => {
         props.dates ? setDates(props.dates) : null
     }, [props.dates])
+
     return (
         <div className='noTransition' {...other}>
+            <DateRangePickerr 
+                start={dates.startDate}
+                end={dates.endDate}
+                onDatesChange={(data) => { console.log(data) } } // PropTypes.func.isRequired,
+            />
             <DateRangePicker 
                 disabled={props.disabled}
                 isOutsideRange={() => false} 
