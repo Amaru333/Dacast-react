@@ -22,7 +22,6 @@ const LeafletMapOld = (props: any) => {
 
         if (leafletMap === null) {
             //bounds of the entire planet 
-            console.log(props.idMap)
             let bounds = new L.LatLngBounds(new L.LatLng(-90, -180), new L.LatLng(90, 180));
             var map = L.map(props.idMap ? props.idMap : "defaultMapId", {
                 center: bounds.getCenter(),
@@ -59,7 +58,6 @@ const LeafletMapOld = (props: any) => {
             lerpPercent -= 100;
             lerpPercent /= 1000;
 
-            console.log(leafletMap);
             let circle = L.circleMarker([propMarker.position.latitude, propMarker.position.longitude], { radius: 10 })
                 .bindPopup(props.markerNameTranform ? props.markerNameTranform(propMarker.city, propMarker.consumedMB, props.datasetName) : propMarker.city + ': ' + propMarker.value + ' ' + props.datasetName)
                 .addTo(map ? map : leafletMap);

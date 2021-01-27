@@ -111,8 +111,6 @@ export const renderMap = (dataRepo: any, id: string, isGb?: boolean) => {
         mapMax = 'No Data';
     }
 
-    console.log(dataRepo);
-
     return (
         <div>
             <LeafletMapOld
