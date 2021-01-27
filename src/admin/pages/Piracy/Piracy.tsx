@@ -21,7 +21,7 @@ export const PiracyPage = (props: PirateComponentProps) => {
         <div className='flex flex-column'>
             <div className='flex my2'>
                 <div className='relative flex items-center mr2'>
-                    <Input  id='urlInput' value={url} placeholder='URL' onChange={(event) => setUrl(event.currentTarget.value)} />
+                    <Input  id='urlInput' backgroundColor="white" value={url} placeholder='URL' onChange={(event) => setUrl(event.currentTarget.value)} />
                     <div className={ url && url.length > 0 ?'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setUrl('')}}><IconStyle>close</IconStyle></div>
                 </div>
                 <Button isLoading={buttonLoading} disabled={!url} onClick={() => {handleSubmit()}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>

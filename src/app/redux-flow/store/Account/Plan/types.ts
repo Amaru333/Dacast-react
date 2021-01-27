@@ -26,8 +26,8 @@ export interface PlaybackProtection {
 
 export interface Extras {
     code: string;
-    quantity: string;
-    price?: string;
+    quantity: number;
+    totalPrice: number;
     datePurchased?: Date;
     token?: string;
     threeDSecureToken?: string

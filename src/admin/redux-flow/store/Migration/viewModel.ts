@@ -25,6 +25,10 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
             ...data.import,
             label: 'Import'
         },
+        validation: {
+            ...data.importVerification,
+            label: 'Validation'
+        },
         switchover: {
             ...data.switchover,
             label: "Switch Over"

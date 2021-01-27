@@ -6,7 +6,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia, getPercentage } from '../../../../utils/utils';
+import { useMedia } from '../../../../utils/utils';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProtectionModal } from './ProtectionModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
@@ -16,13 +16,14 @@ import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { GeneralDashboard } from '../../../containers/Dashboard/GeneralDashboard';
 import { DashboardPayingPlan, DashboardInfos } from '../../../redux-flow/store/Dashboard/types';
-import { PurchaseDataCartStep, PurchaseDataPaymentStep } from './PurchaseDataStepper';
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import { Divider } from '../../../../shared/MiscStyles';
 import { DisableProtectionModal } from '../../../shared/Plan/DisableProtectionModal'
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { formatPostProductExtraInput } from '../../../redux-flow/store/Account/Plan/viewModel';
+import { PurchaseDataCartStep } from './PurchaseDataCartStep';
+import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -39,13 +40,15 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
-    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<any>(null)
+    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<Extras>(null)
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
 
-    const purchaseProducts = async (recurlyToken: string, threeDSecureToken: string, callback: Function) => {
+    const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
+
+    const purchaseProducts = async (recurlyToken: string, callback: Function) => {
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
@@ -112,19 +115,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     }
 
     let smScreen = useMedia('(max-width: 780px)');
-
-    const storage = {
-        percentage: getPercentage(props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed, props.widgetData.generalInfos.storage.limit),
-        left: props.widgetData.generalInfos.storage.limit-props.widgetData.generalInfos.storage.consumed,
-        limit: props.widgetData.generalInfos.storage.limit,
-    } 
-    const bandwidth = {
-        percentage: getPercentage(props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed, props.widgetData.generalInfos.bandwidth.limit),
-        left: props.widgetData.generalInfos.bandwidth.limit-props.widgetData.generalInfos.bandwidth.consumed,
-        limit: props.widgetData.generalInfos.bandwidth.limit,
-    } 
-
-    
 
     const disabledTableHeader = () => {
         return props.billingInfos.paymentMethod ? {data: [
@@ -261,17 +251,16 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <CustomStepper 
                     opened={purchaseDataOpen}
                     stepperHeader="Purchase Data"
-                    stepTitles={["Cart", "Payment"]}
-                    stepList={[PurchaseDataCartStep, PurchaseDataPaymentStep]}
-                    nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                    backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                    cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
+                    stepList={purchaseDataStepList}
                     lastStepButton="Purchase"
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
-                    updateStepperData={(value: any) => {setPurchaseDataStepperData(value)}}
-                    functionCancel={setPurchaseDataOpen}
-                    usefulFunctions={{'billingInfo': props.billingInfos, 'purchaseProducts': purchaseProducts, 'purchaseProducts3Ds': purchaseProducts3Ds, 'handleThreeDSecureFail': handleThreeDSecureFail}}
+                    updateStepperData={(data: Extras) => {setPurchaseDataStepperData(data)}}
+                    functionCancel={() => setPurchaseDataOpen(false)}
+                    billingInfo={props.billingInfos}
+                    purchaseProducts={purchaseProducts}
+                    purchaseProducts3Ds={purchaseProducts3Ds}
+                    handleThreeDSecureFail={handleThreeDSecureFail}
                     isLoading={isLoading}
                 />
             }

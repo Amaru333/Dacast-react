@@ -270,6 +270,15 @@ export interface GetMigrationJobDetailsOutput {
             success: boolean
         }[]
     }
+    importVerification: {
+        status: string
+        errorDetails: string
+        reports?: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
     switchover: {
         status: string
         errorDetails: string

@@ -61,7 +61,7 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
                     <a key={'withdrawalsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(withdrawal.accountSalesforceId)}>{withdrawal.accountSalesforceId}</a>,
-                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10&salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount.toLocaleString()}</Link>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10&salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + " " + withdrawal.amount.toLocaleString()}</Link>,
                     <Text key={'withdrawalsTableBodyTotalBalanceCell' + key } size={14}>${withdrawal.totalBalance.toLocaleString()}</Text>,
                     <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{withdrawal.requestedDate}</Text>,
                     <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate}</Text>,
@@ -139,10 +139,11 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
     return props.withdrawals ? 
         <div className='flex flex-column'>
-            <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
+            <Text size={14} weight='reg'>Customer requests for withdrawals from their paywall</Text>
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
-                    <Input  
+                    <Input
+                        backgroundColor="white"  
                         id='accountIdInput' 
                         value={accountId} 
                         placeholder='Account ID' 

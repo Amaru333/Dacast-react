@@ -24,7 +24,7 @@ const defaultPromo: GroupPromo = {
     assignedGroupIds: []
 }
 
-export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[] }) => {
+export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void>; toggle: React.Dispatch<React.SetStateAction<boolean>>; groupPromo: GroupPromo; groupList: GroupPrice[] }) => {
 
     const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? { ...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : guessTimezone() } : defaultPromo)
 

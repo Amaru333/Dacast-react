@@ -8,8 +8,8 @@ export const formatGetWithdrawalsListOutput = (data: GetAccountsWithdrawalsOutpu
         withdrawalRequests: data.withdrawalRequests.map(request => {
             return {
                 ...request,
-                requestedDate: request.requestedDate > 0 ? new Date(request.requestedDate * 1000).toISOString() : '',
-                transferDate: request.transferDate > 0 ? new Date(request.transferDate * 1000).toISOString() : ''
+                requestedDate: request.requestedDate > 0 ? new Date(request.requestedDate * 1000).toISOString().replace('T', ' T') : '',
+                transferDate: request.transferDate > 0 ? new Date(request.transferDate * 1000).toISOString().replace('T', ' T') : ''
             }
         })
     }

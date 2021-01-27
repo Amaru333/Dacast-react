@@ -103,7 +103,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             <div className='flex my1 items-center'>
                 <Input 
                     id='accountIdInput' 
-                    placeholder='Account ID' 
+                    placeholder='Account ID'
+                    backgroundColor="white" 
                     defaultValue={accountId} 
                     onChange={(event) => setAccountId(event.currentTarget.value)} 
                     onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
