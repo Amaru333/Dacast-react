@@ -9,6 +9,7 @@ import { PlansName } from './FeaturesConst';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const UpgradeCartStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; billingInfo: BillingPageInfos, planDetails: Plans }) => {
     var moment = require('moment')
@@ -101,7 +102,7 @@ React.useEffect(() => {
                         props.stepperData.name.includes("Scale") ?
                             <div >
 
-                                <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Annually"} />
+                                <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' list={[{title: 'Annually'}, {title: 'Monthly'}]} callback={(value: DropdownSingleListItem) => setPlanLength(value.title as 'Annually' | 'Monthly')} dropdownDefaultSelect={{title: "Annually"}} />
                             </div>
                             :
                             <Text className='right pr2' key="cartTableBilledFrequency" size={14} weight="reg" color="gray-1">Annually</Text>,
@@ -118,7 +119,7 @@ React.useEffect(() => {
                         props.stepperData.name.includes("Scale") ?
                             <div >
 
-                                <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Monthly"} />
+                                <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' list={[{title: 'Annually'}, {title: 'Monthly'}]} callback={(value: DropdownSingleListItem) => setPlanLength(value.title as 'Annually' | 'Monthly')} dropdownDefaultSelect={{title: "Monthly"}} />
                             </div>
                             :
                             <Text className='right pr2' key="cartTableBilledFrequency" size={14} weight="med" color="gray-1">Annually</Text>,
@@ -140,7 +141,7 @@ React.useEffect(() => {
                     props.stepperData.name.includes("Scale") ?
                         <div >
 
-                            <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' callback={(value: string) => setPlanLength(value)} list={['Annually', 'Monthly']} dropdownDefaultSelect={"Monthly"} />
+                            <DropdownButton style={{ maxHeight: 30 }} className='right mr2 border-none' id='paymentFrquency' list={[{title: 'Annually'}, {title: 'Monthly'}]} callback={(value: DropdownSingleListItem) => setPlanLength(value.title as 'Annually' | 'Monthly')} dropdownDefaultSelect={{title: "Monthly"}} />
                         </div>
                         :
                         <Text className='right pr2' key="cartTableBilledFrequency" size={14} weight="med" color="gray-1">Annually</Text>,

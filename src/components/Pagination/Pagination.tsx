@@ -5,6 +5,7 @@ import { Text } from '../Typography/Text';
 import { isMobile } from 'react-device-detect'
 import { DropdownButton } from '../FormsComponents/Dropdown/DropdownButton';
 import { useMedia } from '../../utils/utils';
+import { DropdownSingleListItem } from '../FormsComponents/Dropdown/DropdownTypes';
 
 interface PaginationProps { 
     totalResults: number;
@@ -56,9 +57,9 @@ export const Pagination = (props: PaginationProps) => {
                 <DropdownButton
                     className='mx1'
                     id='paginationDropdown'
-                    dropdownDefaultSelect={props.defaultDisplayedOption ? props.defaultDisplayedOption.toString() : null}
-                    list={props.displayedItemsOptions.map(item => item.toString())}
-                    callback={(value: string) => {setDisplayedOptions(parseInt(value))}}
+                    dropdownDefaultSelect={props.defaultDisplayedOption ? {title: props.defaultDisplayedOption.toString()} : null}
+                    list={props.displayedItemsOptions.map(item => {return {title: item.toString()}})}
+                    callback={(value: DropdownSingleListItem) => {setDisplayedOptions(parseInt(value.title))}}
                 />
                 <Text size={14} weight='reg'>of {props.totalResults} results</Text>
             </div>

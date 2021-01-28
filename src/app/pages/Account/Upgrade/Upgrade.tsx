@@ -28,6 +28,7 @@ import { formatPostPlanInput } from '../../../redux-flow/store/Account/Upgrade/v
 import { UpgradeFeaturesStep } from './UpgradeFeaturesStep';
 import { UpgradeCartStep } from './UpgradeCartStep';
 import { UpgradePaymentStep } from './UpgradePaymentStep';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const textClassName = 'py1';
@@ -261,7 +262,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         </div>
                                         <div className='flex flex-baseline mb1'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed </Text>
-                                            <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
+                                            <DropdownButton style={{ maxHeight: 30, width: 'auto' }} className="ml1" id='scalePlanDropdown' list={[{title: 'Annually'}, {title: 'Monthly'}]} callback={(value: DropdownSingleListItem) => setPlanBillingFrequency(value.title as 'Annually' | 'Monthly')} dropdownDefaultSelect={{title: planBillingFrequency}} />
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth * 12).toLocaleString()} GB</Text>
@@ -358,7 +359,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         </div>
                                         <div className='flex flex-baseline'>
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>Billed </Text>
-                                            <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='scalePlanDropdown' list={['Annually', 'Monthly']} callback={(value: 'Annually' | 'Monthly') => setPlanBillingFrequency(value)} dropdownDefaultSelect={planBillingFrequency} />
+                                            <DropdownButton style={{ maxHeight: 30 }} className="ml1" id='scalePlanDropdown' list={[{title: 'Annually'}, {title: 'Monthly'}]} callback={(value: DropdownSingleListItem) => setPlanBillingFrequency(value.title as 'Annually' | 'Monthly')} dropdownDefaultSelect={{title: planBillingFrequency}} />
                                         </div>
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].bandwidth).toLocaleString()} GB Data</Text>
