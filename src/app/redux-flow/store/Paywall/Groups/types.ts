@@ -6,6 +6,7 @@ export enum ActionTypes {
     CREATE_GROUP_PRICE = "@@paywall_groups/CREATE_GROUP_PRICE",
     SAVE_GROUP_PRICE = "@@paywall_groups/SAVE_GROUP_PRICE",
     DELETE_GROUP_PRICE = "@@paywall_groups/DELETE_GROUP_PRICE",
+    GET_PRICE_GROUP_CONTENTS = "@@paywall_groups/GET_PRICE_GROUP_CONTENTS",
     CREATE_GROUP_PROMO = "@@paywall_groups/CREATE_GROUP_PROMO",
     SAVE_GROUP_PROMO = "@@paywall_groups/SAVE_GROUP_PROMO",
     DELETE_GROUP_PROMO = "@@paywall_groups/DELETE_GROUP_PROMO",
@@ -35,9 +36,15 @@ export interface GroupPriceInfo {
 export interface GroupPrice {
     id: string;
     name: string;
-    prices: GroupPriceInfo[]
+    prices: GroupPriceInfo[];
+    pages: interger;
     contents: string[];
+    contentMetadata: string[];
     groupSettings?: PriceSettings;
+}
+
+export interface GroupPriceContents {
+    contents: string[];
 }
 
 export interface GroupPriceCreation {

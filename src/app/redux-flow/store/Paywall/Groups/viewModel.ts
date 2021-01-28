@@ -75,6 +75,7 @@ export const formatDeletePromoGroupInput = (data: GroupPromo): string => data.id
 
 
 export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPriceData => {
+    console.info(data)
     let formattedData: GroupPriceData = {
         total: data.total,
         packages: data.packages.map((item) => {
@@ -82,6 +83,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                 id: item.id,
                 name: item.name,
                 contents: item.contents,
+                contentMetadata: item["content-metadata"],
                 prices: item.prices.length > 0 ? item.prices.map((price) => {
                     return {
                         price: price.price,
@@ -90,7 +92,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                             duration: price.settings.duration ? {
                                 value: price.settings.duration.value,
                                 unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
-                            } 
+                            }
                             : null,
                             type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
                             startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
@@ -99,7 +101,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                                 : price.settings.recurrence.value > 4 ? 'Biannual'
                                 : price.settings.recurrence.value > 1 ? 'Quarterly'
                                 : 'Monthly'
-                            } 
+                            }
                             : null
                         }
                     }
@@ -109,7 +111,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                     duration: item.prices[0].settings.duration ? {
                         value: item.prices[0].settings.duration.value,
                         unit: capitalizeFirstLetter(item.prices[0].settings.duration.unit) + 's'
-                    } 
+                    }
                     : null,
                     type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',
                     startMethod: item.prices[0].settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
@@ -118,10 +120,10 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                         : item.prices[0].settings.recurrence.value > 4 ? 'Biannual'
                         : item.prices[0].settings.recurrence.value > 1 ? 'Quarterly'
                         : 'Monthly'
-                    } 
+                    }
                     : null
                 }: null
-            } 
+            }
         })
     }
 
@@ -174,7 +176,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
                 contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
-    } 
+    }
 
     return formattedPrice
 }
@@ -235,8 +237,19 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
                 contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
-    } 
+    }
     return formattedPrice
 }
 
 export const formatDeletePriceGroupInput = (data: GroupPrice): string => data.id
+
+export const formatGetPriceGroupContentsInput = (path): string => path
+
+// TODO: GroupPriceContentsData, GroupPriceContentsOutput,
+// GroupPriceContentsData, formatGetPriceGroupContentsInput
+export const formatGetPriceGroupContentsOuput = (data: GetPricePackageContentsOutput): GroupPriceContents => {
+    return GroupPriceContents = {
+        contents: data.contents,
+        contentMetadata: data.contentMetadata
+    }
+}
