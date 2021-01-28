@@ -26,10 +26,18 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
 
     let userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
+    
 
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+        let page = 1
+        const DEFAULT_QS = `status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
+        
+        do {
+            props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+            page += 1
+        } while (
+            page <= 3
+        )
     }, [selectedFolder, searchString])
 
     React.useEffect(() => {
