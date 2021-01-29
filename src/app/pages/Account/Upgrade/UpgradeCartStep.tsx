@@ -9,9 +9,9 @@ import { PlansName } from './FeaturesConst';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
+import { dateAdd } from '../../../../utils/services/date/dateService';
 
 export const UpgradeCartStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; billingInfo: BillingPageInfos, planDetails: Plans }) => {
-    var moment = require('moment')
     if(props.stepperData.name.indexOf('scale') !== -1) {
         segmentService.track('Upgrade Form Completed', {
             action: 'Features Form Submitted',
@@ -126,7 +126,7 @@ React.useEffect(() => {
                 },
                 {
                     data: [
-                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {moment().add(3, 'months').format('DD MMMM YYYY')} </Text>,
+                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from { dateAdd(new Date(), 'month', 3).toLocaleDateString()} </Text>,
                         <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? '$' + ((planPrice) + (featuresTotal)) : '$' + (planPrice)}</Text>
                     ]
                 }

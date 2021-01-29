@@ -8,13 +8,14 @@ import { Icon } from '@material-ui/core';
 import { Button } from '../Button/Button';
 import { DateRangePickerr } from './DateRangePicker';
 
-export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: any; endDate: any}) => void; dates: {startDate: any; endDate: any}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: Date; endDate: Date}) => void; dates: {startDate: number; endDate: number}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
     
     const {presets, callback,  ...other} = props;
 
     const [dates, setDates] = React.useState<{startDate: any; endDate: any}>(props.dates ? props.dates : {startDate: null, endDate: null})
-    const [focusedInput, setFocusedInput] = React.useState<any>(null)
-    let mobile = useMedia('(max-width: 780px)')
+
+    // const [focusedInput, setFocusedInput] = React.useState<any>(null)
+    // let mobile = useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
         props.dates ? setDates(props.dates) : null
@@ -25,9 +26,9 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
             <DateRangePickerr 
                 start={dates.startDate}
                 end={dates.endDate}
-                onDatesChange={(data) => { console.log(data) } } // PropTypes.func.isRequired,
+                onDatesChange={(data) => { callback({startDate: data.startDate, endDate: data.endDate}) } } // PropTypes.func.isRequired,
             />
-            <DateRangePicker 
+            {/* <DateRangePicker 
                 disabled={props.disabled}
                 isOutsideRange={() => false} 
                 isDayHighlighted= {() => false}
@@ -45,10 +46,10 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
                 startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
                 endDate={dates.endDate} // momentPropTypes.momentObj or null,
                 endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                onDatesChange={({ startDate, endDate }) => { callback({startDate, endDate}); setDates({ startDate, endDate })} } // PropTypes.func.isRequired,
+                onDatesChange={({ startDate, endDate }) => { console.log(startDate, endDate); callback({startDate, endDate}); setDates({ startDate, endDate })} } // PropTypes.func.isRequired,
                 focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={(focusedInput) => {setFocusedInput(focusedInput)}} // PropTypes.func.isRequired,
-            />
+            /> */}
         </div>
     )
 }

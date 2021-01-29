@@ -23,7 +23,10 @@ export const DateRangePickerr = (props: { start: number, end: number, onDatesCha
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
+
     React.useEffect(() => {}, [isOpened])
+
+
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(datepickerRef, () => setIsOpened(false));
@@ -41,6 +44,15 @@ export const DateRangePickerr = (props: { start: number, end: number, onDatesCha
         }
         props.onDatesChange(data)
     }
+
+    React.useEffect(() => {
+        setState({
+            ...state,
+            startDate: new Date(props.start),
+            endDate: new Date(props.end)
+        })
+    }, [props.start, props.end])
+
 
     const {
         firstDayOfWeek,
