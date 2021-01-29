@@ -11,6 +11,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
 
 export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -19,6 +20,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
     const [searchString, setSearchString] = React.useState<string>(null)
+    const [folderData, setFolderData] = React.useState<FolderAsset[]>([])
 
     React.useEffect(() => {
         props.setStepValidated(selectedItems.length > 0)
@@ -26,18 +28,25 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
 
     let userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    
+    const fetchFolderData = async (tempArray: FolderAsset[]) => {
 
-    React.useEffect(() => {
-        let page = 1
-        const DEFAULT_QS = `status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
+        for(let page = 1; page <= 3; page++) {
+            const DEFAULT_QS = `?status=online&page=${page}&per-page=10&content-types=channel,vod,folder,playlist`
+
+            await axiosClient.get('/search/content' + (DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))).then((response) => {
+                response.data.data.results && tempArray.push(...response.data.data.results)
+            })
+        }
+    }
         
-        do {
-            props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
-            page += 1
-        } while (
-            page <= 3
-        )
+    React.useEffect(() => {
+
+        const tempArray: FolderAsset[] = []
+        
+        fetchFolderData(tempArray).then(() => {
+            setFolderData(tempArray)
+        })
+
     }, [selectedFolder, searchString])
 
     React.useEffect(() => {
@@ -94,15 +103,15 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     }
 
     const renderContentsList = () => {
-        if(props.stepperData.secondStep.folderData.requestedContent) {
-            return props.stepperData.secondStep.folderData.requestedContent.results.map((row) => {
+        if(folderData) {
+            return folderData.map((row) => {
                 if (row.type === "playlist" || selectedItems.includes(row)) {
                     return;
                 }
                 return (
                     <ItemSetupRow className='col col-12 flex items-center p2 pointer'
                         selected={checkedContents.includes(row)}
-                        onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
+                        onDoubleClick={() => { !row.type ? handleNavigateToFolder(row.title) : null }}
                     >
                         {row.type !== "folder" &&
                             <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
@@ -112,9 +121,9 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                             />
                         }
                         {handleRowIconType(row)}
-                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.type ? row.title : row.name}</Text>
                         {
-                            row.type === "folder" &&
+                            !row.type &&
                                 <div className="flex-auto justify-end">
                                     <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                                 </div>
