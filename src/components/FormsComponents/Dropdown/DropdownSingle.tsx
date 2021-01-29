@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle } from './DropdownStyle';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle, DropdownDescriptionText, DropdownItemTitleContainer } from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownListType, DropdownSingleListItem } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -72,7 +72,14 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             className={key === 0 ? 'mt1' : ''}
                             isSelected={selectedItem === item.title}
                             onClick={() => handleClick(item)}>
-                            <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
+                            <DropdownItemTitleContainer>
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
+                            </DropdownItemTitleContainer>
+                           
+                            {
+                                item.description && <DropdownDescriptionText size={12} weight="reg" color="gray-3">{item.description}</DropdownDescriptionText>
+                            }
+                            
                         </DropdownItem>
                 )
             })
