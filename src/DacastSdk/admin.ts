@@ -256,6 +256,7 @@ export interface GetJobsListOutput {
 
 export interface GetMigrationJobDetailsOutput {
     currentStep: string
+    previousStep: string
     errorDetails: string
     export: {
         status: string
