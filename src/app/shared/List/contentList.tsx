@@ -14,7 +14,6 @@ import { SeparatorHeader, TitleContainer, ListContentTitle } from '../../../app/
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
-import { DateTime } from 'luxon';
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { Modal } from '../../../components/Modal/Modal';
 import { MoveItemModal } from '../../../app/pages/Folders/MoveItemsModal';
@@ -324,7 +323,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         ,
                         props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         props.contentType !== 'expo' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
-                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
                         props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'Deleted' && !(value.type === 'vod' && !value.size) ?

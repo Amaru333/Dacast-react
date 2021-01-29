@@ -1,6 +1,5 @@
 import { TransactionsInfo } from './types'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils'
-import { DateTime } from 'luxon'
 import { GetPaywallTransactionsOutput } from '../../../../../DacastSdk/paywall'
 
 export const formatGetPaywallTransactionsInput = (qs: string) => {
@@ -27,7 +26,7 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
                 id: transaction.id,
                 type: transaction.decimalValue ? transaction.note : transaction.actionType,
                 contentName: transaction.contentName,
-                date: transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, DateTime.DATETIME_SHORT) : transaction.date,
+                date: transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : transaction.date,
                 purchaser: transaction.purchaser,
                 currency: transaction.currency || 'USD',
                 price: transaction.decimalValue ? transaction.decimalValue : transaction.price,
