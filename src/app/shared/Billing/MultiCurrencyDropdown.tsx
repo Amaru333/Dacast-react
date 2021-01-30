@@ -15,7 +15,7 @@ export const MultiCurrencyDropdown = (props: MultiCurrencyDropdownProps) => {
     return (
         <DropdownButton 
             id='currencyDropdown'
-            style={{ maxHeight: 30, width: 100 }} 
+            style={{ maxHeight: 30, width: 110 }} 
             dropdownDefaultSelect={props.defaultCurrency} 
             list={Object.keys(props.currenciesList).map(key => {
                 if( key !== 'aud') {

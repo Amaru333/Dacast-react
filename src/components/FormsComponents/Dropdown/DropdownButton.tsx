@@ -4,6 +4,7 @@ import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonCon
 import { dropdownIcons, DropdownButtonProps, DropdownSingleListItem } from './DropdownTypes';
 import { useOutsideAlerter } from '../../../utils/utils';
 import {Text} from '../../Typography/Text'
+import { IconStyle } from '../../../shared/Common/Icon';
 
 export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownButtonProps) => {
 
@@ -54,13 +55,13 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
 
     return (
         <ContainerStyle {...props}>
-            <ButtonContainer backgroundColor={props.backgroundColor} disabled={props.disabled} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+            <ButtonContainer className='relative' backgroundColor={props.backgroundColor} disabled={props.disabled} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
                 {
                     (selectedItem.data && selectedItem.data.img) &&
                     <img className='pr1' height={20} width={20} src={require(`../../../../public/assets/${selectedItem.data.img}.png`)} alt={selectedItem.data.img} />
                 }
-                <Text size={12}>{selectedItem.title}</Text>
-                { !props.disabled && <Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon> }
+                <Text className='mr1' size={12}>{selectedItem.title}</Text>
+                { !props.disabled && <IconStyle>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</IconStyle> }
             </ButtonContainer>
             <DropdownList style={{position: 'static'}} hasSearch={false} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}
