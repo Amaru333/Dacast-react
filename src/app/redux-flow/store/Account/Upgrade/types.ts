@@ -38,11 +38,10 @@ export interface Privilege {
     checked: boolean;
 }
 
-export interface Price {
-    usd: number;
-    gbp: number;
-    eur: number;
-    aud: number;
+export type Currency = 'usd' | 'eur' | 'gbp'
+
+export type Price = {
+    [key in Currency]: number
 }
 
 export interface Plans {

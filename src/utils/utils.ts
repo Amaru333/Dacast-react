@@ -240,3 +240,18 @@ export const responsiveMenu = () => {
 
     return {isOpen, currentNavWidth, setOpen, menuLocked, setMenuLocked};
 }
+
+export const handleCurrencySymbol = (currency: string) => {
+    switch(currency.toUpperCase()) {
+        case 'USD':
+            return '$'
+        case 'AUD':
+            return 'AU$'
+        case 'GBP': 
+            return '£'
+        case 'EUR':
+            return '€'
+        default:
+            return '$'
+    }
+}

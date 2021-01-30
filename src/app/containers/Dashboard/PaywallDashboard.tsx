@@ -5,24 +5,10 @@ import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DashboardPaywall } from '../../redux-flow/store/Dashboard/types';
+import { handleCurrencySymbol } from '../../../utils/utils';
 
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: DashboardPaywall }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
-
-    const handleCurrencySymbol = (currency: string) => {
-        switch(currency) {
-            case 'USD':
-                return '$'
-            case 'AUD':
-                return 'AU$'
-            case 'GBP': 
-                return '£'
-            case 'EUR':
-                return '€'
-            default:
-                return '$'
-        }
-    }
 
     return (
         <section className={classTopContainer}>

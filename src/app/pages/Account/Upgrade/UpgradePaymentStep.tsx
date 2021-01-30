@@ -2,14 +2,30 @@ import React from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
+import { Currency, Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
-import { calculateDiscount } from '../../../../utils/utils';
+import { calculateDiscount, handleCurrencySymbol } from '../../../../utils/utils';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
+import { calcTotalFeatures } from '../../../utils/utils';
 
-export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; finalFunction: () => void; purchasePlan: (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => Promise<void>; purchasePlan3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>; handleThreeDSecureFail: () => void; billingInfo: BillingPageInfos }) => {
+interface UpgradePaymentStepProps { 
+    stepperData: Plan; 
+    billingInfo: BillingPageInfos;
+    selectedCurrency: DropdownSingleListItem;
+    updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; 
+    setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; 
+    finalFunction: () => void; 
+    purchasePlan: (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => Promise<void>; 
+    purchasePlan3Ds: (recurlyToken: string, threeDSecureResultToken: string) => Promise<void>; 
+    handleThreeDSecureFail: () => void; 
+    setSelectedCurrency: React.Dispatch<React.SetStateAction<DropdownSingleListItem>>;
+}
+
+export const UpgradePaymentStep = (props: UpgradePaymentStepProps) => {
 
     segmentService.track('Upgrade Form Completed', {
         action: 'Cart Form Submitted',
@@ -17,9 +33,9 @@ export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData
         'plan_name': props.stepperData.name,
         step: 3,
     })  
-    const planPrice: number = calculateDiscount(props.stepperData.price.usd / 100, props.stepperData.discount)
-    const featuresTotal: number = (props.stepperData.privilegesTotal || 0)
-    const totalPrice: number = calculateDiscount((props.stepperData.price.usd / 100) + featuresTotal, props.stepperData.discount)
+    const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100, props.stepperData.discount)
+    const featuresTotal: number = calcTotalFeatures((props.stepperData.name !== "Starter" || !(props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)) ? props.stepperData.privileges.filter(p => p.checked).map(p => p.price) : [], props.selectedCurrency.data.id as Currency)
+    const totalPrice: number = calculateDiscount((props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100) + featuresTotal, props.stepperData.discount)
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)
@@ -32,9 +48,9 @@ export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData
             data: [
                 { cell: <Text key={"step2headerText"} size={14} weight="med" color="gray-1">Total Pay Now</Text> },
                 props.stepperData.name === 'Annual Scale' ?
-                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">${planPrice}</Text> }
+                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{ handleCurrencySymbol(props.selectedCurrency.data.id) + planPrice}</Text> }
                     :
-                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? '$' + ((planPrice)) * 3 : '$' + totalPrice}</Text> }
+                    { cell: <Text key={"step2headerNumber"} className='right mr2' size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? handleCurrencySymbol(props.selectedCurrency.data.id) + ((planPrice)) * 3 : handleCurrencySymbol(props.selectedCurrency.data.id) + totalPrice}</Text> }
 
             ]
         }
@@ -43,6 +59,13 @@ export const UpgradePaymentStep = (props: { stepperData: Plan; updateStepperData
 
     return (
         <div>
+            <div>
+                <MultiCurrencyDropdown 
+                    defaultCurrency={props.selectedCurrency} 
+                    currenciesList={props.stepperData.price} 
+                    callback={props.setSelectedCurrency}
+                />
+            </div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()} />
 
             <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} recurlyFunction={props.purchasePlan} purchasePlan3Ds={props.purchasePlan3Ds} handleThreeDSecureFail={props.handleThreeDSecureFail} stepperData={props.stepperData} billingInfo={props.billingInfo} />
