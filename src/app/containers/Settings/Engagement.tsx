@@ -32,7 +32,6 @@ export interface SettingsEngagementContainerProps {
 const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-
     const [localEngagementSettings, setLocalEngagementSettings] = React.useState<EngagementInfo>(props.engagementSettings)
     const [settingsEdited, setSettingsEdited] = React.useState<boolean>(false)
 
@@ -55,12 +54,6 @@ const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
         }
     }, [props.engagementSettings])
 
-    React.useEffect(() => {
-        console.log("local engagement settings", localEngagementSettings)
-    }, [localEngagementSettings])
-
-
-
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
@@ -79,6 +72,7 @@ const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
                 }
                 <EngagementBrandImage 
                     {...componentProps}
+                    getUploadUrl={props.getUploadUrl}
                     deleteFile={props.deleteFile}
                     uploadBrandImage={props.uploadFile}
                     getEngagementSettings={props.getEngagementSettings}

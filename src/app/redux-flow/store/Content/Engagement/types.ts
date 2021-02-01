@@ -17,16 +17,16 @@ export enum ActionTypes {
 export interface ContentEngagementContainerProps {
     contentEngagementState: ContentEngagementState;
     globalEngagementSettings: EngagementInfo;
-    getContentEngagementSettings: (contentId: string, contentType: string) => Promise<void>;
-    lockSection: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>;
-    saveContentEngagementSettings: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
-    saveContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
-    createContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
-    deleteContentAd: (data: Ad[], contentId: string, contentType: string) => Promise<void>;
+    getContentEngagementSettings: (contentId: string, contentType: ContentType) => Promise<void>;
+    lockSection: (section: string, contentId: string, contentType: ContentType, unlock?: boolean) => Promise<void>;
+    saveContentEngagementSettings: (data: ContentEngagementSettings, contentType: ContentType) => Promise<void>;
+    saveContentAd: (data: Ad[], contentId: string, contentType: ContentType) => Promise<void>;
+    createContentAd: (data: Ad[], contentId: string, contentType: ContentType) => Promise<void>;
+    deleteContentAd: (data: Ad[], contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    getUploadUrl: (contentId: string, contentType: string) => Promise<void>;
+    getUploadUrl: (contentId: string, contentType: ContentType) => Promise<void>;
     uploadContentImage: (data: File, uploadUrl: string) => Promise<void>;
-    deleteContentImage: (targetId: string, contentType: string) => Promise<void>;
+    deleteContentImage: (targetId: string, contentType: ContentType) => Promise<void>;
     getGlobalEngagementSettings: () => Promise<void>;
 }
 
@@ -35,17 +35,17 @@ export interface EngagementComponentProps {
     localEngagementSettings: EngagementInfo;
     setLocalEngagementSettings: React.Dispatch<React.SetStateAction<EngagementInfo>>;
     setSettingsEdited: React.Dispatch<React.SetStateAction<boolean>>;
-    lockSection?: (section: string, contentId: string, contentType: string, unlock?: boolean) => Promise<void>;
+    lockSection?: (section: string, contentId: string, contentType: ContentType, unlock?: boolean) => Promise<void>;
     contentId?: string;
     contentType?: ContentType;
-    saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: string) => Promise<void>;
-    createAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
-    saveAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
-    deleteAd?: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>;
-    getUploadUrl?: (contentId: string, contentType: string) => Promise<void>;
+    saveContentEngagementSettings?: (data: ContentEngagementSettings, contentType: ContentType) => Promise<void>;
+    createAd?: (data: Ad[], contentId?: string, contentType?: ContentType) => Promise<void>;
+    saveAd?: (data: Ad[], contentId?: string, contentType?: ContentType) => Promise<void>;
+    deleteAd?: (data: Ad[], contentId?: string, contentType?: ContentType) => Promise<void>;
+    getUploadUrl?: (contentId: string, contentType: ContentType) => Promise<void>;
     uploadBrandImage?: (data: File, uploadUrl: string) => Promise<void>
-    deleteFile?: (targetId: string, contentType?: string) => Promise<void>
-    getEngagementSettings?: (contentId?: string, contentType?: string) => Promise<void>
+    deleteFile?: (targetId: string, contentType?: ContentType) => Promise<void>
+    getEngagementSettings?: (contentId?: string, contentType?: ContentType) => Promise<void>
 }
 
 export type EngagementSectionsLock = 'brand-image' | 'ads' | 'brand-text' | 'end-screen-text';
