@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
-import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownIconStyle, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle, DropdownDescriptionText, DropdownItemTitleContainer } from './DropdownStyle';
-import { DropdownProps, dropdownIcons, DropdownListType, DropdownSingleListItem } from './DropdownTypes';
+import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle, DropdownDescriptionText, DropdownItemTitleContainer } from './DropdownStyle';
+import { DropdownProps, dropdownIcons, DropdownSingleListItem } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
 import { Link } from 'react-router-dom';
@@ -61,7 +61,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                 id={props.id + '_' + item.title}
                                 isSelected={selectedItem === item.title}
                                 onClick={() => handleClick(item)}>
-                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><Icon fontSize="inherit">check</Icon></div>}
                             </DropdownItem>
                         </Link>
                         :
@@ -73,7 +73,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             isSelected={selectedItem === item.title}
                             onClick={() => handleClick(item)}>
                             <DropdownItemTitleContainer>
-                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <DropdownIconStyle><Icon fontSize="inherit">check</Icon></DropdownIconStyle>}
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><Icon fontSize="inherit">check</Icon></div>}
                             </DropdownItemTitleContainer>
                            
                             {

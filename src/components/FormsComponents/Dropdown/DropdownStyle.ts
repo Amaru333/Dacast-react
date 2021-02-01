@@ -117,14 +117,6 @@ export const BorderItem = styled.div<{}>`
     margin-left: -5%;
 `;
 
-export const DropdownIconStyle = styled.div`
-    /* position: absolute;
-    right: 0%;
-    top: 25%;
-    padding-right: 8px; */
-    
-`;
-
 export const DropdownItemTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
