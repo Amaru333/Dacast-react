@@ -96,7 +96,7 @@ export class DacastSdk {
     public putEncodingRecipe = async (input: EncodingRecipe): Promise<void> => await this.axiosClient.put('/settings/encoding-recipes/' + input.id, {...input})
     public deleteEncodingRecipe = async (input: string): Promise<void> => await this.axiosClient.delete('/settings/encoding-recipes/' + input)
 
-    public getEngagementSettings = async (): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('https://ca282677-31e5-4de4-8428-6801321ac051.mock.pstmn.io/accounts/' + this.userId + '/settings/engagement', {authRequired: false}).then(this.checkExtraData)
+    public getEngagementSettings = async (): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/engagement').then(this.checkExtraData)
     public putEngagementSettings = async (input: EngagementSettingsEndpoint) => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement', {...input})
     public putAdsSettings = async (input: PutAdInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement/ads', {...input})
     public deleteUserBrandImage = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/engagement/brand-image')

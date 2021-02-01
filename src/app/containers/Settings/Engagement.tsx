@@ -56,12 +56,6 @@ const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
         }
     }, [props.engagementSettings])
 
-    React.useEffect(() => {
-        console.log("local engagement settings", localEngagementSettings)
-    }, [localEngagementSettings])
-
-
-
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }

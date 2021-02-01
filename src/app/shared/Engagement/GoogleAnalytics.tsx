@@ -19,7 +19,6 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                     ...props.localEngagementSettings, 
                     googleAnalyticsSettings: {
                         locked: true,
-                        isEnabled: props.globalEngagementSettings.googleAnalyticsSettings.isEnabled,
                         trackingID: props.globalEngagementSettings.googleAnalyticsSettings.trackingID
 
                     }
@@ -32,7 +31,6 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                     ...Object.keys(props.localEngagementSettings).filter(f => {return props.localEngagementSettings[f] && !props.localEngagementSettings[f].locked}).reduce((acc, next) => {return {...acc, [next]: props.localEngagementSettings[next]}}, {}),
                     googleAnalyticsSettings: {
                         locked:false,
-                        isEnabled: false,
                         trackingID: ''
                     }
                 }          
@@ -42,7 +40,6 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                     ...props.localEngagementSettings,
                     googleAnalyticsSettings: {
                         locked:false,
-                        isEnabled: false,
                         trackingID: ''
                     }
                 })
@@ -72,16 +69,12 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                     <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg' color='gray-3'>Need help with Google Analytics? Visit the <a href={getKnowledgebaseLink("Google Analytics")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
-                <Toggle className='' label='Google Analytics' defaultChecked={props.localEngagementSettings.googleAnalyticsSettings.isEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, googleAnalyticsSettings: {...props.localEngagementSettings.googleAnalyticsSettings, isEnabled: !props.localEngagementSettings.googleAnalyticsSettings.isEnabled }}); props.setSettingsEdited(true) }} />
-                {
-                    props.localEngagementSettings.googleAnalyticsSettings.isEnabled &&
                     <Input
-                            className='my2 pr1 col col-8'
+                            className='my1 pr1 col col-8'
                             label='Google Analytics Tracking ID'
                             onChange={(event) => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, googleAnalyticsSettings: {...props.localEngagementSettings.googleAnalyticsSettings, trackingID: event.currentTarget.value }}); props.setSettingsEdited(true) }}
                             value={props.localEngagementSettings.googleAnalyticsSettings.trackingID || ""}
                         />
-                }
             </DisabledSection>
         </Card>
     )

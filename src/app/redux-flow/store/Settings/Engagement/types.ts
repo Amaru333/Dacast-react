@@ -67,7 +67,6 @@ interface AdsSettings {
 }
 
 interface GoogleAnalyticsSettings {
-    isEnabled: boolean;
     trackingID: string;
     locked: boolean;
 }
