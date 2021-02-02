@@ -48,16 +48,10 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
                         <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="revenueTooltip">The paywall revenue you have earned since the start of the current billing period</Tooltip>
+                        <Tooltip target="revenueTooltip">The paywall revenue you have earned for the last 30 days</Tooltip>
                     </WidgetHeader>
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
-                        {
-                            props.profile.revenue ? props.profile.revenue.map((r, i) => {
-                                return <Text key={'revenue' + i} size={48} weight="reg" color="gray-1">{handleCurrencySymbol(r.currency) + r.total.toLocaleString()}</Text>
-
-                            })
-                            : <Text size={48} weight="reg" color="gray-1">$0</Text>
-                        }
+                        <Text size={48} weight="reg" color="gray-1">{props.profile.revenue ? props.profile.revenue : '$0'}</Text>
                     </div>
                 </WidgetElement>
             </div>
