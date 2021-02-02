@@ -14,6 +14,7 @@ import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addB
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
+import { PlaceholderDashboard } from './PlaceholderDashboard';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -34,6 +35,10 @@ const DashboardTest = (props: DashboardProps) => {
         props.getDashboardVod()
         props.getDashboardPaywall()
     }, [])
+
+    React.useEffect(() => {
+        console.log(props.infos)
+    }, [props.infos])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
@@ -97,7 +102,13 @@ const DashboardTest = (props: DashboardProps) => {
                 props.infos ?
                     <React.Fragment>
                         <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                        {renderDashboard()}
+                        {
+                            props.infos.currentPlan ?
+                                renderDashboard()
+                            :
+                                <PlaceholderDashboard />
+                        }
+                        
                         <div className="clearfix"></div>
                     </React.Fragment> :
                     <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
