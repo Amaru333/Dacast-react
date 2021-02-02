@@ -1,11 +1,7 @@
 import React from 'react'
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker } from 'react-dates';
 import './datepicker_override.css'
-import { useMedia } from '../../../utils/utils';
-import { Icon } from '@material-ui/core';
-import { Button } from '../Button/Button';
 import { DateRangePickerr } from './DateRangePicker';
 
 export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: Date; endDate: Date}) => void; dates: {startDate: number; endDate: number}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {

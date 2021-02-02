@@ -12,7 +12,7 @@ import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
 import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
-import moment from 'moment';
+import { dateAdd } from '../../../utils/services/date/dateService';
 
 export interface ContentAnalyticsProps {
     contentId: string,
@@ -35,7 +35,7 @@ const TabsDimensionLink: { [key: string]: AnalyticsDimensions[] } = {
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: moment().valueOf(), start: moment().subtract(1, 'week').valueOf() } } )
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
     const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_45_MINUTES')
 
     const [loading, setLoading] = React.useState<boolean>(false)

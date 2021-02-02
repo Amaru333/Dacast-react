@@ -11,7 +11,6 @@ import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import ReactTable from 'react-table';
-import moment from 'moment'
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
