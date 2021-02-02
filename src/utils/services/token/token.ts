@@ -60,6 +60,8 @@ interface TokenInfo {
     impersonatedUserIdentifier?: string;
 }
 
+var base64 = require('base-64');
+
 export class UserTokenService {
     constructor() {
         this.getUserInfoItem = this.getUserInfoItem.bind(this)
@@ -74,7 +76,7 @@ export class UserTokenService {
         } else {
             if(localStorage.getItem('userToken')) {
                 this.tokenInfo =  JSON.parse(localStorage.getItem('userToken'));
-                let userInfo = JSON.parse(window.atob(decodeURIComponent(this.tokenInfo.token.split('.')[1]))) as UserInfo
+                let userInfo = JSON.parse(base64.decode(this.tokenInfo.token.split('.')[1])) as UserInfo
                 this.tokenInfo.userInfo = userInfo
                 return this.tokenInfo
             }
