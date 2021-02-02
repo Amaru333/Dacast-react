@@ -36,10 +36,6 @@ const DashboardTest = (props: DashboardProps) => {
         props.getDashboardPaywall()
     }, [])
 
-    React.useEffect(() => {
-        console.log(props.infos)
-    }, [props.infos])
-
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
 
@@ -99,19 +95,14 @@ const DashboardTest = (props: DashboardProps) => {
     return (
         <React.Fragment>
             {
-                props.infos ?
+                props.infos && props.infos.currentPlan ?
                     <React.Fragment>
                         <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                        {
-                            props.infos.currentPlan ?
-                                renderDashboard()
-                            :
-                                <PlaceholderDashboard />
-                        }
+                        {renderDashboard()}
                         
                         <div className="clearfix"></div>
                     </React.Fragment> :
-                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
+                    <PlaceholderDashboard />
             }
         </React.Fragment>
     )
