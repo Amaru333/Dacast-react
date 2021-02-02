@@ -34,13 +34,14 @@ export const formatPutContentEngagementInput = (data: ContentEngagementSettings)
     let formattedData: PutContentEngagementSettingsInput = {
         adsSettings: {
             ...data.engagementSettings.adsSettings,
-            ads: data.engagementSettings.adsSettings.ads.map((ad: Ad): AdEnpoint => {
+            ads: data.engagementSettings.adsSettings && data.engagementSettings.adsSettings.ads ? data.engagementSettings.adsSettings.ads.map((ad: Ad): AdEnpoint => {
                 return {
                     timestamp: ad.timestamp,
                     url: ad.url,
                     ["ad-type"]: ad.type as AdTypeEndpoint,
                 }
             })
+            : null
         },
         brandImageSettings: {
             ...data.engagementSettings.brandImageSettings
