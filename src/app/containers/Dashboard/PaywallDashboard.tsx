@@ -51,7 +51,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Tooltip target="revenueTooltip">The paywall revenue you have earned for the last 30 days</Tooltip>
                     </WidgetHeader>
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{props.profile.revenue ? props.profile.revenue : '$0'}</Text>
+                        <Text size={48} weight="reg" color="gray-1">${props.profile.revenue ? props.profile.revenue : '0'}</Text>
                     </div>
                 </WidgetElement>
             </div>
