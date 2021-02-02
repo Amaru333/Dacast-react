@@ -13,6 +13,7 @@ import { timezoneDropdownList } from '../../../utils/DropdownLists';
 
 var momentTZ = require('moment-timezone')
 
+//TODO Refactor this file entirely, tbh it's a mess and date are treat as string ...
 export const GeneralSettings = (props: {localContentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, contentDetails: ContentDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     const initTimestampValues = (ts: number, timezone: string): { date: string; time: string } => {
@@ -68,8 +69,8 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                                             <DateSinglePickerWrapper
                                                 id="startDate"
                                                 datepickerTitle='Start Date'
-                                                date={moment(startDateTimeValue.date)}
-                                                callback={(date: string) => {setStartDateTimeValue({...startDateTimeValue, date: date}) ;props.setHasChanged(true)}}
+                                                date={new Date(startDateTimeValue.date)}
+                                                callback={(date: Date) => {setStartDateTimeValue({...startDateTimeValue, date: date.toLocaleDateString()}) ;props.setHasChanged(true)}}
                                             />
                                         </div>
                                         <Input

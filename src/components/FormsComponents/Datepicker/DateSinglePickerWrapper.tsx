@@ -1,46 +1,14 @@
 import React from 'react';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-import ReactDates, { SingleDatePicker } from 'react-dates';
-import './datepicker_override.css';
 import { Text } from '../../Typography/Text'
-import moment from 'moment';
+import { DateSinglePicker } from './DateSinglePicker';
 
-export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?: moment.Moment; allowOustsideDate?: boolean; className?: string; callback?: Function; id?: string; datepickerTitle?: string; openDirection?: ReactDates.OpenDirectionShape }) => {
+export const DateSinglePickerWrapper = (props: { date?: Date; minDate?: Date; allowOustsideDate?: boolean; className?: string; callback?: (date: Date) => void; id?: string; datepickerTitle?: string; }) => {
 
-    const [date, setDate] = React.useState<any>(props.date)
-    const [focusedInput, setFocusedInput] = React.useState<boolean>(false)
 
-    React.useEffect(() => {
-        setDate(props.date)
-    }, [props.date])
-
-    React.useEffect(() => {
-        if(props.minDate && props.minDate.diff(date) > 0 && !isNaN(props.minDate.diff(date)) ) {
-            setDate(props.minDate)
-        }
-    }, [props.minDate])
-
-    const handleDateChange = (date: any) => {
+    const handleDateChange = (date: Date) => {
         if (props.callback && date) {
-            props.callback(date.format("YYYY-MM-DD").toString(), date.format("X"))
-        } else {
-            props.callback(false, false)
+            props.callback(date)
         }
-        setDate(date)
-    }
-
-    const handleOutsideRange = (day: any): boolean => {
-        let isDateOutOfRange: boolean = false
-        if(props.allowOustsideDate) {
-            return isDateOutOfRange
-        }
-        if(props.minDate) {
-            isDateOutOfRange = props.minDate.diff(day) > 0
-            return isDateOutOfRange
-        }
-        isDateOutOfRange = moment().diff(day) > 0
-        return isDateOutOfRange
     }
     
     return (
@@ -52,16 +20,11 @@ export const DateSinglePickerWrapper = (props: { date?: moment.Moment; minDate?:
                             <Text size={14} weight='med'>{props.datepickerTitle}</Text>
                         </div>
                 }
-                <SingleDatePicker
+                <DateSinglePicker 
+                    callback={(date: Date) => handleDateChange(date)}
                     id={props.id + 'SingleDatePicker'}
-                    showDefaultInputIcon
-                    inputIconPosition='after'
-                    date={date}
-                    onDateChange={(date: any) => handleDateChange(date)}
-                    focused={focusedInput}
-                    onFocusChange={(test: { focused: boolean }) => setFocusedInput(test.focused)}
-                    numberOfMonths={1}
-                    isOutsideRange={handleOutsideRange}
+                    defaultStartDate={props.date}
+                    minDate={props.minDate.getTime()}
                 />
             </div>
         </div>

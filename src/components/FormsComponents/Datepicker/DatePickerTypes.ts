@@ -3,7 +3,7 @@
 export interface DatePickerProps {
     className?: string;
     id?: string;
-    callback?: Function;
+    callback?: (date: Date) => void;
     DatepickerTitle?: string;
     defaultStartDate?: Date;
     defaultEndDate?: string;
