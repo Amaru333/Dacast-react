@@ -1,5 +1,5 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemThirdWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemThirdWidthContainer, classItemHalfWidthContainer } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -18,7 +18,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
-    const classItem = classItemThirdWidthContainer
+    const classItem = props.isPlanPage ? classItemThirdWidthContainer : classItemHalfWidthContainer
    
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
@@ -123,9 +123,12 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     </div>
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>
-                <WidgetElement className={classItem}>
-                    {renderPlanWidget()}
-                </WidgetElement> 
+                {
+                    props.isPlanPage &&
+                        <WidgetElement className={classItem}>
+                            {renderPlanWidget()}
+                        </WidgetElement> 
+                }
             </div>
         </section>
     )
