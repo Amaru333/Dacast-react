@@ -11,7 +11,7 @@ export const getCurrentTs = ( format: 'ms' | 's' ) => {
 //Replacement for function moment().tz().guess()
 //Offset is weird 
 export const guessTimezone = (offset: boolean = true) => {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone + offset ? `(-(${new Date().getTimezoneOffset() / 60}) )` : '';
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
 export const formatTimezone = () => {

@@ -11,7 +11,7 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
 
     const initTimestampValues = (ts: number, timezone: string): DateTimeValue => {
         timezone = timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
-        return { date: ts > 0 ? ts : new Date().getTime(), timezone: timezone }
+        return { date: ts > 0 ? ts : Math.round(new Date().getTime() /1000), timezone: timezone }
     }
 
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>((props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false)
@@ -51,7 +51,7 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
-
+                            {console.log(startDateTimeValue.date)}
                             {
                                 liveStreamCountdownToggle &&
                                     <DateTimePicker 

@@ -4,7 +4,7 @@ import timezones from 'compact-timezone-list';
 
 export const timezoneDropdownList = timezones.map((item: { offset: string, label: string, tzCode: string }) => {
     let timezoneDropdownItem: DropdownSingleListItem = {title: null}
-    timezoneDropdownItem.title = item.label + ' (' + item.offset + ')'
+    timezoneDropdownItem.title = item.tzCode;   
     return timezoneDropdownItem
 })
 
