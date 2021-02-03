@@ -45,9 +45,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [edited, setEdited] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
-    const countryDropdownList = Object.keys(countries).map((item) => {
-        let countryItem: DropdownSingleListItem = {title: null}
-        countryItem.title = countries[item].name
+    const countryDropdownList = Object.values(countries).map((item) => {
+        let countryItem: DropdownSingleListItem = {
+            title: item.name
+        }
         return countryItem
     })
 
