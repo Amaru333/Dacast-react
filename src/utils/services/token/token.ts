@@ -95,7 +95,8 @@ export class UserTokenService {
 
     public addTokenInfo = (data: TokenInfo) => {
         if(data) {
-            localStorage.setItem('userToken', JSON.stringify({...data, userInfo: {...this.tokenInfo.userInfo, ...data.userInfo}}))
+            let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
+            localStorage.setItem('userToken', JSON.stringify({...data, userInfo: {...existingUserInfo, ...data.userInfo}}))
             this.setTokenInfo()
         } else {
             throw new Error('no token provided')
