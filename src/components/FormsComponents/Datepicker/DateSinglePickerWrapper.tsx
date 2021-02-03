@@ -24,7 +24,7 @@ export const DateSinglePickerWrapper = (props: { date?: Date; minDate?: Date; al
                     callback={(date: Date) => handleDateChange(date)}
                     id={props.id + 'SingleDatePicker'}
                     defaultStartDate={props.date}
-                    minDate={props.minDate.getTime()}
+                    minDate={props.minDate ? props.minDate.getTime() : undefined}
                 />
             </div>
         </div>

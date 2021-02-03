@@ -45,3 +45,12 @@ export const dateAdd = (date: Date, interval: 'year' | 'quarter' | 'month' | 'we
     }
     return ret;
 }
+
+export const utcOffsetToMin = (offset: string) => {
+    let [h, m] = offset.split(':');
+    
+    let hours = Number.parseInt(h);
+    let minutes = Number.parseInt(m);
+    
+    return hours * 60 + (hours < 0 ? (-minutes) : minutes);
+} 

@@ -1,11 +1,10 @@
 import { DropdownSingleListItem } from '../components/FormsComponents/Dropdown/DropdownTypes'
 import { CURRENCY } from '../app/constants/Currencies';
+import timezones from 'compact-timezone-list';
 
-var moment = require('moment-timezone');
-
-export const timezoneDropdownList = moment.tz.names().map((item: string) => {
+export const timezoneDropdownList = timezones.map((item: { offset: string, label: string, tzCode: string }) => {
     let timezoneDropdownItem: DropdownSingleListItem = {title: null}
-    timezoneDropdownItem.title = item + ' (' + moment.tz(item).format('Z z') + ')'
+    timezoneDropdownItem.title = item.label + ' (' + item.offset + ')'
     return timezoneDropdownItem
 })
 

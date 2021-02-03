@@ -4,7 +4,8 @@ import { DropdownSingleListItem } from '../Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
-var moment = require('moment-timezone');
+import timezones from 'compact-timezone-list';
+import { utcOffsetToMin } from "../../../utils/services/date/dateService";
 
 
 interface DateTimePickerProps {
@@ -18,12 +19,14 @@ interface DateTimePickerProps {
     minDate?: number;
     disabled?: boolean;
     fullLineTz?: boolean;
+    dropShowing?: boolean;
 }
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset() * 60
+        let offsetitem = timezones.find(el => el.label === timezoneName)
+        let offset = utcOffsetToMin(offsetitem.offset) * 60
         let splitValue = value.split(':')
         let hours = parseInt(splitValue[0]) * 3600
         if (isNaN(hours)) {
@@ -53,8 +56,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
 
     return (
         <div className="flex flex-wrap items-end col col-12 mxn1">
-            <DropdownSingle disabled={props.disabled} className={colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />
-            {method === "Set Date and Time" &&
+            {props.dropShowing && <DropdownSingle disabled={props.disabled} className={colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />}
+            { (method === "Set Date and Time" || !props.dropShowing) &&
                 <>
                     <DateSinglePickerWrapper
                         minDate={new Date(props.minDate)}
@@ -90,5 +93,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         </div>
     );
 }
+
+DateTimePicker.defaultProps = { dropShowing: true };
+
 
 
