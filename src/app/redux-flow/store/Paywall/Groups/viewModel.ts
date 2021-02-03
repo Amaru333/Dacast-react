@@ -1,7 +1,7 @@
-import { GroupPromoData, GroupPromo, GroupPriceData, GroupPrice } from './types'
+import { GroupPromoData, GroupPromo, GroupPriceData, GroupPrice, GroupPriceContents } from './types'
 import { capitalizeFirstLetter } from '../../../../../utils/utils'
 import { userToken } from '../../../../utils/services/token/tokenService'
-import { PromoId, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput } from '../../../../../DacastSdk/paywall'
+import { PromoId, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPricePackageContentsOutput } from '../../../../../DacastSdk/paywall'
 
 
 export const formatGetPromoGroupOutput = (data: GetPromoOutput): GroupPromoData => {
@@ -83,6 +83,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                 id: item.id,
                 name: item.name,
                 contents: item.contents,
+                pages: item.pages,
                 contentMetadata: item["content-metadata"],
                 prices: item.prices.length > 0 ? item.prices.map((price) => {
                     return {
@@ -243,12 +244,10 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
 
 export const formatDeletePriceGroupInput = (data: GroupPrice): string => data.id
 
-export const formatGetPriceGroupContentsInput = (path): string => path
+export const formatGetPriceGroupContentsInput = (path: string) => path
 
-// TODO: GroupPriceContentsData, GroupPriceContentsOutput,
-// GroupPriceContentsData, formatGetPriceGroupContentsInput
 export const formatGetPriceGroupContentsOuput = (data: GetPricePackageContentsOutput): GroupPriceContents => {
-    return GroupPriceContents = {
+    return {
         contents: data.contents,
         contentMetadata: data.contentMetadata
     }

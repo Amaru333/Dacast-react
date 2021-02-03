@@ -19,6 +19,12 @@ export interface Price {
     description?: string;
 }
 
+export interface ContentMetadata {
+    id: string;
+    title: string;
+    thumbnail: string;
+}
+
 export interface PriceSettings {
     duration?: {value: number; unit: string};
     recurrence?: {unit: string; value?: number};
@@ -37,7 +43,7 @@ export interface GroupPrice {
     id: string;
     name: string;
     prices: GroupPriceInfo[];
-    pages: interger;
+    pages: number;
     contents: string[];
     contentMetadata: string[];
     groupSettings?: PriceSettings;
@@ -45,6 +51,7 @@ export interface GroupPrice {
 
 export interface GroupPriceContents {
     contents: string[];
+    contentMetadata: ContentMetadata[];
 }
 
 export interface GroupPriceCreation {

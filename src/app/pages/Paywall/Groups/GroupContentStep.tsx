@@ -21,6 +21,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
     const [searchString, setSearchString] = React.useState<string>(null)
     const [folderData, setFolderData] = React.useState<FolderAsset[]>([])
+    const [groupContents, setGroupContents] = React.useState<string[]>(props.stepperData.firststep.contents)
 
     React.useEffect(() => {
         props.setStepValidated(selectedItems.length > 0)
@@ -31,12 +32,29 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     const fetchFolderData = async (tempArray: FolderAsset[]) => {
 
         for(let page = 1; page <= 3; page++) {
-            const DEFAULT_QS = `?status=online&page=${page}&per-page=10&content-types=channel,vod,folder,playlist`
+            const DEFAULT_QS = `?status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
 
             await axiosClient.get('/search/content' + (DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))).then((response) => {
-                response.data.data.results && tempArray.push(...response.data.data.results)
+                let editedResults = response.data.data.results && response.data.data.results.map((item) => {
+                    return {
+                        ...item,
+                        objectID: item.path ? item.objectID : item.objectID.split('_')[1],
+                        title: item.name ? item.name : item.title,
+                        type: item.path ? 'folder' : item.type
+
+                    }
+                })
+                editedResults && tempArray.push(...editedResults)
             })
         }
+    }
+
+    const fetchGroupContents = async (tempArray: string[]) => {
+        for(let page = 2; page <= props.stepperData.firststep.pages; page++)
+         await axiosClient.get(`/paywall/prices/groups/${props.stepperData.firststep.id}?page=${page}`).then((response)=> {
+            response.data.data.contents && tempArray.push(...response.data.data.contents)
+        })
+
     }
         
     React.useEffect(() => {
@@ -50,15 +68,24 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     }, [selectedFolder, searchString])
 
     React.useEffect(() => {
-        if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
-            setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
-                return props.stepperData.firststep.contents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' +  content.objectID)
+        const tempArray: string[] = groupContents
+
+        fetchGroupContents(tempArray).then(() => {
+            setGroupContents(tempArray)
+        })
+    }, [])
+
+    React.useEffect(() => {
+        if(folderData && !selectedFolder && !searchString) {
+            setSelectedItems(folderData.filter((content) => {
+                return groupContents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }))
         }
-    }, [props.stepperData.secondStep.folderData.requestedContent.results])
+    }, [folderData, groupContents])
 
     React.useEffect(() => {
         if(selectedItems && selectedItems.length > 0) {
+            
             props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems}})
         }
     }, [selectedItems])
@@ -113,7 +140,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                         selected={checkedContents.includes(row)}
                         onDoubleClick={() => { !row.type ? handleNavigateToFolder(row.title) : null }}
                     >
-                        {row.type !== "folder" &&
+                        {row.type &&
                             <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
                                 onChange={() => handleCheckboxContents(row)}
                                 defaultChecked={checkedContents.includes(row)}
