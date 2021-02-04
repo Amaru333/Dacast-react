@@ -7,7 +7,7 @@ import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { updateClipboard } from '../../utils/utils';
 import { BubbleContent } from '../Security/SecurityStyle';
-import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText } from './GeneralStyle';
+import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText,  EncoderSettingsContainer } from './GeneralStyle';
 import {Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
@@ -55,12 +55,13 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         dropdownDefaultSelect={selectedEncoder.title}
                         callback={(item: DropdownSingleListItem) => {setSelectedEncoder(item)}}
                     />
+                    <EncoderSettingsContainer className="col col-12">
                     <div className="col col-12">
                         <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
                             </LinkBoxLabel>
-                            <LinkBox>
+                            <LinkBox backgroundColour="white">
                                 <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
                                 <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
                             </LinkBox>
@@ -71,21 +72,20 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{selectedEncoder.data.backupPublishURL}</Text>
                                     </LinkBoxLabel>
-                                    <LinkBox>
+                                    <LinkBox backgroundColour="white">
                                         <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
                                         <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
                                     </LinkBox>
                                 </LinkBoxContainer>
                         }
                     </div>
-                    
                     {
                         selectedEncoder.data.username &&
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{selectedEncoder.data.username}</Text>
                                 </LinkBoxLabel>
-                                <LinkBox>
+                                <LinkBox backgroundColour="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
@@ -97,26 +97,26 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{selectedEncoder.data.password}</Text>
                                 </LinkBoxLabel>
-                                <LinkBox>
+                                <LinkBox backgroundColour="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                     }
-                    
                     {props.contentDetails.streamKeys.map((streamKey, i) => {
                         return(
                         <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
                         </LinkBoxLabel>
-                        <LinkBox>
+                        <LinkBox backgroundColour="white">
                             <LinkText size={14} weight="reg">{streamKey}</LinkText>
                             <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
                         </LinkBox>
                     </LinkBoxContainer>
                         )
                     })}
+                    </EncoderSettingsContainer>
                     {/* <div>
                         <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                             <LinkBoxLabel>
@@ -133,6 +133,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     </div> */}
 
                 </div>
+                
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
                     <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
