@@ -21,7 +21,12 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
 
     const encoderList = [
         {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
-        {title: "OBS Open Broadcaster Software", data: {primaryPublishURL: "Server", backupPublishURL: "Backup Server", username: "Username", password: "Password", streamKey: "Stream Key"}}
+        {title: "OBS Open Broadcaster Software", data: {primaryPublishURL: "Server", backupPublishURL: "Backup Server", username: "Username", password: "Password", streamKey: "Stream Key"}},
+        {title: "Sling Studio", data: {primaryPublishURL: "Stream URL", streamKey: "Stream Name"}},
+        {title: "Telestream Wirecast", data: {primaryPublishURL: "Address", backupPublishURL: "Backup Address", username: "Username", password: "Password", streamKey: "Stream"}},
+        {title: "Teradeks", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
+        {title: "Vid Blaster", data: {primaryPublishURL: "URL/IP: Port", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream"}},
+        {title: "vMix", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}
     ]
 
     const handleGenerateKeyClick = () => {
@@ -43,48 +48,62 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         </BubbleContent>
                     </Bubble>
                     <DropdownSingle
+                        className="col col-6 mb2"
                         id="encoderList"
                         dropdownTitle="RTMP Encoders"
                         list={encoderList}
                         dropdownDefaultSelect={selectedEncoder.title}
                         callback={(item: DropdownSingleListItem) => {setSelectedEncoder(item)}}
                     />
-                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
-                            <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">{selectedEncoder.data.backupPublishURL}</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
-                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">{selectedEncoder.data.username}</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
-                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                    <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">{selectedEncoder.data.password}</Text>
-                        </LinkBoxLabel>
-                        <LinkBox>
-                            <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
-                            <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
-                        </LinkBox>
-                    </LinkBoxContainer>
+                    <div className="col col-12">
+                        <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                            <LinkBoxLabel>
+                                <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
+                            </LinkBoxLabel>
+                            <LinkBox>
+                                <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
+                                <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
+                            </LinkBox>
+                        </LinkBoxContainer>
+                        {
+                            selectedEncoder.data.backupPublishURL &&
+                                <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">{selectedEncoder.data.backupPublishURL}</Text>
+                                    </LinkBoxLabel>
+                                    <LinkBox>
+                                        <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
+                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                    </LinkBox>
+                                </LinkBoxContainer>
+                        }
+                    </div>
+                    
+                    {
+                        selectedEncoder.data.username &&
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">{selectedEncoder.data.username}</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                    }
+                    {
+                        selectedEncoder.data.password &&
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">{selectedEncoder.data.password}</Text>
+                                </LinkBoxLabel>
+                                <LinkBox>
+                                    <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                    }
+                    
                     {props.contentDetails.streamKeys.map((streamKey, i) => {
                         return(
                         <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
@@ -98,7 +117,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     </LinkBoxContainer>
                         )
                     })}
-                    <div>
+                    {/* <div>
                         <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">Encoder Key</Text>
@@ -111,7 +130,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         <Button className='right mr2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
                             Generate
                         </Button>
-                    </div>
+                    </div> */}
 
                 </div>
                 <div className="flex col col-12 mt2">
