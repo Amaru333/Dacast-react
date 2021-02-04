@@ -15,6 +15,7 @@ export const LinkBoxContainer = styled.div`
 
 export const LinkBoxLabel = styled.label`
     display: flex;
+    justify-content: space-between;
     height:auto;
     margin-bottom: 4px;
     margin-top:4px;

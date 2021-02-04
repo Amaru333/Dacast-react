@@ -12,6 +12,7 @@ import {Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 
 export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boolean>>; opened: boolean; generateEncoderKey: (liveId: string) => Promise<void>; contentDetails: ContentDetails; }) => {
@@ -60,6 +61,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                             <LinkBoxLabel>
                                 <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
+                                <IconStyle id="primaryPublishURLTooltip">info_outlined</IconStyle>
+                                <Tooltip target="primaryPublishURLTooltip">This is your server address for live streaming.</Tooltip>
                             </LinkBoxLabel>
                             <LinkBox backgroundColour="white">
                                 <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
@@ -71,6 +74,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                     <LinkBoxLabel>
                                         <Text size={14} weight="med">{selectedEncoder.data.backupPublishURL}</Text>
+                                        <IconStyle id="backupPublishURLTooltip">info_outlined</IconStyle>
+                                        <Tooltip target="backupPublishURLTooltip">This is your backup stream in case the Server/Stream URL/ Address does not work.</Tooltip>
                                     </LinkBoxLabel>
                                     <LinkBox backgroundColour="white">
                                         <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
@@ -108,6 +113,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
+                            <IconStyle id="streamKeyTooltip">info_outlined</IconStyle>
+                            <Tooltip target="streamKeyTooltip">This is the name/key for a rendition of your stream.</Tooltip>
                         </LinkBoxLabel>
                         <LinkBox backgroundColour="white">
                             <LinkText size={14} weight="reg">{streamKey}</LinkText>
