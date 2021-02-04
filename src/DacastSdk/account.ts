@@ -105,10 +105,12 @@ interface PrivilegePostEndpoint {
     quantity: number;
 }
 
+export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD'
+
 export interface PostAccountPlanInput { 
     planCode: string;
     token: string;
-    currency: 'USD';
+    currency: PlanCurrencyEndpoint;
     couponCode: '';
     allowances: string;
     threeDSecureToken: string;

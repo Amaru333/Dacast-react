@@ -59,7 +59,7 @@ export interface PaidPrivilege {
 
 export interface ChangePlanData {
     code: string;
-    currency: 'USD';
+    currency: Currency;
     allowanceCode: string;
     privileges: Privilege[];
     selectedPrivileges: string[];

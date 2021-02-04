@@ -24,6 +24,7 @@ import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { formatPostProductExtraInput } from '../../../redux-flow/store/Account/Plan/viewModel';
 import { PurchaseDataCartStep } from './PurchaseDataCartStep';
 import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -40,11 +41,18 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
-    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<Extras>(null)
+    const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<Extras>({
+        code: null,
+        quantity: null,
+        totalPrice: null,
+        currency: 'usd'
+    })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
+    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: 'EUR - €', data: {img: 'eur', id: 'eur'}})
+
 
     const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
 
@@ -52,6 +60,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
+            currency: selectedCurrency.data.id as BandwidthProductCurrency,
             token: recurlyToken, 
             threeDSecureToken: null
         }))
@@ -256,12 +265,15 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}
                     stepperData={purchaseDataStepperData}
                     updateStepperData={(data: Extras) => {setPurchaseDataStepperData(data)}}
-                    functionCancel={() => setPurchaseDataOpen(false)}
+                    functionCancel={setPurchaseDataOpen}
                     billingInfo={props.billingInfos}
                     purchaseProducts={purchaseProducts}
                     purchaseProducts3Ds={purchaseProducts3Ds}
                     handleThreeDSecureFail={handleThreeDSecureFail}
                     isLoading={isLoading}
+                    selectedCurrency={selectedCurrency}
+                    setSelectedCurrency={setSelectedCurrency}
+                    bandwidthProduct={props.billingInfos.products.bandwidth}
                 />
             }
             

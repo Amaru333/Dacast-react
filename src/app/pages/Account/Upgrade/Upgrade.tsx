@@ -53,10 +53,9 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
     const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
-        console.log('recurly token', recurlyToken)
         dacastSdk.postAccountPlan(formatPostPlanInput({
             code: stepperData.code,
-            currency: 'USD',
+            currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
             selectedPrivileges: stepperData.selectedPrivileges,
@@ -90,11 +89,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const purchasePlan3Ds = async (recurlyToken: string, threeDSecureResultToken: string) => {
-        console.log("3DS result token", threeDSecureResultToken)
         setIsLoading(true);
         dacastSdk.postAccountPlan(formatPostPlanInput({
             code: stepperData.code,
-            currency: 'USD',
+            currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
             selectedPrivileges: stepperData.selectedPrivileges,
