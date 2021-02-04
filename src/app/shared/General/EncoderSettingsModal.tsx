@@ -10,17 +10,26 @@ import { BubbleContent } from '../Security/SecurityStyle';
 import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText } from './GeneralStyle';
 import {Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 
 export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boolean>>; opened: boolean; generateEncoderKey: (liveId: string) => Promise<void>; contentDetails: ContentDetails; }) => {
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [selectedEncoder, setSelectedEncoder] = React.useState({title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
+
+    const encoderList = [
+        {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
+        {title: "OBS Open Broadcaster Software", data: {primaryPublishURL: "Server", backupPublishURL: "Backup Server", username: "Username", password: "Password", streamKey: "Stream Key"}}
+    ]
 
     const handleGenerateKeyClick = () => {
         setButtonLoading(true)
         props.generateEncoderKey(props.contentDetails.id)
         .then(() => setButtonLoading(false))
         .catch(() => setButtonLoading(false))
+
     }
     return (
         <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
@@ -33,10 +42,16 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                             </Text>
                         </BubbleContent>
                     </Bubble>
-
+                    <DropdownSingle
+                        id="encoderList"
+                        dropdownTitle="RTMP Encoders"
+                        list={encoderList}
+                        dropdownDefaultSelect={selectedEncoder.title}
+                        callback={(item: DropdownSingleListItem) => {setSelectedEncoder(item)}}
+                    />
                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
-                            <Text size={14} weight="med">Server</Text>
+                            <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
@@ -45,7 +60,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     </LinkBoxContainer>
                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
-                            <Text size={14} weight="med">Backup Server</Text>
+                            <Text size={14} weight="med">{selectedEncoder.data.backupPublishURL}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
@@ -54,7 +69,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     </LinkBoxContainer>
                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
-                            <Text size={14} weight="med">Username</Text>
+                            <Text size={14} weight="med">{selectedEncoder.data.username}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
@@ -63,7 +78,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     </LinkBoxContainer>
                     <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
-                            <Text size={14} weight="med">Password</Text>
+                            <Text size={14} weight="med">{selectedEncoder.data.password}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
@@ -74,7 +89,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         return(
                         <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
-                            <Text size={14} weight="med">{"Stream Key " + (i+1)}</Text>
+                            <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{streamKey}</LinkText>
