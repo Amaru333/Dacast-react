@@ -19,6 +19,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
     const classItem = props.isPlanPage ? classItemThirdWidthContainer : classItemHalfWidthContainer
+
+    let allowanceDataFetching = Number.isNaN(props.profile.storage)
    
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
@@ -87,7 +89,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 {handleBillingPeriod()}
             </div>
             <div className={classContainer}>
-                <WidgetElement className={classItem}>
+                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
                         {(props.plan && props.plan.displayName !== "Free" && props.plan.state === "active") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
@@ -112,7 +114,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     </WidgetElement>
                 } */}
 
-                <WidgetElement className={classItem}>
+                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
                         <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
@@ -125,7 +127,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 </WidgetElement>
                 {
                     props.isPlanPage &&
-                        <WidgetElement className={classItem}>
+                        <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                             {renderPlanWidget()}
                         </WidgetElement> 
                 }

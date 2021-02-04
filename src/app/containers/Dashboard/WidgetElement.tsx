@@ -13,7 +13,7 @@ export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement> & {loa
                     <LoadingSpinner center size='medium' color='violet' />
                     : props.failed ?
                         <FailedCardAnalytics /> :
-                        props.children
+                        !props.placeholderWidget && props.children
                 }
             </Card>
         </div>

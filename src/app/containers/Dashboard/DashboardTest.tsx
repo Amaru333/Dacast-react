@@ -14,7 +14,6 @@ import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addB
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
-import { PlaceholderDashboard } from './PlaceholderDashboard';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -99,10 +98,8 @@ const DashboardTest = (props: DashboardProps) => {
                     <React.Fragment>
                         <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
                         {renderDashboard()}
-                        
-                        <div className="clearfix"></div>
                     </React.Fragment> :
-                    <PlaceholderDashboard />
+                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
             }
         </React.Fragment>
     )
