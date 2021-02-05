@@ -19,8 +19,6 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
 
     let encoderPreference = JSON.parse(localStorage.getItem('userEncoderPreference'))
 
-    console.log('encoder preference', encoderPreference)
-
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [selectedEncoder, setSelectedEncoder] = React.useState(encoderPreference ? encoderPreference : {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
 
@@ -150,8 +148,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                 </div>
                 
                 <div className="flex col col-12 mt2">
-                    <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                    <Text size={14} weight="reg">Need help setting up an encoder? Visit the <a href={getKnowledgebaseLink('Encoder Setup')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight="reg">Quick guide for live streaming with <a href={getKnowledgebaseLink(selectedEncoder.title)} target="_blank" rel="noopener noreferrer">{selectedEncoder.title}</a></Text>
                 </div>
             </ModalContent>
             <ModalFooter className="mt1" >
