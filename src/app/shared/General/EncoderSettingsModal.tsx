@@ -119,8 +119,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
-                            <IconStyle id="streamKeyTooltip">info_outlined</IconStyle>
-                            <Tooltip target="streamKeyTooltip">This is the name/key for a rendition of your stream.</Tooltip>
+                            <IconStyle id={"streamKeyTooltip" + i}>info_outlined</IconStyle>
+                            <Tooltip target={"streamKeyTooltip" + i}>This is the name/key for a rendition of your stream.</Tooltip>
                         </LinkBoxLabel>
                         <LinkBox backgroundColour="white">
                             <LinkText size={14} weight="reg">{streamKey}</LinkText>
