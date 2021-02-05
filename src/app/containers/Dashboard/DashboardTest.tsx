@@ -14,6 +14,8 @@ import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addB
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
+import { WidgetElement } from './WidgetElement';
+import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from './DashboardStyles';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -88,19 +90,32 @@ const DashboardTest = (props: DashboardProps) => {
             return <TrialAdditionalDashboard />
         }
 
-        return null
+        return (
+            <React.Fragment>
+                <section id="live" className="col lg-col-6 sm-col-12 pr2">
+                    <div className={classContainer}>
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemFullWidth} />
+                    </div>
+                </section>
+                <section id="vod" className="right border-box lg-col-6 sm-col-12 pl2">
+                    <div className={classContainer}>
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                        <WidgetElement placeholderWidget className={classItemFullWidth} />
+                    </div>
+                </section>
+            </React.Fragment>
+        )
     }
 
     return (
         <React.Fragment>
-            {
-                props.infos && props.infos.currentPlan ?
-                    <React.Fragment>
-                        <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                        {renderDashboard()}
-                    </React.Fragment> :
-                    <SpinnerContainer><LoadingSpinner className="mlauto mrauto" size="medium" color="violet" /></SpinnerContainer>
-            }
+            <GeneralDashboard openOverage={setProtectionModalOpened} overage={props.infos.playbackProtection} plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
+            {renderDashboard()}
         </React.Fragment>
     )
 };

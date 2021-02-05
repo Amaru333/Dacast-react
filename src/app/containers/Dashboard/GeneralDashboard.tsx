@@ -20,7 +20,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
     const classItem = props.isPlanPage ? classItemThirdWidthContainer : classItemHalfWidthContainer
 
-    let allowanceDataFetching = Number.isNaN(props.profile.storage)
+    let allowanceDataFetching = Number.isNaN(props.profile.storage.consumed)
    
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),

@@ -72,12 +72,12 @@ export const dashboardInitialState: DashboardState = {
     info: {
         generalInfos: {
             bandwidth: {
-                limit: 0,
-                consumed: 0,
+                limit: NaN,
+                consumed: NaN,
             },
             storage: {
-                limit: 0,
-                consumed: 0
+                limit: NaN,
+                consumed: NaN
             },
         },
         vod: {
