@@ -17,8 +17,12 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 
 export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boolean>>; opened: boolean; generateEncoderKey: (liveId: string) => Promise<void>; contentDetails: ContentDetails; }) => {
 
+    let encoderPreference = JSON.parse(localStorage.getItem('userEncoderPreference'))
+
+    console.log('encoder preference', encoderPreference)
+
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [selectedEncoder, setSelectedEncoder] = React.useState({title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
+    const [selectedEncoder, setSelectedEncoder] = React.useState(encoderPreference ? encoderPreference : {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
 
     const encoderList = [
         {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
@@ -35,7 +39,11 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
         props.generateEncoderKey(props.contentDetails.id)
         .then(() => setButtonLoading(false))
         .catch(() => setButtonLoading(false))
+    }
 
+    const handleSelectedEncoder = (encoder: DropdownSingleListItem) => {
+        setSelectedEncoder(encoder)
+        localStorage.setItem('userEncoderPreference', JSON.stringify(encoder))
     }
     return (
         <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
@@ -54,7 +62,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         dropdownTitle="RTMP Encoders"
                         list={encoderList}
                         dropdownDefaultSelect={selectedEncoder.title}
-                        callback={(item: DropdownSingleListItem) => {setSelectedEncoder(item)}}
+                        callback={(item: DropdownSingleListItem) => {handleSelectedEncoder(item)}}
                     />
                     <EncoderSettingsContainer className="col col-12">
                     <div className="col col-12">
