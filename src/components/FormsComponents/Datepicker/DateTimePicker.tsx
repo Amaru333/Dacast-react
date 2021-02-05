@@ -25,9 +25,13 @@ interface DateTimePickerProps {
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        console.log(timezoneName)
-        let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-        let offset = utcOffsetToMin(offsetitem.offset) * 60
+        console.log(value, timezoneName, timezones)
+        if(timezoneName == "UTC") {
+            var offset = 0;
+        } else {
+            let offsetitem = timezones.find(el => el.tzCode === timezoneName)
+            var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
+        }
         let splitValue = value.split(':')
         let hours = parseInt(splitValue[0]) * 3600
         if (isNaN(hours)) {
@@ -42,7 +46,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         return total
     }
 
-    console.log(props.defaultTs)
     let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(props.defaultTs) : null ;
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
@@ -54,7 +57,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {
-        console.log(time, day, method, timezone)
         props.callback(method === "Set Date and Time" ? new Date((day + inputTimeToTs(time , props.timezone || 'UTC')) ).getTime() < 0 ? 0 : new Date((day + inputTimeToTs(time , props.timezone || 'UTC')) ).getTime() : 0, timezone)
     }, [time, day, method, timezone])
 
