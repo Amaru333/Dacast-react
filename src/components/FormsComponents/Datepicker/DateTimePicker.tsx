@@ -25,7 +25,6 @@ interface DateTimePickerProps {
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
     const inputTimeToTs = (value: string, timezoneName: string) => {
-        console.log(value, timezoneName, timezones)
         if(timezoneName == "UTC") {
             var offset = 0;
         } else {
@@ -42,7 +41,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
             min = 0
         }
         let total = hours + min - offset
-        console.log(total, 'total')
         return total
     }
 

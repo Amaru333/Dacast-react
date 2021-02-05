@@ -1,5 +1,4 @@
 var numeral = require('numeral');
-import { DateTime, LocaleOptions } from 'luxon';
 
 export const dataToTimeVideo = (value: number) => {
     if(!value) {return '00:00:00'}
@@ -48,8 +47,8 @@ export function readableBytes(size: number): string {
 }
 
 
-export function tsToLocaleDate(ts: number, options?: LocaleOptions & Intl.DateTimeFormatOptions): string {
-    return DateTime.fromSeconds(ts).toLocaleString(options);
+export function tsToLocaleDate(ts: number, options?: Intl.DateTimeFormatOptions): string {
+    return new Date(ts * 1000).toLocaleString(undefined, options);
 }
 
 export function displayTimeForHumans(seconds: number) {

@@ -176,7 +176,6 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
                 }
 
             </div>
-            {console.log(newPricePreset.settings.startDate)}
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
                     fullLineTz

@@ -122,7 +122,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
-    console.log(props.contentType)
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>

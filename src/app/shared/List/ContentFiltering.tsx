@@ -131,7 +131,6 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     
                     <div className="mb3" id="contentFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        {console.log(isNaN(filteringState.afterDate as any || filteringState.afterDate === false))}
                         <DateSinglePickerWrapper id='startDate' date={isNaN(filteringState.afterDate as any) || !filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, afterDate: date.getTime() } }) }} />
                     </div>
                     <div className="mb3" id="contentFilterBefore">

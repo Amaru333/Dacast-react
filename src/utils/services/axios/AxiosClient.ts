@@ -1,5 +1,4 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { DateTime } from 'luxon'
 import { UserTokenService } from '../token/token'
 import EventHooker from '../event/eventHooker'
 
@@ -47,7 +46,7 @@ export class AxiosClient {
             return newConfig
         }
 
-        if(DateTime.fromSeconds(this.userToken.getTokenInfo().expires).diff(DateTime.local()).milliseconds / 60000 <= 5 && !this.refreshingToken) {
+        if( Math.abs(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime()) / 60000 <= 5 && !this.refreshingToken) {
             this.refreshingToken = true
             await this.refreshToken().then(() => {
                 this.refreshingToken = false

@@ -51,7 +51,6 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                             <ToggleTextInfo className="mt1">
                                 <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
                             </ToggleTextInfo>
-                            {console.log(startDateTimeValue.date)}
                             {
                                 liveStreamCountdownToggle &&
                                     <DateTimePicker 
