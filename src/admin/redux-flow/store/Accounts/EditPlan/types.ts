@@ -34,6 +34,7 @@ export interface PlanInfo {
     emailCatcher: PlanSetting;
     admin: PlanSetting;
     expo: PlanSetting;
+    ultraSecureChannel: PlanSetting;
 }
 
 export interface PlanInfoPut {
