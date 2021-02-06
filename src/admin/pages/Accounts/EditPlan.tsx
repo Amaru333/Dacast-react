@@ -162,6 +162,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.compatibleStreams.planValue || props.accountPlan.compatibleStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('compatibleStreams', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>Ultra Secure Streams</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.ultraSecureChannel.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.ultraSecureChannel.planValue || props.accountPlan.ultraSecureChannel.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('ultraSecureChannel', value === 'On' ? true : false)} />
+                    </div>
                 </Card>
                 <div className='flex mt2'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
