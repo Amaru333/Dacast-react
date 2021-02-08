@@ -4,11 +4,11 @@ import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/Dr
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Preset } from '../../../redux-flow/store/Paywall/Presets/types';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
+import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 
 var moment = require('moment-timezone');
 
@@ -35,21 +35,7 @@ const defaultPreset: Preset = {
 }
 
 export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset()*60
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
-            min = 0
-        }
-        let total = hours + min - offset
-        return total
-    }
-
+    
     const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -87,16 +73,10 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
         })
     }
 
-    let startTimestamp = moment.tz((presetsList.settings.startDate && presetsList.settings.startDate > 0 ? presetsList.settings.startDate :  Math.floor(Date.now() / 1000))*1000, moment.tz.guess())
-
-    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
-
     const handleSubmit = () => {
         setButtonLoading(true)
-        let startDate = moment.utc((startDay + startTime)*1000).valueOf()/1000
 
-        props.action({...presetsList, settings: {...presetsList.settings, startDate: startDate}}).then(() => {
+        props.action({...presetsList, settings: {...presetsList.settings}}).then(() => {
             setButtonLoading(false)
             props.toggle(false)
         }).catch(() => {
@@ -137,48 +117,19 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                 }
 
             </div>
-            <div className='col col-12 mb2'>
-                <DropdownSingle 
-                    id='pricePresetStartMethodDropdown' 
-                    dropdownDefaultSelect={presetsList.settings.startMethod} 
-                    className={ClassHalfXsFullMd + ' pr1'} 
-                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: item.title, startDate: 0 }})} 
-                    list={startMethodDropdownList} dropdownTitle='Start Method' disabled={presetsList.priceType === 'Subscription'}
+            <div className='col col-12 mb2 flex items-end'>
+                <DateTimePicker
+                    fullLineTz
+                    showTimezone={true}
+                    defaultTs={presetsList.settings.startDate}
+                    timezone={presetsList.settings.timezone}
+                    callback={(ts: number, timezone: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
+                    hideOption="Upon Purchase"
+                    id="endDate"
+                    dropdownTitle="Start Method"
+                    disabled={presetsList.priceType === 'Subscription'}
                 />
-                {
-                    (presetsList.settings.startMethod === 'Schedule' && presetsList.priceType === 'Pay Per View') &&
-                        <DropdownSingle 
-                            hasSearch 
-                            id='pricePresetTimezoneDropdown' 
-                            className={ClassHalfXsFullMd + ' px1'}
-                            dropdownTitle='Timezone' 
-                            callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings: {...presetsList.settings, timezone: item.title.split(' ')[0]}})} 
-                            dropdownDefaultSelect={moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')'}
-                            list={timezoneDropdownList} 
-                            
-                        />
-                }
             </div>
-            {  
-                (presetsList.settings.startMethod === 'Schedule' && presetsList.priceType === 'Pay Per View') &&
-                    <div className='col col-12 mb2'>
-
-                        <DateSinglePickerWrapper
-                            date={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone || moment.tz.guess())}
-                            callback={(_, timestamp: string) => setStartDay(moment.tz(parseInt(timestamp)*1000, 'UTC').startOf('day').valueOf()/1000)}
-                            className='col col-6 md-col-4 mr2' />
-                        <Input
-                            type='time'
-                            value={moment.utc((startDay + startTime)*1000).tz(presetsList.settings.timezone || moment.tz.guess()).format('HH:mm')}
-                            onChange={(event) => setStartTime(inputTimeToTs(event.currentTarget.value, presetsList.settings.timezone || 'UTC'))}
-                            className='col col-6 md-col-3'
-                            disabled={false}
-                            id='endTime'
-                            pattern="[0-9]{2}:[0-9]{2}"
-                            
-                        />
-                    </div>
-            }
             <div className='col col-12 mt3'>
         <Button isLoading={buttonLoading} disabled={!presetsList.name || (presetsList.priceType === 'Pay Per View' && Number.isNaN(presetsList.settings.duration.value)) || presetsList.prices.some(price => Number.isNaN(price.value))} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.preset ? "Save" : "Create"}</Button>
                 <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>

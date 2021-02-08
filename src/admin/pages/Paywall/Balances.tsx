@@ -7,9 +7,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
-import { DateTime } from 'luxon'
 import { useQuery } from '../../../utils/utils'
-import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
@@ -60,7 +58,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             return props.balanceInfo.lines.map((line, key) => {
                 return {data: [
                     <a key={'balanceTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(line.salesforceId)}>{line.salesforceId}</a>,
-                    <Link key={'balancesTableBodyDateCell' + key }to=''>{tsToLocaleDate(Math.floor(line.date / 1000), DateTime.DATETIME_SHORT)}</Link>,
+                    <Link key={'balancesTableBodyDateCell' + key }to=''>{line.date}</Link>,
                     <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.note}</Text>,
                     <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)) : '' : line.amount > 0 ? line.amount : 0}</Text>,
                     <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)): '' : line.amount < 0 ? line.amount : 0}</Text>,
@@ -105,7 +103,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
             <div className='flex my1 items-center'>
                 <Input 
                     id='accountIdInput' 
-                    placeholder='Account ID' 
+                    placeholder='Account ID'
+                    backgroundColor="white" 
                     defaultValue={accountId} 
                     onChange={(event) => setAccountId(event.currentTarget.value)} 
                     onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    

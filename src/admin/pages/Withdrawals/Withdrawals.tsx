@@ -6,9 +6,7 @@ import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
 import { Link, useRouteMatch, useHistory } from 'react-router-dom'
-import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
-import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Input } from '../../../components/FormsComponents/Input/Input'
@@ -63,10 +61,10 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             return props.withdrawals.withdrawalRequests.map((withdrawal, key) => {
                 return {data: [
                     <a key={'withdrawalsTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(withdrawal.accountSalesforceId)}>{withdrawal.accountSalesforceId}</a>,
-                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10&salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + withdrawal.amount.toLocaleString()}</Link>,
+                    <Link key={'withdrawalsTableBodyAmountCell' + key } to={`/balances?&page=1&perPage=10&salesforceId=${withdrawal.accountSalesforceId}`}>{withdrawal.currency + " " + withdrawal.amount.toLocaleString()}</Link>,
                     <Text key={'withdrawalsTableBodyTotalBalanceCell' + key } size={14}>${withdrawal.totalBalance.toLocaleString()}</Text>,
-                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{tsToLocaleDate(withdrawal.requestedDate, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate > 0 ? tsToLocaleDate(withdrawal.transferDate, DateTime.DATETIME_SHORT) : ''}</Text>,
+                    <Text key={'withdrawalsTableBodyRequestedDateCell' + key } size={14}>{withdrawal.requestedDate}</Text>,
+                    <Text key={'withdrawalsTableBodyCompletedDateCell' + key } size={14}>{withdrawal.transferDate}</Text>,
                     <Text key={'withdrawalsTableBodyMethodCell' + key } size={14}>{capitalizeFirstLetter(withdrawal.method)}</Text>,
                     <a key={'withdrawalsTableBodyRecurlyIdCell' + key } target="_blank" href={`https://vzaar.recurly.com/accounts/${withdrawal.recurlyId}`}>{withdrawal.recurlyId}</a>,
                     <Link key={'withdrawalsTableBodyStatusCell' + key }to={`${url}/${withdrawal.id}/edit?salesforceId=${withdrawal.accountSalesforceId}`}>{capitalizeFirstLetter(withdrawal.status)}</Link>,
@@ -141,10 +139,11 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
     return props.withdrawals ? 
         <div className='flex flex-column'>
-            <Text size={16} weight='med'>Customer requests for withdrawals from their paywall</Text>
+            <Text size={14} weight='reg'>Customer requests for withdrawals from their paywall</Text>
             <div className='flex my1'>
                 <div className='relative flex items-center mr2'>
-                    <Input  
+                    <Input
+                        backgroundColor="white"  
                         id='accountIdInput' 
                         value={accountId} 
                         placeholder='Account ID' 

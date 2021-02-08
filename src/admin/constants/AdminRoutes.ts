@@ -97,7 +97,6 @@ export const AdminRoutes: Routes[] = [
         name: 'Migration',
         iconName: 'settings',
         component: Migration,
-        notDisplayedInNavigation: true,
         exactPath: true,
     },
 ]

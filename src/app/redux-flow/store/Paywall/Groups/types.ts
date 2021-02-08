@@ -1,3 +1,5 @@
+import { FolderAsset } from "../../Folders/types";
+
 export enum ActionTypes {
     GET_GROUP_PRICES = "@@paywall_groups/GET_GROUP_PRICES",
     GET_GROUP_PROMOS = "@@paywall_groups/GET_GROUP_PROMOS",
@@ -44,7 +46,7 @@ export interface GroupPriceCreation {
     name: string;
     prices: Price[];
     settings: PriceSettings;
-    contents: string[];
+    contents: FolderAsset[];
 }
 
 export interface GroupPromo {

@@ -136,6 +136,7 @@ export interface GetAccountPlanOutput {
     emailCatcher: PlanSettingEndpoint;
     admin: PlanSettingEndpoint;
     expo: PlanSettingEndpoint;
+    ultraSecureChannel: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {
@@ -256,6 +257,7 @@ export interface GetJobsListOutput {
 
 export interface GetMigrationJobDetailsOutput {
     currentStep: string
+    previousStep: string
     errorDetails: string
     export: {
         status: string
@@ -265,6 +267,15 @@ export interface GetMigrationJobDetailsOutput {
         status: string
         errorDetails: string
         reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
+    importVerification: {
+        status: string
+        errorDetails: string
+        reports?: {
             userId: string
             errorDetails: string
             success: boolean

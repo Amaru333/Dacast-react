@@ -14,7 +14,7 @@ export interface Account {
     email: string;
     plan: string;
     // annualAmount: number;
-    registeredDate: number;
+    registeredDate: string;
     data: {
         allocated: number;
         consumed: number;

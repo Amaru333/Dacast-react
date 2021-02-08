@@ -25,6 +25,10 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
             ...data.import,
             label: 'Import'
         },
+        validation: {
+            ...data.importVerification,
+            label: 'Validation'
+        },
         switchover: {
             ...data.switchover,
             label: "Switch Over"
@@ -32,7 +36,8 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
         overall: {
             status: data.currentStep,
             errorDetails: data.errorDetails,
-            label: "Overall"
+            label: "Overall",
+            previousStep: data.previousStep
         }
     }
     return formattedData

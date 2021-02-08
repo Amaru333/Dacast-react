@@ -65,7 +65,7 @@ export interface DashboardLive {
 
 export interface DashboardPaywall {
     balance: number;
-    revenue: {currency: string; total: number}[];
+    revenue: number;
 }
 
 export const dashboardInitialState: DashboardState = {

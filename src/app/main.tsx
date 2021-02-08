@@ -51,7 +51,7 @@ const refreshEvery = 5000
 let fastRefreshUntil = 0
 let timeoutId: NodeJS.Timeout | null = null
 const timeoutFunc = () => {
-    store.dispatch(getContentListAction(null, 'vod')(null) as any)
+    store.dispatch(getContentListAction('vod')(null) as any)
     if(new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
@@ -159,7 +159,6 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
-            segmentService.page('App')
         }
     }, [location])
 

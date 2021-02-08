@@ -5,7 +5,7 @@ export enum ActionTypes {
 export interface Line {
     lineType: "arbitrary" | "inplayer",
     amount: number,
-    date: number,
+    date: string,
     note: string,
     salesforceId: string
     conversionRateToAccountCurency?: number,

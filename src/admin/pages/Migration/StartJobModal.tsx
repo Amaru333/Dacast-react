@@ -48,8 +48,8 @@ export const StartJobModal = (props: StartJobModalProps) => {
             console.log('users list: ', users)
         }
         users.shift()
-        console.log('testing parsed users list: ', users.filter(n => n))
-        setUsersList(users.filter(n => n))
+        console.log('testing parsed users list: ', users.map(n => n.trim()).filter(n => n || n.length > 0))
+        setUsersList(users.map(n => n.trim()).filter(n => n || n.length > 0))
     }
     
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,8 +90,9 @@ export const StartJobModal = (props: StartJobModalProps) => {
                         <Input 
                             id='copyPasteInput' 
                             label='Paste users here' 
-                            indicationLabel="Users must be separated by a ','"                                type='textarea' 
-                            onChange={(event) => setUsersList(event.currentTarget.value.split(','))}
+                            indicationLabel="Users must be separated by a ','"
+                            type='textarea' 
+                            onChange={(event) => setUsersList(event.currentTarget.value.replace(/\r/g,"").replace(/\n/g,"").split(',').map(n => n.trim()).filter(n => n || n.length > 0))}
                         />
                     </div>
                 }

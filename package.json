@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://universe-api-app.dacast.com --env.ANALYTICS_BASE_URL=https://developer.dacast.com/v3 --env.RECURLY_TOKEN=ewr1-Q41rGVpgRgI2uLRM9kgivS  webpack-dev-server -d --config webpack.dev.config.js",
     "start-staging": "cross-env NODE_ENV=development APP_ENV=app --env.API_BASE_URL=https://singularity-api-app.dacast.com --env.RECURLY_TOKEN=ewr1-hgy8aq1eSuf8LEKIOzQk6T  webpack-dev-server -d --config webpack.dev.config.js",
-    "start-admin": "cross-env NODE_ENV=development APP_ENV=admin --env.API_BASE_URL=https://singularity-api-app.dacast.com --env.ADMIN_API_BASE_URL=https://singularity-api-admin.dacast.com --env.APP_DOMAIN=http://localhost:8080/ webpack-dev-server -d --config webpack.dev.config.js",
+    "start-admin": "cross-env NODE_ENV=development APP_ENV=admin --env.API_BASE_URL=https://universe-api-app.dacast.com --env.ADMIN_API_BASE_URL=https://universe-api-admin.dacast.com --env.APP_DOMAIN=http://localhost:8080/ webpack-dev-server -d --config webpack.dev.config.js",
     "build": "cross-env NODE_ENV=production webpack --env.API_BASE_URL=$API_BASE_URL -p --config webpack.prod.config.js",
     "build-preprod": "cross-env NODE_ENV=development --env.API_BASE_URL=$API_BASE_URL npm run lint && webpack -p --config webpack.prod.config.js",
     "lint": "./node_modules/.bin/eslint --ext .ts,.tsx src/",
@@ -98,6 +98,7 @@
     "@types/storybook__addon-knobs": "^5.0.4",
     "@types/storybook__react": "^4.0.2",
     "axios": "^0.19.0",
+    "base-64": "^1.0.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-crosshair": "^1.1.6",
     "core-js": "^3.6.4",

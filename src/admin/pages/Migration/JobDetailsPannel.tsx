@@ -152,7 +152,7 @@ export const JobDetailsPannel = (props: JobDetailsPannelProps) => {
                     })
                 }
                 {
-                    props.jobDetails.overall.status === 'Success' || props.jobDetails.overall.status === 'Ready To Switch' &&
+                    (props.jobDetails.overall.status === 'Success' || props.jobDetails.overall.status === 'Ready To Switch' || (props.jobDetails.overall.status === 'Errored out' && props.jobDetails.overall.previousStep === 'Polling Import Verification')) &&
                     <Button className='right mr2 mb2' onClick={() => setSwitchModalOpened(true)} typeButton='primary' buttonColor='blue' sizeButton='xs'>Switch users</Button>
                 }
             </div>

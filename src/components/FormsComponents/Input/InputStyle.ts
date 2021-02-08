@@ -101,7 +101,7 @@ export const TextAreaStyle = styled.textarea<InputProps>`
 export const InputStyle = styled.input<InputProps>`
     display: flex;
     border: 1px solid ${props => props.theme.colors["gray-7"]} ;
-    background: ${props => props.theme.colors["gray-10"]};
+    background: ${props => props.backgroundColor ? props.backgroundColor : props.theme.colors["gray-10"]};
     box-sizing: border-box;
     padding: 8px 12px;
     flex-grow: 1;

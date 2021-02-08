@@ -157,13 +157,12 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                 </div>
                 <div className="clearfix mxn1 mb2">
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard data={viewershipAnalytics.playtimePerDevices ? viewershipAnalytics.playtimePerDevices.csv : []} infoText="On which devices viewers are consuming your data" title="Play time by Device">
+                        <AnalyticsCard dataName='playTimePerDevices' data={viewershipAnalytics.playtimePerDevices ? viewershipAnalytics.playtimePerDevices.csv : []} infoText="On which devices viewers are consuming your data" title="Play time by Device">
                             {
                                 viewershipAnalytics.playtimePerDevices ?
                                     viewershipAnalytics.playtimePerDevices.failed ?
                                         <FailedCardAnalytics /> :
                                         <CheeseChartOld
-                                            displayBytesFromGB={true}
                                             data={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.data : [0]}
                                             labels={viewershipAnalytics.playtimePerDevices.data.length ? viewershipAnalytics.playtimePerDevices.labels : ["No Data"]} />
                                     :
@@ -172,9 +171,9 @@ export const ViewershipAnalytics = (props: ViewershipComponentProps) => {
                         </AnalyticsCard>
                     </div>
                     <div className={HalfSmFullXs}>
-                        <AnalyticsCard data={viewershipAnalytics.playtimePerLocation.data ? viewershipAnalytics.playtimePerDevices.csv : []} infoText="Reports on your data consumption" title="Play time by location">
+                        <AnalyticsCard dataName='playTimePerLocation' data={viewershipAnalytics.playtimePerLocation ? viewershipAnalytics.playtimePerLocation.csv : []} infoText="Reports on your data consumption" title="Play time by location">
                             {
-                                viewershipAnalytics.playtimePerLocation.data ?
+                                viewershipAnalytics.playtimePerLocation ?
                                     viewershipAnalytics.playtimePerLocation.failed ?
                                         <FailedCardAnalytics  /> :
                                         <div >

@@ -1,4 +1,5 @@
 import { GetAccountBillingInfoOutput, GetProductExtraDataOutput, PostBillingPaymentMethodInput, PostProductExtraDataInput, ProductExtraDataKey, PutPlaybackProtectionInput } from "../../../../../DacastSdk/account";
+import { userToken } from "../../../../utils/services/token/tokenService";
 import { BillingPageInfos, Extras, PlaybackProtection, Products } from "./types";
 
 export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): BillingPageInfos => {
@@ -19,7 +20,8 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             paymentTerm: data.currentPlan.paymentTerm
         }
     }
-
+    userToken.updateUserInfo({'planName': data.currentPlan.displayName})
+    userToken.updateUserInfo({'planAmount': data.currentPlan.price.toString()})
     return formattedData
 }
 

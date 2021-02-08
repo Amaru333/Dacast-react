@@ -10,8 +10,8 @@ export interface Withdrawal {
     amount: number;
     currency: string;
     totalBalance: number;
-    requestedDate: number;
-    transferDate: number;
+    requestedDate: string;
+    transferDate: string;
     method: string;
     recurlyId: string;
     status: Status;

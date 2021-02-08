@@ -8,9 +8,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { useHistory } from 'react-router-dom'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { IconGreyContainer, IconStyle } from '../../../shared/Common/Icon'
-import { DateTime } from 'luxon'
 import { useQuery, capitalizeFirstLetter } from '../../../utils/utils'
-import { tsToLocaleDate } from '../../../utils/formatUtils'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
@@ -164,14 +162,14 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                     tableColumn.name && <Text key={'accountsTableBodyUserNameCell' + key } size={14}>{account.firstName + ' ' + account.lastName}</Text>,
                     tableColumn.phone && <Text key={'accountsTableBodyPhoneCell' + key } size={14}>{account.phone}</Text>,
                     tableColumn.email &&<Text key={'accountsTableBodyEmailCell' + key } size={14}>{account.email}</Text>,
-                    tableColumn.plan && (account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan`}>{capitalizeFirstLetter(account.plan)}</Link>
+                    tableColumn.plan && (account.plan ? <Link key={'accountsTableBodyPlanCell' + key } to={`/accounts/${account.userId}/plan?salesforceId=${account.salesforceId}`}>{capitalizeFirstLetter(account.plan)}</Link>
                     : <Text key={'accountsTableBodyPlanCell' + key } size={14} weight='med'> Not Activated</Text>),
-                    tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate ? tsToLocaleDate(account.registeredDate, DateTime.DATETIME_SHORT) : ''}</Text>,
+                    tableColumn.date  && <Text key={'accountsTableBodyRegisteredDateCell' + key } size={14}>{account.registeredDate}</Text>,
                     tableColumn.data && <Text key={'accountsTableBodyDataCell' + key } size={14}>{(account.data.consumed / 1000000000).toFixed(2) + ' / ' + (account.data.allocated / 1000000000).toFixed(2)}</Text>,
                     tableColumn.storage && <Text key={'accountsTableBodyStorageCell' + key } size={14}>{(account.storage.consumed / 1000000000).toFixed(2) + ' / ' + (account.storage.allocated / 1000000000).toFixed(2)}</Text>,
                     tableColumn.flags && <div key={'accountsTableBodyFlagsCell' + key } className='flex'>{renderFlags(account)}</div>,
-                    tableColumn.edit && <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit`}>Edit</Link>,
-                    tableColumn.allowances && <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances`}>Allowances</Link>, 
+                    tableColumn.edit && <Link key={'accountsTableBodyEditCell' + key }to={`/accounts/${account.userId}/edit?salesforceId=${account.salesforceId}`}>Edit</Link>,
+                    tableColumn.allowances && <Link key={'accountsTableBodyAllowancesCell' + key }to={`/accounts/${account.userId}/allowances?salesforceId=${account.salesforceId}`}>Allowances</Link>, 
                 ].filter(p => p)}
             })
         }
@@ -213,7 +211,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex items-end my1'>
                     <div className='relative flex items-center mr2'>
-                        <Input  
+                        <Input
+                            backgroundColor="white"  
                             id='accountIdInput' 
                             value={accountId} 
                             placeholder='Account ID' 
@@ -223,7 +222,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                         <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
                     </div>
                     <div className='relative flex items-center mr2'>
-                        <Input  
+                        <Input
+                            backgroundColor="white"  
                             id='keywordInput' 
                             value={keyword} 
                             placeholder='Keyword' 
@@ -236,7 +236,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                         <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                     </div>
 
-                <DropdownCheckbox id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => {setTableColumn(value);localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: value, perPage: pagination.nbResults}))}} list={tableColumn} />
+                <DropdownCheckbox isWhiteBackground id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => {setTableColumn(value);localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: value, perPage: pagination.nbResults}))}} list={tableColumn} />
 
             </div>
 

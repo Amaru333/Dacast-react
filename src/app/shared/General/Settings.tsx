@@ -6,7 +6,7 @@ import { ToggleTextInfo } from '../Security/SecurityStyle';
 import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType, DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import moment from 'moment';
 import { ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/General/types';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';

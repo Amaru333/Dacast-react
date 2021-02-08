@@ -22,33 +22,10 @@ export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | Ch
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
 VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege;
 
-type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website'
+type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 
-interface UserInfo {
-    "privilege-advertising": string;
-    "privilege-aes": string;
-    "privilege-api": string;
-    "privilege-china": string;
-    "privilege-dvr": string;
-    "privilege-email-catcher": string;
-    "privilege-folders": string;
-    "privilege-group-id": string;
-    "privilege-live": string;
-    "privilege-paywall": string;
-    "privilege-player-download": string;
-    "privilege-playlists": string;
-    "privilege-recording": string;
-    "privilege-signed-keys": string;
-    "privilege-unsecure-m3u8": string;
-    "privilege-vod": string;
-    "privilege-web-download": string;
-    "privilege-analytics": string;
-    'privilege-expo': string;
-    'custom:dacast_user_id': string;
-    'custom:first_name': string;
-    'custom:last_name': string;
-    'email': string;
-    'custom:website': string;
+type UserInfo = {
+    [key in ExtraUserInfo | Privilege]: string
 }
 
 interface TokenInfo {
@@ -60,6 +37,8 @@ interface TokenInfo {
     impersonatedUserIdentifier?: string;
 }
 
+var base64 = require('base-64');
+
 export class UserTokenService {
     constructor() {
         this.getUserInfoItem = this.getUserInfoItem.bind(this)
@@ -69,16 +48,22 @@ export class UserTokenService {
     private tokenInfo: TokenInfo = null
 
     private setTokenInfo = () => {
-        if(this.tokenInfo) {
-            return this.tokenInfo
-        } else {
-            if(localStorage.getItem('userToken')) {
+        if(localStorage.getItem('userToken')) {
+            try {
+                let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
                 this.tokenInfo =  JSON.parse(localStorage.getItem('userToken'));
-                let userInfo = JSON.parse(window.atob(decodeURIComponent(this.tokenInfo.token.split('.')[1]))) as UserInfo
+                let userInfo = {...existingUserInfo, ...JSON.parse(base64.decode(this.tokenInfo.token.split('.')[1])) as UserInfo}
                 this.tokenInfo.userInfo = userInfo
                 return this.tokenInfo
+            } catch(error) {
+                console.log(error)
+                localStorage.clear()
+                location.href = '/login'
+                return null
             }
         }
+
+        return null
     }
 
     public getTokenInfo = () => {
@@ -86,17 +71,14 @@ export class UserTokenService {
     }
 
     public getUserInfoItem = (item: Privilege | ExtraUserInfo | 'impersonatedUserIdentifier') => {
-        if(!this.tokenInfo  || !this.tokenInfo.userInfo) {
-            this.setTokenInfo()
-        } 
-        if(!this.tokenInfo) {
-            return ''
+        this.setTokenInfo()
+        if(!this.tokenInfo || !this.tokenInfo.userInfo) {
+            return null
         }
 
         if(item === 'impersonatedUserIdentifier') {
             return this.tokenInfo.impersonatedUserIdentifier
         }
-        
         return this.tokenInfo.userInfo[item] || ''
     
     }
@@ -113,8 +95,8 @@ export class UserTokenService {
 
     public addTokenInfo = (data: TokenInfo) => {
         if(data) {
-            this.tokenInfo = null
-            localStorage.setItem('userToken', JSON.stringify(data))
+            let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
+            localStorage.setItem('userToken', JSON.stringify({...data, userInfo: {...existingUserInfo, ...data.userInfo}}))
             this.setTokenInfo()
         } else {
             throw new Error('no token provided')
@@ -127,5 +109,12 @@ export class UserTokenService {
             return true
         } 
         return false
+    }
+
+    public updateUserInfo = (info: {[key in ExtraUserInfo | Privilege]?: string}) => {
+        if (info) {
+            this.tokenInfo.userInfo = {...this.tokenInfo.userInfo, ...info}
+            this.addTokenInfo(this.tokenInfo)
+        }
     }
 }

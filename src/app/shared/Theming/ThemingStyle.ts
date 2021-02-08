@@ -28,14 +28,6 @@ export const PlayerContainer = styled.div`
     position: relative;
 `
 
-export const DisabledSection = styled.div<{enabled: boolean}>`
-pointer-events: none;
-opacity: 0.5;
-    ${props => props.enabled && css`
-        pointer-events: auto;
-        opacity: 1;
-    `}
-`
 export const ControlsCard = styled(Card)`
     height: 765px;
     display: block;

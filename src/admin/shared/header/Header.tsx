@@ -59,10 +59,10 @@ const Header = (props: AdminHeaderProps) => {
         return breadcrumbItems.map((item, index) => {
             if(index !== breadcrumbItems.length - 1) {
                 return (
-                    <Text className='navigation' key={item + index} size={14}>
+                    <Text weight="med" className='navigation' key={item + index} size={14}>
                         {AdminRoutes.some(route => route.name === item) ?
-                            <Link to={'/' + item.toLowerCase()}><Text size={14} color='dark-violet' className='navigation'>{item}</Text></Link>
-                            : <Text size={14}>{item}</Text> 
+                            <Link to={'/' + item.toLowerCase()}><Text weight="med" size={14} color='dark-violet' className='navigation'>{item}</Text></Link>
+                            : <Text weight="med" size={14}>{item}</Text> 
                         }
                         &nbsp;/&nbsp;
                     </Text>
@@ -70,7 +70,7 @@ const Header = (props: AdminHeaderProps) => {
             }
 
             if(index !== 1) {
-                return <Text key={item + index} size={14}>{item}</Text>
+                return <Text weight="med" key={item + index} size={14}>{item}</Text>
             }
         })
     }
@@ -79,13 +79,14 @@ const Header = (props: AdminHeaderProps) => {
         <HeaderStyle userType='admin'>
             {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
 
-            <div className="mr-auto flex ml2 sm-show">
+            <div className="mr-auto flex ml25 sm-show">
                 {renderHeaderBreadcrumb()}
             </div>
                 <div className='flex mx2 items-end'>
                     <Input 
                         type='text' 
-                        id='impersonateInput' 
+                        id='impersonateInput'
+                        backgroundColor="white" 
                         placeholder='Impersonate...' 
                         value={userIdentifier} 
                         onChange={(event) => setUserIdentifier(event.currentTarget.value)} 
