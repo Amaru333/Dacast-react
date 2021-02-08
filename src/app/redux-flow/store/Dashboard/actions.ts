@@ -1,140 +1,38 @@
-import { ActionTypes, DashboardInfos } from "./types";
-import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "..";
-import { DashboardServices } from './services';
-import { showToastNotification } from '../Toasts';
+import { ActionTypes, DashboardGeneralInfo, DashboardInfos, DashboardLive, DashboardPaywall, DashboardVod } from "./types";
+import { applyViewModel } from "../../../utils/utils";
+import { dacastSdk } from "../../../utils/services/axios/axiosClient";
+import { formatGetDashboardGeneralInfoOutput, formatGetDashboardInfoOutput, formatGetDashboardLiveOutput, formatGetDashboardPaywallOutput, formatGetDashboardVodOutput } from "./viewModel";
 
 export interface GetDashboardDetails {
     type: ActionTypes.GET_DASHBOARD_DETAILS;
-    payload: {data: DashboardInfos};
+    payload: DashboardInfos;
 }
 
-export interface GetDashboardVodPlayRate {
-    type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE;
-    payload: {data: any;  failed: boolean; loading: boolean};
+export interface GetDashboardGeneralDetails {
+    type: ActionTypes.GET_DASHBOARD_GENERAL_DETAILS;
+    payload: DashboardGeneralInfo;
 }
 
-export interface GetDashboardVodPlay {
-    type: ActionTypes.GET_DASHBOARD_VOD_PLAY;
-    payload: {data: any;  failed: boolean; loading: boolean};
+export interface GetDashboardLive {
+    type: ActionTypes.GET_DASHBOARD_LIVE;
+    payload: DashboardLive;
 }
 
-
-export interface GetDashboardVodImpressions {
-    type: ActionTypes.GET_DASHBOARD_VOD_IMPRESSIONS;
-    payload: {data: any;  failed: boolean; loading: boolean};
+export interface GetDashboardVod {
+    type: ActionTypes.GET_DASHBOARD_VOD;
+    payload: DashboardVod;
 }
 
-export interface GetDashboardVodTopVideos {
-    type: ActionTypes.GET_DASHBOARD_VOD_TOP_CONTENTS;
-    payload: {data: any;  failed: boolean; loading: boolean};
-}
-export interface GetDashboardLiveViewers {
-    type: ActionTypes.GET_DASHBOARD_LIVE_VIEWERS;
-    payload: {data: any;  failed: boolean; loading: boolean};
+export interface GetDashboardPaywall {
+    type: ActionTypes.GET_DASHBOARD_PAYWALL;
+    payload: DashboardPaywall;
 }
 
-export interface GetDashboardLiveTopChannels{
-    type: ActionTypes.GET_DASHBOARD_LIVE_TOP;
-    payload: {data: any;  failed: boolean; loading: boolean};
-}
+export const getDashboardDetailsAction = applyViewModel(dacastSdk.getDashboardInfo, undefined, formatGetDashboardInfoOutput, ActionTypes.GET_DASHBOARD_DETAILS, null, 'Couldn\'t get dashboard info')
 
+export const getDashboardGeneralDetailsAction = applyViewModel(dacastSdk.getDashboardGeneralInfo, undefined, formatGetDashboardGeneralInfoOutput, ActionTypes.GET_DASHBOARD_GENERAL_DETAILS, null, 'Couldn\'t get dashboard info')
+export const getDashboardLiveAction = applyViewModel(dacastSdk.getDashboardLiveInfo, undefined, formatGetDashboardLiveOutput, ActionTypes.GET_DASHBOARD_LIVE, null, 'Couldn\'t get dashboard info')
+export const getDashboardVodAction = applyViewModel(dacastSdk.getDashboardVodInfo, undefined, formatGetDashboardVodOutput, ActionTypes.GET_DASHBOARD_VOD, null, 'Couldn\'t get dashboard info')
+export const getDashboardPaywallAction = applyViewModel(dacastSdk.getDashboardPaywallInfo, undefined, formatGetDashboardPaywallOutput, ActionTypes.GET_DASHBOARD_PAYWALL, null, 'Couldn\'t get dashboard info')
 
-export const getDashboardDetailsAction = (): ThunkDispatch<Promise<void>, {}, GetDashboardDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardDetails> ) => {
-        await DashboardServices.getDashboardDetailsService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_DETAILS, payload: response.data} );
-            }).catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardLiveTopChannels = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardLiveTopChannels> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardLiveTopChannels> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardTopLiveService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload: {...response.data, failed: false, loading: false } } );
-            }).catch((error) => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_TOP, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardLiveViewers = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardLiveViewers> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardLiveViewers> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_VIEWERS, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardLiveViewersService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_VIEWERS, payload: {...response.data, failed: false, loading: false } } );
-            }).catch((error) => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_LIVE_VIEWERS, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardVodImpressionsAction = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardVodImpressions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardVodImpressions> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_IMPRESSIONS, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardImpressionsService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_IMPRESSIONS, payload: {...response.data, failed: false, loading: false } } );
-            }).catch(() => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_IMPRESSIONS, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardVodTopVideosAction = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardVodTopVideos> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardVodTopVideos> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_TOP_CONTENTS, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardTopVodService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_TOP_CONTENTS, payload: {...response.data, failed: false, loading: false } } );
-            }).catch(() => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_TOP_CONTENTS, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardVodPlayRateAction = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardVodPlayRate> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardVodPlayRate> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardVodPlayRateService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload: {data: response.data, failed: false, loading: false } } );
-            }).catch((error) => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY_RATE, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-export const getDashboardVodPlayAction = (jobID: string): ThunkDispatch<Promise<void>, {}, GetDashboardVodPlay> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetDashboardVodPlay> ) => {
-        dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY, payload:{data: {}, failed: false, loading: true}} );
-        await DashboardServices.getDashboardVodPlayService(jobID)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY, payload: {...response.data, failed: false, loading: false } } );
-            }).catch(() => {
-                dispatch( {type: ActionTypes.GET_DASHBOARD_VOD_PLAY, payload: {data: {}, failed: true, loading: false}} );
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
-
-
-export type Action = GetDashboardDetails | GetDashboardVodPlayRate | GetDashboardVodPlay | GetDashboardLiveViewers | GetDashboardLiveTopChannels | GetDashboardVodTopVideos | GetDashboardVodImpressions;
+export type Action = GetDashboardDetails | GetDashboardGeneralDetails | GetDashboardLive | GetDashboardVod | GetDashboardPaywall;

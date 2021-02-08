@@ -19,6 +19,8 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
     
     var { rightSide, fullWidth, ...other } = props;
 
+    let vodDataFetching = Number.isNaN(props.profile.totalVideos)
+
     return (
         <section {...other} className={classTopContainer}>
             <div className="flex items-baseline mb1">
@@ -29,7 +31,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
             </div>
 
             <div className={classContainer}>
-                <WidgetElement className={itemClass}>
+                <WidgetElement placeholderWidget={vodDataFetching} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
                         <IconStyle id="totalVideosTooltip" className="ml-auto">info_outline</IconStyle>
@@ -40,7 +42,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
+                <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Impressions </Text>
                         <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
@@ -51,7 +53,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
+                <WidgetElement placeholderWidget={vodDataFetching}  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
                     </WidgetHeader>
@@ -60,7 +62,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
+                <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
                         <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
@@ -70,7 +72,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <DoughnutChart value={props.profile.impressions? getPercentage(props.profile.videoPlays, props.profile.impressions) : 0}/>
                     </div>
                 </WidgetElement>
-                <WidgetElement failed={!props.profile.topVideos} className={classItemFullWidth}>
+                <WidgetElement placeholderWidget={vodDataFetching} failed={!props.profile.topVideos} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
                     </WidgetHeader>

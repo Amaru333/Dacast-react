@@ -1,5 +1,5 @@
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import Dashboard from '../containers/Dashboard/Dashboard';
+import DashboardTest from '../containers/Dashboard/DashboardTest';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
@@ -124,7 +124,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: Dashboard,
+        component: DashboardTest,
     },
     {
         path: '/livestreams',
