@@ -18,7 +18,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
-    const classItem = props.isPlanPage ? classItemThirdWidthContainer : classItemHalfWidthContainer
+    let classItem =  props.isPlanPage || (props.plan && props.plan.displayName === "30 Day Trial") ? classItemThirdWidthContainer : classItemHalfWidthContainer
 
     let allowanceDataFetching = Number.isNaN(props.profile.storage.consumed)
    
@@ -43,15 +43,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
     const renderPlanWidget = () => {
         if(!props.plan) {
-            return (
-                <WidgetHeader className="flex">
-                    <Text size={16} weight="med" color="gray-3">Loading Plan... </Text>
-                </WidgetHeader>
-            )
+            return null
         }
         if(props.plan.displayName === "30 Day Trial") {
             return (
-            <React.Fragment>
+                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                 <WidgetHeader className="flex">
                     <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
                     <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
@@ -60,21 +56,28 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
                 </div>
                 <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
-            </React.Fragment>
+            </WidgetElement>
             )
         }
-        return (
-            <React.Fragment>
-                <WidgetHeader className="flex">
-                    <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                    <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
-                </WidgetHeader>
-                {
-                    props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
-                }
-                <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
-            </React.Fragment>
-        )
+
+        if(props.isPlanPage && props.plan.displayName !== "30 Day Trial") {
+            return (
+                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
+                    <WidgetHeader className="flex">
+                        <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
+                        <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                    </WidgetHeader>
+                    {
+                        props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
+                    }
+                    <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
+                </WidgetElement> 
+
+            )
+        }
+
+        return null
+
     }
 
     return (
@@ -125,12 +128,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     </div>
                     <ProgressBarDashboard percentage={storage.percentage} widget="storage" />
                 </WidgetElement>
-                {
-                    props.isPlanPage &&
-                        <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
-                            {renderPlanWidget()}
-                        </WidgetElement> 
-                }
+                {renderPlanWidget()}
             </div>
         </section>
     )
