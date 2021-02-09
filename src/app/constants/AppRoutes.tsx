@@ -61,6 +61,7 @@ import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
+import { Users } from '../containers/Account/Users';
 
 
 export const AppRoutes: Routes[] = [   
@@ -490,6 +491,11 @@ export const AppRoutes: Routes[] = [
                 path: '/account/company',
                 name: 'Company',
                 component: Company
+            },
+            {
+                path: '/account/users',
+                name: 'Users',
+                component: Users
             },
             {
                 path: '/account/billing',
