@@ -20,17 +20,9 @@ import { GeneralImages } from '../../shared/General/Images';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction } from '../../utils/general';
-import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
-import { Bubble } from '../../../components/Bubble/Bubble';
-import { BubbleContent } from '../../shared/Security/SecurityStyle';
-import { Text } from '../../../components/Typography/Text'
-import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText, ButtonContainer } from '../../shared/General/GeneralStyle';
-import { IconStyle } from '../../../shared/Common/Icon';
-import { updateClipboard } from '../../utils/utils';
+import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '../../../shared/MiscStyles';
-import { segmentService } from '../../utils/services/segment/segmentService';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
@@ -46,8 +38,6 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
-    const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {

@@ -48,6 +48,9 @@ export function readableBytes(size: number): string {
 
 
 export function tsToLocaleDate(ts: number, options?: Intl.DateTimeFormatOptions): string {
+    if(!options) {
+        return new Date(ts * 1000).toLocaleDateString();
+    }
     return new Date(ts * 1000).toLocaleString(undefined, options);
 }
 

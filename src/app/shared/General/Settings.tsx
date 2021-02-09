@@ -20,7 +20,7 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
     React.useEffect(() => {
         if (liveStreamCountdownToggle) {
             let countdownTs = liveStreamCountdownToggle ? startDateTimeValue.date : 0
-            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: Math.floor(countdownTs / 1000) } })
+            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: countdownTs  } })
         } else {
             if(props.localContentDetails){
             props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: 0 } })

@@ -20,7 +20,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
             case 'LAST_MONTH':
             case 'LAST_WEEK':
-                return tsToLocaleDate(value, {timeZone: 'UTC'});
+                return tsToLocaleDate(value);
             case 'CUSTOM':
                 let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
                 if(index >= 0) {
@@ -30,13 +30,13 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
                             return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                         } else {
-                            return tsToLocaleDate(value, {timeZone: 'UTC'});
+                            return tsToLocaleDate(value);
                         }
                     } else {
-                        return tsToLocaleDate(value, {timeZone: 'UTC'});
+                        return tsToLocaleDate(value);
                     }
                 } else {
-                    return tsToLocaleDate(value, {timeZone: 'UTC'});
+                    return tsToLocaleDate(value);
                 }
             case 'LAST_5_MINUTES':
             case 'LAST_24_HOURS':
