@@ -5,7 +5,7 @@ import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
 import timezones from 'compact-timezone-list';
-import { utcOffsetToMin } from "../../../utils/services/date/dateService";
+import { dateAdd, utcOffsetToMin } from "../../../utils/services/date/dateService";
 
 
 interface DateTimePickerProps {
@@ -40,7 +40,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         if (isNaN(min)) {
             min = 0
         }
-        let total = hours + min - offset
+        let total = offset <= 0 ? hours + min - offset : hours + min + offset
         return total
     }
 
@@ -55,7 +55,9 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {
-        props.callback(method === "Set Date and Time" ? new Date((day + inputTimeToTs(time , props.timezone || 'UTC')) ).getTime() < 0 ? 0 : new Date((day + inputTimeToTs(time , props.timezone || 'UTC')) ).getTime() : 0, timezone)
+        var dayStart = new Date(day * 1000).setUTCHours(0,0,0,0);
+        dayStart = dateAdd(new Date(dayStart), 'second', inputTimeToTs(time , timezone || 'UTC')).getTime() 
+        props.callback(method === "Set Date and Time" ? new Date(dayStart).getTime() < 0 ? 0 :  Math.round(new Date(dayStart).getTime() / 1000) : 0, timezone)
     }, [time, day, method, timezone])
 
     return (
