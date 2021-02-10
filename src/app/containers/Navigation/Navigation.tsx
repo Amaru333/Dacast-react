@@ -231,7 +231,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
             </ContainerStyle>
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen}>
-                <MultiUserUpgradeModal />
+                <MultiUserUpgradeModal toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
 
         </>
