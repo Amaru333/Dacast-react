@@ -26,7 +26,7 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
             let creditLine = null
             let debitLine = null
             if(transaction.dacastFee >= 0) {
-                creditLine = Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
+                creditLine = Math.sign(transaction.dacastFee === 0 ? 1 : transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
             } else {
                 debitLine = Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
             }
