@@ -211,7 +211,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 dropdownTitle="Available"
                                 id="dateStart"
                                 hideOption="Always"
-                                callback={(ts:number, tz: string) => { console.log(ts); setHasToggleChanged(true); setStartTime(ts); setStartTimezone(tz)  }}
+                                callback={(ts:number, tz: string) => { setHasToggleChanged(true); setStartTime(ts); setStartTimezone(tz)  }}
                                 defaultTs={startTime}
                                 timezone={startTimezone}
                                 showTimezone={true}
