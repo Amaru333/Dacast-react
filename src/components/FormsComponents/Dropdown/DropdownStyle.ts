@@ -89,7 +89,8 @@ export const DropdownList = styled.ul<{direction?: 'up' | 'down'; displayDropdow
 `;
 
 export const DropdownItem = styled.li<{isSelected: boolean; isSingle: boolean}>`
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     min-height: 24px;
     height: 100%;
@@ -116,15 +117,21 @@ export const BorderItem = styled.div<{}>`
     margin-left: -5%;
 `;
 
-export const DropdownIconStyle = styled.div`
-    position: absolute;
-    right: 0%;
-    top: 25%;
-    padding-right: 8px;
-    
-`;
+export const DropdownItemTitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
 
 export const DropdownItemText = styled(Text)`
+    position: absolute;
+    display: contents;
+    width: 80%;
+    min-height: 100%;
+    padding-top: 4px;
+`
+
+export const DropdownDescriptionText = styled(Text)`
     position: absolute;
     display: contents;
     width: 80%;
