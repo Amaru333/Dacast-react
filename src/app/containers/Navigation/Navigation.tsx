@@ -61,7 +61,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     //GET NUMBER OF SEATS FROM SOMEWHERE ELSE
-    const mockUserSeats = 1
+    const mockUserSeats = 2
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();

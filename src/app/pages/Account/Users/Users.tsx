@@ -9,8 +9,12 @@ import { Avatar } from '../../../../components/Avatar/Avatar';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { DropdownCustom } from '../../../../components/FormsComponents/Dropdown/DropdownCustom';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { Modal } from '../../../../components/Modal/Modal';
+import { AddUserModal } from './AddUserModal';
 
 export const UsersPage = () => {
+
+    const [addUserModalOpen, setAddUserModalOpen] = React.useState<boolean>(false)
 
     const mockUsers = [{userID: "8043a658-da1d-8922-0ece-4f3b5994bc08", name: "Jake Napper", email: "jake.napper@dacast.com", role: "Owner"}]
 
@@ -78,11 +82,14 @@ export const UsersPage = () => {
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => console.log('hey')} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">1 out of 5 seats used</Text>
-                    <Button sizeButton="small" className="ml2">Add User</Button>
+                    <Button sizeButton="small" className="ml2" onClick={() => {setAddUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
             <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
             <Text className="relative right" size={12} color="gray-3">4 Seats Available</Text>
+            <Modal modalTitle="Add User" size="small" hasClose={false} toggle={() => setAddUserModalOpen(false)} opened={addUserModalOpen}>
+                <AddUserModal toggle={setAddUserModalOpen} />
+            </Modal>
         </React.Fragment>
     )
 }
