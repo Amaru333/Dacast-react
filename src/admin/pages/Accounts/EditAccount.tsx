@@ -13,6 +13,7 @@ import { Toggle } from '../../../components/Toggle/toggle'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 import { getUrlParam } from '../../../utils/utils'
+import { countries } from 'countries-list'
 
 export const EditAccountPage = (props: EditAccountComponentProps & {accountId: string}) => {
 
@@ -22,15 +23,21 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [createPlatformLoading, setCreatePlatformLoading] = React.useState<boolean>(false)
+    const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
     const salesforceId = getUrlParam('salesforceId') || null
     const verifyEmailDropdownList = [{title: "Yes"}, {title: "No"}]
     const preferredPlatformDropdownList = [{title: "Unified App"}, {title: "Legacy"}]
     const playbackProtectionDropdownList = [{title: "Off"}, {title: "50 GB", data: 50}, {title: "100 GB", data: 100}, {title: "250 GB", data: 250}, {title: "500 GB", data: 500}, {title: "1 TB", data: 1000}, {title: "2 TB", data: 2000}, {title: "5 TB", data: 5000}]
+    const countryDropdownList = Object.keys(countries).map((item) => {
+        let countryItem: DropdownSingleListItem = {title: null}
+        countryItem.title = countries[item].name
+        return countryItem
+    })
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.saveAccountInfo(accountInfo, props.accountId)
+        props.saveAccountInfo(selectedCountry ?  {...accountInfo, country: selectedCountry} : accountInfo, props.accountId)
         .then(() => {
             setButtonLoading(false)
             setOpenConfirmationModal(false)
@@ -85,6 +92,16 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
 
             </div>
 
+            <div className="flex">
+                <DropdownSingle 
+                    hasSearch 
+                    callback={(item: DropdownSingleListItem) => {setSelectedCountry(item.title)}}
+                    dropdownDefaultSelect={!props.accountInfo.country ? "" : props.accountInfo.country} className="col col-3 pr1 my1" 
+                    id='countryDropdown' dropdownTitle='Country' 
+                    list={countryDropdownList} 
+                />
+            </div>
+            
             <div className='flex items-center'>
                 <DropdownSingle 
                     className='col col-3 pr1 my1' 

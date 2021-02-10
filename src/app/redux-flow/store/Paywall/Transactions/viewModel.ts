@@ -23,6 +23,19 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
         perPage: data.perPage,
         total: data.total,
         transactionsList: data.transactionsList.map(transaction => {
+            let creditLine = null
+            let debitLine = null
+            if(transaction.dacastFee >= 0) {
+                creditLine = Math.sign(transaction.dacastFee === 0 ? 1 : transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
+            } else {
+                debitLine = Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
+            }
+
+            if (transaction.actionType === 'refund') {
+                debitLine = creditLine
+                creditLine = null
+            }
+
             return {
                 id: transaction.id,
                 type: transaction.decimalValue ? transaction.note : transaction.actionType,
@@ -31,8 +44,8 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
                 purchaser: transaction.purchaser,
                 currency: transaction.currency || 'USD',
                 price: transaction.decimalValue ? transaction.decimalValue : transaction.price,
-                credit: transaction.dacastFee >= 0 ? Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee) : null,
-                debit: transaction.dacastFee < 0 ? Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue ? transaction.decimalValue : transaction.price)-transaction.dacastFee) : null
+                credit: creditLine,
+                debit: debitLine
             }
         })
     }

@@ -21,11 +21,13 @@ const getContentPaywallPrices = async (contentId: string, contentType: string) =
 
 const createContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const dateAvailable = data.settings.startMethod === "Upon Purchase" ? "immediately" : new Date(data.settings.startDate * 1000).toLocaleString()
+
     let parsedPrice = null
     if(data.priceType === 'Subscription') {
         parsedPrice = {
             contentId: `${userId}-${contentType}-${contentId}`,
-            prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+            prices: data.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),
             settings: {
                 recurrence: {
                     unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
@@ -37,7 +39,7 @@ const createContentPricePreset = async (data: Preset, contentId: string, content
         if(data.settings.startMethod === 'Upon Purchase') {
             parsedPrice = {
                 contentId: `${userId}-${contentType}-${contentId}`,
-                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+                prices: data.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),  
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
@@ -48,7 +50,7 @@ const createContentPricePreset = async (data: Preset, contentId: string, content
         } else {
             parsedPrice = {
                 contentId: `${userId}-${contentType}-${contentId}`,
-                prices: data.prices.map((p) => {return {...p, description: 'price description'}}),
+                prices: data.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),
                 settings: {
                     duration: {
                         unit: data.settings.duration.unit.toLowerCase().substr(0, data.settings.duration.unit.length - 1),
