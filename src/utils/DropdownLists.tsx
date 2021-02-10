@@ -32,6 +32,6 @@ export const availableEndDropdownList = [{title: "Forever"}, {title: "Set Date a
 export const discountAppliedDropdownList = [{title: "Once"}, {title: "Forever"}]
 
 //ENGAGEMENT
-export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "Top Left", description: "party time"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
+export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
 
 export const adPlacementDropdownList = [{title: "Pre-roll"}, {title: "Mid-roll"}, {title: "Post-roll"}]
