@@ -46,8 +46,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
     const countryDropdownList = Object.keys(countries).map((item) => {
-        let countryItem: DropdownSingleListItem = {title: null}
-        countryItem.title = countries[item].name
+        let countryItem: DropdownSingleListItem = {
+            title: countries[item].name, 
+            data: {code: item}
+        }
         return countryItem
     })
 
@@ -331,8 +333,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
                         <DropdownSingle hasSearch 
                             direction='up'
-                            callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.title)}}
-                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
+                            callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.data.code)}}
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country].name} className="sm-col md-col-3 sm-col-6 p1" 
                             id='countryDropdown' dropdownTitle='Country' 
                             list={countryDropdownList} />
                     </div>

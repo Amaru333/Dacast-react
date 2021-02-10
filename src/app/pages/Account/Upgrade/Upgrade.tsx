@@ -30,8 +30,10 @@ import { UpgradeCartStep } from './UpgradeCartStep';
 import { UpgradePaymentStep } from './UpgradePaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
+import { countries } from 'countries-list';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
+    const defaultCurrency: string = props.companyInfo && props.companyInfo.country ? countries[props.companyInfo.country].currency : 'USD'
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
@@ -47,7 +49,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
-    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: 'EUR - €', data: {img: 'eur', id: 'eur'}})
+    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
 
     let history = useHistory()
 
@@ -63,7 +65,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             token3Ds: threeDSecureToken
         }))
         .then((response) => {
-            console.log('response', response)
             setIsLoading(false);
             if (response && response.tokenID) {
                 callback(response.tokenID)

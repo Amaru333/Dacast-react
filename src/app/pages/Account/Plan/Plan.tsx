@@ -6,11 +6,11 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Card } from '../../../../components/Card/Card';
 import styled from 'styled-components';
 import { IconStyle, IconContainer } from '../../../../shared/Common/Icon';
-import { useMedia } from '../../../../utils/utils';
+import { handleCurrencySymbol, useMedia } from '../../../../utils/utils';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ProtectionModal } from './ProtectionModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
-import { BillingPageInfos, Extras, PlaybackProtection } from '../../../redux-flow/store/Account/Plan/types';
+import { BandwidthProductCurrency, BillingPageInfos, Extras, PlaybackProtection } from '../../../redux-flow/store/Account/Plan/types';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { ColorsApp } from '../../../../styled/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
@@ -45,13 +45,13 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         code: null,
         quantity: null,
         totalPrice: null,
-        currency: 'usd'
+        currency: props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency
     })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: 'EUR - €', data: {img: 'eur', id: 'eur'}})
+    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: props.billingInfos.currentPlan.currency + ' - ' + handleCurrencySymbol(props.billingInfos.currentPlan.currency), data: {img: props.billingInfos.currentPlan.currency.toLowerCase(), id: props.billingInfos.currentPlan.currency.toLowerCase()}})
 
 
     const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
@@ -60,7 +60,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
-            currency: selectedCurrency.data.id as BandwidthProductCurrency,
             token: recurlyToken, 
             threeDSecureToken: null
         }))
