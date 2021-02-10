@@ -42,11 +42,13 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
                         className={(key === 1 ? 'mt1' : '') + ' items-center'}
                         isSelected={selectedItem.title === item.title} 
                         onClick={() => handleClick(item)}> 
-                        {
-                            (item.data && item.data.img) &&
-                            <img className='pr1' height={20} width={20} src={require(`../../../../public/assets/${item.data.img}.png`)} alt={item.data.img} />
-                        }
-                        <DropdownItemText className='pl2' size={12} weight='reg' color={selectedItem.title === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText>
+                        <div className='flex'>
+                            {
+                                (item.data && item.data.img) &&
+                                <img className='pr1' height={20} width={20} src={require(`../../../../public/assets/${item.data.img}.png`)} alt={item.data.img} />
+                            }
+                            <DropdownItemText className='pl2' size={12} weight='reg' color={selectedItem.title === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText>
+                        </div>
                     </DropdownItem>
                 )
             })
