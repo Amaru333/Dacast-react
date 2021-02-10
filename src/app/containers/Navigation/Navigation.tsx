@@ -8,10 +8,10 @@ import { DropdownItem, DropdownItemText, DropdownList } from '../../../component
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
-import Scrollbar from "react-scrollbars-custom";
 import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-
+import { Modal } from "../../../components/Modal/Modal";
+import { MultiUserUpgradeModal } from "../../pages/Account/Users/MultiUserUpgradeModal";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -56,7 +56,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
+
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
+
+    //GET NUMBER OF SEATS FROM SOMEWHERE ELSE
+    const mockUserSeats = 1
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
@@ -168,7 +173,14 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
+                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
+                                    if(subMenuElement.name === "Users" && mockUserSeats === 1){
+                                        return (
+                                            <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
+                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                            </SubMenuElement>
+                                        )
+                                    } else
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
@@ -199,7 +211,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
     return (
         <>
-        {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
+        {props.isMobile && <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } />}
        
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
@@ -217,9 +229,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         {renderMenu()}
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
-           
-                  
             </ContainerStyle>
+            <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen}>
+                <MultiUserUpgradeModal />
+            </Modal>
 
         </>
     )
