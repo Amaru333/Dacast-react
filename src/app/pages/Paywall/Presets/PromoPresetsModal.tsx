@@ -8,7 +8,6 @@ import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { guessTimezone } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: '-1',
@@ -18,7 +17,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: guessTimezone(),
+    timezone: null,
     discountApplied: 'Once',
     assignedGroupIds: [],
     assignedContentIds: []
@@ -85,7 +84,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     <DropdownSingle 
                         hasSearch 
                         id='promoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect={guessTimezone()}
+                        dropdownDefaultSelect={null}
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})} 

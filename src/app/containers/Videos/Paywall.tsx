@@ -17,7 +17,6 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentPaywallPage } from '../../shared/Paywall/ContentPaywallPage';
 import { ContentPaywallState } from '../../redux-flow/store/Content/Paywall/types';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { guessTimezone } from '../../../utils/services/date/dateService';
 
 export interface ContentPaywallComponentProps {
     contentPaywallInfo: ContentPaywallState;
@@ -115,7 +114,7 @@ const VodPaywall = (props: ContentPaywallComponentProps) => {
                 limit: NaN,
                 startDate: null,
                 endDate: null,
-                timezone: guessTimezone(),
+                timezone: null,
                 discountApplied: 'Once',
                 assignedContentIds: [],
                 assignedGroupIds: []

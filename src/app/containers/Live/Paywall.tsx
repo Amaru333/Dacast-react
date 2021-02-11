@@ -16,7 +16,6 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Action, createContentPricePresetAction, saveContentPricePresetAction, deleteContentPricePresetAction, createContentPromoPresetAction, saveContentPromoPresetAction, deleteContentPromoPresetAction, getContentPaywallInfosAction, saveContentPaywallInfosAction, getContentPaywallPricesAction, getContentPaywallPromosAction } from '../../redux-flow/store/Content/Paywall/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { guessTimezone } from '../../../utils/services/date/dateService';
 
 const LivePaywall = (props: ContentPaywallComponentProps) => {
 
@@ -86,7 +85,7 @@ const LivePaywall = (props: ContentPaywallComponentProps) => {
                 limit: NaN,
                 startDate: null,
                 endDate: null,
-                timezone: guessTimezone(),
+                timezone: null,
                 discountApplied: 'Once',
                 assignedContentIds: [],
                 assignedGroupIds: []

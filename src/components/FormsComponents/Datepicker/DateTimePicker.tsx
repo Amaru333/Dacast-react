@@ -29,6 +29,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
             var offset = 0;
         } else {
             let offsetitem = timezones.find(el => el.tzCode === timezoneName)
+            console.log(offsetitem)
             var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
         }
         let splitValue = value.split(':')
@@ -40,7 +41,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
         if (isNaN(min)) {
             min = 0
         }
-        let total = offset <= 0 ? hours + min - offset : hours + min + offset
+        let total = offset <= 0 ? hours + min + Math.abs(offset) : hours + min - offset
         return total
     }
 

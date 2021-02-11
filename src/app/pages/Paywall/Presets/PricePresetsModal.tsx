@@ -9,7 +9,6 @@ import { Text } from '../../../../components/Typography/Text';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { guessTimezone } from '../../../../utils/services/date/dateService';
 
 const pricesList = [
     {
@@ -28,7 +27,7 @@ const defaultPreset: Preset = {
         duration: {value: NaN, unit: 'Hours'},
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: guessTimezone(),
+        timezone: null,
         startDate: 0,
     }
 }

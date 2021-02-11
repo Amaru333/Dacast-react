@@ -11,7 +11,6 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { guessTimezone } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -21,7 +20,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: guessTimezone(),
+    timezone: null,
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -130,7 +129,7 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     <DropdownSingle
                         hasSearch
                         id='newPromoPresetTimezoneDropdown'
-                        dropdownDefaultSelect={guessTimezone()}
+                        dropdownDefaultSelect={null}
                         className={ClassHalfXsFullMd + ' pr1'}
                         dropdownTitle='Timezone'
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />

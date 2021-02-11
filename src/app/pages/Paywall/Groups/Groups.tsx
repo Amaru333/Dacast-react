@@ -14,7 +14,6 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { emptyContentListBody } from '../../../shared/List/emptyContentListState';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
-import { guessTimezone } from '../../../../utils/services/date/dateService';
 import { GroupDetailsStep } from './GroupDetailsStep';
 import { GroupContentStep } from './GroupContentStep';
 
@@ -43,7 +42,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: guessTimezone(),
+            timezone: null,
             startDate: 0,
             type: 'Pay Per View',
         },
@@ -58,7 +57,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: guessTimezone(),
+            timezone: null,
             startDate: 0,
             type: 'Pay Per View',
         } 

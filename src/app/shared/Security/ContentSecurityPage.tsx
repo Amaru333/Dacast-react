@@ -205,15 +205,15 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <div className='col col-12 clearfix'>
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                         
+                         {console.log(startTime)}
                         <div className='col col-12 mb2 flex items-end'>
                             <DateTimePicker 
                                 dropdownTitle="Available"
                                 id="dateStart"
                                 hideOption="Always"
                                 callback={(ts:number, tz: string) => { setHasToggleChanged(true); setStartTime(ts); setStartTimezone(tz)  }}
-                                defaultTs={selectedSettings.contentScheduling.startTime}
-                                timezone={selectedSettings.contentScheduling.startTimezone}
+                                defaultTs={startTime}
+                                timezone={startTimezone}
                                 showTimezone={true}
                             />
                         </div>
@@ -224,8 +224,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 minDate={startTime ? startTime : undefined}
                                 hideOption="Forever"
                                 callback={(ts:number, tz: string) => { setHasToggleChanged(true); setEndTime(ts); setEndTimezone(tz) }}
-                                defaultTs={selectedSettings.contentScheduling.endTime}
-                                timezone={selectedSettings.contentScheduling.startTimezone}
+                                defaultTs={endTime}
+                                timezone={endTimezone}
                                 showTimezone={true}
                             />
                         </div>
