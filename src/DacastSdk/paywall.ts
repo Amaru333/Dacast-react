@@ -277,6 +277,7 @@ export interface ExternalTransaction {
     dacastFee: number;
     actionType: string;
     timestamp: number;
+    dacastConversionRateToAccountCurrency: number;
 }
 
 export interface InternalTransaction {
