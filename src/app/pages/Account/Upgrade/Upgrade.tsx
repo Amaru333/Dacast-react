@@ -33,7 +33,7 @@ import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDrop
 import { countries } from 'countries-list';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
-    const defaultCurrency: string = props.companyInfo && props.companyInfo.country ? countries[props.companyInfo.country].currency : 'USD'
+    const defaultCurrency: string = props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country] ? countries[props.companyInfo.country].currency : 'USD'
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;

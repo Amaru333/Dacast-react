@@ -334,7 +334,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <DropdownSingle hasSearch 
                             direction='up'
                             callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.data.code)}}
-                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country].name} className="sm-col md-col-3 sm-col-6 p1" 
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country] ? countries[props.CompanyPageDetails.country].name : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='countryDropdown' dropdownTitle='Country' 
                             list={countryDropdownList} />
                     </div>
