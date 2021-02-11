@@ -10,13 +10,13 @@ import { Label } from '../../../../components/FormsComponents/Label/Label';
 import { DropdownCustom } from '../../../../components/FormsComponents/Dropdown/DropdownCustom';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { Modal } from '../../../../components/Modal/Modal';
-import { AddUserModal } from './AddUserModal';
+import { UserModal } from './UserModal';
+import { defaultUser, User } from '../../../redux-flow/store/Account/Users/types';
 
-export const UsersPage = () => {
+export const UsersPage = (props: {users: User[]}) => {
 
-    const [addUserModalOpen, setAddUserModalOpen] = React.useState<boolean>(false)
-
-    const mockUsers = [{userID: "8043a658-da1d-8922-0ece-4f3b5994bc08", name: "Jake Napper", email: "jake.napper@dacast.com", role: "Owner"}]
+    const [userModalOpen, setUserModalOpen] = React.useState<boolean>(false)
+    const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
 
     const handleUserRole = (role: string) => {
         switch (role) {
@@ -26,6 +26,18 @@ export const UsersPage = () => {
                 return <Label backgroundColor="red20" color="red" label="Admin" />
             default:
                 return null
+        }
+    }
+
+    const handleUserDropdownOptions = (action: string, user: User) => {
+        switch (action) {
+            case 'Edit':
+                setUserDetails(user);
+                setUserModalOpen(true);
+                break;
+            case 'Delete':
+                console.log('delete user modal')
+                break;
         }
     }
 
@@ -41,12 +53,12 @@ export const UsersPage = () => {
     }
 
     const usersBodyElement = () => {
-        return mockUsers.map((user) => {
+        return props.users.map((user) => {
             return {
                 data: [
                     <div className="flex items-center">
-                        <Avatar className="mr3" name={user.name} />
-                        <Text>{user.name}</Text>
+                        <Avatar className="mr3" name={user.firstName + ' ' + user.lastName} />
+                        <Text>{user.firstName + ' ' + user.lastName}</Text>
                         {
                             userToken.getUserInfoItem('custom:dacast_user_id') === user.userID &&
                             <Text color="gray-5">&nbsp;(You)</Text>
@@ -59,7 +71,7 @@ export const UsersPage = () => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown_' + user.userID} 
-                                list={['Edit', 'Delete']} callback={(value: string) => console.log(value)}
+                                list={['Edit', 'Delete']} callback={(value: string) => handleUserDropdownOptions(value, user)}
                             >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
@@ -82,14 +94,15 @@ export const UsersPage = () => {
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => console.log('hey')} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">1 out of 5 seats used</Text>
-                    <Button sizeButton="small" className="ml2" onClick={() => {setAddUserModalOpen(true)}}>Add User</Button>
+                    <Button sizeButton="small" className="ml2" onClick={() => {setUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
             <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
             <Text className="relative right" size={12} color="gray-3">4 Seats Available</Text>
-            <Modal modalTitle="Add User" size="small" hasClose={false} toggle={() => setAddUserModalOpen(false)} opened={addUserModalOpen}>
-                <AddUserModal toggle={setAddUserModalOpen} />
+            <Modal modalTitle={userDetails.userID === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
+                <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
             </Modal>
+
         </React.Fragment>
     )
 }
