@@ -12,10 +12,17 @@ import { userToken } from '../../../utils/services/token/tokenService';
 import { Modal } from '../../../../components/Modal/Modal';
 import { UserModal } from './UserModal';
 import { defaultUser, User } from '../../../redux-flow/store/Account/Users/types';
+import { DeleteUserModal } from './DeleteUserModal';
+import { ConfirmDeleteModal } from './ConfirmDeleteModal';
+import { TransferContentModal } from './TransferContentModal';
 
 export const UsersPage = (props: {users: User[]}) => {
 
     const [userModalOpen, setUserModalOpen] = React.useState<boolean>(false)
+    const [deleteUserModalOpen, setDeleteUserModalOpen] = React.useState<boolean>(false)
+    const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = React.useState<boolean>(false)
+    const [transferContentModalOpen, setTransferContentModalOpen] = React.useState<boolean>(false)
+    
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
 
     const handleUserRole = (role: string) => {
@@ -36,8 +43,17 @@ export const UsersPage = (props: {users: User[]}) => {
                 setUserModalOpen(true);
                 break;
             case 'Delete':
-                console.log('delete user modal')
+                setDeleteUserModalOpen(true);
                 break;
+        }
+    }
+
+    const handleDeleteModalSelection = (input: string) => {
+        setDeleteUserModalOpen(false)
+        if(input === "transfer"){
+            setTransferContentModalOpen(true)
+        } else {
+            setConfirmDeleteModalOpen(true)
         }
     }
 
@@ -101,6 +117,15 @@ export const UsersPage = (props: {users: User[]}) => {
             <Text className="relative right" size={12} color="gray-3">4 Seats Available</Text>
             <Modal modalTitle={userDetails.userID === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
                 <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
+            </Modal>
+            <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setDeleteUserModalOpen(false)} opened={deleteUserModalOpen}>
+                <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection}/>
+            </Modal>
+            <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
+                <ConfirmDeleteModal toggle={setConfirmDeleteModalOpen} />
+            </Modal>
+            <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
+                <TransferContentModal users={props.users} toggle={setTransferContentModalOpen} />
             </Modal>
 
         </React.Fragment>
