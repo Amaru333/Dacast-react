@@ -24,7 +24,12 @@ const identify = (data: IdentifyParam) => {
 
     window.analytics.identify(
         data.userId, 
-        properties
+        properties,
+        {
+            'Google Analytics': {
+                'ClientId': formatGaCookie()
+            }
+        }
     )
 }
 
@@ -61,8 +66,9 @@ const track = (name: string, properties: any) => {
 
 export function formatGaCookie() {
     let gaCookie: string = getCookie('_ga')[0]
-
-    gaCookie = gaCookie.substr(6)
+    if(gaCookie) {
+        gaCookie = gaCookie.substr(6)
+    }
     return gaCookie
 }
 
