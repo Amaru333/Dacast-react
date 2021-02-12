@@ -26,8 +26,9 @@ const identify = (data: IdentifyParam) => {
         data.userId, 
         properties,
         {
-            'All': true,
-            'Google Analytics': true
+            'Google Analytics': {
+                'ClientId': formatGaCookie()
+            }
         }
     )
 }
@@ -41,7 +42,14 @@ const load = () => {
 
 }
 const page = (name: string) => {
-    window.analytics.page(name);
+    window.analytics.page(
+        name,
+        {
+            'Google Analytics': {
+                'ClientId': formatGaCookie()
+            }
+        }
+        );
 
 }
 const track = (name: string, properties: any) => {
