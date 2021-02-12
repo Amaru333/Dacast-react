@@ -24,12 +24,7 @@ const identify = (data: IdentifyParam) => {
 
     window.analytics.identify(
         data.userId, 
-        properties,
-        {
-            'Google Analytics': {
-                'ClientId': formatGaCookie()
-            }
-        }
+        properties
     )
 }
 
