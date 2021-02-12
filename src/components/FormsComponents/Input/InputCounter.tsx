@@ -4,9 +4,10 @@ import { Input } from './Input';
 
 export const InputCounter = () => {
     return (
-        <div>
+        <div style={{alignItems: "center"}} className="flex flex-row">
             <InputCounterButton>-</InputCounterButton>
-            <InputCounterDisplay disabled></InputCounterDisplay>
+            <InputCounterDisplay disabled value={0}></InputCounterDisplay>
+            <InputCounterButton>+</InputCounterButton>
         </div>
     )
 }
@@ -32,4 +33,9 @@ const InputCounterDisplay = styled.input`
     height: 24px;
     width: 43px;
     border: 1px solid #4967EE;
+    margin: 0px 6px;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 14px;
+    background: ${props => props.theme.colors["gray-10"]};
 `
