@@ -113,21 +113,22 @@ const Header = (props: HeaderProps) => {
                 props.getBillingInfo()
             }
 
-            TagManager.initialize(
-                {
-                    gtmId: 'GTM-PHZ3Z7F',
-                    dataLayer: {
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                    }, 
-                    // dataLayerName: 'Uapp'
-                });
+        TagManager.initialize(
+            {
+                gtmId: 'GTM-PHZ3Z7F',
+                dataLayer: {
+                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'companyName': userToken.getUserInfoItem('custom:website'),
+                    'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
+                    'signedUp': 'Unknown yet',
+                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                    'userEmail': userToken.getUserInfoItem('email'),
+                    'bid': userToken.getUserInfoItem('salesforce-group-id')
+                }, 
+                // dataLayerName: 'Uapp'
+            });
     }, [])
 
     React.useEffect(() => {
@@ -143,6 +144,7 @@ const Header = (props: HeaderProps) => {
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });
@@ -164,6 +166,7 @@ const Header = (props: HeaderProps) => {
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });

@@ -25,7 +25,6 @@ import Dashboard from './containers/Dashboard/Dashboard';
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
-import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
 import AddStreamModal from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
@@ -40,6 +39,7 @@ import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
 import { Content, FullContent } from "../shared/Content";
 import DashboardTest from "./containers/Dashboard/DashboardTest";
+import { Privilege } from "../utils/services/token/token";
 
 // Any additional component props go here.
 interface MainProps {
