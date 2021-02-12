@@ -15,6 +15,9 @@ import { defaultUser, User } from '../../../redux-flow/store/Account/Users/types
 import { DeleteUserModal } from './DeleteUserModal';
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 import { TransferContentModal } from './TransferContentModal';
+import { CustomStepper } from '../../../../components/Stepper/Stepper';
+import { ChangeSeatsCartStep } from './ChangeSeatsCartStep';
+import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
 
 export const UsersPage = (props: {users: User[]}) => {
 
@@ -22,8 +25,10 @@ export const UsersPage = (props: {users: User[]}) => {
     const [deleteUserModalOpen, setDeleteUserModalOpen] = React.useState<boolean>(false)
     const [confirmDeleteModalOpen, setConfirmDeleteModalOpen] = React.useState<boolean>(false)
     const [transferContentModalOpen, setTransferContentModalOpen] = React.useState<boolean>(false)
-    
+    const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
+
+    const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
     const handleUserRole = (role: string) => {
         switch (role) {
@@ -107,7 +112,7 @@ export const UsersPage = (props: {users: User[]}) => {
                     <InputTags oneTag noBorder={true} placeholder="Search Users..." style={{ display: "inline-block" }} />
                 </div>
                 <div className="flex items-center relative">
-                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => console.log('hey')} size={14} color="dark-violet">Change Number of Seats</Text>
+                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">1 out of 5 seats used</Text>
                     <Button sizeButton="small" className="ml2" onClick={() => {setUserModalOpen(true)}}>Add User</Button>
@@ -115,6 +120,14 @@ export const UsersPage = (props: {users: User[]}) => {
             </div>
             <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
             <Text className="relative right" size={12} color="gray-3">4 Seats Available</Text>
+            <CustomStepper
+                stepperHeader="Change Number of Seats"
+                stepList={changeSeatsStepList}
+                opened={changeSeatsStepperOpen}
+                lastStepButton="Purchase"
+                finalFunction={() => {}}
+                functionCancel={() => setChangeSeatsStepperOpen(false)}
+            />
             <Modal modalTitle={userDetails.userID === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
                 <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
             </Modal>
