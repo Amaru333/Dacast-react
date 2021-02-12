@@ -1,5 +1,5 @@
 import React from 'react'
-import { DateRangePickerr } from './DateRangePicker';
+import { DateRangePicker } from './DateRangePicker';
 
 export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: any; callback?: (dates: {startDate: Date; endDate: Date}) => void; dates: {startDate: number; endDate: number}} & React.HtmlHTMLAttributes<HTMLDivElement>) => {
     
@@ -16,7 +16,7 @@ export const DateRangePickerWrapper = (props: {disabled? : boolean; presets?: an
 
     return (
         <div className='noTransition' {...other}>
-            <DateRangePickerr 
+            <DateRangePicker
                 start={dates.startDate}
                 end={dates.endDate}
                 onDatesChange={(data) => { callback({startDate: data.startDate, endDate: data.endDate}) } } // PropTypes.func.isRequired,

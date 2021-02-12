@@ -29,7 +29,6 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
             var offset = 0;
         } else {
             let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-            console.log(offsetitem)
             var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
         }
         let splitValue = value.split(':')

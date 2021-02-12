@@ -176,7 +176,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div className="col col-12 mb25 clearfix">
             {renderDatePresets()}
-            <DateRangePickerWrapper callback={(dates) => { setDates({ start: dates.startDate.getTime(), end: dates.endDate.getTime()}) }} disabled={selectedPreset !== 'Custom'} dates={{ startDate: dates.start, endDate: dates.end }} className="inline" />
+            <DateRangePickerWrapper callback={(dates) => { setDates({ start: dates.startDate ? dates.startDate.getTime() : null, end: dates.endDate ? dates.endDate.getTime() : null}) }} disabled={selectedPreset !== 'Custom'} dates={{ startDate: dates.start, endDate: dates.end }} className="inline" />
             <Button sizeButton="small" onClick={() => { props.refreshData({ startDate: dates.start, endDate: dates.end }) } } className="ml2" color="blue">Apply</Button>
         </div>
     )

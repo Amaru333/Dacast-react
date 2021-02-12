@@ -19,7 +19,7 @@ const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
 }
 
 
-export const DateRangePickerr = (props: { start: number, end: number, onDatesChange: (data: {endDate: Date; startDate: Date}) => void } &  React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePicker = (props: { start: number, end: number, onDatesChange: (data: {endDate: Date; startDate: Date}) => void } &  React.HtmlHTMLAttributes<HTMLDivElement>) => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -31,8 +31,8 @@ export const DateRangePickerr = (props: { start: number, end: number, onDatesCha
     const datepickerRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(datepickerRef, () => setIsOpened(false));
     const [state, setState] = useState<OnDatesChangeProps>({
-        startDate: new Date(props.start),
-        endDate: new Date(props.end),
+        startDate: props.start === null ? new Date(props.start) : null,
+        endDate: props.end === null ? new Date(props.end) : null,
         focusedInput: START_DATE
     });
 
@@ -48,8 +48,8 @@ export const DateRangePickerr = (props: { start: number, end: number, onDatesCha
     React.useEffect(() => {
         setState({
             ...state,
-            startDate: new Date(props.start),
-            endDate: new Date(props.end)
+            startDate: props.start ? new Date(props.start) : null,
+            endDate: props.end ? new Date(props.end) : null
         })
     }, [props.start, props.end])
 
