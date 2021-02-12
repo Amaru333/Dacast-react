@@ -44,6 +44,7 @@ const load = () => {
 const page = (name: string) => {
     window.analytics.page(
         name,
+        {},
         {
             'Google Analytics': {
                 'ClientId': formatGaCookie()
