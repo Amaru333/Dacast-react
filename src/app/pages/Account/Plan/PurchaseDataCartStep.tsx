@@ -69,11 +69,12 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
     return (
         <div className="col col-12 flex flex-column">
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown 
+
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.bandwidthProduct.eventBw10to100TB.unitPrice} 
                     callback={(value: DropdownSingleListItem) => {props.setSelectedCurrency(value);props.updateStepperData({...props.stepperData, totalPrice: props.bandwidthProduct[props.stepperData.code].unitPrice[value.data.id as BandwidthProductCurrency] * dataAmount})}}
-                />
+                /> */}
             </div>
             <Input 
                 defaultValue={dataAmount && dataAmount.toString()} 

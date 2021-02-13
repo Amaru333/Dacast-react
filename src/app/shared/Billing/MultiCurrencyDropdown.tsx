@@ -7,6 +7,7 @@ import { Price } from "../../redux-flow/store/Account/Upgrade/types"
 interface MultiCurrencyDropdownProps {
     defaultCurrency: DropdownSingleListItem
     currenciesList: Price
+    id: string
     callback: React.Dispatch<React.SetStateAction<DropdownSingleListItem>>
 }
 
@@ -14,8 +15,8 @@ export const MultiCurrencyDropdown = (props: MultiCurrencyDropdownProps) => {
 
     return (
         <DropdownButton 
-            id='currencyDropdown'
-            style={{ maxHeight: 30, width: 110, zIndex: 1000 }} 
+            id={props.id}
+            style={{ maxHeight: 30, width: 110, zIndex: 100 }} 
             dropdownDefaultSelect={props.defaultCurrency} 
             list={Object.keys(props.currenciesList).map(key => {
                 if( key !== 'aud') {

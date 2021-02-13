@@ -89,6 +89,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
                 <MultiCurrencyDropdown 
+                    id='multiCurrencyDropdownPurchaseStepper'
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.stepperData.price} 
                     callback={props.setSelectedCurrency}

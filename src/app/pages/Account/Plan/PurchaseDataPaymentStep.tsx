@@ -40,11 +40,11 @@ export const PurchaseDataPaymentStep = (props: PurchaseDataPaymentStepProps) => 
     return (
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown 
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.bandwidthProduct.eventBw10to100TB.unitPrice} 
                     callback={(value: DropdownSingleListItem) => {props.setSelectedCurrency(value);props.updateStepperData({...props.stepperData, totalPrice: props.bandwidthProduct[props.stepperData.code].unitPrice[value.data.id as BandwidthProductCurrency] * props.stepperData.quantity})}}
-                />
+                /> */}
             </div>
             <Table id='PurchaseDataPayment' headerBackgroundColor="gray-10" header={paymentTableHeaderElement()}/>
             
