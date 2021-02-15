@@ -2,10 +2,16 @@ import React from 'react';
 import { InputCounter } from '../../../../components/FormsComponents/Input/InputCounter';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
+import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 
-export const ChangeSeatsCartStep = () => {
+export const ChangeSeatsCartStep = (props: {stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; planData: Plan; emptySeats: number}) => {
 
-    const [extraSeats, setExtraSeats] = React.useState<number>(0)
+    const [seatChange, setSeatChange] = React.useState<number>(0)
+    let newExtraSeatPrice = 120 * seatChange
+
+    React.useEffect(() => {
+        props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange)})
+    }, [seatChange])
 
     const seatsHeaderElement = () => {
         return {
@@ -23,7 +29,7 @@ export const ChangeSeatsCartStep = () => {
         return [
             {
                 data: [
-                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">1 Seat</Text>,
+                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.baseSeats!} Seat</Text>,
                     <Text key="planSeatUnitPrice" size={14} weight="reg" color="gray-1">Included In Plan</Text>,
                     <></>,
                     <></>
@@ -31,10 +37,10 @@ export const ChangeSeatsCartStep = () => {
             },
             {
                 data: [
-                    <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">0 Add-Ons</Text>,
+                    <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.extraSeats} Add-Ons</Text>,
                     <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">$10 per month</Text>,
-                    <InputCounter counterValue={extraSeats} setCounterValue={setExtraSeats}/>,
-                    <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">$480 /yr</Text>,
+                    <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={props.stepperData.extraSeats === 0 ? 0 : - Math.abs(props.emptySeats)}/>,
+                    <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">${120 * props.stepperData.extraSeats} /yr</Text>,
                 ]
             }
         ]
@@ -45,13 +51,13 @@ export const ChangeSeatsCartStep = () => {
             {
                 data: [
                     <Text key="totalDueNow" size={14} weight="med" color="gray-1">Total Due Now</Text>,
-                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">$240</Text>
+                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">${seatChange > 0 ? (120 * seatChange) : 0 }</Text>
                 ]
             },
             {
                 data: [
                     <Text key="annualBill" size={14} weight="med" color="gray-1">Annaul Bill From 2nd Sep 2020</Text>,
-                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">$948</Text>
+                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">${(props.stepperData.price/100) + newExtraSeatPrice}</Text>
                 ]
             }
         ]
