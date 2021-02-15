@@ -5,6 +5,8 @@ import { Text } from '../../../../components/Typography/Text';
 
 export const ChangeSeatsCartStep = () => {
 
+    const [extraSeats, setExtraSeats] = React.useState<number>(0)
+
     const seatsHeaderElement = () => {
         return {
             data: [
@@ -31,7 +33,7 @@ export const ChangeSeatsCartStep = () => {
                 data: [
                     <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">0 Add-Ons</Text>,
                     <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">$10 per month</Text>,
-                    <InputCounter />,
+                    <InputCounter counterValue={extraSeats} setCounterValue={setExtraSeats}/>,
                     <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">$480 /yr</Text>,
                 ]
             }

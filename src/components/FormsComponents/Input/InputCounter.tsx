@@ -1,13 +1,21 @@
 import React from 'react';
 import styled from "styled-components"
-import { Input } from './Input';
 
-export const InputCounter = () => {
+export const InputCounter = (props: {counterValue: number, setCounterValue: React.Dispatch<React.SetStateAction<number>>}) => {
+
+    const increaseCount = () => {
+        props.setCounterValue(props.counterValue + 1)
+    }
+
+    const decreaseCount = () => {
+        props.setCounterValue(props.counterValue - 1)
+    }
+
     return (
         <div style={{alignItems: "center"}} className="flex flex-row">
-            <InputCounterButton>-</InputCounterButton>
-            <InputCounterDisplay disabled value={0}></InputCounterDisplay>
-            <InputCounterButton>+</InputCounterButton>
+            <InputCounterButton onClick={() => decreaseCount()}>-</InputCounterButton>
+            <InputCounterDisplay value={props.counterValue} disabled></InputCounterDisplay>
+            <InputCounterButton onClick={() => increaseCount()}>+</InputCounterButton>
         </div>
     )
 }
