@@ -79,7 +79,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                         isDisabled={loading}
                         className='col col-9'
                         defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                        callback={(info) => { setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) } }
+                        callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
                     />
                 )
             case 'real-time':

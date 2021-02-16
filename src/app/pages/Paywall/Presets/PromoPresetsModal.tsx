@@ -8,7 +8,7 @@ import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { tsToInputTime } from '../../../../utils/services/date/dateService';
+import { defaultPaywallTimezone, tsToInputTime } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: '-1',
@@ -26,13 +26,14 @@ const defaultPromo: Promo = {
 
 export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; toggle: (b: boolean) => void; promo: Promo}) => {
 
+    console.log(props.promo)
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [startDate, setStartDate] = React.useState<number>(promoPreset.startDate);
     const [endDate, setEndDate] = React.useState<number>(promoPreset.endDate);
 
     React.useEffect(() => {
-        setPromoPreset(props.promo ? props.promo : defaultPromo);
+        setPromoPreset(props.promo ? {...props.promo, timezone: defaultPaywallTimezone} : defaultPromo);
     }, [props.promo])
 
 
@@ -56,6 +57,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 <Input className='col sm-col-3 col-6 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
+                {console.log(promoPreset.startDate  )}
                 <DateTimePicker 
                     fullLineTz
                     showTimezone={false}
@@ -68,10 +70,10 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker 
+                    fullLineTz
                     showTimezone={false}
                     minDate={startDate}
                     defaultTs={promoPreset.endDate}
-                    timezone={promoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
                     id="endDate"

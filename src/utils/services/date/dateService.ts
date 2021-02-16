@@ -9,6 +9,8 @@ export const getCurrentTs = ( format: 'ms' | 's' ) => {
     }
 }
 
+export const defaultPaywallTimezone = "Europe/London";
+
 
 //Replacement for function moment().tz().guess()
 //Offset is weird 
@@ -18,7 +20,6 @@ export const guessTimezone = (offset: boolean = true) => {
 
 
 export const inputTimeToTs = (value: string, timezoneName: string) => {
-    console.log(value, timezoneName)
     if(timezoneName == "UTC") {
         var offset = 0;
     } else {
@@ -45,7 +46,8 @@ export const tsToInputTime = (value: number, timezoneName?: string  ) => {
         let offsetitem = timezones.find(el => el.tzCode === timezoneName)
         var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
     }
-    let total = offset <= 0 ? value - Math.abs(offset) : value + Math.abs(offset)
+    console.log(timezoneName, value, offset)
+    let total = offset <= 0 ? value + Math.abs(offset) : value - offset
     return total
 }
 

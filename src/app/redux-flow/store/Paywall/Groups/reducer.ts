@@ -44,7 +44,7 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
             }
         case ActionTypes.CREATE_GROUP_PROMO :
             promos = state.promos.promos.slice();
-            promos.splice(promos.length, 0, action.payload);
+            promos.splice(promos.length, 0, { ...action.payload, timezone: null});
             return {
                 ...state,
                 promos: {
@@ -64,7 +64,8 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                         else {
                             return {
                                 ...item,
-                                ...action.payload
+                                ...action.payload,
+                                timezone: null
                             }
                         }
                     })

@@ -9,6 +9,7 @@ export const formatGetPromoPresetOutput = (data: GetPromoPresetOutput): {promos:
     return {
         totalItems: data.totalItems,
         promos: data.promos.map(promo => {
+            console.log(promo)
             return {
                 name: promo.name,
                 id: promo.id,

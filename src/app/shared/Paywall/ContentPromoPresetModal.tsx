@@ -11,7 +11,7 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { tsToInputTime } from '../../../utils/services/date/dateService';
+import { defaultPaywallTimezone, tsToInputTime } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -29,7 +29,7 @@ const defaultPromo: Promo = {
 
 export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
-    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
+    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? {...props.promo, timezone: defaultPaywallTimezone} : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -56,8 +56,8 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
         props.action(
             {
                 ...newPromoPreset,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: tsToInputTime(startDate, newPromoPreset.timezone),
+                endDate: tsToInputTime(endDate, newPromoPreset.timezone),
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
                 assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
@@ -104,7 +104,6 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 <DateTimePicker
                     fullLineTz
                     defaultTs={startDate}
-                    timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
                     id="startDate"
@@ -116,7 +115,6 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     fullLineTz
                     minDate={startDate}
                     defaultTs={endDate}
-                    timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
                     id="endDate"

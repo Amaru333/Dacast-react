@@ -76,7 +76,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
     });
 
     return (
-        <DatepickerStyle ref={datepickerRef} isSingle={false} className={props.className}>
+        <DatepickerStyle  isSingle={false} className={props.className}>
             <DatepickerContext.Provider
                 value={{
                     focusedDate,
@@ -107,7 +107,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
                     </EndTextStyle>
                     <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>
                 </BoxStyle>
-                <MonthContainerStyle isSingle={false} open={isOpened}>
+                <MonthContainerStyle ref={datepickerRef} isSingle={false} open={isOpened}>
                     <NavButtonLeftStyle>
                         <NavButton onClick={goToPreviousMonths}>
                             <Icon>keyboard_arrow_left</Icon>

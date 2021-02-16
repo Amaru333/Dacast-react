@@ -10,6 +10,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import styled from 'styled-components';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { defaultPaywallTimezone } from '../../../utils/services/date/dateService';
 
 const pricesList = [
     {
@@ -35,7 +36,7 @@ const defaultPreset: Preset = {
 
 export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void>; fetchContentPrices: (contentId: string, contentType: string) => Promise<void>}) => {
 
-    const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
+    const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? {...props.preset, settings: { ...props.preset.settings, timezone: defaultPaywallTimezone }} : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
