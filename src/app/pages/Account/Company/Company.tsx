@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
 import { Divider } from '../../../../shared/MiscStyles';
+import { mockUsers } from '../../../containers/Account/Users';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -125,6 +126,21 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             })
         }
     }, [props.CompanyPageDetails.uploadLogoUrl])
+
+    const createAccountOwnerList = () => {
+        return mockUsers.filter((user) => user.role !== "Creator").map((user) => {
+            let userDropdownListItem: DropdownSingleListItem = {
+                title: null,
+                data: null
+            }
+            userDropdownListItem.title = `${user.firstName} ${user.lastName} (${user.email})`
+            userDropdownListItem.data = {
+                id: user.userID,
+                role: user.role
+            }
+            return userDropdownListItem
+        })
+    }
 
     
     return (
@@ -264,6 +280,26 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             name="vatNumber" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('vatNumber', event.currentTarget.value)}}
                         />
+                    </div>
+
+                    <Divider className="p1 mx1" />
+
+                    {/* ONLY ACCOUNT OWNER SHOULD SEE THIS SECTION */}
+
+                    <div className="px1 pt2 pb1" >
+                        <Text size={20} weight='med'>Account Owner</Text>
+                    </div>
+                    <div className="md-col md-col-12 mx1">
+                    <div className="col col-12">
+                        <Text  size={14} weight='reg'>Only the current Account Owner can change this so if you make someone else the Account Owner, only they can transfer it back to you.</Text>
+                    </div>
+                    <DropdownSingle 
+                        id="accountOwnerDropdown"
+                        className="col col-6 my2"
+                        dropdownTitle=""
+                        list={createAccountOwnerList()}
+                        dropdownDefaultSelect={createAccountOwnerList().find(user => user.data.role === "Owner").title}
+                    />
                     </div>
 
                     <Divider className="p1 mx1" />
