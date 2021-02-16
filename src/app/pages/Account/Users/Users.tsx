@@ -19,8 +19,9 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { ChangeSeatsCartStep } from './ChangeSeatsCartStep';
 import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
 import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
+import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
 
-export const UsersPage = (props: {users: User[], plan: Plan}) => {
+export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: BillingPageInfos}) => {
 
     const [userModalOpen, setUserModalOpen] = React.useState<boolean>(false)
     const [deleteUserModalOpen, setDeleteUserModalOpen] = React.useState<boolean>(false)
@@ -134,6 +135,7 @@ export const UsersPage = (props: {users: User[], plan: Plan}) => {
                 updateStepperData={(plan: Plan) => setPlanDetails(plan)}
                 emptySeats={emptySeats}
                 planData={props.plan}
+                billingInfo={props.billingInfo}
             />
             <Modal modalTitle={userDetails.userID === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
                 <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />

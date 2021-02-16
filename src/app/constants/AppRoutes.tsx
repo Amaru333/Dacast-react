@@ -61,7 +61,7 @@ import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
-import { Users } from '../containers/Account/Users';
+import Users from '../containers/Account/Users';
 
 
 export const AppRoutes: Routes[] = [   
