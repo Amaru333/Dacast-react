@@ -69,7 +69,7 @@ export const ChangeSeatsCartStep = (props: {stepperData: Plan; updateStepperData
 
     return (
         <div>
-            <Table id="seatsTable" header={seatsHeaderElement()} body={seatsBodyElement()} headerBackgroundColor="gray-10" />
+            <Table id="seatsTable" header={seatsHeaderElement()} body={seatsBodyElement()} headerBackgroundColor="gray-10" noCells />
             <Table id="seatsBillingTable" body={billingBodyElement()} headerBackgroundColor="gray-10" />
         </div>
     )

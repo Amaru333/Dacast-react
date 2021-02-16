@@ -37,6 +37,7 @@ interface TableSpecificProps {
     customClassName?: string;
     tableHeight? : number;
     contentLoading?: boolean;
+    noCells?: boolean;
 }
 
 export type TableProps = TableSpecificProps & React.HTMLAttributes<HTMLTableElement>;
