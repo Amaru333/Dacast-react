@@ -8,6 +8,7 @@ import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { tsToInputTime } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: '-1',
@@ -37,8 +38,8 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({...promoPreset, startDate: startDate, endDate: endDate})
-        .then(() => {
+        props.action({...promoPreset, startDate: tsToInputTime(startDate, promoPreset.timezone), endDate:  tsToInputTime(endDate, promoPreset.timezone)})
+        .then(() => {   
             props.toggle(false)
             setButtonLoading(false)
         }).catch(() => setButtonLoading(false))
@@ -59,7 +60,6 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     fullLineTz
                     showTimezone={false}
                     defaultTs={promoPreset.startDate}
-                    timezone={promoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
                     id="startDate"

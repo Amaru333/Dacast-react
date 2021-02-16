@@ -4,8 +4,7 @@ import { DropdownSingleListItem } from '../Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
-import timezones from 'compact-timezone-list';
-import { dateAdd, utcOffsetToMin } from "../../../utils/services/date/dateService";
+import { dateAdd, inputTimeToTs, tsToInputTime, utcOffsetToMin } from "../../../utils/services/date/dateService";
 
 
 interface DateTimePickerProps {
@@ -24,27 +23,8 @@ interface DateTimePickerProps {
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        if(timezoneName == "UTC") {
-            var offset = 0;
-        } else {
-            let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-            var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
-        }
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if (isNaN(hours)) {
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if (isNaN(min)) {
-            min = 0
-        }
-        let total = offset <= 0 ? hours + min + Math.abs(offset) : hours + min - offset
-        return total
-    }
 
-    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(props.defaultTs*1000) : null ;
+    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(tsToInputTime(props.defaultTs, props.timezone)*1000) : null ;
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
     const [day, setDay] = React.useState<number>(defaultTimestamp ? Math.round(new Date(props.defaultTs*1000).setHours(0,0,0,0) / 1000)  : null)

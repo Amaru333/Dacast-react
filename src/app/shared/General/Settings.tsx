@@ -10,7 +10,7 @@ import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/D
 export const GeneralSettings = (props: {localContentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, contentDetails: ContentDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     const initTimestampValues = (ts: number, timezone: string): DateTimeValue => {
-        timezone = timezone ? timezone : Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezone = timezone ? timezone : null;
         return { date: ts > 0 ? ts : Math.round(new Date().getTime() /1000), timezone: timezone }
     }
 
@@ -20,10 +20,10 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
     React.useEffect(() => {
         if (liveStreamCountdownToggle) {
             let countdownTs = liveStreamCountdownToggle ? startDateTimeValue.date : 0
-            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: countdownTs  } })
+            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: countdownTs, timezone: startDateTimeValue.timezone  } })
         } else {
             if(props.localContentDetails){
-            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: 0 } })
+            props.setLocalContentDetails({ ...props.localContentDetails, countdown: { ...props.localContentDetails.countdown, startTime: 0, timezone: startDateTimeValue.timezone } })
             }
         }
     }, [liveStreamCountdownToggle, startDateTimeValue])

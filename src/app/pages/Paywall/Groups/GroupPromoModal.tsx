@@ -9,6 +9,7 @@ import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { tsToInputTime } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: GroupPromo = {
     id: '-1',
@@ -51,7 +52,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({ ...groupPromo, startDate: startDate, endDate: endDate })
+        props.action({ ...groupPromo, startDate: tsToInputTime(startDate, groupPromo.timezone), endDate:  tsToInputTime(endDate, groupPromo.timezone) })
             .then(() => {
                 props.toggle(false)
                 setButtonLoading(false)
