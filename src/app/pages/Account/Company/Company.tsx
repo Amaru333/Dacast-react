@@ -45,9 +45,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [edited, setEdited] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
-    const countryDropdownList = Object.keys(countries).map((item) => {
-        let countryItem: DropdownSingleListItem = {title: null}
-        countryItem.title = countries[item].name
+    const countryDropdownList = Object.values(countries).map((item) => {
+        let countryItem: DropdownSingleListItem = {
+            title: item.name
+        }
         return countryItem
     })
 
@@ -210,7 +211,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             placeholder="Company Name"
                             {...handleValidationForm('companyName', errors)}
                             onChange={(event) => {setEdited(true); setValue('companyName', event.currentTarget.value)}}
-                            name="companyName" ref={register({required: "This field can’t be left empty"})}
+                            name="companyName" ref={register()}
                             help="The legal business name for use on invoices, etc."
                         />
                     </div>

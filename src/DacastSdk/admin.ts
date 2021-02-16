@@ -16,6 +16,7 @@ interface AccountDetailsEndpoint {
     lastName: string;
     phone: string;
     email: string;
+    country: string;
     plan: string;
     registeredDate: number;
     data: {
@@ -49,6 +50,7 @@ export interface GetAccountDetailsOutput {
     website: string;
     phone: string;
     email: string;
+    country: string;
     isPaying: boolean;
     playbackProtection: {
         enabled: boolean;
@@ -74,6 +76,7 @@ export interface PutAccountDetailsInput {
     newPassword?: string;
     phone?: string;
     email?: string;
+    country?: string;
     isPaying?: boolean;
     playbackProtection?: {
         enabled: boolean;
@@ -136,6 +139,8 @@ export interface GetAccountPlanOutput {
     emailCatcher: PlanSettingEndpoint;
     admin: PlanSettingEndpoint;
     expo: PlanSettingEndpoint;
+    ultraSecureChannel: PlanSettingEndpoint;
+    phoneSupport: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

@@ -54,8 +54,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         return domainControlDropdownListItem
     })
 
-    const [startTime, setStartTime] = React.useState<number>(selectedSettings.contentScheduling.startTime)
-    const [endTime, setEndTime] = React.useState<number>(selectedSettings.contentScheduling.endTime)
+    const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
+    const [endTime, setEndTime] = React.useState<number>(Math.floor( selectedSettings.contentScheduling.endTime / 1000))
     const [startTimezone, setStartTimezone] = React.useState<string>(selectedSettings.contentScheduling.startTimezone)
     const [endTimezone, setEndTimezone] = React.useState<string>(selectedSettings.contentScheduling.endTimezone)
 
@@ -97,9 +97,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
-                    startTime: startTime, 
+                    startTime: startTime * 1000, 
                     startTimezone: startTimezone,
-                    endTime: endTime,
+                    endTime: endTime * 1000,
                     endTimezone: endTimezone
                 }, 
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 

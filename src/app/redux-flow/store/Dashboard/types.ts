@@ -2,18 +2,16 @@ import { PlanSummary, PlaybackProtection } from '../Account/Plan';
 
 export enum ActionTypes {
     GET_DASHBOARD_DETAILS = "@@dashboard/GET_DASHBOARD_DETAILS",
-    GET_DASHBOARD_VOD_PLAY_RATE = "@@dashboard/GET_DASHBOARD_VOD_PLAY_RATE",
-    GET_DASHBOARD_VOD_TOP_CONTENTS = "@@dashboard/GET_DASHBOARD_VOD_TOP_CONTENTS",
-    GET_DASHBOARD_VOD_IMPRESSIONS = "@@dashboard/GET_DASHBOARD_VOD_IMPRESSIONS",
-    GET_DASHBOARD_VOD_PLAY = "@@dasboard/GET_DASHBOARD_VOD_PLAY",
-    GET_DASHBOARD_LIVE_VIEWERS = "@@dasboard/GET_DASHBOARD_LIVE_VIEWERS",
-    GET_DASHBOARD_LIVE_TOP= "@@dasboard/GET_DASHBOARD_LIVE_TOP"
+    GET_DASHBOARD_GENERAL_DETAILS = "@@dashboard/GET_DASHBOARD_GENERAL_DETAILS",
+    GET_DASHBOARD_LIVE = "@@dashboard/GET_DASHBOARD_LIVE",
+    GET_DASHBOARD_VOD = "@@dashboard/GET_DASHBOARD_VOD",
+    GET_DASHBOARD_PAYWALL = "@@dashboard/GET_DASHBOARD_PAYWALL",
 }
 
 export interface DashboardInfos {
     vod: DashboardVod;
-    isTrial: false | DashboardTrial;
-    isPayingPlan: false | DashboardPayingPlan;
+    isTrial?: false | DashboardTrial;
+    isPayingPlan?: false | DashboardPayingPlan;
     paywall: DashboardPaywall;
     live:  DashboardLive;
     generalInfos: DashboardGeneral;
@@ -40,31 +38,29 @@ export interface DashboardGeneral {
         limit: number;
         consumed: number;
     };
-    encoding: {
-        limit: number;
-        consumed: number;
-    };
-    overage: {
-        enabled: boolean;
-        value: number;
-    };
+}
+
+export interface DashboardGeneralInfo {
+    generalInfos: DashboardGeneral
+    currentPlan: PlanSummary
+    playbackProtection: PlaybackProtection
 }
 
 interface TopContent { name: string; viewers: number }
 
 export interface DashboardVod {
     totalVideos: number;
-    videoPlays: number;
-    impressions: number;
-    topVideos: TopContent[];
-    playRate: {jobID: string; data: any; loading?: boolean; failed?: boolean};
+    videoPlays?: number;
+    impressions?: number;
+    topVideos?: TopContent[];
+    playRate?: number;
 }
 
 export interface DashboardLive {
     activeChannels: number;
     totalChannels: number;
-    liveViewers: number;
-    topChannels: {name: string; viewers: number; }[];
+    liveViewers?: number;
+    topChannels?: {name: string; viewers: number; }[];
 }
 
 export interface DashboardPaywall {
@@ -73,11 +69,43 @@ export interface DashboardPaywall {
 }
 
 export const dashboardInitialState: DashboardState = {
-    data: false,
+    info: {
+        generalInfos: {
+            bandwidth: {
+                limit: NaN,
+                consumed: NaN,
+            },
+            storage: {
+                limit: NaN,
+                consumed: NaN
+            },
+        },
+        vod: {
+            totalVideos: NaN,
+            videoPlays: NaN,
+            impressions: NaN,
+            topVideos: [],
+            playRate: 0,
+        },
+        live: {
+            activeChannels: NaN,
+            totalChannels: NaN,
+            liveViewers: NaN,
+            topChannels: [],
+        },
+        paywall: {
+            balance: NaN,
+            revenue: null
+        },
+        currentPlan: null,
+        playbackProtection: null,
+        isPayingPlan: false,
+        isTrial: false
+    },
 };
 
 export interface DashboardState {
-    readonly data: DashboardInfos | false;
+    info: DashboardInfos | false;
 }
 
 

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { BillingPageInfos, PlaybackProtection } from '../../redux-flow/store/Account/Plan/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
-import { DashboardInfos, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
+import { DashboardInfos, getDashboardDetailsAction, getDashboardGeneralDetailsAction } from '../../redux-flow/store/Dashboard';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
 interface PlanContainerProps {
@@ -48,7 +48,7 @@ const Plan = (props: PlanContainerProps) => {
 export function mapStateToProps( state: ApplicationState) {
     return {
         billingInfos: state.account.plan,
-        widgetData: state.dashboard.data
+        widgetData: state.dashboard.info
     };
 }
 
@@ -65,7 +65,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
              await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
         },
         getWidgetData: async () => {
-             await dispatch(getDashboardDetailsAction());
+             await dispatch(getDashboardGeneralDetailsAction(undefined));
         },
         getProductDetails: async () => {
              await dispatch(getProductDetailsAction(undefined));

@@ -79,13 +79,15 @@ export const formatPutContentLockEngagementSettingsInput = (data: {contentId: st
 
 export const formatPutContentAdsSettingsInput = (data: {ads: Ad[], contentId: string}): PutContentAdsInput => {
     let formattedData: PutContentAdsInput = {
-        ads: data.ads.map(ad => {
-            return {
-                "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
-                timestamp: ad.timestamp,
-                url: ad.url
-            }
-        }),
+        data: {
+            ads: data.ads.map(ad => {
+                return {
+                    "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
+                    timestamp: ad.timestamp,
+                    url: ad.url
+                }
+            })
+        },
         id: data.contentId
     }
 

@@ -317,6 +317,16 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                     audienceData.playsImpressionsByLocation.table[indexTable][type] = data.dimension_sum;
                                 }
                             
+                            } else {
+                                let type: 'plays' | 'impressions' = metric.data_dimension.includes("PLAYS") ? 'plays' : 'impressions';
+                                let indexTable = audienceData.playsImpressionsByLocation.table.findIndex(obj => obj.label === data.dimension_type.value.toString());
+                                if(indexTable >= 0) {
+                                    console.log('index Find', indexTable, audienceData.playsImpressionsByLocation.table, type)
+                                    audienceData.playsImpressionsByLocation.table[indexTable][type] = data.dimension_sum;
+                                } else {
+                                    console.log('index doesnt Find', indexTable, audienceData.playsImpressionsByLocation.table)
+                                    audienceData.playsImpressionsByLocation.table = [...( audienceData.playsImpressionsByLocation ?  audienceData.playsImpressionsByLocation.table : []), { label: data.dimension_type.value.toString(),  plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'impressions' ? data.dimension_sum : 0 }  ]
+                                }
                             }
                             break;
                     }
@@ -377,6 +387,8 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                                     }],
                                     table: [...(watchData.watchByLocation ? watchData.watchByLocation.table : []), {  label: assosiatedCountry["\"Country\""], data: data.dimension_sum }]
                                 }
+                            } else {
+                                watchData.watchByLocation.table = [...( watchData.watchByLocation ?  watchData.watchByLocation.table : []), { label: data.dimension_type.value.toString(),  data: data.dimension_sum }  ] 
                             }
 
                             break;
