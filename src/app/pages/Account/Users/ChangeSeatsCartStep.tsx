@@ -39,7 +39,7 @@ export const ChangeSeatsCartStep = (props: {stepperData: Plan; updateStepperData
                 data: [
                     <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.extraSeats} Add-Ons</Text>,
                     <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">$10 per month</Text>,
-                    <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={props.stepperData.extraSeats === 0 ? 0 : - Math.abs(props.emptySeats)}/>,
+                    <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={props.planData.extraSeats === 0 ? 0 : - Math.abs(props.emptySeats)}/>,
                     <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">${120 * props.stepperData.extraSeats} /yr</Text>,
                 ]
             }
