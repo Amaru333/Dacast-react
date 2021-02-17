@@ -20,6 +20,7 @@ import { getContentDetailsAction } from '../../app/redux-flow/store/Content/Gene
 import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flow/store/Account/Plan';
 import { segmentService } from '../../app/utils/services/segment/segmentService';
 import TagManager from 'react-gtm-module'
+import { ContentType } from "../../app/redux-flow/store/Common/types";
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -283,8 +284,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getProfilePageDetails: () => {
             dispatch(getProfilePageDetailsAction(undefined));
         },
-        getContentDetails: (contentId: string, contentType: string) => {
-            dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: (contentId: string, contentType: ContentType) => {
+            dispatch(getContentDetailsAction(contentType)(contentId));
         },
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))

@@ -12,8 +12,8 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
-                    [action.payload.contentId] : {
-                        ...action.payload.data
+                    [action.payload.id] : {
+                        ...action.payload
                     }
                 }
             }
@@ -22,13 +22,9 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                 ...state,
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
-                    [action.payload.data.id] : {
-                        ...state[action.payload.contentType][action.payload.data.id],
-                        title: action.payload.data.title,
-                        description: action.payload.data.description,
-                        online: action.payload.data.online,
-                        countdown: action.payload.data.countdown ?  action.payload.data.countdown : null,
-                        ...action.payload.data
+                    [action.payload.id] : {
+                        ...state[action.payload.contentType][action.payload.id],
+                        ...action.payload
                     }
                 }
             }

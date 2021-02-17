@@ -2,7 +2,7 @@ import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { SubtitleInfo, ContentDetails, ContentDetailsState } from '../../redux-flow/store/Content/General/types';
+import { SubtitleInfo, ContentDetails, ContentDetailsState, VodDetails } from '../../redux-flow/store/Content/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams, Prompt } from 'react-router-dom';
@@ -20,14 +20,15 @@ import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { handleImageModalFunction, userId } from '../../utils/general'
+import { handleImageModalFunction } from '../../utils/general'
 import { Divider } from '../../../shared/MiscStyles';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
     contentDetails: ContentDetails;
-    getContentDetails: (contentId: string, contentType: string) => Promise<void>
-    saveContentDetails: (data: ContentDetails, contentType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
+    saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => Promise<void>;
     deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
@@ -39,11 +40,11 @@ export interface GeneralComponentProps {
 }
 const General = (props: GeneralComponentProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
+    const [stateContentDetails, setStateContentDetails] = React.useState<VodDetails>(null)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [contentDetails, setContentDetails] = React.useState<VodDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
@@ -57,8 +58,8 @@ const General = (props: GeneralComponentProps) => {
 
     React.useEffect(() => {
         if(props.contentDetailsState['vod']){
-            setStateContentDetails(props.contentDetailsState['vod'][vodId])
-            setContentDetails(props.contentDetailsState['vod'][vodId])
+            setStateContentDetails(props.contentDetailsState['vod'][vodId] as VodDetails)
+            setContentDetails(props.contentDetailsState['vod'][vodId] as VodDetails)
         }
     }, [props.contentDetailsState])
 
@@ -162,11 +163,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentDetails: async (contentId: string, contentType: string) => {
-            await dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(contentId));
         },
-        saveContentDetails: async (data: ContentDetails, contentType: string) => {
-            await dispatch(editContentDetailsAction(data, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
         getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
             await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType, subtitleInfo))

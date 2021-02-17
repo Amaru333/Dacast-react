@@ -10,7 +10,7 @@ import { useParams, Prompt } from 'react-router';
 import { ExposTabs } from './ExposTabs';
 import { GeneralComponentProps } from '../Videos/General';
 import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
-import { ContentDetails } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, ExpoDetails } from '../../redux-flow/store/Content/General/types';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
 import { GeneralSharing } from '../../shared/General/Sharing';
@@ -20,13 +20,14 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../../shared/MiscStyles';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const GeneralExpos = (props: GeneralComponentProps) => {
 
-    let { exposId } = useParams()
+    let { exposId } = useParams<{exposId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
-    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [stateContentDetails, setStateContentDetails] = React.useState<ExpoDetails>(null)
+    const [contentDetails, setContentDetails] = React.useState<ExpoDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
@@ -39,8 +40,8 @@ const GeneralExpos = (props: GeneralComponentProps) => {
 
     React.useEffect(() => {
         if(props.contentDetailsState['expo']){
-            setStateContentDetails(props.contentDetailsState['expo'][exposId])
-            setContentDetails(props.contentDetailsState['expo'][exposId])
+            setStateContentDetails(props.contentDetailsState['expo'][exposId] as ExpoDetails)
+            setContentDetails(props.contentDetailsState['expo'][exposId] as ExpoDetails)
         }
     }, [props.contentDetailsState])
 
@@ -128,11 +129,11 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentDetails: async (contentId: string, contentType: string) => {
-            await dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(contentId));
         },
-        saveContentDetails: async (data: ContentDetails, contentType: string) => {
-            await dispatch(editContentDetailsAction(data, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
         getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string) => {
             await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType))

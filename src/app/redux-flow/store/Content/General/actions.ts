@@ -3,18 +3,20 @@ import { ThunkDispatch } from "redux-thunk"
 import { ApplicationState } from "../.."
 import { showToastNotification } from '../../Toasts'
 import { ContentGeneralServices } from './services'
-import { parseContentType } from '../../../../utils/utils'
+import { applyViewModel, parseContentType } from '../../../../utils/utils'
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
+import { ContentType } from "../../Common/types"
+import { formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
 
 export interface GetContentDetails {
     type: ActionTypes.GET_CONTENT_DETAILS;
-    payload: {data: ContentDetails, contentType: string, contentId: string};
+    payload: ContentDetails & {contentType: ContentType}
 }
 
 export interface EditContentDetails {
     type: ActionTypes.EDIT_CONTENT_DETAILS;
-    payload: {data: ContentDetails, contentType: string};
+    payload: ContentDetails & {contentType: ContentType};
 }
 
 export interface AddContentSubtitle {
@@ -57,17 +59,34 @@ export interface GenerateEncoderKey {
     payload: {encoderKey: string, contentId: string; contentType: string}
 }
 
-export const getContentDetailsAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentDetails>) => {
-        await ContentGeneralServices.getContentDetailsService(contentId, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_DETAILS, payload: {data: contentType === 'expo' ? response.data : response.data.data, contentType: contentType, contentId: contentId} })
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    };
+export const getContentDetailsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.getVodDetails, formatGetContentDetailsInput, formatGetVideoDetailsOutput(contentType), ActionTypes.GET_CONTENT_DETAILS, null, 'Couldn\'t get video info')
+        case 'live':
+            return applyViewModel(dacastSdk.getChannelDetails, formatGetContentDetailsInput, formatGetLiveDetailsOutput(contentType), ActionTypes.GET_CONTENT_DETAILS, null, 'Couldn\'t get channel info')
+        case 'playlist': 
+            return applyViewModel(dacastSdk.getPlaylistDetails, formatGetContentDetailsInput, formatGetPlaylistDetailsOutput(contentType), ActionTypes.GET_CONTENT_DETAILS, null, 'Couldn\'t get playlist info')
+        case 'expo': 
+            return applyViewModel(dacastSdk.getExpoDetails, formatGetContentDetailsInput, formatGetExpoDetailsOutput(contentType), ActionTypes.GET_CONTENT_DETAILS, null, 'Couldn\'t get expo info')
+        default:
+            throw new Error('Error applying get content view model')
+    }
+}
+
+export const editContentDetailsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.putVodDetails, formatPutVideoDetailsInput, formatPutVideoDetailsOutput(contentType), ActionTypes.EDIT_CONTENT_DETAILS, 'Changes saved', 'Couldn\'t save changes')
+        case 'live':
+            return applyViewModel(dacastSdk.putChannelDetails, formatPutLiveDetailsInput, formatPutLiveDetailsOutput(contentType), ActionTypes.EDIT_CONTENT_DETAILS, 'Changes saved', 'Couldn\'t save changes')
+        case 'playlist': 
+            return applyViewModel(dacastSdk.putPlaylistDetails, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput(contentType), ActionTypes.EDIT_CONTENT_DETAILS, 'Changes saved', 'Couldn\'t save changes')
+        case 'expo': 
+            return applyViewModel(dacastSdk.putExpoDetails, formatPutExpoDetailsInput, formatPutExpoDetailsOutput(contentType), ActionTypes.EDIT_CONTENT_DETAILS, 'Changes saved', 'Couldn\'t save changes')
+        default:
+            throw new Error('Error applying get content view model')
+    }
 }
 
 export const generateEncoderKeyAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GenerateEncoderKey> => {
@@ -81,20 +100,6 @@ export const generateEncoderKeyAction = (contentId: string, contentType: string)
                 return Promise.reject()
             })
     };
-}
-
-export const editContentDetailsAction = (data: ContentDetails, contentType: string): ThunkDispatch<Promise<void>, {}, EditContentDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, EditContentDetails>) => {
-        await ContentGeneralServices.editContentDetailsService(data, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.EDIT_CONTENT_DETAILS, payload: {data: data, contentType: contentType} })
-                dispatch(showToastNotification("Changes have been saved", 'fixed', "success"));
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    }
 }
 
 export const getUploadUrlAction = (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {

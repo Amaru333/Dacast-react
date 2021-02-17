@@ -9,8 +9,11 @@ var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
 import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
-import { PostEncoderKeyOutput } from './live'
+import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
+import { GetVideoDetailsOutput, PutVideoDetailsInput } from './video'
+import { GetPlaylistDetailsOutput, PutPlaylistDetailsInput } from './playlist'
+import { GetExpoDetailsOutput, PutExpoDetailsInput } from './expo'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
@@ -166,6 +169,8 @@ export class DacastSdk {
 
     public getExpos = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/expos?' + input).then(this.checkExtraData)
     public deleteExpo = async (input: string): Promise<void> => await this.axiosClient.delete('/expos/' + input)
+    public getExpoDetails = async (input: string): Promise<GetExpoDetailsOutput> => await this.axiosClient.get('/expos/' + input).then(this.checkExtraData)
+    public putExpoDetails = async (input: PutExpoDetailsInput): Promise<void> => await this.axiosClient.put('/expos/' + input.id, input.payload)
 
     public getChannels = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/channels?' + input).then(this.checkExtraData)
     public deleteChannel = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input)
@@ -174,6 +179,8 @@ export class DacastSdk {
     public putChannelLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
     public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.data)
     public deleteChannelBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input + '/settings/engagement/brand-image')
+    public getChannelDetails = async (input: string): Promise<GetLiveDetailsOutput> => await this.axiosClient.get('/channels/' + input).then(this.checkExtraData)
+    public putChannelDetails = async (input: PutLiveDetailsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id, input.payload)
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
@@ -182,9 +189,14 @@ export class DacastSdk {
     public putVodLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
     public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.data)
     public deleteVodBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input + '/settings/engagement/brand-image')
+    public getVodDetails = async (input: string): Promise<GetVideoDetailsOutput> => await this.axiosClient.get('/vods/' + input).then(this.checkExtraData)
+    public putVodDetails = async (input: PutVideoDetailsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id, input.payload)
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
+    public getPlaylistDetails = async (input: string): Promise<GetPlaylistDetailsOutput> => await this.axiosClient.get('/playlists/' + input).then(this.checkExtraData)
+    public putPlaylistDetails = async (input: PutPlaylistDetailsInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.id, input.payload)
+
     public postEncoderKey = async (input: string): Promise<PostEncoderKeyOutput> => await this.axiosClient.post(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}live/${input}/encoder-key`).then(this.checkExtraData)
     public postBulkAction = async (input: PostBulkActionInput): Promise<PostBulkActionOutput> => await this.axiosClient.post('bulk', input).then(this.checkExtraData)
 }

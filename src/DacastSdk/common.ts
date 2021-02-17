@@ -97,3 +97,10 @@ export interface PutContentLockEngagementSettingsInput {
 }
 
 export type PutContentAdsInput = {data: PutAdInput} & {id: string}
+
+export interface AssetTypeEndpoint {
+    url?: string
+    targetID?: string
+    targetType?: 'splashscreen' | 'thumbnail' | 'poster'
+    assetId?: string
+}
