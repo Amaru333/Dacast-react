@@ -34,13 +34,14 @@ export const formatPutContentEngagementInput = (data: ContentEngagementSettings)
     let formattedData: PutContentEngagementSettingsInput = {
         adsSettings: {
             ...data.engagementSettings.adsSettings,
-            ads: data.engagementSettings.adsSettings.ads.map((ad: Ad): AdEnpoint => {
+            ads: data.engagementSettings.adsSettings && data.engagementSettings.adsSettings.ads ? data.engagementSettings.adsSettings.ads.map((ad: Ad): AdEnpoint => {
                 return {
                     timestamp: ad.timestamp,
                     url: ad.url,
                     ["ad-type"]: ad.type as AdTypeEndpoint,
                 }
             })
+            : null
         },
         brandImageSettings: {
             ...data.engagementSettings.brandImageSettings
@@ -78,13 +79,15 @@ export const formatPutContentLockEngagementSettingsInput = (data: {contentId: st
 
 export const formatPutContentAdsSettingsInput = (data: {ads: Ad[], contentId: string}): PutContentAdsInput => {
     let formattedData: PutContentAdsInput = {
-        ads: data.ads.map(ad => {
-            return {
-                "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
-                timestamp: ad.timestamp,
-                url: ad.url
-            }
-        }),
+        data: {
+            ads: data.ads.map(ad => {
+                return {
+                    "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
+                    timestamp: ad.timestamp,
+                    url: ad.url
+                }
+            })
+        },
         id: data.contentId
     }
 

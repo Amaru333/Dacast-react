@@ -5,10 +5,10 @@ import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DashboardPaywall } from '../../redux-flow/store/Dashboard/types';
-import { handleCurrencySymbol } from '../../../utils/utils';
 
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: DashboardPaywall }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
+    let paywallDataFetching = Number.isNaN(props.profile.balance)
 
     return (
         <section className={classTopContainer}>
@@ -20,7 +20,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             </div>
 
             <div className={classContainer}>
-                <WidgetElement className={classItemHalfWidthContainer}>
+                <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
                         <IconStyle id="balanceTooltip" className="ml-auto">info_outline</IconStyle>
@@ -30,20 +30,14 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Text size={48} weight="reg" color="gray-1">${props.profile.balance.toLocaleString()}</Text>
                     </div>
                 </WidgetElement>
-                <WidgetElement className={classItemHalfWidthContainer}>
+                <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
                         <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="revenueTooltip">The paywall revenue you have earned since the start of the current billing period</Tooltip>
+                        <Tooltip target="revenueTooltip">The paywall revenue you have earned for the last 30 days</Tooltip>
                     </WidgetHeader>
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
-                        {
-                            props.profile.revenue ? props.profile.revenue.map((r, i) => {
-                                return <Text key={'revenue' + i} size={48} weight="reg" color="gray-1">{handleCurrencySymbol(r.currency) + r.total.toLocaleString()}</Text>
-
-                            })
-                            : <Text size={48} weight="reg" color="gray-1">$0</Text>
-                        }
+                        <Text size={48} weight="reg" color="gray-1">${props.profile.revenue ? props.profile.revenue : '0'}</Text>
                     </div>
                 </WidgetElement>
             </div>

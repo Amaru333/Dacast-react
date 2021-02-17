@@ -7,24 +7,67 @@ const reducer: Reducer<DashboardState> = (state = dashboardInitialState, action:
         case ActionTypes.GET_DASHBOARD_DETAILS :
             return {
                 ...state,
-                data: { 
-                    
-                    ...action.payload.data,
-                    vod: {
-                        totalVideos: 0,
-                        videoPlays: 0,
-                        impressions: 0,
-                        topVideos: [],
-                        playRate: 0,
-                        ...action.payload.data.vod
-                    },
+                info: { 
+                    ...action.payload,
+                    vod: action.payload.vod,
+                    live: action.payload.live
+                }
+            }
+        case ActionTypes.GET_DASHBOARD_GENERAL_DETAILS:
+            return {
+                info: {
+                    ...state.info,
+                    generalInfos: action.payload.generalInfos,
+                    currentPlan: action.payload.currentPlan,
+                    playbackProtection: action.payload.playbackProtection,
+                    vod: state.info ? state.info.vod : null,
+                    paywall: state.info ? state.info.paywall : null,
+                    live: state.info ? state.info.live : null
+                }
+            }
+        case ActionTypes.GET_DASHBOARD_LIVE:
+            return {
+                ...state,
+                info: {
+                    ...state.info,
+                    generalInfos: state.info ? state.info.generalInfos : null,
+                    currentPlan: state.info ? state.info.currentPlan : null,
+                    playbackProtection: state.info ? state.info.playbackProtection : null,
+                    vod: state.info ? state.info.vod : null,
                     live: {
-                        activeChannels: 0,
-                        totalChannels: 0,
-                        liveViewers: 0,
-                        topChannels: [],
-                        ...action.payload.data.live
-                    }
+                        ...state.info.live,
+                        ...action.payload
+                    },
+                    paywall: state.info ? state.info.paywall : null,
+                }
+            }
+        case ActionTypes.GET_DASHBOARD_VOD:
+            return {
+                ...state,
+                info: {
+                    ...state.info,
+                    generalInfos: state.info ? state.info.generalInfos : null,
+                    currentPlan: state.info ? state.info.currentPlan : null,
+                    playbackProtection: state.info ? state.info.playbackProtection : null,
+                    vod: {
+                        ...state.info.vod,
+                        ...action.payload
+                    },
+                    paywall: state.info ? state.info.paywall : null,
+                    live: state.info ? state.info.live : null
+                }
+            }
+        case ActionTypes.GET_DASHBOARD_PAYWALL:
+            return {
+                ...state,
+                info: {
+                    ...state.info,
+                    generalInfos: state.info ? state.info.generalInfos : null,
+                    currentPlan: state.info ? state.info.currentPlan : null,
+                    playbackProtection: state.info ? state.info.playbackProtection : null,
+                    vod: state.info ? state.info.vod : null,
+                    paywall: action.payload,
+                    live: state.info ? state.info.live : null
                 }
             }
         default: return state

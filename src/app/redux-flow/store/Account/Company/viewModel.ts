@@ -20,7 +20,7 @@ export const formatGetCompanyDetailsOutput = (data: GetCompanyRequestOutput): Co
         country: data.country,
         logoURL: data.logoURL
     }
-
+    userToken.updateUserInfo({'companyName': data.companyName})
     return formattedData
 }
 
@@ -46,7 +46,8 @@ export const formatPutCompanyDetailsInput = (data: CompanyPageInfos): CompanyDet
         formattedData.zipCode = data.zipCode,
         formattedData.country = data.country
     }
-
+    
+    userToken.updateUserInfo({'companyName': data.companyName})
     return formattedData
 }
 

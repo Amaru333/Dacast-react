@@ -60,7 +60,7 @@ const LeafletMapOld = (props: any) => {
 
             let circle = L.circleMarker([propMarker.position.latitude, propMarker.position.longitude], { radius: 10 })
                 .bindPopup(props.markerNameTranform ? props.markerNameTranform(propMarker.city, propMarker.consumedMB, props.datasetName) : propMarker.city + ': ' + propMarker.value + ' ' + props.datasetName)
-                .addTo(map);
+                .addTo(map ? map : leafletMap);
             circle.setStyle({
                 color: lerpColor('#93d5ed', '#2f5ec4', lerpPercent),
                 fillOpacity: 0.5,
@@ -90,7 +90,7 @@ const LeafletMapOld = (props: any) => {
             loadScript();
         }
         updateMap();
-    }, [loadedScript]);
+    }, [loadedScript, props.markers]);
 
 
 

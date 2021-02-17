@@ -3,6 +3,7 @@ export interface DropdownListType {[key: string]: boolean}
 
 export interface DropdownSingleListItem {
     title: string
+    description?: string
     data?: any
 }
 
