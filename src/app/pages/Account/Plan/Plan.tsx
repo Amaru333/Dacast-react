@@ -25,6 +25,7 @@ import { formatPostProductExtraInput } from '../../../redux-flow/store/Account/P
 import { PurchaseDataCartStep } from './PurchaseDataCartStep';
 import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ProductExtraDataCurrencyKey } from '../../../../DacastSdk/account';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -157,7 +158,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount} GB</Text>,
-                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">${props.billingInfos.playbackProtection.price} per GB</Text>,
+                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(props.billingInfos.currentPlan.currency) + props.billingInfos.playbackProtection.price} per GB</Text>,
                 <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
@@ -182,16 +183,16 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const planDetailsTableBodyElement = () => {
         if(props.billingInfos.currentPlan) {
-            const {state, displayName, currency, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
+            const {state, displayName, price, paymentTerm, periodEndsAt} = props.billingInfos.currentPlan
             const color = (state === 'active' || state === "") ? 'green' : 'red';
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (currency === 'gbp' ? "£" : "$" + (price/100) + " " + currency): "-"}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(props.billingInfos.currentPlan.currency) + (price/100)): "-"}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
-                <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{currency === 'gbp' ? "£" : "$" + props.billingInfos.paywallBalance + " " + currency}</Text>
+                <Text key={'planDetailsPaywallBalance'} size={14} weight='reg' color='gray-1'>{handleCurrencySymbol('usd') + props.billingInfos.paywallBalance + " USD"}</Text>
             ]}]
         }
 
@@ -229,7 +230,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                             return (
                                                 <DataPricingTableRow key={item.code}>
                                                     <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
-                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{`$${item.unitPrice.usd}/GB`}</Text></PriceCell>
+                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(props.billingInfos.currentPlan.currency) + item.unitPrice[props.billingInfos.currentPlan.currency as ProductExtraDataCurrencyKey] + '/GB'}</Text></PriceCell>
                                                 </DataPricingTableRow>
                                             )
                                         })
@@ -292,7 +293,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         <Text size={14}>You bought {purchaseDataStepperData.quantity}GB of data</Text>
                     </PaymentSuccessModal>
                     <PaymentFailedModal opened={dataPaymentFailedOpen} toggle={() => setDataPaymentFailedOpen(!dataPaymentSuccessOpen)}>
-                        <Text size={14}>Your payment of ${purchaseDataStepperData.totalPrice} was declined</Text>
+                        <Text size={14}>Your payment of {handleCurrencySymbol(props.billingInfos.currentPlan.currency) + purchaseDataStepperData.totalPrice} was declined</Text>
                     </PaymentFailedModal>
                 </>
             }
