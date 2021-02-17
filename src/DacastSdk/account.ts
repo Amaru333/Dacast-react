@@ -1,3 +1,5 @@
+import { User } from "../app/redux-flow/store/Account/Users/types";
+
 export interface CompanyDetailsEndpoints {
     id: string;
     accountName: string;
@@ -16,6 +18,14 @@ export interface CompanyDetailsEndpoints {
 
 export type GetCompanyRequestOutput = CompanyDetailsEndpoints & {
     logoURL: string;
+}
+
+export interface GetUsersDetailsOutput {
+    users: User[]
+}
+
+export interface UserId {
+    id: string
 }
 
 interface Invoice {

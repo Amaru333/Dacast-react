@@ -3,7 +3,7 @@ import { AxiosClient } from '../utils/services/axios/AxiosClient'
 import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
 import { GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutUploadFileInput } from './common'
-import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput } from './account'
+import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput, GetUsersDetailsOutput, UserId } from './account'
 import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
 var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
@@ -11,6 +11,7 @@ import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
 import { PostEncoderKeyOutput } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
+import { User } from '../app/redux-flow/store/Account/Users/types'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
@@ -93,6 +94,10 @@ export class DacastSdk {
     public getProfileDetails = async (): Promise<ProfileDetails> => await this.axiosClient.get('/accounts/' + this.userId + '/profile').then(this.checkExtraData)
     public putProfileDetails = async (input: PutProfileDetailsInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/profile', {...input})
     public postUserPassword = async (input: PostUserPasswordInput): Promise<void> => await this.axiosClient.post('/accounts/' + this.userId + '/change-password', {...input})
+
+    public getUsersDetails = async (): Promise<GetUsersDetailsOutput> => await this.axiosClient.get('/accounts/users')
+    public postUser = async (input: User): Promise<UserId> => await this.axiosClient.post('/accounts/users', {...input}).then(this.checkExtraData)
+    public putUser = async (input: User): Promise<void> => await this.axiosClient.put('/account/users/' + input.userID, {...input})
 
     public getEmbedSettings = async (): Promise<EmbedSettings> => await this.axiosClient.get('/settings/embed').then(this.checkExtraData)
     public putEmbedSettings = async (input: EmbedSettings): Promise<void> => await this.axiosClient.put('/settings/embed', {...input})
