@@ -12,6 +12,7 @@ import { useHistory } from 'react-router';
 import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
+import { handleCurrencySymbol } from '../../../utils/utils'
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
@@ -110,7 +111,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                                 props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
 
                             }                            
-                            <Text size={32} weight="reg" color="gray-1">${props.plan.price/100}</Text>
+                            <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price/100}</Text>
                         </WidgetElement>
                 }
             </div>

@@ -158,7 +158,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             return [{data:[
                 <IconStyle key={'playbackProtectionEnabledValue'} coloricon='green'>{props.billingInfos.playbackProtection.enabled ? 'checked' : ''}</IconStyle>,
                 <Text key={'playbackProtectionAmountValue'} size={14}  weight="reg" color="gray-1">{props.billingInfos.playbackProtection.amount} GB</Text>,
-                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(props.billingInfos.currentPlan.currency) + props.billingInfos.playbackProtection.price} per GB</Text>,
+                <Text key={'playbackProtectionPriceValue'} size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(selectedCurrency.data.id) + props.billingInfos.playbackProtection.price} per GB</Text>,
                 <IconContainer className="iconAction" key={'protectionTableActionButtons'}><IconStyle onClick={(event) => {event.preventDefault();setProtectionModalOpened(true) }}>edit</IconStyle> </IconContainer>
             ]}]
         } else {
@@ -188,7 +188,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(props.billingInfos.currentPlan.currency) + (price/100)): "-"}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(selectedCurrency.data.id) + (price/100)): "-"}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
@@ -230,7 +230,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                             return (
                                                 <DataPricingTableRow key={item.code}>
                                                     <DataCell><Text size={14}  weight="med" color="gray-1">{item.description.split(' ')[item.description.split(' ').length - 1]}</Text></DataCell>
-                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(props.billingInfos.currentPlan.currency) + item.unitPrice[props.billingInfos.currentPlan.currency as ProductExtraDataCurrencyKey] + '/GB'}</Text></PriceCell>
+                                                    <PriceCell><Text size={14}  weight="reg" color="gray-1">{handleCurrencySymbol(selectedCurrency.data.id) + item.unitPrice[selectedCurrency.data.id as ProductExtraDataCurrencyKey] + '/GB'}</Text></PriceCell>
                                                 </DataPricingTableRow>
                                             )
                                         })
