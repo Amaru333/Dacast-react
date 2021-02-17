@@ -9,7 +9,6 @@ import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList } from '../../../../utils/DropdownLists';
 
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { defaultPaywallTimezone } from '../../../../utils/services/date/dateService';
 
 export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
@@ -73,7 +72,6 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
                     fullLineTz
                     showTimezone={true}
                     defaultTs={props.stepperData.firststep.groupSettings.startDate}
-                    timezone={props.stepperData.firststep.groupSettings.id === '-1' ? defaultPaywallTimezone : null }
                     callback={(ts: number, timezone: string) =>  props.updateStepperData( { ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Upon Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] }  }  })}
                     hideOption="Upon Purchase"
                     id="endDate"

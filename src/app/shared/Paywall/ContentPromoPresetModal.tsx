@@ -11,7 +11,7 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { defaultPaywallTimezone, tsToInputTime } from '../../../utils/services/date/dateService';
+import { tsToInputTime } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -29,7 +29,7 @@ const defaultPromo: Promo = {
 
 export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
-    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? {...props.promo, timezone: defaultPaywallTimezone} : defaultPromo);
+    const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)

@@ -42,6 +42,9 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
         } else {
             setState(data);
         }
+        if(data.startDate && data.endDate) {
+            setIsOpened(false)
+        }
         props.onDatesChange(data)
     }
 

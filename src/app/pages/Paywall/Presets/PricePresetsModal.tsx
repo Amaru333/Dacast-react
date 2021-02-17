@@ -9,7 +9,6 @@ import { Text } from '../../../../components/Typography/Text';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { defaultPaywallTimezone } from '../../../../utils/services/date/dateService';
 
 const pricesList = [
     {
@@ -35,7 +34,7 @@ const defaultPreset: Preset = {
 
 export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
     
-    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? {...props.preset, settings: { ...props.preset.settings, timezone: defaultPaywallTimezone }} : defaultPreset)
+    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {

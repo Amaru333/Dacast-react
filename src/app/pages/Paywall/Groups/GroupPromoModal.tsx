@@ -9,7 +9,7 @@ import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { defaultPaywallTimezone, tsToInputTime } from '../../../../utils/services/date/dateService';
+import { tsToInputTime } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: GroupPromo = {
     id: '-1',
@@ -26,7 +26,7 @@ const defaultPromo: GroupPromo = {
 
 export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void>; toggle: React.Dispatch<React.SetStateAction<boolean>>; groupPromo: GroupPromo; groupList: GroupPrice[] }) => {
 
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? { ...props.groupPromo, timezone: defaultPaywallTimezone } : defaultPromo)
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? props.groupPromo : defaultPromo)
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 

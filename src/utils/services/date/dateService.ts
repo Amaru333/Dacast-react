@@ -9,9 +9,6 @@ export const getCurrentTs = ( format: 'ms' | 's' ) => {
     }
 }
 
-export const defaultPaywallTimezone = "Europe/London";
-
-
 //Replacement for function moment().tz().guess()
 //Offset is weird 
 export const guessTimezone = (offset: boolean = true) => {

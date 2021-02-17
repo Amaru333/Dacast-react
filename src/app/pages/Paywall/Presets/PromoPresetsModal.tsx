@@ -8,7 +8,7 @@ import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { defaultPaywallTimezone, tsToInputTime } from '../../../../utils/services/date/dateService';
+import { tsToInputTime } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: '-1',
@@ -33,7 +33,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
     const [endDate, setEndDate] = React.useState<number>(promoPreset.endDate);
 
     React.useEffect(() => {
-        setPromoPreset(props.promo ? {...props.promo, timezone: defaultPaywallTimezone} : defaultPromo);
+        setPromoPreset(props.promo ? props.promo : defaultPromo);
     }, [props.promo])
 
 
