@@ -285,6 +285,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
                     setDisableProtectionModalOpened={setDisableProtectionModalOpened}
                     setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
+                    selectedCurrency={selectedCurrency.data.id}
                 />
             </Modal>
             {purchaseDataStepperData &&
