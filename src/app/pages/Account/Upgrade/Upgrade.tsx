@@ -33,7 +33,7 @@ import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDrop
 import { countries } from 'countries-list';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
-    const defaultCurrency: string = props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country] ? countries[props.companyInfo.country].currency : 'USD'
+    const defaultCurrency: string = localStorage.getItem('currency') ? localStorage.getItem('currency') : (props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country]) ? countries[props.companyInfo.country].currency : 'USD'
     const textClassName = 'py1';
     const marginBlocks = 'mx1';
     const customInfoIconSize = 16;
@@ -52,6 +52,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
 
     let history = useHistory()
+
+    React.useEffect(() => {
+        localStorage.setItem('currency', selectedCurrency.data.id)
+    }, [selectedCurrency])
 
     const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
