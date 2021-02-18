@@ -11,7 +11,7 @@ interface ProtectionModalProps {
     playbackProtection: PlaybackProtection; 
     selectedCurrency: string;
     toggle: React.Dispatch<SetStateAction<boolean>>; 
-    actionButton: (value: string) => Promise<void>; 
+    actionButton: (value: string) => void; 
     setPlaybackProtectionEnabled: React.Dispatch<SetStateAction<boolean>>;
 }
 

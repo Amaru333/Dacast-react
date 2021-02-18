@@ -251,6 +251,8 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                 toggle={setProtectionModalOpened} 
                                 setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
                                 playbackProtection={props.billingInfos.playbackProtection} 
+                                selectedCurrency={selectedCurrency.data.id}
+
                             />
                         </Modal>
                     }            
@@ -285,7 +287,6 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
                     setDisableProtectionModalOpened={setDisableProtectionModalOpened}
                     setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
-                    selectedCurrency={selectedCurrency.data.id}
                 />
             </Modal>
             {purchaseDataStepperData &&
