@@ -82,7 +82,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
             return {
                 data: [
                     <div className="flex items-center">
-                        <Avatar className="mr3" name={user.firstName + ' ' + user.lastName} />
+                        {user.role !== "Creator" ? <Avatar userRole={user.role} className="mr3" name={user.firstName + ' ' + user.lastName} /> : <div className="mr3" style={{height: 24, width: 24}} /> }
                         <Text>{user.firstName + ' ' + user.lastName}</Text>
                         {
                             userToken.getUserInfoItem('custom:dacast_user_id') === user.userID &&
