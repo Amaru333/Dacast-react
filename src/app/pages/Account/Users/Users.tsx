@@ -34,10 +34,10 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
-    const handleUserRole = (role: string) => {
+    const handleUserRole = (role: string, userID: string) => {
         switch (role) {
             case 'Owner':
-                return <Label backgroundColor="green20" color="green" label="Owner" />
+                return <Label backgroundColor={userToken.getUserInfoItem('custom:dacast_user_id') === userID ? "green20" : "gray-9"} color={userToken.getUserInfoItem('custom:dacast_user_id') === userID ? "green" : "gray-5"} label="Owner" />
             case 'Admin':
                 return <Label backgroundColor="red20" color="red" label="Admin" />
             default:
@@ -82,7 +82,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
             return {
                 data: [
                     <div className="flex items-center">
-                        {user.role !== "Creator" ? <Avatar userRole={user.role} className="mr3" name={user.firstName + ' ' + user.lastName} /> : <div className="mr3" style={{height: 24, width: 24}} /> }
+                        <Avatar userRole={user.role} className="mr3" name={user.firstName + ' ' + user.lastName} />
                         <Text>{user.firstName + ' ' + user.lastName}</Text>
                         {
                             userToken.getUserInfoItem('custom:dacast_user_id') === user.userID &&
@@ -91,7 +91,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
                         
                     </div>,
                     <Text>{user.email}</Text>,
-                    handleUserRole(user.role),
+                    handleUserRole(user.role, user.userID),
                     <div key={'usersMoreActionButton' + user.userID} className='right mr2'>
                             <DropdownCustom 
                                 backgroundColor="transparent" 
