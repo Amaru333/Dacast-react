@@ -25,7 +25,6 @@ import Dashboard from './containers/Dashboard/Dashboard';
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
 import Login from './containers/Register/Login/Login';
-import { Privilege } from './constants/PrivilegesName';
 import { NotFound } from './containers/404page';
 import AddStreamModal from './containers/Navigation/AddStreamModal';
 import { AddPlaylistModal } from './containers/Navigation/AddPlaylistModal'
@@ -39,6 +38,8 @@ import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
 import { Content, FullContent } from "../shared/Content";
+import DashboardTest from "./containers/Dashboard/DashboardTest";
+import { Privilege } from "../utils/services/token/token";
 
 // Any additional component props go here.
 interface MainProps {
@@ -158,7 +159,6 @@ const AppContent = (props: { routes: any }) => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
-            segmentService.page('App')
         }
     }, [location])
 
@@ -204,7 +204,7 @@ const AppContent = (props: { routes: any }) => {
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
                         <Switch>
-                            <PrivateRoute key='/' component={Dashboard} exact path='/' />
+                            <PrivateRoute key='/' component={DashboardTest} exact path='/' />
                             {props.routes}
                         </Switch>
                     </FullContent>

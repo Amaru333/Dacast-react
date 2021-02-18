@@ -36,7 +36,8 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
         overall: {
             status: data.currentStep,
             errorDetails: data.errorDetails,
-            label: "Overall"
+            label: "Overall",
+            previousStep: data.previousStep
         }
     }
     return formattedData

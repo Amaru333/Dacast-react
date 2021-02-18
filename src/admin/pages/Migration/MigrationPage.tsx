@@ -11,6 +11,8 @@ import { StartJobModal } from './StartJobModal'
 import { Tab } from '../../../components/Tab/Tab'
 import { makeRoute } from '../../utils/utils'
 import { FilteringMigrationState, MigrationFiltering } from './MigrationFilters'
+import { Modal } from '../../../components/Modal/Modal'
+import { Tooltip } from '../../../components/Tooltip/Tooltip'
 
 export const MigrationPage = (props: MigrationComponentProps) => {
 
@@ -35,6 +37,8 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     const [userTableFilters, setUserTableFilters] = React.useState<FilteringMigrationState>(filteringDefault)
     const [tablePagination, setTablePagination] = React.useState<{[key: number]: string}>({0: null})
     const [currentPage, setCurrentPage] = React.useState<number>(0)
+    const [selectedUserIds, setSelectedUserIds] = React.useState<string[]>([])
+    const [usersModalOpened, setUsersModalOpened] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(selectedTab === 'Jobs') {
@@ -66,7 +70,11 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             {cell: <Text key='jobsTableHeaderPlatformCell' size={14} weight='med'>Platform</Text>},
             {cell: <Text key='jobsTableHeaderCurrentStepCell' size={14} weight='med'>Current Step</Text>},
             {cell: <Text key='jobsTableHeaderNbUsersCell' size={14} weight='med'>Nb Users</Text>},
-            {cell: <Text key='jobsTableHeaderErrorStatusCell' size={14} weight='med'>Error Status</Text>},
+            {cell: <div className='relative flex items-center'>
+                <Text id='jobsTableHeaderErrorStatusCell' key='jobsTableHeaderErrorStatusCell' size={14} weight='med'>Job Status</Text>
+                <IconStyle fontSize="small" id='jobStatusIcon' coloricon='gray-3'>info_outlined</IconStyle>
+                <Tooltip style={{width: 300, top: 20}} target='jobStatusIcon'>This status is for the job itself. For more information, click on the arrow to get the job details.</Tooltip>
+                </div>},
             {cell: <Text key='jobsTableHeaderLastUpdateCell' size={14} weight='med'>Last Update</Text>},
         ]}
     }
@@ -81,12 +89,12 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                 return {
                     data: [
                         <div className='flex'>
-                            <IconStyle onClick={() => handleArrowClick(job.id)}>{selectedJob === job.id ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }</IconStyle>
+                            <IconStyle className='pointer' onClick={() => handleArrowClick(job.id)}>{selectedJob === job.id ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }</IconStyle>
                             <Text key={'jobsTableBodyJobIdCell' + key } size={14}>{job.id}</Text>
                         </div>,
                         <Text key={'jobsTableBodyPlaformCell' + key } size={14}>{job.platform}</Text>,
                         <Text key={'jobsTableBodyCurrenStepCell' + key } size={14}>{job.currentStep === 'Errored out' ? 'Failed' : job.currentStep}</Text>,
-                        <Text key={'jobsTableBodyNbUsersCell' + key } size={14}>{job.userIds.length}</Text>,
+                        <Text onClick={() => {setSelectedUserIds(job.userIds);setUsersModalOpened(true)}} className='pointer' key={'jobsTableBodyNbUsersCell' + key } size={14}>{job.userIds.length}</Text>,
                         <IconStyle key={'jobsTableBodyErrorDetailsCell' + key } coloricon={!job.errorDetails && job.currentStep !== 'Errored out' ? 'green' : 'red'}>{!job.errorDetails && job.currentStep !== 'Errored out' ? 'check' : 'clear'}</IconStyle>,
                         <Text key={'jobsTableBodyLastUpdateCell' + key } size={14} >{job.lastUpdateDate}</Text>,
                     ]
@@ -165,6 +173,20 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                     {
                         startJobModalOpened && 
                         <StartJobModal startJob={props.startJob} toggle={setStartJobModalOpened} opened={startJobModalOpened} />
+                    }
+                    {
+                        usersModalOpened && 
+                        <Modal size='small' modalTitle='Users List' toggle={() => {setUsersModalOpened(false);setSelectedUserIds([])}} opened={usersModalOpened} >
+                            <div className='flex flex-column col col-12'>
+                            {
+                                selectedUserIds.map(user => {
+                                    return (
+                                        <Text key={user} size={14} weight='med'>{user}</Text>
+                                    )
+                                })
+                            }
+                            </div>
+                    </Modal>
                     }
                 </React.Fragment>
             }

@@ -87,6 +87,15 @@ const Header = (props: HeaderProps) => {
 
     React.useEffect(() => {
         segmentService.page('App')
+        segmentService.identify({
+            userId: userToken.getUserInfoItem('custom:dacast_user_id'),
+            firstName: userToken.getUserInfoItem('custom:first_name'),
+            lastName: userToken.getUserInfoItem('custom:last_name'),
+            company: userToken.getUserInfoItem('companyName'),
+            email: userToken.getUserInfoItem('email'),
+            label: userToken.getUserInfoItem('planName'),
+            value: userToken.getUserInfoItem('planAmount')
+        })
     }, [location])
 
     const [userOptionsDropdownOpen, setUserOptionsDropdownOpen] = React.useState<boolean>(false)
@@ -104,21 +113,22 @@ const Header = (props: HeaderProps) => {
                 props.getBillingInfo()
             }
 
-            TagManager.initialize(
-                {
-                    gtmId: 'GTM-PHZ3Z7F',
-                    dataLayer: {
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                    }, 
-                    // dataLayerName: 'Uapp'
-                });
+        TagManager.initialize(
+            {
+                gtmId: 'GTM-PHZ3Z7F',
+                dataLayer: {
+                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'companyName': userToken.getUserInfoItem('custom:website'),
+                    'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
+                    'signedUp': 'Unknown yet',
+                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                    'userEmail': userToken.getUserInfoItem('email'),
+                    'bid': userToken.getUserInfoItem('salesforce-group-id')
+                }, 
+                // dataLayerName: 'Uapp'
+            });
     }, [])
 
     React.useEffect(() => {
@@ -128,12 +138,13 @@ const Header = (props: HeaderProps) => {
                     dataLayer: {
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo.currentPlan ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': props.ProfileInfo ? props.ProfileInfo.firstName : userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': props.ProfileInfo ? props.ProfileInfo.lastName : userToken.getUserInfoItem('custom:last_name'),
+                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });
@@ -149,12 +160,13 @@ const Header = (props: HeaderProps) => {
                     dataLayer: {
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': props.billingInfo ? props.billingInfo.currentPlan.displayName : 'Unknown yet',
+                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
                         'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': props.ProfileInfo.firstName,
-                        'userLastName': props.ProfileInfo.lastName,
+                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });

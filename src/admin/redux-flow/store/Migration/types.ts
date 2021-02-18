@@ -29,6 +29,7 @@ export type JobDetails = {
         errorDetails: string
         label: 'Export' | 'Import' | 'Validation' | 'Switch Over' | 'Overall'
         reports?: JobReport[]
+        previousStep?: string
     }
 }
 

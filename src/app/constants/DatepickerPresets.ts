@@ -26,7 +26,7 @@ export const presets = [
 },
 {
     text: 'Last 6 Months',
-    start: moment().date(1).month(thisMonth).year(thisYear),
+    start: moment().subtract(6, 'month'),
     end: today,
     value: 'LAST_6_MONTHS'
 },

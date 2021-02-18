@@ -96,4 +96,4 @@ export interface PutContentLockEngagementSettingsInput {
     action: 'lock' | 'unlock';
 }
 
-export type PutContentAdsInput = PutAdInput & {id: string}
+export type PutContentAdsInput = {data: PutAdInput} & {id: string}

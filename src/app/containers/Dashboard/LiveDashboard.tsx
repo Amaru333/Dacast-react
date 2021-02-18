@@ -12,6 +12,8 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
     var activeChannels = numberFormatter(props.profile.activeChannels, 'comma');
     var liveViewers = numberFormatter(props.profile.liveViewers, 'comma');
 
+    let liveDataFetching = Number.isNaN(props.profile.activeChannels)
+
     return (
         <section className="col lg-col-6 sm-col-12 pr2">
             <div className="flex items-baseline mb1">
@@ -22,7 +24,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
             </div>
 
             <div className={classContainer}>
-                <WidgetElement className={classItemHalfWidthContainer}>
+                <WidgetElement placeholderWidget={liveDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Active Channels </Text>
                     </WidgetHeader>
@@ -31,7 +33,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={typeof props.profile.liveViewers === "undefined"} className={classItemHalfWidthContainer}>
+                <WidgetElement placeholderWidget={liveDataFetching} failed={typeof props.profile.liveViewers === "undefined"} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Live Viewers </Text>
                     </WidgetHeader>
@@ -40,7 +42,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     </div>
                 </WidgetElement>
 
-                <WidgetElement failed={typeof props.profile.topChannels === "undefined"} className={classItemFullWidth}>
+                <WidgetElement placeholderWidget={liveDataFetching} failed={typeof props.profile.topChannels === "undefined"} className={classItemFullWidth}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Top Live Channels </Text>
                     </WidgetHeader>

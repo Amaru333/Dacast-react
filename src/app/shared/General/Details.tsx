@@ -60,20 +60,25 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 onChange={() => {props.setLocalContentDetails({ ...props.localContentDetails, online: !props.localContentDetails.online });props.setHasChanged(true)}}
                 label={handleOnlineToggle(props.contentType) + " Online"}
             />
-            <Input
-                className={ClassHalfXsFullMd + "pr2 mb2"}
-                label="Title"
-                value={props.localContentDetails.title}
-                onChange={event => {props.setLocalContentDetails({...props.localContentDetails, title: event.currentTarget.value });props.setHasChanged(true)}}
-            />
-            <InputTags
-                className={ClassHalfXsFullMd + "mb2"}
-                label="Folders"
-                disabled
-                greyBackground
-                defaultTags={props.contentDetails.folders} 
-            />
-
+            <div className="col col-12">
+                <Input
+                    className={ClassHalfXsFullMd + "pr2 mb2"}
+                    label="Title"
+                    value={props.localContentDetails.title}
+                    onChange={event => {props.setLocalContentDetails({...props.localContentDetails, title: event.currentTarget.value });props.setHasChanged(true)}}
+                />
+                {   
+                    props.contentType !== "expo" &&
+                        <InputTags
+                            className={ClassHalfXsFullMd + "mb2"}
+                            label="Folders"
+                            disabled
+                            greyBackground
+                            defaultTags={props.contentDetails.folders} 
+                        />
+                }
+            </div>
+            
             <Input
                 className={ClassHalfXsFullMd + "pr2 mb2"}
                 type="textarea"
