@@ -12,6 +12,15 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { Modal } from "../../../components/Modal/Modal";
 import { MultiUserUpgradeModal } from "../../pages/Account/Users/MultiUserUpgradeModal";
+import { ApplicationState } from "../../redux-flow/store";
+import { getPlanDetailsAction, UpgradeAction } from "../../redux-flow/store/Account/Upgrade/actions";
+import { ThunkDispatch } from "redux-thunk";
+import { connect } from "react-redux";
+import { CustomStepper } from "../../../components/Stepper/Stepper";
+import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
+import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
+import { Plan } from "../../redux-flow/store/Account/Upgrade/types";
+import { mockPlan, mockUsers } from "../Account/Users";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -24,7 +33,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
     )
 }
 
-export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
+const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
     let history = useHistory();
@@ -58,10 +67,20 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
 
+    //REMOVE ALL MOCK DATA WHEN BACKEND DONE
+    const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
+    const [planDetails, setPlanDetails] = React.useState<Plan>(mockPlan)
+    const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
+    let emptySeats: number = (props.planDetails.baseSeats + props.planDetails.extraSeats) - mockUsers.length
+
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
-    //GET NUMBER OF SEATS FROM SOMEWHERE ELSE
-    const mockUserSeats = 2
+    //GET NUMBER OF SEATS FROM PLAN
+    const mockUserSeats = 1
+
+    React.useEffect(() => {
+        props.getPlanDetails()
+    }, [])
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
@@ -118,6 +137,11 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             default:
                 return
         }
+    }
+
+    const openBuySeatsStepper = () => {
+        setChangeSeatsStepperOpen(true)
+        setUpgradeMultiUserModalOpen(false)
     }
 
     const renderAddList = () => {
@@ -230,10 +254,40 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
             </ContainerStyle>
-            <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen}>
-                <MultiUserUpgradeModal toggle={setUpgradeMultiUserModalOpen} />
+            <CustomStepper
+                stepperHeader="Change Number of Seats"
+                stepList={changeSeatsStepList}
+                opened={changeSeatsStepperOpen}
+                lastStepButton="Purchase"
+                finalFunction={() => {}}
+                functionCancel={() => setChangeSeatsStepperOpen(false)}
+                stepperData={planDetails}
+                updateStepperData={(plan: Plan) => setPlanDetails(plan)}
+                emptySeats={emptySeats}
+                planData={mockPlan}
+                billingInfo={props.billingInfos}
+            />
+            <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
+                <MultiUserUpgradeModal openBuySeatsStepper={openBuySeatsStepper} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
 
         </>
     )
 }
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        planDetails: state.account.upgrade,
+        billingInfos: state.account.plan
+    }
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
+    return {
+        getPlanDetails: async () => {
+            await dispatch(getPlanDetailsAction(undefined))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (MainMenu);

@@ -4,9 +4,9 @@ import { Provider } from "react-redux";
 import { Store } from "redux";
 import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
-import { MainMenu } from './containers/Navigation/Navigation';
+import MainMenu from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import styled, { ThemeProvider, css } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
@@ -20,7 +20,6 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from '../utils/utils';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
@@ -34,7 +33,7 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
-import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import { dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';

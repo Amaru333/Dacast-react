@@ -1,4 +1,6 @@
 import { Privilege } from '../../constants/PrivilegesName';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { Plans } from '../../redux-flow/store/Account/Upgrade/types';
 
 export interface MainMenuSpecificProps {
     routes: Routes[]; 
@@ -12,6 +14,9 @@ export interface MainMenuSpecificProps {
     openAddStream?: (b: boolean) => void;
     openPlaylist?: (b: boolean) => void;
     openExpoCreate?: (b: boolean) => void;
+    planDetails: Plans;
+    billingInfos: BillingPageInfos;
+    getPlanDetails: () => Promise<void>;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
