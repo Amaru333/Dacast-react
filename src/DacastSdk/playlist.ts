@@ -26,3 +26,8 @@ interface PutPlaylistDetailsPayload {
     description: string
     online: boolean
 }
+
+export interface GetPlaylistAssetUploadUrl {
+    extension: string
+    playlistID: string
+}

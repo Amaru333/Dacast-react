@@ -7,23 +7,38 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/services/player/player';
 import { userToken } from '../../utils/services/token/tokenService';
+import { ContentType } from '../../redux-flow/store/Common/types';
+import { SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 
-export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
-    
+interface ImageModalProps {
+    imageType: string; 
+    contentType: ContentType; 
+    imageFileName: string; 
+    contentId: string; 
+    opened: boolean; 
+    uploadUrl: string; 
+    title: string; 
+    toggle: () => void; 
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>; 
+    submit: (data: File, uploadUrl: string) => Promise<void>; 
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>; 
+    uploadFromVideoAction?: (contentId: string, time: number, imageType: string) => Promise<void>
+}
+
+export const ImageModal = (props: ImageModalProps) => {
+
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
-    let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [uploadType, setUploadType] = React.useState<string>(null)
 
+    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let playerRef = React.useRef<HTMLDivElement>(null);
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
-
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
@@ -79,7 +94,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType, props.contentType).then(() => {
+            props.submit(logoFile, props.uploadUrl).then(() => {
                 setTimeout(() => {
                     props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)

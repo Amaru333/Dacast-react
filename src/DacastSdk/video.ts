@@ -54,3 +54,16 @@ interface PutVideoDetailsPayload {
     description: string
     online: boolean
 }
+
+export interface GetVideoAssetUploadUrl {
+    extension: string
+    vodID: string
+}
+
+export interface GetVideoSubtitleUploadUrl {
+    vodID: string
+    name: string
+    languageLongName: string
+    languageShortName: string
+    convertToUTF8: string
+}

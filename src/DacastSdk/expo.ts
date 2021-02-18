@@ -24,3 +24,8 @@ export interface PutExpoDetailsInput {
         poster: AssetTypeEndpoint
     }
 }
+
+export interface GetExpoAssetUploadUrl {
+    extension: string
+    expoID: string
+}

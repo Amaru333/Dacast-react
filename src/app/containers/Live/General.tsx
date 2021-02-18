@@ -25,6 +25,7 @@ import { Divider } from '../../../shared/MiscStyles';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -217,17 +218,17 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
             await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, vodId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
-            await dispatch(getUploadUrlAction(uploadType, vodId, extension, contentType, subtitleInfo))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string, vodId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType, contentType))
+        uploadFile: async (data: File, uploadUrl: string) => {
+           await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
         },
         deleteFile: async (vodId: string, targetId: string, contentType: string, imageType: string) => {
             await dispatch(deleteFileAction(vodId, targetId, contentType, imageType))
         },
         generateEncoderKey: async (liveId: string) => {
-            await dispatch(generateEncoderKeyAction(liveId, 'live'))
+            await dispatch(generateEncoderKeyAction('live')(liveId))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

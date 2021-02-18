@@ -21,6 +21,7 @@ import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../../shared/MiscStyles';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 const GeneralExpos = (props: GeneralComponentProps) => {
 
@@ -135,11 +136,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
             await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
+        uploadFile: async (data: File, uploadUrl: string) => {
+           await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
         },
         deleteFile: async (contentId: string, targetId: string, contentType: string, imageType: string) => {
             await dispatch(deleteFileAction(contentId, targetId, contentType, imageType))

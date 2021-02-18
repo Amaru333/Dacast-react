@@ -1,10 +1,10 @@
-import { AssetTypeEndpoint } from "../../../../../DacastSdk/common";
+import { AssetTypeEndpoint, ContentUploadType, PostUploadUrlInput, PostUploadUrlOutput } from "../../../../../DacastSdk/common";
 import { GetExpoDetailsOutput, PutExpoDetailsInput } from "../../../../../DacastSdk/expo";
-import { GetLiveDetailsOutput, PutLiveDetailsInput } from "../../../../../DacastSdk/live";
+import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from "../../../../../DacastSdk/live";
 import { GetPlaylistDetailsOutput, PutPlaylistDetailsInput } from "../../../../../DacastSdk/playlist";
 import { GetVideoDetailsOutput, PutVideoDetailsInput } from "../../../../../DacastSdk/video";
 import { ContentType } from "../../Common/types";
-import { AssetType, ExpoDetails, LiveDetails, PlaylistDetails, VodDetails } from "./types";
+import { AssetType, ExpoDetails, LiveDetails, PlaylistDetails, SubtitleInfo, VodDetails } from "./types";
 
 const formatAssetType = (asset: AssetTypeEndpoint): AssetType => {
     if(!asset.targetID) {
@@ -191,6 +191,97 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
 export const formatPutExpoDetailsOutput = (contentType: ContentType) => (endpointResponse: null, data: ExpoDetails): ExpoDetails & {contentType: ContentType} => {
     let formattedData: ExpoDetails & {contentType: ContentType} = {
         ...data, 
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPostVodAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string, subtitleInfo?: SubtitleInfo}): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: data.assetType,
+        uploadRequestBody: {
+            extension: data.extension,
+            vodID: data.contentId
+        }
+    }
+    return formattedData
+}
+
+export const fomatPostVodAssetUploadOutput = (contentType: ContentType) => (endpointResponse: PostUploadUrlOutput, dataReact: { contentId: string; subtitleInfo?: SubtitleInfo }): {contentId: string; url: string, contentType: ContentType, subtitleInfo?: SubtitleInfo} => {
+    let formattedData: {contentId: string; url: string, contentType: ContentType, subtitleInfo?: SubtitleInfo} = {
+        contentId: dataReact.contentId,
+        url: endpointResponse.presignedURL,
+        contentType: contentType
+    }
+
+    if(endpointResponse.targetID) {
+        formattedData.subtitleInfo = {
+            ...dataReact.subtitleInfo,
+            targetID: endpointResponse.targetID
+        }
+    }
+
+    return formattedData
+}
+
+export const formatPostLiveAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string}): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: data.assetType,
+        uploadRequestBody: {
+            extension: data.extension,
+            liveID: data.contentId
+        }
+    }
+    return formattedData
+}
+
+export const fomatPostLiveAssetUploadOutput = (contentType: ContentType) => (endpointResponse: PostUploadUrlOutput, dataReact: { contentId: string; data?: SubtitleInfo }): {contentId: string; url: string, contentType: ContentType} => {
+    let formattedData: {contentId: string; url: string, contentType: ContentType} = {
+        contentId: dataReact.contentId,
+        url: endpointResponse.presignedURL,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPostPlaylistAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string}): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: data.assetType,
+        uploadRequestBody: {
+            extension: data.extension,
+            playlistID: data.contentId
+        }
+    }
+    return formattedData
+}
+
+export const fomatPostPlaylistAssetUploadOutput = fomatPostLiveAssetUploadOutput
+
+export const formatPostExpoAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string}): PostUploadUrlInput => {
+
+    let formattedData: PostUploadUrlInput = {
+        uploadType: data.assetType,
+        uploadRequestBody: {
+            extension: data.extension,
+            expoID: data.contentId
+        }
+    }
+    return formattedData
+}
+
+export const fomatPostExpoAssetUploadOutput = fomatPostLiveAssetUploadOutput
+
+export const formatPostEncoderKeyInput = (data: string): string => data
+
+export const formatPostEncoderKeyOutput = (contentType: ContentType) => (endpointResponse: PostEncoderKeyOutput, dataReact: string): {encoderKey: string, contentId: string; contentType: string} => {
+    let formattedData: {encoderKey: string, contentId: string; contentType: string} = {
+        encoderKey: endpointResponse.encoder_key,
+        contentId: dataReact,
         contentType: contentType
     }
 

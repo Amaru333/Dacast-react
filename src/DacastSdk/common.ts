@@ -1,6 +1,8 @@
-import { GetLiveBrandImageUrl } from "./live"
+import { GetExpoAssetUploadUrl } from "./expo"
+import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
+import { GetPlaylistAssetUploadUrl } from "./playlist"
 import { EngagementSettingsEndoint, PutAdInput } from "./settings"
-import { GetVodBrandImageUrl } from "./video"
+import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
     userID: string
@@ -10,14 +12,17 @@ export interface GetUserBrandImageUploadUrl {
     userID: string
 }
 
+export type ContentUploadType = 'subtitle' | 'vod-thumbnail' | 'vod-splashscreen' | 'vod-poster' | 'live-thumbnail' | 'live-splashscreen' | 'live-poster' | 'playlist-thumbnail' | 'playlist-splashscreen' | 'playlist-poster' | 'expo-poster'
+
 export type PostUploadUrlInput = {
-    uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark'
-    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | GetVodBrandImageUrl | GetLiveBrandImageUrl |  null
+    uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark' | ContentUploadType
+    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | GetVodBrandImageUrl | GetLiveBrandImageUrl | GetExpoAssetUploadUrl | GetLiveAssetUploadUrl | GetPlaylistAssetUploadUrl | GetVideoAssetUploadUrl | GetVideoSubtitleUploadUrl | null
 }
 
 export interface PostUploadUrlOutput {
     presignedURL: string
     fileID?: string
+    targetID?: string
 }
 
 export interface PutUploadFileInput {

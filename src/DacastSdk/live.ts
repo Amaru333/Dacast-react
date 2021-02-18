@@ -51,3 +51,8 @@ interface PutLiveDetailsPayload {
     recording: boolean
     rewind?: boolean
 }
+
+export interface GetLiveAssetUploadUrl {
+    extension: string
+    liveID: string
+}

@@ -7,7 +7,8 @@ import { applyViewModel, parseContentType } from '../../../../utils/utils'
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
 import { ContentType } from "../../Common/types"
-import { formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
+import { fomatPostExpoAssetUploadOutput, fomatPostLiveAssetUploadOutput, fomatPostPlaylistAssetUploadOutput, fomatPostVodAssetUploadOutput, formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPostEncoderKeyInput, formatPostEncoderKeyOutput, formatPostExpoAssetUploadUrlInput, formatPostLiveAssetUploadUrlInput, formatPostPlaylistAssetUploadUrlInput, formatPostVodAssetUploadUrlInput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
+import { formatPutUploadFileInput } from "../../Common/viewModel"
 
 export interface GetContentDetails {
     type: ActionTypes.GET_CONTENT_DETAILS;
@@ -36,7 +37,7 @@ export interface DeleteContentSubtitle {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: { contentId: string; url: string, data: SubtitleInfo, contentType: string };
+    payload: { contentId: string; url: string, contentType: string, data?: SubtitleInfo };
 }
 
 export interface UploadImage {
@@ -89,44 +90,30 @@ export const editContentDetailsAction = (contentType: ContentType) => {
     }
 }
 
-export const generateEncoderKeyAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GenerateEncoderKey> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GenerateEncoderKey>) => {
-        await dacastSdk.postEncoderKey(contentId)
-            .then(response => {
-                dispatch({ type: ActionTypes.GENERATE_ENCODER_KEY, payload: {encoderKey: response.encoder_key, contentType: contentType, contentId: contentId} })
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
-    };
-}
-
-export const getUploadUrlAction = (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo): ThunkDispatch<Promise<void>, {}, GetUploadUrl> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetUploadUrl>) => {
-        await ContentGeneralServices.getUploadUrl(uploadType, contentId, extension, contentType, subtitleInfo)
-            .then(response => {
-                dispatch({ type: ActionTypes.GET_UPLOAD_URL, payload: {contentId: contentId, contentType: contentType,  data: uploadType === 'subtitle' && {...subtitleInfo, targetID: response.data.data.fileID}, url: response.data.data.presignedURL}, contentType: contentType  })
-
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const getUploadUrlAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostVodAssetUploadUrlInput, fomatPostVodAssetUploadOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        case 'live':
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostLiveAssetUploadUrlInput, fomatPostLiveAssetUploadOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        case 'playlist': 
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostPlaylistAssetUploadUrlInput, fomatPostPlaylistAssetUploadOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        case 'expo':
+            return applyViewModel(dacastSdk.postUploadUrl, formatPostExpoAssetUploadUrlInput, fomatPostExpoAssetUploadOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
+        default:
+            throw new Error('Error applying put lock content view model')
     }
 }
 
-export const uploadFileAction = (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string): ThunkDispatch<Promise<void>, {}, UploadImage> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, UploadImage>) => {
-        await ContentGeneralServices.uploadFile(data, uploadUrl)
-            .then(response => {
-                dispatch({ type: ActionTypes.UPLOAD_IMAGE, payload: {contentId: contentId, contentType: contentType} })
-                dispatch(showToastNotification(`${contentType === "expo" ? 'Header' : capitalizeFirstLetter(uploadType)} has been saved`, 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const uploadFileAction = applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, undefined, ActionTypes.UPLOAD_IMAGE, 'File uploaded', 'Couldn\'t upload file')
+
+
+export const generateEncoderKeyAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'live': 
+            return applyViewModel(dacastSdk.postEncoderKey, formatPostEncoderKeyInput, formatPostEncoderKeyOutput(contentType), ActionTypes.GENERATE_ENCODER_KEY, 'Encoder key generated', 'Couldn\'t generate encoder key')
+        default:
+            throw new Error('Error applying put lock content view model')
     }
 }
 

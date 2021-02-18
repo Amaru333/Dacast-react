@@ -23,6 +23,7 @@ import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction } from '../../utils/general'
 import { Divider } from '../../../shared/MiscStyles';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
@@ -30,7 +31,7 @@ export interface GeneralComponentProps {
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
     saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string) => Promise<void>;
     deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
@@ -169,11 +170,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
             await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType, subtitleInfo))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
+        uploadFile: async (data: File, uploadUrl: string) => {
+           await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
         },
         uploadImageFromVideo: async (contentId: string, time: number, imageType: string)  => {
             await dispatch(uploadImageFromVideoAction(contentId, time, imageType))
