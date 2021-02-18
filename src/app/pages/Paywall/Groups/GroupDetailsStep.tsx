@@ -69,6 +69,7 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={props.stepperData.firststep.groupSettings.startDate}

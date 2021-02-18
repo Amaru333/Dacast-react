@@ -177,6 +177,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={newPricePreset.settings.startDate}

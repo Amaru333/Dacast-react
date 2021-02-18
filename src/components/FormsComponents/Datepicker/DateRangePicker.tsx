@@ -23,10 +23,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
-
     React.useEffect(() => {}, [isOpened])
-
-
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(datepickerRef, () => setIsOpened(false));

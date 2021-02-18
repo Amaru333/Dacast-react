@@ -114,6 +114,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
                         dropdownTitle='Timezone'
                         callback={(value: DropdownSingleListItem) => { setGroupPromo({ ...groupPromo, timezone: value.title.split(' ')[0] }) }}
                         list={timezoneDropdownList}
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                     />
                 }
                 <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setGroupPromo({ ...groupPromo, discountApplied: item.title })} list={discountAppliedDropdownList} />

@@ -69,7 +69,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 /> 
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DateTimePicker 
+                <DateTimePicker
                     fullLineTz
                     showTimezone={false}
                     minDate={startDate}
@@ -90,7 +90,9 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})} 
-                        list={timezoneDropdownList} />
+                        list={timezoneDropdownList} 
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
+                    />
                 }
                <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={promoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, discountApplied: item.title})} list={discountAppliedDropdownList} />
             </div>

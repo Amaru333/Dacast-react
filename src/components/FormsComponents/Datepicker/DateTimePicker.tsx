@@ -3,8 +3,10 @@ import { DropdownSingle } from '../Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../Dropdown/DropdownTypes';
 import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
+import { Text } from '../../Typography/Text';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
 import { dateAdd, inputTimeToTs, tsToInputTime, utcOffsetToMin } from "../../../utils/services/date/dateService";
+import { IconStyle } from "../../../shared/Common/Icon";
 
 
 interface DateTimePickerProps {
@@ -19,6 +21,7 @@ interface DateTimePickerProps {
     disabled?: boolean;
     fullLineTz?: boolean;
     dropShowing?: boolean;
+    isConvertedToUtc?: boolean;
 }
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
@@ -67,12 +70,20 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                             hasSearch
                             id={'timezoneDropdown' + props.id}
                             dropdownDefaultSelect={props.timezone}
-                            className={colClass}
+                            className={props.fullLineTz ? 'col col-12 px1 sm-col-6' : colClass}
                             dropdownTitle='Timezone'
                             callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])}
                             list={timezoneDropdownList}
+                            tooltip={props.isConvertedToUtc ? "The time saved will be converted to Coordinated Universal Time (UTC), UTC +0" : null}
                         />
 
+                    }
+                    {
+                        props.isConvertedToUtc && 
+                        <div className='flex px1 mt1'>
+                            <IconStyle>info_outlined</IconStyle>
+                            <Text size={14} weight="reg">This will change to Upon Purchase at the scheduled time.</Text>
+                        </div>
                     }
 
                 </>

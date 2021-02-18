@@ -44,6 +44,9 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
         const tempData = {...data};
         tempData.endDate = tempData.startDate
         setState({ ...tempData, focusedInput: START_DATE });
+        if(props.callback) {
+            props.callback(tempData.startDate)
+        }
         setIsOpened(false)
     }
 
