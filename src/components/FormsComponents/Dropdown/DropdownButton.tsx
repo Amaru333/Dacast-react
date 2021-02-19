@@ -1,52 +1,69 @@
 import * as React from 'react'
 import Icon from '@material-ui/core/Icon';
 import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonContainer} from './DropdownStyle';
-import { dropdownIcons, DropdownButtonProps } from './DropdownTypes';
+import { dropdownIcons, DropdownButtonProps, DropdownSingleListItem } from './DropdownTypes';
 import { useOutsideAlerter } from '../../../utils/utils';
 import {Text} from '../../Typography/Text'
+import { IconStyle } from '../../../shared/Common/Icon';
 
 export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownButtonProps) => {
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : props.list[0]);
+    const [selectedItem, setSelectedItem] = React.useState<DropdownSingleListItem>(props.dropdownDefaultSelect || props.list[0]);
 
+    React.useEffect(() => {
+        if(props.dropdownDefaultSelect) {
+            setSelectedItem(props.dropdownDefaultSelect)
+        }
+    }, [props.dropdownDefaultSelect])
+    
     useOutsideAlerter(dropdownListRef, () => {
         setOpen(!isOpened)
     });
   
-    React.useEffect(() => {setOpen(false)}, [selectedItem])
-
-    const handleClick = (name: string) => {
-        setSelectedItem(name);
-        if(props.callback && name !== "Select"){
-            props.callback(name);
+    const handleClick = (item: DropdownSingleListItem) => {
+        setSelectedItem(item);
+        if(props.callback && item.title !== "Select"){
+            props.callback(item);
         }
+        setOpen(false)
     }
 
     const renderList = () => {
         return (
-            props.list.map((name, key) => {
+            props.list && props.list.map((item, key) => {
                 return (
                     <DropdownItem 
                         isSingle
-                        key={props.id + '_' + name} 
-                        id={props.id + '_' + name} 
-                        className={key === 1 ? 'mt1' : ''}
-                        isSelected={selectedItem === name} 
-                        onClick={() => handleClick(name)}> 
-                        <DropdownItemText size={12} weight='reg' color={selectedItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        style={{display: 'flex'}}
+                        key={props.id + '_' + item.title} 
+                        id={props.id + '_' + item.title} 
+                        className={(key === 1 ? 'mt1' : '') + ' items-center'}
+                        isSelected={selectedItem.title === item.title} 
+                        onClick={() => handleClick(item)}> 
+                        <div className='flex'>
+                            {
+                                (item.data && item.data.img) &&
+                                <img className='pr1' height={20} width={20} src={require(`../../../../public/assets/${item.data.img}.png`)} alt={item.data.img} />
+                            }
+                            <DropdownItemText className='pl2' size={12} weight='reg' color={selectedItem.title === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText>
+                        </div>
                     </DropdownItem>
-                )                
+                )
             })
         )
     }
 
     return (
         <ContainerStyle {...props}>
-            <ButtonContainer disabled={props.disabled} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
-                <Text size={12}>{selectedItem}</Text>
-                { !props.disabled && <Icon>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</Icon> }
+            <ButtonContainer className='relative' backgroundColor={props.backgroundColor} disabled={props.disabled} isOpened={isOpened} onClick={() => setOpen(!isOpened)}>
+                {
+                    (selectedItem.data && selectedItem.data.img) &&
+                    <img className='pr1' height={20} width={20} src={require(`../../../../public/assets/${selectedItem.data.img}.png`)} alt={selectedItem.data.img} />
+                }
+                <Text className='mr1' size={12}>{selectedItem.title}</Text>
+                { !props.disabled && <IconStyle>{isOpened ? dropdownIcons.opened : dropdownIcons.closed}</IconStyle> }
             </ButtonContainer>
             <DropdownList style={{position: 'static'}} hasSearch={false} isSingle isInModal isNavigation={false} displayDropdown={isOpened} ref={dropdownListRef}>
                 {renderList()}

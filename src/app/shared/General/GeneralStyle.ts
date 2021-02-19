@@ -15,17 +15,18 @@ export const LinkBoxContainer = styled.div`
 
 export const LinkBoxLabel = styled.label`
     display: flex;
+    justify-content: space-between;
     height:auto;
     margin-bottom: 4px;
     margin-top:4px;
     align-items: center;
 `
 
-export const LinkBox = styled.div`
+export const LinkBox = styled.div<{backgroundColour?: string}>`
 display: flex;
 height: 40px;
 padding: 0 12px;
-background-color: ${props => props.theme.colors["gray-10"]};
+background-color: ${props => props.backgroundColour ? props.backgroundColour : props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
 align-items: center;
 justify-content: space-between;
@@ -85,4 +86,10 @@ export const ExpandableContainer = styled.div<{ isExpanded: boolean }>`
 
 export const DescriptionInput = styled(Input)`
     height: 96px;
+`
+
+export const EncoderSettingsContainer = styled.div`
+    border: 1px dashed #C8D1E0;
+    padding: 20px 0px 8px 16px;
+    background-color: ${props => props.theme.colors["gray-10"]};
 `

@@ -30,6 +30,7 @@ import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus } from '../../redux-flow/store/Common/types'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -269,14 +270,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleMoreActions = (item: FolderAsset): string[] => {
+    const handleMoreActions = (item: FolderAsset): DropdownSingleListItem[] => {
         if (item.status === 'deleted') {
-            return ['Restore']
+            return [{title: 'Restore'}]
         }
         if (item.type === 'folder') {
-            return [ 'View', 'Rename', 'Move', 'Delete']
+            return [ {title: 'View'}, {title: 'Rename'}, {title: 'Move'}, {title: 'Delete'}]
         }
-        return ['Edit', 'Move', 'Delete']
+        return [{title: 'Edit'}, {title: 'Move'}, {title: 'Delete'}]
     }
 
     const handleEditAsset = (asset: ContentType) => {
@@ -380,7 +381,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
+                                list={handleMoreActions(row)} callback={(value: DropdownSingleListItem) => handleAssetDropdownOptions(value.title, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
                                     isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
