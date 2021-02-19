@@ -43,7 +43,7 @@ export const tsToInputTime = (value: number, timezoneName?: string  ) => {
         let offsetitem = timezones.find(el => el.tzCode === timezoneName)
         var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
     }
-    let total = offset <= 0 ? value + Math.abs(offset) : value - offset
+    let total = offset <= 0 ? value - Math.abs(offset) : value + offset
     return total
 }
 
