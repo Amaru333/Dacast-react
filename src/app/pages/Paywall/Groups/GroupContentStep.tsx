@@ -140,7 +140,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                         selected={checkedContents.includes(row)}
                         onDoubleClick={() => { !row.type ? handleNavigateToFolder(row.title) : null }}
                     >
-                        {row.type &&
+                        {row.type !== "folder" &&
                             <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
                                 onChange={() => handleCheckboxContents(row)}
                                 defaultChecked={checkedContents.includes(row)}
@@ -150,7 +150,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                         {handleRowIconType(row)}
                         <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.type ? row.title : row.name}</Text>
                         {
-                            !row.type &&
+                            row.type === "folder" &&
                                 <div className="flex-auto justify-end">
                                     <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                                 </div>

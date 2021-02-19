@@ -1,5 +1,3 @@
-import { ContentMetadata } from "../app/redux-flow/store/Paywall/Groups/types"
-
 export interface PromoDetails {
     alphanumericCode: string;
     discount: number;
@@ -92,6 +90,7 @@ export interface PricePackageDetails {
     name: string;
     prices: PricePackageInfo[]
     contents: string[];
+    pages: number;
 }
 
 export interface PricePackageId {
@@ -107,7 +106,6 @@ export interface GetPricePackageOutput {
 
 export interface GetPricePackageContentsOutput {
     contents: string[];
-    contentMetadata: ContentMetadata[];
 }
 
 export interface PostPricePackageOutput {

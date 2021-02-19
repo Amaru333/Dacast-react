@@ -75,7 +75,6 @@ export const formatDeletePromoGroupInput = (data: GroupPromo): string => data.id
 
 
 export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPriceData => {
-    console.info(data)
     let formattedData: GroupPriceData = {
         total: data.total,
         packages: data.packages.map((item) => {
@@ -84,7 +83,6 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                 name: item.name,
                 contents: item.contents,
                 pages: item.pages,
-                contentMetadata: item["content-metadata"],
                 prices: item.prices.length > 0 ? item.prices.map((price) => {
                     return {
                         price: price.price,
