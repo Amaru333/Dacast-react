@@ -77,6 +77,13 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     
                     <Divider className='pt2' />
 
+                    {/* Make this section actually do something when the backend is done */}
+                    <Text className='py2' size={20} weight='med' color='gray-3'>User Management</Text>
+
+                    <Input type="number" className='my1 col col-2' id='seatsInput' placeholder='100' label='User Seats' defaultValue="1" onChange={(event) => console.log(event.currentTarget.value)} />
+
+                    <Divider className='pt2' />
+
                     <Text className='py2' size={20} weight='med' color='gray-3'>Manage Modules</Text>
 
                     <Text className='py1' size={14} weight='med'>Live Streams</Text>
