@@ -10,6 +10,7 @@ import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput
 import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
 import { PostEncoderKeyOutput } from './live'
+import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
@@ -63,6 +64,12 @@ export class DacastSdk {
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
     public postSwitchOverUsers = async (input: PostSwitchOverUsersInput, jobId: string) => await this.axiosClient.post('/migration/job/' + jobId + '/switchover', input)
     public getMigratedUsersList = async (input: string): Promise<GetMigratedUsersListOutput> => await this.axiosClient.get('/migration/users' + input).then(this.checkExtraData)
+
+    public getDashboardInfo = async (): Promise<GetDashboardInfoOutput> => await this.axiosClient.get('/dashboard').then(this.checkExtraData)
+    public getDashboardGeneralInfo = async (): Promise<GetDashboardGeneralInfoOutput> => await this.axiosClient.get('/dashboard/general').then(this.checkExtraData)
+    public getDashboardLiveInfo = async (): Promise<GetDashboardLiveOutput> => await this.axiosClient.get('/dashboard/live').then(this.checkExtraData)
+    public getDashboardVodInfo = async (): Promise<GetDashboardVodOutput> => await this.axiosClient.get('/dashboard/vod').then(this.checkExtraData)
+    public getDashboardPaywallInfo = async (): Promise<GetDashboardPaywallOutput> => await this.axiosClient.get('/dashboard/paywall').then(this.checkExtraData)
 
     public postUploadUrl = async (input: PostUploadUrlInput): Promise<PostUploadUrlOutput> => await this.axiosClient.post('/uploads/signatures/singlepart/' + input.uploadType, {...input.uploadRequestBody}).then(this.checkExtraData)
     public putUploadFile = async (input: PutUploadFileInput): Promise<void> => await this.axiosClient.put(input.uploadUrl, input.data, {authRequired: false})
@@ -166,7 +173,7 @@ export class DacastSdk {
     public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
     public putChannelEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement', input)
     public putChannelLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
-    public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.ads)
+    public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.data)
     public deleteChannelBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input + '/settings/engagement/brand-image')
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
@@ -174,7 +181,7 @@ export class DacastSdk {
     public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)
     public putVodEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement', input)
     public putVodLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
-    public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.ads)
+    public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.data)
     public deleteVodBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input + '/settings/engagement/brand-image')
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)

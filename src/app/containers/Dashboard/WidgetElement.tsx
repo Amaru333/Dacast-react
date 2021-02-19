@@ -3,17 +3,17 @@ import { Card } from '../../../components/Card/Card'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { FailedCardAnalytics } from '../../shared/Analytics/AnalyticsCommun';
 
-export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement> & {loading? : boolean; failed?: boolean} ) => {
+export const WidgetElement = (props: React.HTMLAttributes<HTMLDivElement> & {loading? : boolean; failed?: boolean; placeholderWidget?: boolean} ) => {
     
     return (
         <div className={props.className}>
 
-            <Card className="dashboardCard">
+            <Card backgroundColor={props.placeholderWidget? "gray-7" : "white"} className="dashboardCard">
                 {props.loading ?
                     <LoadingSpinner center size='medium' color='violet' />
                     : props.failed ?
                         <FailedCardAnalytics /> :
-                        props.children
+                        !props.placeholderWidget && props.children
                 }
             </Card>
         </div>

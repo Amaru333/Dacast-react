@@ -4,12 +4,11 @@ import { PaywallDashboard } from './PaywallDashboard';
 import { LiveDashboard } from './LiveDashboard';
 import { GeneralDashboard } from './GeneralDashboard';
 import { TrialAdditionalDashboard } from './TrialAdditionalDashboard';
-import { DashboardInfos, Action, getDashboardDetailsAction, getDashboardVodPlayRateAction, getDashboardVodPlayAction, getDashboardLiveViewers, getDashboardLiveTopChannels, getDashboardVodTopVideosAction, getDashboardVodImpressionsAction } from '../../redux-flow/store/Dashboard';
+import { DashboardInfos, Action, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from "react-redux";
-import styled from 'styled-components';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addBillingPagePaymenPlaybackProtectionAction, getBillingPageInfosAction, BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
@@ -21,7 +20,6 @@ export interface DashboardProps {
     billingInfo: BillingPageInfos;
     getBillingPageInfos: () => Promise<void>
     getDashboardDetails: () => Promise<void>;
-    getDashboardVodPlayRate: (jobID: string) => Promise<void>;
     editBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
     addBillingPagePaymenPlaybackProtection: (data: PlaybackProtection) => Promise<void>;
 }
@@ -107,7 +105,7 @@ const Dashboard = (props: DashboardProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        infos: state.dashboard.data,
+        infos: state.dashboard.info,
         billingInfo: state.account.plan
     };
 }
@@ -115,13 +113,10 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getDashboardDetails: async () => {
-            await dispatch(getDashboardDetailsAction());
+            await dispatch(getDashboardDetailsAction(undefined));
         },
         getBillingPageInfos: async () => {
             await dispatch(getBillingPageInfosAction(undefined));
-        },
-        getDashboardVodPlayRate: async (jobID: string) => {
-            await dispatch(getDashboardVodPlayRateAction(jobID));
         },
         editBillingPagePaymenPlaybackProtection: async (data: PlaybackProtection) => {
             await dispatch(editBillingPagePaymenPlaybackProtectionAction(data));
