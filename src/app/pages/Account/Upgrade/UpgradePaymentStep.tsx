@@ -60,12 +60,12 @@ export const UpgradePaymentStep = (props: UpgradePaymentStepProps) => {
     return (
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                {/* <MultiCurrencyDropdown 
+                <MultiCurrencyDropdown 
                     id='multiCurrencyDropdownPurchaseStepper'
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.stepperData.price} 
                     callback={props.setSelectedCurrency}
-                /> */}
+                />
             </div>
             <Table id='extraStepperStep2TotalTable' headerBackgroundColor="gray-10" header={step2header()} />
 
