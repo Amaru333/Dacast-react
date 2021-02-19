@@ -9,7 +9,6 @@ export const formatGetPromoPresetOutput = (data: GetPromoPresetOutput): {promos:
     return {
         totalItems: data.totalItems,
         promos: data.promos.map(promo => {
-            console.log(promo)
             return {
                 name: promo.name,
                 id: promo.id,
@@ -101,6 +100,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                 prices: preset.preset.prices,
                 settings: {
                     ...preset.preset.settings,
+                    timezone: null,
                     duration: preset.preset.settings.duration ? {
                         value: preset.preset.settings.duration.value,
                         unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'

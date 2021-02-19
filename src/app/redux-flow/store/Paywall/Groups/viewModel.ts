@@ -43,6 +43,7 @@ export const formatPostPromoGroupInput = (data: GroupPromo): PromoDetails => {
 export const formatPostPromoGroupOutput = (endpointResponse: PromoId, dataReact: GroupPromo): GroupPromo => {
     let formattedData: GroupPromo = {
         ...dataReact,
+        timezone: null,
         id: endpointResponse.id
     }
 

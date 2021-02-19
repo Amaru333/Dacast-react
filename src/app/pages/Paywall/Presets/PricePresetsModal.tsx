@@ -34,7 +34,7 @@ const defaultPreset: Preset = {
 
 export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
     
-    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset)
+    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? {...props.preset, settings: {...props.preset.settings, timezone: null}} : defaultPreset)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {

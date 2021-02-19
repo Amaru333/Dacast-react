@@ -5,7 +5,7 @@ import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { Text } from '../../Typography/Text';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
-import { dateAdd, inputTimeToTs, tsToInputTime, utcOffsetToMin } from "../../../utils/services/date/dateService";
+import { dateAdd, inputTimeToTs, tsToInputTime } from "../../../utils/services/date/dateService";
 import { IconStyle } from "../../../shared/Common/Icon";
 
 
@@ -27,7 +27,7 @@ interface DateTimePickerProps {
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
 
-    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(tsToInputTime(props.defaultTs, props.timezone)*1000) : null ;
+    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(props.isConvertedToUtc ?  tsToInputTime(props.defaultTs, props.timezone)*1000 : props.defaultTs * 1000) : null ;
 
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
     const [day, setDay] = React.useState<number>(defaultTimestamp ? Math.round(new Date(props.defaultTs*1000).setHours(0,0,0,0) / 1000)  : null)

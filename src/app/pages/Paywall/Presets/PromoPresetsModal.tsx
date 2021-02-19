@@ -26,7 +26,6 @@ const defaultPromo: Promo = {
 
 export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; toggle: (b: boolean) => void; promo: Promo}) => {
 
-    console.log(props.promo)
     const [promoPreset, setPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [startDate, setStartDate] = React.useState<number>(promoPreset.startDate);
@@ -57,7 +56,6 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 <Input className='col sm-col-3 col-6 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                {console.log(promoPreset.startDate  )}
                 <DateTimePicker 
                     fullLineTz
                     showTimezone={false}
@@ -86,7 +84,6 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     <DropdownSingle 
                         hasSearch 
                         id='promoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect={null}
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})} 

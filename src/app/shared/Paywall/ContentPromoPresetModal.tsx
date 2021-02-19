@@ -131,12 +131,11 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                         dropdownDefaultSelect={null}
                         className={ClassHalfXsFullMd + ' pr1'}
                         dropdownTitle='Timezone'
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 
-                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.title })} list={discountAppliedDropdownList} 
-                    tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
-                />
+                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.title })} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 mb2'>
                 <Button

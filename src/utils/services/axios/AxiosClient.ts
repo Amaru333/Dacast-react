@@ -46,7 +46,7 @@ export class AxiosClient {
             return newConfig
         }
 
-        if( Math.abs(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime()) / 60000 <= 5 && !this.refreshingToken) {
+        if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() / 60000 <= 5 && !this.refreshingToken) {
             this.refreshingToken = true
             await this.refreshToken().then(() => {
                 this.refreshingToken = false

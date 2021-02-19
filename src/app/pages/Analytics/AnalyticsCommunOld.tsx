@@ -147,7 +147,7 @@ export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>)
 
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: { end: number; start: number }, refreshData: Function }) => {
 
-    const [dates, setDates] = React.useState<{ start: number; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
+    const [dates, setDates] = React.useState<{ start: number; end: number }>({ start: props.defaultDates.start, end: props.defaultDates.end })
     const [selectedPreset, setSelectedPreset] = React.useState<string>('Last 24 Hours')
 
     const renderDatePresets = () => {
