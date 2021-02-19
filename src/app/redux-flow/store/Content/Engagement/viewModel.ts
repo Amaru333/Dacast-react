@@ -94,6 +94,15 @@ export const formatPutContentAdsSettingsInput = (data: {ads: Ad[], contentId: st
     return formattedData
 }
 
+export const formatPutContentAdsSettingsOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: {ads: Ad[]; contentId: string}): {ads: Ad[]; contentId: string; contentType: ContentType} => {
+    let formattedData: {ads: Ad[]; contentId: string; contentType: ContentType} = {
+        ...dataReact,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
 export const formatPostVodBrandImageUrlInput = (contentId: string): PostUploadUrlInput => {
 
     let formattedData: PostUploadUrlInput = {
