@@ -19,8 +19,8 @@ interface ImageModalProps {
     uploadUrl: string; 
     title: string; 
     toggle: () => void; 
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>; 
-    submit: (data: File, uploadUrl: string) => Promise<void>; 
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>; 
+    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>; 
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>; 
     uploadFromVideoAction?: (contentId: string, time: number, imageType: string) => Promise<void>
 }
@@ -94,7 +94,7 @@ export const ImageModal = (props: ImageModalProps) => {
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl).then(() => {
+            props.submit(logoFile, props.uploadUrl, props.contentId, props.contentType).then(() => {
                 setTimeout(() => {
                     props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)

@@ -67,3 +67,11 @@ export interface GetVideoSubtitleUploadUrl {
     languageShortName: string
     convertToUTF8: string
 }
+
+export interface PostUploadImageFromVideoInput {
+    id: string
+    imageType: string
+    payload: {
+        time: number
+    }
+}

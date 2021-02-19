@@ -221,11 +221,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
             await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string) => {
-           await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
-        },
-        deleteFile: async (vodId: string, targetId: string, contentType: string, imageType: string) => {
-            await dispatch(deleteFileAction(vodId, targetId, contentType, imageType))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
+            await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
+         },
+         deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+            await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         generateEncoderKey: async (liveId: string) => {
             await dispatch(generateEncoderKeyAction('live')(liveId))

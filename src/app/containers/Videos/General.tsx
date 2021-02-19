@@ -30,13 +30,13 @@ export interface GeneralComponentProps {
     contentDetails: ContentDetails;
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
     saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string) => Promise<void>;
-    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
-    deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>;
+    deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: ContentType) => Promise<void>;
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => Promise<void>;
     generateEncoderKey?: (liveId: string) => Promise<void>
 }
 const General = (props: GeneralComponentProps) => {
@@ -173,20 +173,20 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
             await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string) => {
-           await dispatch(uploadFileAction({data: data, uploadUrl: uploadUrl}))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
+           await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
         },
         uploadImageFromVideo: async (contentId: string, time: number, imageType: string)  => {
-            await dispatch(uploadImageFromVideoAction(contentId, time, imageType))
+            await dispatch(uploadImageFromVideoAction({id: contentId, time: time, imageType: imageType}))
         },
-        deleteFile: async (contentId: string, targetId: string, contentType: string, imageType: string) => {
-            await dispatch(deleteFileAction(contentId, targetId, contentType, imageType))
+        deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+            await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => {
-            await dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, contentId, contentType))
+        addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => {
+            await dispatch(addSubtitleAction(contentType)({data: data, uploadUrl: uploadUrl, subtitleInfo: subtitleInfo, contentId: contentId}))
         },
         deleteSubtitle: async (targetId: string, contentId: string, fileName: string, contentType: string) => {
             await dispatch(deleteSubtitleAction(targetId, contentId, fileName, contentType))

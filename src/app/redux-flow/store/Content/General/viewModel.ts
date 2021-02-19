@@ -1,8 +1,8 @@
-import { AssetTypeEndpoint, ContentUploadType, PostUploadUrlInput, PostUploadUrlOutput } from "../../../../../DacastSdk/common";
+import { AssetTypeEndpoint, ContentUploadType, DeleteContentImageAssetIdInput, PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from "../../../../../DacastSdk/common";
 import { GetExpoDetailsOutput, PutExpoDetailsInput } from "../../../../../DacastSdk/expo";
 import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from "../../../../../DacastSdk/live";
 import { GetPlaylistDetailsOutput, PutPlaylistDetailsInput } from "../../../../../DacastSdk/playlist";
-import { GetVideoDetailsOutput, PutVideoDetailsInput } from "../../../../../DacastSdk/video";
+import { GetVideoDetailsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from "../../../../../DacastSdk/video";
 import { ContentType } from "../../Common/types";
 import { AssetType, ExpoDetails, LiveDetails, PlaylistDetails, SubtitleInfo, VodDetails } from "./types";
 
@@ -284,6 +284,63 @@ export const formatPostEncoderKeyOutput = (contentType: ContentType) => (endpoin
         contentId: dataReact,
         contentType: contentType
     }
+
+    return formattedData
+}
+
+export const formatPostUploadImageFromVideoInput = (data: {id: string; imageType: string; time: number}): PostUploadImageFromVideoInput => {
+    let formattedData: PostUploadImageFromVideoInput = {
+        id: data.id,
+        imageType: data.imageType.split('-')[1],
+        payload: {
+            time: data.time
+        }
+    }
+
+    return formattedData
+}
+
+export const formatDeleteContentImageAssetInput = (data: {id: string; contentId: string;}): DeleteContentImageAssetIdInput => {
+    let formattedData: DeleteContentImageAssetIdInput = {
+        id: data.contentId,
+        targetId: data.id
+    }
+
+    return formattedData
+}
+
+export const formatDeleteContentImagesAssetOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: {id: string; contentId: string;}): {id: string; contentId: string;} & {contentType: ContentType} => {
+    let formattedData: {id: string; contentId: string;} & {contentType: ContentType} = {
+        ...dataReact,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPutUploadFileOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: {data: File, uploadUrl: string, contentId: string}): {contentId: string} & {contentType: ContentType} => {
+    let formattedData: {contentId: string} & {contentType: ContentType} = {
+        contentId: dataReact.contentId,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPutSubtitleInput = (data: {data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string}): PutUploadFileInput => {
+    let formattedData: PutUploadFileInput = {
+        data: data.data,
+        uploadUrl: data.uploadUrl
+    }
+
+    return formattedData
+}
+
+export const formatPutSubtitleOutput = (contentType: ContentType) => (endpointResponse: null, data: {data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string}): {data: SubtitleInfo, contentId: string} & {contentType: ContentType} => {
+    let formattedData: {data: SubtitleInfo, contentId: string} & {contentType: ContentType} = {
+        contentId: data.contentId, 
+        contentType: contentType, 
+        data: {...data.subtitleInfo, url: data.subtitleInfo.targetID ? `https://universe-files.dacast.com/${data.subtitleInfo.targetID}` : null}}
 
     return formattedData
 }

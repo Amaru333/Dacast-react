@@ -109,3 +109,8 @@ export interface AssetTypeEndpoint {
     targetType?: 'splashscreen' | 'thumbnail' | 'poster'
     assetId?: string
 }
+
+export interface DeleteContentImageAssetIdInput {
+    id: string
+    targetId: string
+}
