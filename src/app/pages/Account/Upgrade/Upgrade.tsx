@@ -158,12 +158,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     return (
         <ScrollContainer>
             <div className='flex relative right mr25'>
-                <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown 
                     id='multiCurrencyDropdownUpgradePage'
                     defaultCurrency={selectedCurrency} 
                     currenciesList={props.planDetails.starterPlan.price} 
                     callback={setSelectedCurrency} 
-                />
+                /> */}
             </div>
             <UpgradePageContainer className='col col-12' isMobile={isMobile}>
                 {

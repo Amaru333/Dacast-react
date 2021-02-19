@@ -192,12 +192,12 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
     return (
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown 
                     id='multiCurrencyDropdownPurchaseStepper'
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.stepperData.price} 
                     callback={props.setSelectedCurrency}
-                />
+                /> */}
             </div>
             <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} />
             <Table id='thirdStepTotal' className='tableOverflow' customClassName=' tableOverflow' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} />

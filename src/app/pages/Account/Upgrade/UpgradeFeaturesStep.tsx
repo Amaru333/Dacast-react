@@ -88,12 +88,12 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
     return (
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown 
                     id='multiCurrencyDropdownPurchaseStepper'
                     defaultCurrency={props.selectedCurrency} 
                     currenciesList={props.stepperData.price} 
                     callback={props.setSelectedCurrency}
-                />
+                /> */}
             </div>
             <Text size={14} weight='reg' color='gray-3'>Add additional Features to your {PlansName[props.stepperData.name]}</Text>
             <Table id='secondStepFeatureTable' headerBackgroundColor="gray-10" body={featuresTableBody()} />
