@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Text } from '../../../../components/Typography/Text';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -45,9 +45,10 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [edited, setEdited] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
-    const countryDropdownList = Object.values(countries).map((item) => {
+    const countryDropdownList = Object.keys(countries).map((item) => {
         let countryItem: DropdownSingleListItem = {
-            title: item.name
+            title: countries[item].name, 
+            data: {code: item}
         }
         return countryItem
     })
@@ -332,8 +333,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
                         <DropdownSingle hasSearch 
                             direction='up'
-                            callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.title)}}
-                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
+                            callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.data.code)}}
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country] ? countries[props.CompanyPageDetails.country].name : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
                             id='countryDropdown' dropdownTitle='Country' 
                             list={countryDropdownList} />
                     </div>

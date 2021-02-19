@@ -1,4 +1,4 @@
-import { GetPlansListOutput, PlanKey, PostAccountPlanInput } from "../../../../../DacastSdk/account";
+import { GetPlansListOutput, PlanCurrencyEndpoint, PlanKey, PostAccountPlanInput } from "../../../../../DacastSdk/account";
 import { ChangePlanData, Plans, upgradeInitialState } from "./types";
 
 export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
@@ -24,7 +24,7 @@ export const formatPostPlanInput = (data: ChangePlanData): PostAccountPlanInput 
     let formattedData: PostAccountPlanInput = {
         planCode: data.code,
         token: data.token,
-        currency: data.currency,
+        currency: data.currency.toUpperCase() as PlanCurrencyEndpoint,
         couponCode: '',
         allowances: data.allowanceCode,
         threeDSecureToken: data.token3Ds ? data.token3Ds : undefined,

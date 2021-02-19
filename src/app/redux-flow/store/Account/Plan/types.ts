@@ -25,9 +25,10 @@ export interface PlaybackProtection {
 }
 
 export interface Extras {
-    code: string;
+    code: BandwidthProductKey;
     quantity: number;
     totalPrice: number;
+    currency: BandwidthProductCurrency;
     datePurchased?: Date;
     token?: string;
     threeDSecureToken?: string
@@ -72,7 +73,7 @@ export type BandWidthProduct = {
     [key in BandwidthProductKey]: Product
 }
 
-export type BandwidthProductCurrency = 'usd' | 'eur' | 'gbp' | 'aud';
+export type BandwidthProductCurrency = 'usd' | 'eur' | 'gbp';
 
 type BandwidthProductPrice = {
     [key in BandwidthProductCurrency]: number

@@ -10,8 +10,7 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import styled from 'styled-components';
 import { BillingPageInfos, PaymentDetails, DefaultPaymentDetails } from '../../redux-flow/store/Account/Plan/types';
 import { Table } from '../../../components/Table/Table';
-import { DropdownSelect } from '../../../components/FormsComponents/Dropdown/DropdownSelect';
-import {countries, Country} from 'countries-list'
+import {countries} from 'countries-list'
 import { StateList, ProvinceList } from '../Common/countryList';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook';
@@ -38,10 +37,8 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
     const [recurlyToken, setRecurlyToken] = React.useState<string>(null)
     const [threeDSecureActionToken, setThreeDSecureActionToken] = React.useState<string>(null)
     const [hideForm, setHideForm] = React.useState<boolean>(false)
-    const [billingCountry, setBillingCountry] = React.useState<string>(null)
     const [recurlyError, setRecurlyError] = React.useState<string>(null)
     const [formData, setFormData] = React.useState<PaymentDetails>(DefaultPaymentDetails)
-    const [formState, setFormState] = React.useState<string>(null)
 
     const countriesArray = Object.values(countries).map(country => country.name)
 
@@ -59,14 +56,6 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
     }
 
     let formRef = React.useRef<HTMLFormElement>(null)
-
-    React.useEffect(() => {
-        setFormData({...formData, country: billingCountry})
-    }, [billingCountry])
-
-    React.useEffect(() => {
-        setFormData({...formData, state: formState})
-    }, [formState])
 
     React.useEffect(() => {
         if(props.setFormValid){
@@ -233,14 +222,26 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                             required={false}
                             indicationLabel='Optional'
                         />
-                        <DropdownSelect dataRecurly="country" className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle="Country" setValue={setBillingCountry}>
-                            <option value="">Select</option>
-                           {countriesArray.sort(compareCountries).map(country => {
-                               return (
-                                <option>{country}</option>
-                               )
-                           })}
-                        </DropdownSelect>
+                        <div>
+                            <Input
+                                data-recurly="country"
+                                id='country'
+                                className={ClassHalfXsFullMd + 'pr1 mb2'}
+                                label="Country"
+                                list='countryList'
+                                autocomplete='off'
+                                onChange={(event) => setFormData({...formData, country: event.currentTarget.value})}
+                                {...handleValidationForm('country', errors)} ref={register({ required: "Required" })}
+                            />
+                            <datalist id='countryList'>
+                            {countriesArray.sort(compareCountries).map(country => {
+                                return (
+                                    <option key={country}>{country}</option>
+                                )
+                            })}
+                            </datalist>
+                        </div>
+
                         <div className="mb2 col col-12">
                         <Input
                             data-recurly="address1"
@@ -274,15 +275,27 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                             
                         />
                         {
-                            (billingCountry === "United States" || billingCountry === "Canada") ?
-                                <DropdownSelect dataRecurly="state" className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2" dropdownTitle="State/Province" setValue={setFormState}>
-                                    <option value="">Select</option>
-                                    {(billingCountry === "United States" ? StateList : ProvinceList).map(state => {
+                            (formData.country === "United States" || formData.country === "Canada") ?
+                                <div>
+                                <Input
+                                    data-recurly="state"
+                                    className='col sm-col-4 col-6 pr1 sm-pl1 xs-mb2'
+                                    label="State/Province"
+                                    id='state'
+                                    list='stateList'
+                                    autocomplete='off'
+                                    required={true}
+                                    onChange={(event) => setFormData({...formData, state: event.currentTarget.value})}
+                                    {...handleValidationForm('state', errors)} ref={register({ required: "Required" })}
+                                />
+                                <datalist id='stateList'className="col sm-col-4 col-6 pr1 sm-pl1 xs-mb2">
+                                    {(formData.country === "United States" ? StateList : ProvinceList).map(state => {
                                         return (
-                                            <option>{state}</option>
+                                            <option key={state}>{state}</option>
                                         )
                                     })}
-                                </DropdownSelect>
+                                </datalist>
+                                </div>
                                 :
                                 <Input
                                     data-recurly="state"
@@ -290,7 +303,8 @@ export const NewPaymentMethodForm = (props: { recurlyFunction: Function; purchas
                                     label="State/Province"
                                     type='text'
                                     indicationLabel='Optional'
-                                    required={false}
+                                    onChange={(event) => setFormData({...formData, state: event.currentTarget.value})}
+                                    {...handleValidationForm('state', errors)} ref={register()}
                                 />
                         }
                         

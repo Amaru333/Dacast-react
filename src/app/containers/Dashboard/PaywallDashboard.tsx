@@ -8,23 +8,7 @@ import { DashboardPaywall } from '../../redux-flow/store/Dashboard/types';
 
 export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {rightSide: boolean; profile: DashboardPaywall }) => {
     var classTopContainer = "col lg-col-6 sm-col-12 "+(props.rightSide?"pl2" : "pr2");
-
     let paywallDataFetching = Number.isNaN(props.profile.balance)
-
-    const handleCurrencySymbol = (currency: string) => {
-        switch(currency) {
-            case 'USD':
-                return '$'
-            case 'AUD':
-                return 'AU$'
-            case 'GBP': 
-                return '£'
-            case 'EUR':
-                return '€'
-            default:
-                return '$'
-        }
-    }
 
     return (
         <section className={classTopContainer}>

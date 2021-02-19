@@ -39,7 +39,7 @@ const Plan = (props: PlanContainerProps) => {
     }
 
     return (
-        props.billingInfos && props.widgetData && props.billingInfos.products ?
+        (props.billingInfos && props.widgetData && props.billingInfos.products) ?
             <PlanPage profile={props.widgetData.generalInfos} plan={props.billingInfos.currentPlan} overage={props.billingInfos.playbackProtection} {...props} />
             : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
