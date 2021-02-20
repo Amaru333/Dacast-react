@@ -1,10 +1,5 @@
 import { ActionTypes, ContentDetails, SubtitleInfo, AssetType } from "./types"
-import { ThunkDispatch } from "redux-thunk"
-import { ApplicationState } from "../.."
-import { showToastNotification } from '../../Toasts'
-import { ContentGeneralServices } from './services'
-import { applyViewModel, parseContentType } from '../../../../utils/utils'
-import { capitalizeFirstLetter } from '../../../../../utils/utils';
+import { applyViewModel } from '../../../../utils/utils'
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
 import { ContentType } from "../../Common/types"
 import { fomatPostExpoAssetUploadOutput, fomatPostLiveAssetUploadOutput, fomatPostPlaylistAssetUploadOutput, fomatPostVodAssetUploadOutput, formatDeleteContentImageAssetInput, formatDeleteContentImagesAssetOutput, formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPostEncoderKeyInput, formatPostEncoderKeyOutput, formatPostExpoAssetUploadUrlInput, formatPostLiveAssetUploadUrlInput, formatPostPlaylistAssetUploadUrlInput, formatPostUploadImageFromVideoInput, formatPostVodAssetUploadUrlInput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutSubtitleInput, formatPutSubtitleOutput, formatPutUploadFileOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
@@ -32,7 +27,7 @@ export interface EditContentSubtitle {
 
 export interface DeleteContentSubtitle {
     type: ActionTypes.DELETE_CONTENT_SUBTITLE;
-    payload: {targetID: string; contentId: string; contentType: string};
+    payload: {id: string; contentId: string; contentType: string};
 }
 
 export interface GetUploadUrl {
@@ -71,7 +66,7 @@ export const getContentDetailsAction = (contentType: ContentType) => {
         case 'expo': 
             return applyViewModel(dacastSdk.getExpoDetails, formatGetContentDetailsInput, formatGetExpoDetailsOutput(contentType), ActionTypes.GET_CONTENT_DETAILS, null, 'Couldn\'t get expo info')
         default:
-            throw new Error('Error applying get content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -86,7 +81,7 @@ export const editContentDetailsAction = (contentType: ContentType) => {
         case 'expo': 
             return applyViewModel(dacastSdk.putExpoDetails, formatPutExpoDetailsInput, formatPutExpoDetailsOutput(contentType), ActionTypes.EDIT_CONTENT_DETAILS, 'Changes saved', 'Couldn\'t save changes')
         default:
-            throw new Error('Error applying get content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -101,7 +96,7 @@ export const getUploadUrlAction = (contentType: ContentType) => {
         case 'expo':
             return applyViewModel(dacastSdk.postUploadUrl, formatPostExpoAssetUploadUrlInput, fomatPostExpoAssetUploadOutput(contentType), ActionTypes.GET_UPLOAD_URL, null, 'Couldn\'t upload file')
         default:
-            throw new Error('Error applying put lock content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -116,7 +111,7 @@ export const uploadFileAction = (contentType: ContentType) => {
         case 'expo':
             return applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, formatPutUploadFileOutput(contentType), ActionTypes.UPLOAD_IMAGE, 'File uploaded', 'Couldn\'t upload file')
         default:
-            throw new Error('Error applying put lock content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -125,7 +120,7 @@ export const generateEncoderKeyAction = (contentType: ContentType) => {
         case 'live': 
             return applyViewModel(dacastSdk.postEncoderKey, formatPostEncoderKeyInput, formatPostEncoderKeyOutput(contentType), ActionTypes.GENERATE_ENCODER_KEY, 'Encoder key generated', 'Couldn\'t generate encoder key')
         default:
-            throw new Error('Error applying put lock content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -142,7 +137,7 @@ export const deleteFileAction = (contentType: ContentType) => {
         case 'expo':
             return applyViewModel(dacastSdk.deleteExpoImageAsset, formatDeleteContentImageAssetInput, formatDeleteContentImagesAssetOutput(contentType), ActionTypes.DELETE_IMAGE, 'Image deleted', 'Couldn\'t delete image')
         default:
-            throw new Error('Error applying put lock content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
@@ -151,24 +146,18 @@ export const addSubtitleAction = (contentType: ContentType) => {
         case 'vod': 
             return applyViewModel(dacastSdk.putUploadFile, formatPutSubtitleInput, formatPutSubtitleOutput(contentType), ActionTypes.ADD_CONTENT_SUBTITLE, 'Subtitle added', 'Couldn\'t add subtitle')
         default:
-            throw new Error('Error applying put lock content view model')
+            throw new Error('Error applying content view model')
     }
 }
 
-
-
-export const deleteSubtitleAction = (contentId: string, targetId: string, fileName: string, contentType: string): ThunkDispatch<Promise<void>, {}, DeleteContentSubtitle> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteContentSubtitle>) => {
-        await ContentGeneralServices.deleteFile(contentId, targetId, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_CONTENT_SUBTITLE, payload: {targetID: targetId, contentId: contentId, contentType: contentType} })
-                dispatch(showToastNotification(`${fileName} has been deleted`, 'fixed', "success"))
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
-                return Promise.reject()
-            })
+export const deleteSubtitleAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.deleteVodImageAsset, formatDeleteContentImageAssetInput, formatDeleteContentImagesAssetOutput(contentType), ActionTypes.DELETE_CONTENT_SUBTITLE, 'Subtitle deleted', 'Couldn\'t delete subtitle')
+        default:
+            throw new Error('Error applying content view model')
     }
 }
+
 
 export type Action = GetContentDetails | EditContentDetails | AddContentSubtitle | EditContentSubtitle | DeleteContentSubtitle | GetUploadUrl | UploadImage | UploadImageFromVideo | DeleteImage | GenerateEncoderKey

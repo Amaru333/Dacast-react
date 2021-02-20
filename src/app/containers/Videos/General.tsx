@@ -35,7 +35,7 @@ export interface GeneralComponentProps {
     deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
-    deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: ContentType) => Promise<void>;
+    deleteSubtitle?: (contentId: string, targetId: string, contentType: ContentType) => Promise<void>;
     addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => Promise<void>;
     generateEncoderKey?: (liveId: string) => Promise<void>
 }
@@ -170,8 +170,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
             await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
-            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension, subtitleInfo: subtitleInfo}))
         },
         uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
            await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
@@ -186,10 +186,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(showToastNotification(text, size, notificationType));
         },
         addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => {
-            await dispatch(addSubtitleAction(contentType)({data: data, uploadUrl: uploadUrl, subtitleInfo: subtitleInfo, contentId: contentId}))
+            await dispatch(addSubtitleAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId, subtitleInfo: subtitleInfo}))
         },
-        deleteSubtitle: async (targetId: string, contentId: string, fileName: string, contentType: string) => {
-            await dispatch(deleteSubtitleAction(targetId, contentId, fileName, contentType))
+        deleteSubtitle: async (contentId: string, targetId: string, contentType: ContentType) => {
+            await dispatch(deleteSubtitleAction(contentType)({id: targetId, contentId: contentId}))
         }
     };
 }

@@ -198,6 +198,23 @@ export const formatPutExpoDetailsOutput = (contentType: ContentType) => (endpoin
 }
 
 export const formatPostVodAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string, subtitleInfo?: SubtitleInfo}): PostUploadUrlInput => {
+    
+    console.log('view model data', data)
+
+    if (data.subtitleInfo) {
+        let formattedData: PostUploadUrlInput = {
+            uploadType: 'subtitle',
+            uploadRequestBody: {
+                vodID: data.contentId,
+                name: data.subtitleInfo.name,
+                languageLongName: data.subtitleInfo.languageLongName,
+                languageShortName: data.subtitleInfo.languageShortName,
+                convertToUTF8: data.subtitleInfo.convertToUTF8
+            }
+        }
+
+        return formattedData
+    }
 
     let formattedData: PostUploadUrlInput = {
         uploadType: data.assetType,
@@ -206,6 +223,7 @@ export const formatPostVodAssetUploadUrlInput = (data: {assetType: ContentUpload
             vodID: data.contentId
         }
     }
+
     return formattedData
 }
 
@@ -216,10 +234,10 @@ export const fomatPostVodAssetUploadOutput = (contentType: ContentType) => (endp
         contentType: contentType
     }
 
-    if(endpointResponse.targetID) {
+    if(endpointResponse.fileID) {
         formattedData.subtitleInfo = {
             ...dataReact.subtitleInfo,
-            targetID: endpointResponse.targetID
+            targetID: endpointResponse.fileID
         }
     }
 

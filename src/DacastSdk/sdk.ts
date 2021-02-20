@@ -11,7 +11,7 @@ import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
 import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
-import { GetVideoDetailsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from './video'
+import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from './video'
 import { GetPlaylistDetailsOutput, PutPlaylistDetailsInput } from './playlist'
 import { GetExpoDetailsOutput, PutExpoDetailsInput } from './expo'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
@@ -195,7 +195,8 @@ export class DacastSdk {
     public putVodDetails = async (input: PutVideoDetailsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id, input.payload)
     public postUploadImageFromVideo = async (input: PostUploadImageFromVideoInput): Promise<void> => await this.axiosClient.post(`/vods/${input.id}/targets/${input.imageType}`, input.payload)
     public deleteVodImageAsset = async (input: DeleteContentImageAssetIdInput): Promise<void> => await this.axiosClient.delete(`/vods/${input.id}/targets/${input.targetId}`)
-
+    public getDownloadVodUrl = async (input: string): Promise<GetDownloadVodUrlOuput> => await this.axiosClient.get('/vods/' + input + '/download-url').then(this.checkExtraData)
+    
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
     public getPlaylistDetails = async (input: string): Promise<GetPlaylistDetailsOutput> => await this.axiosClient.get('/playlists/' + input).then(this.checkExtraData)
