@@ -196,6 +196,7 @@ export class DacastSdk {
     public postUploadImageFromVideo = async (input: PostUploadImageFromVideoInput): Promise<void> => await this.axiosClient.post(`/vods/${input.id}/targets/${input.imageType}`, input.payload)
     public deleteVodImageAsset = async (input: DeleteContentImageAssetIdInput): Promise<void> => await this.axiosClient.delete(`/vods/${input.id}/targets/${input.targetId}`)
     public getDownloadVodUrl = async (input: string): Promise<GetDownloadVodUrlOuput> => await this.axiosClient.get('/vods/' + input + '/download-url').then(this.checkExtraData)
+    public getRestoreVod = async (input: string): Promise<void> => await this.axiosClient.get('/vods/' + input + '/restore')
     
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
