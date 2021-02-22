@@ -47,6 +47,19 @@ export const tsToInputTime = (value: number, timezoneName?: string  ) => {
     return total
 }
 
+
+export const tsToUtc = (value: number, timezoneName?: string  ) => {
+    if(timezoneName == "UTC" || !timezoneName) {
+        var offset = 0;
+    } else {
+        let offsetitem = timezones.find(el => el.tzCode === timezoneName)
+        var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
+    }
+    let total = offset <= 0 ? value + Math.abs(offset) : value - offset
+    return total
+}
+
+
 /**
  * Adds time to a date. Modelled after MySQL DATE_ADD function.
  * Example: dateAdd(new Date(), 'minute', 30)  //returns 30 minutes from now.

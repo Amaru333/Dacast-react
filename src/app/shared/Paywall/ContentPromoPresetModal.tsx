@@ -11,7 +11,7 @@ import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-import { tsToInputTime } from '../../../utils/services/date/dateService';
+import { tsToUtc } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -50,14 +50,14 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const handleSubmit = () => {
         setButtonLoading(true)
         if (savePreset) {
-            props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToInputTime(startDate, newPromoPreset.timezone), endDate:  tsToInputTime(endDate, newPromoPreset.timezone) })
+            props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToUtc(startDate, newPromoPreset.timezone), endDate:  tsToUtc(endDate, newPromoPreset.timezone) })
         }
         const userId = userToken.getUserInfoItem('custom:dacast_user_id')
         props.action(
             {
                 ...newPromoPreset,
-                startDate: tsToInputTime(startDate, newPromoPreset.timezone),
-                endDate: tsToInputTime(endDate, newPromoPreset.timezone),
+                startDate: tsToUtc(startDate, newPromoPreset.timezone),
+                endDate: tsToUtc(endDate, newPromoPreset.timezone),
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
                 assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
