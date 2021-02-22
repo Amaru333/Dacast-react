@@ -109,23 +109,23 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                  <div className='col col-12 sm-col-9 my2'>
                     <Input 
                         className='col col-12 sm-col-7 pr1 xs-no-gutter' 
-                        id='accountNumber' 
+                        id='accountNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.accountNumber : ''} 
                         label='Account Number' 
                         placeholder='Account Number' 
-                        {...handleValidationForm('accountNumber', errors)}
+                        {...handleValidationForm('accountNumberUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('accountNumber', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('accountNumberUS', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-12 sm-col-5 pl1 xs-no-gutter' 
-                        id='routingNumber' 
+                        id='routingNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.routingNumber : ''} 
                         label='Routing Number' 
                         placeholder='Routing Number' 
-                        {...handleValidationForm('routingNumber', errors)}
+                        {...handleValidationForm('routingNumberUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('routingNumber', event.currentTarget.value)}    
+                        onChange={(event) =>  handleChange('routingNumberUS', event.currentTarget.value)}    
                     />
                 </div>
                 
@@ -134,69 +134,69 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         paymentMethodRecipientType === 'Personal' ?
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 xs-no-gutter pr1' 
-                                id='firstName' 
+                                id='firstNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
                                 label="Account Holder's First Name" 
                                 placeholder='First Name' 
-                                {...handleValidationForm('firstName', errors)}
+                                {...handleValidationForm('firstNameUS', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('firstName', event.currentTarget.value)}  
+                                onChange={(event) =>  handleChange('firstNameUS', event.currentTarget.value)}  
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 xs-no-gutter pr1' 
-                                id='firstName' 
+                                id='firstNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
                                 label="Account Holder's First Name" 
                                 placeholder='First Name' 
                                 indicationLabel='Optional'
                                 ref={register()}
-                                onChange={(event) =>  handleChange('firstName', event.currentTarget.value)}                             />
+                                onChange={(event) =>  handleChange('firstNameUS', event.currentTarget.value)}                             />
                     }
                     {
                         paymentMethodRecipientType === 'Personal' ?
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 px1 xs-no-gutter' 
-                                id='lastName' 
+                                id='lastNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
                                 label="Account Holder's Last Name" 
                                 placeholder='Last Name' 
-                                {...handleValidationForm('lastName', errors)}
+                                {...handleValidationForm('lastNameUS', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('lastName', event.currentTarget.value)}     
+                                onChange={(event) =>  handleChange('lastNameUS', event.currentTarget.value)}     
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 px1 xs-no-gutter' 
-                                id='lastName' 
+                                id='lastNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
                                 label="Account Holder's Last Name" 
                                 placeholder='Last Name' 
                                 indicationLabel='Optional'
                                 ref={register()}
-                                onChange={(event) =>  handleChange('lastName', event.currentTarget.value)}     
+                                onChange={(event) =>  handleChange('lastNameUS', event.currentTarget.value)}     
                             /> 
                     }
 
                     {
-                        paymentMethodRecipientType === 'Business' ? 
+                        paymentMethodRecipientType === 'Business' ?
                             <Input 
                                 className='col col-12 sm-col-4 pl1 xs-no-gutter' 
-                                id='accountName' 
+                                id='accountNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                 label='Account Name' 
                                 placeholder='Account Name' 
-                                {...handleValidationForm('accountName', errors)}
+                                {...handleValidationForm('accountNameUS', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('accountNameUS', event.currentTarget.value)} 
                             /> :
                             <Input 
                                 className='col col-12 sm-col-4 pl1 xs-no-gutter' 
-                                id='accountName' 
+                                id='accountNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                 label='Account Name' 
                                 placeholder='Account Name' 
                                 indicationLabel='Optional' 
                                 ref={register()}
-                                onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('accountNameUS', event.currentTarget.value)} 
                             />
                     }
 
@@ -204,55 +204,55 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 <div className='col col-12 sm-col-9 mb2'>
                     <Input 
                         className='col col-12 sm-col-7 xs-no-gutter xs-mb2 pr1' 
-                        id='address' 
+                        id='addressUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.address : ''} 
                         label='Address' 
                         placeholder='Address' 
-                        {...handleValidationForm('address', errors)}
+                        {...handleValidationForm('addressUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('address', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('addressUS', event.currentTarget.value)} 
                     />
                     <Input 
                         className='col col-12 sm-col-5 xs-no-gutter pl1' 
-                        id='addressLine2' 
+                        id='addressLine2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
                         label='Address Line 2' 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}
-                        onChange={(event) =>  handleChange('address2', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('address2US', event.currentTarget.value)}  
                     />
                 </div>
                 <div className='col col-12 sm-col-6 mb2 clearfix'>
                     <Input 
                         className='col col-6 sm-col-4 pr1 xs-mb2' 
-                        id='state' 
+                        id='stateUS' 
                         label='State/Province' 
                         defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
                         placeholder='State/Province' 
-                        {...handleValidationForm('state', errors)}
+                        {...handleValidationForm('stateUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('state', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('stateUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-6 sm-col-4 px1' 
-                        id='town' 
+                        id='townUS' 
                         label='Town/City' 
                         defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
                         placeholder='Town/City' 
-                        {...handleValidationForm('town', errors)}
+                        {...handleValidationForm('townUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('town', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('townUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-12 sm-col-4 xs-no-gutter pl1 mb2' 
-                        id='zipCode' 
+                        id='zipCodeUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.zipCode : ''} 
                         label='Zip/Postal Code' 
                         placeholder='Zip/Postal Code' 
-                        {...handleValidationForm('zipCode', errors)}
+                        {...handleValidationForm('zipCodeUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('zipCodeUS', event.currentTarget.value)}  
                     />
                 </div>
     
@@ -261,67 +261,67 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 <div className='col col-12 my2'>
                     <Input 
                         className='col col-12 sm-col-4' 
-                        id='bankName' 
+                        id='bankNameUS' 
                         label='Bank Name' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankName : ''} 
                         placeholder='Bank Name' 
-                        {...handleValidationForm('bankName', errors)}
+                        {...handleValidationForm('bankNameUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('bankName', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankNameUS', event.currentTarget.value)}  
                     />
                 </div>
                 <div className='col col-12 sm-col-9 mb2'>
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
-                        id='bankAddress' 
-                        defaultValue={paymentMethodData ? paymentMethodData.bankAddress : ''} 
+                        id='bankAddressUS' 
+                        defaultValue={paymentMethodData ? paymentMethodData.bankAddress : ''} International
                         label='Address' 
                         placeholder='Address' 
-                        {...handleValidationForm('bankAddress', errors)}
+                        {...handleValidationForm('bankAddressUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('bankAddress', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankAddressUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                        id='bankAddressLine2' 
+                        id='bankAddressLine2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
                         label='Address Line 2' 
                         indicationLabel='Optional' 
                         placeholder='Address' 
                         ref={register()}
-                        onChange={(event) =>  handleChange('bankAddress2', event.currentTarget.value)} 
+                        onChange={(event) =>  handleChange('bankAddress2US', event.currentTarget.value)} 
                     />
                 </div>
                 <div className='col col-12 sm-col-8 clearfix mb2'>
                     <Input 
                         className='col col-6 sm-col-4 pr1' 
-                        id='bankState' 
+                        id='bankStateUS' 
                         label='State/Province' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankState : ''} 
                         placeholder='State/Province' 
-                        {...handleValidationForm('bankState', errors)}
+                        {...handleValidationForm('bankStateUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('bankState', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankStateUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-6 sm-col-4 px1 xs-mb2' 
-                        id='bankTown'   
+                        id='bankTownUS'   
                         label='Town/City' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankTown : ''} 
                         placeholder='Town/City' 
-                        {...handleValidationForm('bankTown', errors)}
+                        {...handleValidationForm('bankTownUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('bankTown', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankTownUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-12 sm-col-4 xs-no-gutter pl1' 
-                        id='bankZipCode' 
+                        id='bankZipCodeUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankZipCode : ''} 
                         label='Zip/Postal Code' 
                         placeholder='Zip/Postal Code' 
-                        {...handleValidationForm('bankZipCode', errors)}
+                        {...handleValidationForm('bankZipCodeUS', errors)}
                         ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('bankZipCode', event.currentTarget.value)}  
+                        onChange={(event) =>  handleChange('bankZipCodeUS', event.currentTarget.value)}  
                     />
                 </div>
             </div>}
@@ -333,23 +333,23 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         <div className='col col-12 sm-col-11 mt2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' 
-                                id='swift' 
+                                id='swiftInternational' 
                                 defaultValue={paymentMethodData ? paymentMethodData.swift : ''} 
                                 label='SWIFT/BIC' 
                                 placeholder='SWIFT/BIC' 
-                                {...handleValidationForm('swift', errors)}
+                                {...handleValidationForm('swiftInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('swift', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('swiftInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                id='iban' 
+                                id='ibanInternational' 
                                 label='IBAN/Account Number' 
                                 defaultValue={paymentMethodData ? paymentMethodData.iban : ''} 
                                 placeholder='IBAN/Account Number' 
-                                {...handleValidationForm('iban', errors)}
+                                {...handleValidationForm('ibanInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('iban', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('ibanInternational', event.currentTarget.value)} 
                             />
                         </div>
                         <div className='col col-12 sm-col-11 mt2'>
@@ -357,134 +357,134 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 paymentMethodRecipientType === 'Personal' ? 
                                 <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' 
-                                    id='firstName' 
+                                    id='firstNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
                                     label='First Name' 
                                     placeholder='First Name' 
-                                    {...handleValidationForm('firstName', errors)}
+                                    {...handleValidationForm('firstNameInternational', errors)}
                                     ref={register({ required: "Required"})}
-                                    onChange={(event) =>  handleChange('firstName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('firstNameInternational', event.currentTarget.value)} 
                                 /> :
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='firstName' 
+                                    id='firstNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
                                     label='First Name' 
                                     placeholder='First Name' 
                                     indicationLabel='Optional' 
                                     ref={register()}
-                                    onChange={(event) =>  handleChange('firstName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('firstNameInternational', event.currentTarget.value)} 
                                 />
                             }
                             {
                                 paymentMethodRecipientType === 'Personal' ? 
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 xs-mb2 px1' 
-                                    id='lastName' 
+                                    id='lastNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
                                     label='Last Name' 
                                     placeholder='Last Name' 
-                                    {...handleValidationForm('lastName', errors)}
+                                    {...handleValidationForm('lastNameInternational', errors)}
                                     ref={register({ required: "Required"})}
-                                    onChange={(event) =>  handleChange('lastName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('lastNameInternational', event.currentTarget.value)} 
                                 /> :
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='lastName' 
+                                    id='lastNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
                                     label='Last Name' 
                                     placeholder='Last Name' 
                                     indicationLabel='Optional' 
                                     ref={register()}
-                                    onChange={(event) =>  handleChange('lastName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('lastNameInternational', event.currentTarget.value)} 
                                 />
                             }
                             {
                                 paymentMethodRecipientType === 'Business' ? 
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='accountName' 
+                                    id='accountNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                     label='Account Name' 
                                     placeholder='Account Name' 
-                                    {...handleValidationForm('accountName', errors)}
+                                    {...handleValidationForm('accountNameInternational', errors)}
                                     ref={register({ required: "Required"})}
-                                    onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('accountNameInternational', event.currentTarget.value)} 
                                 /> :
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='accountName' 
+                                    id='accountNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                     label='Account Name' 
                                     placeholder='Account Name' 
                                     indicationLabel='Optional' 
                                     ref={register()}
-                                    onChange={(event) =>  handleChange('accountName', event.currentTarget.value)} 
+                                    onChange={(event) =>  handleChange('accountNameInternational', event.currentTarget.value)} 
                                 />
                             }
                         </div>
                         <div className='col col-12 sm-col-11 my2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
-                                id='address' 
+                                id='addressInternational' 
                                 defaultValue={paymentMethodData ? paymentMethodData.address : ''} 
                                 label='Address' 
                                 placeholder='Address' 
-                                {...handleValidationForm('address', errors)}
+                                {...handleValidationForm('addressInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('address', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('addressInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                                id='addressLine2' 
+                                id='addressLine2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
                                 label='Address Line 2' 
                                 indicationLabel='Optional' 
                                 placeholder='Address' 
                                 ref={register()}                            
-                                onChange={(event) => handleChange('address2', event.currentTarget.value)}
+                                onChange={(event) => handleChange('address2International', event.currentTarget.value)}
                             />
                         </div>
                         <div className='col col-12 sm-col-11 mb2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-3 xs-mb2 pr1' 
-                                id='state' 
+                                id='stateInternational' 
                                 label='State/Province' 
                                 defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
                                 placeholder='State/Province' 
-                                {...handleValidationForm('state', errors)}
+                                {...handleValidationForm('stateInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('state', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('stateInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1 xs-mb2' 
-                                id='town' 
+                                id='townInternational' 
                                 label='Town/City' 
                                 defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
                                 placeholder='Town/City' 
-                                {...handleValidationForm('town', errors)}
+                                {...handleValidationForm('townInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('town', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('townInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pr1 pl1' 
-                                id='zipCode' 
+                                id='zipCodeInternational' 
                                 label='Zip/Postal Code' 
                                 defaultValue={paymentMethodData ? paymentMethodData.zipCode : ''} 
                                 placeholder='Zip/Postal Code' 
-                                {...handleValidationForm('zipCode', errors)}
+                                {...handleValidationForm('zipCodeInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('zipCode', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('zipCodeInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-3 pl1' 
-                                id='country' 
+                                id='countryInternational' 
                                 label='Country' 
                                 defaultValue={paymentMethodData ? paymentMethodData.country : ''} 
                                 placeholder='Country' 
-                                {...handleValidationForm('country', errors)}
+                                {...handleValidationForm('countryInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('country', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('countryInternational', event.currentTarget.value)} 
                             />
                         </div>
             
@@ -493,77 +493,77 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         <div className='col col-12 my2'>
                             <Input 
                                 className='col col-12 sm-col-4' 
-                                id='bankName' 
+                                id='bankNameInternational' 
                                 label='Bank Name' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankName : ''} 
                                 placeholder='Bank Name' 
-                                {...handleValidationForm('bankName', errors)}
+                                {...handleValidationForm('bankNameInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankName', event.currentTarget.value)}  
+                                onChange={(event) =>  handleChange('bankNameInternational', event.currentTarget.value)}  
                             />
                         </div>
                         <div className='col col-12 sm-col-11 mb2'>
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
-                                id='bankAddress' 
+                                id='bankAddressInternational' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankAddress : ''} 
                                 label='Address' 
                                 placeholder='Address' 
-                                {...handleValidationForm('bankAddress', errors)}
+                                {...handleValidationForm('bankAddressInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankAddress', event.currentTarget.value)}   
+                                onChange={(event) =>  handleChange('bankAddressInternational', event.currentTarget.value)}   
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                                id='bankAddressLine2' 
+                                id='bankAddressLine2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
                                 label='Address Line 2' 
                                 indicationLabel='Optional' 
                                 placeholder='Address' 
                                 ref={register()}                            
-                                onChange={(event) => handleChange('bankAddress2', event.currentTarget.value)}   
+                                onChange={(event) => handleChange('bankAddress2International', event.currentTarget.value)}   
                             />
                         </div>
                         <div className='col col-12 sm-col-11 clearfix mb2'>
                             <Input 
                                 className='col col-6 sm-col-3 pr1' 
-                                id='bankState' 
+                                id='bankStateInternational' 
                                 label='State/Province'
                                 defaultValue={paymentMethodData ? paymentMethodData.bankState : ''} 
                                 placeholder='State/Province' 
-                                {...handleValidationForm('bankState', errors)}
+                                {...handleValidationForm('bankStateInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankState', event.currentTarget.value)}
+                                onChange={(event) =>  handleChange('bankStateInternational', event.currentTarget.value)}
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pr1 pl1 sx-mb2' 
-                                id='bankTown' 
+                                id='bankTownInternational' 
                                 label='Town/City' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankTown : ''} 
                                 placeholder='Town/City' 
-                                {...handleValidationForm('bankTown', errors)}
+                                {...handleValidationForm('bankTownInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankTown', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('bankTownInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1' 
-                                id='bankZipCode' 
+                                id='bankZipCodeInternational' 
                                 label='Zip/Postal Code' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankZipCode : ''} 
                                 placeholder='Zip/Postal Code' 
-                                {...handleValidationForm('bankZipCode', errors)}
+                                {...handleValidationForm('bankZipCodeInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankZipCode', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('bankZipCodeInternational', event.currentTarget.value)} 
                             />
                             <Input 
                                 className='col col-6 sm-col-3 pl1' 
-                                id='bankCountry' 
+                                id='bankCountryInternational' 
                                 label='Country' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankCountry : ''} 
                                 placeholder='Country' 
-                                {...handleValidationForm('bankCountry', errors)}
+                                {...handleValidationForm('bankCountryInternational', errors)}
                                 ref={register({ required: "Required"})}
-                                onChange={(event) =>  handleChange('bankCountry', event.currentTarget.value)} 
+                                onChange={(event) =>  handleChange('bankCountryInternational', event.currentTarget.value)} 
                             />
                         </div>
                     </div>
