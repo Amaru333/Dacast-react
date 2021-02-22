@@ -170,6 +170,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
 export const formatPostPricePresetOutput = (endpointResponse: PricePresetId, dataReact: Preset): Preset => {
     let formattedData: Preset = {
         ...dataReact,
+        settings: {...dataReact.settings, timezone: null},
         id: endpointResponse.id
     }
 
