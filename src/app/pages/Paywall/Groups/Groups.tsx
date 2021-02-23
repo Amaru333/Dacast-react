@@ -77,6 +77,16 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         setStepperData({...stepperData, secondStep: {...props}})
     }, [props])
 
+    const handlePriceGroupButtonFunction = () => {
+        if(props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0){
+            setStepperData({...stepperData, firststep: defaultPrice});
+            setSelectedGroupPrice(null);
+            setGroupPricesStepperOpened(true)
+        } else {
+            setAccessPaywallGroupsModalOpened(true)
+        }
+    }
+
     const groupPricesTableHeader = () => {
         return {data: [
             {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>},
@@ -92,7 +102,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const emptyGroupPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => handlePriceGroupButtonFunction()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
         ]}
     }
 
