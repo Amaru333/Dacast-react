@@ -16,6 +16,7 @@ import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
 import { GroupDetailsStep } from './GroupDetailsStep';
 import { GroupContentStep } from './GroupContentStep';
+import { AccessPaywallGroupsModal } from './AccessPaywallGroupsModal';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -64,6 +65,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     }
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
+    const [accessPaywallGroupsModalOpened, setAccessPaywallGroupsModalOpened] = React.useState<boolean>(false)
     const [selectedGroupPrice, setSelectedGroupPrice] = React.useState<GroupPrice>(null);
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [stepperLoading, setStepperLoading] = React.useState<boolean>(false)
@@ -149,7 +151,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const emptyGroupPromoTableHeader = () => {
         return {data: [
-            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
+            {cell: props.groupsInfos.prices.packages.length > 0 && <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
         ]}
     }
 
@@ -221,6 +223,9 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     groupPromosModalOpened && <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.packages} />
 
                 }
+            </Modal>
+            <Modal hasClose modalTitle="Access Paywall Groups" opened={accessPaywallGroupsModalOpened} toggle={() => {setAccessPaywallGroupsModalOpened(false)}} >
+                <AccessPaywallGroupsModal />
             </Modal>
 
             {
