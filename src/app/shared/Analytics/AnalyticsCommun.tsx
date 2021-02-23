@@ -53,6 +53,6 @@ export const handleRowIconType = (item: FolderAsset) => {
                         <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                     </div>
         default:
-            return;
+            return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
     }
 }

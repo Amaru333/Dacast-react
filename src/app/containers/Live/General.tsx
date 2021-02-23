@@ -9,7 +9,7 @@ import { useParams, Prompt } from 'react-router-dom';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
-import { ContentDetails, LiveDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, LiveDetails } from '../../redux-flow/store/Content/General/types';
 import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction, generateEncoderKeyAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
@@ -20,11 +20,11 @@ import { GeneralImages } from '../../shared/General/Images';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction } from '../../utils/general';
+import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '../../../shared/MiscStyles';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 import { ContentType } from '../../redux-flow/store/Common/types';
-import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ContentUploadType } from '../../../DacastSdk/common';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
@@ -40,8 +40,6 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
-    const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {

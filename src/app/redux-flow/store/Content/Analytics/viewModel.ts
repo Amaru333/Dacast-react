@@ -1,8 +1,7 @@
-import { valueOf } from '*.png';
-import { element } from 'prop-types';
 import { AudienceAnalyticsState, ContentAnalyticsFinalState } from '.'
 import { DimensionItemType, GetContentAnalyticsInput, GetContentAnalyticsOutput, GetContentAnalyticsResultItemOutput } from '../../../../../DacastSdk/analytics'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils';
+import { dateAdd } from '../../../../../utils/services/date/dateService';
 import { CountriesDetail } from '../../../../constants/CountriesDetails';
 import { ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, TimeRangeAnalytics, WatchAnalyticsState } from './types';
 
@@ -21,7 +20,7 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                 return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
             case 'LAST_MONTH':
             case 'LAST_WEEK':
-                return tsToLocaleDate(value, {timeZone: 'UTC'});
+                return tsToLocaleDate(value);
             case 'CUSTOM':
                 let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
                 if(index >= 0) {
@@ -31,13 +30,13 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
                         } else if(response.results[index].data[0].dimension_type.type === "MONTH") {
                             return tsToLocaleDate(value, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                         } else {
-                            return tsToLocaleDate(value, {timeZone: 'UTC'});
+                            return tsToLocaleDate(value);
                         }
                     } else {
-                        return tsToLocaleDate(value, {timeZone: 'UTC'});
+                        return tsToLocaleDate(value);
                     }
                 } else {
-                    return tsToLocaleDate(value, {timeZone: 'UTC'});
+                    return tsToLocaleDate(value);
                 }
             case 'LAST_5_MINUTES':
             case 'LAST_24_HOURS':
@@ -50,34 +49,6 @@ export const formatGetContentAnalyticsOutput = (response: GetContentAnalyticsOut
             case 'LAST_90_MINUTES':
                 return tsToLocaleDate(value, { hour: '2-digit', timeZone: 'UTC' });
             }
-    }
-
-    /**
-     * Adds time to a date. Modelled after MySQL DATE_ADD function.
-     * Example: dateAdd(new Date(), 'minute', 30)  //returns 30 minutes from now.
-     * https://stackoverflow.com/a/1214753/18511
-     * 
-     * @param date  Date to start with
-     * @param interval  One of: year, quarter, month, week, day, hour, minute, second
-     * @param units  Number of units of the given interval to add.
-     */
-    function dateAdd(date: Date, interval: 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second', units: number) {
-        if (!(date instanceof Date))
-            return undefined;
-        var ret = new Date(date); //don't change original date
-        var checkRollover = function () { if (ret.getDate() != date.getDate()) ret.setDate(0); };
-        switch (String(interval).toLowerCase()) {
-            case 'year': ret.setFullYear(ret.getFullYear() + units); checkRollover(); break;
-            case 'quarter': ret.setMonth(ret.getMonth() + 3 * units); checkRollover(); break;
-            case 'month': ret.setMonth(ret.getMonth() + units); checkRollover(); break;
-            case 'week': ret.setDate(ret.getDate() + 7 * units); break;
-            case 'day': ret.setDate(ret.getDate() + units); break;
-            case 'hour': ret.setTime(ret.getTime() + units * 3600000); break;
-            case 'minute': ret.setTime(ret.getTime() + units * 60000); break;
-            case 'second': ret.setTime(ret.getTime() + units * 1000); break;
-            default: ret = undefined; break;
-        }
-        return ret;
     }
 
     const getLabels = (startDate: Date, stopDate: Date, type: DimensionItemType) => {

@@ -3,16 +3,15 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../..//components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../..//components/FormsComponents/Button/Button';
 import { DropdownSingleListItem } from '../../..//components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../..//components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Text } from '../../..//components/Typography/Text';
 import { Promo } from '../../redux-flow/store/Paywall/Presets/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import { ClassHalfXsFullMd } from '../General/GeneralStyle';
 import { userToken } from '../../utils/services/token/tokenService';
-import { availableStartDropdownList, availableEndDropdownList, timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
+import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-var moment = require('moment-timezone');
+import { tsToUtc } from '../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -22,7 +21,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: moment.tz.guess(),
+    timezone: null,
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
@@ -51,14 +50,14 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
     const handleSubmit = () => {
         setButtonLoading(true)
         if (savePreset) {
-            props.savePresetGlobally({ ...newPromoPreset, startDate: startDate, endDate: endDate })
+            props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToUtc(startDate, newPromoPreset.timezone), endDate:  tsToUtc(endDate, newPromoPreset.timezone) })
         }
         const userId = userToken.getUserInfoItem('custom:dacast_user_id')
         props.action(
             {
                 ...newPromoPreset,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: tsToUtc(startDate, newPromoPreset.timezone),
+                endDate: tsToUtc(endDate, newPromoPreset.timezone),
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
                 assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
@@ -105,7 +104,6 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                 <DateTimePicker
                     fullLineTz
                     defaultTs={startDate}
-                    timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
                     id="startDate"
@@ -117,7 +115,6 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     fullLineTz
                     minDate={startDate}
                     defaultTs={endDate}
-                    timezone={newPromoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
                     id="endDate"
@@ -131,9 +128,10 @@ export const ContentPromoPresetsModal = (props: { contentType: string; contentId
                     <DropdownSingle
                         hasSearch
                         id='newPromoPresetTimezoneDropdown'
-                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
+                        dropdownDefaultSelect={null}
                         className={ClassHalfXsFullMd + ' pr1'}
                         dropdownTitle='Timezone'
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 

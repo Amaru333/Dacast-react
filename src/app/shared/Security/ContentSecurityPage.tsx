@@ -205,7 +205,6 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <div className='col col-12 clearfix'>
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                         
                         <div className='col col-12 mb2 flex items-end'>
                             <DateTimePicker 
                                 dropdownTitle="Available"

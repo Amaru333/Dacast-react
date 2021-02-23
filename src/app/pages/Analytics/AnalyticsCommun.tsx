@@ -6,12 +6,8 @@ import { Card } from '../../../components/Card/Card';
 import { Text } from '../../../components/Typography/Text';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import LeafletMap from '../../../components/Analytics/LeafletMap';
-import { DateRangePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateRangePickerWrapper';
-import { presets } from '../../constants/DatepickerPresets';
-import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import ReactTable from 'react-table';
-import moment from 'moment'
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
@@ -142,45 +138,6 @@ export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>)
             <IconStyle className="mt2" coloricon="red" fontSize='large' >warning</IconStyle>
             <Text size={16} weight="med" >Something went wrong</Text>
             <Text size={16} weight="reg" >We are unable to display this report.</Text>
-        </div>
-    )
-}
-
-export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: { end: number; start: number }, refreshData: Function }) => {
-
-    const [dates, setDates] = React.useState<{ start: any; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
-
-    const formateDateFromDatepicker = (dates: { startDate: any; endDate: any }) => {
-        return { startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x') }
-    }
-
-    const renderDatePresets = () => {
-        return presets ? (
-            <div>
-                {presets.map(({ text, start, end }) => {
-                    return (
-                        <Button
-                            key={text}
-                            className='ml1 mb2'
-                            typeButton='secondary'
-                            buttonColor='blue'
-                            sizeButton='small'
-                            onClick={() => setDates({ start, end })}
-                        >
-                            {text}
-                        </Button>
-                    );
-                })}
-            </div>
-        )
-            : null;
-    }
-
-    return (
-        <div className="col col-12 mb25 clearfix">
-            {renderDatePresets()}
-            <DateRangePickerWrapper disabled dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" presets={presets} />
-            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
         </div>
     )
 }

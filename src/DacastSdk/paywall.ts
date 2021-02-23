@@ -51,11 +51,11 @@ export interface PriceEndpoints {
 
 export interface PriceSettingsEndpoints {
     duration?: {
-        value: number; 
+        value: number;
         unit: string;
     }
     recurrence?: {
-        unit: string; 
+        unit: string;
         value?: number
     }
     startDate?: number;
@@ -90,6 +90,7 @@ export interface PricePackageDetails {
     name: string;
     prices: PricePackageInfo[]
     contents: string[];
+    pages: number;
 }
 
 export interface PricePackageId {
@@ -101,6 +102,10 @@ export type PricePackage = PricePackageDetails & PricePackageId
 export interface GetPricePackageOutput {
     packages: PricePackage[];
     total: number;
+}
+
+export interface GetPricePackageContentsOutput {
+    contents: string[];
 }
 
 export interface PostPricePackageOutput {

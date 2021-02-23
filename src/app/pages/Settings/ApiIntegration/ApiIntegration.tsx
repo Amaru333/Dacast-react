@@ -11,7 +11,6 @@ import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ButtonContainer, ButtonStyle } from "../Embed/EmbedSettings";
 import styled from "styled-components";
 import { ApiKeysForm, EncoderKeysForm, WebHooksForm, S3KeysForm } from './ModalsFormsKeys';
-import { DateTime } from 'luxon';
 import { Toggle } from '../../../../components/Toggle/toggle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
@@ -90,7 +89,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.clientId}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
-                        <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction right" key={key + value.clientId}>
                             <ActionIcon id={"deleteTooltip" + key}>
                                 <IconStyle>delete</IconStyle>
@@ -127,7 +126,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     data: [
                         <Text key={key + value.created} size={14} weight="reg" color="gray-1">{value.encoder}</Text>,
                         <Text key={key + value.created} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
-                        <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction" key={key + value.created}>
                             <ActionIcon id={"deleteEncoderTooltip" + key}>
                                 <IconStyle>delete</IconStyle>
@@ -194,8 +193,8 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 return {
                     data: [
                         <Text key={key + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
-                        <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created, DateTime.DATETIME_SHORT)}</Text>,
-                        <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{Date.now() > value.expires ? <Label label="Expired" size={14} weight="reg" color="red" backgroundColor="red20" /> : tsToLocaleDate(value.expires, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={key + value.created} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
+                        <Text key={key + value.expires} size={14} weight="reg" color="gray-1">{Date.now() > value.expires ? <Label label="Expired" size={14} weight="reg" color="red" backgroundColor="red20" /> : tsToLocaleDate(value.expires)}</Text>,
                         <IconContainer className="iconAction right" key={key + "buttonEdit"}>
                             <ActionIcon >
                                 <IconStyle>get_app</IconStyle>

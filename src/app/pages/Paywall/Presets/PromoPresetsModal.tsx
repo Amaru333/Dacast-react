@@ -2,14 +2,13 @@ import React from 'react';
 import {Input} from '../../../../components/FormsComponents/Input/Input';
 import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Text } from '../../../../components/Typography/Text';
 import { Promo } from '../../../redux-flow/store/Paywall/Presets/types';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { availableStartDropdownList, availableEndDropdownList, timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
+import { timezoneDropdownList, discountAppliedDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-var moment = require('moment-timezone');
+import { tsToUtc } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: Promo = {
     id: '-1',
@@ -19,7 +18,7 @@ const defaultPromo: Promo = {
     limit: NaN,
     startDate: 0,
     endDate: 0,
-    timezone: moment.tz.guess(),
+    timezone: null,
     discountApplied: 'Once',
     assignedGroupIds: [],
     assignedContentIds: []
@@ -39,8 +38,8 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({...promoPreset, startDate: startDate, endDate: endDate})
-        .then(() => {
+        props.action({...promoPreset, startDate: tsToUtc(startDate, promoPreset.timezone), endDate:  tsToUtc(endDate, promoPreset.timezone)})
+        .then(() => {   
             props.toggle(false)
             setButtonLoading(false)
         }).catch(() => setButtonLoading(false))
@@ -61,7 +60,6 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     fullLineTz
                     showTimezone={false}
                     defaultTs={promoPreset.startDate}
-                    timezone={promoPreset.timezone}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
                     id="startDate"
@@ -69,11 +67,11 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 /> 
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DateTimePicker 
+                <DateTimePicker
+                    fullLineTz
                     showTimezone={false}
                     minDate={startDate}
                     defaultTs={promoPreset.endDate}
-                    timezone={promoPreset.timezone}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
                     id="endDate"
@@ -86,11 +84,12 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     <DropdownSingle 
                         hasSearch 
                         id='promoPresetTimezoneDropdown' 
-                        dropdownDefaultSelect={moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'}
                         className={ClassHalfXsFullMd + ' pr1'}  
                         dropdownTitle='Timezone' 
                         callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})} 
-                        list={timezoneDropdownList} />
+                        list={timezoneDropdownList} 
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
+                    />
                 }
                <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={promoPreset.discountApplied} className={ClassHalfXsFullMd + ' pl1'} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, discountApplied: item.title})} list={discountAppliedDropdownList} />
             </div>

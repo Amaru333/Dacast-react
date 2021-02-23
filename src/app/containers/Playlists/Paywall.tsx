@@ -17,8 +17,6 @@ import { Action, createContentPricePresetAction, saveContentPricePresetAction, d
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
-var moment = require('moment-timezone');
-
 const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
 
     let { playlistId } = useParams()
@@ -89,7 +87,7 @@ const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
                 limit: NaN,
                 startDate: null,
                 endDate: null,
-                timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
+                timezone: null,
                 discountApplied: 'Once',
                 assignedGroupIds: [],
                 assignedContentIds: []

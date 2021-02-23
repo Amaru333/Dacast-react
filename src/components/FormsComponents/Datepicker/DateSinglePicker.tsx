@@ -26,8 +26,9 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
 
+
     const [state, setState] = useState<OnDatesChangeProps>({
-        startDate: props.defaultStartDate ? props.defaultStartDate : null,
+        startDate: props.defaultStartDate && props.defaultStartDate.getTime() > 0 ? props.defaultStartDate : null,
         endDate: null,
         focusedInput: START_DATE
     });
@@ -35,7 +36,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
     useOutsideAlerter(datepickerRef, () => {
         setIsOpened(false)
         if(props.callback) {
-            props.callback(state.startDate.toLocaleDateString(), state.startDate.setUTCMilliseconds)
+            props.callback(state.startDate)
         }
     });
 
@@ -43,6 +44,10 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
         const tempData = {...data};
         tempData.endDate = tempData.startDate
         setState({ ...tempData, focusedInput: START_DATE });
+        if(props.callback) {
+            props.callback(tempData.startDate)
+        }
+        setIsOpened(false)
     }
 
     const {

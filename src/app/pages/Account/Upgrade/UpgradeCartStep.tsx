@@ -12,6 +12,7 @@ import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { calcTotalFeatures } from '../../../utils/utils';
+import { dateAdd } from '../../../../utils/services/date/dateService';
 
 interface UpgradeCartStepProps { 
     stepperData: Plan; 
@@ -24,7 +25,6 @@ interface UpgradeCartStepProps {
 }
 
 export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
-    var moment = require('moment')
     if(props.stepperData.name.indexOf('scale') !== -1) {
         segmentService.track('Upgrade Form Completed', {
             action: 'Features Form Submitted',
@@ -141,7 +141,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
                 },
                 {
                     data: [
-                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {moment().add(3, 'months').format('DD MMMM YYYY')} </Text>,
+                        <Text key="cartTableBilled" size={14} weight="reg" color="gray-1">Monthly from {dateAdd(new Date(), 'month', 3).toLocaleDateString()} </Text>,
                         <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="reg" color="gray-1">{props.stepperData.privilegesTotal ? currencySymbol + ((planPrice) + (totalFeatures)) : currencySymbol + (planPrice)}</Text>
                     ]
                 }

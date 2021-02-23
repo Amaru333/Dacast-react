@@ -11,6 +11,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
+import { axiosClient } from '../../../utils/services/axios/axiosClient';
 
 export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -19,6 +20,8 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<FolderAsset[]>([])
     const [checkedContents, setCheckedContents] = React.useState<FolderAsset[]>([])
     const [searchString, setSearchString] = React.useState<string>(null)
+    const [folderData, setFolderData] = React.useState<FolderAsset[]>([])
+    const [groupContents, setGroupContents] = React.useState<string[]>(props.stepperData.firststep.contents)
 
     React.useEffect(() => {
         props.setStepValidated(selectedItems.length > 0)
@@ -26,22 +29,63 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
 
     let userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
-    const DEFAULT_QS = 'status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist'
+    const fetchFolderData = async (tempArray: FolderAsset[]) => {
 
+        for(let page = 1; page <= 3; page++) {
+            const DEFAULT_QS = `?status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
+
+            await axiosClient.get('/search/content' + (DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))).then((response) => {
+                let editedResults = response.data.data.results && response.data.data.results.map((item) => {
+                    return {
+                        ...item,
+                        objectID: item.path ? item.objectID : item.objectID.split('_')[1],
+                        title: item.name ? item.name : item.title,
+                        type: item.path ? 'folder' : item.type
+
+                    }
+                })
+                editedResults && tempArray.push(...editedResults)
+            })
+        }
+    }
+
+    const fetchGroupContents = async (tempArray: string[]) => {
+        for(let page = 2; page <= props.stepperData.firststep.pages; page++)
+         await axiosClient.get(`/paywall/prices/groups/${props.stepperData.firststep.id}?page=${page}`).then((response)=> {
+            response.data.data.contents && tempArray.push(...response.data.data.contents)
+        })
+
+    }
+        
     React.useEffect(() => {
-        props.stepperData.secondStep.getFolderContent(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+
+        const tempArray: FolderAsset[] = []
+        
+        fetchFolderData(tempArray).then(() => {
+            setFolderData(tempArray)
+        })
+
     }, [selectedFolder, searchString])
 
     React.useEffect(() => {
-        if(props.stepperData.secondStep.folderData.requestedContent.results && !selectedFolder && !searchString) {
-            setSelectedItems(props.stepperData.secondStep.folderData.requestedContent.results.filter((content) => {
-                return props.stepperData.firststep.contents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' +  content.objectID)
+        const tempArray: string[] = groupContents
+
+        fetchGroupContents(tempArray).then(() => {
+            setGroupContents(tempArray)
+        })
+    }, [])
+
+    React.useEffect(() => {
+        if(folderData && !selectedFolder && !searchString) {
+            setSelectedItems(folderData.filter((content) => {
+                return groupContents.includes(userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }))
         }
-    }, [props.stepperData.secondStep.folderData.requestedContent.results])
+    }, [folderData, groupContents])
 
     React.useEffect(() => {
         if(selectedItems && selectedItems.length > 0) {
+            
             props.updateStepperData({...props.stepperData, firststep: {...props.stepperData.firststep, contents: selectedItems}})
         }
     }, [selectedItems])
@@ -86,15 +130,15 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     }
 
     const renderContentsList = () => {
-        if(props.stepperData.secondStep.folderData.requestedContent) {
-            return props.stepperData.secondStep.folderData.requestedContent.results.map((row) => {
+        if(folderData) {
+            return folderData.map((row) => {
                 if (row.type === "playlist" || selectedItems.includes(row)) {
                     return;
                 }
                 return (
                     <ItemSetupRow className='col col-12 flex items-center p2 pointer'
                         selected={checkedContents.includes(row)}
-                        onDoubleClick={() => { row.type === "folder" ? handleNavigateToFolder(row.title) : null }}
+                        onDoubleClick={() => { !row.type ? handleNavigateToFolder(row.title) : null }}
                     >
                         {row.type !== "folder" &&
                             <InputCheckbox className='mr2' id={row.objectID + row.type + 'InputCheckbox'} key={'foldersTableInputCheckbox' + row.objectID}
@@ -104,7 +148,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                             />
                         }
                         {handleRowIconType(row)}
-                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.title}</Text>
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.type ? row.title : row.name}</Text>
                         {
                             row.type === "folder" &&
                                 <div className="flex-auto justify-end">

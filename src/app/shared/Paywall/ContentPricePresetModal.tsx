@@ -11,8 +11,6 @@ import styled from 'styled-components';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 
-var moment = require('moment-timezone');
-
 const pricesList = [
     {
         value: NaN,
@@ -30,7 +28,7 @@ const defaultPreset: Preset = {
         duration: { value: NaN, unit: 'Hours' },
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: moment.tz.guess(),
+        timezone: null,
         startDate: 0,
     }
 }
@@ -179,6 +177,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={newPricePreset.settings.startDate}

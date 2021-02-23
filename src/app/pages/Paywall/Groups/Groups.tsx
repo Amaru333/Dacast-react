@@ -16,11 +16,11 @@ import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
 import { GroupDetailsStep } from './GroupDetailsStep';
 import { GroupContentStep } from './GroupContentStep';
-var moment = require('moment-timezone')
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
     getFolderContent: (path: string) => Promise<void>;
+    getGroupPriceContents: (path: string) => Promise<void>;
 }
 
 export interface GroupStepperDataCreate {
@@ -43,7 +43,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: moment.tz.guess(),
+            timezone: null,
             startDate: 0,
             type: 'Pay Per View',
         },
@@ -58,7 +58,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
             startMethod: 'Upon Purchase',
-            timezone: moment.tz.guess(),
+            timezone: null,
             startDate: 0,
             type: 'Pay Per View',
         } 

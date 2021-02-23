@@ -22,7 +22,6 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
 import { handleFeatures } from '../../shared/Common/Features'
-import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/services/folder/folderService'
 import { useHistory } from 'react-router'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
@@ -375,7 +374,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         </TitleContainer>
                         ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                        <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' || row.status === 'restored' ? 'green' : 'red'} backgroundColor={row.status === 'online' || row.status === 'restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
