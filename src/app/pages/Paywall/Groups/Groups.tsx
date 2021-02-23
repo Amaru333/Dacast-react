@@ -20,6 +20,7 @@ import { GroupContentStep } from './GroupContentStep';
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
     getFolderContent: (path: string) => Promise<void>;
+    getGroupPriceContents: (path: string) => Promise<void>;
 }
 
 export interface GroupStepperDataCreate {
