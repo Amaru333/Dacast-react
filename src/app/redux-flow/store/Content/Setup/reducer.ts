@@ -20,7 +20,7 @@ const reducer: Reducer<ContentSetupState> = (state = contentDefaultState, action
                 ...state,
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
-                    [action.payload.contentId]: {
+                    [action.payload.data.id]: {
                         ...action.payload.data
                     }
                 }
