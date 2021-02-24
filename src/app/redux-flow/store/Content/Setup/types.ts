@@ -5,23 +5,24 @@ export enum ActionTypes {
 }
 
 export interface Content {
-    contentType: 'vod' | 'live';
+    'content-type': 'vod' | 'live';
     title: string;
     thumbnailURL: string;
-    id: string
+    'vod-id': string;
+    'live-channel-id': string;
+    id?: string
 }
 
-export type ContentSelectorType = 'content' | 'folder';
-
-export type SetupSortType = "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc"
+export type ContentSelector = 'content' | 'folder';
 
 export interface ContentSetupObject {
     contentList: Content[];
     folderId: string;
     id: string;
     maxItems: number;
-    type: ContentSelectorType;
-    sortType: SetupSortType;
+    expoType?: ContentSelector;
+    playlistType?: ContentSelector;
+    sortType: "custom" | "A-to-Z" | "Z-to-A" | "date-desc"| "date-asc";
     title: string;
 }
 

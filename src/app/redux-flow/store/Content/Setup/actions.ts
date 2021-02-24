@@ -1,39 +1,45 @@
-import { ActionTypes, ContentSetupObject} from "./types";
-import { applyViewModel } from '../../../../utils/utils';
-import { ContentType } from "../../Common/types";
-import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
-import { formatGetContentSetupInput, formatGetExpoSetupOutput, formatGetPlaylistSetupOutput, formatPutContentSetupOutput, formatPutExpoSetupInput, formatPutPlaylistSetupInput } from "./viewModel";
+import { ActionTypes, ContentSetupState, ContentSetupObject} from "./types";
+import { ThunkDispatch } from "redux-thunk";
+import { ApplicationState } from "../..";
+import { showToastNotification } from '../../Toasts';
+import { ContentSetupServices } from './services';
+import { parseContentType } from '../../../../utils/utils';
 
 export interface GetContentSetup {
     type: ActionTypes.GET_CONTENT_SETUP;
-    payload: {contentId: ContentType; contentType: string; data: ContentSetupObject};
+    payload: {contentId: string; contentType: string; data: ContentSetupObject};
 }
 
 export interface PostContentSetup {
     type: ActionTypes.POST_CONTENT_SETUP;
-    payload:  {contentType: ContentType; data: ContentSetupObject};
+    payload:  {contentId: string; contentType: string; data: ContentSetupObject};
 }
 
-export const getContentSetupAction = (contentType: ContentType) => {
-    switch(contentType) {
-        case 'playlist': 
-            return applyViewModel(dacastSdk.getPlaylistSetup, formatGetContentSetupInput, formatGetPlaylistSetupOutput(contentType), ActionTypes.GET_CONTENT_SETUP, null, 'Couldn\'t get playlist setup')
-        case 'expo':
-            return applyViewModel(dacastSdk.getExpoSetup, formatGetContentSetupInput, formatGetExpoSetupOutput(contentType), ActionTypes.GET_CONTENT_SETUP, null, 'Couldn\'t get expo setup')
-        default:
-            throw new Error('Error applying put lock content view model')
-    }
+export const getContentSetupAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentSetup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentSetup>) => {
+        await ContentSetupServices.getContentSetupAction(contentId, parseContentType(contentType))
+            .then(response => {
+                dispatch({ type: ActionTypes.GET_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: contentType == "expo" ? response.data :  response.data.data} });
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
+            })
+    };
 }
 
-export const postContentSetupAction = (contentType: ContentType) => {
-    switch(contentType) {
-        case 'playlist': 
-            return applyViewModel(dacastSdk.putPlaylistSetup, formatPutPlaylistSetupInput, formatPutContentSetupOutput(contentType), ActionTypes.POST_CONTENT_SETUP, 'Changes saved', 'Couldn\'t save changes')
-        case 'expo':
-            return applyViewModel(dacastSdk.putExpoSetup, formatPutExpoSetupInput, formatPutContentSetupOutput(contentType), ActionTypes.GET_CONTENT_SETUP, 'Changes saved', 'Couldn\'t save changes')
-        default:
-            throw new Error('Error applying put lock content view model')
-    }
+export const postContentSetupAction = (data: ContentSetupObject, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, PostContentSetup> => {
+    return async (dispatch: ThunkDispatch<ApplicationState, {}, PostContentSetup>) => {
+        await ContentSetupServices.postContentSetupAction(data, contentId, parseContentType(contentType))
+            .then(response => {
+                dispatch({ type: ActionTypes.POST_CONTENT_SETUP, payload: {contentId: contentId, contentType: contentType, data: data} });
+                dispatch(showToastNotification("Content saved", 'fixed', "success"));
+            })
+            .catch(() => {
+                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
+                return Promise.reject()
+            })
+    };
 }
 
 export type Action = GetContentSetup | PostContentSetup

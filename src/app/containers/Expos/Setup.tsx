@@ -4,28 +4,26 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { Action, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FolderAsset, FoldersInfos, SearchResult } from '../../redux-flow/store/Folders/types';
+import { FoldersInfos, SearchResult } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams } from 'react-router-dom';
 import { ExposTabs } from './ExposTabs';
 import { getContentSetupAction, postContentSetupAction } from '../../redux-flow/store/Content/Setup/actions';
-import { ContentSetupState, ContentSetupObject, Content, ContentSelectorType } from '../../redux-flow/store/Content/Setup/types';
-import { segmentService } from '../../utils/services/segment/segmentService';
-import { removePrefix } from '../../utils/utils';
-import { ContentSelector, SortSettingsContentSelector } from '../../../components/ContentSelector/ContentSelector';
-import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentSetupState, ContentSetupObject } from '../../redux-flow/store/Content/Setup/types';
+import { SetupPage } from '../../pages/Expos/Setup';
 
 export interface ExposSetupComponentProps {
     folderData: FoldersInfos;
+    contentData: ContentSetupObject;
     contentDataState: ContentSetupState;
     getContentSetup: (contentId: string, contentType: string) => Promise<void>;
     getFolderContent: (folderPath: string) => Promise<void>;
-    saveContentSetup: (data: ContentSetupObject, contentType: string) => Promise<void>;
+    saveContentSetup: (data: ContentSetupObject, contentId: string, contentType: string) => Promise<void>;
 }
 
 const ExposSetup = (props: ExposSetupComponentProps) => {
 
-    let { exposId } = useParams<{exposId: string}>()
+    let { exposId } = useParams()
     
     React.useEffect(() => {
         props.getContentSetup(exposId, 'expo')
@@ -37,69 +35,12 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
             wait()
         }
     }, [])
-
-    const formateData: FolderAsset[] = props.contentDataState['expo'] && props.contentDataState['expo'][exposId] && props.contentDataState['expo'][exposId].contentList ? props.contentDataState['expo'][exposId].contentList.map(item =>{
-        return {
-            ownerID: "",
-            objectID: item['id'],
-            title: item.title,
-            thumbnail: item.thumbnailURL,
-            type: item.contentType,
-            createdAt: 0,
-            duration: '',
-            featuresList: {},
-            status: 'online'
-        }
-    }) : [];
-    
-    const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
-
-    const handleSave = (items: FolderAsset[], selectedTab: ContentSelectorType, selectedFolderId: string, sortSettings: SortSettingsContentSelector) => {
-        setSaveLoading(true);
-        let newContent = items.map((item: FolderAsset): Content => {
-            return {
-                contentType: (item.type === 'channel'|| item.type === 'live') ? 'live' : 'vod',
-                id: removePrefix(item.objectID),
-                title: item.title,
-                thumbnailURL: item.thumbnail
-            }
-        })
-        let newData: ContentSetupObject = {...props.contentDataState['expo'][exposId]};
-        newData.contentList = newContent;
-        newData.folderId = selectedFolderId ? selectedFolderId : undefined ;
-        newData.type = selectedTab ;
-        newData.sortType = sortSettings.value !== 'none' ? sortSettings.value : 'custom';
-        newData.id = exposId;
-        props.saveContentSetup(newData, 'expo')
-        .then(() => {
-            setSaveLoading(false)
-            segmentService.track('Expo Created', {
-                action: 'Setup Expo',
-                'expo_id': exposId, 
-                step: 2,
-            })  
-        })
-        .catch(() => setSaveLoading(false))
-    }
-
-    
     return (
         <>
             <ExposTabs exposId={exposId} />
             { (props.folderData && props.contentDataState['expo'] && props.contentDataState['expo'][exposId]) ? 
                 <div className='flex flex-column'>
-                    <ContentSelector 
-                        showSort={true}
-                        loading={saveLoading}
-                        showFolders={true}
-                        folderId={props.contentDataState['expo'][exposId].folderId} 
-                        folderData={props.folderData}
-                        type={props.contentDataState['expo'][exposId].type} 
-                        selectedItems={formateData} 
-                        getFolderContent={props.getFolderContent} 
-                        title={props.contentDataState['expo'][exposId].title} 
-                        callback={handleSave} 
-                    />
+                    <SetupPage {...props}  contentData={props.contentDataState['expo'][exposId]} contentId={exposId} contentType='expo'/>
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
@@ -117,14 +58,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentSetup: async (contentId: string, contentType: ContentType) => {
-            await dispatch(getContentSetupAction(contentType)(contentId))
+        getContentSetup: async (contentId: string, contentType: string) => {
+            await dispatch(getContentSetupAction(contentId, contentType))
         },
         getFolderContent: async (folderPath: string, callback?: (data: SearchResult) => void) => {
             await dispatch(getFolderContentAction(folderPath, callback));
         },
-        saveContentSetup: async (data: ContentSetupObject, contentType: ContentType) => {
-            await dispatch(postContentSetupAction(contentType)(data))
+        saveContentSetup: async (data: ContentSetupObject, contentId: string, contentType: string) => {
+            await dispatch(postContentSetupAction(data, contentId, contentType))
         }
     };
 }
