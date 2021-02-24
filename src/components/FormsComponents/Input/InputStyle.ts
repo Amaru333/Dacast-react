@@ -301,6 +301,10 @@ export const TagStyle = styled.li`
     max-width: 90%;
 `
 
+export const TagTextContainer = styled(Text)<{disabled: boolean}>`
+    max-width: ${props => !props.disabled && "90%"}
+`
+
 export const TagTextStyle = styled.p`
     max-width: 298px;
     overflow: hidden;
