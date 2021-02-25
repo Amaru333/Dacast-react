@@ -9,7 +9,7 @@ import { usePlayer } from '../../utils/services/player/player';
 import { userToken } from '../../utils/services/token/tokenService';
 
 export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
-    
+
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
@@ -29,8 +29,8 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     React.useEffect(() => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
-        } else { 
-            setIsSaveDisabled(true) 
+        } else {
+            setIsSaveDisabled(true)
         }
     }, [selectedOption])
 
@@ -73,7 +73,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     setSaveButtonLoading(false)
                     props.toggle()
                 }, 4000)
-            }    
+            }
         }
     }
 
@@ -104,10 +104,10 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     setFileName(file[0].name)
                 }
             }
-            reader.readAsDataURL(file[0])          
+            reader.readAsDataURL(file[0])
         }
     }
-    
+
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
@@ -139,7 +139,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                     <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                    </button>   
+                                    </button>
                                 </ThumbnailFile>
                             }
                         </div>
@@ -160,7 +160,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 </ButtonsArea>
                             </PlayerSection>
                         </div>
-                        
+
                     </RadioButtonOption>
                 </ModalContent>
                 :
@@ -177,7 +177,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                </button>   
+                                </button>
                             </ThumbnailFile>
                         }
                     </div>
@@ -185,7 +185,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
             }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
-                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
+                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button>
             </ModalFooter>
         </Modal>
     )
@@ -228,7 +228,6 @@ export const PlayerSection = styled.div`
 export const PlayerContainer = styled.div`
     width: 95%;
     height: 100%;
-    min-height: 341px;
     position: relative;
     margin: 16px auto;
 `
