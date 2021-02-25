@@ -1,5 +1,6 @@
 import { GetExpoAssetUploadUrl } from "./expo"
 import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
+import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
 import { GetPlaylistAssetUploadUrl } from "./playlist"
 import { EngagementSettingsEndoint, PutAdInput } from "./settings"
 import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
@@ -113,4 +114,53 @@ export interface AssetTypeEndpoint {
 export interface DeleteContentImageAssetIdInput {
     id: string
     targetId: string
+}
+
+export interface GetContentPaywallInfoOutput {
+    introVodId: string
+    paywallEnabled: boolean
+    selectedTheme: string
+    themes: PaywallThemeEndpoints[]
+}
+
+export interface PutContentPaywallInfoInput {
+    id: string
+    payload: {
+        introVodId: string
+        paywallEnabled: boolean
+        selectedTheme: string
+    }
+}
+
+export interface GetContentPricesOutput {
+    prices: {
+        id: string
+        currency: string
+        description: string
+        price: number
+        settings: PriceSettingsEndpoints
+        type: 'individual'
+    }[]
+}
+
+export interface PostContentPriceInput {
+    contentId: string
+    prices: PriceEndpoints[]
+    settings: PriceSettingsEndpoints
+}
+
+export interface PostContentPriceOutput {
+    id: string
+}
+
+export interface PutContentPriceInput {
+    id: string
+    contentId: string
+    price: PriceEndpoints
+    settings: PriceSettingsEndpoints
+}
+
+export interface DeleteContentPriceInput {
+    id: string
+    contentId: string
 }
