@@ -6,7 +6,7 @@ import { ToastProps, NotificationType } from './ToastTypes';
 export const ToastContainer = styled.div`
     position: fixed;
     margin: auto;
-    bottom: 16px;
+    top: 16px;
     left: 50%;
     transform: translate(-50%);
     z-index:9999;
@@ -55,6 +55,7 @@ export const IconStyle = styled.div`
 export const ToastCloseButtonStyle = styled.div<{notificationType: NotificationType} & React.HTMLAttributes<HTMLDivElement>>`
   float: right;
   border: none;
+  margin-left: 8px;
   color: ${props => (props.notificationType == "warning" ? props.theme.colors["black"] : props.theme.colors["white"] )};
   background: inherit;
 
