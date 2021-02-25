@@ -64,6 +64,8 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                     className={ClassHalfXsFullMd + "pr2 mb2"}
                     label="Title"
                     value={props.localContentDetails.title}
+                    isError={props.localContentDetails.title.length === 0}
+                    help={props.localContentDetails.title.length === 0 && "Required"}
                     onChange={event => {props.setLocalContentDetails({...props.localContentDetails, title: event.currentTarget.value });props.setHasChanged(true)}}
                 />
                 {   

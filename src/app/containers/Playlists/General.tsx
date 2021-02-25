@@ -121,7 +121,7 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                         {
                             hasChanged &&
                                 <ButtonContainer>
-                                    <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
+                                    <Button disabled={contentDetails.title.length === 0} isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                     <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                                 </ButtonContainer>
                         }
