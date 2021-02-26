@@ -69,7 +69,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                             <Text color="gray-1" className='absolute right-0 pt1' size={12} weight="reg"><a href="/forgot-password">Forgot your password?</a></Text>
                         </div>
 
-                        <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="/signup">Sign up</a></Text>
+                        <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="https://dacast.com/signup">Sign up</a></Text>
                     </ModalContent>
                     <Bubble hidden={!props.loginInfos || (props.loginInfos && !props.loginInfos.error)} type='error' className='my2'>
                         Unable to sign in. Please check your details and try again.
