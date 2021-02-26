@@ -18,7 +18,7 @@ export class DacastSdk {
 
     constructor(baseUrl: string, userToken: UserTokenService, refreshTokenUrl?: string) {
         this.axiosClient = new AxiosClient(baseUrl, userToken, refreshTokenUrl)
-        this.userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        this.userId = userToken.getUserInfoItem('user-id')
         this.baseUrl = baseUrl
         this.refreshTokenUrl = refreshTokenUrl
     }
@@ -37,7 +37,7 @@ export class DacastSdk {
 
     public updateToken = (newToken: UserTokenService) => {
         this.axiosClient = new AxiosClient(this.baseUrl, newToken, this.refreshTokenUrl)
-        this.userId = newToken.getUserInfoItem('custom:dacast_user_id')
+        this.userId = newToken.getUserInfoItem('user-id')
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()

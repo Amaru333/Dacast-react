@@ -15,12 +15,12 @@ const saveContentPaywallInfos = async (data: ContentPaywallPageInfos, contentId:
 }
 
 const getContentPaywallPrices = async (contentId: string, contentType: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     return await axiosClient.get(`/paywall/prices?content-id=${userId}-${contentType}-${contentId}`)
 }
 
 const createContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     const dateAvailable = data.settings.startMethod === "Upon Purchase" ? "immediately" : new Date(data.settings.startDate * 1000).toLocaleString()
 
     let parsedPrice = null
@@ -69,7 +69,7 @@ const createContentPricePreset = async (data: Preset, contentId: string, content
 }
 
 const saveContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     let parsedPrice = null
     if(data.priceType === 'Subscription') {
         parsedPrice = {
@@ -116,7 +116,7 @@ const saveContentPricePreset = async (data: Preset, contentId: string, contentTy
 }
 
 const deleteContentPricePreset = async (data: Preset, contentId: string, contentType: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     return await axiosClient.delete(`/paywall/prices/${data.id}?content-id=${userId}-${contentType}-${contentId}`)
 }
 

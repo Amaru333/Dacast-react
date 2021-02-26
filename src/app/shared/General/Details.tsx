@@ -14,7 +14,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     function saveFile(url: string, filename: string) {
         axiosClient.get(`/vods/${props.contentDetails.id}/download-url`

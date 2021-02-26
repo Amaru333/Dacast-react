@@ -52,7 +52,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     let playerRef = React.useRef<HTMLDivElement>(null)
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     let player = usePlayer(playerRef, props.contentType !== 'settings' ? userId + '-' + props.contentType + '-' + props.contentId : '1d6184ed-954f-2ce6-a391-3bfe0552555c-vod-d72b87e4-596f-5057-5810-98f0f2ad0e22')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)

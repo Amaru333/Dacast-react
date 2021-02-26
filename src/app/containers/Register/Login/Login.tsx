@@ -22,7 +22,7 @@ const Login = (props: LoginComponentProps) => {
             // history.push('/dashboard');
             location.reload()
             segmentService.identify({
-                userId: userToken.getUserInfoItem('custom:dacast_user_id'), 
+                userId: userToken.getUserInfoItem('user-id'), 
                 firstName: userToken.getUserInfoItem('custom:first_name'), 
                 lastName: userToken.getUserInfoItem('custom:last_name'), 
                 email: userToken.getUserInfoItem('email'),

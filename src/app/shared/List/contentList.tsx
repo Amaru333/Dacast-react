@@ -52,7 +52,7 @@ export const ContentListPage = (props: ContentListProps) => {
 
     let qs = useQuery()
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     const formatFilters = () => {
         let filters: FilteringContentState = {

@@ -150,7 +150,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.GET_CONTENT_PAYWALL_PROMOS :
-            const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+            const userId = userToken.getUserInfoItem('user-id')
             if (state[action.payload.contentType]) {
                 data = {
                     ...state[action.payload.contentType][action.payload.contentId],

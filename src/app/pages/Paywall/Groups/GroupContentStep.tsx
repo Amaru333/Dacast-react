@@ -27,7 +27,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
         props.setStepValidated(selectedItems.length > 0)
     }, [selectedItems])
 
-    let userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let userId = userToken.getUserInfoItem('user-id')
 
     const fetchFolderData = async (tempArray: FolderAsset[]) => {
 

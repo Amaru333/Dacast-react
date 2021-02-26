@@ -21,7 +21,7 @@ export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; 
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [marker, setMarker] = React.useState<number>(null);
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);

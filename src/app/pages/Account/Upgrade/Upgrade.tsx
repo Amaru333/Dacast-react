@@ -79,7 +79,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)            
                 segmentService.track('Upgrade Form Completed', {
                     action: 'Payment Form Submitted',
-                    'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'user_id': userToken.getUserInfoItem('user-id'),
                     'plan_name': stepperData.name,
                     step: 4,
                 })  
@@ -112,7 +112,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
             segmentService.track('Upgrade Form Completed', {
                 action: 'Payment Form Submitted',
-                'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                'user_id': userToken.getUserInfoItem('user-id'),
                 'plan_name': stepperData.name,
                 step: 4,
             })  
@@ -139,7 +139,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         }
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Clicked',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             'plan_name': plan,
             step: 1,
         })  
@@ -149,7 +149,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const handleContactUsButtonClick = () => {
         segmentService.track('Upgrade Form Completed', {
             action: 'Contact Us Clicked',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             step: 1,
         })  
         history.push('/help')

@@ -132,7 +132,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
 
 export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInput => {
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     let formattedPrice: PostPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
@@ -191,7 +191,7 @@ export const formatPostPriceGroupOutput = (endpointResponse: PricePackageId, dat
 }
 
 export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     let formattedPrice: PutPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
         formattedPrice = {

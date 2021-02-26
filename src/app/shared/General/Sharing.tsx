@@ -13,7 +13,7 @@ import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: string}) => {
     
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id') 
+    const userId = userToken.getUserInfoItem('user-id') 
     const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 

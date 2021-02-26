@@ -22,7 +22,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
