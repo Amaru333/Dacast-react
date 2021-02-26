@@ -11,7 +11,7 @@ export const formatGetAccountsOutput = (data: GetAccountsListOutput): {users: Ac
         users: data.users.map(user => {
             return {
                 ...user,
-                registeredDate: user.registeredDate > 0 ? new Date(user.registeredDate * 1000).toISOString() : ''
+                registeredDate: user.registeredDate > 0 ? new Date(user.registeredDate * 1000).toISOString().replace('T', ' T') : ''
             }
         })
     }

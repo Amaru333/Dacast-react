@@ -17,6 +17,7 @@ export interface AccountInfo {
     website: string;
     phone: string;
     email: string;
+    country: string;
     isPaying: boolean;
     playbackProtection: {
         enabled: boolean;
@@ -38,6 +39,7 @@ export interface PutAccountInfo {
     newPassword?: string;
     phone?: string;
     email?: string;
+    country?: string;
     isPaying?: boolean;
     playbackProtection?: {
         enabled: boolean;

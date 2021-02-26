@@ -11,7 +11,6 @@ import { PendingOrder } from '../../../redux-flow/store/Account/PendingOrders/ty
 import { PendingOrdersComponentProps } from '../../../containers/Account/PendingOrders';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { capitalizeFirstLetter } from '../../../../utils/utils';
-import { DateTime } from 'luxon';
 
 export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
 
@@ -54,7 +53,7 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
             const BackgroundColor: ColorsApp = item.status === 'cancelled' ? 'gray-8' : color + '20' as ColorsApp;
             return {data: [
                 <Text key={'pendingOrderTableItemCount'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.items.length}</Text>,
-                <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.dateCreated, DateTime.DATETIME_SHORT)}</Text>,
+                <Text key={'pendingOrderTableDateCreated'+ i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.dateCreated, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                 <Text key={'pendingOrderTablePrice'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.price}</Text>,
                 <Text key={'pendingOrderTableCurrency'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.currency.toUpperCase()}</Text>,
                 <Label key={'pendingOrderTableStatus'+ i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)} />,
@@ -76,9 +75,6 @@ export const PendingOrdersPage = (props: PendingOrdersComponentProps) => {
                 opened={purchaseStepperOpen}
                 stepperHeader="Purchase Pending Order"
                 stepList={purchaseStepList}
-                nextButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Next"}} 
-                backButtonProps={{typeButton: "secondary", sizeButton: "large", buttonText: "Back"}} 
-                cancelButtonProps={{typeButton: "primary", sizeButton: "large", buttonText: "Cancel"}}
                 stepTitles={["Cart", "Payment"]}
                 lastStepButton="Purchase"
                 finalFunction={() => {setPurchaseStepperOpen(false); props.updatePendingOrders(selectedPendingOrder)}}

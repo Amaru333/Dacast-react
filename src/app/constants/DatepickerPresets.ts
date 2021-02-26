@@ -1,44 +1,41 @@
-import moment from 'moment';
+import { dateAdd } from '../../utils/services/date/dateService';
 
-const today = moment();
-const yesterday = moment().subtract(1, 'day')
-const thisMonth = moment().month()
-const thisYear = moment().year()
+const today = new Date();
 
 export const presets = [
 {
     text: 'Last 24 Hours',
-    start: moment().subtract(1, 'day').startOf('day'),
-    end: moment().subtract(1, 'day').endOf('day'),
+    start: new Date(dateAdd(today, 'day', -1).setHours(0,0,0,0)),
+    end: new Date(dateAdd(today, 'day', -1).setHours(23,59,59,999)),
     value: 'LAST_24_HOURS'
 },
 {
     text: 'Last 7 Days',
-    start: moment().subtract(1, 'week'),
+    start: dateAdd(today, 'week', -1),
     end: today,
     value: 'LAST_WEEK'
 },
 {
     text: 'Last 30 Days',
-    start: moment().subtract(1, 'month'),
+    start: dateAdd(today, 'month', -1),
     end: today,
     value: 'LAST_MONTH'
 },
 {
     text: 'Last 6 Months',
-    start: moment().date(1).month(thisMonth).year(thisYear),
+    start: dateAdd(today, 'month', -6),
     end: today,
     value: 'LAST_6_MONTHS'
 },
 {
     text: 'Year To Date',
-    start: moment().date(1).month(0).year(thisYear),
+    start: new Date(new Date().getFullYear(), 0, 1),
     end: today,
     value: 'YEAR_TO_DATE'
 },
 {
     text: 'Custom',
-    start: moment().date(1).month(0).year(thisYear),
+    start: new Date(new Date().getFullYear(), 0, 1),
     end: today,
     value: 'CUSTOM'
 }

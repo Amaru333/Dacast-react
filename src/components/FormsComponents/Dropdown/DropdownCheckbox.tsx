@@ -25,7 +25,7 @@ export const DropdownCheckbox: React.FC<DropdownCheckboxProps> = (props: Dropdow
     const handleTitle = () => {
         const numberChecked = Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name]).length;
         if(numberChecked > 1) {
-            setSelectedItem(numberChecked+" items selected.")
+            setSelectedItem(numberChecked+" items selected")
         } else if (numberChecked == 1) {
             setSelectedItem(Object.keys(checkedCheckboxes).filter(name => checkedCheckboxes[name] )[0] );
         } else {

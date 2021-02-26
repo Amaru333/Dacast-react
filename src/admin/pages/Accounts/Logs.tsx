@@ -7,7 +7,6 @@ import { AccountLogsComponentProps } from '../../containers/Accounts/Logs'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { useHistory } from 'react-router'
 import { makeRoute } from '../../utils/utils'
-import { DateTime } from 'luxon'
 
 export const AccountLogsPage = (props: AccountLogsComponentProps) => {
 
@@ -29,7 +28,7 @@ export const AccountLogsPage = (props: AccountLogsComponentProps) => {
             return props.accountLogs.map((log, key) => {
                 return {
                     data: [
-                        <Text key={'accountLogsTableBodyDateCell' + key } size={14}>{DateTime.fromSeconds(log.date).toFormat("yyyy-LL-dd HH:mm")}</Text>,
+                        <Text key={'accountLogsTableBodyDateCell' + key } size={14}>{new Date(log.date).toLocaleString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}</Text>,
                         <Text key={'accountLogsTableBodyEmailCell' + key } size={14}>{log.email}</Text>,
                         <Text key={'accountLogsTableBodySourceCell' + key } size={14}>{log.source}</Text>,
                         <Text key={'accountLogsTableBodyEventCell' + key } size={14}>{log.event}</Text>,

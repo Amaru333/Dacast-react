@@ -10,20 +10,20 @@ import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
 
 export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
-    const doAThing = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
+    const finalStepAction = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
         callback()
     }}
     React.useEffect(() => {
-        document.getElementById(buttonId).addEventListener('click', doAThing)
+        document.getElementById(buttonId).addEventListener('click', finalStepAction)
 
         return () => {
-            document.getElementById(buttonId).removeEventListener('click', doAThing)
+            document.getElementById(buttonId).removeEventListener('click', finalStepAction)
         }
 
     }, [callback])
 }
 
-export const CustomStepper = (props: StepperProps) => {
+export const CustomStepper = <ExtraProps extends {}>(props: StepperProps & ExtraProps) => {
 
     const [stepIndex, setStepIndex] = React.useState<number>(0)
     const [stepValidated, setStepValidated] = React.useState<boolean>(true)
@@ -36,17 +36,15 @@ export const CustomStepper = (props: StepperProps) => {
 
     useStepperFinalStepAction('stepperNextButton', () => {props.finalFunction()})
 
-    const steps: string[] = props.stepTitles
     const renderStepperContent = (stepIndex: number, stepperData: any, updateStepperData: Function, finalFunction?: Function) => {    
-        const Test: React.FC<any> = props.stepList[stepIndex]
+        const Step: React.FC<any> = props.stepList[stepIndex].content
         return  (
-            <Test
+            <Step
                 stepperData={stepperData} 
                 updateStepperData={updateStepperData}
                 setStepValidated={setStepValidated} 
                 finalFunction={finalFunction} 
-                usefulFunctions={props.usefulFunctions}
-                staticStepperData={props.stepperStaticData}
+                {...props}
             />
         )
         
@@ -73,10 +71,10 @@ export const CustomStepper = (props: StepperProps) => {
                 </StepperHeaderStyle>
                 <StepperStyle isMobile={isMobile}>
                     <Stepper activeStep={stepIndex} alternativeLabel>
-                        {steps.map((label) => {
+                        {props.stepList.map((step) => {
                             return (
-                                <Step key={label}>
-                                    <StepLabel>{label}</StepLabel>
+                                <Step key={step.title}>
+                                    <StepLabel>{step.title}</StepLabel>
                                 </Step>
                             );
                         })}
@@ -86,13 +84,13 @@ export const CustomStepper = (props: StepperProps) => {
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData, props.finalFunction)}
                 </StepperContentStyle>
                 <StepperFooterStyle>
-                    <StepperNextButton id='stepperNextButton' {...props.nextButtonProps} isLoading={props.isLoading} disabled={!stepValidated} onClick={nextStep}>
-                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : props.nextButtonProps.buttonText}
+                    <StepperNextButton id='stepperNextButton' typeButton="primary" sizeButton="large" isLoading={props.isLoading} disabled={!stepValidated} onClick={nextStep}>
+                        {(stepIndex >= props.stepList.length - 1) ? props.lastStepButton : "Next"}
                     </StepperNextButton>
-                    {stepIndex !== 0 ?
-                        <Button {...props.backButtonProps}  onClick={previousStep}>{props.backButtonProps.buttonText}</Button> : null
+                    {stepIndex !== 0 &&
+                        <Button typeButton="secondary" sizeButton="large"  onClick={previousStep}>Back</Button>
                     }
-                    <Button onClick={(event) => {event.preventDefault();props.functionCancel(false);setStepIndex(0)}} {...props.cancelButtonProps} typeButton="tertiary">{props.cancelButtonProps.buttonText}</Button>
+                    <Button onClick={() => props.functionCancel(false)} sizeButton="large" typeButton="tertiary">Cancel</Button>
                 </StepperFooterStyle>
             </StepperContainerStyle>
             <OverlayStyle opened={props.opened}/>

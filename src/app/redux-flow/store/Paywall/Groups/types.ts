@@ -1,9 +1,12 @@
+import { FolderAsset } from "../../Folders/types";
+
 export enum ActionTypes {
     GET_GROUP_PRICES = "@@paywall_groups/GET_GROUP_PRICES",
     GET_GROUP_PROMOS = "@@paywall_groups/GET_GROUP_PROMOS",
     CREATE_GROUP_PRICE = "@@paywall_groups/CREATE_GROUP_PRICE",
     SAVE_GROUP_PRICE = "@@paywall_groups/SAVE_GROUP_PRICE",
     DELETE_GROUP_PRICE = "@@paywall_groups/DELETE_GROUP_PRICE",
+    GET_PRICE_GROUP_CONTENTS = "@@paywall_groups/GET_PRICE_GROUP_CONTENTS",
     CREATE_GROUP_PROMO = "@@paywall_groups/CREATE_GROUP_PROMO",
     SAVE_GROUP_PROMO = "@@paywall_groups/SAVE_GROUP_PROMO",
     DELETE_GROUP_PROMO = "@@paywall_groups/DELETE_GROUP_PROMO",
@@ -33,9 +36,14 @@ export interface GroupPriceInfo {
 export interface GroupPrice {
     id: string;
     name: string;
-    prices: GroupPriceInfo[]
+    prices: GroupPriceInfo[];
+    pages: number;
     contents: string[];
     groupSettings?: PriceSettings;
+}
+
+export interface GroupPriceContents {
+    contents: string[];
 }
 
 export interface GroupPriceCreation {
@@ -44,7 +52,7 @@ export interface GroupPriceCreation {
     name: string;
     prices: Price[];
     settings: PriceSettings;
-    contents: string[];
+    contents: FolderAsset[];
 }
 
 export interface GroupPromo {

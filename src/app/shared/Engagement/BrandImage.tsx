@@ -60,7 +60,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
             props.uploadBrandImage(logoFile, props.localEngagementSettings.uploadurl).then(() => {
                 setUploadButtonLoading(false)
                 setTimeout(() => {
-                    props.getEngagementSettings()
+                    props.getEngagementSettings(props.contentId, props.contentType)
                 }, 3000)
             })
             

@@ -10,6 +10,7 @@ import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput
 import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
 import { PostEncoderKeyOutput } from './live'
+import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
@@ -25,7 +26,7 @@ export class DacastSdk {
     private refreshTokenUrl: string = null
     private axiosClient: AxiosClient = null
     private userId: string = null
-    
+
     private checkExtraData = (response: AxiosResponse<any>): any => {
         let responseData: any = response.data
         if(responseData.data) {
@@ -42,7 +43,7 @@ export class DacastSdk {
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()
 
     public postImpersonateAccount = async (input: PostImpersonateAccountInput): Promise<PostImpersonateAccountOutput> => await this.axiosClient.post('/impersonate', input).then(this.checkExtraData)
-    
+
     public getAccounts = async (input: string): Promise<GetAccountsListOutput> => await this.axiosClient.get('/accounts?' + input).then(this.checkExtraData)
     public getAccountDetails = async (input: string): Promise<GetAccountDetailsOutput> => await this.axiosClient.get('/accounts/' + input).then(this.checkExtraData)
     public putAccountDetails = async (input: PutAccountDetailsInput, accountId: string): Promise<void> => await this.axiosClient.put('/accounts/' + accountId, input)
@@ -57,13 +58,19 @@ export class DacastSdk {
     public getAccountsTransactions = async (input: string): Promise<GetAccountsTransactionsOutput> => await this.axiosClient.get('/paywall-transactions?' + input).then(this.checkExtraData)
     public postAccountTransaction = async (input: PostAccountTransactionInput): Promise<void> => await this.axiosClient.post('/paywall-transactions', input)
     public getPirateInfo = async (input: string): Promise<GetPirateInfoOutput> => await this.axiosClient.get('/identify-cdn-url?url=' + input).then(this.checkExtraData)
-    
+
     public getJobsList = async (): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs').then(this.checkExtraData)
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
     public postSwitchOverUsers = async (input: PostSwitchOverUsersInput, jobId: string) => await this.axiosClient.post('/migration/job/' + jobId + '/switchover', input)
     public getMigratedUsersList = async (input: string): Promise<GetMigratedUsersListOutput> => await this.axiosClient.get('/migration/users' + input).then(this.checkExtraData)
-    
+
+    public getDashboardInfo = async (): Promise<GetDashboardInfoOutput> => await this.axiosClient.get('/dashboard').then(this.checkExtraData)
+    public getDashboardGeneralInfo = async (): Promise<GetDashboardGeneralInfoOutput> => await this.axiosClient.get('/dashboard/general').then(this.checkExtraData)
+    public getDashboardLiveInfo = async (): Promise<GetDashboardLiveOutput> => await this.axiosClient.get('/dashboard/live').then(this.checkExtraData)
+    public getDashboardVodInfo = async (): Promise<GetDashboardVodOutput> => await this.axiosClient.get('/dashboard/vod').then(this.checkExtraData)
+    public getDashboardPaywallInfo = async (): Promise<GetDashboardPaywallOutput> => await this.axiosClient.get('/dashboard/paywall').then(this.checkExtraData)
+
     public postUploadUrl = async (input: PostUploadUrlInput): Promise<PostUploadUrlOutput> => await this.axiosClient.post('/uploads/signatures/singlepart/' + input.uploadType, {...input.uploadRequestBody}).then(this.checkExtraData)
     public putUploadFile = async (input: PutUploadFileInput): Promise<void> => await this.axiosClient.put(input.uploadUrl, input.data, {authRequired: false})
 
@@ -73,11 +80,11 @@ export class DacastSdk {
 
     public getPlansList = async (): Promise<GetPlansListOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/plans').then(this.checkExtraData)
     public postAccountPlan = async (input: PostAccountPlanInput): Promise<PostAccountPlanOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/plans/purchase', input).then(this.checkExtraData)
-    
+
     public getProductExtraDataList = async (): Promise<GetProductExtraDataOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/products').then(this.checkExtraData)
     public postProductExtraData = async (input: PostProductExtraDataInput): Promise<PostProductExtraDataOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/products/purchase', input).then(this.checkExtraData)
     public putPlaybackProtection = async (input: PutPlaybackProtectionInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/billing/playback-protection', input)
-    
+
     public getBillingInfo = async (): Promise<GetAccountBillingInfoOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/billing').then(this.checkExtraData)
     public postBillingPaymentMethod = async (input: PostBillingPaymentMethodInput): Promise<PostBillingPaymentMethodOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/billing/payment-method', input).then(this.checkExtraData)
 
@@ -100,7 +107,7 @@ export class DacastSdk {
     public putEngagementSettings = async (input: EngagementSettingsEndpoint) => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement', {...input})
     public putAdsSettings = async (input: PutAdInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement/ads', {...input})
     public deleteUserBrandImage = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/engagement/brand-image')
-    
+
     public getSecuritySettings = async (): Promise<GetSecuritySettingsOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/security').then(this.checkExtraData)
     public putSecuritySettings = async (input: PutSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/security', {...input})
     public postGeoRestriction = async (input: GeoRestrictionDetails): Promise<GeoRestrictionId> => await this.axiosClient.post('/accounts/' + this.userId + '/settings/security/restrictions', {...input}).then(this.checkExtraData)
@@ -109,12 +116,12 @@ export class DacastSdk {
     public postDomainControl = async (input: DomainControlDetails): Promise<DomainControlId> => await this.axiosClient.post('/accounts/' + this.userId + '/settings/security/restrictions', {...input}).then(this.checkExtraData)
     public putDomainControl = async (input: DomainControlEndpoint): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/security/restrictions/' + input.id, {...input})
     public deleteDomainControl = async (input: string): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/security/restrictions/' + input)
-    
+
     public getThemes = async (): Promise<GetThemeSettingsOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/themes').then(this.checkExtraData)
     public postTheme = async (input: ThemeSettings): Promise<ThemeId> => await this.axiosClient.post('/accounts/' + this.userId + '/settings/themes', {...input}).then(this.checkExtraData)
     public putTheme = async (input: ThemeEndpoint): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/themes/' + input.id, {...input})
     public deleteTheme = async (input: string): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/themes/' + input)
-    
+
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => await this.axiosClient.post('/paywall/promos/presets', {...input}).then(this.checkExtraData)
     public putPromoPreset = async (input: PromoPreset): Promise<void> => await this.axiosClient.put('/paywall/promos/presets/' + input.id, {...input})
@@ -127,13 +134,14 @@ export class DacastSdk {
 
     public getPricePreset = async (input: string): Promise<GetPricePresetOutput> => await this.axiosClient.get('/paywall/prices/presets?' + input).then(this.checkExtraData)
     public postPricePreset = async (input: PricePresetDetails): Promise<PricePresetId> => await this.axiosClient.post('/paywall/prices/presets', {...input}).then(this.checkExtraData)
-    public putPricePreset = async (input: PricePresetEndpoint): Promise<void> => await this.axiosClient.put('/paywall/prices/presets/' + input.id, {package: input})
+    public putPricePreset = async (input: PricePresetEndpoint): Promise<void> => await this.axiosClient.put('/paywall/prices/presets/' + input.id, input)
     public deletePricePreset = async (input: string): Promise<void> => await this.axiosClient.delete('/paywall/prices/presets/' + input)
 
     public getPricePackage = async (input: string): Promise<GetPricePackageOutput> => await this.axiosClient.get('/paywall/prices/groups?' + input).then(this.checkExtraData)
     public postPricePackage = async (input: PostPricePackageInput): Promise<PricePackageId> => await this.axiosClient.post('/paywall/prices/groups', {...input}).then(this.checkExtraData)
     public putPricePackage = async (input: PutPricePackageInput): Promise<void> => await this.axiosClient.put('/paywall/prices/groups/' + input.id, {package: input})
     public deletePricePackage = async (input: string): Promise<void> => await this.axiosClient.delete('/paywall/prices/groups/' + input)
+    public getPricePackageContents = async (input: string): Promise<GetPricePackageOutput> => await this.axiosClient.get('/paywall/prices/groups/' + input).then(this.checkExtraData)
 
     public getPaymentMethod = async (): Promise<GetPaymentMethodOutput> => await this.axiosClient.get('/paywall/payment-methods').then(this.checkExtraData)
     public postPaymentMethod = async (input: PaymentMethodDetails): Promise<PaymentMethodId> => await this.axiosClient.post('/paywall/payment-methods', input).then(this.checkExtraData)
@@ -165,7 +173,7 @@ export class DacastSdk {
     public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
     public putChannelEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement', input)
     public putChannelLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
-    public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.ads)
+    public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.data)
     public deleteChannelBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input + '/settings/engagement/brand-image')
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
@@ -173,7 +181,7 @@ export class DacastSdk {
     public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)
     public putVodEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement', input)
     public putVodLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
-    public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.ads)
+    public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.data)
     public deleteVodBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input + '/settings/engagement/brand-image')
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)

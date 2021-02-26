@@ -6,7 +6,6 @@ import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Dat
 import { Badge } from '../../../components/Badge/Badge';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
-var moment = require('moment');
 
 export interface FoldersFilteringState {
     status: {
@@ -124,11 +123,11 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                     </div>
                     <div className="mb3" id="folderFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper id='startDateFolderFilter' date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper id='startDateFolderFilter' date={isNaN(filteringState.afterDate as any) ? null : new Date(filteringState.afterDate as number) } allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, afterDate: date.getTime() } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper id='endDateFolderFilter' date={filteringState.beforedate == false ? null : moment.unix(filteringState.beforedate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforedate: ms } }) }} />
+                        <DateSinglePickerWrapper id='endDateFolderFilter' date={isNaN(filteringState.beforedate as any) ? null : new Date(filteringState.beforedate as number)} allowOustsideDate callback={(date) => { setFilteringState(prevState => { return { ...prevState, beforedate: date.getTime() } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterType">
                     <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Type</Text>

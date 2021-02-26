@@ -211,7 +211,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             <Text className='py1' size={14}>Account management, impersonation, plans, log and allowances</Text>
             <div className='flex items-end my1'>
                     <div className='relative flex items-center mr2'>
-                        <Input  
+                        <Input
+                            backgroundColor="white"  
                             id='accountIdInput' 
                             value={accountId} 
                             placeholder='Account ID' 
@@ -221,7 +222,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                         <div className={ accountId && accountId.length > 0 ? 'absolute right-0 pointer pr2' : 'hide'} onClick={() => {setAccountId('');handleSubmit('', keyword)}}><IconStyle>close</IconStyle></div>
                     </div>
                     <div className='relative flex items-center mr2'>
-                        <Input  
+                        <Input
+                            backgroundColor="white"  
                             id='keywordInput' 
                             value={keyword} 
                             placeholder='Keyword' 
@@ -234,7 +236,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
                         <Button disabled={!accountId && !keyword ? true : false} onClick={() => {handleSubmit(accountId, keyword)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
                     </div>
 
-                <DropdownCheckbox id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => {setTableColumn(value);localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: value, perPage: pagination.nbResults}))}} list={tableColumn} />
+                <DropdownCheckbox isWhiteBackground id='manageColumnsDropdown' dropdownTitle='Manage Columns' callback={(value: DropdownListType) => {setTableColumn(value);localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: value, perPage: pagination.nbResults}))}} list={tableColumn} />
 
             </div>
 

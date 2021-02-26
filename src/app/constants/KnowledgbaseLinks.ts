@@ -34,8 +34,20 @@ export const getKnowledgebaseLink = (name: string) => {
             return "https://www.dacast.com/support/knowledgebase/can-i-use-local-ads-on-my-content/"
         case 'Encoder Setup':
             return "https://www.dacast.com/support/knowledgebase/live-encoder-configuration/"
-        case 'Google Analytics':
-            return "https://www.dacast.com/support/knowledgebase/how-do-i-link-my-google-analytics-account-to-my-dacast-account/"
+        case 'Generic RTMP Encoder':
+            return "https://www.dacast.com/support/knowledgebase/walkthrough-encoder-setup-guide/"
+        case "OBS Open Broadcaster Software":
+            return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-the-obs-studio-dacast-encoder-on-windows/"
+        case "Sling Studio":
+            return "https://www.dacast.com/support/knowledgebase/walkthrough-encoder-setup-guide/"
+        case "Telestream Wirecast":
+            return "https://www.dacast.com/support/knowledgebase/how-to-live-stream-with-wirecast/"
+        case "Teradeks":
+            return "https://www.dacast.com/support/knowledgebase/teradek-vidiu-documentation/"
+        case "Vid Blaster":
+            return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-vidblasterx/"
+        case "vMix":
+            return "https://www.dacast.com/support/knowledgebase/video-guide-how-to-live-stream-with-vmix/"
         default:
             return "https://www.dacast.com/support/knowledgebase/"
     }

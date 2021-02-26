@@ -5,7 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { TransactionsComponentProps } from '../../../containers/Paywall/Transactions';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { useQuery } from '../../../../utils/utils';
+import { handleCurrencySymbol, useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
@@ -122,21 +122,6 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             ], 
             defaultSort: 'Created Date',
             sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
-        }
-    }
-
-    const handleCurrencySymbol = (currency: string) => {
-        switch(currency) {
-            case 'USD':
-                return '$'
-            case 'AUD':
-                return 'AU$'
-            case 'GBP': 
-                return '£'
-            case 'EUR':
-                return '€'
-            default:
-                return '$'
         }
     }
 

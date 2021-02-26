@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import { ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput } from '../../../../../DacastSdk/account'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils'
 import { userToken } from '../../../../utils/services/token/tokenService'
@@ -7,9 +6,10 @@ import { ProfilePageInfos } from './types'
 export const formatGetProfileDetailsOutput = (data: ProfileDetails): ProfilePageInfos => {
     let formattedData: ProfilePageInfos = {
         ...data,
-        passwordLastChanged: data.passwordLastChanged ? tsToLocaleDate(data.passwordLastChanged, DateTime.DATETIME_SHORT) : 'never'
+        passwordLastChanged: data.passwordLastChanged ? tsToLocaleDate(data.passwordLastChanged, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : 'never'
     }
 
+    userToken.updateUserInfo({'custom:first_name': data.firstName, 'custom:last_name': data.lastName})
     return formattedData
 }
 
@@ -24,6 +24,7 @@ export const formatPutProfileDetailsInput = (data: ProfilePageInfos): PutProfile
         videoUpload: data.videoUpload
     }
 
+    userToken.updateUserInfo({'custom:first_name': data.firstName, 'custom:last_name': data.lastName})
     return formattedData
 }
 

@@ -22,7 +22,6 @@ import { OnlineBulkForm, DeleteBulkForm, PaywallBulkForm, ThemeBulkForm } from '
 import { EmptyTrashModal } from './EmptyTrashModal'
 import { DropdownCustom } from '../../../components/FormsComponents/Dropdown/DropdownCustom'
 import { handleFeatures } from '../../shared/Common/Features'
-import { DateTime } from 'luxon'
 import { FolderTree, rootNode } from '../../utils/services/folder/folderService'
 import { useHistory } from 'react-router'
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
@@ -31,6 +30,7 @@ import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus } from '../../redux-flow/store/Common/types'
+import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -270,14 +270,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleMoreActions = (item: FolderAsset): string[] => {
+    const handleMoreActions = (item: FolderAsset): DropdownSingleListItem[] => {
         if (item.status === 'deleted') {
-            return ['Restore']
+            return [{title: 'Restore'}]
         }
         if (item.type === 'folder') {
-            return [ 'View', 'Rename', 'Move', 'Delete']
+            return [ {title: 'View'}, {title: 'Rename'}, {title: 'Move'}, {title: 'Delete'}]
         }
-        return ['Edit', 'Move', 'Delete']
+        return [{title: 'Edit'}, {title: 'Move'}, {title: 'Delete'}]
     }
 
     const handleEditAsset = (asset: ContentType) => {
@@ -374,14 +374,14 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         </TitleContainer>
                         ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
-                        <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' || row.status === 'restored' ? 'green' : 'red'} backgroundColor={row.status === 'online' || row.status === 'restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: string) => handleAssetDropdownOptions(value, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
+                                list={handleMoreActions(row)} callback={(value: DropdownSingleListItem) => handleAssetDropdownOptions(value.title, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
                                     isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
@@ -560,7 +560,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {setSelectedFolder('Library');setCurrentFolder(null)})}} />
                 }
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Content?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
                     <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await foldersTree.moveToFolder([], [assetToDelete], currentFolder.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />

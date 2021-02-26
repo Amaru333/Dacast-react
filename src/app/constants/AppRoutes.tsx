@@ -1,5 +1,5 @@
 import { Routes } from '../containers/Navigation/NavigationTypes';
-import Dashboard from '../containers/Dashboard/Dashboard';
+import DashboardTest from '../containers/Dashboard/DashboardTest';
 import Company from '../containers/Account/Company';
 import ApiIntegration from '../containers/Settings/ApiIntegration';
 import Profile from '../containers/Account/Profile';
@@ -23,7 +23,6 @@ import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
 import Login from '../containers/Register/Login/Login';
-import SignUp from '../containers/Register/SignUp/SignUp';
 import ConfirmEmail from '../containers/Register/ConfirmEmail';
 import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
@@ -79,13 +78,6 @@ export const AppRoutes: Routes[] = [
         component: Impersonate
     },
     {
-        path:'/signup',
-        name: 'signup',
-        isPublic: true,
-        notDisplayedInNavigation: true,
-        component: SignUp
-    },
-    {
         path:'/confirm-email',
         name: 'confirm-email',
         notDisplayedInNavigation: true,
@@ -124,7 +116,7 @@ export const AppRoutes: Routes[] = [
         path: '/dashboard',
         name: 'Dashboard',
         iconName: 'dashboard',
-        component: Dashboard,
+        component: DashboardTest,
     },
     {
         path: '/livestreams',

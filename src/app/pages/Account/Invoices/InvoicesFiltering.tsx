@@ -74,11 +74,11 @@ export const InvoicesFiltering = (props: {defaultFilters: FilteringInvoicesState
                     </div>
                     <div className="mb3" id="folderFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
+                        <DateSinglePickerWrapper callback={(date) => { setFilteringState(prevState => { return { ...prevState, startDate: date.getTime() } }) }} />
                     </div>
                     <div className="mb3" id="folderFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
+                        <DateSinglePickerWrapper callback={(date) => { setFilteringState(prevState => { return { ...prevState, endDate: date.getTime() } }) }} />
                     </div>
                 </div>
                 

@@ -1,16 +1,15 @@
 import React from 'react';
-import {Input} from '../../../../components/FormsComponents/Input/Input';
-import {DropdownSingle} from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
+import { Input } from '../../../../components/FormsComponents/Input/Input';
+import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { DropdownListType, DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { DateSinglePickerWrapper } from '../../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Text } from '../../../../components/Typography/Text';
 import { GroupPromo, GroupPrice } from '../../../redux-flow/store/Paywall/Groups/types';
 import { GroupPromoDateContainer } from './GroupsStyle';
 import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
-import { availableStartDropdownList, availableEndDropdownList, discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
+import { discountAppliedDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
-var moment = require('moment-timezone');
+import { tsToUtc } from '../../../../utils/services/date/dateService';
 
 const defaultPromo: GroupPromo = {
     id: '-1',
@@ -19,31 +18,15 @@ const defaultPromo: GroupPromo = {
     limit: 0,
     startDate: 0,
     endDate: 0,
-    timezone: moment.tz.guess(),
+    timezone: null,
     discountApplied: 'Once',
     assignedContentIds: [],
     assignedGroupIds: []
 }
 
-export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>; toggle: (b: boolean) => void; groupPromo: GroupPromo; groupList: GroupPrice[]}) => {
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        let offset = moment.tz(timezoneName).utcOffset()*60
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
-            min = 0
-        }
-        let total = hours + min - offset
-        return total
-    }
+export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void>; toggle: React.Dispatch<React.SetStateAction<boolean>>; groupPromo: GroupPromo; groupList: GroupPrice[] }) => {
 
-
-
-    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? {...props.groupPromo, timezone: props.groupPromo.timezone ? props.groupPromo.timezone : moment.tz.guess()} : defaultPromo)
+    const [groupPromo, setGroupPromo] = React.useState<GroupPromo>(props.groupPromo ? props.groupPromo : defaultPromo)
 
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -51,89 +34,90 @@ export const GroupPromoModal = (props: {action: (p: GroupPromo) => Promise<void>
     const [endDate, setEndDate] = React.useState<number>(groupPromo.endDate);
 
     const associatedGroupDropdownList = props.groupList.map((item: GroupPrice) => {
-        let associatedGroupItem: DropdownSingleListItem = {title: null, data: null}
+        let associatedGroupItem: DropdownSingleListItem = { title: null, data: null }
         associatedGroupItem.title = item.name
         associatedGroupItem.data = item
         return associatedGroupItem
     })
-    
-    
+
+
     React.useEffect(() => {
         setGroupPromo(props.groupPromo ? props.groupPromo : defaultPromo);
     }, [props.groupPromo])
     const [modalValid, setModalValid] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        setModalValid((groupPromo.alphanumericCode && groupPromo.alphanumericCode.length > 4) && (groupPromo.discount && groupPromo.discount !== null) && (groupPromo.limit && groupPromo.limit !== null) && (groupPromo.assignedGroupIds.length > 0)) 
+        setModalValid((groupPromo.alphanumericCode && groupPromo.alphanumericCode.length > 4) && (groupPromo.discount && groupPromo.discount !== null) && (groupPromo.limit && groupPromo.limit !== null) && (groupPromo.assignedGroupIds.length > 0))
     }, [groupPromo])
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({...groupPromo, startDate: startDate, endDate: endDate})
-        .then(() => {
-            props.toggle(false)
-            setButtonLoading(false)
-        })
-        .catch(() => setButtonLoading(false))
+        props.action({ ...groupPromo, startDate: tsToUtc(startDate, groupPromo.timezone), endDate:  tsToUtc(endDate, groupPromo.timezone) })
+            .then(() => {
+                props.toggle(false)
+                setButtonLoading(false)
+            })
+            .catch(() => setButtonLoading(false))
     }
 
     return (
         <div>
             <div className="'col col-12 mb2 clearfix">
                 {/* <Input className={ ClassHalfXsFullMd + 'pr2 xs-mb2'} value={groupPromo.name} label='Preset name' onChange={(event) => setGroupPromo({...groupPromo, name: event.currentTarget.value})} /> */}
-                <Input className={ ClassHalfXsFullMd + ''} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." onChange={(event) => setGroupPromo({...groupPromo, alphanumericCode: event.currentTarget.value})} />
+                <Input className={ClassHalfXsFullMd + ''} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." onChange={(event) => setGroupPromo({ ...groupPromo, alphanumericCode: event.currentTarget.value })} />
             </div>
             <div className='col col-12 clearfix mb2'>
-                <DropdownSingle 
-                    id='associatedGroupDropdown' 
-                    className={ ClassHalfXsFullMd + 'pr2 xs-mb2'} 
+                <DropdownSingle
+                    id='associatedGroupDropdown'
+                    className={ClassHalfXsFullMd + 'pr2 xs-mb2'}
                     dropdownTitle='Associated Group'
                     dropdownDefaultSelect={props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0]).length > 0 ? props.groupList.filter(g => g.id === groupPromo.assignedGroupIds[0])[0].name : ''}
-                    list={associatedGroupDropdownList} 
-                    callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, assignedGroupIds: [item.data.id]})}
+                    list={associatedGroupDropdownList}
+                    callback={(item: DropdownSingleListItem) => setGroupPromo({ ...groupPromo, assignedGroupIds: [item.data.id] })}
                 />
             </div>
             <div className='col col-12 mb2 clearfix'>
-                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount ? groupPromo.discount.toString() : ''} label='Discount' onChange={(event) => setGroupPromo({...groupPromo, discount: parseInt(event.currentTarget.value)})} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
-                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({...groupPromo, limit: parseInt(event.currentTarget.value)})} />
+                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.discount ? groupPromo.discount.toString() : ''} label='Discount' onChange={(event) => setGroupPromo({ ...groupPromo, discount: parseInt(event.currentTarget.value) })} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                <Input className='col sm-col-3 col-6 pr2' value={groupPromo.limit ? groupPromo.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setGroupPromo({ ...groupPromo, limit: parseInt(event.currentTarget.value) })} />
             </div>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateTimePicker 
+                <DateTimePicker
+                    fullLineTz
                     showTimezone={false}
-                    defaultTs={groupPromo.startDate}
-                    timezone={groupPromo.timezone}
+                    defaultTs={startDate}
                     callback={(ts: number) => setStartDate(ts)}
                     hideOption="Always"
                     id="startDate"
                     dropdownTitle="Available"
-                /> 
+                />
             </GroupPromoDateContainer>
             <GroupPromoDateContainer className='col col-12 mb2 flex flex-end'>
-                <DateTimePicker 
-                     showTimezone={false}
-                     defaultTs={groupPromo.endDate}
-                     minDate={startDate}
-                    timezone={groupPromo.timezone}
+                <DateTimePicker
+                    fullLineTz
+                    showTimezone={false}
+                    defaultTs={endDate}
+                    minDate={startDate}
                     callback={(ts: number) => setEndDate(ts)}
                     hideOption="Forever"
                     id="endDate"
                     dropdownTitle="Until"
-                /> 
+                />
             </GroupPromoDateContainer>
-            <div className=' col col-12 mb2'> 
+            <div className=' col col-12 mb2'>
                 {
-                   (endDate >  0 || startDate > 0) &&
-                    <DropdownSingle 
-                        hasSearch 
-                        id='groupPromoTimezoneDropdown' 
-                        dropdownDefaultSelect={groupPromo.timezone || moment.tz.guess() + ' (' + moment.tz(moment.tz.guess()).format('Z z') + ')'} 
-                        className='col col-6 pr2' 
-                        dropdownTitle='Timezone' 
-                        callback={(value: DropdownSingleListItem) => { console.log(value.title.split(' ')[0]); setGroupPromo({...groupPromo, timezone: value.title.split(' ')[0] }) } } 
-                        list={timezoneDropdownList} 
+                    (endDate > 0 || startDate > 0) &&
+                    <DropdownSingle
+                        hasSearch
+                        id='groupPromoTimezoneDropdown'
+                        dropdownDefaultSelect={groupPromo.timezone || null}
+                        className='col col-6 pr2'
+                        dropdownTitle='Timezone'
+                        callback={(value: DropdownSingleListItem) => { setGroupPromo({ ...groupPromo, timezone: value.title.split(' ')[0] }) }}
+                        list={timezoneDropdownList}
+                        tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                     />
                 }
-                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setGroupPromo({...groupPromo, discountApplied: item.title})} list={discountAppliedDropdownList} />
+                <DropdownSingle id='groupPromoDiscountAppliedDropdown' dropdownDefaultSelect={groupPromo.discountApplied} className='col col-6' dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setGroupPromo({ ...groupPromo, discountApplied: item.title })} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 py2'>
                 <Button isLoading={buttonLoading} onClick={() => handleSubmit()} disabled={!modalValid} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{props.groupPromo ? 'Save' : 'Create'}</Button>

@@ -89,7 +89,8 @@ export const DropdownList = styled.ul<{direction?: 'up' | 'down'; displayDropdow
 `;
 
 export const DropdownItem = styled.li<{isSelected: boolean; isSingle: boolean}>`
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     min-height: 24px;
     height: 100%;
@@ -116,15 +117,21 @@ export const BorderItem = styled.div<{}>`
     margin-left: -5%;
 `;
 
-export const DropdownIconStyle = styled.div`
-    position: absolute;
-    right: 0%;
-    top: 25%;
-    padding-right: 8px;
-    
-`;
+export const DropdownItemTitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
 
 export const DropdownItemText = styled(Text)`
+    position: absolute;
+    display: contents;
+    width: 80%;
+    min-height: 100%;
+    padding-top: 4px;
+`
+
+export const DropdownDescriptionText = styled(Text)`
     position: absolute;
     display: contents;
     width: 80%;
@@ -186,17 +193,4 @@ export const ButtonContainer = styled.div<{isOpened: boolean; backgroundColor: s
     cursor: pointer;
     height: 22px;
     pointer-events: ${props => props.disabled ? "none" : "auto"};
-`
-
-export const DropdownSelectList = styled.select`
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    height: 40px;
-    width: 100%;
-    background-color: ${props => props.theme.colors["gray-10"]};
-    border: 1px solid ${props => props.theme.colors["gray-7"]};
-    padding: 8px 34px 8px 12px;
-    background-position: right 12px top 50%, 0 0;
-    background-repeat: no-repeat;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
 `

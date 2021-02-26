@@ -1,4 +1,4 @@
-import { Privilege } from '../../constants/PrivilegesName';
+import { Privilege } from "../../../utils/services/token/token";
 
 export interface MainMenuSpecificProps {
     routes: Routes[]; 

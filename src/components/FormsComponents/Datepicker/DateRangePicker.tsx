@@ -19,7 +19,7 @@ const NavButton = (props: React.HtmlHTMLAttributes<HTMLButtonElement>) => {
 }
 
 
-export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => {
+export const DateRangePicker = (props: { start: number, end: number, onDatesChange: (data: {endDate: Date; startDate: Date}) => void } &  React.HtmlHTMLAttributes<HTMLDivElement>) => {
 
     const [isOpened, setIsOpened] = useState<boolean>(false);
 
@@ -28,8 +28,8 @@ export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
     useOutsideAlerter(datepickerRef, () => setIsOpened(false));
     const [state, setState] = useState<OnDatesChangeProps>({
-        startDate: null,
-        endDate: null,
+        startDate: props.start === null ? new Date(props.start) : null,
+        endDate: props.end === null ? new Date(props.end) : null,
         focusedInput: START_DATE
     });
 
@@ -39,7 +39,20 @@ export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => 
         } else {
             setState(data);
         }
+        if(data.startDate && data.endDate) {
+            setIsOpened(false)
+        }
+        props.onDatesChange(data)
     }
+
+    React.useEffect(() => {
+        setState({
+            ...state,
+            startDate: props.start ? new Date(props.start) : null,
+            endDate: props.end ? new Date(props.end) : null
+        })
+    }, [props.start, props.end])
+
 
     const {
         firstDayOfWeek,
@@ -63,7 +76,7 @@ export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => 
     });
 
     return (
-        <DatepickerStyle ref={datepickerRef} isSingle={false} className={props.className}>
+        <DatepickerStyle  isSingle={false} className={props.className}>
             <DatepickerContext.Provider
                 value={{
                     focusedDate,
@@ -94,7 +107,7 @@ export const  Datepicker = (props: React.HtmlHTMLAttributes<HTMLDivElement>) => 
                     </EndTextStyle>
                     <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>
                 </BoxStyle>
-                <MonthContainerStyle isSingle={false} open={isOpened}>
+                <MonthContainerStyle ref={datepickerRef} isSingle={false} open={isOpened}>
                     <NavButtonLeftStyle>
                         <NavButton onClick={goToPreviousMonths}>
                             <Icon>keyboard_arrow_left</Icon>

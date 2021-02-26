@@ -5,7 +5,6 @@ import { Text } from '../../../components/Typography/Text';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
-import { DateSinglePickerWrapper } from '../../../components/FormsComponents/Datepicker/DateSinglePickerWrapper';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ContentSecuritySettings, SecuritySettings } from '../../redux-flow/store/Settings/Security';
@@ -16,10 +15,9 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Prompt } from 'react-router';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../../../shared/MiscStyles';
-import { availableStartDropdownList, timezoneDropdownList, availableEndDropdownList } from '../../../utils/DropdownLists';
+import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { DisabledSection } from '../Common/MiscStyle';
 
-var momentTZ = require('moment-timezone')
 
 interface ContentSecurityComponentProps {
     contentType: string
@@ -33,27 +31,9 @@ interface ContentSecurityComponentProps {
 }
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
-
-    const inputTimeToTs = (value: string, timezoneName: string) => {
-        //let offset = momentTZ.tz(timezoneName)*60
-        let splitValue = value.split(':')
-        let hours = parseInt(splitValue[0]) * 3600
-        if(isNaN(hours)){
-            hours = 0
-        }
-        let min = !splitValue[1] ? 0 : parseInt(splitValue[1]) * 60
-        if(isNaN(min)){
-            min = 0
-        }
-        let total = hours + min
-        return total
-    }
-
     
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.passwordProtection && props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
-    const [startDateTime, setStartDateTime] = React.useState<string>(!props.contentSecuritySettings.securitySettings.contentScheduling.startTime || props.contentSecuritySettings.securitySettings.contentScheduling.startTime === 0 ? 'Always' : 'Set Date and Time')
-    const [endDateTime, setEndDateTime] = React.useState<string>(!props.contentSecuritySettings.securitySettings.contentScheduling.endTime || props.contentSecuritySettings.securitySettings.contentScheduling.endTime === 0 ? 'Forever' : 'Set Date and Time')
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(!props.contentSecuritySettings.securitySettings.locked )
     const [selectedSettings, setSelectedSettings] = React.useState<SecuritySettings>(props.contentSecuritySettings.securitySettings)
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
@@ -74,13 +54,10 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         return domainControlDropdownListItem
     })
 
-    let startTimestamp = momentTZ.tz((selectedSettings.contentScheduling.startTime && selectedSettings.contentScheduling.startTime > 0 ? selectedSettings.contentScheduling.startTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
-    let endTimestamp = momentTZ.tz((selectedSettings.contentScheduling.endTime && selectedSettings.contentScheduling.endTime > 0 ? selectedSettings.contentScheduling.endTime : Math.floor(Date.now() / 1000))*1000, selectedSettings.contentScheduling && selectedSettings.contentScheduling.startTimezone ? selectedSettings.contentScheduling.startTimezone : momentTZ.tz.guess())
-
-    const [startDay, setStartDay] = React.useState<number>(startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endDay, setEndDay] = React.useState<number>(endTimestamp.clone().startOf('day').valueOf()/1000)
-    const [startTime, setStartTime] = React.useState<number>(startTimestamp.clone().valueOf()/1000 - startTimestamp.clone().startOf('day').valueOf()/1000)
-    const [endTime, setEndTime] = React.useState<number>(endTimestamp.clone().valueOf()/1000 - endTimestamp.clone().startOf('day').valueOf()/1000)
+    const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
+    const [endTime, setEndTime] = React.useState<number>(Math.floor( selectedSettings.contentScheduling.endTime / 1000))
+    const [startTimezone, setStartTimezone] = React.useState<string>(selectedSettings.contentScheduling.startTimezone)
+    const [endTimezone, setEndTimezone] = React.useState<string>(selectedSettings.contentScheduling.endTimezone)
 
     const handleReset = () => {
         setSelectedSettings(props.contentSecuritySettings.securitySettings)
@@ -115,17 +92,15 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        let startDate = startDateTime === 'Set Date and Time' ? momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()).valueOf()/1000 : 0
-        let endDate = endDateTime === 'Set Date and Time' ? momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()).valueOf()/1000 : 0
         
         props.saveContentSecuritySettings(
             {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
-                    startTime: startDate, 
-                    startTimezone: startDateTime === 'Set Date and Time' ? selectedSettings.contentScheduling.startTimezone : null,
-                    endTime: endDate,
-                    endTimezone: endDateTime === 'Set Date and Time' ? selectedSettings.contentScheduling.endTimezone : null
+                    startTime: startTime * 1000, 
+                    startTimezone: startTimezone,
+                    endTime: endTime * 1000,
+                    endTimezone: endTimezone
                 }, 
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
                 selectedDomainControl: selectedSettings.selectedDomainControl
@@ -230,101 +205,30 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <div className='col col-12 clearfix'>
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                         
-                        
-                        <div className='col col-12 mb2 clearfix sm-flex'>
-                            <DropdownSingle 
-                                className='col col-12 md-col-3 clearfix sm-mr1'
-                                id="availableStart" 
-                                dropdownTitle="Available" 
-                                list={availableStartDropdownList} 
-                                dropdownDefaultSelect={startDateTime} 
-                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setStartDateTime(item.title)}} 
+                        <div className='col col-12 mb2 flex items-end'>
+                            <DateTimePicker 
+                                dropdownTitle="Available"
+                                id="dateStart"
+                                hideOption="Always"
+                                callback={(ts:number, tz: string) => { setHasToggleChanged(true); setStartTime(ts); setStartTimezone(tz)  }}
+                                defaultTs={startTime}
+                                timezone={startTimezone}
+                                showTimezone={true}
                             />
-                            {
-                                startDateTime === "Set Date and Time" &&
-                                <>        
-                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3'>
-                                    <DateSinglePickerWrapper
-                                        id='startDate'
-                                        date={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess())}
-                                        callback={(_, timestamp: string) => { setHasToggleChanged(true);setStartDay(momentTZ.tz(parseInt(timestamp)*1000, selectedSettings.contentScheduling.startTimezone).startOf('day').valueOf()/1000)}}
-                                        className='mt2' 
-                                    />
-                                    </div>
-
-                                    <Input
-                                        type='time'
-                                        value={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()).format('HH:mm')}
-                                        onChange={(event) => { setHasToggleChanged(true);setStartTime(inputTimeToTs(event.currentTarget.value, selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()))}}
-                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'                                        disabled={false}
-                                        id='startTime'
-                                        pattern="[0-9]{2}:[0-9]{2}"
-                                        
-                                    />
-
-                                    <DropdownSingle 
-                                        hasSearch 
-                                        id='startDateTimezoneDropdown' 
-                                        dropdownDefaultSelect={selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess()} 
-                                        className='col col-3 px2' 
-                                        dropdownTitle='Timezone' 
-                                        callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, startTimezone: item.title.split(' ')[0]}})}} 
-                                        list={timezoneDropdownList} 
-                                    />
-
-                                </>
-                            }                
                         </div>
-
-                    <div className='col col-12 mb2 clearfix sm-flex'>
-                        <DropdownSingle 
-                            className='col col-12 md-col-3 clearfix sm-mr1' 
-                            id="availableEnd" 
-                            dropdownTitle="Until" 
-                            list={availableEndDropdownList} 
-                            dropdownDefaultSelect={endDateTime} callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setEndDateTime(item.title)}}
-                        />
-
-                        {
+                        <div className='col col-12 mb2 flex items-end'>
+                            <DateTimePicker 
+                                dropdownTitle="Until"
+                                id="dateEnd"
+                                minDate={startTime ? startTime : undefined}
+                                hideOption="Forever"
+                                callback={(ts:number, tz: string) => { setHasToggleChanged(true); setEndTime(ts); setEndTimezone(tz) }}
+                                defaultTs={endTime}
+                                timezone={endTimezone}
+                                showTimezone={true}
+                            />
+                        </div>
                         
-                            endDateTime === "Set Date and Time" &&
-                                <>
-                                    <div className='col col-6 pr1 xs-mt2 sm-mt-auto md-col-3' >
-                                        <DateSinglePickerWrapper
-                                            id='endDate'
-                                            date={momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess())}
-                                            callback={(_, timestamp: string) => { setHasToggleChanged(true);setEndDay(momentTZ.tz(parseInt(timestamp)*1000, selectedSettings.contentScheduling.endTimezone).startOf('day').valueOf()/1000)}}
-                                            className='mt2' 
-                                            minDate={momentTZ((startDay + startTime)*1000).tz(selectedSettings.contentScheduling.startTimezone || momentTZ.tz.guess())}
-                                        />
-                                    </div>
-
-                                    <Input
-                                        type='time'
-                                        value={momentTZ((endDay + endTime)*1000).tz(selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()).format('HH:mm')}
-                                        onChange={(event) => { setHasToggleChanged(true);setEndTime(inputTimeToTs(event.currentTarget.value, selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()))}}
-                                        className='col col-6 pl1 sm-mt-auto xs-mt2 md-col-2'                                        disabled={false}
-                                        id='endTime'
-                                        pattern="[0-9]{2}:[0-9]{2}"
-                                        
-                                    />
-
-                                    <DropdownSingle 
-                                        hasSearch 
-                                        id='endDateTimezoneDropdown' 
-                                        dropdownDefaultSelect={selectedSettings.contentScheduling.endTimezone || momentTZ.tz.guess()} 
-                                        className='col col-3 px2' 
-                                        dropdownTitle='Timezone' 
-                                        callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, contentScheduling: {...selectedSettings.contentScheduling, endTimezone: item.title.split(' ')[0]}})}} 
-                                        list={timezoneDropdownList} 
-                                    />
-                                </>
-                        }
-                    </div>
-                     
-                    
-                              
                     </div>
 
                     <Divider className="p1" />

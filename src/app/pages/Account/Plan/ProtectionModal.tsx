@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { PlaybackProtection } from '../../../redux-flow/store/Account/Plan';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { handleCurrencySymbol } from '../../../../utils/utils';
 
-export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; toggle: (b: boolean) => void; actionButton: (value: string) => void; setPlaybackProtectionEnabled: (b: boolean) => void}) => {
+interface ProtectionModalProps {
+    playbackProtection: PlaybackProtection; 
+    selectedCurrency: string;
+    toggle: React.Dispatch<SetStateAction<boolean>>; 
+    actionButton: (value: string) => void; 
+    setPlaybackProtectionEnabled: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export const ProtectionModal = (props: ProtectionModalProps) => {
     const [playbackProtectionAmount, setPlaybackProtectionAmount] = React.useState<string>('50');
 
     const playbackProtectionDropdownList = [{title: "Disable Protection"}, {title: "50"}, {title: "100"}, {title: "250"}, {title: "500"}, {title: "1000"}, {title: "2000"}, {title: "5000"}]
@@ -18,7 +27,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
         },
         {
             label: 'Price per GB',
-            value: "$" + props.playbackProtection.price
+            value: handleCurrencySymbol(props.selectedCurrency) + props.playbackProtection.price
         },
         {
             label: 'Billed',
@@ -38,7 +47,7 @@ export const ProtectionModal = (props: {playbackProtection: PlaybackProtection; 
     const protectionModalTableFooterElement = () => {
         return  [
             <Text  key={"protectionModalTableFooterTotal"} size={14}  weight="med" color="gray-1">Total</Text>,
-            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">${playbackProtectionAmount === "Disable Protection" ? "0" : (parseInt(playbackProtectionAmount) * props.playbackProtection.price).toFixed(2)}</Text>,
+            <Text  key={"protectionModalTableFooterValue"} size={14}  weight="med" color="gray-1">{handleCurrencySymbol(props.selectedCurrency) + (playbackProtectionAmount === "Disable Protection" ? "0" : (parseInt(playbackProtectionAmount) * props.playbackProtection.price).toFixed(2))}</Text>,
         ]
     }
 

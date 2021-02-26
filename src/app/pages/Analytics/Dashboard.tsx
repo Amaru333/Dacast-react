@@ -8,34 +8,11 @@ import { AnalyticsDashboardInfos } from '../../redux-flow/store/Analytics/Dashbo
 import { AnalyticsCard, renderMap, DateFilteringAnalytics, ThirdLgHalfXmFullXs, HalfSmFullXs, FailedCardAnalytics, mergeForTable } from './AnalyticsCommunOld';
 import { DashboardPageProps } from '../../containers/Analytics/Dashboard';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import moment from 'moment';
+import { dateAdd } from '../../../utils/services/date/dateService';
 
 export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
 
-    const COLUMNS_TOP_CONTENT = [
-        {
-            Header: 'Content',
-            accessor: 'content'
-        },
-        {
-            Header: 'Watch Time (sec)',
-            accessor: 'watchTime'
-        },
-        {
-            Header: 'Number of views',
-            accessor: 'views'
-        },
-        {
-            Header: 'Revenue (USD)',
-            accessor: 'revenueUsd'
-        },
-        {
-            Header: 'Revenue (EUR)',
-            accessor: 'revenueEur'
-        }
-    ]
-
-    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: moment().subtract(1, 'hour'), start: moment().subtract(1, 'days') })
+    const [dates, setDates] = React.useState<{ end: number; start: number }>({ end: dateAdd(new Date(), 'hour', -1).getTime(), start: dateAdd(new Date(), 'day', -1).getTime() })
 
     const labelsFormate = (labels: number[]) => {
         if(!labels.length) {
@@ -59,7 +36,8 @@ export const DashboardAnalyticsPage = (props: DashboardPageProps) => {
             <DateFilteringAnalytics defaultDates={dates} refreshData={refreshData} />
             <div className="clearfix mxn1 mb2">
                 <div className={HalfSmFullXs}>
-                    <AnalyticsCard dataName="playtimePerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.playtimePerTime? props.dashboardAnalytics.data.playtimePerTime.data: [], props.dashboardAnalytics.data.playtimePerTime && props.dashboardAnalytics.data.playtimePerTime.time  ? labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time): []), columns: [{ Header: 'Mbytes', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.playtimePerTime.csv} infoText="How much data is consumed over time" title="Play time by Time">
+                   {console.log(props.dashboardAnalytics.data.playtimePerTime)} 
+                    <AnalyticsCard dataName="playtimePerTime" table={ { data: mergeForTable(props.dashboardAnalytics.data.playtimePerTime? props.dashboardAnalytics.data.playtimePerTime.data: [], props.dashboardAnalytics.data.playtimePerTime && props.dashboardAnalytics.data.playtimePerTime.time  ? labelsFormate(props.dashboardAnalytics.data.playtimePerTime.time): []), columns: [{ Header: 'Seconds', accessor: 'mb' }, { Header: 'Date', accessor: 'date' }] } } data={props.dashboardAnalytics.data.playtimePerTime.csv} infoText="How much data is consumed over time" title="Play time by Time">
                         {
                             props.dashboardAnalytics.data.playtimePerTime ?
                                 props.dashboardAnalytics.data.playtimePerTime.failed ?

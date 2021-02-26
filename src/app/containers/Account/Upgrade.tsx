@@ -10,13 +10,16 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/actions';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/store/Account/Company';
 
 
 export interface UpgradeContainerProps {
     planDetails: Plans;
-    getPlanDetails: () => Promise<void>;
     billingInfos: BillingPageInfos;
+    companyInfo: CompanyPageInfos;
+    getPlanDetails: () => Promise<void>;
     getBillingPageInfos: () => Promise<void>
+    getCompanyInfo: () => Promise<void>
 }
 
 const UpgradeContainer = (props: UpgradeContainerProps) => {
@@ -29,6 +32,10 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
 
         props.getPlanDetails()
         .catch(() => setNodataFetched(true))
+
+        if(!props.companyInfo) {
+            props.getCompanyInfo()
+        }
     }, [])
 
     if(noDataFetched) {
@@ -46,7 +53,8 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         planDetails: state.account.upgrade,
-        billingInfos: state.account.plan
+        billingInfos: state.account.plan,
+        companyInfo: state.account.company
     }
 }
 
@@ -57,6 +65,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getBillingPageInfos: async () => {
             await dispatch(getBillingPageInfosAction(undefined));
+        },
+        getCompanyInfo: async () => {
+            await dispatch(getCompanyPageDetailsAction(undefined))
         }
     }
 }

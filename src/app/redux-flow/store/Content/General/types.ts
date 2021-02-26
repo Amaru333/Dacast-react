@@ -80,8 +80,7 @@ export interface SubtitleInfo {
 }
 
 export interface DateTimeValue {
-    date: string;
-    time: string;
+    date: number;
     timezone: string;
 }
 

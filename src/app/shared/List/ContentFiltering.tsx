@@ -8,7 +8,6 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { userToken } from '../../utils/services/token/tokenService';
-var moment = require('moment');
 
 export interface FilteringContentState {
     status: {
@@ -132,11 +131,11 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     
                     <div className="mb3" id="contentFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper id='startDate' date={filteringState.afterDate == false ? null : moment.unix(filteringState.afterDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, afterDate: ms } }) }} />
+                        <DateSinglePickerWrapper id='startDate' date={isNaN(filteringState.afterDate as number) || !filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, afterDate: Math.round(date.getTime()/ 1000)  } }) }} />
                     </div>
                     <div className="mb3" id="contentFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
-                        <DateSinglePickerWrapper id='endDate' date={filteringState.beforeDate == false ? null : moment.unix(filteringState.beforeDate)} allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, beforeDate: ms } }) }} />
+                        <DateSinglePickerWrapper id='endDate' date={isNaN(filteringState.beforeDate as number)  || !filteringState.beforeDate ? null: new Date(filteringState.beforeDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, beforeDate: Math.round(date.getTime()/ 1000)  } }) }} />
                     </div>
                     {
                         props.contentType === "vod" && 
