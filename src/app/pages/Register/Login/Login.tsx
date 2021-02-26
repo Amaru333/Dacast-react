@@ -12,12 +12,15 @@ import { isMobile } from 'react-device-detect';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
 import { LoginInfos } from '../../../redux-flow/store/Register/Login';
+import { isProduction } from '../../../utils/services/player/stage';
 
 const logo = require('../../../../../public/assets/logo.png');
 
 export const LoginPage = (props: LoginComponentProps) => {
 
     let query = useQuery()
+
+    const signupPageUrl = isProduction() ? 'https://dacast.com/signup' : 'https://test.dacast.com/signup'
 
     const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -69,7 +72,7 @@ export const LoginPage = (props: LoginComponentProps) => {
                             <Text color="gray-1" className='absolute right-0 pt1' size={12} weight="reg"><a href="/forgot-password">Forgot your password?</a></Text>
                         </div>
 
-                        <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href="https://dacast.com/signup">Sign up</a></Text>
+                        <Text className="col col-12" color="gray-1" size={12} weight="reg">Don&apos;t have an account? <a href={signupPageUrl}>Sign up</a></Text>
                     </ModalContent>
                     <Bubble hidden={!props.loginInfos || (props.loginInfos && !props.loginInfos.error)} type='error' className='my2'>
                         Unable to sign in. Please check your details and try again.
