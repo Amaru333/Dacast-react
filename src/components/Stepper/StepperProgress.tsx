@@ -1,3 +1,5 @@
+//REPLACE THIS WITH SVG LATER
+import Icon from '@material-ui/core/Icon';
 import React from 'react';
 import { EmptyProgressBar, StepperProgressBar, StepperProgressContainer, StepperProgressWrapper, StepTitle, StepTitleNumber } from './StepperStyles';
 import { Step } from './StepperTypes';
@@ -14,8 +16,10 @@ export const StepperProgress = (props: {stepList: Step[], currentStep: number}) 
                 <EmptyProgressBar/>
                 {props.stepList.map((step, i) => {
                     return (
-                        <StepTitle>
-                            <StepTitleNumber>{i + 1}</StepTitleNumber>
+                        <StepTitle isCurrentStep={i === props.currentStep}>
+                            <StepTitleNumber isFutureStep={i > props.currentStep}>
+                                {i < props.currentStep ? <Icon fontSize="small" style={{color: "white"}}>check</Icon> :  (i + 1)}
+                            </StepTitleNumber>
                             {step.title}
                         </StepTitle>
                     );

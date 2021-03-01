@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
-import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle, StepperNextButton } from './StepperStyles';
+import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperNextButton } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
