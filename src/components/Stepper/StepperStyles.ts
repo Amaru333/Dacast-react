@@ -103,3 +103,64 @@ export const StepperNextButton = styled(Button)`
     outline: none;
   };
 `
+
+export const StepperProgressContainer = styled.div`
+    /* position: absolute;
+    top: 15px; */
+    width: 100%;
+    z-index: 9;
+`
+
+export const StepperProgressWrapper = styled.div`
+    width: 70%;
+    position: relative;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+`
+
+export const EmptyProgressBar = styled.div`
+    position: absolute;
+    height: 3px;
+    top: 13px;
+    z-index: -2;
+    background: ${props => props.theme.colors["gray-7"]};
+    width: 100%;
+`
+
+export const StepperProgressBar = styled.div<{progress: number}>`
+    position: absolute;
+    height: 3px;
+    top: 13px;
+    z-index: -1;
+    background: ${props => props.theme.colors["violet"]};
+    width: ${props => props.progress + "%"};
+`
+
+export const StepTitle = styled.div`
+    text-align: center;
+    font-size: 0.7rem;
+    align-items: center;
+    background: #fff;
+    /* padding: 0 1rem; */
+    /* height: 30px; */
+    display: flex;
+    flex-direction: column;
+    min-width: 48px;
+    /* flex: 1 */
+`
+
+export const StepTitleNumber = styled.div`
+    background: ${props => props.theme.colors["violet"]};
+    height: 24px;
+    width: 24px;
+    margin: 0 auto 8px;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    color: white;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
