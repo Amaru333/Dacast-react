@@ -229,7 +229,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                             id="extendTrial"
                         />
                         <div className='flex'>
-                            <Button onClick={() => handleExtendTrialSubmit} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue' >Save</Button>
+                            <Button onClick={handleExtendTrialSubmit} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue' >Save</Button>
                             <Button onClick={() => setExtendTrialModalOpened(false)} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                         </div>
                     </div>
