@@ -24,6 +24,7 @@ interface Invoice {
     total: number;
     status: 'pending' | 'failed' | 'paid';
     downloadLink: string;
+    currency: PlanCurrencyEndpoint
 }
 
 export interface GetInvoicesOutput {
