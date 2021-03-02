@@ -118,6 +118,7 @@ const Header = (props: HeaderProps) => {
             {
                 gtmId: 'GTM-PHZ3Z7F',
                 dataLayer: {
+                    'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
                     'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
                     'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
@@ -137,6 +138,7 @@ const Header = (props: HeaderProps) => {
             TagManager.dataLayer(
                 {
                     dataLayer: {
+                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
@@ -159,6 +161,7 @@ const Header = (props: HeaderProps) => {
             TagManager.dataLayer(
                 {
                     dataLayer: {
+                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',

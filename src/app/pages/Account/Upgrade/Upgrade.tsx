@@ -212,7 +212,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             {/* <Label className="pt4 mb1" color='green' backgroundColor='green20' label='Feature Trial'></Label>
                                             <Text className='center col col-10' size={10} weight='reg' color='gray-5'>* Feature available for first 6 months</Text> */}
                                             {currentPlan === 'Event' || currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="mt25 col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={handleContactUsButtonClick}>Contact us</ButtonStyle> :
                                                 <ButtonStyle className="mt25 col col-12" disabled={currentPlan === 'Starter'} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.starterPlan }); handleSteps('starter') }}>{currentPlan === 'Starter' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                             }
                                         </div>
@@ -249,7 +249,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
 
                                         <div className='flex flex-column absolute bottom-0 col col-12'>
                                             {currentPlan === "Annual Scale" || currentPlan === "Monthly Scale" ?
-                                                <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact us</ButtonStyle> :
+                                                <ButtonStyle className="col col-12" typeButton='secondary' sizeButton='large' buttonColor='blue' onClick={handleContactUsButtonClick}>Contact us</ButtonStyle> :
                                                 <div className="col col-12 flex flex-column">
                                                     <ButtonStyle className="col col-12" typeButton='primary' disabled={currentPlan === 'Event'} sizeButton='large' buttonColor='blue' onClick={() => { setStepperData({ ...props.planDetails.eventPlan }); handleSteps('event') }}>{currentPlan === 'Event' ? "Current Plan" : "Upgrade"}</ButtonStyle>
                                                 </div>
@@ -322,7 +322,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                             <Text className={textClassName + ' center'} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                         </div>
-                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact Us</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0 col col-12' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={handleContactUsButtonClick}>Contact Us</ButtonStyle>
 
                                     </PlanInfosContainer>
                                 </Card>
@@ -442,7 +442,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'> High volume streaming needs?</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>Contact us for a custom plan tailored to your enterprise.</Text>
                                         </>
-                                        <ButtonStyle className='absolute bottom-0 mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => handleContactUsButtonClick}>Contact Us</ButtonStyle>
+                                        <ButtonStyle className='absolute bottom-0 mb1' typeButton='primary' sizeButton='large' buttonColor='blue' onClick={handleContactUsButtonClick}>Contact Us</ButtonStyle>
 
                                     </PlanInfosContainer>
                                 </Card>

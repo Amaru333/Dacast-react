@@ -44,8 +44,8 @@ export const ImageModal = (props: ImageModalProps) => {
     React.useEffect(() => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
-        } else { 
-            setIsSaveDisabled(true) 
+        } else {
+            setIsSaveDisabled(true)
         }
     }, [selectedOption])
 
@@ -88,7 +88,7 @@ export const ImageModal = (props: ImageModalProps) => {
                     setSaveButtonLoading(false)
                     props.toggle()
                 }, 4000)
-            }    
+            }
         }
     }
 
@@ -119,10 +119,10 @@ export const ImageModal = (props: ImageModalProps) => {
                     setFileName(file[0].name)
                 }
             }
-            reader.readAsDataURL(file[0])          
+            reader.readAsDataURL(file[0])
         }
     }
-    
+
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
@@ -154,7 +154,7 @@ export const ImageModal = (props: ImageModalProps) => {
                                     <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                    </button>   
+                                    </button>
                                 </ThumbnailFile>
                             }
                         </div>
@@ -175,7 +175,7 @@ export const ImageModal = (props: ImageModalProps) => {
                                 </ButtonsArea>
                             </PlayerSection>
                         </div>
-                        
+
                     </RadioButtonOption>
                 </ModalContent>
                 :
@@ -192,7 +192,7 @@ export const ImageModal = (props: ImageModalProps) => {
                                 <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                </button>   
+                                </button>
                             </ThumbnailFile>
                         }
                     </div>
@@ -200,7 +200,7 @@ export const ImageModal = (props: ImageModalProps) => {
             }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
-                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
+                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button>
             </ModalFooter>
         </Modal>
     )
@@ -243,7 +243,6 @@ export const PlayerSection = styled.div`
 export const PlayerContainer = styled.div`
     width: 95%;
     height: 100%;
-    min-height: 341px;
     position: relative;
     margin: 16px auto;
 `

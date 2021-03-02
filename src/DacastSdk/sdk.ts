@@ -165,7 +165,8 @@ export class DacastSdk {
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
     public getPaywallTransactionsCsv = async (input: string): Promise<string> => await this.axiosClient.get('paywall/transactions/csv?' + input).then(this.checkExtraData)
-    
+    public syncTransactions = async (): Promise<string> => await this.axiosClient.put('paywall/transactions/sync')
+
     public getContentPrices = async (input: string): Promise<GetContentPricesOutput> => await this.axiosClient.get('/paywall/prices?content-id=' + input).then(this.checkExtraData)
     public postContentPrice = async (input: PostContentPriceInput): Promise<PostContentPriceOutput> => await this.axiosClient.post('/paywall/prices', input).then(this.checkExtraData)
     public putContentPrice = async (input: PutContentPriceInput): Promise<void> => await this.axiosClient.put('/paywall/prices/' + input.id, input)
