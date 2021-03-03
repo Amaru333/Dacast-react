@@ -8,6 +8,7 @@ import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { segmentService } from '../../../utils/services/segment/segmentService';
+import { useHistory, useLocation } from 'react-router-dom';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;
@@ -16,11 +17,16 @@ export interface LoginComponentProps {
 }
 const Login = (props: LoginComponentProps) => {
 
+    let history = useHistory()
+    // let location = useLocation()
+
+    let { from } = location.state || { from: { pathname: "/" } };
+
+    console.log(from)
+
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
             userToken.addTokenInfo(props.loginInfos);
-            // history.push('/dashboard');
-            location.reload()
             segmentService.identify({
                 userId: userToken.getUserInfoItem('custom:dacast_user_id'), 
                 firstName: userToken.getUserInfoItem('custom:first_name'), 
@@ -28,6 +34,8 @@ const Login = (props: LoginComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
+            // history.push(from)
+            location.reload()
         }
     }, [props.loginInfos])
 

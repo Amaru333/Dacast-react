@@ -96,7 +96,10 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
             </Route>
         )
     } else {
-        return <Redirect to='/' />;
+        return <Redirect to={{
+            pathname: "/",
+            state: { from: location }
+          }}  />;
     }
 }
 
