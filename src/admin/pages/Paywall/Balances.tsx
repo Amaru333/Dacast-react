@@ -110,7 +110,7 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                     onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
                 />
                 <Button className='mx2' disabled={!accountId ? true : false} onClick={() => handleSubmit(accountId)} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
-                <Text size={14} weight='med'>{props.balanceInfo.balance ? 'Balance: $' + props.balanceInfo.balance : ''}</Text>
+                {accountId && <Text size={14} weight='med'>{'Balance: $' + props.balanceInfo.balance || '0'}</Text>}
             </div>
             <Table contentLoading={contentLoading} className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
             <Pagination totalResults={props.balanceInfo.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
