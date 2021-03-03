@@ -117,7 +117,7 @@ export const DaysContainer = styled.div<{}>`
     justify-content: center;
 `
 
-export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: boolean;isSelectedStartOrEnd: boolean; isLineBeginning: boolean; isLineEnd: boolean; isMonthFirstDay: boolean; isMonthLastDay: boolean;  isFirstDay: boolean; isLastDay: boolean; isSingle: boolean}>`
+export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: boolean;isSelectedStartOrEnd: boolean; isLineBeginning: boolean; isLineEnd: boolean; isMonthFirstDay: boolean; isMonthLastDay: boolean;  isFirstDay: boolean; isLastDay: boolean; isSingle: boolean; isBlocked: boolean}>`
     ${props => (props.isWithinHoverRange || props.isSelected) && !props.isSingle && css`
         background-color:${props.theme.colors["violet20"]};
     `}
@@ -137,9 +137,14 @@ export const DayWrapper = styled.div<{isWithinHoverRange: boolean; isSelected: b
     `}
     margin: 5px 0;
     padding: 0 3px;
+    &:hover {
+        ${props => props.isBlocked && css`
+            cursor: not-allowed;
+        `}
+    }
 `
 
-export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: boolean; isSelectedStartOrEnd: boolean; isToday: boolean}>`
+export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: boolean; isSelectedStartOrEnd: boolean; isToday: boolean; isBlocked: boolean}>`
     width: 40px;
     height: 40px;
     border: none;
@@ -150,6 +155,10 @@ export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: 
         background-color: ${props => props.theme.colors["violet20"]};
         color: ${props => props.theme.colors["dark-violet"]};
         cursor: pointer;
+        ${props => props.isBlocked && css`
+            pointer-events: none;
+            background-color: transparent;
+        `}
     }
     &:focus {
         outline: none;
@@ -163,5 +172,9 @@ export const DayStyle = styled.button<{isWithinHoverRange: boolean; isSelected: 
     `}
     ${props => props.isToday && css`
         border: 1px solid ${props.theme.colors["gray-3"]};
+    `}
+
+    ${props => props.isBlocked && css`
+        background-color: transparent;
     `}
 `

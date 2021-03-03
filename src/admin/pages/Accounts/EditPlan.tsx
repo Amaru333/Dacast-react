@@ -15,12 +15,12 @@ import { Modal } from '../../../components/Modal/Modal'
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker'
 
 export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}) => {
-    
+    const defaultTs = Math.floor(props.accountPlan.expiresAt ? new Date(props.accountPlan.expiresAt.replace(' T', 'T')).valueOf() : Date.now()) / 1000
     let history = useHistory()
     const [extendTrialModalOpened, setExtendTrialModalOpened] = React.useState<boolean>(false)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [planData, setPlanData] = React.useState<PlanInfoPut>({privileges: []})
-    const [trialExpirationDate, setTrialExpirationDate] = React.useState<number>(Math.floor(props.accountPlan.expiresAt ? new Date(props.accountPlan.expiresAt).getDate() : Date.now()) / 1000)
+    const [trialExpirationDate, setTrialExpirationDate] = React.useState<number>(defaultTs)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const salesforceId = getUrlParam('salesforceId') || null
 
@@ -35,6 +35,8 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
             setButtonLoading(false)
         })
     }
+
+    React.useEffect(() => console.log('default ts:', trialExpirationDate), [trialExpirationDate])
 
     const handleKeyChange = (key:string, value: boolean | number) => {
         let tempPlanData = planData
@@ -60,11 +62,17 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='flex-auto' size={14}>{props.accountPlan.name}</Text>
                         <Button className='' sizeButton='xs' typeButton='secondary' buttonColor='blue'>Switch</Button>
                     </div>
-                    <Text className='pt25' size={16} weight='med'>Trial Expires</Text>
-                    <div style={{border: ' 1px dashed #C8D1E0'}} className='mb2 col col-3 flex items-center p1'>
-                        <Text className='flex-auto' size={14}>{props.accountPlan.expiresAt}</Text>
-                        <Button className='' onClick={() => setExtendTrialModalOpened(true)} sizeButton='xs' typeButton='secondary' buttonColor='blue'>Extend</Button>
-                    </div>
+                    {
+                        props.accountPlan.name === 'Free' &&
+                        <div className='flex flex-column'>
+                            <Text className='pt25' size={16} weight='med'>Trial Expires</Text>
+                            <div style={{border: ' 1px dashed #C8D1E0'}} className='mb2 col col-6 flex items-center p1'>
+                                <Text className='flex-auto' size={14}>{props.accountPlan.expiresAt}</Text>
+                                <Button className='' onClick={() => setExtendTrialModalOpened(true)} sizeButton='xs' typeButton='secondary' buttonColor='blue'>Extend</Button>
+                            </div>
+                        </div>
+                    }
+
                 </Card>
                 <Card className='my1'>
                     <Text className='pb2' size={20} weight='med' color='gray-3'>Manage Limits</Text>
@@ -220,6 +228,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <Modal modalTitle='Extend Trial' toggle={() => setExtendTrialModalOpened(!extendTrialModalOpened)} opened={extendTrialModalOpened}>
                     <div className='flex flex-column'>
                         <DateTimePicker
+                            minDate={defaultTs}
                             fullLineTz
                             dropShowing={false}
                             showTimezone={true}
@@ -228,7 +237,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                             hideOption="Always"
                             id="extendTrial"
                         />
-                        <div className='flex'>
+                        <div className='flex mt2'>
                             <Button onClick={handleExtendTrialSubmit} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue' >Save</Button>
                             <Button onClick={() => setExtendTrialModalOpened(false)} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                         </div>
