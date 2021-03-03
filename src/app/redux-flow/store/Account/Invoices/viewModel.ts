@@ -1,5 +1,6 @@
 import { SearchInvoicesResult } from './types'
 import { GetInvoicesOutput } from '../../../../../DacastSdk/account'
+import { Currency } from '../Upgrade/types'
 
 export const formatGetInvoicesInput = (qs: string) => {
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))
@@ -20,7 +21,16 @@ export const formatGetInvoicesOutput = (data: GetInvoicesOutput): SearchInvoices
         page: data.page,
         perPage: data.perPage,
         total: data.total,
-        invoices: data.invoices
+        invoices: data.invoices.map(invoice => {
+            return {
+                id: invoice.id,
+                date: invoice.date,
+                total: invoice.total,
+                status: invoice.status,
+                downloadLink: invoice.downloadLink,
+                currency: invoice.currency.toLowerCase() as Currency
+            }
+        })
     }
 
     return formattedData

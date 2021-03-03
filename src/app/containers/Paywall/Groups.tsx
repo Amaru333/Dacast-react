@@ -41,12 +41,8 @@ const Groups = (props: GroupsComponentProps) => {
             .catch(() => setNodataFetched(true))
 
         }
-        if(!props.folderData) {
-            const wait = async () => {
-                await props.getFolderContent('/')
-            }
-            wait()
-        }
+            props.getFolderContent('status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist')
+            .catch(() => setNodataFetched(true))
     }, [])
 
     if(noDataFetched) {
@@ -54,7 +50,7 @@ const Groups = (props: GroupsComponentProps) => {
     }
 
     return (
-        props.groupsInfos.prices && props.groupsInfos.promos ?
+        props.groupsInfos.prices && props.groupsInfos.promos && props.folderData ?
             <GroupsPage {...props} />
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )

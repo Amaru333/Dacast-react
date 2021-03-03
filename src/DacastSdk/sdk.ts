@@ -163,6 +163,7 @@ export class DacastSdk {
 
     public getPaywallTransactions = async (input: string): Promise<GetPaywallTransactionsOutput> => await this.axiosClient.get('/paywall/transactions?' + input).then(this.checkExtraData)
     public getPaywallTransactionsCsv = async (input: string): Promise<string> => await this.axiosClient.get('paywall/transactions/csv?' + input).then(this.checkExtraData)
+    public syncTransactions = async (): Promise<string> => await this.axiosClient.put('paywall/transactions/sync')
 
     public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
