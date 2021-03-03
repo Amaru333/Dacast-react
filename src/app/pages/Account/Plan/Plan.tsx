@@ -205,7 +205,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                { 
-                   (props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free") &&
+                   (props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.displayName !== "30 Day Trial") &&
                     <>
                         <Divider className="py1" />
                         <div className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></div>
