@@ -144,7 +144,7 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
         )
     }
     const handleInfos = () => {
-        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free") {
+        if(props.widget === "bandwidth" && props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") {
             if(props.overage && props.overage.enabled && props.overage.amount > 0) {
                 return (
                     <div className="flex align-center"><Text className="self-center mr1" size={12} weight="reg">{ props.percentage <= 0 ? props.overage.amount+"GB Playback Protection purchased" : "Playback Protection enabled"}</Text>
