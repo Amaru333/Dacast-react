@@ -1,5 +1,5 @@
-import { GetExpoSetupOutput, PutExpoSetupInput } from "../../../../../DacastSdk/expo"
-import { GetPlaylistSetupOutput, PutPlaylistSetupInput } from "../../../../../DacastSdk/playlist"
+import { ExpoContentSetup, GetExpoSetupOutput, PutExpoSetupInput } from "../../../../../DacastSdk/expo"
+import { GetPlaylistSetupOutput, PlaylistContentSetup, PutPlaylistSetupInput } from "../../../../../DacastSdk/playlist"
 import { ContentType } from "../../Common/types"
 import { ContentSelectorType, ContentSetupObject } from "./types"
 
@@ -10,7 +10,7 @@ export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data:
         contentId: data.id,
         data: {
             id: data.id,
-            contentList: data.contentList.map(content => {
+            contentList: data.contentList.map((content: PlaylistContentSetup) => {
                 return {
                     contentType: content["content-type"],
                     title: content.title,
@@ -26,7 +26,6 @@ export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data:
         },
         contentType: contentType
     }
-
     return formattedData
 }
 
@@ -84,12 +83,12 @@ export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: Get
         contentId: data.id,
         data: {
             id: data.id,
-            contentList: data.contentList.map(content => {
+            contentList: data.contentList.map((content: ExpoContentSetup) => {
                 return {
                     contentType: content.contentType,
                     title: content.title,
                     thumbnailURL: content.thumbnailUrl,
-                    id: content.contentId
+                    id: content.id
                 }
             }),
             folderId: data.folderId,
@@ -100,6 +99,7 @@ export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: Get
         },
         contentType: contentType
     }
+    console.log('view model out', formattedData)
 
     return formattedData
 }

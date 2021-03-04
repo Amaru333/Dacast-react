@@ -32,7 +32,7 @@ export interface GetPlaylistAssetUploadUrl {
     playlistID: string
 }
 
-interface PlaylistContentSetup {
+export interface PlaylistContentSetup {
     'content-type': 'vod' | 'live';
     title: string;
     thumbnailURL: string;

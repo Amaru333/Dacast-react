@@ -34,7 +34,7 @@ export interface ExpoContentSetup {
     contentType: 'vod' | 'live';
     title: string;
     thumbnailUrl: string;
-    contentId: string
+    id: string
 }
 
 interface PutExpoContentSetup {
