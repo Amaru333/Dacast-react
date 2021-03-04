@@ -16,10 +16,11 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Action, createContentPricePresetAction, saveContentPricePresetAction, deleteContentPricePresetAction, createContentPromoPresetAction, saveContentPromoPresetAction, deleteContentPromoPresetAction, getContentPaywallInfosAction, saveContentPaywallInfosAction, getContentPaywallPricesAction, getContentPaywallPromosAction } from '../../redux-flow/store/Content/Paywall/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const PlaylistPaywall = (props: ContentPaywallComponentProps) => {
 
-    let { playlistId } = useParams()
+    let { playlistId } = useParams<{playlistId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
@@ -143,41 +144,41 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentPaywallInfos: async (playlistId: string, contentType: string) => {
-            await dispatch(getContentPaywallInfosAction(playlistId, contentType));
+        getContentPaywallInfos: async (playlistId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallInfosAction(contentType)(playlistId));
         },
-        getContentPaywallPrices: async (playlistId: string, contentType: string) => {
-            await dispatch(getContentPaywallPricesAction(playlistId, contentType));
+        getContentPaywallPrices: async (playlistId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallPricesAction({id: playlistId, contentType: contentType}));
         },
-        saveContentPaywallInfos: async (data: ContentPaywallPageInfos, playlistId: string, contentType: string) => {
-            await dispatch(saveContentPaywallInfosAction(data, playlistId, contentType));
+        saveContentPaywallInfos: async (data: ContentPaywallPageInfos, playlistId: string, contentType: ContentType) => {
+            await dispatch(saveContentPaywallInfosAction(contentType)({info: data, contentId: playlistId}));
         },
-        createContentPricePreset: async (data: Preset, playlistId: string, contentType: string) => {
-            await dispatch(createContentPricePresetAction(data, playlistId, contentType));
+        createContentPricePreset: async (data: Preset, playlistId: string, contentType: ContentType) => {
+            await dispatch(createContentPricePresetAction({price: data, id: playlistId, contentType: contentType}));
         },
-        saveContentPricePreset: async (data: Preset, playlistId: string, contentType: string) => {
-            await dispatch(saveContentPricePresetAction(data, playlistId, contentType));
+        saveContentPricePreset: async (data: Preset, playlistId: string, contentType: ContentType) => {
+            await dispatch(saveContentPricePresetAction({price: data, contentId: playlistId, contentType: contentType}));
         },
-        deleteContentPricePreset: async (data: Preset, playlistId: string, contentType: string) => {
-            await dispatch(deleteContentPricePresetAction(data, playlistId, contentType));
+        deleteContentPricePreset: async (data: Preset, playlistId: string, contentType: ContentType) => {
+            await dispatch(deleteContentPricePresetAction({price: data, contentId: playlistId, contentType: contentType}));
         },
-        getContentPaywallPromos: async (playlistId: string, contentType: string) => {
-            await dispatch(getContentPaywallPromosAction(playlistId, contentType));
+        getContentPaywallPromos: async (playlistId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallPromosAction({contentId: playlistId, contentType: contentType}));
         },
-        createContentPromoPreset: async (data: Promo, playlistId: string, contentType: string) => {
-            await dispatch(createContentPromoPresetAction(data, playlistId, contentType));
+        createContentPromoPreset: async (data: Promo, playlistId: string, contentType: ContentType) => {
+            await dispatch(createContentPromoPresetAction({promo: data, contentId: playlistId, contentType: contentType}));
         },
-        saveContentPromoPreset: async (data: Promo, playlistId: string, contentType: string) => {
-            await dispatch(saveContentPromoPresetAction(data, playlistId, contentType));
+        saveContentPromoPreset: async (data: Promo, playlistId: string, contentType: ContentType) => {
+            await dispatch(saveContentPromoPresetAction({promo: data, contentId: playlistId, contentType: contentType}));
         },
-        deleteContentPromoPreset: async (data: Promo, playlistId: string, contentType: string) => {
-            await dispatch(deleteContentPromoPresetAction(data, playlistId, contentType));
+        deleteContentPromoPreset: async (data: Promo, playlistId: string, contentType: ContentType) => {
+            await dispatch(deleteContentPromoPresetAction({promo: data, contentId: playlistId, contentType: contentType}));
         },
         getGroupsInfos: async () => {
-            await dispatch(getGroupPricesAction());
+            await dispatch(getGroupPricesAction(undefined));
         },
         getPaywallThemes: async () => {
-            await dispatch(getPaywallThemesAction())
+            await dispatch(getPaywallThemesAction(undefined))
         },
         getPresetsInfo: async (qs: string) => {
             await dispatch(getPricePresetsInfosAction(qs))

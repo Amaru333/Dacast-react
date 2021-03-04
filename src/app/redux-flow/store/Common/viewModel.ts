@@ -1,7 +1,7 @@
 import { BulkActionItem, PostBulkActionInput, PutUploadFileInput } from '../../../../DacastSdk/common'
 import { BulkActionContentType, BulkActionType } from './types'
 
-export const formatPutUploadFileInput = (data: {data: File, uploadUrl: string}): PutUploadFileInput => {
+export const formatPutUploadFileInput = (data: {data: File, uploadUrl: string; contentId?: string}): PutUploadFileInput => {
     let formattedData: PutUploadFileInput = {
         uploadUrl: data.uploadUrl,
         data: data.data

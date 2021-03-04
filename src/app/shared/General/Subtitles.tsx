@@ -12,9 +12,17 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import styled from 'styled-components';
 import { languages } from 'countries-list';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
+interface GeneralSubtitlesProps {
+    contentType: ContentType, 
+    contentDetails: ContentDetails, 
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    deleteSubtitle?: (contentId: string, targetId: string, contentType: ContentType) => Promise<void>, 
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => Promise<void>, 
+}
 
-export const GeneralSubtitles = (props: {contentType: string, contentDetails: ContentDetails, deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>, addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>, getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;}) => {
+export const GeneralSubtitles = (props: GeneralSubtitlesProps) => {
 
     const emptySubtitle = { targetID: "", name: "", languageLongName: "", languageShortName: "", convertToUTF8: false }
     let subtitleBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -109,7 +117,7 @@ export const GeneralSubtitles = (props: {contentType: string, contentDetails: Co
                     <IconContainer key={"generalPage_subtitles_actionIcons" + value.name + key} className="iconAction">
                         <ActionIcon id={"downloadSubtitleTooltip" + key}><a href={value.url} download><IconStyle>get_app</IconStyle></a></ActionIcon>
                         <Tooltip target={"downloadSubtitleTooltip" + key}>Download</Tooltip>
-                        <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, value.name, props.contentType)}>delete</IconStyle></ActionIcon>
+                        <ActionIcon id={"deleteSubtitleTooltip" + key}><IconStyle onClick={() => props.deleteSubtitle(props.contentDetails.id, value.targetID, props.contentType)}>delete</IconStyle></ActionIcon>
                         <Tooltip target={"deleteSubtitleTooltip" + key}>Delete</Tooltip>
                     </IconContainer>
                 ]

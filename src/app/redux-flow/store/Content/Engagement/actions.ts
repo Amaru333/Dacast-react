@@ -1,14 +1,10 @@
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../..';
-import { showToastNotification } from '../../Toasts';
+
 import { ActionTypes } from './types';
-import { contentEngagementServices } from './services';
 import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
-import { applyViewModel, parseContentType } from '../../../../utils/utils';
+import { applyViewModel } from '../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { ContentType } from '../../Common/types';
 import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPostContentBrandImageUrlOutput, formatPostLiveBrandImageUrlInput, formatPostVodBrandImageUrlInput, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
-import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
 import { formatPutUploadFileInput } from '../../Common/viewModel';
 
 export interface GetContentEngagementSettings {
