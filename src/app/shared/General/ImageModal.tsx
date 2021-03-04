@@ -228,6 +228,7 @@ export const PlayerSection = styled.div`
 export const PlayerContainer = styled.div`
     width: 95%;
     height: 100%;
+    max-height: 66vh;
     position: relative;
     margin: 16px auto;
 `
