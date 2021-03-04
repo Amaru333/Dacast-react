@@ -10,14 +10,14 @@ export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data:
         contentId: data.id,
         data: {
             id: data.id,
-            contentList: data.contentList.map((content: PlaylistContentSetup) => {
+            contentList: data.contentList ? data.contentList.map((content: PlaylistContentSetup) => {
                 return {
                     contentType: content["content-type"],
                     title: content.title,
                     thumbnailURL: content.thumbnailURL,
                     id: content["content-type"] === 'vod' ? content["vod-id"] : content["live-channel-id"]
                 }
-            }),
+            }) : [],
             folderId: data.folderId,
             maxItems: data.maxItems,
             type: data.playlistType,
