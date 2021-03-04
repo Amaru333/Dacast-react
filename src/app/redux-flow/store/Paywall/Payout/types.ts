@@ -47,13 +47,60 @@ export interface PaymentMethod {
     bankCountry?: string;
     emailAddress?: string;
     comments?: string;
+}
 
+export interface PaymentMethodPut {
+    id?: string;
+    paymentMethodType?: string;
+    paymentMethodName?: string;
+    recipientType?: 'Business' | 'Personal';
+    accountNumberUS?: string;
+    routingNumberUS?: string;
+    firstNameUS?: string;
+    lastNameUS?: string;
+    accountNameUS?: string;
+    addressUS?: string;
+    address2US?: string;
+    stateUS?: string;
+    townUS?: string;
+    zipCodeUS?: string;
+    countryUS?: string;
+    bankNameUS?: string;
+    bankAddressUS?: string;
+    bankAddress2US?: string;
+    bankStateUS?: string;
+    bankTownUS?: string;
+    bankZipCodeUS?: string;
+    bankCountryUS?: string;
+    swiftInternational?: string;
+    ibanInternational?: string;
+    routingNumberInternational?: string;
+    firstNameInternational?: string;
+    lastNameInternational?: string;
+    accountNameInternational?: string;
+    addressInternational?: string;
+    address2International?: string;
+    stateInternational?: string;
+    townInternational?: string;
+    zipCodeInternational?: string;
+    countryInternational?: string;
+    bankNameInternational?: string;
+    bankAddressInternational?: string;
+    bankAddress2International?: string;
+    bankStateInternational?: string;
+    bankTownInternational?: string;
+    bankZipCodeInternational?: string;
+    bankCountryInternational?: string;
+    payee?: string;
+    companyName?: string;
     checkAddress?: string;
     checkAddressLine2?: string;
     checkState?: string;
     checkTown?: string;
     checkZipCode?: string;
     checkCountry?: string;
+    emailAddress?: string;
+    comments?: string;
 }
 
 export interface WithdrawalRequest {
