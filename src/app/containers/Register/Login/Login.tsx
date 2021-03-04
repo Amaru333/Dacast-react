@@ -17,13 +17,6 @@ export interface LoginComponentProps {
 }
 const Login = (props: LoginComponentProps) => {
 
-    let history = useHistory()
-    // let location = useLocation()
-
-    let { from } = location.state || { from: { pathname: "/" } };
-
-    console.log(from)
-
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
             userToken.addTokenInfo(props.loginInfos);
@@ -34,7 +27,6 @@ const Login = (props: LoginComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
-            // history.push(from)
             location.reload()
         }
     }, [props.loginInfos])

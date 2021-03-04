@@ -186,7 +186,6 @@ const Header = (props: HeaderProps) => {
     const handleLogOut = () => {
         userToken.resetUserInfo()
         window.location.href = '/login'
-        window.location.reload()
         
     }
 

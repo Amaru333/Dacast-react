@@ -97,7 +97,7 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
         )
     } else {
         return <Redirect to={{
-            pathname: "/",
+            pathname: "/login",
             state: { from: location }
           }}  />;
     }
