@@ -27,8 +27,11 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
         props.getPaywallThemes()
         .catch(() => setNodataFetched(true))
 
-        props.getCompanyState()
+        if(!props.companyState) {
+            props.getCompanyState()
         .catch(() => setNodataFetched(true))
+        }
+        
     }, [])
 
     if(noDataFetched) {
