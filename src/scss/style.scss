@@ -15,7 +15,7 @@ img {
 
 .mt-auto {
     margin-top: auto;
-} 
+}
 
 .h-fit {
     height: fit-content;
@@ -91,12 +91,12 @@ a:link {
    transition: all .2s linear;
    font-family: Roboto;
 }
-  
+
 /* visited link */
 a:visited {
     color: #284CEB;
 }
-  
+
 /* mouse over link */
 a:hover {
     color: #203DBC;
@@ -321,7 +321,7 @@ a {
 }
 
 .unsavedChangesFooter {
-    & > * { 
+    & > * {
         margin-right: 12px;
     }
 }
@@ -353,10 +353,11 @@ a {
     border: none;
 }
 
-.inplayer-parent, .inplayer-paywall { height:100%} 
+.inplayer-parent, .inplayer-paywall { height:100%}
+.inplayer-paywall { max-height: 100%; }
 
-    
-/**  Responsive stuff */ 
+
+/**  Responsive stuff */
 
 .xs-show {
     display: none;
@@ -366,7 +367,7 @@ a {
     display:none;
 }
 
-/** XS custom class */ 
+/** XS custom class */
 @media (max-width: 40em) {
     .xs-no-gutter {
         padding-left: 0;
@@ -404,7 +405,7 @@ a {
     }
 }
 
-/** SM custom class */ 
+/** SM custom class */
 @media (min-width: 40em) {
     .sm-px1 { padding-left:   var(--space-1); padding-right:  var(--space-1) }
     .sm-pr1 {
