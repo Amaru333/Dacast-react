@@ -26,7 +26,6 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
 
-    console.log('date picker start day:', props.defaultStartDate)
     const [state, setState] = useState<OnDatesChangeProps>({
         startDate: props.defaultStartDate && props.defaultStartDate.getTime() > 0 ? props.defaultStartDate : null,
         endDate: null,
@@ -94,7 +93,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                     <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
                         <StartTextStyle isSingle text={state.startDate ? true : false}>
                             <Text size={14} weight='reg' color='gray-5'>
-                                {state.startDate ? state.startDate.toISOString() : "Select date"}
+                                {state.startDate ? state.startDate.toLocaleDateString() : "Select date"}
                             </Text>
                         </StartTextStyle>
                         <IconStyle isCalendar={true}><Icon>calendar_today</Icon></IconStyle>

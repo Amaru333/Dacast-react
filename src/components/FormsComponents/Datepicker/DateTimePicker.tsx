@@ -26,28 +26,19 @@ interface DateTimePickerProps {
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
-    console.log('props default ts', props.defaultTs)
     let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(tsToInputTime(props.defaultTs, props.timezone)*1000) : null ;
-    console.log('datetime default ts:', defaultTimestamp)
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
-    const [day, setDay] = React.useState<number>(defaultTimestamp ? Math.round(new Date(props.defaultTs*1000).valueOf() / 1000)  : null)
+    const [day, setDay] = React.useState<number>(defaultTimestamp ? Math.round(new Date(props.defaultTs*1000).setHours(0,0,0,0) / 1000)  : null)
     const [time, setTime] = React.useState<string>(defaultTimestamp ? ("0" + defaultTimestamp.getUTCHours()).slice(-2)+':'+("0" + defaultTimestamp.getUTCMinutes()).slice(-2): '00:00')
 
     const [timezone, setTimezone] = React.useState<string>(props.timezone)
     const colClass= props.fullLineTz ? 'col col-6 px1 sm-col-4' : 'col col-6 px1 sm-col-3';
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
-    const saveChanges = () => {
+    React.useEffect(() => {
         var dayStart = new Date(day * 1000).setUTCHours(0,0,0,0);
         var timeStamp = dateAdd(new Date(dayStart), 'second', inputTimeToTs(time , timezone || 'UTC')).getTime() 
         props.callback(method === "Set Date and Time" ? new Date(timeStamp).getTime() < 0 ? 0 :  Math.round(new Date(timeStamp).getTime() / 1000) : 0, timezone)
-    }
-    React.useEffect(() => {
-
-        console.log('datetime time:', time)
-        console.log('timezone', timezone)
-        console.log('day', day)
-        console.log('total', )
     }, [time, day, method, timezone])
 
     return (
