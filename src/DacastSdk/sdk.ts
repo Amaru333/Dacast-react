@@ -1,7 +1,7 @@
 import { UserTokenService } from '../utils/services/token/token'
 import { AxiosClient } from '../utils/services/axios/AxiosClient'
 import { AxiosResponse } from 'axios'
-import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput } from './paywall'
+import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput, GetPaywallBalanceOutput } from './paywall'
 import { DeleteContentImageAssetIdInput, DeleteContentPriceInput, GetContentPaywallInfoOutput, GetContentPricesOutput, GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostContentPriceInput, PostContentPriceOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutContentPaywallInfoInput, PutContentPriceInput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput } from './account'
 import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
@@ -155,6 +155,8 @@ export class DacastSdk {
     public postPaymentRequest = async (input: PostPaymentRequestInput): Promise<PaymentRequestId> => await this.axiosClient.post('/paywall/payment-requests', input).then(this.checkExtraData)
     public putPaymentRequest = async (input: PaymentRequestEndpoints): Promise<void> => await this.axiosClient.put('/paywall/payment-requests/'+ input.id, input)
 
+    public getPaywallBalance = async (): Promise<GetPaywallBalanceOutput> => await this.axiosClient.get('/paywall/balance').then(this.checkExtraData)
+    
     public getPaywallSettings = async (): Promise<PaywallSettings> => await this.axiosClient.get('paywall/payment-options').then(this.checkExtraData)
     public putPaywallSettings = async (input: PaywallSettings): Promise<void> => await this.axiosClient.put('paywall/payment-options', {...input})
 

@@ -297,5 +297,10 @@ export interface GetPaywallTransactionsOutput {
     page: number;
     perPage: number;
     total: number;
-    transactionsList: PaywallTransaction[]
+    transactionsList: PaywallTransaction[];
+}
+
+export interface GetPaywallBalanceOutput {
+    revenue: number;
+    balance: number;
 }
