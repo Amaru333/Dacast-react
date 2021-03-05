@@ -8,7 +8,6 @@ import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { segmentService } from '../../../utils/services/segment/segmentService';
-import { useHistory, useLocation } from 'react-router-dom';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;
