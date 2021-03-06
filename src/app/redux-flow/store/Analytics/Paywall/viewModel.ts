@@ -1,12 +1,12 @@
 import { GetAnalyticsInput, GetAnalyticsOutput } from '../../../../../DacastSdk/analytics'
-import { formatAudienceResults } from '../../../../shared/Analytics/viewModel';
+import { formatSalesResults } from '../../../../shared/Analytics/viewModel';
 import { AccountAnalyticsParameters } from '../types';
-import { AccountAnalyticsAudience, AccountAnalyticsAudienceState } from './types';
+import { AccountAnalyticsPaywall, AccountAnalyticsPaywallState } from './types';
 
 
-export const formatGetAccountAnalyticsAudienceOutput = (response: GetAnalyticsOutput, data: AccountAnalyticsParameters): AccountAnalyticsAudienceState => {
+export const formatGetAccountAnalyticsPaywallOutput = (response: GetAnalyticsOutput, data: AccountAnalyticsParameters): AccountAnalyticsPaywallState => {
 
-    var audienceData: AccountAnalyticsAudience = formatAudienceResults(response, data);
+    var audienceData: AccountAnalyticsPaywall = formatSalesResults(response, data);
 
     return {
         data: Object.keys(audienceData).length === 0 && audienceData.constructor === Object ? undefined : audienceData

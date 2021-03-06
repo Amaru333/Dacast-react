@@ -1,12 +1,12 @@
 import { GetAnalyticsInput, GetAnalyticsOutput } from '../../../../../DacastSdk/analytics'
-import { formatAudienceResults } from '../../../../shared/Analytics/viewModel';
+import { formatWatchResults } from '../../../../shared/Analytics/viewModel';
 import { AccountAnalyticsParameters } from '../types';
-import { AccountAnalyticsAudience, AccountAnalyticsAudienceState } from './types';
+import { AccountAnalyticsEngagement, AccountAnalyticsEngagementState } from './types';
 
 
-export const formatGetAccountAnalyticsAudienceOutput = (response: GetAnalyticsOutput, data: AccountAnalyticsParameters): AccountAnalyticsAudienceState => {
+export const formatGetAccountAnalyticsEngagementOutput = (response: GetAnalyticsOutput, data: AccountAnalyticsParameters): AccountAnalyticsEngagementState => {
 
-    var audienceData: AccountAnalyticsAudience = formatAudienceResults(response, data);
+    var audienceData: AccountAnalyticsEngagement = formatWatchResults(response, data);
 
     return {
         data: Object.keys(audienceData).length === 0 && audienceData.constructor === Object ? undefined : audienceData

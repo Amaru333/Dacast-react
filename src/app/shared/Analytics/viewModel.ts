@@ -1,9 +1,8 @@
-import { start } from "repl";
-import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsOutputItem, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
+import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
 import { tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
 import { CountriesDetail } from "../../constants/CountriesDetails";
-import { AccountAnalyticsParameters } from "../../redux-flow/store/Analytics/Audience/types";
+import { AccountAnalyticsParameters } from "../../redux-flow/store/Analytics/types";
 import { AudienceAnalyticsState, ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, TimeRangeAnalytics, WatchAnalyticsState } from "../../redux-flow/store/Content/Analytics/types";
 
 const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, response: GetAnalyticsOutput) => {
@@ -333,7 +332,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
     return formattedData
 }
 
-export const formatWachResults = (response: GetAnalyticsOutput, input: ContentAnalyticsParameters): WatchAnalyticsState => {
+export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentAnalyticsParameters | AccountAnalyticsParameters): WatchAnalyticsState => {
     let formattedData: WatchAnalyticsState = {
         watchByTime: { 
             labels: [], 
@@ -407,7 +406,7 @@ export const formatWachResults = (response: GetAnalyticsOutput, input: ContentAn
     return formattedData
 }
 
-export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentAnalyticsParameters): SalesAnalyticsState => {
+export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentAnalyticsParameters | AccountAnalyticsParameters): SalesAnalyticsState => {
     let formattedData: SalesAnalyticsState = {
         salesRevenuesByLocation: {
             data: [],

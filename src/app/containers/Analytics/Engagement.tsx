@@ -5,18 +5,18 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { dateAdd } from '../../../utils/services/date/dateService'
 import { ApplicationState } from '../../redux-flow/store'
-import { Action, getAccountAnalyticsAudienceAction } from '../../redux-flow/store/Analytics/Audience/actions'
-import { AccountAnalyticsAudienceState, AccountAudienceDimension } from '../../redux-flow/store/Analytics/Audience/types'
+import { Action, getAccountAnalyticsEngagementAction } from '../../redux-flow/store/Analytics/Engagement/actions'
 import { AccountAnalyticsParameters, TimeRangeAccountAnalytics } from '../../redux-flow/store/Analytics/types'
-import { AudienceAnalytics } from '../../shared/Analytics/AnalyticsType/AudienceAnalytics'
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
+import { AccountAnalyticsEngagementState, AccountEngagementDimension } from '../../redux-flow/store/Analytics/Engagement/types'
+import { WatchDurationAnalytics } from '../../shared/Analytics/AnalyticsType/WatchDurationAnalytics'
 
-interface AccountAnalyticsAudienceProps {
-    audience: AccountAnalyticsAudienceState
-    getAccountAnalyticsAudience: (options: AccountAnalyticsParameters) => Promise<void>
+interface AccountAnalyticsEngagementProps {
+    engagement: AccountAnalyticsEngagementState
+    getAccountAnalyticsEngagement: (options: AccountAnalyticsParameters) => Promise<void>
 }
 
-const Audience = (props: AccountAnalyticsAudienceProps) => {
+const Engagement = (props: AccountAnalyticsEngagementProps) => {
 
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -25,9 +25,9 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
     const loaded = React.useRef(false);
 
     React.useEffect(() => {
-        if(!isFetching || !props.audience) {
+        if(!isFetching || !props.engagement) {
             setIsFetching(true);
-            props.getAccountAnalyticsAudience({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountAudienceDimension }).then(() => setIsFetching(false))
+            props.getAccountAnalyticsEngagement({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountEngagementDimension }).then(() => setIsFetching(false))
         }
     }, [])
 
@@ -36,11 +36,10 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
 
             } else {
-                console.log('request')
                 setLoading(true)
-                props.getAccountAnalyticsAudience({
+                props.getAccountAnalyticsEngagement({
                     id: null,
-                    dimension: AccountAudienceDimension,
+                    dimension: AccountEngagementDimension,
                     timeRange: timeRangePick.timeRange,
                     type: 'account',
                     start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
@@ -69,8 +68,8 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
                 />
             </div>
             {
-            props.audience.data ?
-                <AudienceAnalytics data={props.audience.data} /> 
+            props.engagement.data ?
+                <WatchDurationAnalytics data={props.engagement.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>
@@ -80,17 +79,17 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        audience: state.analytics.audience,
+        engagement: state.analytics.engagement,
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAccountAnalyticsAudience: async (options: AccountAnalyticsParameters) => {
-           await dispatch(getAccountAnalyticsAudienceAction(options))
+        getAccountAnalyticsEngagement: async (options: AccountAnalyticsParameters) => {
+           await dispatch(getAccountAnalyticsEngagementAction(options))
         },
 
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Audience);
+export default connect(mapStateToProps, mapDispatchToProps)(Engagement);

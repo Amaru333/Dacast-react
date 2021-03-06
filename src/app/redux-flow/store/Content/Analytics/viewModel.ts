@@ -1,6 +1,6 @@
 import { AudienceAnalyticsState, ContentAnalyticsFinalState } from '.'
 import { GetAnalyticsInput, GetAnalyticsOutput } from '../../../../../DacastSdk/analytics'
-import { formatAudienceResults, formatRealTimeResults, formatSalesResults, formatWachResults } from '../../../../shared/Analytics/viewModel';
+import { formatAudienceResults, formatRealTimeResults, formatSalesResults, formatWatchResults } from '../../../../shared/Analytics/viewModel';
 import { ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
 
 
@@ -15,7 +15,7 @@ export const formatGetContentAnalyticsOutput = (response: GetAnalyticsOutput, da
         realTimeData =  formatRealTimeResults(response, data)
     } else {
         audienceData = formatAudienceResults(response, data)
-        watchData = formatWachResults(response, data)
+        watchData = formatWatchResults(response, data)
         salesData = formatSalesResults(response, data)
     }
 

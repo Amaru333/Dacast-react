@@ -36,20 +36,8 @@ export interface AccountAnalyticsAudienceState {
     data?: AccountAnalyticsAudience
 }
 
+export type AnalyticsAudienceDimensions = 'PLAYS_BY_TIME_ACCT' | 'PLAYS_BY_DEVICE_ACCT' | 'PLAYS_BY_COUNTRY_ACCT' | 'IMPRESSIONS_BY_TIME_ACCT' | 'IMPRESSIONS_BY_DEVICE_ACCT' | 'IMPRESSIONS_BY_COUNTRY_ACCT'
 
-export interface AccountAnalyticsParameters {
-    id: string;
-    dimension: AnalyticsDimensions[];
-    timeRange: TimeRangeAnalytics,
-    type: 'account',
-    start?: number,
-    end?: number
-}
-
-export type TimeRangeAnalytics = 'LAST_24_HOURS' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' | 'CUSTOM'
-
-export type AnalyticsDimensions = 'PLAYS_BY_TIME_ACCT' | 'PLAYS_BY_DEVICE_ACCT' | 'PLAYS_BY_COUNTRY_ACCT' | 'IMPRESSIONS_BY_TIME_ACCT' | 'IMPRESSIONS_BY_DEVICE_ACCT' | 'IMPRESSIONS_BY_COUNTRY_ACCT'
-
-export const AccountAudienceDimension: AnalyticsDimensions[] = ['PLAYS_BY_TIME_ACCT','PLAYS_BY_DEVICE_ACCT','PLAYS_BY_COUNTRY_ACCT', 'IMPRESSIONS_BY_TIME_ACCT', 'IMPRESSIONS_BY_DEVICE_ACCT','IMPRESSIONS_BY_COUNTRY_ACCT']
+export const AccountAudienceDimension: AnalyticsAudienceDimensions[] = ['PLAYS_BY_TIME_ACCT','PLAYS_BY_DEVICE_ACCT','PLAYS_BY_COUNTRY_ACCT', 'IMPRESSIONS_BY_TIME_ACCT', 'IMPRESSIONS_BY_DEVICE_ACCT','IMPRESSIONS_BY_COUNTRY_ACCT']
 
 export const defaultStateAccountAnalyticsAudience: AccountAnalyticsAudienceState = {}

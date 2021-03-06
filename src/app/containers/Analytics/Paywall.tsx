@@ -5,18 +5,20 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { dateAdd } from '../../../utils/services/date/dateService'
 import { ApplicationState } from '../../redux-flow/store'
-import { Action, getAccountAnalyticsAudienceAction } from '../../redux-flow/store/Analytics/Audience/actions'
-import { AccountAnalyticsAudienceState, AccountAudienceDimension } from '../../redux-flow/store/Analytics/Audience/types'
-import { AccountAnalyticsParameters, TimeRangeAccountAnalytics } from '../../redux-flow/store/Analytics/types'
-import { AudienceAnalytics } from '../../shared/Analytics/AnalyticsType/AudienceAnalytics'
+import { Action } from '../../redux-flow/store/Analytics/Paywall/actions'
+import { TimeRangeAccountAnalytics } from '../../redux-flow/store/Analytics/types'
+import { getAccountAnalyticsPaywallAction } from '../../redux-flow/store/Analytics/Paywall/actions'
+import { AccountAnalyticsPaywallState, AccountPaywallDimension } from '../../redux-flow/store/Analytics/Paywall/types'
+import { AccountAnalyticsParameters } from '../../redux-flow/store/Analytics/types'
+import { SalesAnalytics } from '../../shared/Analytics/AnalyticsType/SalesAnalytics'
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
 
-interface AccountAnalyticsAudienceProps {
-    audience: AccountAnalyticsAudienceState
-    getAccountAnalyticsAudience: (options: AccountAnalyticsParameters) => Promise<void>
+interface AccountAnalyticsPaywallProps {
+    paywall: AccountAnalyticsPaywallState
+    getAccountAnalyticsPaywall: (options: AccountAnalyticsParameters) => Promise<void>
 }
 
-const Audience = (props: AccountAnalyticsAudienceProps) => {
+const Paywall = (props: AccountAnalyticsPaywallProps) => {
 
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -25,9 +27,9 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
     const loaded = React.useRef(false);
 
     React.useEffect(() => {
-        if(!isFetching || !props.audience) {
+        if(!isFetching || !props.paywall) {
             setIsFetching(true);
-            props.getAccountAnalyticsAudience({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountAudienceDimension }).then(() => setIsFetching(false))
+            props.getAccountAnalyticsPaywall({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountPaywallDimension }).then(() => setIsFetching(false))
         }
     }, [])
 
@@ -38,9 +40,9 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             } else {
                 console.log('request')
                 setLoading(true)
-                props.getAccountAnalyticsAudience({
+                props.getAccountAnalyticsPaywall({
                     id: null,
-                    dimension: AccountAudienceDimension,
+                    dimension: AccountPaywallDimension,
                     timeRange: timeRangePick.timeRange,
                     type: 'account',
                     start: timeRangePick.timeRange === 'CUSTOM' ? timeRangePick.custom.start : undefined,
@@ -69,8 +71,8 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
                 />
             </div>
             {
-            props.audience.data ?
-                <AudienceAnalytics data={props.audience.data} /> 
+            props.paywall.data ?
+                <SalesAnalytics data={props.paywall.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>
@@ -80,17 +82,17 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        audience: state.analytics.audience,
+        paywall: state.analytics.paywall,
     };
 }
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getAccountAnalyticsAudience: async (options: AccountAnalyticsParameters) => {
-           await dispatch(getAccountAnalyticsAudienceAction(options))
+        getAccountAnalyticsPaywall: async (options: AccountAnalyticsParameters) => {
+           await dispatch(getAccountAnalyticsPaywallAction(options))
         },
 
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Audience);
+export default connect(mapStateToProps, mapDispatchToProps)(Paywall);
