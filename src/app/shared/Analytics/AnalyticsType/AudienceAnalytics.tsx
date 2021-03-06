@@ -13,10 +13,6 @@ export interface AudienceAnalyticsProps {
 
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
 
-    React.useEffect(() => {
-
-    }, [])
-
     const returnTimeAnalytics = () => {
         return (
             <LineChart
