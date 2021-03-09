@@ -98,7 +98,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(fetchContent) {
             setContentLoading(true)
             props.getTransactions(qsParams).then(() => {
-                props.syncTransactions()
+                // props.syncTransactions()
                 setContentLoading(false)
                 setFetchContent(false)
                 history.push(`${location.pathname}?${qsParams}`)
