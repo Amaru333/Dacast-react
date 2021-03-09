@@ -1,9 +1,10 @@
 import React from 'react'
 import { Modal } from '../../../components/Modal/Modal'
+import { ContentType } from '../../redux-flow/store/Common/types';
 import { usePlayer } from '../../utils/services/player/player';
 import { PlayerContainer } from '../General/ImageModal';
 
-export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: string; isOpened: boolean; contentType: string}) => {
+export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: string; isOpened: boolean; contentType: ContentType}) => {
     let playerRef = React.useRef<HTMLDivElement>(null)
     let player = usePlayer(playerRef, props.contentId)
 
