@@ -29,8 +29,9 @@ export interface AccountAnalyticsPaywallState {
     data?: AccountAnalyticsPaywall
 }
 
-export type AnalyticsDimensionsPaywall = 'SALES_BY_TIME_ACCT' | 'SALES_BY_COUNTRY_ACCT' | 'REVENUES_BY_TIME_ACCT' | 'REVENUES_BY_COUNTRY_ACCT'
+//Missing REVENUES_BY_COUNTRY_ACCT for now
+export type AnalyticsDimensionsPaywall = 'SALES_BY_TIME_ACCT' | 'SALES_BY_COUNTRY_ACCT' | 'REVENUES_BY_TIME_ACCT'
 
-export const AccountPaywallDimension: AnalyticsDimensionsPaywall[] = ['SALES_BY_TIME_ACCT','SALES_BY_COUNTRY_ACCT', 'REVENUES_BY_TIME_ACCT', 'REVENUES_BY_COUNTRY_ACCT']
+export const AccountPaywallDimension: AnalyticsDimensionsPaywall[] = ['SALES_BY_TIME_ACCT','SALES_BY_COUNTRY_ACCT', 'REVENUES_BY_TIME_ACCT']
 
 export const defaultStateAccountAnalyticsPaywall: AccountAnalyticsPaywallState = {}

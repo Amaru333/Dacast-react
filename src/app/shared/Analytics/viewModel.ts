@@ -57,6 +57,7 @@ const getLabels = (startDate: Date, stopDate: Date, type: DimensionItemType, tim
                 currentDate = dateAdd(currentDate, 'day', 1);
                 break;
             case 'MONTH':
+                console.log('date:', currentDate)
                 currentDate = dateAdd(currentDate, 'month', 1);
                 break;
             default:
@@ -77,15 +78,15 @@ const formatLabels = (dimension: TimeRangeAnalytics, startDate: number, endDate:
         case 'LAST_6_MONTHS':
             var stopDate = new Date();
             var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
-            var current = dateAdd(firstDay, 'month', -5);
+            var current = dateAdd(firstDay, 'month', -6);
             return getLabels(current, firstDay, 'MONTH', dimension, response)
         case 'LAST_MONTH':
             var stopDate = ( d => new Date(d.setDate(d.getDate()-1)) )(new Date);
             var current = dateAdd(stopDate, 'day', -29);
             return getLabels(current, stopDate, 'DAY', dimension, response)
         case 'LAST_WEEK':
-            var stopDate = ( d => new Date(d.setDate(d.getDate()-1)) )(new Date);
-            var current = dateAdd(stopDate, 'day', -6);
+            var stopDate = ( d => new Date(d.setDate(d.getDate())) )(new Date);
+            var current = dateAdd(stopDate, 'day', -7);
             return getLabels(current, stopDate, 'DAY', dimension, response)
         case 'LAST_24_HOURS':
             var stopDate = new Date();
@@ -359,16 +360,14 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                     case 'HOURLY':
                     case 'MONTH':
                     case 'DAY':
-                        if (!formattedData || !formattedData.watchByTime) {
-                            formattedData.watchByTime = { labels: labels, data: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, data: 0 } }) }
-                        }
+                        formattedData.watchByTime.labels = labels
+                        formattedData.watchByTime.table = labels.map(label => { return { label: label, data: 0 } })
+                        
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
                         let indexLabel = labels.indexOf(label);
                         formattedData.watchByTime.data[indexLabel] = data.dimension_sum;
-
                         let index = formattedData.watchByTime.table.findIndex(obj => obj.label === label);
-                        formattedData.watchByTime.table[index] ? formattedData.watchByTime.table[index].data = data.dimension_sum : null;
-
+                    formattedData.watchByTime.table[indexLabel].data = data.dimension_sum
                         break;
                     case 'DEVICE':
                         if (!formattedData || !formattedData.watchByDevice) {
