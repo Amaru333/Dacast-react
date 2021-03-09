@@ -13,12 +13,13 @@ import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
 import { Action, getContentSecuritySettingsAction, saveContentSecuritySettingsAction, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 
 
 const LiveSecurity = (props: ContentSecurityProps) => {
 
-    let { liveId } = useParams()
+    let { liveId } = useParams<{liveId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
 
@@ -72,8 +73,8 @@ export function mapStateToProps( state: ApplicationState ) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentSecuritySettings: async (contentId: string, contentType: string) => {
-            await dispatch(getContentSecuritySettingsAction(contentId, contentType));
+        getContentSecuritySettings: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentSecuritySettingsAction(contentType)(contentId));
         },
         saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
             await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
@@ -82,7 +83,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(lockContentAction(contentId, contentType));
         },
         getSettingsSecurityOptions: async () => {
-            await dispatch(getSettingsSecurityOptionsAction());
+            await dispatch(getSettingsSecurityOptionsAction(undefined));
         },
         showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

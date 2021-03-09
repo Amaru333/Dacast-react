@@ -2,7 +2,7 @@ import { GetExpoAssetUploadUrl } from "./expo"
 import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
 import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
 import { GetPlaylistAssetUploadUrl } from "./playlist"
-import { EngagementSettingsEndoint, PutAdInput } from "./settings"
+import { EngagementSettingsEndoint, GetSecuritySettingsOutput, PutAdInput } from "./settings"
 import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
@@ -164,3 +164,11 @@ export interface DeleteContentPriceInput {
     id: string
     contentId: string
 }
+
+interface ContentSecurityExtraFields {
+    locked: boolean
+    selectedGeoRestriction?: string
+    selectedDomainControl?: string 
+}
+
+export type GetContentSecuritySettingsOutput = GetSecuritySettingsOutput & ContentSecurityExtraFields
