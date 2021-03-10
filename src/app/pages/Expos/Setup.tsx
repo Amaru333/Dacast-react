@@ -59,6 +59,7 @@ export const SetupPage = (props: SetupComponentProps & {contentId: string; conte
     return (
         <>
             <ContentSelector 
+                emptyText="Start adding videos to your Expo by selecting folders/content from the left using the arrows."
                 showSort={true}
                 loading={saveLoading}
                 showFolders={true}

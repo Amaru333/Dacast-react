@@ -54,6 +54,7 @@ import Plan from '../containers/Account/Plan';
 import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
+import DesignExpos from '../containers/Expos/Design';
 import ExposSetup from '../containers/Expos/Setup';
 import Viewership from '../containers/Analytics/Viewership';
 import Revenue from '../containers/Analytics/Revenue';
@@ -261,6 +262,15 @@ export const AppRoutes: Routes[] = [
         component: VodAnalytics
     },
     {
+        path: '/expos/:exposId/content',
+        name: 'Content',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-expo',
+        notDisplayedInNavigation: true,
+        component: ExposSetup,
+    },
+    {
         path: '/expos/:exposId/general',
         name: 'General',
         iconName: null,
@@ -270,13 +280,13 @@ export const AppRoutes: Routes[] = [
         component: GeneralExpos,
     },
     {
-        path: '/expos/:exposId/setup',
-        name: 'Setup',
+        path: '/expos/:exposId/design',
+        name: 'Design',
         iconName: null,
         isExact: true,
         associatePrivilege: 'privilege-expo',
         notDisplayedInNavigation: true,
-        component: ExposSetup,
+        component: DesignExpos,
     },
     {
         path: '/folders',

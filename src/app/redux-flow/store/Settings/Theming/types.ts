@@ -1,3 +1,4 @@
+import { ExposThemingState } from "../../Content/Theming/types";
 
 
 export enum ActionTypes {
@@ -54,7 +55,7 @@ export interface ThemesData {
 export interface ContentTheme {
     contentId: string;
     contentThemeId: string;
-    themes: ThemeOptions[];
+    themes: (ThemeOptions | ExposThemingState)[];
 }
 
 

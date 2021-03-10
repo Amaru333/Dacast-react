@@ -14,10 +14,7 @@ import { ContentDetails, ExpoDetails } from '../../redux-flow/store/Content/Gene
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
 import { GeneralSharing } from '../../shared/General/Sharing';
-import { GeneralImages } from '../../shared/General/Images';
-import { ImageModal } from '../../shared/General/ImageModal';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../../shared/MiscStyles';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ContentType } from '../../redux-flow/store/Common/types';
@@ -30,9 +27,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ExpoDetails>(null)
     const [contentDetails, setContentDetails] = React.useState<ExpoDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
-    const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
-    const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
-    const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -76,34 +70,6 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                                 contentType="expo"
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
-                            <GeneralImages 
-                                contentType="expo"
-                                localContentDetails={contentDetails}
-                                setLocalContentDetails={setContentDetails}
-                                contentDetails={stateContentDetails}
-                                setHasChanged={setHasChanged}
-                                setImageModalTitle={setImageModalTitle}
-                                setSelectedImageName={setSelectedImageName}
-                                setImageModalOpen={setImageModalOpen}
-                                deleteFile={props.deleteFile}
-                            />
-                            {
-                                imageModalOpen &&
-                                <ImageModal
-                                    imageFileName={selectedImageName}
-                                    imageType={handleImageModalFunction(imageModalTitle, "expo")}
-                                    contentId={stateContentDetails.id}
-                                    contentType="expo"
-                                    uploadFromVideoAction={props.uploadImageFromVideo}
-                                    uploadUrl={stateContentDetails.uploadurl}
-                                    getUploadUrl={props.getUploadUrl}
-                                    title={imageModalTitle}
-                                    toggle={() => setImageModalOpen(false)}
-                                    opened={imageModalOpen === true}
-                                    submit={props.uploadFile}
-                                    getContentDetails={props.getContentDetails}
-                                />
-                            }
                         </Card>
                         {
                             hasChanged &&

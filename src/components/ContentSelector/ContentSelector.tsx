@@ -29,6 +29,7 @@ export interface ContentSelectorComponentProps {
     showSort?: boolean;
     showFolders?: boolean;
     openSettings?: Function;
+    emptyText?: string;
 }
 
 export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
@@ -223,6 +224,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     }
 
     const renderSelectedItems = () => {
+        if(selectedItems.length == 0) {
+            return (
+                <Text>{props.emptyText}</Text>
+            )
+        }
         return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
