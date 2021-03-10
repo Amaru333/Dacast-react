@@ -289,7 +289,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const handleThumbnailClick = (contentId: string) => {
         setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
         setPreviewModalOpen(true)
-    }   
+    }
 
     const contentListBodyElement = () => {
         if (contentList) {
@@ -308,7 +308,7 @@ export const ContentListPage = (props: ContentListProps) => {
                                 } />
 
                                 {
-                                    
+
                                     value.thumbnail ?
                                         <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
@@ -436,13 +436,13 @@ export const ContentListPage = (props: ContentListProps) => {
                     <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id).then(() => setListUpdate('Deleted')) }} />
                 }
             </Modal>
-            {addStreamModalOpen && 
+            {addStreamModalOpen &&
             <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
             {
-                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
             }
         </>
 

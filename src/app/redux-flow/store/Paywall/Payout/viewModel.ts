@@ -1,6 +1,6 @@
 import { PaymentMethodType, PaymentMethod, WithdrawalRequest, PaymentMethodPut } from './types';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
-import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId } from '../../../../../DacastSdk/paywall';
+import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId, GetPaywallBalanceOutput } from '../../../../../DacastSdk/paywall';
 
 export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput): PaymentMethod[] => {
     return input.paymentMethods.map((p) => {
@@ -221,4 +221,8 @@ export const formatPutWithdrawalRequestInput = (data: WithdrawalRequest): Paymen
     }
 
     return formattedWithdrawalRequest
+}
+
+export const formatGetPaywallBalanceOutput = (data: GetPaywallBalanceOutput): number => {
+    return data.balance || 0
 }
