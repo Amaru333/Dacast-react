@@ -71,11 +71,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getContentSecuritySettings: async (contentId: string, contentType: ContentType) => {
             await dispatch(getContentSecuritySettingsAction(contentType)(contentId));
         },
-        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
-            await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentSecuritySettingsAction(contentType)({securitySettings: data, contentId: contentId}));
         },
-        lockContent: async (contentId: string, contentType: string) => {
-            await dispatch(lockContentAction(contentId, contentType));
+        lockContent: async (contentId: string, contentType: ContentType) => {
+            await dispatch(lockContentAction(contentType)(contentId));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction(undefined));

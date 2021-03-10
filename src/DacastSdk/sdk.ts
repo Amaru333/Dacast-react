@@ -197,7 +197,8 @@ export class DacastSdk {
     public getChannelPaywallInfo = async (input: string): Promise<GetContentPaywallInfoOutput> => await this.axiosClient.get('/channels/' + input + '/paywall').then(this.checkExtraData)
     public putChannelPaywallInfo = async (input: PutContentPaywallInfoInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/paywall', input.payload).then(this.checkExtraData)
     public getChannelSecuritySettings = async (input: string): Promise<GetContentSecuritySettingsOutput> => await this.axiosClient.get('/channels/' + input + '/settings/security').then(this.checkExtraData)
-    public putChannelSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/security', input.payload).then(this.checkExtraData)
+    public putChannelSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/security', input.payload)
+    public putLockChannelSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/channels/' + input + '/settings/security/lock')
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
@@ -215,7 +216,8 @@ export class DacastSdk {
     public getVodPaywallInfo = async (input: string): Promise<GetContentPaywallInfoOutput> => await this.axiosClient.get('/vods/' + input + '/paywall').then(this.checkExtraData)
     public putVodPaywallInfo = async (input: PutContentPaywallInfoInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/paywall', input.payload).then(this.checkExtraData)
     public getVodSecuritySettings = async (input: string): Promise<GetContentSecuritySettingsOutput> => await this.axiosClient.get('/vods/' + input + '/settings/security').then(this.checkExtraData)
-    public putVodSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/security', input.payload).then(this.checkExtraData)
+    public putVodSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/security', input.payload)
+    public putLockVodSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/vods/' + input + '/settings/security/lock')
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
@@ -227,7 +229,8 @@ export class DacastSdk {
     public getPlaylistPaywallInfo = async (input: string): Promise<GetContentPaywallInfoOutput> => await this.axiosClient.get('/playlists/' + input + '/paywall').then(this.checkExtraData)
     public putPlaylistPaywallInfo = async (input: PutContentPaywallInfoInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.id + '/paywall', input.payload).then(this.checkExtraData)
     public getPlaylistSecuritySettings = async (input: string): Promise<GetContentSecuritySettingsOutput> => await this.axiosClient.get('/playlists/' + input + '/settings/security').then(this.checkExtraData)
-    public putPlaylistSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.id + '/settings/security', input.payload).then(this.checkExtraData)
+    public putPlaylistSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.id + '/settings/security', input.payload)
+    public putLockPlaylistSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/playlists/' + input + '/settings/security/lock')
 
     public postEncoderKey = async (input: string): Promise<PostEncoderKeyOutput> => await this.axiosClient.post(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}live/${input}/encoder-key`).then(this.checkExtraData)
     public postBulkAction = async (input: PostBulkActionInput): Promise<PostBulkActionOutput> => await this.axiosClient.post('bulk', input).then(this.checkExtraData)

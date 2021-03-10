@@ -1,4 +1,4 @@
-import { GetContentSecuritySettingsOutput } from "../../../../../DacastSdk/common"
+import { GetContentSecuritySettingsOutput, PutContentSecuritySettingsInput } from "../../../../../DacastSdk/common"
 import { ContentType } from "../../Common/types"
 import { ContentSecuritySettings, defaultDomainControl, defaultGeoRestriction, DomainControl, GeoRestriction } from "../../Settings/Security"
 
@@ -42,3 +42,31 @@ export const formatGetContentSecuritySettingsOutput = (contentType: ContentType)
 
     return formattedData
 }
+
+export const formatPutContentSecuritySettingsInput = (data: ContentSecuritySettings): PutContentSecuritySettingsInput => {
+    let formattedData: PutContentSecuritySettingsInput = {
+        id: data.contentId,
+        payload: {
+            contentScheduling: data.securitySettings.contentScheduling,
+            passwordProtection: {
+                password: data.securitySettings.passwordProtection.password ? data.securitySettings.passwordProtection.password : null
+            },
+            selectedDomainControl: data.securitySettings.selectedDomainControl === '-1' ? null : data.securitySettings.selectedDomainControl,
+            selectedGeoRestriction: data.securitySettings.selectedGeoRestriction === '-1' ? null : data.securitySettings.selectedGeoRestriction,
+            locked: data.securitySettings.locked
+        }
+    }
+
+    return formattedData
+}
+
+export const formatPutContentSecuritySettingsOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: ContentSecuritySettings): ContentSecuritySettings & {contentType: ContentType} => {
+    let formattedData: ContentSecuritySettings & {contentType: ContentType} = {
+        ...dataReact,
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPutLockContentSecuritySettings = (data: string): string => data

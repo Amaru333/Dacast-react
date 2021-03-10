@@ -16,14 +16,14 @@ import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface ContentSecurityProps {
-    contentType: string
+    contentType: ContentType
     contentSecuritySettings: ContentSecuritySettings;
     contentSecuritySettingsState: ContentSecuritySettingsState;
     globalSecuritySettings: SecuritySettings;
     getContentSecuritySettings: (contentId: string, contentType: ContentType) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: ContentType) => Promise<void>;
     getSettingsSecurityOptions: () => Promise<void>;
-    lockContent: (contentId: string, contentType: string) => Promise<void>;
+    lockContent: (contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -81,11 +81,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getContentSecuritySettings: async (contentId: string, contentType: ContentType) => {
             await dispatch(getContentSecuritySettingsAction(contentType)(contentId));
         },
-        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
-            await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentSecuritySettingsAction(contentType)({securitySettings: data, contentId: contentId}));
         },
-        lockContent: async (contentId: string, contentType: string) => {
-            await dispatch(lockContentAction(contentId, contentType));
+        lockContent: async (contentId: string, contentType: ContentType) => {
+            await dispatch(lockContentAction(contentType)(contentId));
         },
         getSettingsSecurityOptions: async () => {
             await dispatch(getSettingsSecurityOptionsAction(undefined));
