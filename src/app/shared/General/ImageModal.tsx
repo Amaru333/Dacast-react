@@ -11,17 +11,17 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 import { SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 
 interface ImageModalProps {
-    imageType: string; 
-    contentType: ContentType; 
-    imageFileName: string; 
-    contentId: string; 
-    opened: boolean; 
-    uploadUrl: string; 
-    title: string; 
-    toggle: () => void; 
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>; 
-    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>; 
-    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>; 
+    imageType: string;
+    contentType: ContentType;
+    imageFileName: string;
+    contentId: string;
+    opened: boolean;
+    uploadUrl: string;
+    title: string;
+    toggle: () => void;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
     uploadFromVideoAction?: (contentId: string, time: number, imageType: string) => Promise<void>
 }
 
@@ -243,7 +243,7 @@ export const PlayerSection = styled.div`
 export const PlayerContainer = styled.div`
     width: 95%;
     height: 100%;
-    max-height: 66vh;
+    min-height: 341px;
     position: relative;
     margin: 16px auto;
 `
