@@ -45,9 +45,9 @@ export const ImageModal = (props: ImageModalProps) => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
         } else {
-            setIsSaveDisabled(true)
+            setIsSaveDisabled(logoFile ? false : true)
         }
-    }, [selectedOption])
+    }, [selectedOption, logoFile])
 
     React.useEffect(() => {
         if(props.imageType.includes("thumbnail")) {
@@ -130,10 +130,6 @@ export const ImageModal = (props: ImageModalProps) => {
         }
     }
 
-    React.useEffect(() => {
-        setIsSaveDisabled(logoFile ? false : true)
-    }, [logoFile])
-
     return (
         <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             { props.contentType === 'vod' ?
@@ -163,7 +159,7 @@ export const ImageModal = (props: ImageModalProps) => {
                         <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
-                        <div className="col col-12">
+                        <div className="col col-12 ">
                             <PlayerSection className='col col-12 mr2 mb1'>
                                 <PlayerContainer>
                                     <div ref={playerRef}>
