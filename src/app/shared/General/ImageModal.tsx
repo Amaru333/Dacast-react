@@ -11,17 +11,17 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 import { SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 
 interface ImageModalProps {
-    imageType: string; 
-    contentType: ContentType; 
-    imageFileName: string; 
-    contentId: string; 
-    opened: boolean; 
-    uploadUrl: string; 
-    title: string; 
-    toggle: () => void; 
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>; 
-    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>; 
-    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>; 
+    imageType: string;
+    contentType: ContentType;
+    imageFileName: string;
+    contentId: string;
+    opened: boolean;
+    uploadUrl: string;
+    title: string;
+    toggle: () => void;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
     uploadFromVideoAction?: (contentId: string, time: number, imageType: string) => Promise<void>
 }
 
@@ -45,9 +45,9 @@ export const ImageModal = (props: ImageModalProps) => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
         } else {
-            setIsSaveDisabled(true)
+            setIsSaveDisabled(logoFile ? false : true)
         }
-    }, [selectedOption])
+    }, [selectedOption, logoFile])
 
     React.useEffect(() => {
         if(props.imageType.includes("thumbnail")) {
@@ -130,10 +130,6 @@ export const ImageModal = (props: ImageModalProps) => {
         }
     }
 
-    React.useEffect(() => {
-        setIsSaveDisabled(logoFile ? false : true)
-    }, [logoFile])
-
     return (
         <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
             { props.contentType === 'vod' ?
@@ -163,7 +159,7 @@ export const ImageModal = (props: ImageModalProps) => {
                         <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
-                        <div className="col col-12">
+                        <div className="col col-12 ">
                             <PlayerSection className='col col-12 mr2 mb1'>
                                 <PlayerContainer>
                                     <div ref={playerRef}>
@@ -243,7 +239,7 @@ export const PlayerSection = styled.div`
 export const PlayerContainer = styled.div`
     width: 95%;
     height: 100%;
-    max-height: 66vh;
+    min-height: 341px;
     position: relative;
     margin: 16px auto;
 `
