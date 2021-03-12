@@ -23,12 +23,12 @@ export interface ContentAnalyticsProps {
 
 export type ContentAnalyticsTypes = 'live' | 'vod';
 
-export type ContentAnalyticsDropdownValues = 'audience' | 'watch-duration' | 'sales' | 'engagement' | 'real-time';
+export type ContentAnalyticsDropdownValues = 'audience' | 'paywall' | 'engagement' | 'real-time';
 
 const TabsDimensionLink: { [key: string]: AnalyticsDimensions[] } = {
     'audience': AudienceDimension,
-    'watch-duration': WatchDurationDimension,
-    'sales': SalesDimension,
+    'engagement': WatchDurationDimension,
+    'paywall': SalesDimension,
     'real-time': RealTimeDimension
 }
 
@@ -70,8 +70,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const handleExtraSettings = () => {
         switch (currentTab) {
             case 'audience':
-            case 'watch-duration':
-            case 'sales':
+            case 'paywall':
             case 'engagement':
                 return (
                     <DateFilteringAnalytics
@@ -98,16 +97,16 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
             case 'audience':
                 return props.contentAnalyticsData.audience ?
                     <AudienceAnalytics data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-            case 'watch-duration':
+            case 'engagement':
                 return props.contentAnalyticsData.watch && Object.keys(props.contentAnalyticsData.watch).length !== 0 ?
                     <WatchDurationAnalytics data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-            case 'sales':
+            case 'paywall':
                 return props.contentAnalyticsData.sales ?
                     <SalesAnalytics data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-            case 'engagement':
-                return (
-                    <EngagementAnalytics />
-                )
+            // case 'engagement':
+            //     return (
+            //         <EngagementAnalytics />
+            //     )
             case 'real-time':
                 return props.contentAnalyticsData.realtime ?
                     <RealTimeAnalytics data={props.contentAnalyticsData.realtime} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -118,9 +117,9 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
 
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
-        { title: "Watch Duration", data: "watch-duration" },
-        { title: "Sales & Revenue", data: "sales" },
-        // { title: "Engagement", data: "engagement" },
+        // { title: "Watch Duration", data: "watch-duration" },
+        { title: "Paywall", data: "paywall" },
+        { title: "Engagement", data: "engagement" },
         ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
     ]
 

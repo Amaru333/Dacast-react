@@ -373,23 +373,24 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/analytics/paywall',
                 name: 'Paywall',
-                component: Paywall
+                component: Paywall,
+                associatePrivilege: 'privilege-paywall'
             },
-            {
-                path: '/analytics/real-time',
-                name: 'Real Time',
-                component: RealTime
-            },
-            {
-                path: '/analytics/viewership',
-                name: 'Viewership',
-                component: Viewership
-            },
-            {
-                path: '/analytics/revenue',
-                name: 'Revenue',
-                component: Revenue
-            }
+            // {
+            //     path: '/analytics/real-time',
+            //     name: 'Real Time',
+            //     component: RealTime
+            // },
+            // {
+            //     path: '/analytics/viewership',
+            //     name: 'Viewership',
+            //     component: Viewership
+            // },
+            // {
+            //     path: '/analytics/revenue',
+            //     name: 'Revenue',
+            //     component: Revenue
+            // }
         ]
     },
     {

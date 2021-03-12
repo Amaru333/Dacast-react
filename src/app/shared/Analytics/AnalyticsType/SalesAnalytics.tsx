@@ -13,15 +13,11 @@ export interface SalesAnalyticsProps {
 
 export const SalesAnalytics = (props: SalesAnalyticsProps) => {
 
-    React.useEffect(() => {
-
-    }, [])
-
     const returnTimeAnalytics = () => {
         return (
             <BarChart
                 id="uniqueStuff"
-                title="Sales and Revenue by Time"
+                title="Paywall by Time"
                 options={ {rightYAxes: true} }
                 type="vertical"
                 unitRight="$"
@@ -56,9 +52,9 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Sales & Revenue by"
+                title="Paywall by"
                 showTable={true}
-                csvType="Sales&Revenues"
+                csvType="Paywall"
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },

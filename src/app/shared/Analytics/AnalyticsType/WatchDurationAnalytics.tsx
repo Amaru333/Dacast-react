@@ -17,8 +17,8 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
     const returnTimeAnalytics = () => {
         return (
             <BarChart
-                title="Watch Duration by Time"
-                dataSets={ [ {data: props.data.watchByTime.data, label: "Watch Duration (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                title="Engagement by Time"
+                dataSets={ [ {data: props.data.watchByTime.data, label: "Engagement (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.watchByTime.labels}
                 unit="s" />
         )
@@ -27,8 +27,8 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
     const returnDeviceAnalytics = () => {
         return (
             <BarChart
-                title="Watch Duration by Device"
-                dataSets={ [ {data: props.data.watchByDevice.data, label: "Watch Duration (device)", color: ThemeAnalyticsColors.blue } ] }
+                title="Engagement by Device"
+                dataSets={ [ {data: props.data.watchByDevice.data, label: "Engagement (device)", color: ThemeAnalyticsColors.blue } ] }
                 labels={props.data.watchByDevice.labels} 
                 unit="s"/>
         )
@@ -44,9 +44,9 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Watch Duration by"
+                title="Engagement by"
                 showTable={true}
-                csvType='WatchDuration'
+                csvType='Engagement'
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },

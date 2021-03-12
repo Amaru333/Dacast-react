@@ -301,7 +301,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.value as string,
                                         position: {
                                             latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                             longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -365,9 +365,10 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                         
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
                         let indexLabel = labels.indexOf(label);
-                        formattedData.watchByTime.data[indexLabel] = data.dimension_sum;
-                        let index = formattedData.watchByTime.table.findIndex(obj => obj.label === label);
-                    formattedData.watchByTime.table[indexLabel].data = data.dimension_sum
+                        if(indexLabel !== -1) {
+                            formattedData.watchByTime.data[indexLabel] = data.dimension_sum;
+                            formattedData.watchByTime.table[indexLabel].data = data.dimension_sum
+                        }
                         break;
                     case 'DEVICE':
                         if (!formattedData || !formattedData.watchByDevice) {
@@ -433,7 +434,6 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         let label = formateTimestampAnalytics(metric.data_dimension.includes("SALES") ? parseInt( data.dimension_type.value as string) / 1000 : parseInt(data.dimension_type.value as string), input.timeRange, response );
                         let indexLabel = labels.indexOf(label);
 
-
                         if (!formattedData || !formattedData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !formattedData.salesRevenuesByTime.sales.length) || (metric.data_dimension.includes("REVENUES") && !formattedData.salesRevenuesByTime.revenues.length)) {
                             formattedData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, sales: 0, revenues: 0 } }) }
                         }
@@ -448,7 +448,6 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         } else {
                             formattedData.salesRevenuesByTime.table[index] ? formattedData.salesRevenuesByTime.table[index].revenues = Math.round(formattedData.salesRevenuesByTime.table[index].revenues + data.dimension_sum) : null;
                         }
-
 
                         break;
                     case 'COUNTRY':

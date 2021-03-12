@@ -45,7 +45,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Plays & Impressions by"
+                title="Audience (Plays & Impressions) by "
                 showTable={true}
                 csvType="Audience"
                 tabs={
