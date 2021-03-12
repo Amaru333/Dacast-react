@@ -67,7 +67,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <div className='flex flex-column'>
                             <Text className='pt25' size={16} weight='med'>Trial Expires</Text>
                             <div style={{border: ' 1px dashed #C8D1E0'}} className='mb2 col col-6 flex items-center p1'>
-                                <Text className='flex-auto' size={14}>{props.accountPlan.expiresAt}</Text>
+                                <Text className='flex-auto' size={14}>{props.accountPlan.expiresAt || 'Expired'}</Text>
                                 <Button className='' onClick={() => setExtendTrialModalOpened(true)} sizeButton='xs' typeButton='secondary' buttonColor='blue'>Extend</Button>
                             </div>
                         </div>
