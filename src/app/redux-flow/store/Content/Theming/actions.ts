@@ -3,8 +3,11 @@ import { ActionTypes } from './types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../..';
 import { showToastNotification } from '../../Toasts';
-import { parseContentType } from '../../../../utils/utils';
+import { applyViewModel, parseContentType } from '../../../../utils/utils';
 import { ContentThemingServices } from './services';
+import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
+import { formatGetContentThemesInput, formatGetContentThemesOutput } from './viewModel';
+import { ContentType } from '../../Common/types';
 
 export interface GetContentTheme {
     type: ActionTypes.GET_CONTENT_THEME;
@@ -16,17 +19,17 @@ export interface SaveContentTheme {
     payload: { contentId: string; data: ThemeOptions, contentType: string};
 }
 
-export const getContentThemeAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentTheme> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentTheme> ) => {
-        await ContentThemingServices.getContentThemeService(contentId, parseContentType(contentType))
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_CONTENT_THEME, payload: { contentId: contentId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID, contentType: contentType }} );
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const getContentThemeAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.getVodThemes, formatGetContentThemesInput, formatGetContentThemesOutput(contentType), ActionTypes.GET_CONTENT_THEME, null, 'Couldn\'t get video themes')
+        case 'live':
+            return applyViewModel(dacastSdk.getChannelThemes, formatGetContentThemesInput, formatGetContentThemesOutput(contentType), ActionTypes.GET_CONTENT_THEME, null, 'Couldn\'t get channel themes')
+        case 'playlist': 
+            return applyViewModel(dacastSdk.getPlaylistThemes, formatGetContentThemesInput, formatGetContentThemesOutput(contentType), ActionTypes.GET_CONTENT_THEME, null, 'Couldn\'t get playlist themes')
+        default:
+            throw new Error('Error applying content view model')
+    }
 }
 
 export const saveContentThemeAction = (data: ThemeOptions, contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, SaveContentTheme> => {

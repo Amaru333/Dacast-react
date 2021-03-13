@@ -11,10 +11,11 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { ContentThemingComponentProps } from '../Videos/Theming';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export const LiveTheming = (props: ContentThemingComponentProps) => {
 
-    let { liveId } = useParams()
+    let { liveId } = useParams<{liveId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
 
@@ -57,8 +58,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentTheme: async (contentId: string, contentType: string) => {
-            await dispatch(getContentThemeAction(contentId, contentType))
+        getContentTheme: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentThemeAction(contentType)(contentId))
         },
         saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
             await dispatch(saveContentThemeAction(theme, contentId, contentType))

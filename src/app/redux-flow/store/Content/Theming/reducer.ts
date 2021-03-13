@@ -12,8 +12,9 @@ const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, acti
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
-                        ...action.payload,
-                        themes: action.payload.themes.length === 0 ?[defaultTheme] : action.payload.themes
+                        contentId: action.payload.contentId,
+                        contentThemeId: action.payload.contentThemeId,
+                        themes: action.payload.themes
                     }
                 }
             }

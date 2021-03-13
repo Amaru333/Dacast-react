@@ -1,10 +1,6 @@
-import { ContentSecuritySettings, SecuritySettings } from '../../Settings/Security/types';
+import { ContentSecuritySettings } from '../../Settings/Security/types';
 import { ActionTypes } from './types';
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../..';
-import { ContentSecurityServices } from './services';
-import { applyViewModel, parseContentType } from '../../../../utils/utils';
-import { showToastNotification } from '../../Toasts/actions';
+import { applyViewModel } from '../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { ContentType } from '../../Common/types';
 import { formatGetContentSecuritySettingsInput, formatGetContentSecuritySettingsOutput, formatPutContentSecuritySettingsInput, formatPutContentSecuritySettingsOutput, formatPutLockContentSecuritySettings } from './viewModel';

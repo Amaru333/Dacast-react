@@ -2,7 +2,7 @@ import { GetExpoAssetUploadUrl } from "./expo"
 import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
 import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
 import { GetPlaylistAssetUploadUrl } from "./playlist"
-import { EngagementSettingsEndoint, GetSecuritySettingsOutput, PutAdInput, PutSecuritySettingsInput } from "./settings"
+import { EngagementSettingsEndoint, GetSecuritySettingsOutput, PutAdInput, PutSecuritySettingsInput, ThemeEndpoint } from "./settings"
 import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
@@ -176,4 +176,9 @@ export type GetContentSecuritySettingsOutput = GetSecuritySettingsOutput & Conte
 export type PutContentSecuritySettingsInput = {
     id: string
     payload: PutSecuritySettingsInput & ContentSecurityExtraFields
+}
+
+export interface GetContentThemeOutput {
+    contentThemeID: string
+    themes: ThemeEndpoint[]
 }

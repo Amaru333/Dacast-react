@@ -12,10 +12,11 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { ContentThemingComponentProps } from '../Videos/Theming';
 import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const PlaylistTheming = (props: ContentThemingComponentProps) => {
 
-    let { playlistId } = useParams()
+    let { playlistId } = useParams<{playlistId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -55,8 +56,8 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentTheme: async (contentId: string, contentType: string) => {
-            await dispatch(getContentThemeAction(contentId, contentType))
+        getContentTheme: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentThemeAction(contentType)(contentId))
         },
         saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
             await dispatch(saveContentThemeAction(theme, contentId, contentType))

@@ -39,13 +39,17 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleDefaultSelectedTheme = (): ThemeOptions => {
         if (props.contentType === 'settings') {
             return props.theme.themes[0]
-        } else if (props.theme.contentThemeId && props.theme.themes.filter(t => t.id === props.theme.contentThemeId).length > 0) {
-            return props.theme.themes.filter(t => t.id === props.theme.contentThemeId)[0]
-        } else if (props.theme.themes.filter(t => t.isDefault).length > 0) {
-            return props.theme.themes.filter(t => t.isDefault)[0]
-        } else {
-            return props.theme.themes.filter(t => t.themeName === 'default')[0]
         }
+
+        if (props.theme.contentThemeId && props.theme.themes.filter(t => t.id === props.theme.contentThemeId).length > 0) {
+            return props.theme.themes.filter(t => t.id === props.theme.contentThemeId)[0]
+        }
+
+        if (props.theme.themes.filter(t => t.isDefault).length > 0) {
+            return props.theme.themes.filter(t => t.isDefault)[0]
+        }
+
+        return props.theme.themes.filter(t => t.themeName === 'default')[0]
     }
     
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
