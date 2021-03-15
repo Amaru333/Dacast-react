@@ -105,3 +105,14 @@ export const HeaderSalesLocation = [
         accessor: 'revenues'
     }
 ]
+
+export const HeaderDataConsumptionTime = [
+    {
+        Header: 'Date',
+        accessor: 'label',
+    },
+    {
+        Header: 'Data Usage',
+        accessor: 'data'
+    }
+]

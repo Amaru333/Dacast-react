@@ -1,7 +1,8 @@
 import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
-import { tsToLocaleDate } from "../../../utils/formatUtils";
+import { readableBytes, tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
 import { CountriesDetail } from "../../constants/CountriesDetails";
+import { AccountAnalyticsData } from "../../redux-flow/store/Analytics/Data/types";
 import { AccountAnalyticsParameters } from "../../redux-flow/store/Analytics/types";
 import { AudienceAnalyticsState, ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, TimeRangeAnalytics, WatchAnalyticsState } from "../../redux-flow/store/Content/Analytics/types";
 
@@ -57,7 +58,6 @@ const getLabels = (startDate: Date, stopDate: Date, type: DimensionItemType, tim
                 currentDate = dateAdd(currentDate, 'day', 1);
                 break;
             case 'MONTH':
-                console.log('date:', currentDate)
                 currentDate = dateAdd(currentDate, 'month', 1);
                 break;
             default:
@@ -497,3 +497,41 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
 
     return formattedData
 }
+
+export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input: AccountAnalyticsParameters): AccountAnalyticsData => {
+    let formattedData: AccountAnalyticsData = {
+        dataConsumptionByTime: {
+            labels: [],
+            data: [],
+            table: []
+        }
+    }
+    let labels = formatLabels(input.timeRange, input.start, input.end, response)
+    response.results.filter(metric => metric.data_dimension.includes("DATA_CONSUMPTION")).forEach(metric => {
+        if(metric.data) {
+            metric.data.forEach(data => {
+                switch (data.dimension_type.type) {
+                    case 'HOURLY':
+                    case 'MONTH':
+                    case 'DAY':
+                        if(formattedData.dataConsumptionByTime.labels.length === 0) {
+                            formattedData.dataConsumptionByTime.labels = labels
+                            formattedData.dataConsumptionByTime.table = labels.map(label => { return { label: label, data: 0 } })
+                        }
+                        let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
+                        let indexLabel = labels.indexOf(label);
+                        if(indexLabel !== -1) {
+                            let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
+                            formattedData.dataConsumptionByTime.data[indexLabel] = parseInt(readableBytes(Math.abs(data.dimension_sum)));
+                            formattedData.dataConsumptionByTime.table[index].data = parseInt(readableBytes(Math.abs(data.dimension_sum)));
+                        }
+
+                        break
+                }
+            })
+        }
+    })
+
+    return formattedData
+}
+

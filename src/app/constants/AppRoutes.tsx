@@ -63,6 +63,7 @@ import ActivatedAccount from '../containers/Register/ActivatedAccount';
 import Audience from '../containers/Analytics/Audience';
 import Paywall from '../containers/Analytics/Paywall';
 import Engagement from '../containers/Analytics/Engagement';
+import DataConsumption from '../containers/Analytics/DataConsumption';
 
 
 export const AppRoutes: Routes[] = [   
@@ -359,6 +360,11 @@ export const AppRoutes: Routes[] = [
                 path: '/analytics/dashboard',
                 name: 'Dashboard',
                 component: DashboardAnalytics
+            },
+            {
+                path: '/analytics/data',
+                name: 'Data Usage',
+                component: DataConsumption,
             },
             {
                 path: '/analytics/audience',
