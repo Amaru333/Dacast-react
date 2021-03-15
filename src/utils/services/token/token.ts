@@ -66,7 +66,7 @@ export class UserTokenService {
                 let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
                 this.tokenInfo = JSON.parse(localStorage.getItem('userToken'));
                 let userInfo = parseJwt(this.tokenInfo.token)
-                this.tokenInfo.userInfo = userInfo
+                this.tokenInfo.userInfo = {...existingUserInfo, ...userInfo}
                 return this.tokenInfo
             } catch(error) {
                 console.log(error)
