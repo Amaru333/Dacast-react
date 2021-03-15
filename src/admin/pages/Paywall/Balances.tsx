@@ -97,8 +97,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
         }
     }
 
-    return props.balanceInfo ?
-        <div>
+    return (
+        <React.Fragment>
             <Text className='py1' size={14}>Paywall balances - select an Account to view their transactions and current balance</Text>
             <div className='flex my1 items-center'>
                 <Input 
@@ -110,11 +110,17 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                     onKeyDown={(event) => {if(event.key === 'Enter' || event.key === 'NumpadEnter') {handleSubmit(accountId)}}}    
                 />
                 <Button className='mx2' disabled={!accountId ? true : false} onClick={() => handleSubmit(accountId)} sizeButton='large' typeButton='primary' buttonColor='blue'>Search</Button>
-                {accountId && <Text size={14} weight='med'>{'Balance: $' + props.balanceInfo.balance || '0'}</Text>}
+                {accountId && <Text size={14} weight='med'>{'Balance: $' + props.balanceInfo ? props.balanceInfo.balance : '0'}</Text>}
             </div>
-            <Table contentLoading={contentLoading} className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
-            <Pagination totalResults={props.balanceInfo.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
-        </div>
-        : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
+            {
+                props.balanceInfo ?
+                <div>
+                    <Table contentLoading={contentLoading} className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
+                    <Pagination totalResults={props.balanceInfo.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
+                </div>
+                : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
+            }
+        </React.Fragment>
+    )
 
 }

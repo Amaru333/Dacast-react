@@ -67,6 +67,11 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
                     }
                 })
             }
+        case ActionTypes.GET_PAYWALL_BALANCE:
+            return {
+                ...state,
+                paywallBalance: action.payload
+            }
         default:
             return state;
     }

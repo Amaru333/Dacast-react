@@ -178,13 +178,12 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
             description: data.description,
             appearance: data.appearance,
             online: data.online,
-            poster: {
+            poster: data.poster ? {
                 assetId: data.poster.assetId,
                 url: data.poster.url
-            }
+            } : null
         }
     }
-
     return formattedData
 }
 

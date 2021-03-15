@@ -5,8 +5,8 @@ export enum ActionTypes {
     UPDATE_PAYMENT_METHOD = "@@paywall_payout/UPDATE_PAYMENT_METHOD",
     DELETE_PAYMENT_METHOD = "@@paywall_payout/DELETE_PAYMENT_METHOD",
     ADD_WITHDRAWAL_REQUEST = "@@paywall_payout/ADD_WITHDRAWAL_REQUEST",
-    CANCEL_WITHDRAWAL_REQUEST = "@@paywall_payout/CANCEL_WITHDRAWAL_REQUEST"
-
+    CANCEL_WITHDRAWAL_REQUEST = "@@paywall_payout/CANCEL_WITHDRAWAL_REQUEST",
+    GET_PAYWALL_BALANCE = "@@paywall_payout/GET_PAYWALL_BALANCE"
 }
 
 
@@ -116,9 +116,11 @@ export interface WithdrawalRequest {
 export interface PayoutInfos {
     paymentMethods?: PaymentMethod[];
     withdrawalRequests?: WithdrawalRequest[];
+    paywallBalance: number;
 }
 
 export const payoutInitialState: PayoutInfos = {
     paymentMethods: null,
-    withdrawalRequests: []
+    withdrawalRequests: [],
+    paywallBalance: 0
 }

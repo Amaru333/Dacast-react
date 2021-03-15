@@ -42,6 +42,16 @@ interface TokenInfo {
 
 var base64 = require('base-64');
 
+function parseJwt (token: string) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 export class UserTokenService {
     constructor() {
         this.getUserInfoItem = this.getUserInfoItem.bind(this)
@@ -54,9 +64,9 @@ export class UserTokenService {
         if(localStorage.getItem('userToken')) {
             try {
                 let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
-                this.tokenInfo =  JSON.parse(localStorage.getItem('userToken'));
-                let userInfo = {...existingUserInfo, ...JSON.parse(base64.decode(this.tokenInfo.token.split('.')[1])) as UserInfo}
-                this.tokenInfo.userInfo = userInfo
+                this.tokenInfo = JSON.parse(localStorage.getItem('userToken'));
+                let userInfo = parseJwt(this.tokenInfo.token)
+                this.tokenInfo.userInfo = {...existingUserInfo, ...userInfo}
                 return this.tokenInfo
             } catch(error) {
                 console.log(error)
