@@ -7,32 +7,47 @@ import { Text } from "../../../components/Typography/Text"
 import { IconStyle } from '../../../shared/Common/Icon';
 import { usePlayer } from '../../utils/services/player/player';
 import { userToken } from '../../utils/services/token/tokenService';
+import { ContentType } from '../../redux-flow/store/Common/types';
+import { SubtitleInfo } from '../../redux-flow/store/Content/General/types';
 
-export const ImageModal = (props: {imageType: string; contentType: string; imageFileName: string; contentId: string; toggle: () => void; uploadUrl: string; getUploadUrl: Function; opened: boolean; submit: Function; title: string; getContentDetails: Function; uploadFromVideoAction?: Function}) => {
-    
+interface ImageModalProps {
+    imageType: string;
+    contentType: ContentType;
+    imageFileName: string;
+    contentId: string;
+    opened: boolean;
+    uploadUrl: string;
+    title: string;
+    toggle: () => void;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
+    uploadFromVideoAction?: (contentId: string, time: number, imageType: string) => Promise<void>
+}
+
+export const ImageModal = (props: ImageModalProps) => {
+
     var objectContext = props.title ? props.title.split(' ')[1] : "";
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
-    let playerRef = React.useRef<HTMLDivElement>(null);
     const [logoFile, setLogoFile] = React.useState<File>(null);
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [uploadType, setUploadType] = React.useState<string>(null)
 
+    const userId = userToken.getUserInfoItem('user-id')
+    let playerRef = React.useRef<HTMLDivElement>(null);
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
-
-    const userId = userToken.getUserInfoItem('user-id')
-
     let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
         if (selectedOption === "frame") {
             setIsSaveDisabled(false)
-        } else { 
-            setIsSaveDisabled(true) 
+        } else {
+            setIsSaveDisabled(logoFile ? false : true)
         }
-    }, [selectedOption])
+    }, [selectedOption, logoFile])
 
     React.useEffect(() => {
         if(props.imageType.includes("thumbnail")) {
@@ -73,13 +88,13 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     setSaveButtonLoading(false)
                     props.toggle()
                 }, 4000)
-            }    
+            }
         }
     }
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
-            props.submit(logoFile, props.uploadUrl, props.contentId, uploadType, props.contentType).then(() => {
+            props.submit(logoFile, props.uploadUrl, props.contentId, props.contentType).then(() => {
                 setTimeout(() => {
                     props.getContentDetails(props.contentId, props.contentType)
                     setSaveButtonLoading(false)
@@ -104,20 +119,16 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                     setFileName(file[0].name)
                 }
             }
-            reader.readAsDataURL(file[0])          
+            reader.readAsDataURL(file[0])
         }
     }
-    
+
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
             handleDrop(e.target.files);
         }
     }
-
-    React.useEffect(() => {
-        setIsSaveDisabled(logoFile ? false : true)
-    }, [logoFile])
 
     return (
         <Modal size={props.contentType === 'vod' ? 'large' : 'small'} modalTitle={props.title} toggle={props.toggle} opened={props.opened} hasClose={false}>
@@ -139,7 +150,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                     <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                     <button style={{border: "none", backgroundColor:"inherit"}}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                    </button>   
+                                    </button>
                                 </ThumbnailFile>
                             }
                         </div>
@@ -148,7 +159,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                         <InputRadio name="addThumbnail" value="frame" defaultChecked={selectedOption === "frame"} label="Select from Video" onChange={() => setSelectedOption('frame')}/>
                     </RadioButtonContainer>
                     <RadioButtonOption className="col col-12" isOpen={selectedOption === "frame"}>
-                        <div className="col col-12">
+                        <div className="col col-12 ">
                             <PlayerSection className='col col-12 mr2 mb1'>
                                 <PlayerContainer>
                                     <div ref={playerRef}>
@@ -160,7 +171,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 </ButtonsArea>
                             </PlayerSection>
                         </div>
-                        
+
                     </RadioButtonOption>
                 </ModalContent>
                 :
@@ -177,7 +188,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
                                 <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
                                 <button style={{border: "none", backgroundColor:"inherit"}}>
                                     <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
-                                </button>   
+                                </button>
                             </ThumbnailFile>
                         }
                     </div>
@@ -185,7 +196,7 @@ export const ImageModal = (props: {imageType: string; contentType: string; image
             }
             <ModalFooter>
                 <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
-                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button> 
+                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button>
             </ModalFooter>
         </Modal>
     )

@@ -2,7 +2,7 @@ import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { SubtitleInfo, ContentDetails, ContentDetailsState } from '../../redux-flow/store/Content/General/types';
+import { SubtitleInfo, ContentDetails, ContentDetailsState, VodDetails } from '../../redux-flow/store/Content/General/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { useParams, Prompt } from 'react-router-dom';
@@ -20,30 +20,32 @@ import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { ImageModal } from '../../shared/General/ImageModal';
-import { handleImageModalFunction, userId } from '../../utils/general'
+import { handleImageModalFunction } from '../../utils/general'
 import { Divider } from '../../../shared/MiscStyles';
+import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 export interface GeneralComponentProps {
     contentDetailsState: ContentDetailsState;
     contentDetails: ContentDetails;
-    getContentDetails: (contentId: string, contentType: string) => Promise<void>
-    saveContentDetails: (data: ContentDetails, contentType: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => Promise<void>;
-    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
+    saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
-    deleteSubtitle?: (targetId: string, contentId: string, fileName: string, contentType: string) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => Promise<void>;
+    deleteSubtitle?: (contentId: string, targetId: string, contentType: ContentType) => Promise<void>;
+    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => Promise<void>;
     generateEncoderKey?: (liveId: string) => Promise<void>
 }
 const General = (props: GeneralComponentProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
+    const [stateContentDetails, setStateContentDetails] = React.useState<VodDetails>(null)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [contentDetails, setContentDetails] = React.useState<VodDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
@@ -57,8 +59,8 @@ const General = (props: GeneralComponentProps) => {
 
     React.useEffect(() => {
         if(props.contentDetailsState['vod']){
-            setStateContentDetails(props.contentDetailsState['vod'][vodId])
-            setContentDetails(props.contentDetailsState['vod'][vodId])
+            setStateContentDetails(props.contentDetailsState['vod'][vodId] as VodDetails)
+            setContentDetails(props.contentDetailsState['vod'][vodId] as VodDetails)
         }
     }, [props.contentDetailsState])
 
@@ -162,32 +164,32 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentDetails: async (contentId: string, contentType: string) => {
-            await dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(contentId));
         },
-        saveContentDetails: async (data: ContentDetails, contentType: string) => {
-            await dispatch(editContentDetailsAction(data, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType, subtitleInfo))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension, subtitleInfo: subtitleInfo}))
         },
-        uploadFile: async (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
+           await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
         },
         uploadImageFromVideo: async (contentId: string, time: number, imageType: string)  => {
-            await dispatch(uploadImageFromVideoAction(contentId, time, imageType))
+            await dispatch(uploadImageFromVideoAction({id: contentId, time: time, imageType: imageType}))
         },
-        deleteFile: async (contentId: string, targetId: string, contentType: string, imageType: string) => {
-            await dispatch(deleteFileAction(contentId, targetId, contentType, imageType))
+        deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+            await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: string) => {
-            await dispatch(addSubtitleAction(data, uploadUrl, subtitleInfo, contentId, contentType))
+        addSubtitle: async (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => {
+            await dispatch(addSubtitleAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId, subtitleInfo: subtitleInfo}))
         },
-        deleteSubtitle: async (targetId: string, contentId: string, fileName: string, contentType: string) => {
-            await dispatch(deleteSubtitleAction(targetId, contentId, fileName, contentType))
+        deleteSubtitle: async (contentId: string, targetId: string, contentType: ContentType) => {
+            await dispatch(deleteSubtitleAction(contentType)({id: targetId, contentId: contentId}))
         }
     };
 }

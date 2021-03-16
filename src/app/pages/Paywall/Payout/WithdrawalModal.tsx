@@ -8,7 +8,14 @@ import { ColorsApp } from '../../../../styled/types';
 import { WithdrawalRequest, PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
-export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (wr: WithdrawalRequest) => Promise<void>; toggle: (b: boolean) => void }) => {
+interface WithdrawalModalProps { 
+    paymentList: PaymentMethod[]; 
+    balance: number;
+    action: (wr: WithdrawalRequest) => Promise<void>; 
+    toggle: (b: boolean) => void 
+}
+
+export const WithdrawalModal = (props: WithdrawalModalProps) => {
     const [withdrawalRequest, setwithdrawalRequest] = React.useState<WithdrawalRequest>({
         paymentMethodId: props.paymentList[0].id,
         currency: 'USD',
@@ -61,7 +68,10 @@ export const WithdrawalModal = (props: { paymentList: PaymentMethod[]; action: (
                     callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data.id}) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
-                <Input className='col xs-no-gutter col-12 sm-col-5 mt2 mb1' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
+                <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
+                    <Input className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
+                    <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
+                </div>
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>

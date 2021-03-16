@@ -23,7 +23,6 @@ import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
 import Login from '../containers/Register/Login/Login';
-import SignUp from '../containers/Register/SignUp/SignUp';
 import ConfirmEmail from '../containers/Register/ConfirmEmail';
 import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
@@ -77,13 +76,6 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: Impersonate
-    },
-    {
-        path:'/signup',
-        name: 'signup',
-        isPublic: true,
-        notDisplayedInNavigation: true,
-        component: SignUp
     },
     {
         path:'/confirm-email',

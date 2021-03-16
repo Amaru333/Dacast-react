@@ -22,35 +22,35 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
             case 'expo':
                 segmentService.track('Expo Created', {
                     action: 'Expo Shared',
-                    'expo_id': props.contentDetails.id, 
+                    'expo_id': props.contentDetails.id,
                     step: 3,
-                })  
+                })
                 break
-            case 'vod': 
+            case 'vod':
                 segmentService.track('VOD Created', {
                     action: 'VOD Shared',
-                    'vod_id': props.contentDetails.id, 
+                    'vod_id': props.contentDetails.id,
                     step: 2,
                     option: sharingString
-                })  
+                })
                 break
-            case 'live': 
+            case 'live':
                 segmentService.track('Livestream Created', {
                     action: 'Livestream Shared',
-                    'channel_id': props.contentDetails.id, 
+                    'channel_id': props.contentDetails.id,
                     step: 3,
                     option: sharingString
-                })  
+                })
                 break
-            case 'playlist': 
+            case 'playlist':
                 segmentService.track('Playlist Created', {
                     action: 'Playlist Shared',
-                    'playlist_id': props.contentDetails.id, 
+                    'playlist_id': props.contentDetails.id,
                     step: 3,
                     option: sharingString
-                })  
+                })
                 break
-            default: 
+            default:
                 break
         }
     }
@@ -114,7 +114,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                         </LinkBox>
                     </div>
                     {
-                        previewModalOpen && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                        previewModalOpen && <PreviewModal contentId={userId + '-' + props.contentType + '-' + props.contentDetails.id} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
                     }
                 </>
             }

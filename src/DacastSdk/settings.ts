@@ -1,6 +1,9 @@
+export type EmbedScalingEndpoint = 'fixed' | 'responsive'
+export type EmbedTypeEndpoint = 'iframe' | 'script'
+
 export interface EmbedSettings {
-    'embed-type': 'iframe' | 'script'
-    'embed-scaling': 'fixed' | 'responsive'
+    'embed-type': EmbedTypeEndpoint
+    'embed-scaling': EmbedScalingEndpoint
     'embed-size': number
 }
 

@@ -7,8 +7,21 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const GeneralImages = (props: {contentType: string, localContentDetails: ContentDetails, contentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: string) => Promise<void>, setImageModalTitle: React.Dispatch<React.SetStateAction<string>>, setSelectedImageName: React.Dispatch<React.SetStateAction<string>>, setImageModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+interface GeneralImagesProps {
+    contentType: ContentType, 
+    localContentDetails: ContentDetails, 
+    contentDetails: ContentDetails, 
+    setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, 
+    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, 
+    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>, 
+    setImageModalTitle: React.Dispatch<React.SetStateAction<string>>, 
+    setSelectedImageName: React.Dispatch<React.SetStateAction<string>>, 
+    setImageModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+
+}
+export const GeneralImages = (props: GeneralImagesProps) => {
 
     let posterEnable = props.contentDetails.poster && Object.keys(props.contentDetails.poster).length !== 0;
     let headerEnable = posterEnable;

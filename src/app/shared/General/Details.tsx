@@ -8,25 +8,24 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Text } from '../../../components/Typography/Text'
 import { updateClipboard } from '../../utils/utils'
-import { axiosClient } from '../../utils/services/axios/axiosClient'
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
+import { dacastSdk } from '../../../admin/utils/services/axios/adminAxiosClient';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const userId = userToken.getUserInfoItem('user-id')
 
-    function saveFile(url: string, filename: string) {
-        axiosClient.get(`/vods/${props.contentDetails.id}/download-url`
-        ).then((response) => {
+    function saveFile(filename: string) {
+        dacastSdk.getDownloadVodUrl(props.contentDetails.id)
+        .then((response) => {
             var a = document.createElement("a")
             a.target = '_blank'
-            a.href = response.data.data.url
+            a.href = response.url
             a.setAttribute("download", filename)
             a.click()
         })
-
-        }
+    }
 
         const handleOnlineToggle = (contentType: string) => {
             switch (contentType) {
@@ -47,7 +46,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 <Text size={20} weight="med">Details</Text>
                 { 
                     (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
-                        <Button onClick={() => saveFile(null, props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
+                        <Button onClick={() => saveFile(props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
                 }
                 {
                     props.contentType === 'live' &&

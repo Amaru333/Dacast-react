@@ -4,7 +4,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
+import { PaymentMethod, PaymentMethodPut, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../../shared/MiscStyles';
@@ -31,7 +31,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         // setPaymentMethodData({...paymentMethodData, [key]: value})
     }
 
-    const onSubmit = (data: PaymentMethod) => { 
+    const onSubmit = (data: PaymentMethodPut) => { 
         setButtonLoading(true)
         debugger
         props.addPaymentMethodRequest(
@@ -214,7 +214,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     />
                     <Input 
                         className='col col-12 sm-col-5 xs-no-gutter pl1' 
-                        id='addressLine2US' 
+                        id='address2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
                         label='Address Line 2' 
                         indicationLabel='Optional' 
@@ -283,7 +283,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     />
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                        id='bankAddressLine2US' 
+                        id='bankAddress2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
                         label='Address Line 2' 
                         indicationLabel='Optional' 
@@ -436,7 +436,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                                id='addressLine2International' 
+                                id='address2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
                                 label='Address Line 2' 
                                 indicationLabel='Optional' 
@@ -515,7 +515,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             />
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
-                                id='bankAddressLine2International' 
+                                id='bankAddress2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
                                 label='Address Line 2' 
                                 indicationLabel='Optional' 

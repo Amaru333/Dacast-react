@@ -1,8 +1,6 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
 import { ActionTypes, ContentPaywallState  } from "./types";
-import { userToken } from '../../../../utils/services/token/tokenService';
-import { capitalizeFirstLetter } from '../../../../../utils/utils';
 
 const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
     let prices = null;
@@ -16,7 +14,11 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     ...action.payload.data
                 }
             } else {
-                data = action.payload.data
+                data = {
+                    ...action.payload.data,
+                    promos: [],
+                    prices: []
+                }
             }
             return {
                 ...state,
@@ -41,29 +43,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
             if (state[action.payload.contentType]) {
                 data = {
                     ...state[action.payload.contentType][action.payload.contentId],
-                    prices: action.payload.data.prices.map((price) => {
-                        return {
-                            ...price,
-                            prices: price.prices,
-                            settings: {
-                                ...price.settings,
-                                duration: price.settings.duration ? {
-                                    value: price.settings.duration.value,
-                                    unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
-                                } 
-                                : null,
-                                startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
-                                recurrence: price.settings.recurrence ? {
-                                    unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
-                                    : price.settings.recurrence.value > 4 ? 'Biannual'
-                                    : price.settings.recurrence.value > 1 ? 'Quarterly'
-                                    : 'Monthly'
-                                } 
-                                : null
-                            },
-                            priceType: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
-                        }
-                    })
+                    prices: action.payload.data
                 }
             } else {
                 data = {
@@ -71,29 +51,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     paywallEnabled: false,
                     introVodId: '',
                     selectedTheme: null,
-                    prices: action.payload.data.prices.map((price) => {
-                        return {
-                            ...price,
-                            prices: price.prices,
-                            settings: {
-                                ...price.settings,
-                                duration: price.settings.duration ? {
-                                    value: price.settings.duration.value,
-                                    unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
-                                } 
-                                : null,
-                                startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
-                                recurrence: price.settings.recurrence ? {
-                                    unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
-                                    : price.settings.recurrence.value > 4 ? 'Biannual'
-                                    : price.settings.recurrence.value > 1 ? 'Quarterly'
-                                    : 'Monthly'
-                                } 
-                                : null
-                            },
-                            priceType: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
-                        }
-                    })
+                    prices: action.payload.data
                 }
             }
             return {
@@ -124,15 +82,13 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
                         prices: state[action.payload.contentType][action.payload.contentId].prices.map((item) => {
-                            if(item.id !== action.payload.data.id) {
-                                return item;
-                            }
-                            else {
+                            if(item.id === action.payload.data.id) {
                                 return {
                                     ...item,
                                     ...action.payload.data
                                 }
                             }
+                            return item
                         })
                     }
                 }
@@ -150,15 +106,10 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                 }
             }
         case ActionTypes.GET_CONTENT_PAYWALL_PROMOS :
-            const userId = userToken.getUserInfoItem('user-id')
             if (state[action.payload.contentType]) {
                 data = {
                     ...state[action.payload.contentType][action.payload.contentId],
-                    promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${action.payload.contentType}-${action.payload.contentId}`) !== -1).map((promo) => {
-                        return {
-                            ...promo
-                        }
-                    })
+                    promos: action.payload.data
                 }
             } else {
                 data = {
@@ -166,11 +117,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     paywallEnabled: false,
                     introVodId: '',
                     selectedTheme: null,
-                    promos: action.payload.data.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${action.payload.contentType}-${action.payload.contentId}`) !== -1).map((promo) => {
-                        return {
-                            ...promo
-                        }
-                    })
+                    promos: action.payload.data
                 }
             }
             return {
@@ -182,7 +129,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
             }
         case ActionTypes.CREATE_CONTENT_PROMO_PRESET :
             promos = state[action.payload.contentType][action.payload.contentId].promos.slice();
-            promos.splice(promos.length, 0, action.payload.data);
+            promos.splice(promos.length, 0, action.payload.promo);
             return {
                 ...state,
                 [action.payload.contentType]: {
@@ -201,15 +148,13 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
                         promos: state[action.payload.contentType][action.payload.contentId].promos.map((item) => {
-                            if(item.id !== action.payload.data.id) {
-                                return item;
-                            }
-                            else {
+                            if(item.id === action.payload.promo.id) {
                                 return {
                                     ...item,
-                                    ...action.payload.data
+                                    ...action.payload.promo
                                 }
                             }
+                            return item
                         })
                     } 
                 }
@@ -221,7 +166,7 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        promos: state[action.payload.contentType][action.payload.contentId].promos.filter((item) => {return item.id !== action.payload.data.id})
+                        promos: state[action.payload.contentType][action.payload.contentId].promos.filter((item) => {return item.id !== action.payload.promo.id})
                     }
                 }
             }

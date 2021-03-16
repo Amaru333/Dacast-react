@@ -1,6 +1,6 @@
-import { PaymentMethodType, PaymentMethod, WithdrawalRequest } from './types';
+import { PaymentMethodType, PaymentMethod, WithdrawalRequest, PaymentMethodPut } from './types';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
-import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId } from '../../../../../DacastSdk/paywall';
+import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId, GetPaywallBalanceOutput } from '../../../../../DacastSdk/paywall';
 
 export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput): PaymentMethod[] => {
     return input.paymentMethods.map((p) => {
@@ -12,7 +12,7 @@ export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput):
     })
 } 
 
-export const formatPostWithdrawalMethodInput = (data: PaymentMethod): PaymentMethodDetails => {
+export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): PaymentMethodDetails => {
 
     switch(data.paymentMethodType) {
         case PaymentMethodType.BankAccountUS:
@@ -20,22 +20,22 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethod): PaymentMet
                 paymentMethodType: 'us-transfer',
                 paymentMethodName: data.paymentMethodName,
                 recipientType: data.recipientType.toLowerCase() as 'business' | 'personal',
-                accountNumber: data.accountNumber,
-                routingNumber: data.routingNumber,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                accountName: data.accountName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                bankName: data.bankName,
-                bankAddress: data.bankAddress,
-                bankAddress2: data.bankAddress2,
-                bankState: data.bankState,
-                bankTown: data.bankTown,
-                bankZipCode: data.bankZipCode
+                accountNumber: data.accountNumberUS,
+                routingNumber: data.routingNumberUS,
+                firstName: data.firstNameUS,
+                lastName: data.lastNameUS,
+                accountName: data.accountNameUS,
+                address: data.addressUS,
+                address2: data.address2US,
+                state: data.stateUS,
+                town: data.townUS,
+                zipCode: data.zipCodeUS,
+                bankName: data.bankNameUS,
+                bankAddress: data.bankAddressUS,
+                bankAddress2: data.bankAddress2US,
+                bankState: data.bankStateUS,
+                bankTown: data.bankTownUS,
+                bankZipCode: data.bankZipCodeUS
              }
             return us
         case PaymentMethodType.BankAccountInternational:
@@ -43,24 +43,24 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethod): PaymentMet
                 paymentMethodType: 'international-transfer',
                 paymentMethodName: data.paymentMethodName,
                 recipientType: data.recipientType.toLowerCase() as 'business' | 'personal',
-                swift: data.swift,
-                iban: data.iban,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                accountName: data.accountName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                country: data.country,
-                bankName: data.bankName,
-                bankAddress: data.bankAddress,
-                bankAddress2: data.bankAddress2,
-                bankState: data.bankState,
-                bankTown: data.bankTown,
-                bankZipCode: data.bankZipCode,
-                bankCountry: data.bankCountry
+                swift: data.swiftInternational,
+                iban: data.ibanInternational,
+                firstName: data.firstNameInternational,
+                lastName: data.lastNameInternational,
+                accountName: data.accountNameInternational,
+                address: data.addressInternational,
+                address2: data.address2International,
+                state: data.stateInternational,
+                town: data.townInternational,
+                zipCode: data.zipCodeInternational,
+                country: data.countryInternational,
+                bankName: data.bankNameInternational,
+                bankAddress: data.bankAddressInternational,
+                bankAddress2: data.bankAddress2International,
+                bankState: data.bankStateInternational,
+                bankTown: data.bankTownInternational,
+                bankZipCode: data.bankZipCodeInternational,
+                bankCountry: data.bankCountryInternational
              }            
              return inter
         case PaymentMethodType.Check: 
@@ -99,7 +99,7 @@ export const formatPostWithdrawalMethodOuput = (endpointResponse: PaymentMethodI
     return formattedData
 }
 
-export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMethodEndpoints => {
+export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentMethodEndpoints => {
 
     switch(data.paymentMethodType) {
         case PaymentMethodType.BankAccountUS:
@@ -108,22 +108,22 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMeth
                 paymentMethodType: 'us-transfer',
                 paymentMethodName: data.paymentMethodName,
                 recipientType: data.recipientType.toLowerCase() as 'business' | 'personal',
-                accountNumber: data.accountNumber,
-                routingNumber: data.routingNumber,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                accountName: data.accountName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                bankName: data.bankName,
-                bankAddress: data.bankAddress,
-                bankAddress2: data.bankAddress2,
-                bankState: data.bankState,
-                bankTown: data.bankTown,
-                bankZipCode: data.bankZipCode
+                accountNumber: data.accountNumberUS,
+                routingNumber: data.routingNumberUS,
+                firstName: data.firstNameUS,
+                lastName: data.lastNameUS,
+                accountName: data.accountNameUS,
+                address: data.addressUS,
+                address2: data.address2US,
+                state: data.stateUS,
+                town: data.townUS,
+                zipCode: data.zipCodeUS,
+                bankName: data.bankNameUS,
+                bankAddress: data.bankAddressUS,
+                bankAddress2: data.bankAddress2US,
+                bankState: data.bankStateUS,
+                bankTown: data.bankTownUS,
+                bankZipCode: data.bankZipCodeUS
              }
             return us
         case PaymentMethodType.BankAccountInternational:
@@ -132,24 +132,24 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMeth
                 paymentMethodType: 'international-transfer',
                 paymentMethodName: data.paymentMethodName,
                 recipientType: data.recipientType.toLowerCase() as 'business' | 'personal',
-                swift: data.swift,
-                iban: data.iban,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                accountName: data.accountName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                country: data.country,
-                bankName: data.bankName,
-                bankAddress: data.bankAddress,
-                bankAddress2: data.bankAddress2,
-                bankState: data.bankState,
-                bankTown: data.bankTown,
-                bankZipCode: data.bankZipCode,
-                bankCountry: data.bankCountry
+                swift: data.swiftInternational,
+                iban: data.ibanInternational,
+                firstName: data.firstNameInternational,
+                lastName: data.lastNameInternational,
+                accountName: data.accountNameInternational,
+                address: data.addressInternational,
+                address2: data.address2International,
+                state: data.stateInternational,
+                town: data.townInternational,
+                zipCode: data.zipCodeInternational,
+                country: data.countryInternational,
+                bankName: data.bankNameInternational,
+                bankAddress: data.bankAddressInternational,
+                bankAddress2: data.bankAddress2International,
+                bankState: data.bankStateInternational,
+                bankTown: data.bankTownInternational,
+                bankZipCode: data.bankZipCodeInternational,
+                bankCountry: data.bankCountryInternational
              }            
              return inter
         case PaymentMethodType.Check: 
@@ -159,12 +159,12 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethod): PaymentMeth
                 paymentMethodName: data.paymentMethodName,
                 payee: data.payee,
                 companyName: data.companyName,
-                address: data.address,
-                address2: data.address2,
-                state: data.state,
-                town: data.town,
-                zipCode: data.zipCode,
-                country: data.country
+                address: data.checkAddress,
+                address2: data.checkAddressLine2,
+                state: data.checkState,
+                town: data.checkTown,
+                zipCode: data.checkZipCode,
+                country: data.checkCountry
             }            
             return check
         case PaymentMethodType.PayPal:
@@ -221,4 +221,8 @@ export const formatPutWithdrawalRequestInput = (data: WithdrawalRequest): Paymen
     }
 
     return formattedWithdrawalRequest
+}
+
+export const formatGetPaywallBalanceOutput = (data: GetPaywallBalanceOutput): number => {
+    return data.balance || 0
 }

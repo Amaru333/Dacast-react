@@ -1,6 +1,9 @@
-import { GetLiveBrandImageUrl } from "./live"
+import { GetExpoAssetUploadUrl } from "./expo"
+import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
+import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
+import { GetPlaylistAssetUploadUrl } from "./playlist"
 import { EngagementSettingsEndoint, PutAdInput } from "./settings"
-import { GetVodBrandImageUrl } from "./video"
+import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
     userID: string
@@ -10,14 +13,17 @@ export interface GetUserBrandImageUploadUrl {
     userID: string
 }
 
+export type ContentUploadType = 'subtitle' | 'vod-thumbnail' | 'vod-splashscreen' | 'vod-poster' | 'live-thumbnail' | 'live-splashscreen' | 'live-poster' | 'playlist-thumbnail' | 'playlist-splashscreen' | 'playlist-poster' | 'expo-poster'
+
 export type PostUploadUrlInput = {
-    uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark'
-    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | GetVodBrandImageUrl | GetLiveBrandImageUrl |  null
+    uploadType: 'company-logo' | 'transcoding-watermark' | 'player-watermark' | ContentUploadType
+    uploadRequestBody: GetCompanyLogoUploadUrl | GetUserBrandImageUploadUrl | GetVodBrandImageUrl | GetLiveBrandImageUrl | GetExpoAssetUploadUrl | GetLiveAssetUploadUrl | GetPlaylistAssetUploadUrl | GetVideoAssetUploadUrl | GetVideoSubtitleUploadUrl | null
 }
 
 export interface PostUploadUrlOutput {
     presignedURL: string
     fileID?: string
+    targetID?: string
 }
 
 export interface PutUploadFileInput {
@@ -97,3 +103,64 @@ export interface PutContentLockEngagementSettingsInput {
 }
 
 export type PutContentAdsInput = {data: PutAdInput} & {id: string}
+
+export interface AssetTypeEndpoint {
+    url?: string
+    targetID?: string
+    targetType?: 'splashscreen' | 'thumbnail' | 'poster'
+    assetId?: string
+}
+
+export interface DeleteContentImageAssetIdInput {
+    id: string
+    targetId: string
+}
+
+export interface GetContentPaywallInfoOutput {
+    introVodId: string
+    paywallEnabled: boolean
+    selectedTheme: string
+    themes: PaywallThemeEndpoints[]
+}
+
+export interface PutContentPaywallInfoInput {
+    id: string
+    payload: {
+        introVodId: string
+        paywallEnabled: boolean
+        selectedTheme: string
+    }
+}
+
+export interface GetContentPricesOutput {
+    prices: {
+        id: string
+        currency: string
+        description: string
+        price: number
+        settings: PriceSettingsEndpoints
+        type: 'individual'
+    }[]
+}
+
+export interface PostContentPriceInput {
+    contentId: string
+    prices: PriceEndpoints[]
+    settings: PriceSettingsEndpoints
+}
+
+export interface PostContentPriceOutput {
+    id: string
+}
+
+export interface PutContentPriceInput {
+    id: string
+    contentId: string
+    price: PriceEndpoints
+    settings: PriceSettingsEndpoints
+}
+
+export interface DeleteContentPriceInput {
+    id: string
+    contentId: string
+}
