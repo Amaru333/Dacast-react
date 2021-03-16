@@ -89,6 +89,8 @@ export const BarChart = (props: BarChartProps) => {
                         ...(props.step && {
                             stepSize: props.step,
                         }),
+                        suggestedMin: 0,
+                        beginAtZero: true
                     }
                 },
                 ...(props.options.rightYAxes ? [{
