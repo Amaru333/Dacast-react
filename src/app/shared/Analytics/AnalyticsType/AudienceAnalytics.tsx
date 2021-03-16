@@ -16,7 +16,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
     const returnTimeAnalytics = () => {
         return (
             <LineChart
-                title="Audience by Time"
+                title="Plays & Impressions by Time"
                 options={{ fill: true, curve: 0, rightYAxes: false }}
                 lines={[{ data: props.data.playsImpressionsByTime.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByTime.impressions, label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
                 labels={props.data.playsImpressionsByTime.labels} />
@@ -27,7 +27,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         return (
             <BarChart
                 type="vertical"
-                title="Audience by Device"
+                title="Plays & Impressions by Device"
                 dataSets={[{ data: props.data.playsImpressionsByDevice.plays, label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.data.playsImpressionsByDevice.impressions, label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
                 labels={props.data.playsImpressionsByDevice.labels} />
         )

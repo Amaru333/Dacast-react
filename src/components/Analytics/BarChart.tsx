@@ -30,6 +30,7 @@ export const BarChart = (props: BarChartProps) => {
                 pointBackgroundColor: item.color,
                 pointHighlightStroke: item.color,
                 lineTension: 0,
+                startValue: 0
             })
         };
     }
@@ -73,7 +74,7 @@ export const BarChart = (props: BarChartProps) => {
                         ticks: {
                             callback: (value) => {
                                 return value + " " + props.unit;
-                            }
+                            },
                         }
                     }),
                     id: 'A',
@@ -87,7 +88,6 @@ export const BarChart = (props: BarChartProps) => {
                         }),
                         ...(props.step && {
                             stepSize: props.step,
-                            suggestedMin: 0
                         }),
                     }
                 },
@@ -96,9 +96,14 @@ export const BarChart = (props: BarChartProps) => {
                     ...(props.unitRight && {
                         ticks: {
                             callback:  (value) => {
-                                return value + " " + props.unitRight;
-                            }
-                        }
+                                if(value >= 0) {
+                                    return value + " " + props.unitRight;
+                                }
+                            },
+                            suggestedMin: 0,
+                            beginAtZero: true
+                        },
+
                     }),
                     type: 'linear',
                     position: 'right',

@@ -10,7 +10,7 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
     switch (timeRange) {
         case 'YEAR_TO_DATE':
         case 'LAST_6_MONTHS':
-            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
         case 'LAST_MONTH':
         case 'LAST_WEEK':
             return tsToLocaleDate(ts);
@@ -19,10 +19,10 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
             if(index >= 0) {
                 if(response.results[index].data && response.results[index].data.length > 0) {
                     if(response.results[index].data[0].dimension_type.type === "HOURLY") {
-                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
                     }
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
-                        return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+                        return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
                     }
                     return tsToLocaleDate(ts);
                 }
@@ -35,10 +35,10 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
         case 'LAST_30_MINUTES':
         case 'LAST_45_MINUTES':
         case 'LAST_HOUR':
-            return tsToLocaleDate(ts, { timeZone: 'UTC', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+            return tsToLocaleDate(ts, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         case 'LAST_2_HOURS':
         case 'LAST_90_MINUTES':
-            return tsToLocaleDate(ts, { hour: '2-digit', timeZone: 'UTC' });
+            return tsToLocaleDate(ts, { hour: '2-digit', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
         }
 }
 
@@ -73,7 +73,7 @@ const formatLabels = (dimension: TimeRangeAnalytics, startDate: number, endDate:
         case 'YEAR_TO_DATE':
             var stopDate = new Date();
             var firstDay = new Date(stopDate.getFullYear(), stopDate.getMonth(), 1);
-            var current = dateAdd(firstDay, 'year', -1);
+            var current = dateAdd(firstDay, 'month', -1 * stopDate.getMonth());
             return getLabels(current, firstDay, 'MONTH', dimension, response)
         case 'LAST_6_MONTHS':
             var stopDate = new Date();
@@ -360,9 +360,10 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                     case 'HOURLY':
                     case 'MONTH':
                     case 'DAY':
-                        formattedData.watchByTime.labels = labels
-                        formattedData.watchByTime.table = labels.map(label => { return { label: label, data: 0 } })
-                        
+                        if(formattedData.watchByTime.labels.length === 0 ) {
+                            formattedData.watchByTime.labels = labels
+                            formattedData.watchByTime.table = labels.map(label => { return { label: label, data: 0 } })
+                        }
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
                         let indexLabel = labels.indexOf(label);
                         if(indexLabel !== -1) {

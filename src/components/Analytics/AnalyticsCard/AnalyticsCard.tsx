@@ -51,7 +51,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                             </>
                         }
                     </div>
-                    { props.tabs && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
+                    { (props.tabs && Object.keys(props.tabs).length > 1) && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
                 <AnalyticsCardBody table={props.showTable}>
                     { props.tabs ? props.tabs[selectedTab].content() : props.children}
