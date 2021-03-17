@@ -20,7 +20,8 @@ export const getContentThemeAction = (contentId: string, contentType: string): T
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentTheme> ) => {
         await ContentThemingServices.getContentThemeService(contentId, parseContentType(contentType))
             .then( response => {
-                dispatch( {type: ActionTypes.GET_CONTENT_THEME, payload: { contentId: contentId, themes: response.data.data.themes, contentThemeId: response.data.data.contentThemeID, contentType: contentType }} );
+                let data = response.data.data ? response.data.data : response.data
+                dispatch( {type: ActionTypes.GET_CONTENT_THEME, payload: { contentId: contentId, themes: data.themes, contentThemeId: data.contentThemeID, contentType: contentType }} );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

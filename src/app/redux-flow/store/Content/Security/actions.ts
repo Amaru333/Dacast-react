@@ -25,7 +25,8 @@ export const getContentSecuritySettingsAction = (contentId: string, contentType:
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentSecuritySettings> ) => {
         await ContentSecurityServices.getContentSecuritySettingsService(contentId, parseContentType(contentType))
             .then( response => {
-                dispatch( {type: ActionTypes.GET_CONTENT_SECURITY_SETTINGS, payload: { contentId: contentId, securitySettings: response.data.data, contentType: contentType } } );
+                let data = response.data.data ? response.data.data : response.data
+                dispatch( {type: ActionTypes.GET_CONTENT_SECURITY_SETTINGS, payload: { contentId: contentId, securitySettings: data, contentType: contentType } } );
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));

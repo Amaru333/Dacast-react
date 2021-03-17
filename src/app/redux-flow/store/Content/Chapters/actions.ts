@@ -30,7 +30,8 @@ export const getContentChapterMarkersAction = (contentId: string, contentType: s
     return async (dispatch: ThunkDispatch<ApplicationState , {}, GetContentChapterMarkers> ) => {
         await ContentChaptersServices.getContentChapterMarkersService(contentId, parseContentType(contentType))
             .then( response => {
-                dispatch( {type: ActionTypes.GET_CONTENT_CHAPTER_MARKERS, payload:{contentId: contentId, contentType: contentType, data: response.data.data} } )
+                let data = response.data.data ? response.data.data : response.data
+                dispatch( {type: ActionTypes.GET_CONTENT_CHAPTER_MARKERS, payload:{contentId, contentType, data} } )
             })
             .catch(() => {
                 dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"))
