@@ -53,24 +53,25 @@ export const Tab = (props: TabProps) => {
                 list.map((tab, i) => {
                     return (
                         <Link style={{textDecoration: 'none' }}to={tab.path} key={tab.name+i.toString()}>
-                            <TabStyle                               
-                                orientation={orientation} 
-                                selected={selectedTab === tab.path} 
+                            <TabStyle
+                                orientation={orientation}
+                                selected={selectedTab === tab.path}
                                 onClick={() => setSelectedTab(tab.name)}
+                                data-text={tab.name}
                             >
                                 <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.path ? 'med' : 'reg'}  color={selectedTab === tab.path ? "dark-violet" : "gray-1"}>{tab.name}</Text>
                             </TabStyle>
                         </Link>
                     )
                 })
-                : 
+                :
                 list.map((tab) => {
                     return (
-                        <TabStyle 
-                            
-                            key={tab.name}                              
-                            orientation={orientation} 
-                            selected={selectedTab === tab.name} 
+                        <TabStyle
+                            key={tab.name}
+                            orientation={orientation}
+                            selected={selectedTab === tab.name}
+                            data-text={tab.name}
                             onClick={() => {setSelectedTab(tab.name);props.callback(tab.name)}}
                         >
                             <Text className={orientation === 'horizontal' ? "center" : ''} size={14} weight={selectedTab === tab.name ? 'med' : 'reg'}  color={selectedTab === tab.name ? "dark-violet" : "gray-1"}>{tab.name}</Text>
