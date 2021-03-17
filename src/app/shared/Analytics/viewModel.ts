@@ -10,7 +10,7 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
     switch (timeRange) {
         case 'YEAR_TO_DATE':
         case 'LAST_6_MONTHS':
-            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
         case 'LAST_MONTH':
         case 'LAST_WEEK':
             return tsToLocaleDate(ts);
@@ -22,7 +22,7 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
                         return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
                     }
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
-                        return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+                        return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                     }
                     return tsToLocaleDate(ts);
                 }
