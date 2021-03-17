@@ -67,7 +67,7 @@ export function displayTimeForHumans(seconds: number) {
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
 }
 
-const formatTimeToUnit = (seconds: number, unit: 's' | 'm' | 'h') => {
+export const formatTimeToUnit = (seconds: number, unit: 's' | 'm' | 'h') => {
     if(!seconds || seconds < 0) {
         return 0
     }
