@@ -12,7 +12,7 @@ export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: st
     let contentInfo = player && player.getContentInfo()
     let activeMedia = player && player.getActiveMedia()
     let { features } = contentInfo || {}
-    let { width, height } = activeMedia || {}
+    let { width, height } = props.contentType === 'live' ? { width: 16, height: 9 } : (activeMedia || {})
     let playListPosition = features && features.playlist && features.playlist.position;
     let playlistWidthAdjustment = playListPosition === 'right' || playListPosition === 'left' ? 180 : 0
     let playlistHeightAdjustment = playListPosition === 'top' || playListPosition === 'bottom' ? 145 : 0
