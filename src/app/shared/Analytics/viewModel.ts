@@ -19,7 +19,7 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
             if(index >= 0) {
                 if(response.results[index].data && response.results[index].data.length > 0) {
                     if(response.results[index].data[0].dimension_type.type === "HOURLY") {
-                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
                     }
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
                         return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
