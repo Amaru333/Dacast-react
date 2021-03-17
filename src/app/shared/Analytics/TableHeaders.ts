@@ -44,7 +44,7 @@ export const HeaderWatchTime = [
         Header: 'Date',
         accessor: 'label',
     }, {
-        Header: 'Engagement (s)',
+        Header: 'Engagement ',
         accessor: 'data'
     }
 ]
@@ -53,7 +53,7 @@ export const HeaderWatchDevice = [
         Header: 'Device',
         accessor: 'label',
     }, {
-        Header: 'Engagement (s)',
+        Header: 'Engagement',
         accessor: 'data'
     }
 ]
@@ -62,7 +62,7 @@ export const HeaderWatchLocation = [
         Header: 'Country',
         accessor: 'label',
     }, {
-        Header: 'Engagement (s)',
+        Header: 'Engagement',
         accessor: 'data'
     }
 ]

@@ -67,6 +67,41 @@ export function displayTimeForHumans(seconds: number) {
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
 }
 
+const formatTimeToUnit = (seconds: number, unit: 's' | 'm' | 'h') => {
+    if(!seconds || seconds < 0) {
+        return 0
+    }
+
+    if(unit === 'h') {
+        return Math.floor(seconds / 3600)
+    }
+
+    if(unit === 'm') {
+        return Math.floor(seconds / 60)
+    }
+
+    return seconds
+}
+
+export const formatTimeValue = (values: number[]) => {
+    const maxValue = values.reduce((acc, next) => {
+        if(next > acc) {
+            return next
+        }
+        return acc
+    }, 0)
+
+    if(maxValue >= 3600) {
+        return {values: values.map(v => formatTimeToUnit(v, 'h')), unitShort: 'h', unitLong: 'Hours'}
+    }
+
+    if (maxValue < 3600 && maxValue > 60) {
+        return {values: values.map(v => formatTimeToUnit(v, 'm')), unitShort: 'm', unitLong: 'Minutes'}
+    }
+
+    return {values: values, unitShort: 's', unitLong: 'Seconds'}
+}
+
 export function displayBytesForHumans(mbAmount: number, decimals = 2, fromAnalytics = false) {
     if (fromAnalytics) {
         var bytes = mbAmount * 1000000000;

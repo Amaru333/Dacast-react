@@ -3,7 +3,7 @@ import { AnalyticsCard } from '../../../../components/Analytics/AnalyticsCard/An
 import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
-import { displayBytesForHumans } from '../../../../utils/formatUtils'
+import { formatTimeValue } from '../../../../utils/formatUtils'
 import {HeaderWatchTime, HeaderWatchDevice, HeaderWatchLocation} from '../TableHeaders'
 import { WatchAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 
@@ -12,15 +12,29 @@ export interface WatchDurationAnalyticsProps {
 }
 
 export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
-
+    const watchDurationPerTime = formatTimeValue(props.data.watchByTime.data)
+    const watchDurationPerDevice = formatTimeValue(props.data.watchByDevice.data)
+    const watchDurationPerLocationData = formatTimeValue(props.data.watchByLocation.table.map(item => item.data))
+    
+    const handleDynamiceHeader = (header: {Header: string, accessor: string}[], metric: string) => {
+        return header.map(h => {
+            if(h.Header.indexOf('Engagement') !== -1) {
+                return {
+                    Header: h.Header + ' (' + metric + ')',
+                    accessor: h.accessor
+                }
+            }
+            return h
+        })
+    } 
 
     const returnTimeAnalytics = () => {
         return (
             <BarChart
                 title="Engagement by Time"
-                dataSets={ [ {data: props.data.watchByTime.data, label: "Engagement (seconds)", type:"bar", color: ThemeAnalyticsColors.blue}] }
+                dataSets={ [ {data: watchDurationPerTime.values, label: "Engagement (" + watchDurationPerTime.unitLong + ')', type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.watchByTime.labels}
-                unit="s" />
+                unit={watchDurationPerTime.unitShort} />
         )
     }
 
@@ -28,16 +42,16 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
         return (
             <BarChart
                 title="Engagement by Device"
-                dataSets={ [ {data: props.data.watchByDevice.data, label: "Engagement (device)", color: ThemeAnalyticsColors.blue } ] }
+                dataSets={ [ {data: watchDurationPerDevice.values, label: "Engagement (device)", color: ThemeAnalyticsColors.blue } ] }
                 labels={props.data.watchByDevice.labels} 
-                unit="s"/>
+                unit={watchDurationPerDevice.unitShort}/>
         )
     }
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
-                markers={props.data.watchByLocation.data} 
-                markerNameTranform={ (element) => element.city+": "+(element.value)+" s" } />
+                markers={props.data.watchByLocation.data.map((el, i) => {return {...el, value: [watchDurationPerLocationData.values[i]]}})} 
+                markerNameTranform={ (element) => element.city+": "+(element.value)+" "+watchDurationPerLocationData.unitShort } />
         )
     }
 
@@ -49,9 +63,9 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 csvType='Engagement'
                 tabs={
                     {
-                        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table, header: HeaderWatchTime} },
-                        "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.watchByDevice.table, header: HeaderWatchDevice} },
-                        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.watchByLocation.table, header: HeaderWatchLocation}  },
+                        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table.map((el, i) => {return {data: watchDurationPerTime.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchTime, watchDurationPerTime.unitShort)} },
+                        "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.watchByDevice.table.map((el, i) => {return {data: watchDurationPerDevice.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchDevice, watchDurationPerDevice.unitShort)}},
+                        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.watchByLocation.table.map((el, i) => {return {data: watchDurationPerLocationData.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchLocation, watchDurationPerLocationData.unitShort)}  },
                     }
                 }
             />
