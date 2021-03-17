@@ -301,7 +301,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: data.dimension_type.value as string,
+                                        city: assosiatedCountry["\"Country\""],
                                         position: {
                                             latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                             longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])

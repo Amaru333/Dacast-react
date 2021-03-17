@@ -43,70 +43,70 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
   let max = Math.max(...props.markers.map(k => k.value[0]));
   let min = Math.min(...props.markers.map(k => k.value[0]));
 
-  // const renderMarkers = () => {
-  //   return props.markers.map((element, index) => {
-      // let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
-      // lerpPercent -= 100;
-      // lerpPercent /= 1000;
-
-  //     return (
-  //       <CircleMarker
-  //         weight={1} radius={12} center={[element.position.latitude, element.position.longitude]}
-  //         color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
-  //       >
-  //         <Popup>
-  //           {props.markerNameTranform(element, index)}
-  //         </Popup>
-  //       </CircleMarker>)
-  //   })
-  // }
-
-  function UpdateCountryStyle(feature: any, layer: any) {
-  let fillColor = '#e2e0db'
-
-  if(feature.properties.plays > 0) {
-    console.log(feature)
-    let lerpPercent = logScale(feature.properties.plays, 0, max, 100, 1000);
+  const renderMarkers = () => {
+    return props.markers.map((element, index) => {
+      let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
       lerpPercent -= 100;
       lerpPercent /= 1000;
-    fillColor = lerpColor('#93d5ed', '#2f5ec4', lerpPercent)
+
+      return (
+        <CircleMarker
+          weight={1} radius={12} center={[element.position.latitude, element.position.longitude]}
+          color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
+        >
+          <Popup>
+            {props.markerNameTranform(element, index)}
+          </Popup>
+        </CircleMarker>)
+    })
   }
 
-  return {
-      fillColor: fillColor,
-      weight: 2,
-      opacity: 1,
-      color: 'white',
-      dashArray: '3',
-      fillOpacity: 0.7
-  };
-}
+//   function UpdateCountryStyle(feature: any, layer: any) {
+//   let fillColor = '#e2e0db'
 
-const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
-  let layer = e.target
-  layer.bindPopup('<h1>'+feature.properties.plays+'</h1><p>name: '+feature.properties.name+'</p>')
-}
+//   if(feature.properties.plays > 0) {
+//     console.log(feature)
+//     let lerpPercent = logScale(feature.properties.plays, 0, max, 100, 1000);
+//       lerpPercent -= 100;
+//       lerpPercent /= 1000;
+//     fillColor = lerpColor('#93d5ed', '#2f5ec4', lerpPercent)
+//   }
+
+//   return {
+//       fillColor: fillColor,
+//       weight: 2,
+//       opacity: 1,
+//       color: 'white',
+//       dashArray: '3',
+//       fillOpacity: 0.7
+//   };
+// }
+
+// const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
+//   let layer = e.target
+//   layer.bindPopup('<h1>'+feature.properties.plays+'</h1><p>name: '+feature.properties.name+'</p>')
+// }
 
 
-  const onEachFeature = (feature: any, layer: Layer) => {
-    layer.on({
-      mouseover: (e) => handleMouseOver(e, feature)
-    })
+//   const onEachFeature = (feature: any, layer: Layer) => {
+//     layer.on({
+//       mouseover: (e) => handleMouseOver(e, feature)
+//     })
     
-  }
+//   }
 
-  const renderGeoJSON = () => {
-    let countries = world.features.map((country) => {
-      return {
-        ...country, 
-        properties: {
-          ...country.properties,
-          plays: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0].value[0] : 0
-        }
-      }
-    })
-    return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
-  }
+//   const renderGeoJSON = () => {
+//     let countries = world.features.map((country) => {
+//       return {
+//         ...country, 
+//         properties: {
+//           ...country.properties,
+//           plays: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0].value[0] : 0
+//         }
+//       }
+//     })
+//     return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
+//   }
 
   return (
     <>
@@ -117,7 +117,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
           url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
         //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
         />
-        {renderGeoJSON()}
+        {renderMarkers()}
       </Map>
       <div className="flex mt2 justify-center">
         <span className="mr2">{min}</span>
