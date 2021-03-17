@@ -77,7 +77,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
             </div>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle className='pointer' onClick={() => history.push('/analytics/data')} coloricon='dark-violet'>wifi</IconStyle>
+                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/data')} coloricon='dark-violet'>wifi</IconStyle>
                     <Text className='pointer' onClick={() => history.push('/analytics/data')} size={14} weight='med' color='gray-3'>Data Usage</Text>
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
@@ -87,7 +87,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle className='pointer' onClick={() => history.push('/analytics/audience')}coloricon='dark-violet'>play_circle_outlined</IconStyle>
+                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/audience')}coloricon='dark-violet'>play_circle_outlined</IconStyle>
                     <Text className='pointer' onClick={() => history.push('/analytics/audience')} size={14} weight='med' color='gray-3'>Audience</Text>
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
