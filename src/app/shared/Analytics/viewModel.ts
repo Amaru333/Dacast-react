@@ -10,16 +10,16 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
     switch (timeRange) {
         case 'YEAR_TO_DATE':
         case 'LAST_6_MONTHS':
-            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC'});
         case 'LAST_MONTH':
         case 'LAST_WEEK':
-            return tsToLocaleDate(ts);
+            return tsToLocaleDate(ts, {month: '2-digit', year:'numeric', day: '2-digit', timeZone: 'UTC'});
         case 'CUSTOM':
             let index = response.results.findIndex(obj => obj.data_dimension.includes("_TIME"));
             if(index >= 0) {
                 if(response.results[index].data && response.results[index].data.length > 0) {
                     if(response.results[index].data[0].dimension_type.type === "HOURLY") {
-                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+                        return tsToLocaleDate(ts, { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
                     }
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
                         return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
@@ -81,7 +81,7 @@ const formatLabels = (dimension: TimeRangeAnalytics, startDate: number, endDate:
             var current = dateAdd(firstDay, 'month', -6);
             return getLabels(current, firstDay, 'MONTH', dimension, response)
         case 'LAST_MONTH':
-            var stopDate = ( d => new Date(d.setDate(d.getDate()-1)) )(new Date);
+            var stopDate = ( d => new Date(d.setDate(d.getDate())) )(new Date);
             var current = dateAdd(stopDate, 'day', -29);
             return getLabels(current, stopDate, 'DAY', dimension, response)
         case 'LAST_WEEK':
