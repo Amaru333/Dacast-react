@@ -98,7 +98,7 @@ export const Table = (props: TableProps) => {
 
     return (
         <WrapperResponsiveContainer tableHeight={props.tableHeight} hasContainer={props.hasContainer}>
-            <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed noScroll={props.noScroll} minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}} >
+            <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed noScroll={props.noScroll} noScrollX={props.noScrollX} noScrollY={props.noScrollY} minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}} >
                 <TableContainer className='relative'  {...props} contentLoading={props.contentLoading}>
 
                     {props.header &&

@@ -38,6 +38,8 @@ interface TableSpecificProps {
     tableHeight? : number;
     contentLoading?: boolean;
     noScroll?: boolean;
+    noScrollX?: boolean;
+    noScrollY?: boolean;
 }
 
 export type TableProps = TableSpecificProps & React.HTMLAttributes<HTMLTableElement>;
