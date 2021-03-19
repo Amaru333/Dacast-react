@@ -30,7 +30,7 @@ export const TabHeaderContainer = styled.div<TabProps & {mobile: boolean}>`
         border: none;
         width: 100%;
         margin: auto;
-    `} 
+    `}
 `;
 
 
@@ -61,6 +61,13 @@ export const TabStyle = styled.div<{selected: boolean; orientation: string}>`
             font-weight: 500 !important;
         }
     }
+    &:after {
+        content: attr(data-text);
+        height: 0;
+        visibility: hidden;
+        font-weight: 500 !important;
+        font-size: 14px;
+    }
 `;
 
 export const TabBody = styled.div<{}>`
@@ -71,7 +78,7 @@ export const TabBody = styled.div<{}>`
 export const TabContentStyle = styled.div<{isDisplayed: boolean}>`
     display: none;
     ${props => props.isDisplayed && css`
-        display: flex;   
+        display: flex;
         flex-direction: column;
     `}
 `;
