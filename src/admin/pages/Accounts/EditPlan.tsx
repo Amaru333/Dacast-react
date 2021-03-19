@@ -21,7 +21,7 @@ const Plans = [
 ]
 
 export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}) => {
-    
+
     let history = useHistory()
     const [showSwitchPlan, setShowSwitchPlan] = React.useState<boolean>(false)
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
@@ -58,7 +58,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <div style={{justifyContent: "space-between", alignItems: "center"}} className="col col-12 mb2 flex">
                     <Text size={16} weight='med'>Editing Plan for BID: {salesforceId} </Text>
                 </div>
-                
+
                 <Card className='my1'>
                     <Text size={20} color='gray-3' weight='med'>Manage Plan </Text>
                     <Text className='pt25' size={16} weight='med'>Current Plan</Text>
@@ -74,7 +74,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     {/* <Input className='my1 col col-2' id='itemLimitInput' placeholder='100' label='Item Limit' defaultValue={props.accountPlan.itemLimit ? props.accountPlan.itemLimit.toString() : '0'} onChange={(event) => handleKeyChange('itemLimit', parseInt(event.currentTarget.value))}  /> */}
                     {/* <Input className='my1 col col-2' id='folderDepthInput' placeholder='5' label='Folder Depth' defaultValue={props.accountPlan.folderDepth ? props.accountPlan.folderDepth.toString(): '0'} onChange={(event) => handleKeyChange('folderDepth', parseInt(event.currentTarget.value))}  /> */}
                     <Input className='my1 col col-2' id='recipeRenditionInput' placeholder='6' label='Renditions per Recipes' defaultValue={props.accountPlan.renditionsPerRecipe ? props.accountPlan.renditionsPerRecipe.toString() : '0'} onChange={(event) => handleKeyChange('renditionsPerRecipe', parseInt(event.currentTarget.value))}  />
-                    
+
                     <Divider className='pt2' />
 
                     <Text className='py2' size={20} weight='med' color='gray-3'>Manage Modules</Text>
@@ -122,7 +122,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.dvr.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.dvr.planValue || props.accountPlan.dvr.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('dvr', value === 'On' ? true : false)} />
-                    </div> 
+                    </div>
                     <Text className='py1' size={14} weight='med'>Advertising</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.advertising.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
@@ -133,15 +133,10 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.recording.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.recording.planValue || props.accountPlan.recording.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('recording', value === 'On' ? true : false)} />
                     </div>
-                    <Text className='py1' size={14} weight='med'>Download: Web</Text>
+                    <Text className='py1' size={14} weight='med'>Allow VOD Download</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.webDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.webDownload.planValue || props.accountPlan.webDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('webDownload', value === 'On' ? true : false)} />
-                    </div>
-                    <Text className='py1' size={14} weight='med'>Download: Player</Text>
-                    <div className='flex items-center my1'>
-                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.playerDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
-                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.playerDownload.planValue || props.accountPlan.playerDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('playerDownload', value === 'On' ? true : false)} />
                     </div>
                     <Text className='py1' size={14} weight='med'>24/7 Phone Support</Text>
                     <div className='flex items-center my1'>
@@ -149,7 +144,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.phoneSupport.planValue || props.accountPlan.phoneSupport.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('phoneSupport', value === 'On' ? true : false)} />
                     </div>
 
-                    <Divider className='pt2' /> 
+                    <Divider className='pt2' />
 
                     <Text className='py2' size={20} weight='med' color='gray-3'>Special</Text>
                     <Text className='py1' size={14} weight='med'>Admin</Text>
@@ -204,7 +199,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
             </div>
         )
     }
-    
+
     const handleSwitchPlan = () => {
         props.switchAccountPlan(selectedPlan)
         setShowSwitchPlan(false)
@@ -230,11 +225,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
 
     return(
         <div>
-            {showSwitchPlan ? 
+            {showSwitchPlan ?
                 SwitchPlanContent()
                 : EditPlanContent()
             }
             <ConfirmationModal modalButtonLoading={buttonLoading} submit={showSwitchPlan ? handleSwitchPlan : handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>
-    ) 
+    )
 }

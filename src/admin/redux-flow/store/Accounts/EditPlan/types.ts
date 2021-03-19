@@ -28,7 +28,6 @@ export interface PlanInfo {
     signedKeys: PlanSetting;
     api: PlanSetting;
     webDownload: PlanSetting;
-    playerDownload: PlanSetting;
     paywall: PlanSetting;
     advertising: PlanSetting;
     emailCatcher: PlanSetting;

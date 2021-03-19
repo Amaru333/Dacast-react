@@ -133,7 +133,6 @@ export interface GetAccountPlanOutput {
     signedKeys: PlanSettingEndpoint;
     api: PlanSettingEndpoint;
     webDownload: PlanSettingEndpoint;
-    playerDownload: PlanSettingEndpoint;
     paywall: PlanSettingEndpoint;
     advertising: PlanSettingEndpoint;
     emailCatcher: PlanSettingEndpoint;
