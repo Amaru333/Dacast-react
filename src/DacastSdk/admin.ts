@@ -321,5 +321,7 @@ export interface GetMigratedUsersListOutput {
 
 export interface PutExtendTrialInput {
     userId: string
-    newExpirationDate: number
+    payload: {
+        newExpirationDate: number
+    }
 }

@@ -61,7 +61,7 @@ export class DacastSdk {
     public getAccountsTransactions = async (input: string): Promise<GetAccountsTransactionsOutput> => await this.axiosClient.get('/paywall-transactions?' + input).then(this.checkExtraData)
     public postAccountTransaction = async (input: PostAccountTransactionInput): Promise<void> => await this.axiosClient.post('/paywall-transactions', input)
     public getPirateInfo = async (input: string): Promise<GetPirateInfoOutput> => await this.axiosClient.get('/identify-cdn-url?url=' + input).then(this.checkExtraData)
-    public putExtendTrial = async (input: PutExtendTrialInput): Promise<void> => await this.axiosClient.put('/accounts/' + input.userId + '/extend-trial', input)
+    public putExtendTrial = async (input: PutExtendTrialInput): Promise<void> => await this.axiosClient.put('/accounts/' + input.userId + '/extend-trial', input.payload)
     
     public getJobsList = async (): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs').then(this.checkExtraData)
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)

@@ -15,7 +15,9 @@ export const formatPutAccountPlanInput = (data: PlanInfoPut): PutAccountPlanInpu
 export const formatPutExtendTrialInput = (data: {userId: string; newExpirationDate: number}): PutExtendTrialInput => {
     let formattedData: PutExtendTrialInput = {
         userId: data.userId,
-        newExpirationDate: data.newExpirationDate
+        payload: {
+            newExpirationDate: data.newExpirationDate
+        }
     }
 
     return formattedData
