@@ -1,6 +1,6 @@
 import React from 'react'
 import { EditPlanPage } from '../../pages/Accounts/EditPlan'
-import { saveAccountPlanAction, getAccountPlanAction, Action } from '../../redux-flow/store/Accounts/EditPlan/actions';
+import { saveAccountPlanAction, getAccountPlanAction, Action, extendTrialAction } from '../../redux-flow/store/Accounts/EditPlan/actions';
 import { PlanInfo, PlanInfoPut } from '../../redux-flow/store/Accounts/EditPlan/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { AdminState } from '../../redux-flow/store';
@@ -8,12 +8,13 @@ import { connect } from 'react-redux';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { useParams } from 'react-router-dom';
+import { string } from 'prop-types';
 
 export interface EditPlanComponentProps {
     accountPlan: PlanInfo;
     getAccountPlan: (accountId: string) => Promise<void>;
     saveAccountPlan: (planDetails: PlanInfoPut, accountId: string) => Promise<void>;
-    switchAccountPlan: Function;
+    extendTrial: (userId: string, newExpirationDate: number) => Promise<void>;
 }
 const EditPlan = (props: EditPlanComponentProps) => {
 
@@ -42,7 +43,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         },
         saveAccountPlan: async (planInfo: PlanInfoPut, accountInfo: string) => {
             await dispatch(saveAccountPlanAction(planInfo, accountInfo))
-        }
+        },
+        extendTrial: async (userId: string, newExpirationDate: number) => {
+            await dispatch(extendTrialAction({userId: userId, newExpirationDate: newExpirationDate }))
+        },
     };
 }
 

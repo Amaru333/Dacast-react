@@ -4,7 +4,7 @@ import React from 'react';
 import { Text } from '../../Typography/Text';
 import { WeekdayStyle, DaysContainer, MonthContainer, MonthLabelStyle } from './DatePickerStyle';
 
-const  Month = ({ year, month, firstDayOfWeek }: UseMonthProps) => {
+const  Month = ({ year, month, firstDayOfWeek, minDate }: UseMonthProps & {minDate?: number}) => {
     const { days, weekdayLabels, monthLabel } = useMonth({
         year,
         month,
@@ -34,6 +34,7 @@ const  Month = ({ year, month, firstDayOfWeek }: UseMonthProps) => {
                                 dayLabel={day.dayLabel}
                                 isToday={today.toLocaleDateString() === day.date.toLocaleDateString()}
                                 isMonthLastDay={index === (days.length - 1)}
+                                minDate={minDate}
                             />
                         );
                     }
