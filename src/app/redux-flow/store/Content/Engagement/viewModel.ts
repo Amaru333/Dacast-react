@@ -52,6 +52,9 @@ export const formatPutContentEngagementInput = (data: ContentEngagementSettings)
         endScreenSettings: {
             ...data.engagementSettings.endScreenSettings
         },
+        googleAnalyticsSettings: {
+            ...data.engagementSettings.googleAnalyticsSettings
+        },
         id: data.contentId
     }
 

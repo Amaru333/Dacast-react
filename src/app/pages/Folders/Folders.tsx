@@ -77,7 +77,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const parseFiltersToQueryString = (filters: FoldersFilteringState) => {
         let returnedString= `page=${paginationInfo.page}&per-page=${paginationInfo.nbResults}&`
         if(filters) {
-            
+
             Object.keys(filters).map((filter) => {
                 if(filter.toLowerCase().indexOf('date') === -1 && filter.toLowerCase().indexOf('size') === -1 && Object.values(filters[filter]).some(v => v)) {
                     returnedString += filter + '='
@@ -85,10 +85,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         if(filters[filter][subfilter]) {
                             returnedString += subfilter + ','
                         }
-                    })  
-                    returnedString += '&'                
+                    })
+                    returnedString += '&'
                     returnedString = returnedString.replace(',&','&')
-                } 
+                }
             })
 
             if(filters.afterDate || filters.beforedate) {
@@ -102,7 +102,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
         if(returnedString.indexOf('content-types') ===- 1) {
             returnedString += `content-types=channel,vod,playlist${FIXED_FOLDERS.indexOf(selectedFolder) > -1 ? '&' : ',folder&'}`
-        }  
+        }
 
         if(searchString) {
             returnedString += `keyword=${searchString}&`
@@ -251,7 +251,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text> },
                 { cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text> },
                 { cell: <span key='tableHeaderEmptyCell2'></span> }
-            ], 
+            ],
             defaultSort: 'created-at',
             sortCallback: (value: string) => {setSort(value);if(!fetchContent) { setFetchContent(true)}}
         }
@@ -294,13 +294,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             case 'folder':
                 break
             default:
-                break 
+                break
         }
     }
 
     const handleAssetDropdownOptions = (option: string, asset: ContentType, folderNode?: FolderTreeNode) => {
         switch (option) {
-            case 'Edit': 
+            case 'Edit':
                 handleEditAsset(asset)
                 break
             case 'Move':
@@ -349,7 +349,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 setAssetToDelete({id: currentFolder.id, type: 'folder', fullPath: currentFolder.fullPath, name: currentFolder.name})
                 setDeleteFolderModalOpened(true)
                 break
-            case 'New Folder': 
+            case 'New Folder':
                 setNewFolderModalAction('New Folder')
                 setNewFolderModalOpened(true)
                 break
@@ -378,10 +378,10 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' || row.status === 'restored' ? 'green' : 'red'} backgroundColor={row.status === 'online' || row.status === 'restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
-                            <DropdownCustom 
-                                backgroundColor="transparent" 
-                                id={'foldersTableMoreActionDropdown' + row.objectID} 
-                                list={handleMoreActions(row)} callback={(value: DropdownSingleListItem) => handleAssetDropdownOptions(value.title, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {    
+                            <DropdownCustom
+                                backgroundColor="transparent"
+                                id={'foldersTableMoreActionDropdown' + row.objectID}
+                                list={handleMoreActions(row)} callback={(value: DropdownSingleListItem) => handleAssetDropdownOptions(value.title, {id:row.objectID, type:row.type, name: row.title}, row.type == 'folder' && {
                                     isExpanded: true,
                                     name: row.title,
                                     id: row.objectID,
@@ -414,7 +414,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         return (
             <div key={node.id}>
                 {
-                    node.id && 
+                    node.id &&
                     <FolderRow isSelected={node.id === selectedFolder} style={{marginLeft: node.subfolders === 0 && singleFolder ? 24 : depth * 24 }} className={'py1 pr1 flex items-center'} onClick={() => { foldersTree.navigateToFolder(node)}}>
                         { node.subfolders > 0 && <IconStyle onClick={() => foldersTree.expandFolder(node)} coloricon={"gray-7"} className={node.fullPath !== '/' ? '' : 'hide'}>{node.isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</IconStyle> }
                         <Text size={14} weight='reg' color={node.id === selectedFolder ? 'dark-violet' : 'gray-1'}>{node.name}</Text>
@@ -430,7 +430,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
 
     return (
         <div>
-            {  
+            {
                 !smallScreen ?
                     <div style={{height:55}} className='mb2 col col-12 items-center flex'>
                         <div className='col col-9 flex items-center'>
@@ -479,7 +479,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             }
                         </div>
                     </div>
-                    : 
+                    :
                     <div className='mb2 col col-12 clearfix xs-show'>
                         <div className='col flex items-center mb2 col-12'>
                             <IconStyle coloricon='gray-3'>search</IconStyle>
@@ -517,8 +517,8 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             />
                         </div>
                     </div>
-            } 
-            
+            }
+
             <ContentSection>
                 <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
                     <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
@@ -535,19 +535,19 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     {renderNode(folderTree)}
                 </FoldersTreeSection>
                 <div className={(foldersTreeHidden ? 'col col-12 ' : 'col col-10 ') + 'flex flex-column right'}>
-                    <Table contentLoading={contentLoading} className='col col-12 tableOverflow' customClassName=" tableOverflow" id='folderContentTable' headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer />
+                    <Table contentLoading={contentLoading} className='col col-12 tableOverflow' customClassName=" tableOverflow" id='folderContentTable' headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? foldersContentTableHeader() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? foldersContentTableBody() : emptyContentListBody('No items matched your search')} hasContainer noScrollY/>
                     <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 </div>
             </ContentSection>
             <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
-                    newFolderModalOpened && 
+                    newFolderModalOpened &&
                     <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
                 }
             </Modal>
             <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
-                    moveItemsModalOpened && 
+                    moveItemsModalOpened &&
                     <MoveItemModal movedContent={checkedItems} oldFolderId={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null} showToast={props.showToast} setMoveModalSelectedFolder={setMoveModalSelectedFolder}  callback={() => {if(!fetchContent) { setFetchContent(true)}}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
@@ -573,7 +573,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 bulkThemeOpen &&
                 <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={checkedItems} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
-            
+
         </div>
     )
 }

@@ -4,18 +4,18 @@ import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput, GetPaywallBalanceOutput } from './paywall'
 import { DeleteContentImageAssetIdInput, DeleteContentPriceInput, GetContentPaywallInfoOutput, GetContentPricesOutput, GetContentSecuritySettingsOutput, GetContentThemeOutput, GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostContentPriceInput, PostContentPriceOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutContentPaywallInfoInput, PutContentPriceInput, PutContentSecuritySettingsInput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput } from './account'
-import { GetContentAnalyticsInput, GetContentAnalyticsOutput } from './analytics'
+import { GetAnalyticsInput, GetAnalyticsOutput } from './analytics'
 var qs = require('qs');
-import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
+import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndpoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
 import { isProduction } from '../app/utils/services/player/stage'
-import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutWithdrawalDetailsInput } from './admin'
+import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutExtendTrialInput, PutWithdrawalDetailsInput } from './admin'
 import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
-const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
-const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
+const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
+const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
 
 export class DacastSdk {
 
@@ -61,7 +61,8 @@ export class DacastSdk {
     public getAccountsTransactions = async (input: string): Promise<GetAccountsTransactionsOutput> => await this.axiosClient.get('/paywall-transactions?' + input).then(this.checkExtraData)
     public postAccountTransaction = async (input: PostAccountTransactionInput): Promise<void> => await this.axiosClient.post('/paywall-transactions', input)
     public getPirateInfo = async (input: string): Promise<GetPirateInfoOutput> => await this.axiosClient.get('/identify-cdn-url?url=' + input).then(this.checkExtraData)
-
+    public putExtendTrial = async (input: PutExtendTrialInput): Promise<void> => await this.axiosClient.put('/accounts/' + input.userId + '/extend-trial', input.payload)
+    
     public getJobsList = async (): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs').then(this.checkExtraData)
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
@@ -106,8 +107,8 @@ export class DacastSdk {
     public putEncodingRecipe = async (input: EncodingRecipe): Promise<void> => await this.axiosClient.put('/settings/encoding-recipes/' + input.id, {...input})
     public deleteEncodingRecipe = async (input: string): Promise<void> => await this.axiosClient.delete('/settings/encoding-recipes/' + input)
 
-    public getEngagementSettings = async (): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/engagement').then(this.checkExtraData)
-    public putEngagementSettings = async (input: EngagementSettingsEndoint) => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement', {...input})
+    public getEngagementSettings = async (): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/accounts/' + this.userId + '/settings/engagement').then(this.checkExtraData)
+    public putEngagementSettings = async (input: EngagementSettingsEndpoint) => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement', {...input})
     public putAdsSettings = async (input: PutAdInput): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/engagement/ads', {...input})
     public deleteUserBrandImage = async (): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/engagement/brand-image')
 
@@ -173,8 +174,9 @@ export class DacastSdk {
     public postContentPrice = async (input: PostContentPriceInput): Promise<PostContentPriceOutput> => await this.axiosClient.post('/paywall/prices', input).then(this.checkExtraData)
     public putContentPrice = async (input: PutContentPriceInput): Promise<void> => await this.axiosClient.put('/paywall/prices/' + input.id, input)
     public deleteContentPrice = async (input: DeleteContentPriceInput): Promise<void> => await this.axiosClient.delete('/paywall/prices/' + input.id + '?content-id=' + input.contentId)
-
-    public getContentAnalytics = async (options: GetContentAnalyticsInput): Promise<GetContentAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
+    
+    public getAccountAnalytics = async (options: GetAnalyticsInput): Promise<GetAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
+    public getContentAnalytics = async (options: GetAnalyticsInput): Promise<GetAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
 
     public getExpos = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/expos?' + input).then(this.checkExtraData)
     public deleteExpo = async (input: string): Promise<void> => await this.axiosClient.delete('/expos/' + input)
@@ -186,7 +188,7 @@ export class DacastSdk {
 
     public getChannels = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/channels?' + input).then(this.checkExtraData)
     public deleteChannel = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input)
-    public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
+    public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
     public putChannelEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement', input)
     public putChannelLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
     public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.data)
@@ -203,7 +205,7 @@ export class DacastSdk {
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
-    public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)
+    public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)
     public putVodEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement', input)
     public putVodLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
     public putVodAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/engagement/ads', input.data)

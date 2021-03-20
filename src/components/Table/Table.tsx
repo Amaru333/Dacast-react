@@ -33,14 +33,14 @@ export const Table = (props: TableProps) => {
     }
 
     const renderTableHeader = () => {
-        return props.header.data ? 
+        return props.header.data ?
             props.header.data.map((headerCell, i) => {
                 return (
                     <TableHeaderCell contentLoading={props.contentLoading} onClick={() => {if(headerCell.sort){handleHeaderCellClick(headerCell.sort)}}} sortApplied={ headerCell.sort ? sortApplied.name === headerCell.sort && typeof headerCell.sort !== 'undefined': false} className={headerCell.sort ? 'pointer' : ""} key={props.id+"tableHeaderCell"+i.toString()}>
 
-                            
+
                         {
-                            headerCell.sort ? 
+                            headerCell.sort ?
                                 <div style={{width: 'max-content'}} className='flex items-center col col-12'>
                                     {headerCell.cell}
                                     <IconStyle className='pl1' customsize={18}>{headerCell.sort === sortApplied.name ? sortApplied.sortDesc ? 'arrow_downward' : 'arrow_upward' : 'unfold_more'}</IconStyle>
@@ -85,7 +85,7 @@ export const Table = (props: TableProps) => {
             }) : null
     }
     const renderTableFooter = () => {
-        return props.footer ? 
+        return props.footer ?
             props.footer.map((footerCell, i) => {
                 return (
                     <TableFooterCell className="" key={props.id+"tableFooterCell"+i.toString()}>
@@ -98,9 +98,9 @@ export const Table = (props: TableProps) => {
 
     return (
         <WrapperResponsiveContainer tableHeight={props.tableHeight} hasContainer={props.hasContainer}>
-            <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}}>
+            <Scrollbar className={'tableTest' + (props.customClassName ? props.customClassName : '')} style={{overflowY: 'visible'}} contentProps={{style: {position: 'relative', overflowY:'visible',  display: "inline-table"}}} scrollerProps={{style: {overflowY:'visible', position: 'relative'}}} wrapperProps={{style: {overflowY:'visible', position: 'relative'}}} removeTracksWhenNotUsed removeTrackYWhenNotUsed noScroll={props.noScroll} noScrollX={props.noScrollX} noScrollY={props.noScrollY} minimalThumbXSize={6} trackXProps={{style: {backgroundColor: 'inherit'}}} trackYProps={{style: {overflowY: 'visible'}}} >
                 <TableContainer className='relative'  {...props} contentLoading={props.contentLoading}>
-            
+
                     {props.header &&
                         <TableHeaderContainer>
                             <TableHeaderRow backgroundColor={props.headerBackgroundColor}>
@@ -112,27 +112,27 @@ export const Table = (props: TableProps) => {
                         props.body &&
                             <TableBodyContainer>
                                 {
-                                    props.contentLoading && 
+                                    props.contentLoading &&
                                     <>
                                         <SpinnerContainer>
-                                            <LoadingSpinner size='medium' color='violet' />    
+                                            <LoadingSpinner size='medium' color='violet' />
                                         </SpinnerContainer>
                                     </>
-                                } 
+                                }
                                 {renderTableBody()}
                             </TableBodyContainer>
                     }
 
-                    {props.footer && 
+                    {props.footer &&
                         <TableFooterContainer>
                             <TableFooterRow>
                                 {renderTableFooter()}
                             </TableFooterRow>
                         </TableFooterContainer>
-                    }    
-          
-                </TableContainer>                
-            </Scrollbar> 
+                    }
+
+                </TableContainer>
+            </Scrollbar>
         </WrapperResponsiveContainer>
     );
 }

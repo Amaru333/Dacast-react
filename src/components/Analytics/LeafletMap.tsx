@@ -1,10 +1,11 @@
 
 
 import React from 'react';
-import { Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
-import { LatLngTuple } from 'leaflet';
+import { Map, CircleMarker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
+import { LatLngTuple, Layer, LeafletMouseEvent } from 'leaflet';
 import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 import { EmptyAnalytics } from './EmptyAnalytics';
+import { world } from '../../app/constants/CountriesList';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 1;
@@ -25,6 +26,9 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
   }
 
   const lerpColor = (a: string, b: string, amount: number) => {
+    if(!amount || amount === 0) {
+      return '#00000'
+    }
     var ah = parseInt(a.replace(/#/g, ''), 16),
       ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
       bh = parseInt(b.replace(/#/g, ''), 16),
@@ -57,9 +61,56 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
     })
   }
 
+//   function UpdateCountryStyle(feature: any, layer: any) {
+//   let fillColor = '#e2e0db'
+
+//   if(feature.properties.plays > 0) {
+//     console.log(feature)
+//     let lerpPercent = logScale(feature.properties.plays, 0, max, 100, 1000);
+//       lerpPercent -= 100;
+//       lerpPercent /= 1000;
+//     fillColor = lerpColor('#93d5ed', '#2f5ec4', lerpPercent)
+//   }
+
+//   return {
+//       fillColor: fillColor,
+//       weight: 2,
+//       opacity: 1,
+//       color: 'white',
+//       dashArray: '3',
+//       fillOpacity: 0.7
+//   };
+// }
+
+// const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
+//   let layer = e.target
+//   layer.bindPopup('<h1>'+feature.properties.plays+'</h1><p>name: '+feature.properties.name+'</p>')
+// }
+
+
+//   const onEachFeature = (feature: any, layer: Layer) => {
+//     layer.on({
+//       mouseover: (e) => handleMouseOver(e, feature)
+//     })
+    
+//   }
+
+//   const renderGeoJSON = () => {
+//     let countries = world.features.map((country) => {
+//       return {
+//         ...country, 
+//         properties: {
+//           ...country.properties,
+//           plays: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0].value[0] : 0
+//         }
+//       }
+//     })
+//     return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
+//   }
+
   return (
     <>
-      <Map center={defaultLatLng} zoom={zoom} style={{ height: '350px' }} minZoom={2}  >
+      <Map center={defaultLatLng} zoom={zoom} style={{ height: '500px' }} minZoom={2}  >
         <TileLayer
           noWrap={true}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
