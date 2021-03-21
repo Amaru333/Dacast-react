@@ -2,7 +2,7 @@ import { GetExpoAssetUploadUrl } from "./expo"
 import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
 import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
 import { GetPlaylistAssetUploadUrl } from "./playlist"
-import { EngagementSettingsEndoint, GetSecuritySettingsOutput, PutAdInput, PutSecuritySettingsInput, ThemeEndpoint } from "./settings"
+import { EngagementSettingsEndpoint, GetSecuritySettingsOutput, PutAdInput, PutSecuritySettingsInput, ThemeEndpoint, ThemeSettings } from "./settings"
 import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
@@ -94,7 +94,7 @@ export interface PostBulkActionOutput {
     items: BulkActionReponseItem[]
 }
 
-export type PutContentEngagementSettingsInput = EngagementSettingsEndoint & {id: string}
+export type PutContentEngagementSettingsInput = EngagementSettingsEndpoint & {id: string}
 
 export interface PutContentLockEngagementSettingsInput {
     id: string;
@@ -181,4 +181,15 @@ export type PutContentSecuritySettingsInput = {
 export interface GetContentThemeOutput {
     contentThemeID: string
     themes: ThemeEndpoint[]
+}
+
+export interface PostContentCustomThemeInput {
+    contentId: string
+    payload: ThemeSettings
+}
+
+export interface PutContentThemeInput {
+    contentId: string
+    actionWord: '/set' | ''
+    payload: ThemeEndpoint
 }

@@ -1,5 +1,5 @@
-import { GetContentThemeOutput } from "../../../../../DacastSdk/common"
-import { ThemeEndpoint } from "../../../../../DacastSdk/settings"
+import { GetContentThemeOutput, PostContentCustomThemeInput, PutContentThemeInput } from "../../../../../DacastSdk/common"
+import { ThemeEndpoint, ThemeId } from "../../../../../DacastSdk/settings"
 import { ContentType } from "../../Common/types"
 import { ContentTheme, defaultTheme, DeliveryMethod, RegionSetting, ThemeOptions } from "../../Settings/Theming"
 
@@ -27,6 +27,48 @@ export const formatGetContentThemesOutput = (contentType: ContentType) => (endpo
                 }
             })
         ],
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPostContentCustomThemeInput = (data: {contentId: string, theme: ThemeOptions, contentType: ContentType}): PostContentCustomThemeInput => {
+    let formattedData: PostContentCustomThemeInput = {
+        contentId: data.contentId,
+        payload: data.theme
+    }
+
+    return formattedData
+}
+
+export const formatPostContentCustomThemeOutput = (contentType: ContentType) => (endpointResponse: ThemeId, dataReact: {contentId: string, theme: ThemeOptions}): {contentId: string, theme: ThemeOptions, contentType: ContentType} => {
+    let formattedData: {contentId: string, theme: ThemeOptions, contentType: ContentType} = {
+        contentId: dataReact.contentId, 
+        theme: {
+            ...dataReact.theme,
+            id: endpointResponse.id
+        },
+        contentType: contentType
+    }
+
+    return formattedData
+}
+
+export const formatPutContentThemeInput = (data: {contentId: string, theme: ThemeOptions, contentType: ContentType}): PutContentThemeInput => {
+    let formattedData: PutContentThemeInput = {
+        contentId: data.contentId,
+        payload: data.theme,
+        actionWord: data.theme.isCustom ? '/set' : ''
+    }
+
+    return formattedData
+}
+
+export const formatPutContentThemeOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: {contentId: string, theme: ThemeOptions}): {contentId: string, theme: ThemeOptions, contentType: ContentType} => {
+    let formattedData: {contentId: string, theme: ThemeOptions, contentType: ContentType} = {
+        contentId: dataReact.contentId, 
+        theme: dataReact.theme,
         contentType: contentType
     }
 

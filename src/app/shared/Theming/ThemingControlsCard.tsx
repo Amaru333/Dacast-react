@@ -27,6 +27,7 @@ export interface ControlCardThemingComponentProps {
     contentId?: string;
     saveTheme: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
     createTheme?: (theme: ThemeOptions, contentType: string) => Promise<void>;
+    createContentCustomTheme?: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
     cancelFunction?: () => void;
 }
 
@@ -72,12 +73,22 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                 setButtonLoading(false)
             })
         } else {
-            props.saveTheme(selectedTheme, props.contentId, props.contentType).then(() => {
-                setButtonLoading(false)
-                setEditedSettings(false)
-            }).catch(() => {
-                setButtonLoading(false)
-            })
+            if(selectedTheme.id === '-1') {
+                props.createContentCustomTheme(selectedTheme, props.contentId, props.contentType).then(() => {
+                    setButtonLoading(false)
+                    setEditedSettings(false)
+                }).catch(() => {
+                    setButtonLoading(false)
+                })
+            } else {
+                props.saveTheme(selectedTheme, props.contentId, props.contentType).then(() => {
+                    setButtonLoading(false)
+                    setEditedSettings(false)
+                }).catch(() => {
+                    setButtonLoading(false)
+                })
+            }
+
         }
     }
 

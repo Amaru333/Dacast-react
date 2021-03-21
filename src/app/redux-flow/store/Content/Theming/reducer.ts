@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
 import { ActionTypes } from './types';
 import { Action } from './actions';
-import { ContentThemeState, defaultTheme } from '../../Settings/Theming';
+import { ContentThemeState } from '../../Settings/Theming';
 
 
 const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, action: Action) => {
@@ -18,6 +18,23 @@ const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, acti
                     }
                 }
             }
+        case ActionTypes.CREATE_CONTENT_CUSTOM_THEME:
+            return {
+                ...state,
+                [action.payload.contentType]: {
+                    ...state[action.payload.contentType],
+                [action.payload.contentId] : {
+                    ...state[action.payload.contentType][action.payload.contentId],
+                    themes: state[action.payload.contentType][action.payload.contentId].themes.map((theme) => {
+                        if((theme.isCustom && action.payload.theme.isCustom)) {
+                            return action.payload.theme
+                        } 
+                        return theme
+                    }),
+                    contentThemeId: action.payload.theme.id
+                }
+            }
+            }
         case ActionTypes.SAVE_CONTENT_THEME :
             return {
                 ...state,
@@ -26,12 +43,12 @@ const reducer: Reducer<ContentThemeState> = (state: ContentThemeState = {}, acti
                 [action.payload.contentId] : {
                     ...state[action.payload.contentType][action.payload.contentId],
                     themes: state[action.payload.contentType][action.payload.contentId].themes.map((theme) => {
-                        if(theme.id === action.payload.data.id || (theme.isCustom && action.payload.data.isCustom)) {
-                            return action.payload.data
+                        if(theme.id === action.payload.theme.id) {
+                            return action.payload.theme
                         } 
                         return theme
                     }),
-                    contentThemeId: action.payload.data.id
+                    contentThemeId: action.payload.theme.id
                 }
             }
         }

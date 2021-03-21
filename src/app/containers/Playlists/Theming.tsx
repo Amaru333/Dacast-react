@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action } from '../../redux-flow/store/Content/Theming/actions';
+import { Action, createContentCustomThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -37,6 +37,7 @@ const PlaylistTheming = (props: ContentThemingComponentProps) => {
                     <ThemingControlsCard
                         theme={props.themeState['playlist'][playlistId]}
                         saveTheme={props.saveContentTheme}
+                        createContentCustomTheme={props.createContentCustomTheme}
                         contentType='playlist'
                         actionType='Save'
                         contentId={playlistId}
@@ -59,8 +60,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getContentTheme: async (contentId: string, contentType: ContentType) => {
             await dispatch(getContentThemeAction(contentType)(contentId))
         },
-        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
-            await dispatch(saveContentThemeAction(theme, contentId, contentType))
+        createContentCustomTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(createContentCustomThemeAction(contentType)({theme: theme, contentId: contentId}))
+        },
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentThemeAction(contentType)({theme: theme, contentId: contentId}))
         },
     }
 }

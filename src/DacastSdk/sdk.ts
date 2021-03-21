@@ -2,7 +2,7 @@ import { UserTokenService } from '../utils/services/token/token'
 import { AxiosClient } from '../utils/services/axios/AxiosClient'
 import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput, GetPaywallBalanceOutput } from './paywall'
-import { DeleteContentImageAssetIdInput, DeleteContentPriceInput, GetContentPaywallInfoOutput, GetContentPricesOutput, GetContentSecuritySettingsOutput, GetContentThemeOutput, GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostContentPriceInput, PostContentPriceOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutContentPaywallInfoInput, PutContentPriceInput, PutContentSecuritySettingsInput, PutUploadFileInput } from './common'
+import { DeleteContentImageAssetIdInput, DeleteContentPriceInput, GetContentPaywallInfoOutput, GetContentPricesOutput, GetContentSecuritySettingsOutput, GetContentThemeOutput, GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostContentCustomThemeInput, PostContentPriceInput, PostContentPriceOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentThemeInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutContentPaywallInfoInput, PutContentPriceInput, PutContentSecuritySettingsInput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput } from './account'
 import { GetAnalyticsInput, GetAnalyticsOutput } from './analytics'
 var qs = require('qs');
@@ -202,6 +202,8 @@ export class DacastSdk {
     public putChannelSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/security', input.payload)
     public putLockChannelSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/channels/' + input + '/settings/security/lock')
     public getChannelThemes = async (input: string): Promise<GetContentThemeOutput> => await this.axiosClient.get('/channels/' + input + '/settings/themes').then(this.checkExtraData)
+    public postChannelCustomTheme = async (input: PostContentCustomThemeInput): Promise<ThemeId> => await this.axiosClient.post('/channels/' + input.contentId + '/settings/themes', input.payload).then(this.checkExtraData)
+    public putChannelCustomTheme = async (input: PutContentThemeInput): Promise<void> => await this.axiosClient.put('/channels/' + input.contentId + '/settings/themes/' + input.payload.id + input.actionWord, input.payload)
 
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
@@ -222,6 +224,8 @@ export class DacastSdk {
     public putVodSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/settings/security', input.payload)
     public putLockVodSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/vods/' + input + '/settings/security/lock')
     public getVodThemes = async (input: string): Promise<GetContentThemeOutput> => await this.axiosClient.get('/vods/' + input + '/settings/themes').then(this.checkExtraData)
+    public postVodCustomTheme = async (input: PostContentCustomThemeInput): Promise<ThemeId> => await this.axiosClient.post('/vods/' + input.contentId + '/settings/themes', input.payload).then(this.checkExtraData)
+    public putVodCustomTheme = async (input: PutContentThemeInput): Promise<void> => await this.axiosClient.put('/vods/' + input.contentId + '/settings/themes/' + input.payload.id + input.actionWord, input.payload)
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
@@ -236,6 +240,8 @@ export class DacastSdk {
     public putPlaylistSecuritySettings = async (input: PutContentSecuritySettingsInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.id + '/settings/security', input.payload)
     public putLockPlaylistSecuritySettings = async (input: string): Promise<void> => await this.axiosClient.put('/playlists/' + input + '/settings/security/lock')
     public getPlaylistThemes = async (input: string): Promise<GetContentThemeOutput> => await this.axiosClient.get('/playlists/' + input + '/settings/themes').then(this.checkExtraData)
+    public postPlaylistCustomTheme = async (input: PostContentCustomThemeInput): Promise<ThemeId> => await this.axiosClient.post('/playlists/' + input.contentId + '/settings/themes', input.payload).then(this.checkExtraData)
+    public putPlaylistCustomTheme = async (input: PutContentThemeInput): Promise<void> => await this.axiosClient.put('/playlists/' + input.contentId + '/settings/themes/' + input.payload.id + input.actionWord, input.payload)
 
     public postEncoderKey = async (input: string): Promise<PostEncoderKeyOutput> => await this.axiosClient.post(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}live/${input}/encoder-key`).then(this.checkExtraData)
     public postBulkAction = async (input: PostBulkActionInput): Promise<PostBulkActionOutput> => await this.axiosClient.post('bulk', input).then(this.checkExtraData)
