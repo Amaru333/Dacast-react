@@ -14,9 +14,9 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
 
     const handleGoogleAnalyticsLockChange = () => {
         if (!props.localEngagementSettings.googleAnalyticsSettings.locked) {
-            props.lockSection('brand-text', props.contentId, props.contentType).then(() => {
+            props.lockSection('google-analytics', props.contentId, props.contentType).then(() => {
                 props.setLocalEngagementSettings({
-                    ...props.localEngagementSettings, 
+                    ...props.localEngagementSettings,
                     googleAnalyticsSettings: {
                         locked: true,
                         trackingID: props.globalEngagementSettings.googleAnalyticsSettings.trackingID
@@ -33,7 +33,7 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                         locked:false,
                         trackingID: ''
                     }
-                }          
+                }
             }, props.contentType).then(() => {
                 props.setSettingsEdited(false)
                 props.setLocalEngagementSettings({
@@ -43,7 +43,7 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                         trackingID: ''
                     }
                 })
-            })        
+            })
             }
     }
 
@@ -53,7 +53,7 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                 <div>
                     <Text size={20} weight='med'>Google Analytics</Text>
                 </div>
-                {   
+                {
                     props.contentType &&
                         <>
                             <IconStyle className='pointer' id="unlockGASectionTooltip" onClick={() => {handleGoogleAnalyticsLockChange()}}>
