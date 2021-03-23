@@ -1,8 +1,8 @@
 import { Reducer } from "redux";
-import { ActionTypes, Users, usersInitialState } from "./types";
+import { ActionTypes, MultiUserDetails, usersInitialState } from "./types";
 import { UsersAction } from "./actions";
 
-const reducer: Reducer<Users> = (state = usersInitialState, action: UsersAction) => {
+const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: UsersAction) => {
     let users = null
     switch(action.type) {
         case ActionTypes.GET_USERS_DETAILS:
@@ -22,7 +22,7 @@ const reducer: Reducer<Users> = (state = usersInitialState, action: UsersAction)
             return {
                 ...state,
                 users: users.map(user => {
-                    if(user.userID === action.payload.userID){
+                    if(user.userId === action.payload.userId){
                         return {
                             ...user,
                             ...action.payload
@@ -34,4 +34,4 @@ const reducer: Reducer<Users> = (state = usersInitialState, action: UsersAction)
     }
 }
 
-export { reducer as UsersReducer };
+export { reducer as MultiUsersReducer };

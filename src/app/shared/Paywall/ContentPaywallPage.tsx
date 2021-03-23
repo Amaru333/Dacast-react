@@ -47,7 +47,7 @@ export interface ContentPaywallComponentProps {
 
 export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     const [priceModalOpened, setPriceModalOpened] = React.useState<boolean>(false);
     const [promoModalOpened, setPromoModalOpened] = React.useState<boolean>(false);

@@ -29,7 +29,7 @@ export const UpgradePaymentStep = (props: UpgradePaymentStepProps) => {
 
     segmentService.track('Upgrade Form Completed', {
         action: 'Cart Form Submitted',
-        'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+        'user_id': userToken.getUserInfoItem('user-id'),
         'plan_name': props.stepperData.name,
         step: 3,
     })  

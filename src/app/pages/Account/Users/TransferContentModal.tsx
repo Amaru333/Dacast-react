@@ -15,7 +15,7 @@ export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean)
             }
             userDropdownListItem.title = user.firstName + ' ' + user.lastName
             userDropdownListItem.data = {
-                id: user.userID,
+                id: user.userId,
                 role: user.role
             }
             return userDropdownListItem
@@ -24,7 +24,7 @@ export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean)
 
     const userDropdownList = createUserDropdownList()
 
-    const [selectedUser, setSelectedUser] = React.useState<string>(userDropdownList.find(user => user.data.role === "Owner").data.userID)
+    const [selectedUser, setSelectedUser] = React.useState<string>(userDropdownList.find(user => user.data.role === "Owner").data.userId)
 
     return (
         <div className="flex flex-column">

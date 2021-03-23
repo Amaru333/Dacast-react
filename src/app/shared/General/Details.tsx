@@ -15,7 +15,7 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: ContentType, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     function saveFile(filename: string) {
         dacastSdk.getDownloadVodUrl(props.contentDetails.id)

@@ -1,5 +1,3 @@
-import { User } from "../app/redux-flow/store/Account/Users/types";
-
 export interface CompanyDetailsEndpoints {
     id: string;
     accountName: string;
@@ -20,8 +18,20 @@ export type GetCompanyRequestOutput = CompanyDetailsEndpoints & {
     logoURL: string;
 }
 
+interface UserEndpoint {
+    userId: string
+    firstName: string
+    lastName: string
+    email: string
+    role: string
+    invitationId: string
+    status: 'active' | 'expired' | 'invited'
+}
+
 export interface GetUsersDetailsOutput {
-    users: User[]
+    users: UserEndpoint[]
+    maxSeats: number
+    occupiedSeats: number
 }
 
 export interface UserId {

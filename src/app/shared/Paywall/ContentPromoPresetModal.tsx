@@ -53,7 +53,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
         if (savePreset) {
             props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToUtc(startDate, newPromoPreset.timezone), endDate:  tsToUtc(endDate, newPromoPreset.timezone) })
         }
-        const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        const userId = userToken.getUserInfoItem('user-id')
         props.action(
             {
                 ...newPromoPreset,

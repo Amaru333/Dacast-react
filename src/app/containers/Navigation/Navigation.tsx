@@ -20,7 +20,7 @@ import { CustomStepper } from "../../../components/Stepper/Stepper";
 import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
 import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
 import { Plan } from "../../redux-flow/store/Account/Upgrade/types";
-import { mockPlan, mockUsers } from "../Account/Users";
+import { mockPlan } from "../Account/Users";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -71,7 +71,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [planDetails, setPlanDetails] = React.useState<Plan>(mockPlan)
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
-    let emptySeats: number = (props.planDetails.baseSeats + props.planDetails.extraSeats) - mockUsers.length
+    // let emptySeats: number = (props.planDetails.baseSeats + props.planDetails.extraSeats) - mockUsers.length
 
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
 
@@ -198,13 +198,13 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
                                 {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
-                                    if(subMenuElement.name === "Users" && mockUserSeats === 1){
-                                        return (
-                                            <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
-                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                            </SubMenuElement>
-                                        )
-                                    } else
+                                    // if(subMenuElement.name === "Users" && mockUserSeats === 1){
+                                    //     return (
+                                    //         <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
+                                    //             <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                    //         </SubMenuElement>
+                                    //     )
+                                    // } else
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
@@ -263,7 +263,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 functionCancel={() => setChangeSeatsStepperOpen(false)}
                 stepperData={planDetails}
                 updateStepperData={(plan: Plan) => setPlanDetails(plan)}
-                emptySeats={emptySeats}
+                emptySeats={1}
                 planData={mockPlan}
                 billingInfo={props.billingInfos}
             />

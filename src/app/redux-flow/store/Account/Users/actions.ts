@@ -1,11 +1,11 @@
 import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
 import { applyViewModel } from "../../../../utils/utils";
-import { ActionTypes, User, Users } from "./types";
+import { ActionTypes, MultiUserDetails, User } from "./types";
 import { formatGetUsersDetailsOutput, formatPostUserOutput } from "./viewModel";
 
 export interface GetUsersDetails {
     type: ActionTypes.GET_USERS_DETAILS;
-    payload: User[]
+    payload: MultiUserDetails
 }
 
 export interface AddUser {
@@ -20,7 +20,7 @@ export interface EditUser {
 
 export type UsersAction = GetUsersDetails | AddUser | EditUser
 
-export const getUsersDetailsAction = applyViewModel(dacastSdk.getUsersDetails, undefined, formatGetUsersDetailsOutput, ActionTypes.GET_USERS_DETAILS, null, 'Couldn\'t get users details')
+export const getMultiUsersDetailsAction = applyViewModel(dacastSdk.getUsersDetails, undefined, formatGetUsersDetailsOutput, ActionTypes.GET_USERS_DETAILS, null, 'Couldn\'t get users details')
 
 export const addUserAction = applyViewModel(dacastSdk.postUser, undefined, formatPostUserOutput, ActionTypes.ADD_USER, 'User has been added', 'Couldn\'t add user')
 

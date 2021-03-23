@@ -3,27 +3,36 @@ export enum ActionTypes {
     ADD_USER = "@@account_users/ADD_USER",
     EDIT_USER = "@@account_users/EDIT_USER"
 }
+export type UserStatus = 'Active' | 'Invited' | 'Expired';
 
 export interface User {
-    userID: string;
+    userId: string;
     firstName: string;
     lastName: string;
     email: string;
     role: string;
+    invitationId: string;
+    status: UserStatus;
 }
 
-export interface Users {
+export interface MultiUserDetails {
     users: User[]
+    maxSeats: number
+    occupiedSeats: number
 }
 
-export const defaultUser = {
-    userID: "-1",
+export const defaultUser: User = {
+    userId: "-1",
     firstName: "",
     lastName: "",
     email: "",
-    role: "Creator"
+    role: "Creator",
+    invitationId: '',
+    status: 'Expired'
 }
 
-export const usersInitialState: Users = {
-    users: []
+export const usersInitialState: MultiUserDetails = {
+    users: [],
+    occupiedSeats: 0,
+    maxSeats: 0
 }

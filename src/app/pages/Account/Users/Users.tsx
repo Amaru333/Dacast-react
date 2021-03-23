@@ -11,7 +11,7 @@ import { DropdownCustom } from '../../../../components/FormsComponents/Dropdown/
 import { userToken } from '../../../utils/services/token/tokenService';
 import { Modal } from '../../../../components/Modal/Modal';
 import { UserModal } from './UserModal';
-import { defaultUser, User } from '../../../redux-flow/store/Account/Users/types';
+import { defaultUser, MultiUserDetails, User } from '../../../redux-flow/store/Account/Users/types';
 import { DeleteUserModal } from './DeleteUserModal';
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 import { TransferContentModal } from './TransferContentModal';
@@ -21,7 +21,7 @@ import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
 import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
 
-export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: BillingPageInfos}) => {
+export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan, billingInfo: BillingPageInfos}) => {
 
     const [userModalOpen, setUserModalOpen] = React.useState<boolean>(false)
     const [deleteUserModalOpen, setDeleteUserModalOpen] = React.useState<boolean>(false)
@@ -30,14 +30,14 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
     const [planDetails, setPlanDetails] = React.useState<Plan>(props.plan)
-    let emptySeats: number = (props.plan.baseSeats + props.plan.extraSeats) - props.users.length
+    let emptySeats: number = props.multiUserdetails.maxSeats - props.multiUserdetails.users.length
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
-    const handleUserRole = (role: string, userID: string) => {
+    const handleUserRole = (role: string, userId: string) => {
         switch (role) {
             case 'Owner':
-                return <Label backgroundColor={userToken.getUserInfoItem('custom:dacast_user_id') === userID ? "green20" : "gray-9"} color={userToken.getUserInfoItem('custom:dacast_user_id') === userID ? "green" : "gray-5"} label="Owner" />
+                return <Label backgroundColor={userToken.getUserInfoItem('user-id') === userId ? "green20" : "gray-9"} color={userToken.getUserInfoItem('user-id') === userId ? "green" : "gray-5"} label="Owner" />
             case 'Admin':
                 return <Label backgroundColor="red20" color="red" label="Admin" />
             default:
@@ -78,25 +78,25 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
     }
 
     const usersBodyElement = () => {
-        return props.users.map((user) => {
+        return props.multiUserdetails.users.map((user) => {
             return {
                 data: [
                     <div className="flex items-center">
                         <Avatar userRole={user.role} className="mr3" name={user.firstName + ' ' + user.lastName} />
                         <Text>{user.firstName + ' ' + user.lastName}</Text>
                         {
-                            userToken.getUserInfoItem('custom:dacast_user_id') === user.userID &&
+                            userToken.getUserInfoItem('user-id') === user.userId &&
                             <Text color="gray-5">&nbsp;(You)</Text>
                         }
                         
                     </div>,
                     <Text>{user.email}</Text>,
-                    handleUserRole(user.role, user.userID),
-                    <div key={'usersMoreActionButton' + user.userID} className='right mr2'>
+                    handleUserRole(user.role, user.userId),
+                    <div key={'usersMoreActionButton' + user.userId} className='right mr2'>
                             <DropdownCustom 
                                 backgroundColor="transparent" 
-                                id={'foldersTableMoreActionDropdown_' + user.userID} 
-                                list={['Edit', 'Delete']} callback={(value: string) => handleUserDropdownOptions(value, user)}
+                                id={'foldersTableMoreActionDropdown_' + user.userId} 
+                                list={[{title: 'Edit'}, {title: 'Delete'}]} callback={(value: string) => handleUserDropdownOptions(value, user)}
                             >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>
@@ -118,7 +118,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
                 <div className="flex items-center relative">
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
-                    <Text color="gray-3">{props.users.length} out of {props.plan.baseSeats + props.plan.extraSeats} seats used</Text>
+                    <Text color="gray-3">{props.multiUserdetails.users.length} out of {props.multiUserdetails.maxSeats} seats used</Text>
                     <Button sizeButton="small" className="ml2" onClick={() => {setUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
@@ -137,7 +137,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
                 planData={props.plan}
                 billingInfo={props.billingInfo}
             />
-            <Modal modalTitle={userDetails.userID === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
+            <Modal modalTitle={userDetails.userId === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
                 <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setDeleteUserModalOpen(false)} opened={deleteUserModalOpen}>
@@ -147,7 +147,7 @@ export const UsersPage = (props: {users: User[], plan: Plan, billingInfo: Billin
                 <ConfirmDeleteModal toggle={setConfirmDeleteModalOpen} />
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
-                <TransferContentModal users={props.users} toggle={setTransferContentModalOpen} />
+                <TransferContentModal users={props.multiUserdetails.users} toggle={setTransferContentModalOpen} />
             </Modal>
 
         </React.Fragment>

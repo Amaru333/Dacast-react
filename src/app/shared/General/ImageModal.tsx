@@ -35,7 +35,7 @@ export const ImageModal = (props: ImageModalProps) => {
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [uploadType, setUploadType] = React.useState<string>(null)
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     let playerRef = React.useRef<HTMLDivElement>(null);
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
