@@ -1,6 +1,7 @@
 export enum ActionTypes {
     GET_TRANSACTIONS = "@@paywall_transactions/GET_TRANSACTIONS",
-    GET_TRANSACTIONS_CSV = '@@paywall_transactions/GET_TRANSACTIONS_CSV'
+    GET_TRANSACTIONS_CSV = '@@paywall_transactions/GET_TRANSACTIONS_CSV',
+    SYNC_TRANSACTIONS = '@@paywall_transactions/SYNC_TRANSACTIONS'
 }
 
 export interface TransactionLine {

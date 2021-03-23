@@ -10,8 +10,6 @@ import { ClassHalfXsFullMd } from '../../../shared/General/GeneralStyle';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
 
-var moment = require('moment-timezone');
-
 const pricesList = [
     {
         value: NaN,
@@ -29,14 +27,14 @@ const defaultPreset: Preset = {
         duration: {value: NaN, unit: 'Hours'},
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: moment.tz.guess(),
+        timezone: null,
         startDate: 0,
     }
 }
 
 export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
     
-    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? props.preset : defaultPreset)
+    const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? {...props.preset, settings: {...props.preset.settings, timezone: null}} : defaultPreset)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -119,6 +117,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={presetsList.settings.startDate}

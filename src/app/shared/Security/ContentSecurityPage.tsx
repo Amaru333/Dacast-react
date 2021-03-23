@@ -17,16 +17,17 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../../../shared/MiscStyles';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { DisabledSection } from '../Common/MiscStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 
 interface ContentSecurityComponentProps {
-    contentType: string
+    contentType: ContentType
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     contentId: string;
-    getSettingsSecurityOptions: (contentId: string, contentType: string) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
-    lockContent: (contentId: string, contentType: string) => Promise<void>;
+    getSettingsSecurityOptions: (contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: ContentType) => Promise<void>;
+    lockContent: (contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
@@ -54,8 +55,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         return domainControlDropdownListItem
     })
 
-    const [startTime, setStartTime] = React.useState<number>(selectedSettings.contentScheduling.startTime)
-    const [endTime, setEndTime] = React.useState<number>(selectedSettings.contentScheduling.endTime)
+    const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
+    const [endTime, setEndTime] = React.useState<number>(Math.floor( selectedSettings.contentScheduling.endTime / 1000))
     const [startTimezone, setStartTimezone] = React.useState<string>(selectedSettings.contentScheduling.startTimezone)
     const [endTimezone, setEndTimezone] = React.useState<string>(selectedSettings.contentScheduling.endTimezone)
 
@@ -97,9 +98,9 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
-                    startTime: startTime, 
+                    startTime: startTime * 1000, 
                     startTimezone: startTimezone,
-                    endTime: endTime,
+                    endTime: endTime * 1000,
                     endTimezone: endTimezone
                 }, 
                 selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
@@ -205,15 +206,14 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <div className='col col-12 clearfix'>
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
-                         
                         <div className='col col-12 mb2 flex items-end'>
                             <DateTimePicker 
                                 dropdownTitle="Available"
                                 id="dateStart"
                                 hideOption="Always"
                                 callback={(ts:number, tz: string) => { setHasToggleChanged(true); setStartTime(ts); setStartTimezone(tz)  }}
-                                defaultTs={selectedSettings.contentScheduling.startTime}
-                                timezone={selectedSettings.contentScheduling.startTimezone}
+                                defaultTs={startTime}
+                                timezone={startTimezone}
                                 showTimezone={true}
                             />
                         </div>
@@ -224,8 +224,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 minDate={startTime ? startTime : undefined}
                                 hideOption="Forever"
                                 callback={(ts:number, tz: string) => { setHasToggleChanged(true); setEndTime(ts); setEndTimezone(tz) }}
-                                defaultTs={selectedSettings.contentScheduling.endTime}
-                                timezone={selectedSettings.contentScheduling.startTimezone}
+                                defaultTs={endTime}
+                                timezone={endTimezone}
                                 showTimezone={true}
                             />
                         </div>

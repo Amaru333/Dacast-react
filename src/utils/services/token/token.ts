@@ -17,15 +17,18 @@ export type VodPrivilege = "privilege-vod";
 export type WebDownloadPrivilege = "privilege-web-download";
 export type AnalyticsPrivilege = "privilege-analytics";
 export type ExposPrivilege = "privilege-expo";
+export type PhoneSupportPrivilege = "privilege-phone-support"
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege;
 
 type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 
+type GroupIds = 'credit-group-id' | 'live-channel-group-id' | 'monetization-group-id' | 'restriction-group-id' | 'billing-group-id' | 'privilege-group-id' | 'expo-group-id' | 'transcoding-recipe-group-id' | 'vod-storage-id' | 'policy-group-id' | 'folder-group-id' | 'salesforce-group-id' | 'playlist-group-id' | 'theme-group-id' | 'payment-group-id' | 'ads-group-id'
+
 type UserInfo = {
-    [key in ExtraUserInfo | Privilege]: string
+    [key in ExtraUserInfo | Privilege | GroupIds]: string
 }
 
 interface TokenInfo {
@@ -39,6 +42,16 @@ interface TokenInfo {
 
 var base64 = require('base-64');
 
+function parseJwt (token: string) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
 export class UserTokenService {
     constructor() {
         this.getUserInfoItem = this.getUserInfoItem.bind(this)
@@ -51,9 +64,9 @@ export class UserTokenService {
         if(localStorage.getItem('userToken')) {
             try {
                 let existingUserInfo = this.tokenInfo && this.tokenInfo.userInfo ? this.tokenInfo.userInfo : {}
-                this.tokenInfo =  JSON.parse(localStorage.getItem('userToken'));
-                let userInfo = {...existingUserInfo, ...JSON.parse(base64.decode(this.tokenInfo.token.split('.')[1])) as UserInfo}
-                this.tokenInfo.userInfo = userInfo
+                this.tokenInfo = JSON.parse(localStorage.getItem('userToken'));
+                let userInfo = parseJwt(this.tokenInfo.token)
+                this.tokenInfo.userInfo = {...existingUserInfo, ...userInfo}
                 return this.tokenInfo
             } catch(error) {
                 console.log(error)
@@ -70,7 +83,7 @@ export class UserTokenService {
         return this.setTokenInfo() 
     }
 
-    public getUserInfoItem = (item: Privilege | ExtraUserInfo | 'impersonatedUserIdentifier') => {
+    public getUserInfoItem = (item: Privilege | ExtraUserInfo | GroupIds | 'impersonatedUserIdentifier') => {
         this.setTokenInfo()
         if(!this.tokenInfo || !this.tokenInfo.userInfo) {
             return null

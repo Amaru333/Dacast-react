@@ -1,6 +1,5 @@
 import { TransactionsInfo } from './types'
 import { tsToLocaleDate } from '../../../../../utils/formatUtils'
-import { DateTime } from 'luxon'
 import { GetPaywallTransactionsOutput } from '../../../../../DacastSdk/paywall'
 
 export const formatGetPaywallTransactionsInput = (qs: string) => {
@@ -26,9 +25,9 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
             let creditLine = null
             let debitLine = null
             if(transaction.dacastFee >= 0) {
-                creditLine = Math.sign(transaction.dacastFee === 0 ? 1 : transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
+                creditLine = Math.sign(transaction.dacastFee === 0 ? 1 : transaction.dacastFee) * (Math.abs(transaction.decimalValue || (transaction.price*transaction.dacastConversionRateToAccountCurrency))-transaction.dacastFee)
             } else {
-                debitLine = Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue || transaction.price)-transaction.dacastFee)
+                debitLine = Math.sign(transaction.dacastFee) * (Math.abs(transaction.decimalValue || (transaction.price*transaction.dacastConversionRateToAccountCurrency))-transaction.dacastFee)
             }
 
             if (transaction.actionType === 'refund') {
@@ -40,7 +39,7 @@ export const formatGetPaywallTransactionsOutput = (data: GetPaywallTransactionsO
                 id: transaction.id,
                 type: transaction.decimalValue ? transaction.note : transaction.actionType,
                 contentName: transaction.contentName,
-                date: transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, DateTime.DATETIME_SHORT) : transaction.date,
+                date: transaction.decimalValue ? tsToLocaleDate(transaction.timestamp / 1000, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : transaction.date,
                 purchaser: transaction.purchaser,
                 currency: transaction.currency || 'USD',
                 price: transaction.decimalValue ? transaction.decimalValue : transaction.price,

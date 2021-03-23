@@ -12,6 +12,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { EngagementBrandImage } from '../../shared/Engagement/BrandImage';
 import { EngagementBrandText } from '../../shared/Engagement/BrandText';
 import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
+import { EngagementGoogleAnalytics } from '../../shared/Engagement/GoogleAnalytics';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 
@@ -70,6 +71,9 @@ const SettingsEngagement = (props: SettingsEngagementContainerProps) => {
                         saveAd={props.saveAd} 
                     />
                 }
+                <EngagementGoogleAnalytics
+                    {...componentProps}
+                />
                 <EngagementBrandImage 
                     {...componentProps}
                     getUploadUrl={props.getUploadUrl}

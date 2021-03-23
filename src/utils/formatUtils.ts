@@ -1,5 +1,4 @@
 var numeral = require('numeral');
-import { DateTime, LocaleOptions } from 'luxon';
 
 export const dataToTimeVideo = (value: number) => {
     if(!value) {return '00:00:00'}
@@ -48,8 +47,11 @@ export function readableBytes(size: number): string {
 }
 
 
-export function tsToLocaleDate(ts: number, options?: LocaleOptions & Intl.DateTimeFormatOptions): string {
-    return DateTime.fromSeconds(ts).toLocaleString(options);
+export function tsToLocaleDate(ts: number, options?: Intl.DateTimeFormatOptions): string {
+    if(!options) {
+        return new Date(ts * 1000).toLocaleDateString();
+    }
+    return new Date(ts * 1000).toLocaleString(undefined, options);
 }
 
 export function displayTimeForHumans(seconds: number) {
@@ -63,6 +65,41 @@ export function displayTimeForHumans(seconds: number) {
     var mnts = Math.floor(seconds / 60);
     seconds -= mnts * 60;
     return (days ? days + " day " : '') + (hrs ? hrs + " hr " : '') + (mnts ? mnts + " min " : '') + (seconds ? seconds + " sec" : '');
+}
+
+export const formatTimeToUnit = (seconds: number, unit: 's' | 'm' | 'h') => {
+    if(!seconds || seconds < 0) {
+        return 0
+    }
+
+    if(unit === 'h') {
+        return Math.floor(seconds / 3600)
+    }
+
+    if(unit === 'm') {
+        return Math.floor(seconds / 60)
+    }
+
+    return seconds
+}
+
+export const formatTimeValue = (values: number[]) => {
+    const maxValue = values.reduce((acc, next) => {
+        if(next > acc) {
+            return next
+        }
+        return acc
+    }, 0)
+
+    if(maxValue >= 3600) {
+        return {values: values.map(v => formatTimeToUnit(v, 'h')), unitShort: 'h', unitLong: 'Hours'}
+    }
+
+    if (maxValue < 3600 && maxValue > 60) {
+        return {values: values.map(v => formatTimeToUnit(v, 'm')), unitShort: 'm', unitLong: 'Minutes'}
+    }
+
+    return {values: values, unitShort: 's', unitLong: 'Seconds'}
 }
 
 export function displayBytesForHumans(mbAmount: number, decimals = 2, fromAnalytics = false) {

@@ -1,49 +1,45 @@
-import { ThunkDispatch } from 'redux-thunk';
-import { ApplicationState } from '../..';
-import { showToastNotification } from '../../Toasts';
+
 import { ActionTypes } from './types';
-import { contentEngagementServices } from './services';
 import { Ad, ContentEngagementSettings } from '../../Settings/Engagement';
-import { applyViewModel, parseContentType } from '../../../../utils/utils';
+import { applyViewModel } from '../../../../utils/utils';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
 import { ContentType } from '../../Common/types';
-import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPostContentBrandImageUrlOutput, formatPostLiveBrandImageUrlInput, formatPostVodBrandImageUrlInput, formatPutContentAdsSettingsInput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
-import { PostUploadUrlOutput } from '../../../../../DacastSdk/common';
+import { formatGetContentEngagementSettingsInput, formatGetContentEngagementSettingsOutput, formatPostContentBrandImageUrlOutput, formatPostLiveBrandImageUrlInput, formatPostVodBrandImageUrlInput, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput, formatPutContentEngagementInput, formatPutContentEngagementOutput, formatPutContentLockEngagementSettingsInput } from './viewModel';
 import { formatPutUploadFileInput } from '../../Common/viewModel';
 
 export interface GetContentEngagementSettings {
     type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface SaveContentEngagementSettings {
     type: ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface LockSection {
     type: ActionTypes.LOCK_SECTION;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface SaveContentAd {
     type: ActionTypes.SAVE_CONTENT_AD;
-    payload: {ads: Ad[]; contentId: string; contentType: string;};
+    payload: {ads: Ad[]; contentId: string; contentType: ContentType;};
 }
 
 export interface CreateContentAd {
     type: ActionTypes.CREATE_CONTENT_AD;
-    payload: {ads: Ad[], adsId: string; contentId: string; contentType: string;};
+    payload: {ads: Ad[], adsId: string; contentId: string; contentType: ContentType;};
 }
 
 export interface DeleteContentAd {
     type: ActionTypes.DELETE_CONTENT_AD;
-    payload:{ads: Ad[]; contentId: string; contentType: string;}; 
+    payload:{ads: Ad[]; contentId: string; contentType: ContentType;}; 
 }
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {presignedURL: string, contentId: string; contentType: string };
+    payload: {presignedURL: string, contentId: string; contentType: ContentType };
 }
 
 export interface UploadContentImage {
@@ -92,9 +88,9 @@ export const lockSectionAction = (contentType: ContentType) => {
 export const saveContentAdAction = (contentType: ContentType) => {
     switch(contentType) {
         case 'vod': 
-            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
         case 'live':
-            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.SAVE_CONTENT_AD, 'Ad has been saved', 'Couldn\'t save ad')
         default:
             throw new Error('Error applying put lock content view model')
     }
@@ -103,9 +99,9 @@ export const saveContentAdAction = (contentType: ContentType) => {
 export const createContentAdAction = (contentType: ContentType) => {
     switch(contentType) {
         case 'vod': 
-            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
         case 'live':
-            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.CREATE_CONTENT_AD, 'Ad has been created', 'Couldn\'t create ad')
         default:
             throw new Error('Error applying put lock content view model')
     }
@@ -114,9 +110,9 @@ export const createContentAdAction = (contentType: ContentType) => {
 export const deleteContentAdAction = (contentType: ContentType) => {
     switch(contentType) {
         case 'vod': 
-            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
+            return applyViewModel(dacastSdk.putVodAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
         case 'live':
-            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, undefined, ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
+            return applyViewModel(dacastSdk.putChannelAds, formatPutContentAdsSettingsInput, formatPutContentAdsSettingsOutput(contentType), ActionTypes.DELETE_CONTENT_AD, 'Ad has been deleted', 'Couldn\'t delete ad')
         default:
             throw new Error('Error applying put lock content view model')
     }

@@ -10,7 +10,7 @@ import { useParams, Prompt } from 'react-router';
 import { ExposTabs } from './ExposTabs';
 import { GeneralComponentProps } from '../Videos/General';
 import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
-import { ContentDetails } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, ExpoDetails } from '../../redux-flow/store/Content/General/types';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
 import { GeneralSharing } from '../../shared/General/Sharing';
@@ -20,13 +20,15 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleImageModalFunction } from '../../utils/general';
 import { Divider } from '../../../shared/MiscStyles';
 import { ButtonContainer } from '../../shared/General/GeneralStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 const GeneralExpos = (props: GeneralComponentProps) => {
 
-    let { exposId } = useParams()
+    let { exposId } = useParams<{exposId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
-    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [stateContentDetails, setStateContentDetails] = React.useState<ExpoDetails>(null)
+    const [contentDetails, setContentDetails] = React.useState<ExpoDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
@@ -39,8 +41,8 @@ const GeneralExpos = (props: GeneralComponentProps) => {
 
     React.useEffect(() => {
         if(props.contentDetailsState['expo']){
-            setStateContentDetails(props.contentDetailsState['expo'][exposId])
-            setContentDetails(props.contentDetailsState['expo'][exposId])
+            setStateContentDetails(props.contentDetailsState['expo'][exposId] as ExpoDetails)
+            setContentDetails(props.contentDetailsState['expo'][exposId] as ExpoDetails)
         }
     }, [props.contentDetailsState])
 
@@ -106,7 +108,7 @@ const GeneralExpos = (props: GeneralComponentProps) => {
                         {
                             hasChanged &&
                             <ButtonContainer>
-                                <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
+                                <Button disabled={contentDetails.title.length === 0} isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                 <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                             </ButtonContainer>
                         }
@@ -128,20 +130,20 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentDetails: async (contentId: string, contentType: string) => {
-            await dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(contentId));
         },
-        saveContentDetails: async (data: ContentDetails, contentType: string) => {
-            await dispatch(editContentDetailsAction(data, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, contentId: string, extension: string, contentType: string) => {
-            await dispatch(getUploadUrlAction(uploadType, contentId, extension, contentType))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string, contentId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, contentId, uploadType, contentType))
-        },
-        deleteFile: async (contentId: string, targetId: string, contentType: string, imageType: string) => {
-            await dispatch(deleteFileAction(contentId, targetId, contentType, imageType))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
+            await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
+         },
+         deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+            await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

@@ -3,11 +3,11 @@
 export interface DatePickerProps {
     className?: string;
     id?: string;
-    callback?: Function;
+    callback?: (date: Date) => void;
     DatepickerTitle?: string;
     defaultStartDate?: Date;
     defaultEndDate?: string;
-    minDate: number;
+    minDate?: number;
 }
 
 interface DatePickerContext {
@@ -43,6 +43,7 @@ export interface DayType {
     key: string;
     isToday: boolean;
     isMonthLastDay: boolean;
+    minDate?: number;
 }
 
 export type DayProps = DayType & React.HTMLAttributes<HTMLButtonElement>;

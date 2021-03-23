@@ -16,12 +16,11 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Action, createContentPricePresetAction, saveContentPricePresetAction, deleteContentPricePresetAction, createContentPromoPresetAction, saveContentPromoPresetAction, deleteContentPromoPresetAction, getContentPaywallInfosAction, saveContentPaywallInfosAction, getContentPaywallPricesAction, getContentPaywallPromosAction } from '../../redux-flow/store/Content/Paywall/actions';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-
-var moment = require('moment-timezone');
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const LivePaywall = (props: ContentPaywallComponentProps) => {
 
-    let { liveId } = useParams()
+    let { liveId } = useParams<{liveId: string}>()
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
@@ -87,7 +86,7 @@ const LivePaywall = (props: ContentPaywallComponentProps) => {
                 limit: NaN,
                 startDate: null,
                 endDate: null,
-                timezone: moment.tz.guess()+ ' (' +moment.tz(moment.tz.guess()).format('Z z') + ')',
+                timezone: null,
                 discountApplied: 'Once',
                 assignedContentIds: [],
                 assignedGroupIds: []
@@ -143,41 +142,41 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentPaywallInfos: async (liveId: string, contentType: string) => {
-            await dispatch(getContentPaywallInfosAction(liveId, contentType));
+        getContentPaywallInfos: async (liveId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallInfosAction(contentType)(liveId));
         },
-        getContentPaywallPrices: async (liveId: string, contentType: string) => {
-            await dispatch(getContentPaywallPricesAction(liveId, contentType));
+        getContentPaywallPrices: async (liveId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallPricesAction({id: liveId, contentType: contentType}));
         },
-        saveContentPaywallInfos: async (data: ContentPaywallPageInfos, liveId: string, contentType: string) => {
-            await dispatch(saveContentPaywallInfosAction(data, liveId, contentType));
+        saveContentPaywallInfos: async (data: ContentPaywallPageInfos, liveId: string, contentType: ContentType) => {
+            await dispatch(saveContentPaywallInfosAction(contentType)({info: data, contentId: liveId}));
         },
-        createContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
-            await dispatch(createContentPricePresetAction(data, liveId, contentType));
+        createContentPricePreset: async (data: Preset, liveId: string, contentType: ContentType) => {
+            await dispatch(createContentPricePresetAction({price: data, id: liveId, contentType: contentType}));
         },
-        saveContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
-            await dispatch(saveContentPricePresetAction(data, liveId, contentType));
+        saveContentPricePreset: async (data: Preset, liveId: string, contentType: ContentType) => {
+            await dispatch(saveContentPricePresetAction({price: data, contentId: liveId, contentType: contentType}));
         },
-        deleteContentPricePreset: async (data: Preset, liveId: string, contentType: string) => {
-            await dispatch(deleteContentPricePresetAction(data, liveId, contentType));
+        deleteContentPricePreset: async (data: Preset, liveId: string, contentType: ContentType) => {
+            await dispatch(deleteContentPricePresetAction({price: data, contentId: liveId, contentType: contentType}));
         },
-        getContentPaywallPromos: async (liveId: string, contentType: string) => {
-            await dispatch(getContentPaywallPromosAction(liveId, contentType));
+        getContentPaywallPromos: async (liveId: string, contentType: ContentType) => {
+            await dispatch(getContentPaywallPromosAction({contentId: liveId, contentType: contentType}));
         },
-        createContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
-            await dispatch(createContentPromoPresetAction(data, liveId, contentType));
+        createContentPromoPreset: async (data: Promo, liveId: string, contentType: ContentType) => {
+            await dispatch(createContentPromoPresetAction({promo: data, contentId: liveId, contentType: contentType}));
         },
-        saveContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
-            await dispatch(saveContentPromoPresetAction(data, liveId, contentType));
+        saveContentPromoPreset: async (data: Promo, liveId: string, contentType: ContentType) => {
+            await dispatch(saveContentPromoPresetAction({promo: data, contentId: liveId, contentType: contentType}));
         },
-        deleteContentPromoPreset: async (data: Promo, liveId: string, contentType: string) => {
-            await dispatch(deleteContentPromoPresetAction(data, liveId, contentType));
+        deleteContentPromoPreset: async (data: Promo, liveId: string, contentType: ContentType) => {
+            await dispatch(deleteContentPromoPresetAction({promo: data, contentId: liveId, contentType: contentType}));
         },
         getGroupsInfos: async () => {
-            await dispatch(getGroupPricesAction());
+            await dispatch(getGroupPricesAction(undefined));
         },
         getPaywallThemes: async () => {
-            await dispatch(getPaywallThemesAction())
+            await dispatch(getPaywallThemesAction(undefined))
         },
         getPresetsInfo: async (qs: string) => {
             await dispatch(getPricePresetsInfosAction(qs))

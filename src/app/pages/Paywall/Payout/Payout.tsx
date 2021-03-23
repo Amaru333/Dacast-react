@@ -163,7 +163,10 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 }
                 <Divider className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
-                <Text className='pt2 py1' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
+                <div className='flex mt2 my1'>
+                <Text className='pr2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
+                <Text size={14} weight='med'>Available: ${props.payoutInfos.paywallBalance}</Text>
+                </div>
                 {props.payoutInfos.paymentMethods &&
                     <Button key='withdrawalTableHeaderActionButton' className='xs-show' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>
                 }
@@ -176,7 +179,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 {
                     withdrawalModalOpened &&
-                    <WithdrawalModal paymentList={props.payoutInfos.paymentMethods} action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
+                    <WithdrawalModal balance={props.payoutInfos.paywallBalance} paymentList={props.payoutInfos.paymentMethods} action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
 
                 }
             </Modal>

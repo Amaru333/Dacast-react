@@ -22,6 +22,7 @@ import { EngagementEndScreenText } from '../../shared/Engagement/EndScreenText';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentEngagementContainerProps, EngagementComponentProps, EngagementSectionsLock } from '../../redux-flow/store/Content/Engagement/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { EngagementGoogleAnalytics } from '../../shared/Engagement/GoogleAnalytics';
 
 export const VodEngagement = (props: ContentEngagementContainerProps) => {
 
@@ -95,6 +96,9 @@ export const VodEngagement = (props: ContentEngagementContainerProps) => {
                             saveAd={props.saveContentAd}
                         />
                         }
+                        <EngagementGoogleAnalytics
+                            {...componentProps}
+                        />
                         <EngagementBrandImage
                             {...componentProps}
                             getUploadUrl={props.getUploadUrl}

@@ -5,7 +5,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { TransactionsComponentProps } from '../../../containers/Paywall/Transactions';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { useQuery } from '../../../../utils/utils';
+import { handleCurrencySymbol, useQuery } from '../../../../utils/utils';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
 import { useHistory } from 'react-router';
@@ -46,9 +46,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     const formatFiltersToQueryString = (filters: FilteringTransactionsState, pagination: {page: number; nbResults: number}, sortValue: string, keyword: string, ) => {
         let returnedString= `page=${pagination.page}&perPage=${pagination.nbResults}`
         if(filters) {
-            
+
             if(filters.type) {
-                returnedString += '&type=' + filters.type 
+                returnedString += '&type=' + filters.type
             }
 
             if(filters.currency) {
@@ -76,7 +76,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
 
         if(returnedString.indexOf('currency=&') > -1) {
             returnedString = returnedString.replace('currency=&','')
-            
+
         }
         returnedString = returnedString.replace('currency=,','currency=')
 
@@ -98,13 +98,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         if(fetchContent) {
             setContentLoading(true)
             props.getTransactions(qsParams).then(() => {
+                // props.syncTransactions()
                 setContentLoading(false)
                 setFetchContent(false)
                 history.push(`${location.pathname}?${qsParams}`)
             }).catch(() => {
                 setContentLoading(false)
                 setFetchContent(false)
-            })  
+            })
         }
     }, [fetchContent])
 
@@ -119,24 +120,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
                 {cell: <Text key='transactionsTableHeaderCredit' size={14} weight='med'>Credit</Text>},
                 {cell: <Text key='transactionsTableHeaderDebit' size={14} weight='med'>Debit</Text>},
-            ], 
+            ],
             defaultSort: 'Created Date',
             sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
-        }
-    }
-
-    const handleCurrencySymbol = (currency: string) => {
-        switch(currency) {
-            case 'USD':
-                return '$'
-            case 'AUD':
-                return 'AU$'
-            case 'GBP': 
-                return '£'
-            case 'EUR':
-                return '€'
-            default:
-                return '$'
         }
     }
 
@@ -169,7 +155,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
             <div style={{alignItems: 'center'}} className='col col-12 flex justify-end'>
                 <div className='flex items-center flex-auto'>
                     <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />   
+                    <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
                 </div>
                 <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray' onClick={handleExportClick}>Export </Button>
                 <TransactionsFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} />

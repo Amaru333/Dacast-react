@@ -6,9 +6,7 @@ import { Table } from '../../../../components/Table/Table';
 import { IconStyle, IconContainer, ActionIcon } from '../../../../shared/Common/Icon';
 import { ThemingComponentProps} from '../../../containers/Settings/Theming';
 import { ThemeOptions, defaultTheme } from '../../../redux-flow/store/Settings/Theming';
-import { usePlayer } from '../../../utils/services/player/player';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
-import { DateTime } from 'luxon';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
@@ -66,7 +64,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                     {data: [
                         <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
                         theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
-                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
                                 <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, isDefault: false, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>

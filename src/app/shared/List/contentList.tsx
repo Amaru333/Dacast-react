@@ -14,7 +14,6 @@ import { SeparatorHeader, TitleContainer, ListContentTitle } from '../../../app/
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../shared/Common/Features';
 import { useHistory } from 'react-router-dom';
-import { DateTime } from 'luxon';
 import { emptyContentListHeader, emptyContentListBody } from '../../shared/List/emptyContentListState';
 import { Modal } from '../../../components/Modal/Modal';
 import { MoveItemModal } from '../../../app/pages/Folders/MoveItemsModal';
@@ -233,7 +232,7 @@ export const ContentListPage = (props: ContentListProps) => {
         { name: 'Delete', function: setBulkDeleteOpen, hideForContent: [] },
     ]
 
-    const handleURLName = (contentType: string) => {
+    const handleURLName = (contentType: ContentType) => {
         switch (contentType) {
             case 'vod':
                 return 'videos'
@@ -290,7 +289,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const handleThumbnailClick = (contentId: string) => {
         setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
         setPreviewModalOpen(true)
-    }   
+    }
 
     const contentListBodyElement = () => {
         if (contentList) {
@@ -309,7 +308,7 @@ export const ContentListPage = (props: ContentListProps) => {
                                 } />
 
                                 {
-                                    
+
                                     value.thumbnail ?
                                         <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
@@ -324,7 +323,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         ,
                         props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         props.contentType !== 'expo' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
-                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, DateTime.DATETIME_SHORT)}</Text>,
+                        <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
                         props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
                         value.status !== 'Deleted' && !(value.type === 'vod' && !value.size) ?
@@ -437,13 +436,13 @@ export const ContentListPage = (props: ContentListProps) => {
                     <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id).then(() => setListUpdate('Deleted')) }} />
                 }
             </Modal>
-            {addStreamModalOpen && 
+            {addStreamModalOpen &&
             <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
             }
             <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
             <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
             {
-                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
             }
         </>
 

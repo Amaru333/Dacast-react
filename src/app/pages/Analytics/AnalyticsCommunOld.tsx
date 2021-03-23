@@ -11,7 +11,6 @@ import { presets } from '../../constants/DatepickerPresets';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import ReactTable from 'react-table';
-import moment from 'moment'
 import { exportCSVFile } from '../../../utils/services/csv/csvService';
 
 export var ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
@@ -148,14 +147,8 @@ export const FailedCardAnalytics = (props: React.HTMLAttributes<HTMLDivElement>)
 
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & { defaultDates: { end: number; start: number }, refreshData: Function }) => {
 
-    const [dates, setDates] = React.useState<{ start: any; end: any }>({ start: props.defaultDates.start, end: props.defaultDates.end })
+    const [dates, setDates] = React.useState<{ start: number; end: number }>({ start: props.defaultDates.start, end: props.defaultDates.end })
     const [selectedPreset, setSelectedPreset] = React.useState<string>('Last 24 Hours')
-
-    const formateDateFromDatepicker = (dates: { startDate: any; endDate: any }) => {
-        return { startDate: dates.startDate.format('x'), endDate: dates.endDate.format('x') }
-    }
-
-
 
     const renderDatePresets = () => {
         return presets ? (
@@ -169,7 +162,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             buttonColor='blue'
                             sizeButton='small'
                             focusState={selectedPreset === text}
-                            onClick={() => { setSelectedPreset(text); text !== 'Custom' && setDates({ start, end })} }
+                            onClick={() => { setSelectedPreset(text); text !== 'Custom' && setDates({ start: start.getTime(), end: end.getTime() })} }
                         >
                             {text}
                         </Button>
@@ -183,8 +176,8 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
     return (
         <div className="col col-12 mb25 clearfix">
             {renderDatePresets()}
-            <DateRangePickerWrapper callback={(dates) => { setDates({ start: dates.startDate, end: dates.endDate }) }} disabled={selectedPreset !== 'Custom'} dates={{ startDate: moment(dates.start), endDate: moment(dates.end) }} className="inline" />
-            <Button sizeButton="small" onClick={() => props.refreshData(formateDateFromDatepicker({ startDate: dates.start, endDate: dates.end }))} className="ml2" color="blue">Apply</Button>
+            <DateRangePickerWrapper callback={(dates) => { setDates({ start: dates.startDate ? dates.startDate.getTime() : null, end: dates.endDate ? dates.endDate.getTime() : null}) }} disabled={selectedPreset !== 'Custom'} dates={{ startDate: dates.start, endDate: dates.end }} className="inline" />
+            <Button sizeButton="small" onClick={() => { props.refreshData({ startDate: dates.start, endDate: dates.end }) } } className="ml2" color="blue">Apply</Button>
         </div>
     )
 }

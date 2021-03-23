@@ -26,10 +26,10 @@ export interface PriceSettings {
 
 export interface Preset {
     id: string;
-    name: string;
+    name?: string;
     type: string;
     priceType?: string;
-    prices: Price[];
+    prices?: Price[];
     settings: PriceSettings;
     contentId?: string;
     price?: number;
@@ -39,7 +39,7 @@ export interface Preset {
 
 export interface Promo {
     id: string;
-    name: string;
+    name?: string;
     alphanumericCode?: string;
     discount: number;
     limit: number;
@@ -61,13 +61,18 @@ export const presetsInitialState: PresetsPageInfos = {
     promos: null
 }
 
-export interface ContentPaywallPageInfos {
-    prices: Preset[];
-    promos: Promo[];
+export interface ContentPaywallDetails {
     paywallEnabled: boolean;
     introVodId: string;
     selectedTheme: string;
 }
+
+export type ContentPaywallPageInfos = {
+    prices: Preset[];
+    promos: Promo[];
+} & ContentPaywallDetails
+
+
 
 export interface ContentPaywallState {[key: string]: ContentPaywallPageInfos}
 

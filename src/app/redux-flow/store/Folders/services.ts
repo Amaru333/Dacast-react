@@ -1,7 +1,7 @@
 import { ContentType } from './types';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { contentListServices } from '../Content/List/services';
-import { ContentGeneralServices } from '../Content/General/services';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 
 const getFolderContent = async (qs: string) => {
     return await axiosClient.get('/search/content' + (qs ? '?' + qs :'?status=online,offline,processing&page=1&per-page=10&content-types=channel,vod,playlist&sort-by=created-at-desc'))
@@ -18,7 +18,7 @@ const restoreContent = async (content: ContentType[]) => {
     content.map(async (c) => {
         switch(c.type) {
             case 'vod':
-                return await ContentGeneralServices.restoreContentService(c.id, c.type + 's')
+                return await dacastSdk.getRestoreVod(c.id)
             case 'channel':
             case'playlist':
                 return

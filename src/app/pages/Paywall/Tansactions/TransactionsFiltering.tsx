@@ -98,11 +98,11 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
                     </div>
                     <div className="mb3" id="transactionFilterStartDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Start Date</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, startDate: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, startDate: date.getTime() } }) }} />
                     </div>
                     <div className="mb3" id="transactionFilterEndDate">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >End Date</Text>
-                        <DateSinglePickerWrapper allowOustsideDate callback={(date: string, ms: number) => { setFilteringState(prevState => { return { ...prevState, endDate: ms } }) }} />
+                        <DateSinglePickerWrapper allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, endDate: date.getTime() } }) }} />
                     </div>
                 </div>
                 

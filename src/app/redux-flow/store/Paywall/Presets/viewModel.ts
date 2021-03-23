@@ -100,6 +100,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                 prices: preset.preset.prices,
                 settings: {
                     ...preset.preset.settings,
+                    timezone: null,
                     duration: preset.preset.settings.duration ? {
                         value: preset.preset.settings.duration.value,
                         unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
@@ -169,6 +170,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
 export const formatPostPricePresetOutput = (endpointResponse: PricePresetId, dataReact: Preset): Preset => {
     let formattedData: Preset = {
         ...dataReact,
+        settings: {...dataReact.settings, timezone: null},
         id: endpointResponse.id
     }
 

@@ -8,9 +8,8 @@ import { InvoicesComponentProps } from '../../../containers/Account/Invoices';
 import { InvoicesFiltering, FilteringInvoicesState } from './InvoicesFiltering';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
-import { DateTime } from 'luxon';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
-import { capitalizeFirstLetter, useQuery } from '../../../../utils/utils';
+import { capitalizeFirstLetter, handleCurrencySymbol, useQuery } from '../../../../utils/utils';
 import { Link, useHistory } from 'react-router-dom';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {
@@ -124,8 +123,8 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
                 const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
                 return {data: [
                     <Text key={'invoicesTableBodyRef'+ i.toString()} size={14} weight='reg' color='gray-1'>{item.id}</Text>,
-                    <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, DateTime.DATETIME_SHORT)}</Text>,
-                    <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{'$' + item.total}</Text>,
+                    <Text key={'invoicesTableBodyDate'+i.toString()} size={14} weight='reg' color='gray-1'>{tsToLocaleDate(item.date, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
+                    <Text key={'invoicesTableBodyTotal'+i.toString()} size={14} weight='reg' color='gray-1'>{handleCurrencySymbol(item.currency) + item.total}</Text>,
                     <Label key={'invoicesTableBodyStatus'+i.toString()} backgroundColor={BackgroundColor} color={color} label={capitalizeFirstLetter(item.status)}  />,
                     <IconContainer className="iconAction" key={'invoicesTableBodyActionButtons'+i.toString()}><a className="noTransition" href={item.downloadLink} target='_blank'><IconStyle>print</IconStyle></a><IconStyle onClick={() => saveFile(item.downloadLink, item.id + '.pdf')}>get_app</IconStyle></IconContainer>
     

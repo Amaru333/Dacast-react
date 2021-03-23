@@ -23,7 +23,6 @@ import PaywallTheming from '../containers/Paywall/Theming';
 import PendingOrders from '../containers/Account/PendingOrders';
 import Groups from '../containers/Paywall/Groups';
 import Login from '../containers/Register/Login/Login';
-import SignUp from '../containers/Register/SignUp/SignUp';
 import ConfirmEmail from '../containers/Register/ConfirmEmail';
 import { NotFound } from '../containers/404page';
 import { HelpPage } from '../pages/Help/Help';
@@ -62,6 +61,11 @@ import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
 import Users from '../containers/Account/Users';
+import Audience from '../containers/Analytics/Audience';
+import Paywall from '../containers/Analytics/Paywall';
+import Engagement from '../containers/Analytics/Engagement';
+import DataConsumption from '../containers/Analytics/DataConsumption';
+import DashboardNew from '../containers/Analytics/DashboardNew';
 
 
 export const AppRoutes: Routes[] = [   
@@ -78,13 +82,6 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: Impersonate
-    },
-    {
-        path:'/signup',
-        name: 'signup',
-        isPublic: true,
-        notDisplayedInNavigation: true,
-        component: SignUp
     },
     {
         path:'/confirm-email',
@@ -365,6 +362,37 @@ export const AppRoutes: Routes[] = [
                 path: '/analytics/dashboard',
                 name: 'Dashboard',
                 component: DashboardAnalytics
+            },
+            {
+                path: '/analytics/dashboardv2',
+                name: 'Dashboard V2',
+                component: DashboardNew,
+                notDisplayedInNavigation: true
+            },
+            {
+                path: '/analytics/data',
+                name: 'Data Usage',
+                component: DataConsumption,
+                notDisplayedInNavigation: true
+            },
+            {
+                path: '/analytics/audience',
+                name: 'Audience',
+                component: Audience,
+                notDisplayedInNavigation: true
+            },
+            {
+                path: '/analytics/engagement',
+                name: 'Engagement',
+                component: Engagement,
+                notDisplayedInNavigation: true
+            },
+            {
+                path: '/analytics/paywall',
+                name: 'Paywall',
+                component: Paywall,
+                associatePrivilege: 'privilege-paywall',
+                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/real-time',

@@ -1,5 +1,5 @@
 import { PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput } from "../../../../../DacastSdk/common";
-import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndoint } from "../../../../../DacastSdk/settings";
+import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndpoint } from "../../../../../DacastSdk/settings";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { ContentType } from "../../Common/types";
 import { Ad, AdType, ContentEngagementSettings, EngagementInfo } from "../../Settings/Engagement/types";
@@ -7,7 +7,7 @@ import { EngagementSectionsLock } from "./types";
 
 export const formatGetContentEngagementSettingsInput = (data: string): string => data
 
-export const formatGetContentEngagementSettingsOutput = (contentType: ContentType) => (data: EngagementSettingsEndoint, dataReact: string): ContentEngagementSettings & {contentType: ContentType} => {
+export const formatGetContentEngagementSettingsOutput = (contentType: ContentType) => (data: EngagementSettingsEndpoint, dataReact: string): ContentEngagementSettings & {contentType: ContentType} => {
     let formattedData: ContentEngagementSettings & {contentType: ContentType} = {
         contentId: dataReact,
         engagementSettings: {
@@ -52,6 +52,9 @@ export const formatPutContentEngagementInput = (data: ContentEngagementSettings)
         endScreenSettings: {
             ...data.engagementSettings.endScreenSettings
         },
+        googleAnalyticsSettings: {
+            ...data.engagementSettings.googleAnalyticsSettings
+        },
         id: data.contentId
     }
 
@@ -79,14 +82,25 @@ export const formatPutContentLockEngagementSettingsInput = (data: {contentId: st
 
 export const formatPutContentAdsSettingsInput = (data: {ads: Ad[], contentId: string}): PutContentAdsInput => {
     let formattedData: PutContentAdsInput = {
-        ads: data.ads.map(ad => {
-            return {
-                "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
-                timestamp: ad.timestamp,
-                url: ad.url
-            }
-        }),
+        data: {
+            ads: data.ads.map(ad => {
+                return {
+                    "ad-type": ad.type.toLowerCase() as AdTypeEndpoint,
+                    timestamp: ad.timestamp,
+                    url: ad.url
+                }
+            })
+        },
         id: data.contentId
+    }
+
+    return formattedData
+}
+
+export const formatPutContentAdsSettingsOutput = (contentType: ContentType) => (endpointResponse: null, dataReact: {ads: Ad[]; contentId: string}): {ads: Ad[]; contentId: string; contentType: ContentType} => {
+    let formattedData: {ads: Ad[]; contentId: string; contentType: ContentType} = {
+        ...dataReact,
+        contentType: contentType
     }
 
     return formattedData
@@ -114,8 +128,8 @@ export const formatPostLiveBrandImageUrlInput = (contentId: string): PostUploadU
     return formattedData
 }
 
-export const formatPostContentBrandImageUrlOutput = (contentType: ContentType) => (data: PostUploadUrlOutput, dataReact: string): {presignedURL: string, contentId: string; contentType: string} => {
-    let formattedData: {presignedURL: string, contentId: string; contentType: string} = {
+export const formatPostContentBrandImageUrlOutput = (contentType: ContentType) => (data: PostUploadUrlOutput, dataReact: string): {presignedURL: string, contentId: string; contentType: ContentType} => {
+    let formattedData: {presignedURL: string, contentId: string; contentType: ContentType} = {
         presignedURL: data.presignedURL,
         contentId: dataReact,
         contentType: contentType

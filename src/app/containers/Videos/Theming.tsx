@@ -8,19 +8,21 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { useParams } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
-import { Action, getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
+import { Action, createContentCustomThemeAction, getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface ContentThemingComponentProps {
     theme: ContentTheme;
     themeState: ContentThemeState;
-    getContentTheme: (contentId: string, contentType: string) => Promise<void>;
-    saveContentTheme: (theme: ThemeOptions, contentId: string, contentType: string) => Promise<void>;
+    getContentTheme: (contentId: string, contentType: ContentType) => Promise<void>;
+    createContentCustomTheme: (theme: ThemeOptions, contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentTheme: (theme: ThemeOptions, contentId: string, contentType: ContentType) => Promise<void>;
 }
 
 export const VodTheming = (props: ContentThemingComponentProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -43,6 +45,7 @@ export const VodTheming = (props: ContentThemingComponentProps) => {
                         <ThemingControlsCard
                             theme={props.themeState['vod'][vodId]}
                             saveTheme={props.saveContentTheme}
+                            createContentCustomTheme={props.createContentCustomTheme}
                             contentType='vod'
                             actionType='Save'
                             contentId={vodId}
@@ -62,11 +65,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentTheme: async (contentId: string, contentType: string) => {
-            await dispatch(getContentThemeAction(contentId, contentType))
+        getContentTheme: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentThemeAction(contentType)(contentId))
         },
-        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
-            await dispatch(saveContentThemeAction(theme, contentId, contentType))
+        createContentCustomTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(createContentCustomThemeAction(contentType)({theme: theme, contentId: contentId}))
+        },
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentThemeAction(contentType)({theme: theme, contentId: contentId}))
         },
     }
 }

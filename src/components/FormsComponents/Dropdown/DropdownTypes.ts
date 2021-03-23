@@ -46,10 +46,10 @@ interface DropdownCountriesSpecificProps {
 }
 
 interface DropdownButtonSpecificProps {
-    list: string[];
+    list: DropdownSingleListItem[];
     id: string;
     callback: Function;
-    dropdownDefaultSelect?: string;
+    dropdownDefaultSelect?: DropdownSingleListItem;
     backgroundColor?: string;
     disabled?: boolean
 }

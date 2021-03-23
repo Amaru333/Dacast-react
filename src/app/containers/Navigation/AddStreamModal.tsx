@@ -17,14 +17,13 @@ import { ApplicationState } from '../../redux-flow/store';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { connect } from 'react-redux';
 import { segmentService } from '../../utils/services/segment/segmentService';
-
-const moment = require('moment-timezone')
+import { guessTimezone } from '../../../utils/services/date/dateService';
 
 const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
     let history = useHistory()
 
-    const localeTimezone: string = moment.tz.guess()
+    const localeTimezone: string = guessTimezone()
 
     const handleLocaleCountry = (): string => {
         if (localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {

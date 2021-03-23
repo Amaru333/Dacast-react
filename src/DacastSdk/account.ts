@@ -34,6 +34,7 @@ interface Invoice {
     total: number;
     status: 'pending' | 'failed' | 'paid';
     downloadLink: string;
+    currency: PlanCurrencyEndpoint
 }
 
 export interface GetInvoicesOutput {
@@ -72,16 +73,15 @@ export interface PostUserPasswordInput {
     accessToken: string;
 }
 
-interface PlanPriceEndpoint {
-    usd: number;
-    gbp: number;
-    eur: number;
-    aud: number;
+export type CurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud'
+
+type PriceEndpointStruct = {
+    [key in CurrencyKey] : number;
 }
 
 interface PrivilegeEndpoint {
     code: string;
-    price: PlanPriceEndpoint;
+    price: PriceEndpointStruct;
 }
 
 interface AllowanceEndpoint {
@@ -101,7 +101,7 @@ interface PlanDetails {
     name: 'Annual Starter' | 'Event' | 'Annual Scale' | 'Monthly Scale';
     paymentFrequency: string;
     paymentTerm: number;
-    price: PlanPriceEndpoint;
+    price: PriceEndpointStruct;
     privileges: PrivilegeEndpoint[];
 }
 
@@ -116,10 +116,12 @@ interface PrivilegePostEndpoint {
     quantity: number;
 }
 
+export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD'
+
 export interface PostAccountPlanInput { 
     planCode: string;
     token: string;
-    currency: 'USD';
+    currency: PlanCurrencyEndpoint;
     couponCode: '';
     allowances: string;
     threeDSecureToken: string;
@@ -133,12 +135,6 @@ export interface PostAccountPlanOutput {
 
 export type ProductExtraDataKey = 'eventBw1to4TB' | 'eventBw5to10TB' | 'eventBw10to100TB';
 
-export type ProductExtraDataCurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud'
-
-type ProductExtraDataUnitPrice = {
-    [key in ProductExtraDataCurrencyKey] : number;
-}
-
 export interface ProductExtraData {
     code: ProductExtraDataKey;
     description: string;
@@ -146,7 +142,7 @@ export interface ProductExtraData {
     minQuantity: number;
     nextProductID: string;
     type: "BW";
-    unitPrice: ProductExtraDataUnitPrice;
+    unitPrice: PriceEndpointStruct;
 }
 
 type ProductExtraDataBandwidth = {

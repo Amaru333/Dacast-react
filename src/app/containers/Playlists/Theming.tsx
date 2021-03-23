@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming/types';
 import { ThunkDispatch } from 'redux-thunk';
 import { ApplicationState } from '../../redux-flow/store';
-import { Action } from '../../redux-flow/store/Content/Theming/actions';
+import { Action, createContentCustomThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { connect } from 'react-redux';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -12,10 +12,11 @@ import { ThemingControlsCard } from '../../shared/Theming/ThemingControlsCard';
 import { ContentThemingComponentProps } from '../Videos/Theming';
 import { getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const PlaylistTheming = (props: ContentThemingComponentProps) => {
 
-    let { playlistId } = useParams()
+    let { playlistId } = useParams<{playlistId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -36,6 +37,7 @@ const PlaylistTheming = (props: ContentThemingComponentProps) => {
                     <ThemingControlsCard
                         theme={props.themeState['playlist'][playlistId]}
                         saveTheme={props.saveContentTheme}
+                        createContentCustomTheme={props.createContentCustomTheme}
                         contentType='playlist'
                         actionType='Save'
                         contentId={playlistId}
@@ -55,11 +57,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentTheme: async (contentId: string, contentType: string) => {
-            await dispatch(getContentThemeAction(contentId, contentType))
+        getContentTheme: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentThemeAction(contentType)(contentId))
         },
-        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
-            await dispatch(saveContentThemeAction(theme, contentId, contentType))
+        createContentCustomTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(createContentCustomThemeAction(contentType)({theme: theme, contentId: contentId}))
+        },
+        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentThemeAction(contentType)({theme: theme, contentId: contentId}))
         },
     }
 }

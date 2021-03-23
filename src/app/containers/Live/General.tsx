@@ -9,7 +9,7 @@ import { useParams, Prompt } from 'react-router-dom';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
-import { ContentDetails, SubtitleInfo } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, LiveDetails } from '../../redux-flow/store/Content/General/types';
 import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction, generateEncoderKeyAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
@@ -20,34 +20,26 @@ import { GeneralImages } from '../../shared/General/Images';
 import { GeneralAdvancedLinks } from '../../shared/General/AdvancedLinks';
 import { ImageModal } from '../../shared/General/ImageModal';
 import { handleImageModalFunction } from '../../utils/general';
-import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
-import { Bubble } from '../../../components/Bubble/Bubble';
-import { BubbleContent } from '../../shared/Security/SecurityStyle';
-import { Text } from '../../../components/Typography/Text'
-import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { LinkBoxContainer, ClassHalfXsFullMd, LinkBoxLabel, LinkBox, LinkText, ButtonContainer } from '../../shared/General/GeneralStyle';
-import { IconStyle } from '../../../shared/Common/Icon';
-import { updateClipboard } from '../../utils/utils';
+import { ButtonContainer } from '../../shared/General/GeneralStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { Divider } from '../../../shared/MiscStyles';
-import { segmentService } from '../../utils/services/segment/segmentService';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
+import { ContentType } from '../../redux-flow/store/Common/types';
+import { ContentUploadType } from '../../../DacastSdk/common';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
-    let { liveId } = useParams()
+    let { liveId } = useParams<{liveId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ContentDetails>(null)
+    const [stateContentDetails, setStateContentDetails] = React.useState<LiveDetails>(null)
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [contentDetails, setContentDetails] = React.useState<ContentDetails>(stateContentDetails)
+    const [contentDetails, setContentDetails] = React.useState<LiveDetails>(stateContentDetails)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const [imageModalTitle, setImageModalTitle] = React.useState<string>(null)
     const [selectedImageName, setSelectedImageName] = React.useState<string>(null)
     const [imageModalOpen, setImageModalOpen] = React.useState<boolean>(false)
     const [encoderModalOpen, setEncoderModalOpen] = React.useState<boolean>(false)
-    const [stepModalRewind, setStepModalRewind] = React.useState<1 | 2>(1)
-    const [confirmRewindModal, setConfirmRewindModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -58,8 +50,8 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
 
     React.useEffect(() => {
         if(props.contentDetailsState['live']){
-            setStateContentDetails(props.contentDetailsState['live'][liveId])
-            setContentDetails(props.contentDetailsState['live'][liveId])
+            setStateContentDetails(props.contentDetailsState['live'][liveId] as LiveDetails)
+            setContentDetails(props.contentDetailsState['live'][liveId] as LiveDetails)
         }
     }, [props.contentDetailsState])
 
@@ -197,7 +189,7 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                             {
                                 hasChanged &&
                                 <ButtonContainer>
-                                    <Button isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
+                                    <Button disabled={contentDetails.title.length === 0} isLoading={buttonLoading} className="mr2" onClick={() => handleSave()}>Save</Button>
                                     <Button typeButton="tertiary" onClick={() => { setContentDetails(stateContentDetails); props.showToast("Changes have been discarded", 'fixed', "success"); setHasChanged(false) }}>Discard</Button>
                                 </ButtonContainer>
                             }
@@ -218,23 +210,23 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentDetails: async (liveId: string, contentType: string) => {
-            await dispatch(getContentDetailsAction(liveId, contentType));
+        getContentDetails: async (liveId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(liveId));
         },
-        saveContentDetails: async (data: ContentDetails, contentType: string) => {
-            await dispatch(editContentDetailsAction(data, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
-        getUploadUrl: async (uploadType: string, vodId: string, extension: string, contentType: string, subtitleInfo?: SubtitleInfo) => {
-            await dispatch(getUploadUrlAction(uploadType, vodId, extension, contentType, subtitleInfo))
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
-        uploadFile: async (data: File, uploadUrl: string, vodId: string, uploadType: string, contentType: string) => {
-           await dispatch(uploadFileAction(data, uploadUrl, vodId, uploadType, contentType))
-        },
-        deleteFile: async (vodId: string, targetId: string, contentType: string, imageType: string) => {
-            await dispatch(deleteFileAction(vodId, targetId, contentType, imageType))
+        uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
+            await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
+         },
+         deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+            await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         generateEncoderKey: async (liveId: string) => {
-            await dispatch(generateEncoderKeyAction(liveId, 'live'))
+            await dispatch(generateEncoderKeyAction('live')(liveId))
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

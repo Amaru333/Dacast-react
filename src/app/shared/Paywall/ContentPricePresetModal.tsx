@@ -10,8 +10,7 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import styled from 'styled-components';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
-
-var moment = require('moment-timezone');
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const pricesList = [
     {
@@ -30,12 +29,12 @@ const defaultPreset: Preset = {
         duration: { value: NaN, unit: 'Hours' },
         recurrence: null,
         startMethod: 'Upon Purchase',
-        timezone: moment.tz.guess(),
+        timezone: null,
         startDate: 0,
     }
 }
 
-export const ContentPricePresetsModal = (props: {contentType: string; contentId: string; action: (p: Preset, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void>; fetchContentPrices: (contentId: string, contentType: string) => Promise<void>}) => {
+export const ContentPricePresetsModal = (props: {contentType: ContentType; contentId: string; action: (p: Preset, contentId: string, contentType: ContentType) => Promise<void>; toggle: (b: boolean) => void; preset: Preset; presetList: Preset[]; savePresetGlobally: (p: Preset) => Promise<void>; fetchContentPrices: (contentId: string, contentType: ContentType) => Promise<void>}) => {
 
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
@@ -179,6 +178,7 @@ export const ContentPricePresetsModal = (props: {contentType: string; contentId:
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={newPricePreset.settings.startDate}

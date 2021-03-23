@@ -1,6 +1,6 @@
 import React from 'react'
 import { GroupsPage } from '../../pages/Paywall/Groups/Groups'
-import { Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupPricesAction, getGroupPromosAction } from '../../redux-flow/store/Paywall/Groups/actions';
+import { Action, createGroupPriceAction, saveGroupPriceAction, deleteGroupPriceAction, getGroupPriceContentsAction, createGroupPromoAction, saveGroupPromoAction, deleteGroupPromoAction, getGroupPricesAction, getGroupPromosAction } from '../../redux-flow/store/Paywall/Groups/actions';
 import { GroupPrice, GroupsPageInfos, GroupPromo } from '../../redux-flow/store/Paywall/Groups/types';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
@@ -19,6 +19,7 @@ export interface GroupsComponentProps {
     createGroupPrice: (p: GroupPrice) => Promise<void>;
     saveGroupPrice: (p: GroupPrice) => Promise<void>;
     deleteGroupPrice: (p: GroupPrice) => Promise<void>;
+    getGroupPriceContents: (path: string) => Promise<void>;
     createGroupPromo: (p: GroupPromo) => Promise<void>;
     saveGroupPromo: (p: GroupPromo) => Promise<void>;
     deleteGroupPromo: (p: GroupPromo) => Promise<void>;
@@ -40,12 +41,8 @@ const Groups = (props: GroupsComponentProps) => {
             .catch(() => setNodataFetched(true))
 
         }
-        if(!props.folderData) {
-            const wait = async () => {
-                await props.getFolderContent('/')
-            }
-            wait()
-        }
+            props.getFolderContent('status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist')
+            .catch(() => setNodataFetched(true))
     }, [])
 
     if(noDataFetched) {
@@ -53,7 +50,7 @@ const Groups = (props: GroupsComponentProps) => {
     }
 
     return (
-        props.groupsInfos.prices && props.groupsInfos.promos ?
+        props.groupsInfos.prices && props.groupsInfos.promos && props.folderData ?
             <GroupsPage {...props} />
             : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     )
@@ -82,6 +79,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteGroupPrice: async (data: GroupPrice) => {
             await dispatch(deleteGroupPriceAction(data));
+        },
+        getGroupPriceContents: async (path: string) => {
+            await dispatch(getGroupPriceContentsAction(path));
         },
         createGroupPromo: async (data: GroupPromo) => {
             await dispatch(createGroupPromoAction(data));

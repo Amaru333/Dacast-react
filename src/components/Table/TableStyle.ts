@@ -76,19 +76,20 @@ export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: bool
                 background-color: ${props => props.theme.colors["white"]} ;
             }
         }
-        cursor: pointer;
         background-color: ${props => props.theme.colors["violet10"]};
         td {
             .iconAction {
                 visibility: visible;
+                cursor: pointer;
             }
         }
-        ${props => props.contentLoading && css`
-            cursor: not-allowed !important;
-            pointer-events: none;
-            opacity: 0.5;
-        `}
     }
+    ${props => props.contentLoading && css`
+        cursor: not-allowed !important;
+        pointer-events: none;
+        opacity: 0.5;
+    `}
+}
 `;
 
 export const TableBodyCell = styled.td<{contentLoading: boolean;}>`

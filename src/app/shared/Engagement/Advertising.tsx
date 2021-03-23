@@ -146,7 +146,7 @@ export const EngagementAdvertising = (props: EngagementComponentProps  ) => {
                         }
                     </Header>
                     <DisabledSection settingsEditable={!props.localEngagementSettings.adsSettings.locked || !props.contentType}>
-                        <Toggle className="mb2" id='advertisingEnabled' defaultChecked={props.globalEngagementSettings.adsSettings.adsEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, adsEnabled: !props.localEngagementSettings.adsSettings.adsEnabled }}); props.setSettingsEdited(true) }} label='Advertising enabled' />
+                        <Toggle className="mb2" id='advertisingEnabled' checked={props.localEngagementSettings.adsSettings.adsEnabled} defaultChecked={(props.localEngagementSettings.adsSettings.locked && props.contentType) ? props.globalEngagementSettings.adsSettings.adsEnabled : props.localEngagementSettings.adsSettings.adsEnabled} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, adsSettings: {...props.localEngagementSettings.adsSettings, adsEnabled: !props.localEngagementSettings.adsSettings.adsEnabled }}); props.setSettingsEdited(true) }} label='Advertising enabled' />
                     
                     <Text className="" size={14} weight='reg' color='gray-3'>Ads configured here will apply to all your content and can be overridden individually. Be aware that Mid-roll ads will only play if the video/stream duration is long enough.</Text>
                     <div className='flex my2'>

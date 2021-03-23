@@ -19,14 +19,18 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { Divider } from '../../../shared/MiscStyles';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { DisabledSection } from '../Common/MiscStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
+
+type ThemeContentType = ContentType | 'settings'
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
-    contentType: 'vod' | 'live' | 'playlist' | 'settings';
+    contentType: ThemeContentType;
     actionType: 'Create' | 'Save';
     contentId?: string;
-    saveTheme: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
-    createTheme?: (theme: ThemeOptions, contentType: string) => Promise<void>;
+    saveTheme: (theme: ThemeOptions, contendId: string, contentType: ThemeContentType) => Promise<void>;
+    createTheme?: (theme: ThemeOptions, contentType: ThemeContentType) => Promise<void>;
+    createContentCustomTheme?: (theme: ThemeOptions, contendId: string, contentType: ThemeContentType) => Promise<void>;
     cancelFunction?: () => void;
 }
 
@@ -39,13 +43,17 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const handleDefaultSelectedTheme = (): ThemeOptions => {
         if (props.contentType === 'settings') {
             return props.theme.themes[0]
-        } else if (props.theme.contentThemeId && props.theme.themes.filter(t => t.id === props.theme.contentThemeId).length > 0) {
-            return props.theme.themes.filter(t => t.id === props.theme.contentThemeId)[0]
-        } else if (props.theme.themes.filter(t => t.isDefault).length > 0) {
-            return props.theme.themes.filter(t => t.isDefault)[0]
-        } else {
-            return props.theme.themes.filter(t => t.themeName === 'default')[0]
         }
+
+        if (props.theme.contentThemeId && props.theme.themes.filter(t => t.id === props.theme.contentThemeId).length > 0) {
+            return props.theme.themes.filter(t => t.id === props.theme.contentThemeId)[0]
+        }
+
+        if (props.theme.themes.filter(t => t.isDefault).length > 0) {
+            return props.theme.themes.filter(t => t.isDefault)[0]
+        }
+
+        return props.theme.themes.filter(t => t.themeName === 'default')[0]
     }
     
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
@@ -68,12 +76,22 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                 setButtonLoading(false)
             })
         } else {
-            props.saveTheme(selectedTheme, props.contentId, props.contentType).then(() => {
-                setButtonLoading(false)
-                setEditedSettings(false)
-            }).catch(() => {
-                setButtonLoading(false)
-            })
+            if(selectedTheme.id === '-1') {
+                props.createContentCustomTheme(selectedTheme, props.contentId, props.contentType).then(() => {
+                    setButtonLoading(false)
+                    setEditedSettings(false)
+                }).catch(() => {
+                    setButtonLoading(false)
+                })
+            } else {
+                props.saveTheme(selectedTheme, props.contentId, props.contentType).then(() => {
+                    setButtonLoading(false)
+                    setEditedSettings(false)
+                }).catch(() => {
+                    setButtonLoading(false)
+                })
+            }
+
         }
     }
 
@@ -122,7 +140,6 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     let customEnabled = selectedTheme.isCustom || props.contentType === 'settings'
     const liveEnabled = (selectedTheme.isCustom && props.contentType === 'live') || props.contentType === 'settings'
     const playlistEnabled = (selectedTheme.isCustom && props.contentType === 'playlist') || props.contentType === 'settings'
-    console.log(props.contentType)
     return (
         <div>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>

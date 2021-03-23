@@ -20,6 +20,7 @@ import { getContentDetailsAction } from '../../app/redux-flow/store/Content/Gene
 import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flow/store/Account/Plan';
 import { segmentService } from '../../app/utils/services/segment/segmentService';
 import TagManager from 'react-gtm-module'
+import { ContentType } from "../../app/redux-flow/store/Common/types";
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -31,7 +32,7 @@ export interface HeaderProps {
     setOpen: (b: boolean) => void;
     getBillingInfo: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
-    getContentDetails: (contentId: string, contentType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
 }
 
 const Header = (props: HeaderProps) => {
@@ -113,21 +114,23 @@ const Header = (props: HeaderProps) => {
                 props.getBillingInfo()
             }
 
-            TagManager.initialize(
-                {
-                    gtmId: 'GTM-PHZ3Z7F',
-                    dataLayer: {
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                    }, 
-                    // dataLayerName: 'Uapp'
-                });
+        TagManager.initialize(
+            {
+                gtmId: 'GTM-PHZ3Z7F',
+                dataLayer: {
+                    'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
+                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'companyName': userToken.getUserInfoItem('custom:website'),
+                    'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
+                    'signedUp': 'Unknown yet',
+                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
+                    'userEmail': userToken.getUserInfoItem('email'),
+                    'bid': userToken.getUserInfoItem('salesforce-group-id')
+                }, 
+                // dataLayerName: 'Uapp'
+            });
     }, [])
 
     React.useEffect(() => {
@@ -135,6 +138,7 @@ const Header = (props: HeaderProps) => {
             TagManager.dataLayer(
                 {
                     dataLayer: {
+                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
@@ -143,6 +147,7 @@ const Header = (props: HeaderProps) => {
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });
@@ -156,6 +161,7 @@ const Header = (props: HeaderProps) => {
             TagManager.dataLayer(
                 {
                     dataLayer: {
+                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
                         'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
@@ -164,6 +170,7 @@ const Header = (props: HeaderProps) => {
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
+                        'bid': userToken.getUserInfoItem('salesforce-group-id')
                     }, 
                     // dataLayerName: 'Uapp'
                 });
@@ -280,8 +287,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getProfilePageDetails: () => {
             dispatch(getProfilePageDetailsAction(undefined));
         },
-        getContentDetails: (contentId: string, contentType: string) => {
-            dispatch(getContentDetailsAction(contentId, contentType));
+        getContentDetails: (contentId: string, contentType: ContentType) => {
+            dispatch(getContentDetailsAction(contentType)(contentId));
         },
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))

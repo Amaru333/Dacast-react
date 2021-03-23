@@ -64,7 +64,8 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
                         else {
                             return {
                                 ...item,
-                                ...action.payload
+                                ...action.payload,
+                                timezone: null
                             }
                         }
                     })

@@ -3,7 +3,7 @@ import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { TransactionsPage } from '../../pages/Paywall/Tansactions/Transactions';
-import { getTransactionsAction, Action, getTransactionsCsvAction } from '../../redux-flow/store/Paywall/Transactions/actions';
+import { getTransactionsAction, Action, getTransactionsCsvAction, syncTransactionsAction } from '../../redux-flow/store/Paywall/Transactions/actions';
 import { TransactionsInfo } from '../../redux-flow/store/Paywall/Transactions/types';
 
 export interface TransactionsComponentProps {
@@ -30,6 +30,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getTransactionsCsv: async (qs: string) => {
             await dispatch(getTransactionsCsvAction(qs))
+        },
+        syncTransactions: async () => {
+            await dispatch(syncTransactionsAction())
         }
     }
 }

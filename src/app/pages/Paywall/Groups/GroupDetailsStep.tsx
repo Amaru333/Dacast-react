@@ -69,10 +69,10 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
+                    isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
                     defaultTs={props.stepperData.firststep.groupSettings.startDate}
-                    timezone={props.stepperData.firststep.groupSettings.timezone}
                     callback={(ts: number, timezone: string) =>  props.updateStepperData( { ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Upon Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] }  }  })}
                     hideOption="Upon Purchase"
                     id="endDate"

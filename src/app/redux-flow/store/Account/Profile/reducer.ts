@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { tsToLocaleDate } from '../../../../../utils/formatUtils';
 import { ProfileAction } from "./actions";
 import { ActionTypes, profileInitialState, ProfilePageInfos } from './types';
@@ -17,7 +16,7 @@ export const reducer = (state = profileInitialState, action: ProfileAction): Pro
         case ActionTypes.SAVE_PROFILE_PASSWORD:
             return {
                 ...state, 
-                passwordLastChanged: tsToLocaleDate(Math.round(Date.now()/1000), DateTime.DATETIME_SHORT)
+                passwordLastChanged: tsToLocaleDate(Math.round(Date.now()/1000), {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})
             }
         default:
             return state;

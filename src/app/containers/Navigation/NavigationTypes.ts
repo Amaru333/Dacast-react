@@ -1,6 +1,6 @@
-import { Privilege } from '../../constants/PrivilegesName';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { Plans } from '../../redux-flow/store/Account/Upgrade/types';
+import { Privilege } from "../../../utils/services/token/token";
 
 export interface MainMenuSpecificProps {
     routes: Routes[]; 
