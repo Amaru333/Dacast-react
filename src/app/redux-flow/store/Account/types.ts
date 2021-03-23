@@ -17,7 +17,7 @@ export interface  AccountState {
     invoices: false | SearchInvoicesResult;
     pendingOrders: false | PendingOrdersList;
     upgrade: false | Plans;
-    multiUsers: MultiUserDetails;
+    multiUsers: false | MultiUserDetails;
 }
 
 export const accountInitialState: AccountState = {
@@ -27,7 +27,7 @@ export const accountInitialState: AccountState = {
     invoices: false,
     pendingOrders: false,
     upgrade: false,
-    multiUsers: null
+    multiUsers: false
 }
 
 export const AccountReducer: Reducer<AccountState> = combineReducers({

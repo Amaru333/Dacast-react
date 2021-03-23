@@ -31,6 +31,8 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
                     return { ...user}
                 })
             }
+        default: 
+            return state
     }
 }
 
