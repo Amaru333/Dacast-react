@@ -1,5 +1,5 @@
 import { AssetTypeEndpoint } from "./common";
-import { EmbedScalingEndpoint, EmbedTypeEndpoint } from "./settings";
+import { EmbedScalingEndpoint, EmbedTypeEndpoint, RecipePresetEndpoint } from "./settings";
 
 export interface GetVodBrandImageUrl {
     vodID: string
@@ -78,4 +78,23 @@ export interface PostUploadImageFromVideoInput {
 
 export interface GetDownloadVodUrlOuput {
     url: string
+}
+
+interface VodEncodedRendition {
+    bitrate: number
+    fileLocation: string
+    height: number
+    name: string
+    renditionID: string
+    size: number
+    transcodingJobID: string
+    width: number
+}
+
+export interface GetVodRenditionsOutput {
+    id: string
+    presets: RecipePresetEndpoint[]
+    encodedRenditions: VodEncodedRendition[]
+    storageRemaining: number
+    videoInfo: VideoInfo
 }

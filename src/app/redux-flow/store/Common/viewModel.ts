@@ -1,5 +1,5 @@
 import { BulkActionItem, PostBulkActionInput, PutUploadFileInput } from '../../../../DacastSdk/common'
-import { BulkActionContentType, BulkActionType } from './types'
+import { BulkActionInput } from './types'
 
 export const formatPutUploadFileInput = (data: {data: File, uploadUrl: string; contentId?: string}): PutUploadFileInput => {
     let formattedData: PutUploadFileInput = {
@@ -10,7 +10,7 @@ export const formatPutUploadFileInput = (data: {data: File, uploadUrl: string; c
     return formattedData
 }
 
-export const formatPostBulkActionInput = (data: {items: {type: BulkActionContentType, id: string, name?: string}[], action: BulkActionType, targetValue?: string | boolean}): PostBulkActionInput => {
+export const formatPostBulkActionInput = (data: BulkActionInput): PostBulkActionInput => {
     let formattedData: PostBulkActionInput = {
         action: data.action,
         items: data.items.map((item): BulkActionItem => {

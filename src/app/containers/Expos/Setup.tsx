@@ -18,9 +18,9 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 export interface ExposSetupComponentProps {
     folderData: FoldersInfos;
     contentDataState: ContentSetupState;
-    getContentSetup: (contentId: string, contentType: string) => Promise<void>;
+    getContentSetup: (contentId: string, contentType: ContentType) => Promise<void>;
     getFolderContent: (folderPath: string) => Promise<void>;
-    saveContentSetup: (data: ContentSetupObject, contentType: string) => Promise<void>;
+    saveContentSetup: (data: ContentSetupObject, contentType: ContentType) => Promise<void>;
 }
 
 const ExposSetup = (props: ExposSetupComponentProps) => {

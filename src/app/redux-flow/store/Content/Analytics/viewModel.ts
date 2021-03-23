@@ -4,7 +4,7 @@ import { formatAudienceResults, formatRealTimeResults, formatSalesResults, forma
 import { ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, WatchAnalyticsState } from './types';
 
 
-export const formatGetContentAnalyticsOutput = (response: GetAnalyticsOutput, data: ContentAnalyticsParameters): { contentId: string; contentType: string; data: ContentAnalyticsFinalState } => {
+export const formatGetContentAnalyticsOutput = (response: GetAnalyticsOutput, data: ContentAnalyticsParameters): { contentId: string; contentType: 'live' | 'vod'; data: ContentAnalyticsFinalState } => {
 
     var audienceData: AudienceAnalyticsState = {};
     var salesData: SalesAnalyticsState = {};

@@ -10,17 +10,18 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface VodRenditionsProps {
     renditions: RenditionsList;
     renditionsState: RenditionsListState
-    addContentRenditions: (ids: string[], contentId: string, contentType: string) => Promise<void>;
-    deleteContentRenditions: (ids: string[], contentId: string, contentType: string) => Promise<void>;
-    getContentRenditions: (contentId: string, contentType: string) => Promise<void>;
+    addContentRenditions: (ids: string[], contentId: string, contentType: ContentType) => Promise<void>;
+    deleteContentRenditions: (ids: string[], contentId: string, contentType: ContentType) => Promise<void>;
+    getContentRenditions: (contentId: string, contentType: ContentType) => Promise<void>;
 }
 export const VodRenditions = (props: VodRenditionsProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -56,14 +57,14 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentRenditions: async (contentId: string, contentType: string) => {
-            await dispatch(getContentRenditionsAction(contentId, contentType));
+        getContentRenditions: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentRenditionsAction(contentType)(contentId));
         },
-        addContentRenditions: async (ids: string[], contentId: string, contentType: string) => {
-            await dispatch(addContentRenditionsAction(ids, contentId, contentType));
+        addContentRenditions: async (ids: string[], contentId: string, contentType: ContentType) => {
+            await dispatch(addContentRenditionsAction(contentType)({names: ids, targetValue: contentId}));
         },
-        deleteContentRenditions: async (ids: string[], contentId: string, contentType: string) => {
-            await dispatch(deleteContentRenditionsAction(ids, contentId, contentType));
+        deleteContentRenditions: async (ids: string[], contentId: string, contentType: ContentType) => {
+            await dispatch(deleteContentRenditionsAction(contentType)({ids: ids, targetValue: contentId}));
         }
     }
 }

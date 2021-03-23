@@ -1,4 +1,6 @@
-export const handleImageModalFunction = (imageModalTitle: string, contentType: string ) => {
+import { ContentType } from "../redux-flow/store/Common/types"
+
+export const handleImageModalFunction = (imageModalTitle: string, contentType: ContentType ) => {
     if (imageModalTitle === "Change Splashscreen") {
         return `${contentType}-splashscreen`
     } 

@@ -37,8 +37,9 @@ export interface SubtitleInfo {
     convertToUTF8?: boolean;
 }
 
-export interface ContentListState { 
-    [contentType: string]: SearchResult
-}
+export type ContentListState = {
+    [contentType in ContentType]: SearchResult;
+};
 
-export const initialContentList: ContentListState =  {}
+export const initialContentList: ContentListState = {
+}
