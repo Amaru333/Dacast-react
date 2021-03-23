@@ -232,7 +232,7 @@ export const ContentListPage = (props: ContentListProps) => {
         { name: 'Delete', function: setBulkDeleteOpen, hideForContent: [] },
     ]
 
-    const handleURLName = (contentType: string) => {
+    const handleURLName = (contentType: ContentType) => {
         switch (contentType) {
             case 'vod':
                 return 'videos'

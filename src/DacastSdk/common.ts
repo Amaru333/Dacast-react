@@ -68,8 +68,8 @@ export interface GetSearchContentOutput {
 }
 
 export interface BulkActionItem {
-    id: string;
     contentType: 'rendition' | 'vod' | 'channel' | 'playlist' | 'expos';
+    id?: string;
     name?: string;
 }
 
@@ -77,7 +77,6 @@ export interface PostBulkActionInput {
     action: 'delete' | 'theme' | 'online' | 'paywall' | 'create';
     items: BulkActionItem[];
     targetValue?: string | boolean;
-
 }
 
 interface BulkItemAdditionResponseField {

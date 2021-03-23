@@ -19,15 +19,18 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { Divider } from '../../../shared/MiscStyles';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { DisabledSection } from '../Common/MiscStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
+
+type ThemeContentType = ContentType | 'settings'
 
 export interface ControlCardThemingComponentProps {
     theme: ContentTheme;
-    contentType: 'vod' | 'live' | 'playlist' | 'settings';
+    contentType: ThemeContentType;
     actionType: 'Create' | 'Save';
     contentId?: string;
-    saveTheme: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
-    createTheme?: (theme: ThemeOptions, contentType: string) => Promise<void>;
-    createContentCustomTheme?: (theme: ThemeOptions, contendId: string, contentType: string) => Promise<void>;
+    saveTheme: (theme: ThemeOptions, contendId: string, contentType: ThemeContentType) => Promise<void>;
+    createTheme?: (theme: ThemeOptions, contentType: ThemeContentType) => Promise<void>;
+    createContentCustomTheme?: (theme: ThemeOptions, contendId: string, contentType: ThemeContentType) => Promise<void>;
     cancelFunction?: () => void;
 }
 

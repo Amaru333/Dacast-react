@@ -16,7 +16,7 @@ export interface EncodingRecipeOptionType {
 export interface RecipePreset {
     name: string;
     description: string;
-    size: string;
+    size: number;
     bitrate: number;
 }
 

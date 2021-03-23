@@ -20,6 +20,7 @@ import { emptyContentListBody } from '../List/emptyContentListState';
 import { userToken } from '../../utils/services/token/tokenService'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
 import { Divider } from '../../../shared/MiscStyles';
+import { ContentType } from '../../redux-flow/store/Common/types'
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -30,15 +31,15 @@ export interface ContentPaywallComponentProps {
     globalPresets: PresetsPageInfos;
     customPricePresetList: Preset[];
     customPromoPresetList: Promo[];
-    saveContentPaywallInfos: (data: ContentPaywallPageInfos, contentId: string, contentType: string) => Promise<void>;
-    getContentPrices: (contentId: string, contentType: string) => Promise<void>;
-    createContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
-    saveContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
-    deleteContentPricePreset: (data: Preset, contentId: string, contentType: string) => Promise<void>;
-    getContentPromos: (contentId: string, contentType: string) => Promise<void>;
-    createContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
-    saveContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
-    deleteContentPromoPreset: (data: Promo, contentId: string, contentType: string) => Promise<void>;
+    saveContentPaywallInfos: (data: ContentPaywallPageInfos, contentId: string, contentType: ContentType) => Promise<void>;
+    getContentPrices: (contentId: string, contentType: ContentType) => Promise<void>;
+    createContentPricePreset: (data: Preset, contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentPricePreset: (data: Preset, contentId: string, contentType: ContentType) => Promise<void>;
+    deleteContentPricePreset: (data: Preset, contentId: string, contentType: ContentType) => Promise<void>;
+    getContentPromos: (contentId: string, contentType: ContentType) => Promise<void>;
+    createContentPromoPreset: (data: Promo, contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentPromoPreset: (data: Promo, contentId: string, contentType: ContentType) => Promise<void>;
+    deleteContentPromoPreset: (data: Promo, contentId: string, contentType: ContentType) => Promise<void>;
     createPromoPreset: (data: Promo) => Promise<void>;
     createPricePreset: (data: Preset) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;

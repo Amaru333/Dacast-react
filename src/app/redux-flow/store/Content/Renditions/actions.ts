@@ -1,78 +1,49 @@
-import { ThunkDispatch } from "redux-thunk";
-import { showToastNotification } from '../../Toasts';
-import { ApplicationState } from '../..';
 import { RenditionsList, ActionTypes, Rendition } from '../Renditions/types'
-import { ContentRenditionsServices } from './services';
-import { parseContentType } from '../../../../utils/utils';
-import { BulkActionItem } from '../../../../../DacastSdk/common';
+import { applyViewModel } from '../../../../utils/utils';
+import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
+import { ContentType } from "../../Common/types";
+import { formatDeleteVodRenditionsInput, formatDeleteVodRenditionsOutput, formatGetVodRenditionsInput, formatGetVodRenditionsOutput, formatPostVodRenditionsInput, formatPostVodRenditionsOutput } from "./viewModel";
 
 export interface GetContentRenditions {
     type: ActionTypes.GET_CONTENT_RENDITIONS;
-    payload: {contentId: string; contentType: string; data: RenditionsList};
+    payload: {contentId: string; contentType: ContentType; data: RenditionsList};
 }
 
 export interface AddContentRenditions {
     type: ActionTypes.ADD_CONTENT_RENDITIONS;
-    payload:{ contentId: string; contentType: string; data: Rendition[]};
+    payload: { contentId: string; contentType: ContentType; data: Rendition[]};
 }
 
 export interface DeleteContentRenditions {
     type: ActionTypes.DELETE_CONTENT_RENDITIONS;
-    payload: { contentId: string; contentType: string; data: string[] } ;
+    payload: { contentId: string; contentType: ContentType; data: string[] } ;
 }
 
-export const getContentRenditionsAction = (contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, GetContentRenditions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, GetContentRenditions>) => {
-        await ContentRenditionsServices.getContentRenditionsService(contentId, parseContentType(contentType))
-            .then(response => {
-                dispatch({ type: ActionTypes.GET_CONTENT_RENDITIONS, payload: {contentId: contentId, contentType: contentType, data: response.data.data }});
-            })
-            .catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const getContentRenditionsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.getVodRenditions, formatGetVodRenditionsInput, formatGetVodRenditionsOutput(contentType), ActionTypes.GET_CONTENT_RENDITIONS, null, 'Couldn\'t get video renditions')
+        default:
+            throw new Error('Error applying content view model')
+    }
 }
 
-export const addContentRenditionsAction = (data: string[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, AddContentRenditions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, AddContentRenditions>) => {
-        await ContentRenditionsServices.addContentRenditionsService(data, contentId)
-            .then(response => {
-                let array: Rendition[] = [] 
-                response.items.map((item: BulkActionItem, i: number) => {
-                    let rendition: Rendition = {
-                        renditionID: item.id,
-                        name: data[i],
-                        size: null,
-                        bitrate: null,
-                        width: null,
-                        transcodingJobID: null,
-                        height: null
-                    } 
-                    array.push(rendition)
-                })
-                dispatch({ type: ActionTypes.ADD_CONTENT_RENDITIONS, payload:{ contentId: contentId, contentType: contentType, data: array} });
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const addContentRenditionsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.postBulkAction, formatPostVodRenditionsInput, formatPostVodRenditionsOutput(contentType), ActionTypes.ADD_CONTENT_RENDITIONS, null, 'Couldn\'t add video renditions')
+        default:
+            throw new Error('Error applying content view model')
+    }
 }
 
-export const deleteContentRenditionsAction = (data: string[], contentId: string, contentType: string): ThunkDispatch<Promise<void>, {}, AddContentRenditions> => {
-    return async (dispatch: ThunkDispatch<ApplicationState, {}, DeleteContentRenditions>) => {
-        await ContentRenditionsServices.deleteContentRenditionsService(data, contentId)
-            .then(response => {
-                dispatch({ type: ActionTypes.DELETE_CONTENT_RENDITIONS, payload: { contentId: contentId, contentType: contentType, data: data } });
-            })
-            .catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export const deleteContentRenditionsAction = (contentType: ContentType) => {
+    switch(contentType) {
+        case 'vod': 
+            return applyViewModel(dacastSdk.postBulkAction, formatDeleteVodRenditionsInput, formatDeleteVodRenditionsOutput(contentType), ActionTypes.DELETE_CONTENT_RENDITIONS, null, 'Couldn\'t delete video renditions')
+        default:
+            throw new Error('Error applying content view model')
+    }
 }
-
-
 
 export type Action = GetContentRenditions | AddContentRenditions | DeleteContentRenditions

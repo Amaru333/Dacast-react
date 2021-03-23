@@ -7,12 +7,12 @@ import { formatGetContentSecuritySettingsInput, formatGetContentSecuritySettings
 
 export interface GetContentSecuritySettings {
     type: ActionTypes.GET_CONTENT_SECURITY_SETTINGS;
-    payload: ContentSecuritySettings & {contentType: string}
+    payload: ContentSecuritySettings & {contentType: ContentType}
 }
 
 export interface SaveContentSecuritySettings {
     type: ActionTypes.SAVE_CONTENT_SECURITY_SETTINGS;
-    payload: ContentSecuritySettings & {contentType: string}
+    payload: ContentSecuritySettings & {contentType: ContentType}
 }
 
 export interface LockContent {

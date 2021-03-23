@@ -11,7 +11,7 @@ import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutExtendTrialInput, PutWithdrawalDetailsInput } from './admin'
 import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
-import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from './video'
+import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
@@ -226,6 +226,7 @@ export class DacastSdk {
     public getVodThemes = async (input: string): Promise<GetContentThemeOutput> => await this.axiosClient.get('/vods/' + input + '/settings/themes').then(this.checkExtraData)
     public postVodCustomTheme = async (input: PostContentCustomThemeInput): Promise<ThemeId> => await this.axiosClient.post('/vods/' + input.contentId + '/settings/themes', input.payload).then(this.checkExtraData)
     public putVodCustomTheme = async (input: PutContentThemeInput): Promise<void> => await this.axiosClient.put('/vods/' + input.contentId + '/settings/themes/' + input.payload.id + input.actionWord, input.payload)
+    public getVodRenditions = async (input: string): Promise<GetVodRenditionsOutput> => await this.axiosClient.get('/vods/' + input + '/renditions').then(this.checkExtraData)
 
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)

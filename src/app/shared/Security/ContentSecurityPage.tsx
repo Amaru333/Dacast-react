@@ -26,8 +26,8 @@ interface ContentSecurityComponentProps {
     globalSecuritySettings: SecuritySettings;
     contentId: string;
     getSettingsSecurityOptions: (contentId: string, contentType: ContentType) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
-    lockContent: (contentId: string, contentType: string) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: ContentType) => Promise<void>;
+    lockContent: (contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
