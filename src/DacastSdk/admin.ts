@@ -116,6 +116,7 @@ interface PlanSettingEndpoint {
 
 export interface GetAccountPlanOutput {
     name: string;
+    expiresAt: number;
     uploadSize: number;
     itemLimit: number;
     folderDepth: number;
@@ -133,7 +134,6 @@ export interface GetAccountPlanOutput {
     signedKeys: PlanSettingEndpoint;
     api: PlanSettingEndpoint;
     webDownload: PlanSettingEndpoint;
-    playerDownload: PlanSettingEndpoint;
     paywall: PlanSettingEndpoint;
     advertising: PlanSettingEndpoint;
     emailCatcher: PlanSettingEndpoint;
@@ -317,4 +317,11 @@ export interface MigratedUserEndpoint {
 export interface GetMigratedUsersListOutput {
     users: MigratedUserEndpoint[]
     next: string
+}
+
+export interface PutExtendTrialInput {
+    userId: string
+    payload: {
+        newExpirationDate: number
+    }
 }

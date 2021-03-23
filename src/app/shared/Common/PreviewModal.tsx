@@ -1,8 +1,8 @@
 import React from 'react'
+import styled from 'styled-components';
 import { Modal } from '../../../components/Modal/Modal'
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { usePlayer } from '../../utils/services/player/player';
-import { PlayerContainer } from '../General/ImageModal';
 
 export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: string; isOpened: boolean; contentType: ContentType}) => {
     let playerRef = React.useRef<HTMLDivElement>(null)
@@ -10,7 +10,9 @@ export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: st
 
     const [playerReady, setPlayerReady] = React.useState(false);
     let contentInfo = player && player.getContentInfo()
-    let { width, height, features } = contentInfo || {}
+    let activeMedia = player && player.getActiveMedia()
+    let { features } = contentInfo || {}
+    let { width, height } = props.contentType === 'live' ? { width: 16, height: 9 } : (activeMedia || {})
     let playListPosition = features && features.playlist && features.playlist.position;
     let playlistWidthAdjustment = playListPosition === 'right' || playListPosition === 'left' ? 180 : 0
     let playlistHeightAdjustment = playListPosition === 'top' || playListPosition === 'bottom' ? 145 : 0
@@ -39,3 +41,11 @@ export const PreviewModal = (props: {toggle: (v: boolean) => void; contentId: st
         </Modal>
     )
 }
+
+export const PlayerContainer = styled.div`
+    width: 95%;
+    height: 100%;
+    max-height: 66vh;
+    position: relative;
+    margin: 16px auto;
+`

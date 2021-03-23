@@ -12,10 +12,10 @@ const reducer: Reducer<PlanInfo> = (state = editPlanDefaultState, action: Action
             return {
                 ...state,
             }
-        case ActionTypes.SWITCH_ACCOUNT_PLAN: 
+        case ActionTypes.EXTEND_TRIAL: 
             return {
                 ...state,
-                name: action.payload
+                expiresAt: action.payload
             }
         default:
             return state

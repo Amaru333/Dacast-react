@@ -6,8 +6,9 @@ import React from 'react';
 import { DayStyle, DayWrapper } from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
 
-function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
+function Day({ dayLabel, date, isToday, isMonthLastDay, minDate }: DayProps) {
     const dayRef = useRef(null);
+    const isBlocked = minDate ? date.valueOf() / 1000 < minDate : false
     const {
         focusedDate,
         isDateFocused,
@@ -57,6 +58,8 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
             isFirstDay={startDateStyle === date}
             isLastDay={endDateStyle === date}
             isSingle={isSingle!}
+            isBlocked={isBlocked}
+
         >
             <DayStyle
                 onClick={onClick}
@@ -68,8 +71,9 @@ function Day({ dayLabel, date, isToday, isMonthLastDay }: DayProps) {
                 type="button"
                 ref={dayRef}
                 isToday={isToday}
+                isBlocked={isBlocked}
             >
-                <Text size={16} weight='reg' color={isSelected ? 'white' : 'gray-1'}>{dayLabel}</Text>
+                <Text size={16} weight='reg' color={isSelected ? 'white' : isBlocked ? 'gray-6' : 'gray-1'}>{dayLabel}</Text>
             </DayStyle>
         </DayWrapper>
 

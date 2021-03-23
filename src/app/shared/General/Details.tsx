@@ -10,7 +10,7 @@ import { Text } from '../../../components/Typography/Text'
 import { updateClipboard } from '../../utils/utils'
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
-import { dacastSdk } from '../../../admin/utils/services/axios/adminAxiosClient';
+import { dacastSdk } from '../../utils/services/axios/axiosClient';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 

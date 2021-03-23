@@ -3,7 +3,7 @@ import { CardStyle } from './CardStyle';
 import { isMobile } from 'react-device-detect'
 import { ColorsApp } from '../../styled/types';
 
-export const Card = (props: React.HTMLAttributes<HTMLDivElement> & {backgroundColor: ColorsApp}) => {
+export const Card = (props: React.HTMLAttributes<HTMLDivElement> & {backgroundColor: ColorsApp; customPadding?: string}) => {
 
     const {className, backgroundColor,  ...other} = props;
 

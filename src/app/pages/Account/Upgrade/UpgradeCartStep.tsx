@@ -14,12 +14,12 @@ import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDrop
 import { calcTotalFeatures } from '../../../utils/utils';
 import { dateAdd } from '../../../../utils/services/date/dateService';
 
-interface UpgradeCartStepProps { 
-    stepperData: Plan; 
+interface UpgradeCartStepProps {
+    stepperData: Plan;
     billingInfo: BillingPageInfos;
     planDetails: Plans;
     selectedCurrency: DropdownSingleListItem;
-    updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; 
+    updateStepperData: React.Dispatch<React.SetStateAction<Plan>>;
     setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;
     setSelectedCurrency: React.Dispatch<React.SetStateAction<DropdownSingleListItem>>;
 }
@@ -54,9 +54,9 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
     //     props.updateStepperData({...props.stepperData, privileges: props.stepperData.privileges.map((item: Privilege) => {
     //         if(props.stepperData.selectedPrivileges && props.stepperData.selectedPrivileges.indexOf(item.code) > -1){
     //             return {...item, checked: true}
-    //         } 
+    //         }
     //         return item
-            
+
     //     })})
     // }, [props.stepperData.paymentTerm])
 
@@ -182,7 +182,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
             <Text key={"cartTableFooterTotal"} size={14} weight="med" color="gray-1">Total Pay Now&nbsp;</Text>,
             <div className="flex items-center right">
                 {
-                    props.stepperData.commitment === 3 && <Label className="mr2" color='green' backgroundColor='green20' label="3 Months Upfront" /> 
+                    props.stepperData.commitment === 3 && <Label className="mr2" color='green' backgroundColor='green20' label="3 Months Upfront" />
                 }
                 <Text className='right pr2' key={"cartTableFooterValue"} size={14} weight="med" color="gray-1">{props.stepperData.commitment === 3 ? currencySymbol + (planPrice * 3) : (props.stepperData.name !== 'Monthly Scale' ? currencySymbol + (planPrice + totalFeatures) : currencySymbol + planPrice)}</Text>
             </div>
@@ -192,15 +192,15 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
     return (
         <div>
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                <MultiCurrencyDropdown 
+                <MultiCurrencyDropdown
                     id='multiCurrencyDropdownPurchaseStepper'
-                    defaultCurrency={props.selectedCurrency} 
-                    currenciesList={props.stepperData.price} 
+                    defaultCurrency={props.selectedCurrency}
+                    currenciesList={props.stepperData.price}
                     callback={props.setSelectedCurrency}
                 />
             </div>
             <Table id='thirdStep' headerBackgroundColor="gray-10" body={cartTableBodyElement()} />
-            <Table id='thirdStepTotal' className='tableOverflow' customClassName=' tableOverflow' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} />
+            <Table id='thirdStepTotal' className='tableOverflow' customClassName=' tableOverflow' headerBackgroundColor="gray-10" body={cartDropdownOption()} footer={cartTableFooterElement()} noScroll/>
         </div>
     )
 }
