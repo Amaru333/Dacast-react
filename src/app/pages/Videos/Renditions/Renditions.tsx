@@ -39,7 +39,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     const [newSourceFileUploadProgress, setNewSourceFileUploadProgress] = React.useState<number>(0)
     const [uploadError, setUploadError] = React.useState<string>(null)
     // the data from the WS to know when the processing renditions are completed
-    let wsData = useWebSocket()
+    // let wsData = useWebSocket()
 
     let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -160,7 +160,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0 || (wsData && !wsData.data.completed)}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
                     defaultChecked={selectedEncodedRendition.indexOf(value.name) !== -1}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
@@ -260,7 +260,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             <div>
                 <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
             </div>
-            <div className="flex mt1">
+            <div className="flex mt1 mb2">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                 <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href={getKnowledgebaseLink('Encoding Recipes')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
