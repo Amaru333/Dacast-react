@@ -20,14 +20,25 @@ export interface PutExpoDetailsInput {
         title: string
         description: string
         online: boolean
-        appearance: AppearanceEndpoint
-        poster: AssetTypeEndpoint
+        //appearance: AppearanceEndpoint
+        //poster: AssetTypeEndpoint
     }
 }
 
 export interface GetExpoAssetUploadUrl {
     extension: string
     expoID: string
+}
+
+export interface PutExpoDesign {
+    titleTextColor: string;
+    descriptionTextColor: string;
+    coverBackgroundEnable: boolean;
+    coverBackgroundImage: string; 
+    darkModeEnable: boolean;
+    contentDescriptionsEnable: boolean;
+    featuredContentEnable: boolean;
+    featuredContentId: string;
 }
 
 export interface ExpoContentSetup {
