@@ -30,8 +30,8 @@ export const DesignPage = (props: { contentDataState: ContentSetupState;  design
     
     return (
         <React.Fragment>
-            <PlayerSection className='xs-mb2 col col-right col-12 md-col-8  sm-pl1'>
-                <WrapIFrame>
+            <PlayerSection className='xs-mb2 col col-right col-12 md-col-8 relative sm-pl1'>
+                <WrapIFrame className='col-12'>
                     <ScaledFrame  src={"https://dacastexpo.com/?id="+props.exposId} />   
                 </WrapIFrame>
             </PlayerSection>
@@ -53,7 +53,7 @@ export const DesignPage = (props: { contentDataState: ContentSetupState;  design
                     <Tooltip  target="coverBackgroundTooltip"></Tooltip>
                 </ControlToggleContainer>
                 {
-                    backgroundEnable && <Text>New Component Here</Text>
+                    backgroundEnable && <Text>TODO: New Component Here</Text>
                 }
                 <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
                     When disabled, white will be the default cover background.
@@ -95,15 +95,14 @@ export const DesignPage = (props: { contentDataState: ContentSetupState;  design
 }
 
 export const WrapIFrame = styled.div<{}>`
-    width: 100%;
-    height: 1500px;
+    height: 800px;
     padding: 0;
     overflow: hidden;
 `
 export const ScaledFrame = styled.iframe<{}>`
-    width: 1000px;
-    height: 2000px;
-    border: 0px;
-    zoom: 1;
-
+    width: 1280px;
+    height: 786px;
+    border: 0;
+    transform: scale(0.5);
+    transform-origin: 0 0;
 `
