@@ -21,11 +21,11 @@ export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; 
     const [selectedItem, setSelectedItem] = React.useState<string>(null);
     const [marker, setMarker] = React.useState<number>(null);
 
-    const userId = userToken.getUserInfoItem('user-id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     let isMobile = useMedia('(max-width: 832px)');
     let playerRef = React.useRef<HTMLDivElement>(null);
-    let player = usePlayer(playerRef, userId +  '-vod-' + props.contentId);
+    let player = usePlayer(playerRef, accountId + '-vod-' + props.contentId);
 
 
     const tableHeaderElement = () => {

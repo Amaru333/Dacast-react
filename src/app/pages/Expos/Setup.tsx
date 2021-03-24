@@ -10,8 +10,6 @@ import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const SetupPage = (props: SetupComponentProps & {contentId: string; contentType: string}) => {
 
-    const userId = userToken.getUserInfoItem('user-id')
-
     const formateData: FolderAsset[] = props.contentData.contentList ? props.contentData.contentList.map(item =>{
         return {
             ownerID: "",

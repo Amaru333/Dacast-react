@@ -35,11 +35,11 @@ export const ImageModal = (props: ImageModalProps) => {
     const [fileName, setFileName] = React.useState<string>(props.imageFileName)
     const [uploadType, setUploadType] = React.useState<string>(null)
 
-    const userId = userToken.getUserInfoItem('user-id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     let playerRef = React.useRef<HTMLDivElement>(null);
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
-    let player = usePlayer(playerRef, userId + '-' + props.contentType + '-' + props.contentId)
+    let player = usePlayer(playerRef, accountId + '-' + props.contentType + '-' + props.contentId)
 
     React.useEffect(() => {
         if (selectedOption === "frame") {

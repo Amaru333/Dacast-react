@@ -25,7 +25,7 @@ VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | Phon
 
 type ExtraUserInfo = 'user-id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 
-type GroupIds = 'credit-group-id' | 'live-channel-group-id' | 'monetization-group-id' | 'restriction-group-id' | 'billing-group-id' | 'privilege-group-id' | 'expo-group-id' | 'transcoding-recipe-group-id' | 'vod-storage-id' | 'policy-group-id' | 'folder-group-id' | 'salesforce-group-id' | 'playlist-group-id' | 'theme-group-id' | 'payment-group-id' | 'ads-group-id'
+type GroupIds = 'credit-group-id' | 'live-channel-group-id' | 'monetization-group-id' | 'restriction-group-id' | 'billing-group-id' | 'privilege-group-id' | 'expo-group-id' | 'transcoding-recipe-group-id' | 'vod-storage-id' | 'policy-group-id' | 'folder-group-id' | 'salesforce-group-id' | 'playlist-group-id' | 'theme-group-id' | 'payment-group-id' | 'ads-group-id' | 'parent-id'
 
 type UserInfo = {
     [key in ExtraUserInfo | Privilege | GroupIds]: string
