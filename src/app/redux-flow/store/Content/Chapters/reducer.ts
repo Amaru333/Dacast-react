@@ -1,6 +1,6 @@
 import { Reducer } from "redux"
 import { Action } from "./actions"
-import { ActionTypes, ChapterMarkerInfos, defaultStateChapter, ChapterMarkerInfosState } from './types'
+import { ActionTypes, defaultStateChapter, ChapterMarkerInfosState } from './types'
 
 const reducer: Reducer<ChapterMarkerInfosState> = (state = defaultStateChapter, action: Action) => {
     switch (action.type) {
@@ -10,8 +10,7 @@ const reducer: Reducer<ChapterMarkerInfosState> = (state = defaultStateChapter, 
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
-                        chapterMarkers: action.payload.data.chapterMarkers && action.payload.data.chapterMarkers.length > 0 ? action.payload.data.chapterMarkers.map((chapter, i) => {return {...chapter, id: chapter.text + i.toString()}}) 
-                            : []
+                        chapterMarkers: action.payload.chapterMarkers
                     }
                 }
 
@@ -25,7 +24,7 @@ const reducer: Reducer<ChapterMarkerInfosState> = (state = defaultStateChapter, 
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        chapterMarkers: action.payload.data
+                        chapterMarkers: action.payload.chapterMarkers
                     }
                 }
 
