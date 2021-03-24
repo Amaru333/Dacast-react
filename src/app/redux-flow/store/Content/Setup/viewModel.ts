@@ -5,8 +5,8 @@ import { ContentSelectorType, ContentSetupObject } from "./types"
 
 export const formatGetContentSetupInput = (data: string): string => data
 
-export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data: GetPlaylistSetupOutput): {contentId: string; contentType: string; data: ContentSetupObject} => {
-    let formattedData: {contentId: string; contentType: string; data: ContentSetupObject} = {
+export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data: GetPlaylistSetupOutput): {contentId: string; contentType: ContentType; data: ContentSetupObject} => {
+    let formattedData: {contentId: string; contentType: ContentType; data: ContentSetupObject} = {
         contentId: data.id,
         data: {
             id: data.id,
@@ -78,8 +78,8 @@ export const formatPutContentSetupOutput = (contentType: ContentType) => (ednpoi
     return formattedData
 }
 
-export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: GetExpoSetupOutput): {contentId: string; contentType: string; data: ContentSetupObject} => {
-    let formattedData: {contentId: string; contentType: string; data: ContentSetupObject} = {
+export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: GetExpoSetupOutput): {contentId: string; contentType: ContentType; data: ContentSetupObject} => {
+    let formattedData: {contentId: string; contentType: ContentType; data: ContentSetupObject} = {
         contentId: data.id,
         data: {
             id: data.id,

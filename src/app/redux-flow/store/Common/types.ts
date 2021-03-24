@@ -6,3 +6,13 @@ export type BulkActionType = 'delete' | 'create' | 'theme' | 'paywall' | 'online
 
 export type BulkActionContentType = ContentType | 'rendition'
 
+export interface BulkActionInput {
+    items: {
+        type: BulkActionContentType
+        id?: string
+        name?: string
+    }[]
+    action: BulkActionType
+    targetValue?: string | boolean
+}
+

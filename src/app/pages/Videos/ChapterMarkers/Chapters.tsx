@@ -13,9 +13,10 @@ import { ChapterComponentProps } from '../../../containers/Videos/Chapters';
 import { emptyContentListBody, emptyContentListHeader } from '../../../shared/List/emptyContentListState';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { dataToTimeVideo } from '../../../../utils/formatUtils';
+import { ContentType } from '../../../redux-flow/store/Common/types';
 
 
-export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; contentType: string}) => {
+export const ChaptersPage = (props: ChapterComponentProps & {contentId: string; contentType: ContentType}) => {
 
     const [chapterMarkerModalOpened, setChapterMarkerModalOpened] = React.useState<boolean>(false);
     const [selectedItem, setSelectedItem] = React.useState<string>(null);

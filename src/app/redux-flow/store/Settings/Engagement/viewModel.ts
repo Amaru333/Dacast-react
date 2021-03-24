@@ -1,10 +1,10 @@
 import { PostUploadUrlInput } from '../../../../../DacastSdk/common';
-import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndoint, PutAdInput } from '../../../../../DacastSdk/settings';
+import { AdEnpoint, AdTypeEndpoint, EngagementSettingsEndpoint, PutAdInput } from '../../../../../DacastSdk/settings';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 import { userToken } from '../../../../utils/services/token/tokenService';
 import { Ad, AdType, EngagementInfo } from './types';
 
-export const formatGetEngagementOutput = (data: EngagementSettingsEndoint): EngagementInfo => {
+export const formatGetEngagementOutput = (data: EngagementSettingsEndpoint): EngagementInfo => {
     let formattedData: EngagementInfo = {
         ...data,
         adsSettings: {
@@ -23,8 +23,8 @@ export const formatGetEngagementOutput = (data: EngagementSettingsEndoint): Enga
     return formattedData
 }
 
-export const formatPutEngagementInput = (data: EngagementInfo): EngagementSettingsEndoint => {
-    let formattedData: EngagementSettingsEndoint = {
+export const formatPutEngagementInput = (data: EngagementInfo): EngagementSettingsEndpoint => {
+    let formattedData: EngagementSettingsEndpoint = {
         adsSettings: {
             ...data.adsSettings,
             ads: data.adsSettings.ads.map((ad: Ad): AdEnpoint => {
@@ -43,6 +43,9 @@ export const formatPutEngagementInput = (data: EngagementInfo): EngagementSettin
         },
         endScreenSettings: {
             ...data.endScreenSettings
+        },
+        googleAnalyticsSettings: {
+            ...data.googleAnalyticsSettings
         }
     }
 

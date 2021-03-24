@@ -1,7 +1,7 @@
 export enum ActionTypes  {
     GET_ACCOUNT_PLAN = "@@admin_accounts/GET_ACCOUNT_PLAN",
     SAVE_ACCOUNT_PLAN = "@@admin_accounts/SAVE_ACCOUNT_PLAN",
-    SWITCH_ACCOUNT_PLAN = "@@admin_accounts/SWITCH_ACCOUNT_PLAN"
+    EXTEND_TRIAL = "@@admin_accounts/EXTEND_TRIAL"
 }
 
 interface PlanSetting {
@@ -11,6 +11,7 @@ interface PlanSetting {
 
 export interface PlanInfo {
     name: string;
+    expiresAt: string;
     uploadSize: number;
     itemLimit: number;
     folderDepth: number;
@@ -28,7 +29,6 @@ export interface PlanInfo {
     signedKeys: PlanSetting;
     api: PlanSetting;
     webDownload: PlanSetting;
-    playerDownload: PlanSetting;
     paywall: PlanSetting;
     advertising: PlanSetting;
     emailCatcher: PlanSetting;

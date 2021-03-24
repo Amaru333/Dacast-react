@@ -17,7 +17,7 @@ export interface EditContentDetails {
 
 export interface AddContentSubtitle {
     type: ActionTypes.ADD_CONTENT_SUBTITLE;
-    payload: {contentId: string; data: SubtitleInfo; contentType: string};
+    payload: {contentId: string; data: SubtitleInfo; contentType: ContentType};
 }
 
 export interface EditContentSubtitle {
@@ -27,17 +27,17 @@ export interface EditContentSubtitle {
 
 export interface DeleteContentSubtitle {
     type: ActionTypes.DELETE_CONTENT_SUBTITLE;
-    payload: {id: string; contentId: string; contentType: string};
+    payload: {id: string; contentId: string; contentType: ContentType};
 }
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: { contentId: string; url: string, contentType: string, data?: SubtitleInfo };
+    payload: { contentId: string; url: string, contentType: ContentType, data?: SubtitleInfo };
 }
 
 export interface UploadImage {
     type: ActionTypes.UPLOAD_IMAGE;
-    payload: {contentId: string, contentType: string};
+    payload: {contentId: string, contentType: ContentType};
 }
 
 export interface UploadImageFromVideo {
@@ -47,12 +47,12 @@ export interface UploadImageFromVideo {
 
 export interface DeleteImage {
     type: ActionTypes.DELETE_IMAGE;
-    payload: {id: string, contentId: string, contentType: string};
+    payload: {id: string, contentId: string, contentType: ContentType};
 }
 
 export interface GenerateEncoderKey {
     type: ActionTypes.GENERATE_ENCODER_KEY;
-    payload: {encoderKey: string, contentId: string; contentType: string}
+    payload: {encoderKey: string, contentId: string; contentType: ContentType}
 }
 
 export const getContentDetailsAction = (contentType: ContentType) => {

@@ -12,6 +12,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { timezoneDropdownList, discountAppliedDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { tsToUtc } from '../../../utils/services/date/dateService';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -27,7 +28,7 @@ const defaultPromo: Promo = {
     assignedGroupIds: []
 }
 
-export const ContentPromoPresetsModal = (props: { contentType: string; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: string) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
+export const ContentPromoPresetsModal = (props: { contentType: ContentType; contentId: string; actionButton: 'Create' | 'Save'; action: (p: Promo, contentId: string, contentType: ContentType) => Promise<void>; toggle: (b: boolean) => void; promo: Promo; presetList: Promo[]; savePresetGlobally: (p: Promo) => Promise<void> }) => {
 
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)

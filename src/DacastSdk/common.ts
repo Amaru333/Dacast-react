@@ -2,7 +2,7 @@ import { GetExpoAssetUploadUrl } from "./expo"
 import { GetLiveAssetUploadUrl, GetLiveBrandImageUrl } from "./live"
 import { PaywallThemeEndpoints, PriceEndpoints, PriceSettingsEndpoints } from "./paywall"
 import { GetPlaylistAssetUploadUrl } from "./playlist"
-import { EngagementSettingsEndoint, PutAdInput } from "./settings"
+import { EngagementSettingsEndpoint, GetSecuritySettingsOutput, PutAdInput, PutSecuritySettingsInput, ThemeEndpoint, ThemeSettings } from "./settings"
 import { GetVideoAssetUploadUrl, GetVideoSubtitleUploadUrl, GetVodBrandImageUrl } from "./video"
 
 export interface GetCompanyLogoUploadUrl {
@@ -68,8 +68,8 @@ export interface GetSearchContentOutput {
 }
 
 export interface BulkActionItem {
-    id: string;
     contentType: 'rendition' | 'vod' | 'channel' | 'playlist' | 'expos';
+    id?: string;
     name?: string;
 }
 
@@ -77,7 +77,6 @@ export interface PostBulkActionInput {
     action: 'delete' | 'theme' | 'online' | 'paywall' | 'create';
     items: BulkActionItem[];
     targetValue?: string | boolean;
-
 }
 
 interface BulkItemAdditionResponseField {
@@ -94,7 +93,7 @@ export interface PostBulkActionOutput {
     items: BulkActionReponseItem[]
 }
 
-export type PutContentEngagementSettingsInput = EngagementSettingsEndoint & {id: string}
+export type PutContentEngagementSettingsInput = EngagementSettingsEndpoint & {id: string}
 
 export interface PutContentLockEngagementSettingsInput {
     id: string;
@@ -163,4 +162,33 @@ export interface PutContentPriceInput {
 export interface DeleteContentPriceInput {
     id: string
     contentId: string
+}
+
+interface ContentSecurityExtraFields {
+    locked: boolean
+    selectedGeoRestriction?: string
+    selectedDomainControl?: string 
+}
+
+export type GetContentSecuritySettingsOutput = GetSecuritySettingsOutput & ContentSecurityExtraFields
+
+export type PutContentSecuritySettingsInput = {
+    id: string
+    payload: PutSecuritySettingsInput & ContentSecurityExtraFields
+}
+
+export interface GetContentThemeOutput {
+    contentThemeID: string
+    themes: ThemeEndpoint[]
+}
+
+export interface PostContentCustomThemeInput {
+    contentId: string
+    payload: ThemeSettings
+}
+
+export interface PutContentThemeInput {
+    contentId: string
+    actionWord: '/set' | ''
+    payload: ThemeEndpoint
 }

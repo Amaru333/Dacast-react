@@ -295,8 +295,8 @@ export const fomatPostExpoAssetUploadOutput = fomatPostLiveAssetUploadOutput
 
 export const formatPostEncoderKeyInput = (data: string): string => data
 
-export const formatPostEncoderKeyOutput = (contentType: ContentType) => (endpointResponse: PostEncoderKeyOutput, dataReact: string): {encoderKey: string, contentId: string; contentType: string} => {
-    let formattedData: {encoderKey: string, contentId: string; contentType: string} = {
+export const formatPostEncoderKeyOutput = (contentType: ContentType) => (endpointResponse: PostEncoderKeyOutput, dataReact: string): {encoderKey: string, contentId: string; contentType: ContentType} => {
+    let formattedData: {encoderKey: string, contentId: string; contentType: ContentType} = {
         encoderKey: endpointResponse.encoder_key,
         contentId: dataReact,
         contentType: contentType

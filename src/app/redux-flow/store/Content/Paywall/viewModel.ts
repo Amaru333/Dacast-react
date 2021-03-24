@@ -211,9 +211,9 @@ export const formatDeleteContentPriceOutput = (endpointResponse: null, dataReact
 
 export const formatGetContentPromosInput = (data: {contentId: string; contentType: ContentType}): string => 'page=1&per-page=100'
 
-export const formatGetContentPromosOutput = (endpointResponse: GetPromoOutput, dataReact: {contentId: string; contentType: ContentType}): {data: Promo[], contentId: string, contentType: string} => {
+export const formatGetContentPromosOutput = (endpointResponse: GetPromoOutput, dataReact: {contentId: string; contentType: ContentType}): {data: Promo[], contentId: string, contentType: ContentType} => {
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
-    let formattedData: {data: Promo[], contentId: string, contentType: string} = {
+    let formattedData: {data: Promo[], contentId: string, contentType: ContentType} = {
         data: endpointResponse.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${dataReact.contentType}-${dataReact.contentId}`) !== -1),
         contentType: dataReact.contentType,
         contentId: dataReact.contentId

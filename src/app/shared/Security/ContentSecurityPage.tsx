@@ -17,16 +17,17 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { Divider } from '../../../shared/MiscStyles';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { DisabledSection } from '../Common/MiscStyle';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 
 interface ContentSecurityComponentProps {
-    contentType: string
+    contentType: ContentType
     contentSecuritySettings: ContentSecuritySettings;
     globalSecuritySettings: SecuritySettings;
     contentId: string;
-    getSettingsSecurityOptions: (contentId: string, contentType: string) => Promise<void>;
-    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: string) => Promise<void>;
-    lockContent: (contentId: string, contentType: string) => Promise<void>;
+    getSettingsSecurityOptions: (contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentSecuritySettings: (data: SecuritySettings, contentId: string, contentType: ContentType) => Promise<void>;
+    lockContent: (contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 

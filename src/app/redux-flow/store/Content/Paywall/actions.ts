@@ -48,12 +48,12 @@ export interface CreateContentPromoPreset {
 
 export interface SaveContentPromoPreset {
     type: ActionTypes.SAVE_CONTENT_PROMO_PRESET;
-    payload: {promo: Promo, contentId: string, contentType: string};
+    payload: {promo: Promo, contentId: string, contentType: ContentType};
 }
 
 export interface DeleteContentPromoPreset {
     type: ActionTypes.DELETE_CONTENT_PROMO_PRESET;
-    payload: {promo: Promo, contentId: string, contentType: string};
+    payload: {promo: Promo, contentId: string, contentType: ContentType};
 }
 
 export type Action = GetContentPaywallInfo | GetContentPaywallPrices | CreateContentPricePreset | SaveContentPaywallInfos | SaveContentPricePreset | DeleteContentPricePreset | GetContentPaywallPromos | CreateContentPromoPreset | SaveContentPromoPreset | DeleteContentPromoPreset

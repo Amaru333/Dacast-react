@@ -6,7 +6,7 @@ import { ContentType } from '../../Common/types'
 
 export interface GetContentList {
     type: ActionTypes.GET_CONTENT_LIST;
-    payload: {data: SearchResult, contentType: string, countTotal?: number };
+    payload: {data: SearchResult, contentType: ContentType, countTotal?: number };
 }
 
 export interface DeleteContent {

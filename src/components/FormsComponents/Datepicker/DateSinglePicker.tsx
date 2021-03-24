@@ -26,7 +26,6 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
 
     const datepickerRef = React.useRef<HTMLDivElement>(null);
 
-
     const [state, setState] = useState<OnDatesChangeProps>({
         startDate: props.defaultStartDate && props.defaultStartDate.getTime() > 0 ? props.defaultStartDate : null,
         endDate: null,
@@ -117,6 +116,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                                 year={month.year}
                                 month={month.month}
                                 firstDayOfWeek={firstDayOfWeek}
+                                minDate={props.minDate}
                             />
                         ))}
                     </MonthContainerStyle>

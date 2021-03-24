@@ -1,9 +1,9 @@
 import styled, {css} from 'styled-components';
 import { ColorsApp } from '../../styled/types';
 
-export const CardStyle = styled.div<{isMobile: boolean; backgroundColor: ColorsApp}>`
+export const CardStyle = styled.div<{isMobile: boolean; backgroundColor: ColorsApp; customPadding?: string}>`
     box-sizing: border-box;
-    padding: 24px;
+    padding: ${props => props.customPadding ? props.customPadding : '24px'};
     ${props => props.isMobile && css`
         padding: 16px !important;
     `};

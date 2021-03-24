@@ -1,5 +1,8 @@
+import { LocationItem } from "../Audience/types";
+
 export enum ActionTypes {
-    GET_ANALYTICS_DASHBOARD = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD"
+    GET_ANALYTICS_DASHBOARD = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD",
+    GET_ANALYTICS_DASHBOARD_NEW = "@@ANALYTICS_DASHBOARD/GETANALYTICS_DASHBOARD_NEW"
 }
 
 export interface GetAnalyticsDashboardOptions {
@@ -68,6 +71,14 @@ interface TopContentData {
     revenueEur: number;
 }
 
+export interface AnalyticsDashboardNewInfo {
+    dataConsumption: number;
+    engagement: number;
+    plays: number;
+    paywall: number | null;
+    audienceLocation: LocationItem[]
+}
+
 export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
     data: {
         playtimePerTime: false,
@@ -76,8 +87,14 @@ export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
         topContents: false,
         consumptionPerLocation: false
     },
+    newDashboardInfo: null
 };
+
+export type AnalyticsDashboardDimensions = 'PLAYS_BY_TIME_ACCT' | 'PLAYS_BY_COUNTRY_ACCT' | 'WATCHTIME_BY_TIME_ACCT' | 'REVENUES_BY_TIME_ACCT' | 'DATA_CONSUMPTION_ACCT'
+
+export const AnalyticsDashboardDimension: AnalyticsDashboardDimensions[] = ['PLAYS_BY_TIME_ACCT', 'PLAYS_BY_COUNTRY_ACCT', 'WATCHTIME_BY_TIME_ACCT', 'REVENUES_BY_TIME_ACCT', 'DATA_CONSUMPTION_ACCT']
 
 export interface AnalyticsDashboardState {
     readonly data: AnalyticsDashboardInfos;
+    readonly newDashboardInfo: AnalyticsDashboardNewInfo
 }

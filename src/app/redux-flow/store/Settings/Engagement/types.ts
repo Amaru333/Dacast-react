@@ -34,6 +34,7 @@ export const engagementDefaultState: EngagementInfo = {
     endScreenSettings: null,
     brandImageSettings: null,
     adsSettings: null,
+    googleAnalyticsSettings: null,
     uploadurl: null,
 }
 
@@ -65,11 +66,17 @@ interface AdsSettings {
     locked: boolean;
 }
 
+interface GoogleAnalyticsSettings {
+    trackingID: string;
+    locked: boolean;
+}
+
 export interface EngagementInfo {
     brandTextSettings?: BrandTextSettings;
     endScreenSettings?: EndScreenSettings;
     brandImageSettings?: BrandImageSettings;
     adsSettings?: AdsSettings;
+    googleAnalyticsSettings?: GoogleAnalyticsSettings;
     mailCatcher?: MailCatcher;
     uploadurl?: string;
 }

@@ -20,11 +20,20 @@ import { isMobile } from "react-device-detect";
 import { responsiveMenu, useMedia } from "../utils/utils";
 import { Content, FullContent } from "../shared/Content";
 import { Routes } from "./shared/Navigation/NavigationTypes";
+import { store } from ".";
+import EventHooker from '../utils/services/event/eventHooker';
 
 // Any additional component props go here.
 interface AdminMainProps {
     store: Store<AdminState>;
 }
+
+EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
+    store.dispatch({type: 'USER_LOGOUT'})
+    adminToken.resetUserInfo()
+    location.reload()
+})
+
 const PrivateRoute = (props: {key: string; component: any; path: string; exact: boolean}) => {  
     const { currentNavWidth, isOpen, setOpen, menuLocked, setMenuLocked } = responsiveMenu();
     let mobileWidth = useMedia('(max-width:780px');

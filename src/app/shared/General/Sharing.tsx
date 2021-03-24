@@ -10,9 +10,10 @@ import { isProduction } from '../../utils/services/player/stage';
 import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
 import { segmentService } from '../../utils/services/segment/segmentService';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: string}) => {
-    
+export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: ContentType}) => {
+
     const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)

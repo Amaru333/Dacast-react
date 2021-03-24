@@ -73,7 +73,9 @@ export const LineChart = (props: LineChartProps) => {
                     ticks: {
                         ...(props.step && {
                             stepSize: props.step,
-                            suggestedMin: 0
+                            suggestedMin: 0,
+                            beginAtZero: true,
+                            min: 0
                         }),
                     }
                 }],
@@ -92,10 +94,20 @@ export const LineChart = (props: LineChartProps) => {
                             id: 'left-y-axis',
                             type: 'linear',
                             position: 'left',
+                            ticks:{
+                                suggestedMin: 0,
+                                beginAtZero: true,
+                                min: 0
+                            }
                         }, {
                             id: 'right-y-axis',
                             type: 'linear',
                             position: 'right',
+                            ticks: {
+                                suggestedMin: 0,
+                                beginAtZero: true,
+                                min: 0
+                            }
                         }]
                     }
                 )

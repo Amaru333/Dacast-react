@@ -9,37 +9,37 @@ import { formatPutUploadFileInput } from '../../Common/viewModel';
 
 export interface GetContentEngagementSettings {
     type: ActionTypes.GET_CONTENT_ENGAGEMENT_SETTINGS;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface SaveContentEngagementSettings {
     type: ActionTypes.SAVE_CONTENT_ENGAGEMENT_SETTINGS;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface LockSection {
     type: ActionTypes.LOCK_SECTION;
-    payload: ContentEngagementSettings & {contentType: string};
+    payload: ContentEngagementSettings & {contentType: ContentType};
 }
 
 export interface SaveContentAd {
     type: ActionTypes.SAVE_CONTENT_AD;
-    payload: {ads: Ad[]; contentId: string; contentType: string;};
+    payload: {ads: Ad[]; contentId: string; contentType: ContentType;};
 }
 
 export interface CreateContentAd {
     type: ActionTypes.CREATE_CONTENT_AD;
-    payload: {ads: Ad[], adsId: string; contentId: string; contentType: string;};
+    payload: {ads: Ad[], adsId: string; contentId: string; contentType: ContentType;};
 }
 
 export interface DeleteContentAd {
     type: ActionTypes.DELETE_CONTENT_AD;
-    payload:{ads: Ad[]; contentId: string; contentType: string;}; 
+    payload:{ads: Ad[]; contentId: string; contentType: ContentType;}; 
 }
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: {presignedURL: string, contentId: string; contentType: string };
+    payload: {presignedURL: string, contentId: string; contentType: ContentType };
 }
 
 export interface UploadContentImage {

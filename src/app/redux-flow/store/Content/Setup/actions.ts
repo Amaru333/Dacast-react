@@ -6,7 +6,7 @@ import { formatGetContentSetupInput, formatGetExpoSetupOutput, formatGetPlaylist
 
 export interface GetContentSetup {
     type: ActionTypes.GET_CONTENT_SETUP;
-    payload: {contentId: ContentType; contentType: string; data: ContentSetupObject};
+    payload: {contentId: string; contentType: ContentType; data: ContentSetupObject};
 }
 
 export interface PostContentSetup {

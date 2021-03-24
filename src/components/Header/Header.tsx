@@ -32,7 +32,7 @@ export interface HeaderProps {
     setOpen: (b: boolean) => void;
     getBillingInfo: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
-    getContentDetails: (contentId: string, contentType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
 }
 
 const Header = (props: HeaderProps) => {

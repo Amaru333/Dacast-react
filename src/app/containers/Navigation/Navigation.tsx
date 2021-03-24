@@ -169,13 +169,16 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
                                 {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
-                                    return (
-                                        <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
-                                            <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
-                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                            </SubMenuElement>
-                                        </Link>
-                                    )
+                                    if(!subMenuElement.notDisplayedInNavigation) {
+                                        return (
+                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                                <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                </SubMenuElement>
+                                            </Link>
+                                        )
+                                    }
+                                    return 
                                 })
 
                                 }

@@ -1,3 +1,5 @@
+import { RecipePreset } from "../../Settings/EncodingRecipes/EncodingRecipesTypes";
+
 export enum ActionTypes {
     GET_CONTENT_RENDITIONS = "@@content_renditions/GET_CONTENT_RENDITIONS",
     ADD_CONTENT_RENDITIONS = "@@content_renditions/ADD_CONTENT_RENDITIONS",
@@ -21,7 +23,7 @@ interface VodInfo {
 export interface RenditionsList {
     id: string;
     videoInfo: VodInfo;
-    presets: Rendition[];
+    presets: RecipePreset[];
     encodedRenditions: Rendition[];
     storageRemaining: number;
 }
@@ -38,7 +40,7 @@ export interface Rendition {
     name: string;
     size: number;
     bitrate: number;
-    encoded?: boolean;
     width: number;
     height: number;
+    fileLocation: string;
 }
