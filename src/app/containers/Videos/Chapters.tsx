@@ -10,19 +10,20 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { VideoTabs } from './VideoTabs';
 import { useParams } from 'react-router-dom';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface ChapterComponentProps {
     chapterPageDetails: ChapterMarkerInfos;
     chapterPageDetailsState: ChapterMarkerInfosState;
-    getContentChapterMarkers: (contentId: string, contentType: string) => Promise<void>;
-    saveContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
-    addContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
-    deleteContentChapterMarker: (contentId: string, contentType: string, data: ChapterMarker[]) => Promise<void>;
+    getContentChapterMarkers: (contentId: string, contentType: ContentType) => Promise<void>;
+    saveContentChapterMarker: (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => Promise<void>;
+    addContentChapterMarker: (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => Promise<void>;
+    deleteContentChapterMarker: (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => Promise<void>;
 }
 
 const Chapters = (props: ChapterComponentProps) => {
 
-    let { vodId } = useParams()
+    let { vodId } = useParams<{vodId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -57,17 +58,17 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentChapterMarkers: async (contentId: string, contentType: string) => {
-            await dispatch(getContentChapterMarkersAction(contentId, contentType));
+        getContentChapterMarkers: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentChapterMarkersAction(contentType)(contentId));
         },
-        saveContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
-            await dispatch(saveContentChapterMarkerAction(contentId, contentType, data));
+        saveContentChapterMarker: async (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => {
+            await dispatch(saveContentChapterMarkerAction(contentType)({contentId: contentId, chapterMarkers: chapterMarkers}));
         },
-        addContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
-            await dispatch(addContentChapterMarkerAction(contentId, contentType, data));
+        addContentChapterMarker: async (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => {
+            await dispatch(addContentChapterMarkerAction(contentType)({contentId: contentId, chapterMarkers: chapterMarkers}));
         },
-        deleteContentChapterMarker: async (contentId: string, contentType: string, data: ChapterMarker[]) => {
-            await dispatch(deleteContentChapterMarkerAction(contentId, contentType, data));
+        deleteContentChapterMarker: async (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => {
+            await dispatch(deleteContentChapterMarkerAction(contentType)({contentId: contentId, chapterMarkers: chapterMarkers}));
         },
     };
 }

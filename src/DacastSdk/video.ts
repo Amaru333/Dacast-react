@@ -98,3 +98,19 @@ export interface GetVodRenditionsOutput {
     storageRemaining: number
     videoInfo: VideoInfo
 }
+
+interface ChapterMarkerEndpoint {
+    start: number
+    text: string
+}
+
+export interface GetVodChapterMarkersOutput {
+    chapterMarkers: ChapterMarkerEndpoint[]
+}
+
+export interface PutVodChapterMarkersInput {
+    id: string
+    payload: {
+        chapterMarkers: ChapterMarkerEndpoint[]
+    }
+}

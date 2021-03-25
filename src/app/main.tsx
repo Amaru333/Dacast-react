@@ -64,7 +64,6 @@ EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
 })
 
 EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
-    console.log('forcing logout')
     store.dispatch({type: 'USER_LOGOUT'})
     userToken.resetUserInfo()
     location.reload()

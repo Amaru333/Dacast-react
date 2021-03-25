@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { Input } from '../../../../components/FormsComponents/Input/Input'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
-import { ChapterMarker, ChapterMarkerInfosState } from '../../../redux-flow/store/Content/Chapters/types'
+import { ChapterMarker } from '../../../redux-flow/store/Content/Chapters/types'
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils'
+import { ContentType } from '../../../redux-flow/store/Common/types'
 
-export const ChapterMarkerForm = (props: {contentId: string; contentType: string; item: ChapterMarker; chapters: ChapterMarker[]; toggle: (b: boolean) => void; submit: (contentId: string, contentType: string, chapterMarkers: ChapterMarker[]) => Promise<void>;}) => {
+export const ChapterMarkerForm = (props: {contentId: string; contentType: ContentType; item: ChapterMarker; chapters: ChapterMarker[]; toggle: (b: boolean) => void; submit: (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => Promise<void>;}) => {
 
     const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null)
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0)
@@ -31,9 +32,8 @@ export const ChapterMarkerForm = (props: {contentId: string; contentType: string
             submittedChapterMarkers = submittedChapterMarkers.map((chapter) => {
                 if(chapter.id === props.item.id) {
                     return {...newChapterMarker, id: props.item.id}
-                } else {
-                    return chapter
                 }
+                return chapter
             })
         }
         setCreateButtonLoading(true)
