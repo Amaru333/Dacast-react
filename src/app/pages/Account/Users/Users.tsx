@@ -139,7 +139,11 @@ export const UsersPage = (props: UsersComponentProps) => {
                     </div>,
                     <Text>{user.email}</Text>,
                     <div key={'usersRoleDropdown' + user.userId} className='right mr2'>
-                        <DropdownCustom 
+                        {
+                            user.role === 'Owner' ?
+                            handleUserRole(user.role, user.userId)
+                            : 
+                            <DropdownCustom 
                             backgroundColor="transparent" 
                             id={'usersTableStatusDropdown_' + user.userId} 
                             dropdownDefaultSelect={{title: user.role}}
@@ -147,6 +151,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                         >
                             {handleUserRole(user.role, user.userId)}
                         </DropdownCustom>
+                        }
                     </div>,
                     handleUserStatus(user.status),
                     handleUserMoreActions(user)
