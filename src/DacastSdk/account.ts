@@ -34,6 +34,20 @@ export interface GetUsersDetailsOutput {
     occupiedSeats: number
 }
 
+export interface PostUserInput {
+    email: string
+    isAdmin: boolean
+}
+
+export type UserRoleWhitoutOwner = 'creator' | 'admin'
+
+export interface PostUserRoleInput {
+    id: string
+    payload: {
+        role: UserRoleWhitoutOwner
+    }
+}
+
 export interface UserId {
     id: string
 }

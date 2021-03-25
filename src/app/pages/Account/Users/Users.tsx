@@ -1,6 +1,6 @@
 import React from 'react';
 import { InputTags } from '../../../../components/FormsComponents/Input/InputTags';
-import { IconGreyActionsContainer, IconStyle } from '../../../../shared/Common/Icon';
+import { ActionIcon, IconGreyActionsContainer, IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { SeparatorHeader } from '../../Folders/FoldersStyle';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
@@ -11,7 +11,7 @@ import { DropdownCustom } from '../../../../components/FormsComponents/Dropdown/
 import { userToken } from '../../../utils/services/token/tokenService';
 import { Modal } from '../../../../components/Modal/Modal';
 import { UserModal } from './UserModal';
-import { defaultUser, MultiUserDetails, User } from '../../../redux-flow/store/Account/Users/types';
+import { defaultUser, MultiUserDetails, User, UserRole, UserStatus } from '../../../redux-flow/store/Account/Users/types';
 import { DeleteUserModal } from './DeleteUserModal';
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 import { TransferContentModal } from './TransferContentModal';
@@ -19,9 +19,11 @@ import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { ChangeSeatsCartStep } from './ChangeSeatsCartStep';
 import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
 import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
-import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { UsersComponentProps } from '../../../containers/Account/Users';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 
-export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan, billingInfo: BillingPageInfos}) => {
+export const UsersPage = (props: UsersComponentProps) => {
 
     const [userModalOpen, setUserModalOpen] = React.useState<boolean>(false)
     const [deleteUserModalOpen, setDeleteUserModalOpen] = React.useState<boolean>(false)
@@ -30,32 +32,47 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
     const [planDetails, setPlanDetails] = React.useState<Plan>(props.plan)
-    let emptySeats: number = props.multiUserdetails.maxSeats - props.multiUserdetails.users.length
+    let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.users.length
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
-    const handleUserRole = (role: string, userId: string) => {
+    const handleUserRole = (role: UserRole, userId: string) => {
         switch (role) {
             case 'Owner':
                 return <Label backgroundColor={userToken.getUserInfoItem('user-id') === userId ? "green20" : "gray-9"} color={userToken.getUserInfoItem('user-id') === userId ? "green" : "gray-5"} label="Owner" />
             case 'Admin':
                 return <Label backgroundColor="red20" color="red" label="Admin" />
+            case 'Creator':
+                return <Label backgroundColor="yellow20" color="orange" label="Creator" />
             default:
                 return null
         }
     }
 
-    const handleUserDropdownOptions = (action: string, user: User) => {
-        switch (action) {
-            case 'Edit':
-                setUserDetails(user);
-                setUserModalOpen(true);
-                break;
-            case 'Delete':
-                setDeleteUserModalOpen(true);
-                break;
+    const handleUserStatus = (status: UserStatus) => {
+        switch (status) {
+            case 'Active':
+                return <Label backgroundColor="green20" color="green" label={status} />
+            case 'Invited':
+                return <Label backgroundColor="blue20" color="blue" label={status} />
+            case 'Expired':
+                return <Label backgroundColor="yellow20" color="orange" label={status} />
+            default:
+                return null
         }
     }
+
+    // const handleUserDropdownOptions = (action: string, user: User) => {
+    //     switch (action) {
+    //         case 'Edit':
+    //             setUserDetails(user);
+    //             setUserModalOpen(true);
+    //             break;
+    //         case 'Delete':
+    //             setDeleteUserModalOpen(true);
+    //             break;
+    //     }
+    // }
 
     const handleDeleteModalSelection = (input: string) => {
         setDeleteUserModalOpen(false)
@@ -66,19 +83,49 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
         }
     }
 
+    const handleUserMoreActions = (user: User) => {
+        if(user.userId === userToken.getUserInfoItem('user-id') || user.role === 'Owner') {
+            return <span></span>
+        }
+
+        if(user.status === 'Invited') {
+            return (
+                <div key={"more" + user.userId} className="iconAction right mr2" >
+                    <ActionIcon id={"deleteTooltip" + user.userId}>
+                        <IconStyle onClick={() => {props.cancelUserInvite(user)}} className="right mr1" >delete</IconStyle>
+                    </ActionIcon>
+                    <Tooltip target={"deleteTooltip" + user.userId}>Delete</Tooltip>
+                    <ActionIcon id={"editTooltip" + user.userId}>
+                        <IconStyle onClick={() => {props.resendUserInvite(user)}} className="right mr1" >mail</IconStyle>
+                    </ActionIcon>
+                    <Tooltip target={"editTooltip" + user.userId}>Resend Email</Tooltip>
+                </div>
+            )
+        }
+        return (
+            <div key={"more" + user.userId} className="iconAction right mr2" >
+                <ActionIcon id={"deleteTooltip" + user.userId}>
+                    <IconStyle onClick={() => {}} className="right mr1" >delete</IconStyle>
+                </ActionIcon>
+                <Tooltip target={"deleteTooltip" + user.userId}>Delete</Tooltip>
+            </div>
+        )
+    }
+
     const usersHeaderElement = () => {
         return {
             data: [
                 {cell: <Text style={{marginLeft: 56}} key="nameUsers" size={14} weight="med" color="gray-1">Name</Text>, sort: 'name'},
                 {cell: <Text key="emailUsers" size={14} weight="med" color="gray-1">Email</Text>, sort: 'email'},
                 {cell: <Text key="roleUsers" size={14} weight="med" color="gray-1">Role</Text>, sort: 'role'},
+                {cell: <Text key="statusUsers" size={14} weight="med" color="gray-1">Status</Text>, sort: 'status'},
                 { cell: <div></div> }
             ]
         }
     }
 
     const usersBodyElement = () => {
-        return props.multiUserdetails.users.map((user) => {
+        return props.multiUserDetails.users.map((user) => {
             return {
                 data: [
                     <div className="flex items-center">
@@ -91,18 +138,18 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
                         
                     </div>,
                     <Text>{user.email}</Text>,
-                    handleUserRole(user.role, user.userId),
-                    <div key={'usersMoreActionButton' + user.userId} className='right mr2'>
-                            <DropdownCustom 
-                                backgroundColor="transparent" 
-                                id={'foldersTableMoreActionDropdown_' + user.userId} 
-                                list={[{title: 'Edit'}, {title: 'Delete'}]} callback={(value: string) => handleUserDropdownOptions(value, user)}
-                            >
-                                <IconGreyActionsContainer >
-                                    <IconStyle>more_vert</IconStyle>
-                                </IconGreyActionsContainer>
-                            </DropdownCustom>
-                        </div>
+                    <div key={'usersRoleDropdown' + user.userId} className='right mr2'>
+                        <DropdownCustom 
+                            backgroundColor="transparent" 
+                            id={'usersTableStatusDropdown_' + user.userId} 
+                            dropdownDefaultSelect={{title: user.role}}
+                            list={[{title: 'Admin'}, {title: 'Creator'}]} callback={(value: DropdownSingleListItem) => props.editUserRole({...user, role: value.title as UserRole})}
+                        >
+                            {handleUserRole(user.role, user.userId)}
+                        </DropdownCustom>
+                    </div>,
+                    handleUserStatus(user.status),
+                    handleUserMoreActions(user)
                 ]
             }
         })
@@ -118,7 +165,7 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
                 <div className="flex items-center relative">
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
-                    <Text color="gray-3">{props.multiUserdetails.users.length} out of {props.multiUserdetails.maxSeats} seats used</Text>
+                    <Text color="gray-3">{props.multiUserDetails.users.length} out of {props.multiUserDetails.maxSeats} seats used</Text>
                     <Button sizeButton="small" className="ml2" onClick={() => {setUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
@@ -138,7 +185,7 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
                 billingInfo={props.billingInfo}
             />
             <Modal modalTitle={userDetails.userId === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
-                <UserModal userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
+                <UserModal action={props.addUser} userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setDeleteUserModalOpen(false)} opened={deleteUserModalOpen}>
                 <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection}/>
@@ -146,10 +193,12 @@ export const UsersPage = (props: {multiUserdetails: MultiUserDetails, plan: Plan
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
                 <ConfirmDeleteModal toggle={setConfirmDeleteModalOpen} />
             </Modal>
-            <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
-                <TransferContentModal users={props.multiUserdetails.users} toggle={setTransferContentModalOpen} />
-            </Modal>
-
+            {
+                transferContentModalOpen &&
+                <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
+                    <TransferContentModal users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
+                </Modal>
+            }
         </React.Fragment>
     )
 }

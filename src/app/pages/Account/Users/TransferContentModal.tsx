@@ -8,23 +8,19 @@ import { User } from '../../../redux-flow/store/Account/Users/types';
 export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean) => void}) => {
 
     const createUserDropdownList = () => {
-        return props.users.map((user: User) => {
-            let userDropdownListItem: DropdownSingleListItem = {
-                title: null,
-                data: null
+        return props.users.map((user: User): DropdownSingleListItem => {
+            return {
+                title: user.firstName + ' ' + user.lastName,
+                data: {
+                    id: user.userId,
+                    role: user.role
+                }
             }
-            userDropdownListItem.title = user.firstName + ' ' + user.lastName
-            userDropdownListItem.data = {
-                id: user.userId,
-                role: user.role
-            }
-            return userDropdownListItem
         })
     }
 
     const userDropdownList = createUserDropdownList()
-
-    const [selectedUser, setSelectedUser] = React.useState<string>(userDropdownList.find(user => user.data.role === "Owner").data.userId)
+    const [selectedUser, setSelectedUser] = React.useState<string>(userDropdownList.find(user => user.data.role === "Owner") ? userDropdownList.find(user => user.data.role === "Owner").data.userId: '')
 
     return (
         <div className="flex flex-column">
@@ -33,8 +29,9 @@ export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean)
                 id="userDropdown" 
                 dropdownTitle="Existing User"
                 isInModal 
+                hasSearch
                 list={userDropdownList} 
-                dropdownDefaultSelect={userDropdownList.find(user => user.data.role === "Owner").title}
+                dropdownDefaultSelect={userDropdownList.find(user => user.data.role === "Owner") ? userDropdownList.find(user => user.data.role === "Owner").title : null}
                 callback={(user: DropdownSingleListItem) => setSelectedUser(user.data.id)}
             />
             <div className="flex mt3">

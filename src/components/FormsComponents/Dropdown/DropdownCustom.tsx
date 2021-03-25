@@ -7,7 +7,7 @@ export const DropdownCustom: React.FC<DropdownButtonProps> = (props: DropdownBut
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(null);
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.dropdownDefaultSelect ? props.dropdownDefaultSelect.title : null);
 
     useOutsideAlerter(dropdownListRef, () => {
         setOpen(!isOpened)
