@@ -156,7 +156,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 userDropdownListItem.data = {
                     id: user.userId,
                     role: user.role
-                }
+                },
+                userDropdownListItem.description = user.role
                 return userDropdownListItem
             })
         }
@@ -326,7 +327,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                     callback={(value: DropdownSingleListItem) => setNewOwner(value.data as User)}
                                     dropdownDefaultSelect={createAccountOwnerList() && createAccountOwnerList().length && createAccountOwnerList().find(user => user.data.role === "Owner") ? createAccountOwnerList().find(user => user.data.role === "Owner").title : null}
                                 />
-                                <Button className='ml2' type='button' isLoading={changeOwnerButtonLoading} onClick={() => handleOwnerChange()} sizeButton='small' buttonColor='blue' typeButton='secondary'>Change Owner</Button>
+                                <Button className='ml2 mt2' type='button' isLoading={changeOwnerButtonLoading} onClick={() => handleOwnerChange()} sizeButton='small' buttonColor='blue' typeButton='primary'>Change Owner</Button>
                             </div>
                             <Divider className="p1 mx1" />
                         </React.Fragment>
