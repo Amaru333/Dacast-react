@@ -181,11 +181,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
                     <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
-                            <Text size={14} weight="med">Account ID</Text>
+                            <Text size={14} weight="med">User ID</Text>
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
                             <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.CompanyPageDetails.id, 'Account ID copied to clipboard')}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.CompanyPageDetails.id, 'User ID copied to clipboard')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
