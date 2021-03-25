@@ -20,7 +20,8 @@ import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
 import { Divider } from '../../../../shared/MiscStyles';
-import { mockUsers } from '../../../containers/Account/Users';
+import { userToken } from '../../../utils/services/token/tokenService';
+import { User } from '../../../redux-flow/store/Account/Users/types';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -45,6 +46,22 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false)
     const [edited, setEdited] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
+    const [newOwner, setNewOwner] = React.useState<User>(null)
+    const [changeOwnerButtonLoading, setChangeOwnerButtonLoading] = React.useState<boolean>(false)
+
+    const getUserRole = () => {
+        if(!props.multiUserDetails || !props.multiUserDetails.users) {
+            return false
+        }
+
+        if(!props.multiUserDetails.users.find(user => user.role === "Owner")) {
+            return false
+        }
+
+        return props.multiUserDetails.users.find(user => user.role === "Owner").userId === userToken.getUserInfoItem('user-id')
+    }
+
+    const isUserAccountOwner = getUserRole()
 
     const countryDropdownList = Object.keys(countries).map((item) => {
         let countryItem: DropdownSingleListItem = {
@@ -129,20 +146,26 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }, [props.CompanyPageDetails.uploadLogoUrl])
 
     const createAccountOwnerList = () => {
-        return mockUsers.filter((user) => user.role !== "Creator").map((user) => {
-            let userDropdownListItem: DropdownSingleListItem = {
-                title: null,
-                data: null
-            }
-            userDropdownListItem.title = `${user.firstName} ${user.lastName} (${user.email})`
-            userDropdownListItem.data = {
-                id: user.userID,
-                role: user.role
-            }
-            return userDropdownListItem
-        })
+        if(props.multiUserDetails && props.multiUserDetails.users) {
+            return props.multiUserDetails.users.map((user) => {
+                let userDropdownListItem: DropdownSingleListItem = {
+                    title: null,
+                    data: null
+                }
+                userDropdownListItem.title = `${user.firstName} ${user.lastName} (${user.email})`
+                userDropdownListItem.data = {
+                    id: user.userId,
+                    role: user.role
+                }
+                return userDropdownListItem
+            })
+        }
+        return null
     }
 
+    const handleOwnerChange = () => {
+        props.makeUserOwner(newOwner.userId)
+    }
     
     return (
         <CompanyPageContainer>
@@ -285,25 +308,29 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
                     <Divider className="p1 mx1" />
 
-                    {/* ONLY ACCOUNT OWNER SHOULD SEE THIS SECTION */}
-
-                    <div className="px1 pt2 pb1" >
-                        <Text size={20} weight='med'>Account Owner</Text>
-                    </div>
-                    <div className="md-col md-col-12 mx1">
-                    <div className="col col-12">
-                        <Text  size={14} weight='reg'>Only the current Account Owner can change this so if you make someone else the Account Owner, only they can transfer it back to you.</Text>
-                    </div>
-                    <DropdownSingle 
-                        id="accountOwnerDropdown"
-                        className="col col-6 my2"
-                        dropdownTitle=""
-                        list={createAccountOwnerList()}
-                        dropdownDefaultSelect={createAccountOwnerList().find(user => user.data.role === "Owner").title}
-                    />
-                    </div>
-
-                    <Divider className="p1 mx1" />
+                    {
+                        isUserAccountOwner &&
+                        <React.Fragment>
+                            <div className="px1 pt2 pb1" >
+                                <Text size={20} weight='med'>Account Owner</Text>
+                            </div>
+                            <div className="md-col md-col-12 mx1">
+                                <div className="col col-12">
+                                    <Text size={14} weight='reg'>Only the current Account Owner can change this so if you make someone else the Account Owner, only they can transfer it back to you.</Text>
+                                </div>
+                                <DropdownSingle 
+                                    id="accountOwnerDropdown"
+                                    className="col col-6 my2"
+                                    dropdownTitle=""
+                                    list={createAccountOwnerList() ? createAccountOwnerList() : []}
+                                    callback={(value: DropdownSingleListItem) => setNewOwner(value.data as User)}
+                                    dropdownDefaultSelect={createAccountOwnerList() && createAccountOwnerList().length && createAccountOwnerList().find(user => user.data.role === "Owner") ? createAccountOwnerList().find(user => user.data.role === "Owner").title : null}
+                                />
+                                <Button type='button' isLoading={changeOwnerButtonLoading} onClick={() => handleOwnerChange()} sizeButton='small' buttonColor='blue' typeButton='secondary'>Change Owner</Button>
+                            </div>
+                            <Divider className="p1 mx1" />
+                        </React.Fragment>
+                    }
 
                     <div className="px1 pt2 pb1" >
                         <Text size={20} weight='med'>Address</Text>
@@ -328,7 +355,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             id="addressLine2" 
                             label="Address line 2" 
                             placeholder="Address line 2"
-                            name="addressLine2" ref={register()}                            
+                            name="addressLine2" ref={register()} 
                             onChange={(event) => {setEdited(true); setValue('addressLine2', event.currentTarget.value)}}
 
                         />

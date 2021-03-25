@@ -60,3 +60,5 @@ export const formatPostCompanyLogoUrlInput = (): PostUploadUrlInput => {
     }
     return formattedData
 }
+
+export const formatPostMakeUserOwnerInput = (data: string): string => data
