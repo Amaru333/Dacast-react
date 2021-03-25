@@ -85,6 +85,10 @@ input:focus, textarea:focus, select:focus{
 /* unvisited link */
 a:link {
     color: #284CEB;
+
+    &.a-blue-2 {
+        color: #2899F6;
+    }
 }
 
 * {
@@ -95,6 +99,10 @@ a:link {
 /* visited link */
 a:visited {
     color: #284CEB;
+
+    &.a-blue-2 {
+        color: #2899F6;
+    }
 }
 
 /* mouse over link */
@@ -106,6 +114,10 @@ a:hover {
 /* selected link */
 a:active {
     color: #284CEB;
+
+    &.a-blue-2 {
+        color: #2899F6;
+    }
 }
 a {
     text-decoration: none;
@@ -156,6 +168,12 @@ a {
 .bg-w {
     background: white;
 }
+
+.px15 {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
 .p25 {
     padding: 1.5rem;
 }
