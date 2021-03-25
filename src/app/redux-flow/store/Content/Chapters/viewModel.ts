@@ -8,13 +8,14 @@ export const formatGetVodChapterMarkersOutput = (contentType: ContentType) => (e
     let formattedData: {contentId: string; contentType: ContentType; chapterMarkers: ChapterMarker[]} = {
         contentId: dataRect,
         contentType: contentType,
-        chapterMarkers: endpointResponse.chapterMarkers.map((chapter, i) => {
+        chapterMarkers: endpointResponse.chapterMarkers ? endpointResponse.chapterMarkers.map((chapter, i) => {
             return {
                 start: chapter.start,
                 text: chapter.text,
                 id: chapter.text + i.toString()
             }
-        })
+        }) 
+        : []
     }
 
     return formattedData
