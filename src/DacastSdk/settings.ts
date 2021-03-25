@@ -10,7 +10,7 @@ export interface EmbedSettings {
 export interface RecipePresetEndpoint {
     name: string
     description: string
-    size: string
+    size: number
     bitrate: number
 }
 

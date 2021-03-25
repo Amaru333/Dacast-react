@@ -17,7 +17,8 @@ function defineEvent<Name extends string, Type>(name: Name, _: Type): EventDef<N
 const EventDefinitions = [
     defineEvent('EVENT_VOD_UPLOADED', {} as unknown),
     defineEvent('EVENT_FORCE_LOGOUT', {} as unknown),
-    defineEvent('EVENT_FORCE_TOKEN_REFRESH', {} as unknown)
+    defineEvent('EVENT_FORCE_TOKEN_REFRESH', {} as unknown),
+    defineEvent('EVENT_RENDITIONS_ENCODED', {} as unknown)
 ]
 export const Events = EventDefinitions.map(event => event[0])
 export type EventArgs = Reduce<MapToObj<(typeof EventDefinitions)[0]>>

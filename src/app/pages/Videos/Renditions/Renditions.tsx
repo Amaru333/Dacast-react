@@ -6,21 +6,30 @@ import { Table } from '../../../../components/Table/Table';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
-import { RenditionsList, Rendition } from '../../../redux-flow/store/Content/Renditions/types';
 import { Modal, ModalContent, ModalFooter } from '../../../../components/Modal/Modal';
 import { useWebSocket } from '../../../utils/custom-hooks/webSocketHook';
 import { UploadObject } from '../../../utils/services/uploader/uploaderService';
 import { ProgressBar } from '../../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
 import { VodRenditionsProps } from '../../../containers/Videos/Renditions';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { ContentType } from '../../../redux-flow/store/Common/types';
+import { RecipePreset } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
+import { Bubble } from '../../../../components/Bubble/Bubble';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
-export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string; contentType: string}) => {
+export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string; contentType: ContentType}) => {
+
+    const isLegacyVideo = props.renditions.encodedRenditions.some(rendition => rendition.fileLocation && rendition.fileLocation.indexOf('vod-storage') === -1)
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
     const NB_CONCURRENT_REQUESTS = 5
+    const refreshSpan = 60000
+    const refreshEvery = 10000
+    let fastRefreshUntil = 0
+    let timeoutId: NodeJS.Timeout | null = null
 
-    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<Rendition[]>([])
+    const [notEncodedRenditions, setNotEncodedRenditions] = React.useState<RecipePreset[]>([])
     const [selectedNotEncodedRendition, setSelectedNotEncodedRendition] = React.useState<string[]>([])
     const [selectedEncodedRendition, setSelectedEncodedRendition] = React.useState<string[]>([])
     const [encodeRenditionsModalOpen, setEncodeRenditionsModalOpen] = React.useState<boolean>(false)
@@ -30,7 +39,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     const [newSourceFileUploadProgress, setNewSourceFileUploadProgress] = React.useState<number>(0)
     const [uploadError, setUploadError] = React.useState<string>(null)
     // the data from the WS to know when the processing renditions are completed
-    let wsData = useWebSocket()
+    // let wsData = useWebSocket()
 
     let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -41,18 +50,43 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
         }
     }, [replaceSourceModalOpen])
 
-    
-    React.useEffect(() => {
-        if(wsData){
-            setTimeout(() => {
-                props.getContentRenditions(props.contentId, props.contentType)
-            }, 10000)
-        }  
-    }, [wsData])
+
+    const timeoutFunc = () => {
+        props.getContentRenditions(props.contentId, props.contentType)
+        if(new Date().getTime() < fastRefreshUntil) {
+            timeoutId = setTimeout(timeoutFunc, refreshEvery)
+        }
+    }
 
     React.useEffect(() => {
-        let renditionName = props.renditions.encodedRenditions.map((renditions) => {return renditions.name})
-        setNotEncodedRenditions(props.renditions.presets.filter((rendition) => !renditionName.includes(rendition.name)))
+        EventHooker.subscribe('EVENT_RENDITIONS_ENCODED', () => {
+            fastRefreshUntil = new Date().getTime() + refreshSpan
+            if(timeoutId === null) { 
+                timeoutId = setTimeout(timeoutFunc, refreshEvery)
+            }
+        })
+
+        return () => {
+            EventHooker.unsubscribe('EVENT_RENDITIONS_ENCODED', () => {
+                fastRefreshUntil = new Date().getTime() + refreshSpan
+                if(timeoutId === null) { 
+                    timeoutId = setTimeout(timeoutFunc, refreshEvery)
+                }
+            })
+        }
+    }, [])
+
+    // React.useEffect(() => {
+    //     if(wsData){
+    //         setTimeout(() => {
+    //             props.getContentRenditions(props.contentId, props.contentType)
+    //         }, 10000)
+    //     }  
+    // }, [wsData])
+
+    React.useEffect(() => {
+        let renditionName = props.renditions.encodedRenditions.map(renditions => renditions.name)
+        setNotEncodedRenditions(props.renditions.presets.filter(rendition => renditionName.indexOf(rendition.name) === -1))
     }, [props.renditions.encodedRenditions])
 
     const notEncodedRenditionsTableHeader = () => {
@@ -65,14 +99,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     defaultChecked={selectedNotEncodedRendition.length > 0 && selectedNotEncodedRendition.length === notEncodedRenditions.length}
                     onChange={(event) => {
                         if (event.currentTarget.checked && !(selectedNotEncodedRendition.length >= 1 && selectedNotEncodedRendition.length < notEncodedRenditions.length)) {
-                            const editedSelectedRenditions = notEncodedRenditions.filter(item => { 
-                                const disabledRendition = item.size > props.renditions.videoInfo.width;
-                                if(!disabledRendition) {
-                                    return true
-                                } else {
-                                    return false;
-                                }
-                            }).map( (renditions) => {return renditions.name} )
+                            const editedSelectedRenditions = notEncodedRenditions.filter(item => item.size <= props.renditions.videoInfo.width).map(renditions => renditions.name)
                             setSelectedNotEncodedRendition(editedSelectedRenditions);
                         } else {
                             setSelectedNotEncodedRendition([])
@@ -91,7 +118,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             const disabledRendition = value.size > props.renditions.videoInfo.width
             return {data: [
                 <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedEncodedRendition.length > 0 || (value.size != null && disabledRendition)}
-                    defaultChecked={selectedNotEncodedRendition.includes(value.name)}
+                    defaultChecked={selectedNotEncodedRendition.indexOf(value.name) !== -1}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedNotEncodedRendition.length < notEncodedRenditions.length) {
                             setSelectedNotEncodedRendition([...selectedNotEncodedRendition, value.name])
@@ -116,7 +143,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 defaultChecked={selectedEncodedRendition.length > 0 && selectedEncodedRendition.length === props.renditions.encodedRenditions.length}
                 onChange={(event) => {
                     if (event.currentTarget.checked) {
-                        const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => { return item.name })
+                        const editedSelectedEncodedRendition = props.renditions.encodedRenditions.map(item => item.name)
                         setSelectedEncodedRendition(editedSelectedEncodedRendition);
                     } else if (event.currentTarget.indeterminate || !event.currentTarget.checked) {
                         setSelectedEncodedRendition([])
@@ -125,7 +152,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             {cell: <Text size={14} weight="med">Rendition</Text>},
             {cell: <Text size={14} weight="med">Size (px)</Text>},
             {cell: <Text size={14} weight="med">Size (Mb)</Text>},
-            {cell: <Text size={14} weight="med">Bitrate(Mbps)</Text>},
+            {cell: <Text size={14} weight="med">Bitrate (Mbps)</Text>},
             {cell: <Text size={14} weight="med">Status</Text>}
         ]}
     }
@@ -133,8 +160,8 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     const EncodedRenditionsTableBody = () => {
         return props.renditions.encodedRenditions.map((value) => {
             return {data: [
-                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0 || (wsData && !wsData.data.completed)}
-                    defaultChecked={selectedEncodedRendition.includes(value.name)}
+                <InputCheckbox className="inline-flex" key={"checkbox" + value.name} id={"checkbox" + value.name} disabled={selectedNotEncodedRendition.length > 0}
+                    defaultChecked={selectedEncodedRendition.indexOf(value.name) !== -1}
                     onChange={(event) => {
                         if (event.currentTarget.checked && selectedEncodedRendition.length < props.renditions.encodedRenditions.length) {
                             setSelectedEncodedRendition([...selectedEncodedRendition, value.name])
@@ -145,32 +172,35 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     }} />,
                 <Text size={14} weight="reg">{value.name}</Text>,
                 <Text size={14} weight="reg">{value.width}</Text>,
-                <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
                 <Text size={14} weight="reg">{value.size ? (value.size / 1000000).toFixed(1) : null}</Text>,
-                !value.transcodingJobID ? 
+                <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
+                (!value.transcodingJobID || !value.size || !value.bitrate || !value.height) ? 
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
                     :
                     <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
-                    
             ]}
         })
     }
 
     const encodeRenditions = () => {
-        event.preventDefault();
         props.addContentRenditions(selectedNotEncodedRendition, props.contentId, props.contentType)
+        .then(() => {
+            EventHooker.dispatch('EVENT_RENDITIONS_ENCODED', undefined)
+        })
         setSelectedNotEncodedRendition([])
     }
 
     const deleteRenditions = () => {
-        event.preventDefault();
         let ids: string[] = []
         props.renditions.encodedRenditions.map(rendition => {
-            if(selectedEncodedRendition.includes(rendition.name)) {
+            if(selectedEncodedRendition.indexOf(rendition.name) !== -1) {
                 ids.push(rendition.renditionID)
             }
         })
         props.deleteContentRenditions(ids, props.contentId, props.contentType)
+        .then(() => {
+            EventHooker.dispatch('EVENT_RENDITIONS_ENCODED', undefined)
+        })
         setSelectedEncodedRendition([])
     }
 
@@ -230,10 +260,16 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             <div>
                 <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
             </div>
-            <div className="flex mt1">
+            <div className="flex mt1 mb2">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
                 <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href={getKnowledgebaseLink('Encoding Recipes')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
             </div>
+            {
+                isLegacyVideo && 
+                <Bubble className="flex items-center" type='info'>This content has been uploaded on a former version of Dacast and the rendering of this content can no longer be changed. If you want to update the rendition for this specific content, please re-upload your source file</Bubble>
+
+            }
+
             <div className="widgets flex items-baseline mt25">
                 <RenditionsWidget>
                     <div >
@@ -269,13 +305,12 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     <RenditionsTable className="notEncodedTable ">
                         <Table hasContainer id="notEncodedRenditionsTable" headerBackgroundColor="white" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
-                     
                 </div>
                 <ButtonContainer className="col">
-                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length === 0} 
+                    <Button className="mb2" type="button" typeButton="secondary" sizeButton="xs" disabled={selectedNotEncodedRendition.length === 0 || isLegacyVideo} 
                         onClick={() => setEncodeRenditionsModalOpen(true)}
                     >Encode &gt;</Button>
-                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length === 0} 
+                    <Button type="button" typeButton="secondary" sizeButton="xs" disabled={selectedEncodedRendition.length === 0 || isLegacyVideo} 
                         onClick={() => setDeleteRenditionsModalOpen(true)}
                     >&lt; Delete</Button>
                 </ButtonContainer>
@@ -286,7 +321,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     <RenditionsTable className="notEncodedTable ">
                         <Table hasContainer id="EncodedRenditionsTable" headerBackgroundColor="white" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
                     </RenditionsTable>
-                     
                 </div>
             </div>
             <Modal size="small" modalTitle="Encode Renditions" opened={encodeRenditionsModalOpen} toggle={() => setEncodeRenditionsModalOpen(false)} hasClose={false}>
@@ -314,8 +348,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         <Text size={14} weight="reg">When a video is replaced, the previous version is completely updated and any existing links will lead to your new upload. </Text> 
                         {
                             newSourceFileUpload && 
-                                <ProgressBar static  size='large' color={uploadError ? 'red' : 'violet'} label='Upload Progress' startingValue={newSourceFileUploadProgress} />
-
+                                <ProgressBar static size='large' color={uploadError ? 'red' : 'violet'} label='Upload Progress' startingValue={newSourceFileUploadProgress} />
                         }
                         {
                             uploadError && 
@@ -334,7 +367,6 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     </ModalFooter>
                 </Modal>
             }
-            
         </React.Fragment>
     )
 }

@@ -14,10 +14,11 @@ import { ContentSecurityPage } from '../../shared/Security/ContentSecurityPage';
 import { ContentSecurityProps } from '../Videos/Security';
 import { getContentSecuritySettingsAction, saveContentSecuritySettingsAction, Action, lockContentAction } from '../../redux-flow/store/Content/Security/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 const PlaylistSecurity = (props: ContentSecurityProps) => {
 
-    let { playlistId } = useParams()
+    let { playlistId } = useParams<{playlistId: string}>()
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
@@ -67,17 +68,17 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getContentSecuritySettings: async (contentId: string, contentType: string) => {
-            await dispatch(getContentSecuritySettingsAction(contentId, contentType));
+        getContentSecuritySettings: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentSecuritySettingsAction(contentType)(contentId));
         },
-        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: string) => {
-            await dispatch(saveContentSecuritySettingsAction(data, contentId, contentType));
+        saveContentSecuritySettings: async (data: SecuritySettings, contentId: string, contentType: ContentType) => {
+            await dispatch(saveContentSecuritySettingsAction(contentType)({securitySettings: data, contentId: contentId}));
         },
-        lockContent: async (contentId: string, contentType: string) => {
-            await dispatch(lockContentAction(contentId, contentType));
+        lockContent: async (contentId: string, contentType: ContentType) => {
+            await dispatch(lockContentAction(contentType)(contentId));
         },
         getSettingsSecurityOptions: async () => {
-            await dispatch(getSettingsSecurityOptionsAction());
+            await dispatch(getSettingsSecurityOptionsAction(undefined));
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));

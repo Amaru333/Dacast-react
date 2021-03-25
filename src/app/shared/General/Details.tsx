@@ -11,8 +11,9 @@ import { updateClipboard } from '../../utils/utils'
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
 import { dacastSdk } from '../../utils/services/axios/axiosClient';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: string, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: ContentType, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const userId = userToken.getUserInfoItem('custom:dacast_user_id')
 
@@ -27,7 +28,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
         })
     }
 
-        const handleOnlineToggle = (contentType: string) => {
+        const handleOnlineToggle = (contentType: ContentType) => {
             switch (contentType) {
                 case "vod":
                     return "Video"

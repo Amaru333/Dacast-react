@@ -1,3 +1,5 @@
+import { ContentType } from "../../Common/types";
+
 export enum ActionTypes {
     GET_CONTENT_DETAILS = "@@content_general/GET_CONTENT_DETAILS",
     POST_CONTENT = "@@content_general/POST_CONTENT",
@@ -21,11 +23,11 @@ export interface AssetType {
     assetId?: string;
 }
 
-export interface ContentDetailsState { 
-    [contentType: string]: {
-        [contentId: string]: ContentDetails
-    } 
-}
+export type ContentDetailsState = {
+    [contentType in ContentType]: {
+        [contentId: string]: ContentDetails;
+    };
+};
 
 export interface VodDetails {
     id: string;
@@ -119,4 +121,9 @@ export interface DateTimeValue {
     timezone: string;
 }
 
-export const initialContentGeneralState: ContentDetailsState = {};
+export const initialContentGeneralState: ContentDetailsState = {
+    'vod': {},
+    'live': {},
+    'playlist': {},
+    'expo': {}
+};
