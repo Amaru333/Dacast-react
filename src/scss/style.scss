@@ -160,11 +160,16 @@ a {
     .iconAction {
       visibility:visible;
     }
-  }
+}
 
 .inline-flex {
     display: inline-flex;
 }
+
+.text-decoration-underline {
+    text-decoration: underline;
+}
+
 .bg-w {
     background: white;
 }
