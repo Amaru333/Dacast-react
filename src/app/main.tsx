@@ -32,7 +32,8 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
-import { dacastSdk } from './utils/services/axios/axiosClient';
+import EndOfTrialModal from './containers/Navigation/EndOfTrialModal';
+import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
@@ -66,7 +67,7 @@ const companyLogoTimeoutFunc = () => {
 
 EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) { 
+    if(timeoutId === null) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
 })
@@ -83,7 +84,7 @@ EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
 
 EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) { 
+    if(timeoutId === null) {
         timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 })
@@ -184,6 +185,7 @@ const AppContent = (props: { routes: any }) => {
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
+    const [endOfTrialModalOpen, setEndOfTrialModalOpen] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
@@ -216,6 +218,7 @@ const AppContent = (props: { routes: any }) => {
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
                     <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
+                    <EndOfTrialModal toggle={() => setEndOfTrialModalOpen(false)} opened={endOfTrialModalOpen === true} />
 
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
@@ -296,7 +299,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                         } else {
                             <Route key={route.path} path={route.path}><route.component /></Route>
                         }
-                        
+
                     } else {
                         return <Route key={route.path} path={route.path}><route.component /></Route>;
                     }

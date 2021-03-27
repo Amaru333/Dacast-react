@@ -16,7 +16,7 @@ export const Modal = (props: ModalProps) => {
         <React.Fragment>
             <ModalContainerStyle isMobile={isMobile} ref={modalRef} hasClose={hasClose} {...other}>
                 <ModalTitleStyle>
-                    {icon && <IconStyle style={{float: 'left', marginTop: '4px', marginRight: '8px'}} fontSize='large'  coloricon={icon.color} >{icon.name}</IconStyle>}
+                    {icon && <IconStyle style={{float: 'left', marginRight: '6px'}} fontSize='large'  coloricon={icon.color} >{icon.name}</IconStyle>}
                     <Text color="gray-1" size={24} weight="med">
                         {props.modalTitle}
                     </Text>
