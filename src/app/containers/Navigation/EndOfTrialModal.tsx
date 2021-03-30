@@ -15,7 +15,7 @@ export const EndOfTrialModal  = (props: { toggle: () => void; opened: boolean; b
         history.push('/account/upgrade')
     }
 
-    const canOpen = props.billingInfo && props.billingInfo.currentPlan.trialExpiresIn <= 0
+    const canOpen = props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.trialExpiresIn <= 0
 
     return (
         <Modal size="medium" modalTitle="End of Trial" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen} hasClose={true} icon={ {name: "error_outline", color: "blue-2"} }>
