@@ -48,6 +48,13 @@ export interface PostUserRoleInput {
     }
 }
 
+export interface DeleteUserInput {
+    id: string
+    payload: {
+        transferContentsToUserId: string
+    }
+}
+
 export interface UserId {
     id: string
 }

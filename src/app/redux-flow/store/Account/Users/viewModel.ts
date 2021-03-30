@@ -1,4 +1,4 @@
-import { GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, UserId, UserRoleWhitoutOwner } from "../../../../../DacastSdk/account";
+import { DeleteUserInput, GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, UserId, UserRoleWhitoutOwner } from "../../../../../DacastSdk/account";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 
@@ -62,3 +62,14 @@ export const formatPostResendUserInviteOutput = formatPostUserRoleOutput
 
 export const formatPostCancelUserInviteInput = (user: User): string => user.invitationId
 export const formatPostResendUserInviteInput = formatPostCancelUserInviteInput
+
+export const formatDeleteUserInput = (data: {userToDelete: string; transferContentsToUserId: string}): DeleteUserInput => {
+    let formattedData: DeleteUserInput = {
+        id: data.userToDelete,
+        payload: {
+            transferContentsToUserId: data.transferContentsToUserId
+        }
+    }
+
+    return formattedData
+}
