@@ -254,7 +254,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
             </ContainerStyle>
-            <CustomStepper
+            {/* <CustomStepper
                 stepperHeader="Change Number of Seats"
                 stepList={changeSeatsStepList}
                 opened={changeSeatsStepperOpen}
@@ -266,7 +266,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 emptySeats={1}
                 planData={mockPlan}
                 billingInfo={props.billingInfos}
-            />
+            /> */}
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
                 <MultiUserUpgradeModal openBuySeatsStepper={openBuySeatsStepper} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
