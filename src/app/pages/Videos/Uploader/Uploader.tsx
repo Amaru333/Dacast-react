@@ -133,7 +133,8 @@ export const UploaderPage = (props: UploaderProps) => {
                             })
                         }
                     },
-                    selectedRecipe
+                    selectedRecipe,
+                    undefined
                 )
                 if (uploadFileQueue.length < 1 && !uploadingList.find(el => el.currentState === 'progress') && i === 0) {
                     newUpload.startUpload()

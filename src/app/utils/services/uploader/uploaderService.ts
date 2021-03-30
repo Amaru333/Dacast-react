@@ -10,8 +10,8 @@ export class UploadObject {
         fileChunkSize: number,
         onProgressUpdate: (percent: number) => void,
         onError: (error: any) => void,
-        recipeId?: string,
-        vodId?: string
+        recipeId: string,
+        vodId: string
     ) {
         this.file = file
         this.uploadUrlBatchSize = uploadUrlBatchSize
