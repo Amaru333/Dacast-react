@@ -6,7 +6,7 @@ import { Text } from '../../../../components/Typography/Text';
 import Icon from '@material-ui/core/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { UploadObject } from '../../../utils/services/uploader/uploaderService';
-import { Prompt, useHistory } from 'react-router'
+import { Prompt } from 'react-router'
 import { UploaderProps } from '../../../containers/Videos/Uploader';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
@@ -20,8 +20,6 @@ import { segmentService } from '../../../utils/services/segment/segmentService';
 
 
 export const UploaderPage = (props: UploaderProps) => {
-
-    let history = useHistory();
 
     const FILE_CHUNK_SIZE = 10000000 // 10MB
     const MAX_REQUEST_PER_BATCH = 100
@@ -37,11 +35,11 @@ export const UploaderPage = (props: UploaderProps) => {
     const [selectedRecipe, setSelectedRecipe] = React.useState<string>(props.encodingRecipe.recipes.find(r => r.isDefault).id)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
-    const encodingRecipeList = Object.keys(props.encodingRecipe.recipes).map((item) => {
-        let encodingRecipeListItem: DropdownSingleListItem = {title: null}
-        encodingRecipeListItem.title = props.encodingRecipe.recipes[item].name
-        encodingRecipeListItem.data = props.encodingRecipe.recipes[item]
-        return encodingRecipeListItem
+    const encodingRecipeList = Object.values(props.encodingRecipe.recipes).map((item) => {
+        return {
+            title: item.name,
+            data: item
+        }
     })
 
     React.useEffect(() => {
