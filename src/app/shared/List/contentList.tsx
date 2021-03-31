@@ -248,6 +248,10 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const isTrialVodOrLive = () => {
+        return (props.contentType === "live"|| props.contentType === "vod") && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial";
+    }
+
     const contentListHeaderElement = () => {
         return {
             data: [
@@ -294,6 +298,12 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const renderLimitedTrialFeatures = () => {
+        return (
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade'>Upgrade Now</a></div>} />
+        )
+    }
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -328,7 +338,7 @@ export const ContentListPage = (props: ContentListProps) => {
                         props.contentType !== 'expo' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
-                        props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{isTrialVodOrLive() ? renderLimitedTrialFeatures() : (value.featuresList ? handleFeatures(value, value.objectID) : null)}</div>,
                         value.status !== 'Deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -423,7 +433,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map(contentId => { return { id: contentId, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
             {
-                (props.contentType === "live"|| props.contentType === "vod") && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial" &&
+                isTrialVodOrLive() &&
                 <PlanDetailsCardWrapper>
                     <PlanDetailsCard type={props.contentType === 'vod' ? 'vod' : 'regular'}/>
                 </PlanDetailsCardWrapper>
