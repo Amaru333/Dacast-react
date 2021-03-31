@@ -9,8 +9,25 @@ export const formatGetVodRenditionsOutput = (contentType: ContentType) =>  (data
     let formattedData: {contentId: string; contentType: ContentType; data: RenditionsList} = {
         contentId: data.id,
         contentType: contentType,
-        data: data
+        data: {
+            presets: data.presets,
+            storageRemaining: data.storageRemaining,
+            videoInfo: data.videoInfo,
+            encodedRenditions: data.encodedRenditions.map(rendition => {
+                return {
+                    renditionID: rendition.renditionID,
+                    name: rendition.name,
+                    size : rendition.size || 0,
+                    width: rendition.width || 0,
+                    height: rendition.height || 0,
+                    bitrate: rendition.bitrate || 0,
+                    fileLocation: rendition.fileLocation || '',
+                    transcodingJobID: rendition.transcodingJobID || null
+                }
+            })
+        }
     }
+    console.log('formatted data: ', formattedData)
     return formattedData
 }
 
@@ -35,11 +52,11 @@ export const formatPostVodRenditionsOutput = (contentType: ContentType) => (endp
             return {
                 renditionID: item.id,
                 name: item.name,
-                size: null,
-                bitrate: null,
-                width: null,
+                size: 0,
+                bitrate: 0,
+                width: 0,
                 transcodingJobID: null,
-                height: null,
+                height: 0,
                 fileLocation: 'vod-storage'
             }
         }),
