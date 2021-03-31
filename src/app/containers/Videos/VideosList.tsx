@@ -19,23 +19,25 @@ export interface ContentListProps {
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
-const VideosList = (props: ContentListProps) => {
+const VideosList = (props: ContentListProps & {billingInfo: BillingPageInfos}) => {
 
     return <ContentListPage
-            contentType="vod" 
+            contentType="vod"
             items={props.contentListState['vod']}
             themesList={props.themesList}
             getContentList={props.getContentList}
             deleteContentList={props.deleteContentList}
             getThemesList={props.getThemesList}
             showToast={props.showToast}
+            billingInfo={props.billingInfo}
          />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
-        themesList: state.settings.theming
+        themesList: state.settings.theming,
+        billingInfo: state.account.plan
     };
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from "react-device-detect";
 import { Table } from '../../../../components/Table/Table';
 import { Modal } from '../../../../components/Modal/Modal';
 import { Text } from '../../../../components/Typography/Text';
@@ -242,7 +243,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     </>
                 }
                 {
-                    props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName === "30 Day Trial" &&
+                    !isMobile && props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName === "30 Day Trial" &&
                     <PlanDetailsCardWrapper>
                         <PlanDetailsCard/>
                     </PlanDetailsCardWrapper>
@@ -285,9 +286,14 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     bandwidthProduct={props.billingInfos.products.bandwidth}
                 />
             }
-
             </Elements>
             </RecurlyProvider>
+            {
+                isMobile && props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName === "30 Day Trial" &&
+                <PlanDetailsCardMobileWrapper>
+                    <PlanDetailsCard/>
+                </PlanDetailsCardMobileWrapper>
+            }
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <DisableProtectionModal
                     price={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.price : 0}
@@ -346,5 +352,10 @@ export const DataCell = styled(PriceCell)`
 
 export const PlanDetailsCardWrapper = styled.div`
     background-color: ${props => props.theme.colors["gray-10"]};
+    padding: 16px 16px 24px;
     margin-top: 8px;
+`
+export const PlanDetailsCardMobileWrapper = styled.div`
+    padding: 16px 16px 7px;
+    margin: 32px 0 16px;
 `

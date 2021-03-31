@@ -13,7 +13,7 @@ import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 export const LiveList = (props: ContentListProps & {billingInfo: BillingPageInfos}) => {
 
     return <ContentListPage
-            contentType="live" 
+            contentType="live"
             items={props.contentListState['live']}
             themesList={props.themesList}
             getContentList={props.getContentList}

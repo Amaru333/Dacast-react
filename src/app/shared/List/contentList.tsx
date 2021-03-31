@@ -1,4 +1,6 @@
 import React from 'react';
+import { isMobile } from "react-device-detect";
+import styled from 'styled-components';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
 import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
@@ -34,6 +36,7 @@ import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types';
+import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -368,43 +371,43 @@ export const ContentListPage = (props: ContentListProps) => {
 
     return (
         <>
-            <div className='flex items-center mb2'>
+            <div className={'flex mb2 ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
                 <div className="flex-auto items-center flex">
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
                 </div>
-                <div className="flex items-center relative" >
+                <div className={'flex items-center relative ' + (isMobile ? 'mt2 ml-2' : '')}>
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
                     }
                     {
                         props.contentType !== 'expo' &&
                         <>
-                            <div className="relative">
-                                <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <div className={'relative ' + (isMobile ? 'mr2 flex-1 flex' : '')}>
+                                <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="secondary" >{ isMobile ? 'Actions' : 'Bulk Actions' }</Button>
                                 <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                     {renderList()}
                                 </DropdownList>
                             </div>
-                            <SeparatorHeader className="mx2 inline-block" />
+                            { !isMobile && <SeparatorHeader className="mx2 inline-block" /> }
                         </>
                     }
                     <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
                     {
                         props.contentType === "vod" &&
-                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" >{ isMobile ? 'Upload' : 'Upload Video' }</Button>
                     }
                     {
                         props.contentType === "live" &&
-                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')}sizeButton="small" typeButton="primary" >{ isMobile ? 'Create' : 'Create Live Stream' }</Button>
                     }
                     {
                         props.contentType === "playlist" &&
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : 'Create Playlist' }</Button>
                     }
                     {
                         props.contentType === 'expo' &&
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >{ isMobile ? 'Create' : 'Create Expo' }</Button>
                     }
                 </div>
 
@@ -418,6 +421,12 @@ export const ContentListPage = (props: ContentListProps) => {
             {
                 bulkThemeOpen &&
                 <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map(contentId => { return { id: contentId, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
+            }
+            {
+                (props.contentType === "live"|| props.contentType === "vod") && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial" &&
+                <PlanDetailsCardWrapper>
+                    <PlanDetailsCard type={props.contentType === 'vod' ? 'vod' : 'regular'}/>
+                </PlanDetailsCardWrapper>
             }
             <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
@@ -449,3 +458,9 @@ export const ContentListPage = (props: ContentListProps) => {
     )
 }
 
+export const PlanDetailsCardWrapper = styled.div`
+    background-color: ${props => props.theme.colors["gray-10"]};
+    padding: 16px 16px ${isMobile ? '7px' : '32px'};
+    margin-top: 8px;
+    border: ${props => isMobile ? 'none' : '1px solid ' + props.theme.colors["violet"]};
+`
