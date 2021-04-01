@@ -100,7 +100,9 @@ export interface PlanSummary {
     price: number;
     currency: string;
     paymentFrequency: string;
-    paymentTerm: number
+    paymentTerm: number;
+    nbSeats: number;
+    extraSeats: number;
 }
 
 export const planInitialState: BillingPageInfos = {

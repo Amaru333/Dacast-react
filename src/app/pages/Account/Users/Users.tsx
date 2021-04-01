@@ -21,6 +21,7 @@ import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
 import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { UsersComponentProps } from '../../../containers/Account/Users';
 import { compareValues } from '../../../../utils/utils';
+import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const UsersPage = (props: UsersComponentProps) => {
 
@@ -149,7 +150,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown_' + user.userId} 
-                                list={getUserDropdownOptions(user)} callback={(value: string) => handleUserDropdownOptions(value, user)}
+                                list={getUserDropdownOptions(user)} callback={(value: DropdownSingleListItem) => handleUserDropdownOptions(value.title, user)}
                             >
                                 <IconGreyActionsContainer >
                                     <IconStyle>more_vert</IconStyle>

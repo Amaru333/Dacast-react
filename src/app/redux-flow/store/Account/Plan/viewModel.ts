@@ -17,7 +17,9 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             price: data.currentPlan.price,
             currency: data.currentPlan.currency,
             paymentFrequency: data.currentPlan.paymentFrequency,
-            paymentTerm: data.currentPlan.paymentTerm
+            paymentTerm: data.currentPlan.paymentTerm,
+            nbSeats: data.currentPlan.displayName.indexOf('Starter') !== -1 || data.currentPlan.displayName.indexOf('Trial') !== -1 ? 1 : data.currentPlan.displayName.indexOf('Scale') !== -1 ? 5 : 3,
+            extraSeats: 2
         }
     }
     userToken.updateUserInfo({'planName': data.currentPlan.displayName})

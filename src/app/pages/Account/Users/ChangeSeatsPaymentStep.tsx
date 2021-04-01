@@ -4,9 +4,9 @@ import { Text } from '../../../../components/Typography/Text';
 import { Table } from '../../../../components/Table/Table';
 import { NewPaymentMethodForm } from '../../../shared/Billing/NewPaymentMethodForm';
 import { InputCheckbox } from '../../../../components/FormsComponents/Input/InputCheckbox';
-import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
+import { BillingPageInfos, PlanSummary } from '../../../redux-flow/store/Account/Plan/types';
 
-export const ChangeSeatsPaymentStep = (props: {stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; planData: Plan; billingInfo: BillingPageInfos; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;}) => {
+export const ChangeSeatsPaymentStep = (props: {stepperData: PlanSummary; updateStepperData: React.Dispatch<React.SetStateAction<PlanSummary>>; planData: PlanSummary; billingInfo: BillingPageInfos; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;}) => {
 
     const extraSeatsPurchased = props.stepperData.seatChange > 0
 

@@ -26,24 +26,6 @@ export interface UsersComponentProps {
     plan?: Plan
 }
 
-export const mockPlan: Plan = {
-        
-    displayName: 'Annual Starter',
-    planCode: 'starter-annual-uapp',
-    planName: 'Annual Starter',
-    state: 'active',
-    playbackProtectionUnitPrice: '0.15',
-    periodStartedAt: 1608039694,
-    periodEndsAt: 1639575694,
-    trialExpiresIn: null,
-    price: 46800,
-    currency: 'USD',
-    paymentFrequency: 'months',
-    paymentTerm: 12,
-    baseSeats: 1,
-    extraSeats: 4
-}
-
 export const Users = (props: UsersComponentProps) => {
 
     const [noDataFetched, setNoDataFetched] = React.useState<boolean>(false)
@@ -51,14 +33,19 @@ export const Users = (props: UsersComponentProps) => {
     React.useEffect(() => {
         props.getMultiUsersDetails()
         .catch(() => setNoDataFetched(true))
+
+        if(!props.billingInfo) {
+            props.getBillingPageInfos()
+            .catch(() => noDataFetched)
+        }
     }, [])
 
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
     return (
-        props.multiUserDetails ?
-            <UsersPage {...props} plan={mockPlan} />
+        (props.multiUserDetails && props.billingInfo) ?
+            <UsersPage {...props} plan={props.billingInfo} />
         :
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

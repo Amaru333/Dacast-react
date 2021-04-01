@@ -2,19 +2,18 @@ import React from 'react';
 import { InputCounter } from '../../../../components/FormsComponents/Input/InputCounter';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
+import { PlanSummary } from '../../../redux-flow/store/Account/Plan';
 import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 
-export const ChangeSeatsCartStep = (props: {stepperData: Plan; updateStepperData: React.Dispatch<React.SetStateAction<Plan>>; planData: Plan; emptySeats: number; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;}) => {
+export const ChangeSeatsCartStep = (props: {stepperData: PlanSummary; updateStepperData: React.Dispatch<React.SetStateAction<PlanSummary>>; planData: PlanSummary; emptySeats: number; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;}) => {
 
     const [seatChange, setSeatChange] = React.useState<number>(0)
     let newExtraSeatPrice = 120 * seatChange
 
     React.useEffect(() => {
         props.setStepValidated(seatChange !== 0)
-    }, [seatChange])
-
-    React.useEffect(() => {
         props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), seatChange: seatChange})
+
     }, [seatChange])
 
     const seatsHeaderElement = () => {
@@ -33,7 +32,7 @@ export const ChangeSeatsCartStep = (props: {stepperData: Plan; updateStepperData
         return [
             {
                 data: [
-                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.baseSeats!} Seat</Text>,
+                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.nbSeats!} Seat</Text>,
                     <Text key="planSeatUnitPrice" size={14} weight="reg" color="gray-1">Included In Plan</Text>,
                     <></>,
                     <></>

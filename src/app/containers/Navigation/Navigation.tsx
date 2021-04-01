@@ -20,7 +20,7 @@ import { CustomStepper } from "../../../components/Stepper/Stepper";
 import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
 import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
 import { Plan } from "../../redux-flow/store/Account/Upgrade/types";
-import { mockPlan } from "../Account/Users";
+import { PlanSummary } from "../../redux-flow/store/Account/Plan";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -69,14 +69,10 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     //REMOVE ALL MOCK DATA WHEN BACKEND DONE
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
-    const [planDetails, setPlanDetails] = React.useState<Plan>(mockPlan)
+    const [planDetails, setPlanDetails] = React.useState<PlanSummary>(props.billingInfo.currentPlan)
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
-    // let emptySeats: number = (props.planDetails.baseSeats + props.planDetails.extraSeats) - mockUsers.length
 
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
-
-    //GET NUMBER OF SEATS FROM PLAN
-    const mockUserSeats = 1
 
     React.useEffect(() => {
         props.getPlanDetails()
@@ -108,8 +104,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
 
     const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
-
-    
 
     //Funtions for Add button dropdown
 
@@ -198,13 +192,13 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
                                 {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
-                                    // if(subMenuElement.name === "Users" && mockUserSeats === 1){
-                                    //     return (
-                                    //         <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
-                                    //             <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                    //         </SubMenuElement>
-                                    //     )
-                                    // } else
+                                    if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan.nbSeats === 1){
+                                        return (
+                                            <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
+                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                            </SubMenuElement>
+                                        )
+                                    } else {
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
@@ -212,6 +206,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                             </SubMenuElement>
                                         </Link>
                                     )
+                                    }
                                 })
 
                                 }
@@ -254,19 +249,23 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
             </ContainerStyle>
-            {/* <CustomStepper
-                stepperHeader="Change Number of Seats"
-                stepList={changeSeatsStepList}
-                opened={changeSeatsStepperOpen}
-                lastStepButton="Purchase"
-                finalFunction={() => {}}
-                functionCancel={() => setChangeSeatsStepperOpen(false)}
-                stepperData={planDetails}
-                updateStepperData={(plan: Plan) => setPlanDetails(plan)}
-                emptySeats={1}
-                planData={mockPlan}
-                billingInfo={props.billingInfos}
-            /> */}
+            {
+                changeSeatsStepperOpen && 
+                    <CustomStepper
+                    stepperHeader="Change Number of Seats"
+                    stepList={changeSeatsStepList}
+                    opened={changeSeatsStepperOpen}
+                    lastStepButton="Purchase"
+                    finalFunction={() => {}}
+                    functionCancel={() => setChangeSeatsStepperOpen(false)}
+                    stepperData={planDetails}
+                    updateStepperData={(plan: PlanSummary) => setPlanDetails(plan)}
+                    emptySeats={1}
+                    planData={planDetails}
+                    billingInfo={props.billingInfo}
+                />
+            }
+
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
                 <MultiUserUpgradeModal openBuySeatsStepper={openBuySeatsStepper} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
@@ -278,7 +277,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         planDetails: state.account.upgrade,
-        billingInfos: state.account.plan
+        billingInfo: state.account.plan
     }
 }
 
