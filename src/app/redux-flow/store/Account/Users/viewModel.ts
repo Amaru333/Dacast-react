@@ -5,14 +5,23 @@ import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiUserDetails => {
     let formattedData: MultiUserDetails = {
         users: data.users.map(user => {
+            let fullName = ''
+            if(user.firstName) {
+                fullName = user.firstName
+            }
+
+            if(user.lastName) {
+                fullName += ' ' + user.lastName
+            }
             return {
                 userId: user.userId,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                email: user.email || '',
                 role: capitalizeFirstLetter(user.role) as UserRole,
                 invitationId: user.invitationId,
-                status: capitalizeFirstLetter(user.status) as UserStatus
+                status: capitalizeFirstLetter(user.status) as UserStatus,
+                name: fullName
             }
         }),
         maxSeats: data.maxSeats || data.occupiedSeats,
@@ -36,10 +45,11 @@ export const formatPostUserOutput = (endpointResponse: null, dataReact: {email: 
         email: dataReact.email,
         role: dataReact.isAdmin ? 'Admin' : 'Creator',
         status: 'Invited',
-        firstName: null,
-        lastName: null,
+        firstName: '',
+        lastName: '',
         invitationId: null,
-        userId: null
+        userId: null,
+        name: ''
     }
 
     return formattedData
@@ -73,3 +83,5 @@ export const formatDeleteUserInput = (data: {userToDelete: string; transferConte
 
     return formattedData
 }
+
+export const formatDeleteUserOutput = (endpointResponse: null, dataReact: {userToDelete: string; transferContentsToUserId: string}): string => dataReact.userToDelete

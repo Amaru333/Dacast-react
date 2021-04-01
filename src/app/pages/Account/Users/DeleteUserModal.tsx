@@ -3,7 +3,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Text } from '../../../../components/Typography/Text';
 
-export const DeleteUserModal = (props: {toggle: (b: boolean) => void; handleDeleteModalSelection: (input: string) => void} ) => {
+export const DeleteUserModal = (props: {toggle: React.Dispatch<React.SetStateAction<boolean>>; handleDeleteModalSelection: React.Dispatch<React.SetStateAction<string>>}) => {
 
     const [deleteModalSelection, setDeleteModalSelection] = React.useState<string>(null)
 

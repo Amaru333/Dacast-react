@@ -10,7 +10,7 @@ import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/a
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { UpgradeAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { Plan } from '../../redux-flow/store/Account/Upgrade/types';
-import { addUserAction, cancelUserInviteAction, editUserRoleAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
+import { addUserAction, cancelUserInviteAction, deleteUserAction, editUserRoleAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
 import { MultiUserDetails, User } from '../../redux-flow/store/Account/Users/types';
 
 export interface UsersComponentProps {
@@ -19,6 +19,7 @@ export interface UsersComponentProps {
     getMultiUsersDetails: () => Promise<void> 
     addUser: (email: string, isAdmin: boolean) => Promise<void>
     editUserRole: (user: User) => Promise<void>
+    deleteUser: (userId: string, transferContentsToUserId: string) => Promise<void>
     cancelUserInvite: (user: User) => Promise<void>
     resendUserInvite: (user: User) => Promise<void>
     multiUserDetails: MultiUserDetails
@@ -83,6 +84,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         editUserRole: async (user: User) => {
             await dispatch(editUserRoleAction(user));
+        },
+        deleteUser: async (userId: string, transferContentsToUserId: string) => {
+            await dispatch(deleteUserAction({userToDelete: userId, transferContentsToUserId: transferContentsToUserId}));
         },
         cancelUserInvite: async (user: User) => {
             await dispatch(cancelUserInviteAction(user));

@@ -6,7 +6,7 @@ export enum ActionTypes {
     RESEND_USER_INVITE = "@@account_users/RESEND_USER_INVITE",
     DELETE_USER = "@@account_users/DELETE_USER"
 }
-export type UserStatus = 'Active' | 'Invited' | 'Expired';
+export type UserStatus = 'Active' | 'Invited' | 'Expired' | 'Disabled';
 
 export type UserRole = 'Owner' | 'Admin' | 'Creator'
 
@@ -18,6 +18,7 @@ export interface User {
     role: UserRole;
     invitationId: string;
     status: UserStatus;
+    name: string;
 }
 
 export interface MultiUserDetails {
@@ -33,7 +34,8 @@ export const defaultUser: User = {
     email: "",
     role: "Creator",
     invitationId: '',
-    status: 'Expired'
+    status: 'Expired',
+    name: ''
 }
 
 export const usersInitialState: MultiUserDetails = {

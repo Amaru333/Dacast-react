@@ -5,7 +5,7 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { Text } from '../../../../components/Typography/Text';
 import { User } from '../../../redux-flow/store/Account/Users/types';
 
-export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean) => void}) => {
+export const TransferContentModal = (props: {users: User[]; toggle: React.Dispatch<React.SetStateAction<boolean>>; userToDelete: string; deleteUser: (userToDelete: string, transferContentsToUserId: string) => Promise<void>}) => {
 
     const createUserDropdownList = () => {
         return props.users.map((user: User): DropdownSingleListItem => {
@@ -21,7 +21,16 @@ export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean)
 
     const userDropdownList = createUserDropdownList()
     const [selectedUser, setSelectedUser] = React.useState<string>(userDropdownList.find(user => user.data.role === "Owner") ? userDropdownList.find(user => user.data.role === "Owner").data.userId: '')
+    const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
+    const handleSubmit = () => {
+        setButtonLoading(true)
+        props.deleteUser(props.userToDelete, selectedUser)
+        .then(() => {
+            setButtonLoading(false)
+            props.toggle(false)
+        }).catch(() => setButtonLoading(false))
+    }
     return (
         <div className="flex flex-column">
             <Text>Who should have the content?</Text>
@@ -35,7 +44,7 @@ export const TransferContentModal = (props: {users: User[]; toggle: (b: boolean)
                 callback={(user: DropdownSingleListItem) => setSelectedUser(user.data.id)}
             />
             <div className="flex mt3">
-                <Button onClick={() => props.toggle(false)}>Confirm</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleSubmit()}>Confirm</Button>
                 <Button className="ml2" typeButton="secondary" onClick={() => {props.toggle(false)}}>Cancel</Button>
             </div>
         </div>

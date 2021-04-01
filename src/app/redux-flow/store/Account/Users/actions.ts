@@ -1,7 +1,7 @@
 import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
 import { applyViewModel } from "../../../../utils/utils";
 import { ActionTypes, MultiUserDetails, User } from "./types";
-import { formatDeleteUserInput, formatGetUsersDetailsOutput, formatPostCancelUserInviteInput, formatPostCancelUserInviteOutput, formatPostResendUserInviteInput, formatPostResendUserInviteOutput, formatPostUserInput, formatPostUserOutput, formatPostUserRoleInput, formatPostUserRoleOutput } from "./viewModel";
+import { formatDeleteUserInput, formatDeleteUserOutput, formatGetUsersDetailsOutput, formatPostCancelUserInviteInput, formatPostCancelUserInviteOutput, formatPostResendUserInviteInput, formatPostResendUserInviteOutput, formatPostUserInput, formatPostUserOutput, formatPostUserRoleInput, formatPostUserRoleOutput } from "./viewModel";
 
 export interface GetUsersDetails {
     type: ActionTypes.GET_USERS_DETAILS;
@@ -30,7 +30,7 @@ export interface ResendUserInvite {
 
 export interface DeleteUser {
     type: ActionTypes.DELETE_USER;
-    payload: User
+    payload: string
 }
 
 export type UsersAction = GetUsersDetails | AddUser | EditUserRole | CancelUserInvite | ResendUserInvite | DeleteUser
@@ -40,4 +40,4 @@ export const addUserAction = applyViewModel(dacastSdk.postUser, formatPostUserIn
 export const editUserRoleAction = applyViewModel(dacastSdk.postUserRole, formatPostUserRoleInput, formatPostUserRoleOutput, ActionTypes.EDIT_USER_ROLE, 'User role has been edited', 'Couldn\'t edit user role')
 export const cancelUserInviteAction = applyViewModel(dacastSdk.postCancelUserInvite, formatPostCancelUserInviteInput, formatPostCancelUserInviteOutput, ActionTypes.CANCEL_USER_INVITE, 'User invitation has been cancelled', 'Couldn\'t cancel user invitation')
 export const resendUserInviteAction = applyViewModel(dacastSdk.postResendUserInvite, formatPostResendUserInviteInput, formatPostResendUserInviteOutput, ActionTypes.RESEND_USER_INVITE, 'User invite has been resent', 'Couldn\'t rensend user invite')
-export const deleteUserAction = applyViewModel(dacastSdk.deleteUser, formatDeleteUserInput, formatPostResendUserInviteOutput, ActionTypes.DELETE_USER, 'User has been deleted', 'Couldn\'t delete user')
+export const deleteUserAction = applyViewModel(dacastSdk.deleteUser, formatDeleteUserInput, formatDeleteUserOutput, ActionTypes.DELETE_USER, 'User has been deleted', 'Couldn\'t delete user')
