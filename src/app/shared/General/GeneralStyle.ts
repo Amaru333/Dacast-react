@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Text } from '../../../components/Typography/Text'
 import { Input } from '../../../components/FormsComponents/Input/Input';
 
@@ -60,9 +60,12 @@ padding-bottom: 41px;
 box-sizing: border-box;
 `
 
-export const ImageSection = styled.div`
+export const ImageSection = styled.div<{backgroundColor?: string}>`
 width: 100%;
 display: flex;
+${props => props.backgroundColor && css`
+    background-color: ${props=> props.backgroundColor};
+`}
 justify-content: center;
 align-items: center;
 `

@@ -11,13 +11,12 @@ import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/Dro
 import styled from 'styled-components';
 import { DesignComponentProps } from '../../containers/Expos/Design';
 import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
+import { Button } from '../../../components/FormsComponents/Button/Button';
+import { ImageAreaExpo } from './ImageAreaExpo';
 
-export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string}) => {
+export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
 
-    const [backgroundEnable, setBackgroundEnable] = React.useState<boolean>(props.designState.coverBackgroundEnable)
-
-    const [featuredContentEnable, setFeaturedContentEnable] = React.useState<boolean>(props.designState.featuredContentEnable)
-    const [selectedFeaturedContent, setSelectedFeaturedContent] = React.useState<string>(props.designState.featuredContentId)
+    const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
 
     const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item) => {
         let assetDropdownItem: DropdownSingleListItem = {title: null}
@@ -41,17 +40,17 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     Customize the look of your expo
                 </Text>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Dark Mode' checked={props.designState.darkModeEnable} />
+                    <Toggle label='Dark Mode' defaultChecked={stateContentDetails.darkModeEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, darkModeEnable: !stateContentDetails.darkModeEnable }) }} />
                     <IconStyle id="darkModeTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="darkModeTooltip"></Tooltip>
+                    <Tooltip  target="darkModeTooltip">Change design to a dark theme.</Tooltip>
                 </ControlToggleContainer>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Cover Background' defaultChecked={backgroundEnable} onChange={() => { setBackgroundEnable(!backgroundEnable) } }/>
+                    <Toggle label='Cover Background' defaultChecked={stateContentDetails.coverBackgroundEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, coverBackgroundEnable: !stateContentDetails.coverBackgroundEnable }) } }/>
                     <IconStyle id="coverBackgroundTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="coverBackgroundTooltip"></Tooltip>
+                    <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
                 </ControlToggleContainer>
                 {
-                    backgroundEnable && <Text>TODO: New Component Here</Text>
+                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo headerEnable={stateContentDetails.coverBackgroundEnable} headerColor={stateContentDetails.coverBackgroundColor} headerUrl={stateContentDetails.coverBackgroundUrl}/>
                 }
                 <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
                     When disabled, white will be the default cover background.
@@ -61,27 +60,31 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     <Text size={20} weight='med'> Content Layout </Text>
                 </TitleSection>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Content Descriptions' checked={props.designState.contentDescriptions} />
+                    <Toggle label='Content Descriptions' checked={stateContentDetails.contentDescriptions} />
                     <IconStyle id="contentDescriptionTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="contentDescriptionTooltip"></Tooltip>
+                    <Tooltip  target="contentDescriptionTooltip">Show the descriptions of all content.</Tooltip>
                 </ControlToggleContainer>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Featured Content' defaultChecked={props.designState.featuredContentEnable} onChange={() => setFeaturedContentEnable(!featuredContentEnable)} />
+                    <Toggle label='Featured Content' defaultChecked={stateContentDetails.featuredContentEnable} onChange={() => setStateContentDetails({ ...stateContentDetails, featuredContentEnable: !stateContentDetails.featuredContentEnable })} />
                     <IconStyle id="featuredContentTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="featuredContentTooltip"></Tooltip>
+                    <Tooltip  target="featuredContentTooltip">Fix one piece of content at the top.</Tooltip>
                 </ControlToggleContainer>
                 {
-                    featuredContentEnable && 
+                    stateContentDetails.featuredContentEnable && 
                     <DropdownSingle
                         id='assetsDropdown'
                         isInModal
                         className='col col-12 py1'
                         dropdownTitle='Featured Content'
-                        defaultSelected={selectedFeaturedContent ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === selectedFeaturedContent).title : null}
-                        callback={(item: DropdownSingleListItem) => setSelectedFeaturedContent(item.data)}
+                        defaultSelected={stateContentDetails.featuredContentId ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId).title : null}
+                        callback={(item: DropdownSingleListItem) => setStateContentDetails({ ...stateContentDetails, featuredContentId: item.data }) }
                         list={assetsDropdownList}
                     />
                 }
+                <div className='my1 flex'>
+                    <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                </div>
             </ControlsCard>
             
         </React.Fragment>

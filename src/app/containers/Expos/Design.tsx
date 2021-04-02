@@ -8,7 +8,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { ExposTabs } from './ExposTabs';
-import { ContentDetails, ContentDetailsState, ExpoDetails } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, ContentDetailsState, ExpoDetails, ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { DesignPage } from '../../pages/Expos/Design';
 import { Action } from '../../redux-flow/store/Content/Theming/actions';
@@ -32,27 +32,29 @@ const DesignExpos = (props: DesignComponentProps) => {
 
     let { exposId } = useParams<{exposId: string}>()
 
-    const [stateContentDetails, setStateContentDetails] = React.useState<ExpoDetails>(null)
-    const [contentDetails, setContentDetails] = React.useState<ExpoDetails>(stateContentDetails)
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         props.getContentDetails(exposId, 'expo');
         props.getContentSetup(exposId, 'expo')
     }, [])
 
-    const handleSave = () => {
-        props.saveContentDetails(contentDetails, "expo").then(() => { }).catch(() => {})
+    const handleSave = (data: ExposThemingState) => {
+        setIsLoading(true)
+        console.log(data);
+        props.saveContentDetails({...props.themeState['expo'][exposId], appearance: data}, "expo").then( ()=>  setIsLoading(false)).catch(() => {})
     }
 
     return (
         <>
             <ExposTabs exposId={exposId} />
-            { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] ?
+            { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] && !isLoading ?
                 (
                     <DesignPage 
                         designState={ (props.themeState['expo'][exposId] as ExpoDetails).appearance } 
                         exposId={exposId}
                         {...props}
+                        save={handleSave}
                     />          
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

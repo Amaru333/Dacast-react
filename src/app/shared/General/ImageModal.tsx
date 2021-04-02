@@ -202,7 +202,7 @@ export const ImageModal = (props: ImageModalProps) => {
     )
 }
 
-const RadioButtonContainer = styled.div<{isSelected: boolean}>`
+export const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     position: relative;
     display: flex;
     flex-direction: row;
@@ -213,7 +213,7 @@ const RadioButtonContainer = styled.div<{isSelected: boolean}>`
     margin-bottom: 0px;
 `
 
-const RadioButtonOption = styled.div<{isOpen: boolean}>`
+export const RadioButtonOption = styled.div<{isOpen: boolean}>`
     display: none;
     margin-bottom: 0;
     ${props => props.isOpen && css`
@@ -224,7 +224,7 @@ const RadioButtonOption = styled.div<{isOpen: boolean}>`
         border-top: none;
     `}
 `
-const ThumbnailFile = styled.div`
+export const ThumbnailFile = styled.div`
     display: flex;
     background-color: ${props => props.theme.colors["gray-10"]};
     height: 32px;
