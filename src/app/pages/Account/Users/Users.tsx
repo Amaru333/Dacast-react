@@ -146,7 +146,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     handleUserStatus(user.status),
                     <div key={'usersMoreActionButton' + user.userId} className='right mr2'>
                         {
-                            (user.userId !== userToken.getUserInfoItem('user-id') && user.role !== 'Owner') &&
+                            (user.userId !== userToken.getUserInfoItem('user-id') && user.role !== 'Owner' && user.status !== 'Disabled') &&
                             <DropdownCustom 
                                 backgroundColor="transparent" 
                                 id={'foldersTableMoreActionDropdown_' + user.userId} 
@@ -203,9 +203,13 @@ export const UsersPage = (props: UsersComponentProps) => {
                 planData={props.plan}
                 billingInfo={props.billingInfo}
             />
-            <Modal modalTitle={userDetails.userId === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
-                <UserModal action={props.addUser} userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
-            </Modal>
+            {
+                userModalOpen && 
+                <Modal modalTitle={userDetails.userId === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>
+                    <UserModal addUser={props.addUser} editRole={props.editUserRole} userDetails={userDetails} setUserDetails={setUserDetails} toggle={setUserModalOpen} />
+                </Modal>
+            }
+
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setDeleteUserModalOpen(false)} opened={deleteUserModalOpen}>
                 <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection}/>
             </Modal>

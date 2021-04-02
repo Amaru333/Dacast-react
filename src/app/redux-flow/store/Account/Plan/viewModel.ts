@@ -18,7 +18,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             currency: data.currentPlan.currency,
             paymentFrequency: data.currentPlan.paymentFrequency,
             paymentTerm: data.currentPlan.paymentTerm,
-            nbSeats: data.currentPlan.displayName.indexOf('Starter') !== -1 || data.currentPlan.displayName.indexOf('Trial') !== -1 ? 1 : data.currentPlan.displayName.indexOf('Scale') !== -1 ? 5 : 3,
+            nbSeats: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1,
             extraSeats: 2
         }
     }

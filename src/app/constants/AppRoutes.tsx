@@ -436,7 +436,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/withdrawals',
                 name: 'Withdrawals',
-                component: Payout
+                component: Payout,
+                associatePrivilege: 'privilege-payment-request'
             },
             {
                 path: '/paywall/theming',
@@ -459,6 +460,7 @@ export const AppRoutes: Routes[] = [
         name: 'Settings',
         iconName: 'settings',
         component: null,
+        associatePrivilege: 'privilege-account-settings',
         slug: [
             {
                 path: '/settings/encoding',
@@ -518,17 +520,20 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/company',
                 name: 'Company',
-                component: Company
+                component: Company,
+                associatePrivilege: 'privilege-account-settings'
             },
             {
                 path: '/account/users',
                 name: 'Users',
-                component: Users
+                component: Users,
+                associatePrivilege: 'privilege-multi-access-beta'
             },
             {
                 path: '/account/billing',
                 name: 'Billing',
-                component: Billing
+                component: Billing,
+                associatePrivilege: 'privilege-billing'
             },
             // {
             //     path: '/account/pending-orders',
@@ -538,7 +543,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: Invoices
+                component: Invoices,
+                associatePrivilege: 'privilege-billing'
             }
         ]
     },

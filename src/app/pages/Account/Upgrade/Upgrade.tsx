@@ -240,7 +240,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB</Text>
-                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>3</Text>
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>1</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -284,7 +284,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
                                         </div>
-                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>5</Text>
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>3</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
