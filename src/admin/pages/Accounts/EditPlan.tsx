@@ -223,7 +223,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <Modal modalTitle='Extend Trial' toggle={() => setExtendTrialModalOpened(!extendTrialModalOpened)} opened={extendTrialModalOpened}>
                     <div className='flex flex-column'>
                         <DateTimePicker
-                            minDate={defaultTs}
+                            //minDate={defaultTs}
                             fullLineTz
                             dropShowing={false}
                             showTimezone={true}

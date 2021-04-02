@@ -37,6 +37,9 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types';
 import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import { PlanLimitReachedModalType } from '../../containers/Navigation/PlanLimitReachedModal';
+import { Bubble } from '../../../components/Bubble/Bubble';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -104,6 +107,8 @@ export const ContentListPage = (props: ContentListProps) => {
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [previewedContent, setPreviewedContent] = React.useState<string>(null)
+    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
+    const [planLimitReachedModalType, setPlanLimitReachedModalType] = React.useState<PlanLimitReachedModalType>(null)
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -248,8 +253,20 @@ export const ContentListPage = (props: ContentListProps) => {
         }
     }
 
+    const planIsTrial = () => {
+        return props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial"
+    }
+
     const isTrialVodOrLive = () => {
-        return (props.contentType === "live"|| props.contentType === "vod") && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial";
+        return (props.contentType === "live"|| props.contentType === "vod") && planIsTrial()
+    }
+
+    const renderPlaybackLimitReached = () => {
+        return (
+            <Bubble className="flex items-center mb2" type='warning' icon="info_outlined">
+                You reached your daily 100 playbacks limit for the trial plan today. <a href='/account/upgrade' className="text-semibold">Upgrade your plan</a> to get more playbacks.
+            </Bubble>
+        )
     }
 
     const contentListHeaderElement = () => {
@@ -298,9 +315,47 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const handleUploadVideoClick = () => {
+        if(planIsTrial()) {
+            if(props.billingInfo.currentPlan.trialExpiresIn <= 0) {
+                setPlanLimitReachedModalType('upgrade_now')
+                setPlanLimitReachedModalOpen(true)
+                return
+            }
+        }
+        history.push('/uploader')
+    }
+
+    const handleCreateStreamClick = () => {
+        if(planIsTrial()) {
+            if(props.billingInfo.currentPlan.trialExpiresIn <= 0) {
+                setPlanLimitReachedModalType('upgrade_now')
+                setPlanLimitReachedModalOpen(true)
+                return
+            }
+            if(props.items.totalResults > 0){
+                setPlanLimitReachedModalType('livestream_limit_reached_trial')
+                setPlanLimitReachedModalOpen(true)
+                return
+            }
+        }
+        setAddStreamModalOpen(true)
+    }
+
+    const handleCreateExpoClick = () => {
+        if(planIsTrial()) {
+            if(props.billingInfo.currentPlan.trialExpiresIn <= 0) {
+                setPlanLimitReachedModalType('upgrade_now')
+                setPlanLimitReachedModalOpen(true)
+                return
+            }
+        }
+        setAddExpoModalOpen(true)
+    }
+
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade'>Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade' className="text-semibold">Upgrade Now</a></div>} />
         )
     }
 
@@ -405,11 +460,11 @@ export const ContentListPage = (props: ContentListProps) => {
                     <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
                     {
                         props.contentType === "vod" &&
-                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" >{ isMobile ? 'Upload' : 'Upload Video' }</Button>
+                        <Button onClick={handleUploadVideoClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.billingInfo}>{ isMobile ? 'Upload' : 'Upload Video' }</Button>
                     }
                     {
                         props.contentType === "live" &&
-                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')}sizeButton="small" typeButton="primary" >{ isMobile ? 'Create' : 'Create Live Stream' }</Button>
+                        <Button onClick={handleCreateStreamClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.billingInfo}>{ isMobile ? 'Create' : 'Create Live Stream' }</Button>
                     }
                     {
                         props.contentType === "playlist" &&
@@ -417,11 +472,14 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === 'expo' &&
-                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >{ isMobile ? 'Create' : 'Create Expo' }</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.billingInfo}>{ isMobile ? 'Create' : 'Create Expo' }</Button>
                     }
                 </div>
 
             </div>
+
+            { isTrialVodOrLive() && renderPlaybackLimitReached() }
+
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
@@ -463,6 +521,7 @@ export const ContentListPage = (props: ContentListProps) => {
             {
                 previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
             }
+            <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
         </>
 
     )

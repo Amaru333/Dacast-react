@@ -32,7 +32,7 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
-import EndOfTrialModal from './containers/Navigation/EndOfTrialModal';
+import PlanLimitReachedModal from './containers/Navigation/PlanLimitReachedModal';
 import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
@@ -185,7 +185,7 @@ const AppContent = (props: { routes: any }) => {
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
     const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
-    const [endOfTrialModalOpen, setEndOfTrialModalOpen] = React.useState<boolean>(true)
+    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(true)
 
     React.useEffect(() => {
         updateStateTitle(location.pathname);
@@ -218,7 +218,7 @@ const AppContent = (props: { routes: any }) => {
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
                     <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
-                    <EndOfTrialModal toggle={() => setEndOfTrialModalOpen(false)} opened={endOfTrialModalOpen === true} />
+                    <PlanLimitReachedModal type="end_of_trial" toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
 
                     <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
                         <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />

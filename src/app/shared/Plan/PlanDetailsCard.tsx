@@ -40,7 +40,7 @@ export const PlanDetailsCard = (props: PlanDetailsCardProps) => {
                     </div>
                 </>
             }
-            <Text size={16} className="block mt25">Any questions regarding your trial features? Our team will be more than happy to assist you. <a href='/help'>Contact Us</a> now.</Text>
+            <Text size={16} className="block mt25">Any questions regarding your trial features? Our team will be more than happy to assist you. <a href='/help' className="text-semibold">Contact Us</a> now.</Text>
         </div>
     )
 }
