@@ -8,22 +8,21 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams } from 'react-router';
 import { ExposTabs } from './ExposTabs';
-import { ExpoDetails } from '../../redux-flow/store/Content/General/types';
+import { ContentDetails, ContentDetailsState, ExpoDetails } from '../../redux-flow/store/Content/General/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { DesignPage } from '../../pages/Expos/Design';
-import { Action, getContentThemeAction, saveContentThemeAction } from '../../redux-flow/store/Content/Theming/actions';
-import { ContentThemeState, ThemeOptions } from '../../redux-flow/store/Settings/Theming';
-import { ExposThemingState } from '../../redux-flow/store/Content/Theming/types';
+import { Action } from '../../redux-flow/store/Content/Theming/actions';
+import { ContentThemeState } from '../../redux-flow/store/Settings/Theming';
 import { ContentUploadType } from '../../../DacastSdk/common';
-import { deleteFileAction, getUploadUrlAction, uploadFileAction } from '../../redux-flow/store/Content/General/actions';
+import { deleteFileAction, editContentDetailsAction, getContentDetailsAction, getUploadUrlAction, uploadFileAction } from '../../redux-flow/store/Content/General/actions';
 import { getContentSetupAction } from '../../redux-flow/store/Content/Setup/actions';
 import { ContentSetupState } from '../../redux-flow/store/Content/Setup/types';
 
 export interface DesignComponentProps {
-    themeState: ContentThemeState;
+    themeState: ContentDetailsState;
     contentDataState: ContentSetupState;
-    getContentTheme: (contentId: string, contentType: ContentType) => Promise<void>
-    saveContentTheme: (theme: ThemeOptions, contentId: string, contentType: string) => Promise<void>;
+    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
+    saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getContentSetup: (contentId: string, contentType: string) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
@@ -31,38 +30,27 @@ export interface DesignComponentProps {
 
 const DesignExpos = (props: DesignComponentProps) => {
 
-    var fakeDesignState = {
-        darkModeEnable: true,
-        coverBackgroundEnable: true,
-        coverBackgroundUrl: "",
-        coverBackgroundColor: "#fff",
-        contentDescriptions: false,
-        featuredContentEnable: true,
-        featuredContentId: "f4aae457-5dbd-193c-6521-3491eb0938e3"
-    }
-
     let { exposId } = useParams<{exposId: string}>()
 
     const [stateContentDetails, setStateContentDetails] = React.useState<ExpoDetails>(null)
     const [contentDetails, setContentDetails] = React.useState<ExpoDetails>(stateContentDetails)
 
     React.useEffect(() => {
-        props.getContentTheme(exposId, 'expo');
+        props.getContentDetails(exposId, 'expo');
         props.getContentSetup(exposId, 'expo')
     }, [])
 
     const handleSave = () => {
-        props.saveContentTheme(contentDetails, "expo").then(() => { }).catch(() => {})
+        props.saveContentDetails(contentDetails, "expo").then(() => { }).catch(() => {})
     }
 
     return (
         <>
             <ExposTabs exposId={exposId} />
-            { (props.themeState['expos'] && props.themeState['expos'][exposId]) || true  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] ?
+            { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] ?
                 (
                     <DesignPage 
-                        //designState={props.themeState['expos'][exposId].themes[0] as ExposThemingState} 
-                        designState={fakeDesignState} 
+                        designState={ (props.themeState['expo'][exposId] as ExpoDetails).appearance } 
                         exposId={exposId}
                         {...props}
                     />          
@@ -76,7 +64,7 @@ const DesignExpos = (props: DesignComponentProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        themeState: state.content.theming,
+        themeState: state.content.general,
         contentDataState: state.content.setup
     };
 }
@@ -86,11 +74,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType));
         },
-        getContentTheme: async (contentId: string, contentType: string) => {
-            await dispatch(getContentThemeAction(contentId, contentType))
+        saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
+            await dispatch(editContentDetailsAction(contentType)(data))
         },
-        saveContentTheme: async (theme: ThemeOptions, contentId: string, contentType: string) => {
-            await dispatch(saveContentThemeAction(theme, contentId, contentType))
+        getContentDetails: async (contentId: string, contentType: ContentType) => {
+            await dispatch(getContentDetailsAction(contentType)(contentId));
         },
         getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
             await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))

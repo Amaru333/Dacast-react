@@ -1,6 +1,3 @@
-import { ExposThemingState } from "../../Content/Theming/types";
-
-
 export enum ActionTypes {
     GET_SETTING_THEMING_LIST = "@@settings_theming/GET_SETTINGS_THEMING_LIST",
     SAVE_SETTING_THEME = "@@settings_theming/SAVE_SETTINGS_THEME",
@@ -55,7 +52,7 @@ export interface ThemesData {
 export interface ContentTheme {
     contentId: string;
     contentThemeId: string;
-    themes: (ThemeOptions | ExposThemingState)[];
+    themes: ThemeOptions[];
 }
 
 

@@ -6,12 +6,13 @@ export interface GetExpoDetailsOutput {
     description: string
     online: boolean
     appearance: AppearanceEndpoint
-    poster: AssetTypeEndpoint
 }
 
 interface AppearanceEndpoint {
-    fontColor: string
-    headerColor: string
+    darkMode: boolean;
+    showContentsDescription: boolean;
+    featuredContentId?: string;
+    cover?: {url: string; assetId: string} | {headerColor: string}
 }
 
 export interface PutExpoDetailsInput {

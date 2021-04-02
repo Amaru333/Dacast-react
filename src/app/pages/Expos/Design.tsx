@@ -1,20 +1,18 @@
 import React from 'react';
-import { ExposThemingState } from '../../redux-flow/store/Content/Theming/types';
-import { ControlsCard, ControlToggleContainer, RadioButtonContainer, TitleSection } from '../../shared/Theming/ThemingStyle';
-import { PlayerSection, PlayerContainer } from '../Videos/ChapterMarkers/ChaptersStyle';
+import { ControlsCard, ControlToggleContainer, TitleSection } from '../../shared/Theming/ThemingStyle';
+import { PlayerSection } from '../Videos/ChapterMarkers/ChaptersStyle';
 import { Text } from '../../../components/Typography/Text';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { Divider } from '../../../shared/MiscStyles';
-import { ContentType } from '../../redux-flow/store/Common/types';
-import { SubtitleInfo } from '../../redux-flow/store/Content/List/types';
-import { ContentSetupState } from '../../redux-flow/store/Content/Setup/types';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import styled from 'styled-components';
+import { DesignComponentProps } from '../../containers/Expos/Design';
+import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 
-export const DesignPage = (props: { contentDataState: ContentSetupState;  designState: ExposThemingState; exposId: string; getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>; deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>;uploadFile: (data: File, uploadUrl: string) => Promise<void>;}) => {
+export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string}) => {
 
     const [backgroundEnable, setBackgroundEnable] = React.useState<boolean>(props.designState.coverBackgroundEnable)
 
