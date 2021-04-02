@@ -16,6 +16,7 @@ export interface PlanInfo {
     itemLimit: number;
     folderDepth: number;
     renditionsPerRecipe: number;
+    maxSeats: number;
     liveStream: PlanSetting;
     compatibleStreams: PlanSetting;
     chinaStreams: PlanSetting;
@@ -36,6 +37,8 @@ export interface PlanInfo {
     expo: PlanSetting;
     ultraSecureChannel: PlanSetting;
     phoneSupport: PlanSetting;
+    multiUserAccess: PlanSetting;
+    multiUserAccessBeta: PlanSetting
 }
 
 export interface PlanInfoPut {
