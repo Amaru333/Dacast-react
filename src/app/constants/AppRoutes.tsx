@@ -360,53 +360,33 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/analytics/dashboard',
                 name: 'Dashboard',
-                component: DashboardAnalytics
-            },
-            {
-                path: '/analytics/dashboardv2',
-                name: 'Dashboard V2',
                 component: DashboardNew,
-                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/data',
                 name: 'Data Usage',
                 component: DataConsumption,
-                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/audience',
                 name: 'Audience',
                 component: Audience,
-                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/engagement',
                 name: 'Engagement',
                 component: Engagement,
-                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/paywall',
                 name: 'Paywall',
                 component: Paywall,
                 associatePrivilege: 'privilege-paywall',
-                notDisplayedInNavigation: true
             },
             {
                 path: '/analytics/real-time',
                 name: 'Real Time',
                 component: RealTime
-            },
-            {
-                path: '/analytics/viewership',
-                name: 'Viewership',
-                component: Viewership
-            },
-            {
-                path: '/analytics/revenue',
-                name: 'Revenue',
-                component: Revenue
             }
         ]
     },
