@@ -24,13 +24,9 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
 
     const query = useQuery()
 
-    const handleUserSelection = (userId: string) => {
-        props.login({selectedUserId: userId, loginToken: props.accountData.loginToken})
-        .then(() => {
-            console.log('data:', props.accountData)
+    React.useEffect(() => {
+        if(props.accountData && props.accountData.token) {
             userToken.addTokenInfo(props.accountData);
-            debugger
-            // history.push('/dashboard');
             segmentService.identify({
                 userId: userToken.getUserInfoItem('user-id'), 
                 firstName: userToken.getUserInfoItem('custom:first_name'), 
@@ -39,7 +35,11 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
                 company: userToken.getUserInfoItem('custom:website')
             })
             location.href = '/'
-        })
+        }
+    }, [props.accountData])
+
+    const handleUserSelection = (userId: string) => {
+        props.login({selectedUserId: userId, loginToken: props.accountData.loginToken})
     }
     const renderAccountsList = () => {
         return props.accountData.availableUsers.map((account, i) => {
