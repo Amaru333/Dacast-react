@@ -14,6 +14,7 @@ import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLive
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput, PutVodChapterMarkersInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
+import { PostLoginInput, PostLoginOuput } from './session'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
 
@@ -44,6 +45,8 @@ export class DacastSdk {
     }
 
     public forceRefresh = async (): Promise<void> => await this.axiosClient.forceRefresh()
+
+    public postLogin = async (input: PostLoginInput): Promise<PostLoginOuput> => await this.axiosClient.post('/sessions/login', input, {authRequired: false}).then(this.checkExtraData)
 
     public postImpersonateAccount = async (input: PostImpersonateAccountInput): Promise<PostImpersonateAccountOutput> => await this.axiosClient.post('/impersonate', input).then(this.checkExtraData)
 

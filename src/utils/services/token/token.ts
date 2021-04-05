@@ -74,6 +74,7 @@ export class UserTokenService {
                 return this.tokenInfo
             } catch(error) {
                 console.log(error)
+                debugger
                 localStorage.clear()
                 location.href = '/login'
                 return null

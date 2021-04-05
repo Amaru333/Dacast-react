@@ -66,6 +66,7 @@ import Paywall from '../containers/Analytics/Paywall';
 import Engagement from '../containers/Analytics/Engagement';
 import DataConsumption from '../containers/Analytics/DataConsumption';
 import DashboardNew from '../containers/Analytics/DashboardNew';
+import AccountSelection from '../containers/Register/AccountSelection';
 
 
 export const AppRoutes: Routes[] = [   
@@ -117,6 +118,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ForgotPasswordEmail
+    },
+    {
+        path:'/selectAccount',
+        name: 'selectAccount',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: AccountSelection
     },
     {
         path: '/dashboard',
