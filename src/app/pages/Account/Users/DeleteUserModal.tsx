@@ -3,13 +3,13 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputRadio } from '../../../../components/FormsComponents/Input/InputRadio';
 import { Text } from '../../../../components/Typography/Text';
 
-export const DeleteUserModal = (props: {toggle: React.Dispatch<React.SetStateAction<boolean>>; handleDeleteModalSelection: React.Dispatch<React.SetStateAction<string>>}) => {
+export const DeleteUserModal = (props: {toggle: React.Dispatch<React.SetStateAction<boolean>>; handleDeleteModalSelection: React.Dispatch<React.SetStateAction<string>>; userName: string}) => {
 
     const [deleteModalSelection, setDeleteModalSelection] = React.useState<string>(null)
 
     return (
         <div className="flex flex-column">
-            <Text className="mt1">What do you want to happen to their content?</Text>
+            <Text className="mt1">What do you want to happen to {props.userName}&#39; content?</Text>
             <InputRadio checked={deleteModalSelection === "transfer"} className="mt1" name="delete-user" value="transfer" label="Transfer to another user" onChange={() => setDeleteModalSelection("transfer")}/>
             <InputRadio checked={deleteModalSelection === "delete"} className="mt1" name="delete-user" value="delete" label="Delete permanently" onChange={() => setDeleteModalSelection("delete")}/>
             <div className="flex mt3">

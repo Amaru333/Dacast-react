@@ -44,4 +44,4 @@ export const saveCompanyPageDetailsAction = applyViewModel(dacastSdk.putCompanyD
 export const getUploadLogoUrlAction = applyViewModel(dacastSdk.postUploadUrl, formatPostCompanyLogoUrlInput, (data: PostUploadUrlOutput) => data, ActionTypes.GET_UPLOAD_LOGO_URL, null, 'Couldn\'t upload file')
 export const uploadCompanyLogo = applyViewModel(dacastSdk.putUploadFile, formatPutUploadFileInput, undefined, ActionTypes.UPLOAD_COMPANY_LOGO, 'Company Logo has been uploaded', 'Couldn\'t upload company logo')
 export const deleteCompanyLogo = applyViewModel(dacastSdk.deleteCompanyLogo, undefined, undefined, ActionTypes.DELETE_COMPANY_LOGO, 'Company Logo has been deleted', 'Couldn\'t delete company logo')
-export const makeUserOwnerAction = applyViewModel(dacastSdk.postMakeUserOwner, formatPostMakeUserOwnerInput, undefined, ActionTypes.MAKE_USER_OWNER, 'Account owner changed', 'Couldn\'t change acocunt owner')
+export const makeUserOwnerAction = applyViewModel(dacastSdk.postMakeUserOwner, formatPostMakeUserOwnerInput, undefined, ActionTypes.MAKE_USER_OWNER, 'Account owner changed', 'Couldn\'t change account owner')

@@ -35,7 +35,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [usersTableSort, setUsersTableSort] = React.useState<string>('')
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
     const [usersList, setUsersList] = React.useState<User[]>(props.multiUserDetails.users)
-    const [userToDelete, setUserToDelete] = React.useState<string>(null)
+    const [userToDelete, setUserToDelete] = React.useState<User>(null)
 
     let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.users.length
 
@@ -58,18 +58,17 @@ export const UsersPage = (props: UsersComponentProps) => {
         }
     }
 
-    const handleUserStatus = (status: UserStatus) => {
+    const handleStatusColor = (status: UserStatus) => {
         switch (status) {
             case 'Active':
-                return <Label backgroundColor="green20" color="green" label={status} />
+                return 'green'
             case 'Invited':
-                return <Label backgroundColor="blue20" color="blue" label={status} />
+                return 'gray-4'
             case 'Expired':
-                return <Label backgroundColor="yellow20" color="orange" label={status} />
             case 'Disabled':
-                return <Label backgroundColor="red20" color="red" label={status} />
+                return 'red'
             default:
-                return null
+                return 'red'
         }
     }
 
@@ -80,7 +79,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                 setUserModalOpen(true);
                 break;
             case 'Delete':
-                setUserToDelete(user.userId)
+                setUserToDelete(user)
                 setDeleteUserModalOpen(true);
                 break;
             case 'Resend Invite': 
@@ -127,24 +126,24 @@ export const UsersPage = (props: UsersComponentProps) => {
         return usersList.map((user) => {
             return {
                 data: [
-                    <div className="flex items-center">
+                    <div key={'userName' + user.userId} className="flex items-center">
                         {
                             (user.name) &&
                             <Avatar userRole={user.role} className="mr3" name={user.name} />
                         }
-                        <Text>{user.name}</Text>
+                        <Text >{user.name}</Text>
                         {
                             userToken.getUserInfoItem('user-id') === user.userId &&
                             <Text color="gray-5">&nbsp;(You)</Text>
                         }
                         
                     </div>,
-                    <Text>{user.email}</Text>,
-                    <div key={'usersRoleDropdown' + user.userId} className='left mr2'>
+                    <Text key={'userEmail' + user.userId}>{user.email}</Text>,
+                    <div key={'usersRole' + user.userId} className='left mr2'>
                         {handleUserRole(user.role, user.userId)}
                     </div>,
-                    handleUserStatus(user.status),
-                    <div key={'usersMoreActionButton' + user.userId} className='right mr2'>
+                    <Text key={'userStatus' + user.userId} size={14} weight='reg' color={handleStatusColor(user.status)}>{user.status}</Text>,
+                        <div key={'usersMoreActionButton' + user.userId} className='right mr2'>
                         {
                             (user.userId !== userToken.getUserInfoItem('user-id') && user.role !== 'Owner' && user.status !== 'Disabled') &&
                             <DropdownCustom 
@@ -211,15 +210,15 @@ export const UsersPage = (props: UsersComponentProps) => {
             }
 
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setDeleteUserModalOpen(false)} opened={deleteUserModalOpen}>
-                <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection}/>
+                <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection} userName={userToDelete ? userToDelete.name : ''}/>
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
-                <ConfirmDeleteModal userId={userToDelete} deleteUser={props.deleteUser} toggle={setConfirmDeleteModalOpen} />
+                <ConfirmDeleteModal userId={userToDelete ? userToDelete.userId : ''} deleteUser={props.deleteUser} toggle={setConfirmDeleteModalOpen} />
             </Modal>
             {
                 transferContentModalOpen &&
                 <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
-                    <TransferContentModal userToDelete={userToDelete} deleteUser={props.deleteUser} users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
+                    <TransferContentModal userToDelete={userToDelete.userId} deleteUser={props.deleteUser} users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
                 </Modal>
             }
         </React.Fragment>

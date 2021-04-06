@@ -147,25 +147,25 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const createAccountOwnerList = () => {
         if(props.multiUserDetails && props.multiUserDetails.users) {
-            return props.multiUserDetails.users.map((user) => {
-                let userDropdownListItem: DropdownSingleListItem = {
-                    title: null,
-                    data: null
+            return props.multiUserDetails.users.filter(user => (user.role !== "Owner" && user.status === 'Active')).map((user): DropdownSingleListItem => {
+                return {
+                    title:  `${user.firstName} ${user.lastName} (${user.email})`,
+                    data: {
+                        id: user.userId,
+                        role: user.role
+                    },
+                    description: user.role
                 }
-                userDropdownListItem.title = `${user.firstName} ${user.lastName} (${user.email})`
-                userDropdownListItem.data = {
-                    id: user.userId,
-                    role: user.role
-                },
-                userDropdownListItem.description = user.role
-                return userDropdownListItem
             })
         }
         return null
     }
 
     const handleOwnerChange = () => {
+        setChangeOwnerButtonLoading(true)
         props.makeUserOwner(newOwner.userId)
+        .then(() => setChangeOwnerButtonLoading(false))
+        .catch(() => setChangeOwnerButtonLoading(false))
     }
     
     return (
