@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory } from 
 import { ApplicationState } from "./redux-flow/store";
 import { MainMenu } from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import styled, { ThemeProvider, css } from 'styled-components';
+import { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 
@@ -20,7 +20,6 @@ import Header from '../components/Header/Header';
 import { responsiveMenu } from '../utils/utils';
 import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
-import Dashboard from './containers/Dashboard/Dashboard';
 
 import ReactDOM from 'react-dom';
 import { Icon } from '@material-ui/core';
@@ -33,13 +32,14 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
-import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import { dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';
 import { Content, FullContent } from "../shared/Content";
 import DashboardTest from "./containers/Dashboard/DashboardTest";
 import { Privilege } from "../utils/services/token/token";
+import { getCompanyPageDetailsAction } from "./redux-flow/store/Account/Company/actions";
 
 // Any additional component props go here.
 interface MainProps {
@@ -54,6 +54,13 @@ const timeoutFunc = () => {
     store.dispatch(getContentListAction('vod')(null) as any)
     if(new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
+    }
+}
+
+const companyLogoTimeoutFunc = () => {
+    store.dispatch(getCompanyPageDetailsAction(undefined))
+    if(new Date().getTime() < fastRefreshUntil) {
+        timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 }
 
@@ -72,6 +79,13 @@ EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
 
 EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
     dacastSdk.forceRefresh()
+})
+
+EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
+    fastRefreshUntil = new Date().getTime() + refreshSpan
+    if(timeoutId === null) { 
+        timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
+    }
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {

@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
 import { Divider } from '../../../../shared/MiscStyles';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -122,6 +123,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
             props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl).then(() => {
+                EventHooker.dispatch('EVENT_COMPANY_PAGE_EDITED', undefined)
                 setUploadButtonLoading(false)
             })
         }
