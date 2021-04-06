@@ -1,4 +1,5 @@
 import { isMultiUserPayload, isMultiUserToken, PostLoginInput, PostLoginOuput } from "../../../../../DacastSdk/session";
+import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { LoginInfos, TokenInfos } from "./types";
 
 
@@ -26,7 +27,14 @@ export const formatPostLoginOutput = (data: PostLoginOuput, dataReact: LoginInfo
             token: '',
             expires: Date.now(),
             loginToken: data.loginToken,
-            availableUsers: data.availableUsers,
+            availableUsers: data.availableUsers.map(user => {
+                return {
+                    userId: user.userId,
+                    companyName: user.companyName,
+                    companyWebsite: user.companyWebsite,
+                    role: capitalizeFirstLetter(user.role.split('-')[1])
+                }
+            }),
             email: !isMultiUserPayload(dataReact) ? dataReact.email : ''
         }
     }
