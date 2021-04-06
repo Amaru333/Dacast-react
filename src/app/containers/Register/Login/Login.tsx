@@ -19,8 +19,6 @@ const Login = (props: LoginComponentProps) => {
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
             userToken.addTokenInfo(props.loginInfos);
-            // history.push('/dashboard');
-            location.reload()
             segmentService.identify({
                 userId: userToken.getUserInfoItem('custom:dacast_user_id'), 
                 firstName: userToken.getUserInfoItem('custom:first_name'), 
@@ -28,6 +26,7 @@ const Login = (props: LoginComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
+            location.reload()
         }
     }, [props.loginInfos])
 
