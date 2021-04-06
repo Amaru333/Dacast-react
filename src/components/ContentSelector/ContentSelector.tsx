@@ -226,7 +226,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const renderSelectedItems = () => {
         if(selectedItems.length == 0) {
             return (
-                <Text>{props.emptyText}</Text>
+                <Text className="col-8 mr-auto ml-auto block mt2">{props.emptyText}</Text>
             )
         }
         return selectedItems.map((element: FolderAsset, i) => {

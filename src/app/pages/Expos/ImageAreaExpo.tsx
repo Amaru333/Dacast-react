@@ -130,7 +130,7 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
                 </ModalContent>
                 <ModalFooter>
                     <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
-                    <Button onClick={props.toggle} typeButton="secondary">Cancel</Button>
+                    <Button onClick={() => setSettingsModalopen(false)} typeButton="secondary">Cancel</Button>
                 </ModalFooter>
             </Modal>
         </>

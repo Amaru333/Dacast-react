@@ -74,14 +74,14 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     <DropdownSingle
                         id='assetsDropdown'
                         isInModal
-                        className='col col-12 py1'
+                        className='col col-12 py1 clearfix'
                         dropdownTitle='Featured Content'
                         defaultSelected={stateContentDetails.featuredContentId ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId).title : null}
                         callback={(item: DropdownSingleListItem) => setStateContentDetails({ ...stateContentDetails, featuredContentId: item.data }) }
                         list={assetsDropdownList}
                     />
                 }
-                <div className='my1 flex'>
+                <div className='col my1 flex'>
                     <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
                 </div>
