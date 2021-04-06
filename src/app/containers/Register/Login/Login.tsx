@@ -33,7 +33,7 @@ const Login = (props: LoginComponentProps) => {
         }
 
         if(props.loginInfos && props.loginInfos.loginToken) {
-            history.push('/selectAccount?' + props.loginInfos.email)
+            history.push('/selectAccount?email=' + props.loginInfos.email)
         }
     }, [props.loginInfos])
 
