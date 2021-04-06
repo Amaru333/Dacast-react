@@ -513,7 +513,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plan',
                 name: 'Plan',
-                component: Plan
+                component: Plan,
+                associatePrivilege: 'privilege-billing'
             },
             {
                 path: '/account/upgrade',
