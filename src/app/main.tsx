@@ -39,6 +39,7 @@ import { segmentService } from './utils/services/segment/segmentService';
 import { Content, FullContent } from "../shared/Content";
 import DashboardTest from "./containers/Dashboard/DashboardTest";
 import { Privilege } from "../utils/services/token/token";
+import { getCompanyPageDetailsAction } from "./redux-flow/store/Account/Company/actions";
 
 // Any additional component props go here.
 interface MainProps {
@@ -53,6 +54,13 @@ const timeoutFunc = () => {
     store.dispatch(getContentListAction('vod')(null) as any)
     if(new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
+    }
+}
+
+const companyLogoTimeoutFunc = () => {
+    store.dispatch(getCompanyPageDetailsAction(undefined))
+    if(new Date().getTime() < fastRefreshUntil) {
+        timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 }
 
@@ -71,6 +79,13 @@ EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
 
 EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
     dacastSdk.forceRefresh()
+})
+
+EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
+    fastRefreshUntil = new Date().getTime() + refreshSpan
+    if(timeoutId === null) { 
+        timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
+    }
 })
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
@@ -94,7 +109,10 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
             </Route>
         )
     } else {
-        return <Redirect to='/' />;
+        return <Redirect to={{
+            pathname: "/login",
+            state: { from: location }
+          }}  />;
     }
 }
 

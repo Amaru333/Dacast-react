@@ -22,6 +22,7 @@ import { CompanyComponentProps } from '../../../containers/Account/Company';
 import { Divider } from '../../../../shared/MiscStyles';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { User } from '../../../redux-flow/store/Account/Users/types';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -140,6 +141,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     React.useEffect(() => {
         if(props.CompanyPageDetails.uploadLogoUrl) {
             props.uploadCompanyLogo(logoFile, props.CompanyPageDetails.uploadLogoUrl).then(() => {
+                EventHooker.dispatch('EVENT_COMPANY_PAGE_EDITED', undefined)
                 setUploadButtonLoading(false)
             })
         }

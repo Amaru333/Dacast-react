@@ -229,7 +229,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     FILE_CHUNK_SIZE,
                     (percent: number) => { handleUploadProgress(percent) },
                     (err: any) => { handleUploadError(err)},
-                    null,
+                    undefined,
                     props.contentId
                 )
                 setNewSourceFileUpload(newUpload)

@@ -22,7 +22,6 @@ const Login = (props: LoginComponentProps) => {
     React.useEffect(() => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
             userToken.addTokenInfo(props.loginInfos);
-            // history.push('/dashboard');
             segmentService.identify({
                 userId: userToken.getUserInfoItem('user-id'), 
                 firstName: userToken.getUserInfoItem('custom:first_name'), 

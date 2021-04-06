@@ -14,7 +14,7 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
-    const chargebackTypeDropdownList = [{title: 'Credit'}, {title: 'Debit'}, {title: 'Special credit'}, {title: 'Special debit'}, {title: 'Payment by balance'}, {title: 'Bank transfer fee'}, {title: 'Viewer refund'}, {title: 'Dispute/chargeback fee'}]
+    const chargebackTypeDropdownList = [{title: 'Credit'}, {title: 'Debit'}, {title: 'Payment by balance'}, {title: 'Bank transfer fee'}, {title: 'Viewer refund'}, {title: 'Dispute/chargeback fee'}]
 
     const handleSubmit = () => {
         setButtonLoading(true)
@@ -30,7 +30,10 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
         <div className='flex flex-column'>
             <Text size={14} weight='reg'>Manual debits create a line item on an Account's paywall balance</Text>
             <Input backgroundColor="white" onChange={(event) => setSubmittedData({...submittedData, salesforceId: event.currentTarget.value})} className='my1 col col-2' id='accountIdInput' placeholder='Account ID' label='Account ID' />
-            <Input backgroundColor="white" onChange={(event) => setSubmittedData({...submittedData, amount: parseFloat(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
+            <div className='flex items-center'>
+                <Text className='pt25 pr2' size={32} weight='med'>{submittedData.type === 'Credit' ? '+' : '-'}</Text>
+                <Input type='number' min="0.01" step="0.01" backgroundColor="white" onChange={(event) => setSubmittedData({...submittedData, amount: parseFloat(event.currentTarget.value)})} className='my1 col col-2' id='amountInput' placeholder='Amount' label='Amount (USD)' />
+            </div>
             <DropdownSingle
                 isWhiteBackground 
                 id='typeDropdown' 
@@ -39,8 +42,6 @@ export const ChargebacksPage = (props: ChargebackComponentProps) => {
                 list={chargebackTypeDropdownList}
                 callback={(item: DropdownSingleListItem) => setSubmittedData({...submittedData, type: item.title})}
             />
-            <Text size={16} weight='med'>Regardless of Type, a positive Amount will take a payment</Text>
-            <Text size={16} weight='med'>and a negative Amount will issue a refund</Text>
             <Button disabled={(!submittedData.amount || !submittedData.salesforceId || !submittedData.type)} onClick={() => setOpenConfirmationModal(true)} className='mt25 col col-1' sizeButton='large' typeButton='primary' buttonColor='blue'>Submit</Button>
             <ConfirmationModal modalButtonLoading={buttonLoading}  submit={handleSubmit} isOpened={openConfirmationModal} toggle={setOpenConfirmationModal} />
         </div>

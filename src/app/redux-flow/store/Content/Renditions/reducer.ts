@@ -11,13 +11,7 @@ const reducer: Reducer<RenditionsListState> = (state = {}, action: Action) => {
                 [action.payload.contentType]: {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
-                        ...action.payload.data,
-                        encodedRenditions: action.payload.data.encodedRenditions.map(rendition => {
-                            return {
-                                ...rendition,
-                                width: rendition.width || state[action.payload.contentType][action.payload.contentId].encodedRenditions.find(stateRendition => stateRendition.renditionID === rendition.renditionID).width
-                            }
-                        })
+                        ...action.payload.data
                     }
                 }
 

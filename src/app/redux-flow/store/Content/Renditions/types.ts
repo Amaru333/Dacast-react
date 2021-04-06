@@ -21,7 +21,6 @@ interface VodInfo {
 }
 
 export interface RenditionsList {
-    id: string;
     videoInfo: VodInfo;
     presets: RecipePreset[];
     encodedRenditions: Rendition[];

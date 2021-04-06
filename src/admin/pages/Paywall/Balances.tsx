@@ -60,9 +60,9 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                     <a key={'balanceTableBodyAccountIdCell' + key } onClick={() => handleImpersonate(line.salesforceId)}>{line.salesforceId}</a>,
                     <Link key={'balancesTableBodyDateCell' + key }to=''>{line.date}</Link>,
                     <Text key={'balancesTableBodyTypeCell' + key } size={14}>{line.transactionType || line.note}</Text>,
-                    <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)) : '' : line.amount > 0 ? line.amount : 0}</Text>,
-                    <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)): '' : line.amount < 0 ? line.amount : 0}</Text>,
-                    <Text key={'balancesTableBodyRevenueCell' + key } size={14}>{line.fee || 0}</Text>,
+                    <Text key={'balancesTableBodyCreditCell' + key } size={14}>{line.fee ? line.fee >= 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)).toFixed(2) : '' : line.amount > 0 ? line.amount.toFixed(2) : 0}</Text>,
+                    <Text key={'balancesTableBodyDebitCell' + key } size={14}>{line.fee  ? line.fee < 0 ? (Math.sign(line.amount) * (Math.abs(line.amount) * line.conversionRateToAccountCurency-line.fee)).toFixed(2) : '' : line.amount < 0 ? line.amount.toFixed(2) : 0}</Text>,
+                    <Text key={'balancesTableBodyRevenueCell' + key } size={14}>{line.fee.toFixed(2) || 0}</Text>,
                 ]}
             })
         }
