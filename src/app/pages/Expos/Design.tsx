@@ -13,9 +13,10 @@ import { DesignComponentProps } from '../../containers/Expos/Design';
 import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ImageAreaExpo } from './ImageAreaExpo';
+import { isProduction } from '../../utils/services/player/stage';
 
 export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
-
+    const expoClientBaseUrl = isProduction() ? 'https://dacastexpo.com/?id=' : 'https://singularity-expo.dacast.com/?id='
     const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
 
     const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item) => {
@@ -29,7 +30,7 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
         <React.Fragment>
             <PlayerSection className='xs-mb2 col col-right col-12 md-col-8 relative sm-pl1'>
                 <WrapIFrame className='col-12'>
-                    <ScaledFrame  src={"https://dacastexpo.com/?id="+props.exposId} />   
+                    <ScaledFrame  src={expoClientBaseUrl+props.exposId} />   
                 </WrapIFrame>
             </PlayerSection>
             <ControlsCard>
