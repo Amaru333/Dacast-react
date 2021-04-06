@@ -71,7 +71,7 @@ const Dashboard = (props: DashboardProps) => {
                 <DisableProtectionModal
                     price={props.infos.playbackProtection.price}
                     editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                    setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                    setDisableProtectionModalOpened={setDisableProtectionModalOpened}
                 />
             </Modal>
                     <PaywallDashboard profile={props.infos.paywall} rightSide={false} />

@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { Store } from "redux";
 import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { ApplicationState } from "./redux-flow/store";
-import { MainMenu } from './containers/Navigation/Navigation';
+import MainMenu from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
 import { ThemeProvider, css } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';

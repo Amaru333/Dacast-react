@@ -1,7 +1,8 @@
 import { Privilege } from "../../../utils/services/token/token";
+import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
 export interface MainMenuSpecificProps {
-    routes: Routes[]; 
+    routes: Routes[];
     history: any;
     isOpen: boolean;
     setOpen: (b: boolean) => void;
@@ -12,6 +13,10 @@ export interface MainMenuSpecificProps {
     openAddStream?: (b: boolean) => void;
     openPlaylist?: (b: boolean) => void;
     openExpoCreate?: (b: boolean) => void;
+    infos: DashboardInfos;
+    billingInfo: BillingPageInfos;
+    getBillingPageInfos: () => Promise<void>;
+    getDashboardDetails: () => Promise<void>;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

@@ -1,17 +1,20 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { Text } from '../../../components/Typography/Text';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { Action, getDashboardDetailsAction } from '../../redux-flow/store/Dashboard';
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
 import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-
+import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks'
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal'
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -24,7 +27,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
     )
 }
 
-export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
+const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
     let history = useHistory();
@@ -57,6 +60,21 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
+    const [profileDataisFetching, setProfileDataIsFetching] = React.useState<boolean>(true)
+
+    const planLimitsValidaorCallbacks = {
+        openAddStream: props.openAddStream,
+        openAddVod: () => history.push('/uploader'),
+        openExpoCreate: props.openExpoCreate
+    }
+    const {
+        handleCreateStreamClick,
+        handleUploadVideoClick,
+        handleCreateExpoClick,
+        PlanLimitReachedModalOpen,
+        setPlanLimitReachedModalOpen,
+        planLimitReachedModalType,
+    } = usePlanLimitsValidator(props.billingInfo, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
@@ -68,6 +86,10 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedSubElement(firstSelectedItem().slug);
     }, [location])
 
+    React.useEffect(() => {
+        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
+    }, [])
+
     const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
@@ -75,7 +97,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         else {
             setToggleSubMenu(false)
         }
-        setSelectedElement(menuName); 
+        setSelectedElement(menuName);
         const menuItem = props.routes.filter((item) => item.path === menuName)[0];
         if(!menuItem.slug) {
             setSelectedSubElement('')
@@ -85,7 +107,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
-    
+
 
     //Funtions for Add button dropdown
 
@@ -98,17 +120,17 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setAddDropdownIsOpened(false)
         switch (name) {
             case "Video":
-                history.push('/uploader')
+                handleUploadVideoClick()
                 break
             case "Live Stream":
                 setAddDropdownIsOpened(false)
-                props.openAddStream()
+                handleCreateStreamClick()
                 break
             case "Playlist":
                 props.openPlaylist()
                 break
-            case "Expo": 
-                props.openExpoCreate()
+            case "Expo":
+                handleCreateExpoClick()
                 break
             default:
                 return
@@ -119,22 +141,22 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         return (
             AddItemsList.filter(item => item.enabled).map((item) => {
                 return (
-                    <DropdownItem 
+                    <DropdownItem
                         isSingle
-                        key={props.id + '_' + item.name} 
-                        id={props.id + '_' + item.name} 
+                        key={props.id + '_' + item.name}
+                        id={props.id + '_' + item.name}
                         className="mt1"
-                        isSelected={selectedAddDropdownItem === item.name} 
-                        onClick={() => handleClick(item.name)}> 
+                        isSelected={selectedAddDropdownItem === item.name}
+                        onClick={() => handleClick(item.name)}>
                         <DropdownItemText size={14} weight='reg' color={selectedAddDropdownItem === item.name ? 'dark-violet' : 'gray-1'}>{item.name}</DropdownItemText>
                     </DropdownItem>
-                )                
+                )
             })
         )
     }
 
     const handleMenuItemClick = (route: string, slug: string) => {
-        //setSelectedElement(route) 
+        //setSelectedElement(route)
         //setSelectedSubElement(slug)
         if(props.isMobile) {
             props.setOpen(false)
@@ -154,17 +176,17 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 else if(element.slug) {
                     return (
                         <div key={'superkey'+i}>
-                            <ElementMenu 
-                                isMobile={props.isMobile} 
-                                onClick={() => handleMenuToggle(element.path)} 
-                                key={'MenuElementwithSubsections'+i} 
+                            <ElementMenu
+                                isMobile={props.isMobile}
+                                onClick={() => handleMenuToggle(element.path)}
+                                key={'MenuElementwithSubsections'+i}
                                 isOpen={props.isOpen}
-                                hasSlugs={true} 
-                                active={selectedElement === element.path} 
+                                hasSlugs={true}
+                                active={selectedElement === element.path}
                                 icon={element.iconName!}
                                 arrowIcon={selectedElement === element.path && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                             >
-                                {element.name} 
+                                {element.name}
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
@@ -178,7 +200,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                             </Link>
                                         )
                                     }
-                                    return 
+                                    return
                                 })
 
                                 }
@@ -187,12 +209,12 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         </div>
                     )
                 }
-                
+
                 else{
                     return (
                         <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '')}} key={'MenuElement'+i} >
                             <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
-                                {element.name} 
+                                {element.name}
                             </ElementMenu>
                         </Link>
                     )
@@ -203,27 +225,47 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     return (
         <>
         {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
-       
+
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
-                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary">{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
+                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary" disabled={profileDataisFetching}>{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
                         <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
                             {renderAddList()}
                         </DropdownList>
                     </div>
-                
-           
-           
+
+
+
                     <SectionStyle>
                         {renderMenu()}
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
-           
-                  
-            </ContainerStyle>
 
+
+            </ContainerStyle>
+            <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
         </>
     )
 }
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        infos: state.dashboard.info,
+        billingInfo: state.account.plan
+    };
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
+    return {
+        getDashboardDetails: async () => {
+            await dispatch(getDashboardDetailsAction(undefined));
+        },
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction(undefined));
+        },
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainMenu);
