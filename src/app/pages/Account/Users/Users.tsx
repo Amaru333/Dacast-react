@@ -22,6 +22,7 @@ import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { UsersComponentProps } from '../../../containers/Account/Users';
 import { compareValues } from '../../../../utils/utils';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { MultiUserUpgradeModal } from './MultiUserUpgradeModal';
 
 export const UsersPage = (props: UsersComponentProps) => {
 
@@ -36,6 +37,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
     const [usersList, setUsersList] = React.useState<User[]>(props.multiUserDetails.users)
     const [userToDelete, setUserToDelete] = React.useState<User>(null)
+    const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
 
     let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.users.length
 
@@ -159,7 +161,6 @@ export const UsersPage = (props: UsersComponentProps) => {
                     </div>
                 ]
             }
-            
         })
     }
 
@@ -184,7 +185,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">{props.multiUserDetails.users.length} out of {props.multiUserDetails.maxSeats} seats used</Text>
-                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {setUserModalOpen(true)}}>Add User</Button>
+                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
             <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
@@ -221,6 +222,9 @@ export const UsersPage = (props: UsersComponentProps) => {
                     <TransferContentModal userToDelete={userToDelete.userId} deleteUser={props.deleteUser} users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
                 </Modal>
             }
+            <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
+                <MultiUserUpgradeModal openBuySeatsStepper={() => setChangeSeatsStepperOpen(true)} toggle={setUpgradeMultiUserModalOpen} />
+            </Modal>
         </React.Fragment>
     )
 }
