@@ -21,6 +21,7 @@ import { useKeyboardSubmit } from '../../../../utils/utils';
 import { CompanyComponentProps } from '../../../containers/Account/Company';
 import { Divider } from '../../../../shared/MiscStyles';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -185,9 +186,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <AccountIdLabel>
                             <Text size={14} weight="med">Account ID</Text>
                         </AccountIdLabel>
-                        <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 p1 clearfix">
-                            <AccountIdText size={14} weight="reg">{props.CompanyPageDetails.id}</AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(props.CompanyPageDetails.id, 'Account ID copied to clipboard')}>file_copy_outlined</IconStyle>
+                        <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 flex p1 clearfix">
+                            <AccountIdText className='flex-auto pl1' size={14} weight="reg">{userToken.getUserInfoItem('salesforce-group-id')}</AccountIdText>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(userToken.getUserInfoItem('salesforce-group-id'), 'Account ID copied to clipboard')}>file_copy_outlined</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
