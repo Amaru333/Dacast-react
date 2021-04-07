@@ -153,7 +153,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 return {
                     title:  `${user.firstName} ${user.lastName} (${user.email})`,
                     data: {
-                        id: user.userId,
+                        userId: user.userId,
                         role: user.role
                     },
                     description: user.role
