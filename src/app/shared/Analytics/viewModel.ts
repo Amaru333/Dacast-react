@@ -1,5 +1,5 @@
 import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
-import { readableBytes, tsToLocaleDate } from "../../../utils/formatUtils";
+import { tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
 import { CountriesDetail } from "../../constants/CountriesDetails";
 import { AccountAnalyticsData } from "../../redux-flow/store/Analytics/Data/types";
@@ -523,8 +523,8 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
                         let indexLabel = labels.indexOf(label);
                         if(indexLabel !== -1) {
                             let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
-                            formattedData.dataConsumptionByTime.data[indexLabel] = parseInt(readableBytes(Math.abs(data.dimension_sum)));
-                            formattedData.dataConsumptionByTime.table[index].data = parseInt(readableBytes(Math.abs(data.dimension_sum)));
+                            formattedData.dataConsumptionByTime.data[indexLabel] = data.dimension_sum / 1000000000;
+                            formattedData.dataConsumptionByTime.table[index].data = data.dimension_sum / 1000000000;
                         }
 
                         break
