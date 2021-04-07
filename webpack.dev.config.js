@@ -53,10 +53,6 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
-        port: '8081',
-        allowedHosts: [
-            'dacast-app.com'
-        ],
     },
     module: {
         rules: [

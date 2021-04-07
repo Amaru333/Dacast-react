@@ -23,11 +23,11 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
         if(playerRef && playerRef.current)
         {
             let existingPlayerTag = Array.from(document.getElementsByTagName('script'))
-                .find(s => s.src.indexOf('nestor-nplayer.dacast.com/js/player.js') !== -1)
+                .find(s => s.src.indexOf('player.dacast.com/js/player.js') !== -1)
             if(!existingPlayerTag) {
                 let head = document.head || document.getElementsByTagName('head')[0];
                 const playerScript = document.createElement('script');
-                playerScript.src = "https://nestor-nplayer.dacast.com/js/player.js?contentId=" + contentId;
+                playerScript.src = "https://player.dacast.com/js/player.js?contentId=" + contentId;
                 head.insertBefore(playerScript, head.firstChild);
                 playerScript.addEventListener('load', initPlayer)
             } else {
@@ -45,4 +45,3 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
     }, [])
     return player;
 }
-
