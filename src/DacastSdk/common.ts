@@ -31,7 +31,7 @@ export interface PutUploadFileInput {
     data: File
 }
 
-interface FeaturesList {
+export interface FeaturesList {
     paywall?: boolean;
     recording?: boolean;
     playlist?: boolean;  

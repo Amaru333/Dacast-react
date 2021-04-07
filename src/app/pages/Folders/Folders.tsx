@@ -271,7 +271,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     }
 
     const handleMoreActions = (item: FolderAsset): DropdownSingleListItem[] => {
-        if (item.status === 'deleted') {
+        if (item.status === 'Deleted') {
             return [{title: 'Restore'}]
         }
         if (item.type === 'folder') {
@@ -375,7 +375,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         ,
                         <Text key={'foldersTableDuration' + row.objectID} size={14} weight='reg' color='gray-3'>{row.duration ? row.duration : '-'}</Text>,
                         <Text key={'foldersTableCreated' + row.objectID} size={14} weight='reg' color='gray-3'>{tsToLocaleDate(row.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
-                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status.charAt(0).toUpperCase() + row.status.substr(1)} size={14} weight='reg' color={row.status === 'online' || row.status === 'restored' ? 'green' : 'red'} backgroundColor={row.status === 'online' || row.status === 'restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
+                        row.status ? <Label key={'foldersTableStatus' + row.objectID} label={row.status} size={14} weight='reg' color={row.status === 'Online' || row.status === 'Restored' ? 'green' : 'red'} backgroundColor={row.status === 'Online' || row.status === 'Restored' ? 'green20' : 'red20'} /> : <span key={'foldersTableNoStatus' + row.objectID}></span>,
                         <div className='flex' key={'foldersTableFeatures' + row.objectID}>{handleFeatures(row, row.objectID)}</div>,
                         <div key={'foldersTableMoreActionButton' + row.objectID} className='right mr2'>
                             <DropdownCustom
@@ -401,7 +401,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         </div>
                     ], callback: (row: FolderAsset) => { handleCheckboxChange({id: row.objectID, type: row.type}, checkedItems.find(value => value.id === row.objectID) ? true : false) }
                     , callbackData: row,
-                    isDisabled: (row.status === 'deleted' && selectedFolder !== 'Trash') || row.status === 'restored',
+                    isDisabled: (row.status === 'Deleted' && selectedFolder !== 'Trash') || row.status === 'Restored',
                 }
             })
         }

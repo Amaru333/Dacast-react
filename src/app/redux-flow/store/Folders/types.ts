@@ -1,4 +1,5 @@
 import { FeaturesList } from '../../../shared/Common/Features';
+import { ContentStatus, FolderContentType } from '../Common/types';
 
 export enum ActionTypes {
     GET_FOLDERS = "@@folders/GET_FOLDERS",
@@ -35,20 +36,17 @@ export interface FolderTreeNode {
 }
 
 export interface FolderAsset {
-    ownerID: string;
     objectID: string;
     title: string;
+    type: FolderContentType;
+    createdAt: number;
+    featuresList: FeaturesList;
+    duration?: string;
     size?: number;
     thumbnail?: string;
-    type: 'playlist' | 'vod' | 'channel' | 'folder' | 'live';
-    createdAt: number;
-    duration: string;
-    featuresList: FeaturesList;
-    status: 'deleted' | 'offline' | 'online' | 'processing' | 'restored';
+    status?: ContentStatus;
     splitPath?: string[];
     path?: string;
-    name?: string;
-
 }
 
 export interface SearchResult {

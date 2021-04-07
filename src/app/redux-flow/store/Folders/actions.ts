@@ -3,10 +3,13 @@ import { ApplicationState } from '..';
 import { showToastNotification } from '../Toasts';
 import { ActionTypes, SearchResult, ContentType } from './types'
 import { FoldersServices } from './services';
+import { applyViewModel } from '../../../utils/utils';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatGetFolderContentInput, formatGetFolderContentOutput } from './viewModel';
 
 export interface GetFolderContent {
     type: ActionTypes.GET_FOLDER_CONTENT;
-    payload: {data: SearchResult};
+    payload: SearchResult;
 }
 
 export interface DeleteContent {
@@ -19,18 +22,7 @@ export interface RestoreContent {
     payload: ContentType[];
 }
 
-export const getFolderContentAction = (qs: string, callback?: (data: SearchResult) => void): ThunkDispatch<Promise<void>, {}, GetFolderContent> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetFolderContent> ) => {
-        await FoldersServices.getFolderContent(qs)
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_FOLDER_CONTENT, payload: response.data} );
-                callback ? callback(response.data) : null;
-            }).catch((error) => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
-}
+export const getFolderContentAction = applyViewModel(dacastSdk.getFolderContentList, formatGetFolderContentInput, formatGetFolderContentOutput, ActionTypes.GET_FOLDER_CONTENT, null, 'Couldn\'t get folder content')
 
 export const deleteContentAction = (content: ContentType[]): ThunkDispatch<Promise<void>, {}, DeleteContent> => {
     return async (dispatch: ThunkDispatch<ApplicationState , {}, DeleteContent> ) => {

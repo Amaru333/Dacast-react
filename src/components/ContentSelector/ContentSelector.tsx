@@ -235,7 +235,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     }
 
                     {handleRowIconType(element)}
-                    <ListContentTitle className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</ListContentTitle>
+                    <ListContentTitle className='pl2' size={14} weight='reg'>{element.title}</ListContentTitle>
                     {
                         sortSettings.value === "custom" &&
                         <div className="iconAction flex-auto justify-end">
