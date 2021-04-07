@@ -1,5 +1,5 @@
 import React from 'react'
-import { BillingPageInfos } from '../../redux-flow/store/Account/Plan'
+import { DashboardInfos } from '../../redux-flow/store/Dashboard'
 import { PlanLimitReachedModalType } from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface PlanLimitsValidatorCallbacks {
@@ -8,26 +8,49 @@ export interface PlanLimitsValidatorCallbacks {
     openExpoCreate?: () => void;
 }
 
-export const usePlanLimitsValidator = (billingInfo?: BillingPageInfos, callbacks?: PlanLimitsValidatorCallbacks) => {
+export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLimitsValidatorCallbacks) => {
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
     const [planLimitReachedModalType, setPlanLimitReachedModalType] = React.useState<PlanLimitReachedModalType>(null)
 
     const planIsTrial = () => {
-        return billingInfo && billingInfo.currentPlan && billingInfo.currentPlan.displayName === "30 Day Trial"
+        return infos && infos.currentPlan && infos.currentPlan.displayName === "30 Day Trial"
+    }
+
+    const trialExpired = () => {
+        return infos.currentPlan.trialExpiresIn <= 0
+    }
+
+    const bandwidthLimitReached = () => {
+        return infos.generalInfos.bandwidth.remaining <= 0
+    }
+
+    const storageLimitReached = () => {
+        return infos.generalInfos.storage.remaining <= 0
     }
 
     const handleCreateStreamClick = () => {
+        let creationAllowed = true;
         if(planIsTrial()) {
-            if(billingInfo.currentPlan.trialExpiresIn <= 0) {
+            if(trialExpired()) {
                 setPlanLimitReachedModalType('upgrade_now')
-                setPlanLimitReachedModalOpen(true)
-                return
+                creationAllowed = false;
             }
-            if(true){
+            if(infos.live.activeChannels > 0){
                 setPlanLimitReachedModalType('livestream_limit_reached_trial')
-                setPlanLimitReachedModalOpen(true)
-                return
+                creationAllowed = false;
             }
+        }
+        if(bandwidthLimitReached()) {
+            setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
+            creationAllowed = false;
+        }
+        if(storageLimitReached()) {
+            setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
+            creationAllowed = false;
+        }
+        if(!creationAllowed) {
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(callbacks && callbacks.openAddStream) {
             callbacks.openAddStream();
@@ -35,12 +58,24 @@ export const usePlanLimitsValidator = (billingInfo?: BillingPageInfos, callbacks
     }
 
     const handleUploadVideoClick = () => {
+        let creationAllowed = true;
         if(planIsTrial()) {
-            if(billingInfo.currentPlan.trialExpiresIn <= 0) {
+            if(trialExpired()) {
                 setPlanLimitReachedModalType('upgrade_now')
-                setPlanLimitReachedModalOpen(true)
-                return
+                creationAllowed = false;
             }
+        }
+        if(bandwidthLimitReached()) {
+            setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
+            creationAllowed = false;
+        }
+        if(storageLimitReached()) {
+            setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
+            creationAllowed = false;
+        }
+        if(!creationAllowed) {
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(callbacks && callbacks.openAddVod) {
             callbacks.openAddVod();
@@ -49,7 +84,7 @@ export const usePlanLimitsValidator = (billingInfo?: BillingPageInfos, callbacks
 
     const handleCreateExpoClick = () => {
         if(planIsTrial()) {
-            if(billingInfo.currentPlan.trialExpiresIn <= 0) {
+            if(trialExpired()) {
                 setPlanLimitReachedModalType('upgrade_now')
                 setPlanLimitReachedModalOpen(true)
                 return

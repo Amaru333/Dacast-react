@@ -9,35 +9,38 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
 export interface ContentListProps {
     contentListState: ContentListState;
     themesList: ThemesData;
+    infos: DashboardInfos;
     getContentList: (qs: string) => Promise<void>;
     deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
 }
 
-const VideosList = (props: ContentListProps & {billingInfo: BillingPageInfos}) => {
+const VideosList = (props: ContentListProps) => {
 
     return <ContentListPage
-            contentType="vod"
-            items={props.contentListState['vod']}
-            themesList={props.themesList}
-            getContentList={props.getContentList}
-            deleteContentList={props.deleteContentList}
-            getThemesList={props.getThemesList}
-            showToast={props.showToast}
-            billingInfo={props.billingInfo}
-         />
+        contentType="vod"
+        items={props.contentListState['vod']}
+        themesList={props.themesList}
+        getContentList={props.getContentList}
+        deleteContentList={props.deleteContentList}
+        getThemesList={props.getThemesList}
+        showToast={props.showToast}
+        infos={props.infos}
+    />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
         themesList: state.settings.theming,
-        billingInfo: state.account.plan
+        infos: state.dashboard.info
     };
 }
 

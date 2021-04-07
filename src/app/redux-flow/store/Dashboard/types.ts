@@ -20,7 +20,7 @@ export interface DashboardInfos {
 }
 
 export interface DashboardTrial {
-    daysLeft: number; 
+    daysLeft: number;
 }
 
 export interface DashboardPayingPlan {
@@ -33,10 +33,12 @@ export interface DashboardGeneral {
     bandwidth: {
         limit: number;
         consumed: number;
+        remaining: number;
     };
     storage: {
         limit: number;
         consumed: number;
+        remaining: number;
     };
 }
 

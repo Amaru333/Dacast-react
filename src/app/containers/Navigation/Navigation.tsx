@@ -13,8 +13,8 @@ import { useOutsideAlerter } from '../../../utils/utils';
 import Scrollbar from "react-scrollbars-custom";
 import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks'
-import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal'
+import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -74,7 +74,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         PlanLimitReachedModalOpen,
         setPlanLimitReachedModalOpen,
         planLimitReachedModalType,
-    } = usePlanLimitsValidator(props.billingInfo, planLimitsValidaorCallbacks)
+    } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
@@ -252,8 +252,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        infos: state.dashboard.info,
-        billingInfo: state.account.plan
+        infos: state.dashboard.info
     };
 }
 

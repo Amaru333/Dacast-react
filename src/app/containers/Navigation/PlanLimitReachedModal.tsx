@@ -101,11 +101,11 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
                 }
                 {
                     ['more_data_needed_trial', 'more_storage_needed_trial', 'livestream_limit_reached_trial'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="blue" >Contact us</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="secondary" buttonColor="blue" >Contact us</Button>
                 }
                 {
                     ['more_data_needed'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="blue" >Purchase Data</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="secondary" buttonColor="blue" >Purchase Data</Button>
                 }
             </ModalFooter>
         </Modal>
