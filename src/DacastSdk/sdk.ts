@@ -14,6 +14,7 @@ import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLive
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput, PutVodChapterMarkersInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
+import { GetContentWithFolderOuput } from './folder'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
 
@@ -248,4 +249,6 @@ export class DacastSdk {
 
     public postEncoderKey = async (input: string): Promise<PostEncoderKeyOutput> => await this.axiosClient.post(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}live/${input}/encoder-key`).then(this.checkExtraData)
     public postBulkAction = async (input: PostBulkActionInput): Promise<PostBulkActionOutput> => await this.axiosClient.post('bulk', input).then(this.checkExtraData)
+
+    public getContentListWithFolder = async (input: string): Promise<GetContentWithFolderOuput> => await this.axiosClient.get('/search/content?' + input).then(this.checkExtraData)
 }

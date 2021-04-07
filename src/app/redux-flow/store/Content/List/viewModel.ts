@@ -22,7 +22,7 @@ export const formatGetContentListInput = (qs: string): string => {
 
 export const formatGetContentListOutput = (contentType: ContentType) => (dataEndpoints: GetSearchContentOutput): {data: SearchResult, contentType: ContentType} => {
     let formattedData: SearchResult = {
-        pageNumber: dataEndpoints.pageNumber,
+        pageNumber: dataEndpoints.page,
         perPage: dataEndpoints.perPage,
         totalResults: dataEndpoints.totalResults,
         results: dataEndpoints.results.map((item: AssetEndpoint): ContentItem => {

@@ -45,26 +45,21 @@ export interface AssetEndpoint {
     objectID: string;
     createdAt: number;
     title: string;
-    type: 'expo' | 'vod' | 'channel' | 'playlist' | 'folder';
-    status?: 'deleted' | 'offline' | 'online' | 'processing';
+    type: 'expo' | 'vod' | 'channel' | 'playlist';
+    status: 'deleted' | 'offline' | 'online' | 'processing';
+    featuresList: FeaturesList;
     size?: number;
     duration?: number;
     thumbnail?: string;
     views?: number;
-    featuresList?: FeaturesList;
     channelType?: string;
-    folderGroupID?: string;
-    parentID?: string;
-    name?: string;
-    path?: string;
-    splitPath?: string;
 }
 
 export interface GetSearchContentOutput {
     totalResults: number;
     results: AssetEndpoint[];
     perPage: number;
-    pageNumber: number;
+    page: number;
 }
 
 export interface BulkActionItem {
