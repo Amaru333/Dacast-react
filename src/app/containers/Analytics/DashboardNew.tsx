@@ -33,7 +33,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
 
 
     React.useEffect(() => {
-        props.getAnalyticsDashboard({ id: null, timeRange: 'LAST_MONTH', type: "account", dimension: AnalyticsDashboardDimension })
+        props.getAnalyticsDashboard({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AnalyticsDashboardDimension })
         .then(() => setIsFetching(false))
     }, [])
 
