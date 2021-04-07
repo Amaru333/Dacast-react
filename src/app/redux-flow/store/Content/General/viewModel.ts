@@ -185,12 +185,15 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
         payload: {
             title: data.title,
             description: data.description,
-            appearance: data.appearance,
             online: data.online,
-            poster: data.poster ? {
-                assetId: data.poster.assetId,
-                url: data.poster.url
-            } : null
+            appearance: {
+                darkMode: data.appearance.darkModeEnable,
+                showContentsDescription: data.appearance.contentDescriptions,
+                featuredContentId: data.appearance.featuredContentId,
+                cover: data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
+                : data.appearance.coverBackgroundEnable ? {url: data.appearance.coverBackgroundUrl, assetId: data.appearance.coverBackgroundUrl} 
+                : null
+            }
         }
     }
     return formattedData

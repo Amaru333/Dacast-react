@@ -82,8 +82,8 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
                                 }
                             </Button>
                         </ButtonSection>
-                        {props.headerEnable && props.headerUrl && <ImageSection> <SelectedImage src={props.headerUrl} /></ImageSection>}
-                        {props.headerEnable && !props.headerUrl && props.headerColor && <ImageSection backgroundColor={props.headerColor}> </ImageSection>}
+                        {(props.headerEnable && props.headerUrl && !props.headerColor) && <ImageSection> <SelectedImage src={props.headerUrl} /></ImageSection>}
+                        {(props.headerEnable && !props.headerUrl && props.headerColor) && <ImageSection backgroundColor={props.headerColor}> </ImageSection>}
 
                     </ImageArea>
                 </div>

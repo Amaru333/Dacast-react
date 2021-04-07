@@ -21,8 +21,8 @@ export interface PutExpoDetailsInput {
         title: string
         description: string
         online: boolean
-        //appearance: AppearanceEndpoint
-        //poster: AssetTypeEndpoint
+        appearance: AppearanceEndpoint
+        poster?: AssetTypeEndpoint
     }
 }
 

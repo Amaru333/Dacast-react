@@ -19,11 +19,11 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
     const expoClientBaseUrl = isProduction() ? 'https://dacastexpo.com/?id=' : 'https://singularity-expo.dacast.com/?id='
     const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
 
-    const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item) => {
-        let assetDropdownItem: DropdownSingleListItem = {title: null}
-        assetDropdownItem.title = item.title
-        assetDropdownItem.data = item.id
-        return assetDropdownItem
+    const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item): DropdownSingleListItem => {
+        return {
+            title: item.title,
+            data: item.id
+        }
     })
     
     return (
@@ -61,7 +61,7 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     <Text size={20} weight='med'> Content Layout </Text>
                 </TitleSection>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Content Descriptions' checked={stateContentDetails.contentDescriptions} />
+                    <Toggle label='Content Descriptions' defaultChecked={stateContentDetails.contentDescriptions} onChange={() => setStateContentDetails({...stateContentDetails, contentDescriptions: !stateContentDetails.contentDescriptions})} />
                     <IconStyle id="contentDescriptionTooltip">info_outlined</IconStyle>
                     <Tooltip  target="contentDescriptionTooltip">Show the descriptions of all content.</Tooltip>
                 </ControlToggleContainer>
