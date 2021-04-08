@@ -12,6 +12,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { MultiUserDetails } from '../../redux-flow/store/Account/Users/types';
 import { getMultiUsersDetailsAction } from '../../redux-flow/store/Account/Users/actions';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface CompanyComponentProps {
     CompanyPageDetails: CompanyPageInfos;
@@ -34,10 +35,10 @@ const Company = (props: CompanyComponentProps) => {
         props.getCompanyPageDetails()
         .then(() => setIsFetching(false))
         .catch(() => setNodataFetched(true))
-
-        props.getMultiUsersDetails()
-        .catch(() => setNodataFetched(true))
-
+        if(userToken.getPrivilege('privilege-multi-access-beta')) {
+            props.getMultiUsersDetails()
+            .catch(() => setNodataFetched(true))
+        }
     }, [])
 
     if(noDataFetched) {
