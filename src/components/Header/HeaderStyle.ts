@@ -60,8 +60,18 @@ export const UpgradeButton = styled(Button)`
     font-size: 14px;
 `
 
-export const TrialUpgradeButton = styled(Button)`
+export const TrialUpgradeButton = styled.div`
     display: flex;
     align-items: center;
     padding: 8px 20px 8px 11px;
+    background-color: ${props => props.theme.colors["blue-2"]};
+    color: white;
+    border-radius: 4px;
+    & > span > a {
+        cursor: pointer;
+        text-decoration: underline;
+        &:hover {
+            color: ${props => props.theme.colors["gray-8"]};
+        }
+    }
 `

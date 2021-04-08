@@ -44,11 +44,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
     const renderUpgradeText = () => {
         if(props.plan.trialExpiresIn > 7) {
-            return <span><a href='/account/upgrade' className='a-blue-2'>Upgrade</a> to enable all features</span>
+            return <span><a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
         } else if(props.plan.trialExpiresIn > 0) {
-            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-2'>Upgrade Now</a></span>
+            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade Now</a></span>
         } else {
-            return <span>Or <a href='/help' className='a-blue-2'>Contact Us</a> in order to request more testing</span>
+            return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
         }
     }
 
@@ -61,8 +61,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             )
         } else {
             return (
-                <Text className="mb1" size={20} weight="reg" color="white">
-                    Your trial has ended, <a href='/account/upgrade' className='a-blue-2'>Upgrade Now</a>
+                <Text className="mb15 mt1" size={20} weight="reg" color="white">
+                    Your trial has ended, <a href='/account/upgrade' className='a-blue-2 text-semibold'>Upgrade Now</a>
                 </Text>
             )
         }
@@ -81,7 +81,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
                     </WidgetHeaderTop>
                     {renderDaysRemaining()}
-                    <Text size={12} weight="reg" color="white">{renderUpgradeText()}</Text>
+                    <Text size={14} weight="reg" color="white">{renderUpgradeText()}</Text>
                 </WidgetElement>
             )
         }
@@ -91,7 +91,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                        <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
                     </WidgetHeaderTop>
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>

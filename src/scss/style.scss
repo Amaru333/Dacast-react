@@ -89,6 +89,10 @@ a:link {
     &.a-blue-2 {
         color: #2899F6;
     }
+
+    &.a-blue-260 {
+        color: #7EC2FA;
+    }
 }
 
 * {
@@ -103,6 +107,10 @@ a:visited {
     &.a-blue-2 {
         color: #2899F6;
     }
+
+    &.a-blue-260 {
+        color: #7EC2FA;
+    }
 }
 
 /* mouse over link */
@@ -114,10 +122,6 @@ a:hover {
 /* selected link */
 a:active {
     color: #284CEB;
-
-    &.a-blue-2 {
-        color: #2899F6;
-    }
 }
 a {
     text-decoration: none;
@@ -182,10 +186,6 @@ a {
     flex: 1;
 }
 
-.text-decoration-underline {
-    text-decoration: underline;
-}
-
 .bg-w {
     background: white;
 }
@@ -220,6 +220,10 @@ a {
 
 .m25 {
     margin: 1.5rem;
+}
+
+.mb15 {
+    margin-bottom: 0.75rem;
 }
 
 .mb25 {

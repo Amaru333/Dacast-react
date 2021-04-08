@@ -240,8 +240,8 @@ const Header = (props: HeaderProps) => {
     const renderUpgradeButton = () => {
         if(!props.isMobile && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
             return (
-                <TrialUpgradeButton onClick={() => history.push('/account/upgrade')} className="mr2" typeButton="primary" buttonColor="lightBlue">
-                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <span className="text-decoration-underline">Upgrade Now</span></span>
+                <TrialUpgradeButton className="mr2">
+                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => history.push('/account/upgrade')}>Upgrade Now</a></span>
                 </TrialUpgradeButton>
             )
         } else {
