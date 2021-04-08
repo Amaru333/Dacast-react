@@ -91,6 +91,7 @@ export interface ExpoDetails {
     description: string
     online: boolean
     appearance: ExposThemingState
+    uploadurl?: string
 }
 
 export type ContentDetails = VodDetails | LiveDetails | PlaylistDetails | ExpoDetails

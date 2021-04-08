@@ -26,6 +26,7 @@ export interface DesignComponentProps {
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getContentSetup: (contentId: string, contentType: string) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    uploadFile: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
 }
 
 const DesignExpos = (props: DesignComponentProps) => {

@@ -11,7 +11,6 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
     const colorPickerRef = React.useRef<HTMLDivElement>(null);
 
-    console.log(props.defaultColor)
     useEasyOutsideAlerter(colorPickerRef, () => {
         if(props.callback && isOpened) {
             props.callback(selectedColor);

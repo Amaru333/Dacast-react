@@ -9,7 +9,7 @@ import { RadioButtonContainer, RadioButtonOption, ThumbnailFile, UploadText } fr
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>; headerEnable: boolean, headerColor?: string, headerUrl?: string }) => {
+export const ImageAreaExpo = (props: { updateHeader: () => void; updateColor: (color: string) => void; submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>; uploadUrl?: string; contentId: string; getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>; headerEnable: boolean, headerColor?: string, headerUrl?: string }) => {
 
     const [settingsModalopen, setSettingsModalopen] = React.useState<boolean>(false)
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -19,6 +19,7 @@ export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadT
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
 
+
     React.useEffect(() => {
         if (selectedOption === "color") {
             setIsSaveDisabled(false)
@@ -26,6 +27,18 @@ export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadT
             setIsSaveDisabled(logoFile ? false : true)
         }
     }, [selectedOption, logoFile])
+
+    React.useEffect(() => {
+        if(props.uploadUrl && saveButtonLoading && logoFile) {
+            props.submit(logoFile, props.uploadUrl, props.contentId, 'expo').then(() => {
+                setTimeout(() => {
+                    setSaveButtonLoading(false);
+                    setSettingsModalopen(false);
+                    props.updateHeader();
+                }, 6000)
+            })
+        }
+    }, [props.uploadUrl])
 
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
@@ -51,7 +64,8 @@ export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadT
             if(selectedOption === 'upload') {
                 props.getUploadUrl('expo-poster', props.contentId, '.' + logoFile.type.split('/')[1], 'expo')
             } else {
-                
+                props.updateColor(selectedColor);
+                setSettingsModalopen(false)
             }
         }
     }
@@ -63,7 +77,6 @@ export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadT
         }
     }
 
-    console.log(props, props.headerEnable && props.headerUrl && 'Yo')
     return (
         <>
             <ImageContainer className="col col-12">

@@ -64,7 +64,8 @@ export const ImageSection = styled.div<{backgroundColor?: string}>`
 width: 100%;
 display: flex;
 ${props => props.backgroundColor && css`
-    background-color: ${props=> props.backgroundColor};
+    background-color: ${props.backgroundColor};
+    height: 100%;
 `}
 justify-content: center;
 align-items: center;
