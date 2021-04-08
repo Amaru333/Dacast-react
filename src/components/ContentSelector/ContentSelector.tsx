@@ -94,7 +94,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         if (checkedFolders.length < 1) return;
         const wait = async () => {
             await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id, (data) => {
-                setSelectedItems(data.data.results);
+                setSelectedItems(data.results);
                 setSelectedFolderId(checkedFolders[0].id)
             })
         }
