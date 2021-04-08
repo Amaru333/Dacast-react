@@ -65,6 +65,7 @@ width: 100%;
 display: flex;
 ${props => props.backgroundColor && css`
     background-color: ${props.backgroundColor};
+    height: 100%;
 `}
 justify-content: center;
 align-items: center;
