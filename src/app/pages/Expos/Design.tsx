@@ -10,10 +10,10 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import styled from 'styled-components';
 import { DesignComponentProps } from '../../containers/Expos/Design';
-import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ImageAreaExpo } from './ImageAreaExpo';
 import { isProduction } from '../../utils/services/player/stage';
+import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 
 export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
     const expoClientBaseUrl = isProduction() ? 'https://dacastexpo.com/?id=' : 'https://singularity-expo.dacast.com/?id='
@@ -51,7 +51,7 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
                 </ControlToggleContainer>
                 {
-                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo headerEnable={stateContentDetails.coverBackgroundEnable} headerColor={stateContentDetails.coverBackgroundColor} headerUrl={stateContentDetails.coverBackgroundUrl}/>
+                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo getUploadUrl={props.getUploadUrl} contentId={props.exposId} headerEnable={stateContentDetails.coverBackgroundEnable} headerColor={stateContentDetails.coverBackgroundColor} headerUrl={stateContentDetails.coverBackgroundUrl}/>
                 }
                 <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
                     When disabled, white will be the default cover background.

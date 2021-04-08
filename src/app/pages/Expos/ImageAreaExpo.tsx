@@ -7,8 +7,9 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RadioButtonContainer, RadioButtonOption, ThumbnailFile, UploadText } from '../../shared/General/ImageModal';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: string, headerUrl?: string }) => {
+export const ImageAreaExpo = (props: { contentId: string; getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>; headerEnable: boolean, headerColor?: string, headerUrl?: string }) => {
 
     const [settingsModalopen, setSettingsModalopen] = React.useState<boolean>(false)
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -48,7 +49,7 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
         if(!saveButtonLoading && !isSaveDisabled) {
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                //props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], props.contentType)
+                props.getUploadUrl('expo-poster', props.contentId, '.' + logoFile.type.split('/')[1], 'expo')
             } else {
                 
             }
