@@ -23,7 +23,7 @@ export const formatGetFolderContentOutput = (data: GetFolderContentOutput): Sear
             }
 
             return {
-                objectID: item.objectID,
+                objectID: item.objectID.substr(item.objectID.indexOf('_') + 1),
                 createdAt: item.createdAt,
                 title: item.title,
                 featuresList: item.featuresList,
