@@ -9,7 +9,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams, Prompt } from 'react-router';
 import { ExposTabs } from './ExposTabs';
 import { GeneralComponentProps } from '../Videos/General';
-import { getContentDetailsAction, Action, editContentDetailsAction, getUploadUrlAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
+import { getContentDetailsAction, Action, editContentDetailsAction, uploadFileAction, deleteFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
 import { ContentDetails, ExpoDetails } from '../../redux-flow/store/Content/General/types';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';

@@ -7,10 +7,11 @@ import { useEasyOutsideAlerter } from '../../utils/utils';
 
 export const ColorPicker = (props: {defaultColor: string; callback?: Function; className?: string}) => {
 
-    const [selectedColor, setSelectedColor] = React.useState<Color>(props.defaultColor ? props.defaultColor : '#000000');
+    const [selectedColor, setSelectedColor] = React.useState<Color>(props.defaultColor && props.defaultColor !== null ? props.defaultColor : '#000000');
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
     const colorPickerRef = React.useRef<HTMLDivElement>(null);
 
+    console.log(props.defaultColor)
     useEasyOutsideAlerter(colorPickerRef, () => {
         if(props.callback && isOpened) {
             props.callback(selectedColor);
@@ -23,10 +24,6 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
             props.callback(selectedColor.toString())
         }
     }, [selectedColor])
-
-    React.useEffect(() => {
-        setSelectedColor(props.defaultColor)
-    }, [props.defaultColor])
 
     return (
         <div>
