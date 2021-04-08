@@ -17,38 +17,37 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
     }
 
     const trialExpired = () => {
-        return infos.currentPlan.trialExpiresIn <= 0
+        return infos && infos.currentPlan && infos.currentPlan.trialExpiresIn != null && infos.currentPlan.trialExpiresIn <= 0
     }
 
     const bandwidthLimitReached = () => {
-        return infos.generalInfos.bandwidth.remaining <= 0
+        return infos && infos.generalInfos.bandwidth.remaining <= 0
     }
 
     const storageLimitReached = () => {
-        return infos.generalInfos.storage.remaining <= 0
+        return infos && infos.generalInfos.storage.remaining <= 0
     }
 
     const handleCreateStreamClick = () => {
-        let creationAllowed = true;
         if(planIsTrial()) {
             if(trialExpired()) {
                 setPlanLimitReachedModalType('upgrade_now')
-                creationAllowed = false;
+                setPlanLimitReachedModalOpen(true)
+                return
             }
             if(infos.live.activeChannels > 0){
                 setPlanLimitReachedModalType('livestream_limit_reached_trial')
-                creationAllowed = false;
+                setPlanLimitReachedModalOpen(true)
+                return
             }
         }
         if(bandwidthLimitReached()) {
             setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
-            creationAllowed = false;
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(storageLimitReached()) {
             setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
-            creationAllowed = false;
-        }
-        if(!creationAllowed) {
             setPlanLimitReachedModalOpen(true)
             return
         }
@@ -58,22 +57,18 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
     }
 
     const handleUploadVideoClick = () => {
-        let creationAllowed = true;
-        if(planIsTrial()) {
-            if(trialExpired()) {
-                setPlanLimitReachedModalType('upgrade_now')
-                creationAllowed = false;
-            }
+        if(planIsTrial() && trialExpired()) {
+            setPlanLimitReachedModalType('upgrade_now')
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(bandwidthLimitReached()) {
             setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
-            creationAllowed = false;
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(storageLimitReached()) {
             setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
-            creationAllowed = false;
-        }
-        if(!creationAllowed) {
             setPlanLimitReachedModalOpen(true)
             return
         }
@@ -83,12 +78,10 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
     }
 
     const handleCreateExpoClick = () => {
-        if(planIsTrial()) {
-            if(trialExpired()) {
-                setPlanLimitReachedModalType('upgrade_now')
-                setPlanLimitReachedModalOpen(true)
-                return
-            }
+        if(planIsTrial() && trialExpired()) {
+            setPlanLimitReachedModalType('upgrade_now')
+            setPlanLimitReachedModalOpen(true)
+            return
         }
         if(callbacks && callbacks.openExpoCreate) {
             callbacks.openExpoCreate();

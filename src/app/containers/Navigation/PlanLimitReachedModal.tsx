@@ -11,7 +11,7 @@ export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more
 export interface PlanLimitReachedModalProps {
     type: PlanLimitReachedModalType;
     opened: boolean;
-    billingInfo: BillingPageInfos;
+    infos: DashboardInfos;
     type: PlanLimitReachedModalType;
     toggle: () => void;
 }
@@ -25,9 +25,19 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
         history.push('/account/upgrade')
     }
 
+    const navigateToContactUs = () => {
+        props.toggle()
+        history.push('/help')
+    }
+
+    const navigateToPurchaseData = () => {
+        props.toggle()
+        history.push('/account/plan/#purchase-data')
+    }
+
     const canOpen = () => {
         if(props.type === 'end_of_trial') {
-            return props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.trialExpiresIn <= 0
+            return props.infos && props.infos.currentPlan && props.infos.currentPlan.trialExpiresIn != null && props.infos.currentPlan.trialExpiresIn <= 0
         }
         return true;
     }
@@ -101,11 +111,11 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
                 }
                 {
                     ['more_data_needed_trial', 'more_storage_needed_trial', 'livestream_limit_reached_trial'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="secondary" buttonColor="blue" >Contact us</Button>
+                    <Button sizeButton="large" onClick={()=> navigateToContactUs()} type="button" typeButton="secondary" buttonColor="blue" >Contact us</Button>
                 }
                 {
                     ['more_data_needed'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="secondary" buttonColor="blue" >Purchase Data</Button>
+                    <Button sizeButton="large" onClick={()=> navigateToPurchaseData()} type="button" typeButton="secondary" buttonColor="blue" >Purchase Data</Button>
                 }
             </ModalFooter>
         </Modal>
@@ -114,7 +124,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        billingInfo: state.account.plan
+        infos: state.dashboard.info
     };
 }
 

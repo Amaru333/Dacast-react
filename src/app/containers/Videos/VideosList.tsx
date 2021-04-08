@@ -9,7 +9,6 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
-import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
 export interface ContentListProps {

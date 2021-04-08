@@ -200,6 +200,13 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     }
 
+    React.useEffect(() => {
+        if (location.hash === '#purchase-data') {
+            setPurchaseDataOpen(true)
+            history.replaceState(null, null, ' ');
+        }
+    }, [location.hash])
+
     return (
         <div>
             <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.plan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
