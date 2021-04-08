@@ -10,13 +10,14 @@ import { useParams } from 'react-router';
 import { ExposTabs } from './ExposTabs';
 import { ContentDetails, ContentDetailsState, ExpoDetails, ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
-import { DesignPage } from '../../pages/Expos/Design';
+import { DesignPage, ScaledFrame, WrapIFrame } from '../../pages/Expos/Design';
 import { Action } from '../../redux-flow/store/Content/Theming/actions';
-import { ContentThemeState } from '../../redux-flow/store/Settings/Theming';
 import { ContentUploadType } from '../../../DacastSdk/common';
 import { deleteFileAction, editContentDetailsAction, getContentDetailsAction, getUploadUrlAction, uploadFileAction } from '../../redux-flow/store/Content/General/actions';
 import { getContentSetupAction } from '../../redux-flow/store/Content/Setup/actions';
 import { ContentSetupState } from '../../redux-flow/store/Content/Setup/types';
+import { isProduction } from '../../utils/services/player/stage';
+import { PlayerSection } from '../../pages/Videos/ChapterMarkers/ChaptersStyle';
 
 export interface DesignComponentProps {
     themeState: ContentDetailsState;
@@ -25,13 +26,14 @@ export interface DesignComponentProps {
     saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getContentSetup: (contentId: string, contentType: string) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
 }
 
 const DesignExpos = (props: DesignComponentProps) => {
 
     let { exposId } = useParams<{exposId: string}>()
+    const expoClientBaseUrl = isProduction() ? 'https://dacastexpo.com/?id=' : 'https://singularity-expo.dacast.com/?id='
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
@@ -49,14 +51,26 @@ const DesignExpos = (props: DesignComponentProps) => {
     return (
         <>
             <ExposTabs exposId={exposId} />
-            { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] && !isLoading ?
+            { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] ?
                 (
-                    <DesignPage 
-                        designState={ (props.themeState['expo'][exposId] as ExpoDetails).appearance } 
-                        exposId={exposId}
-                        {...props}
-                        save={handleSave}
-                    />          
+                    <React.Fragment>
+                        <DesignPage 
+                            uploadUrl={(props.themeState['expo'][exposId] as ExpoDetails).uploadurl}
+                            designState={ (props.themeState['expo'][exposId] as ExpoDetails).appearance } 
+                            exposId={exposId}
+                            {...props}
+                            save={handleSave}
+                        />
+                        {
+                            !isLoading ?
+                            <PlayerSection className='xs-mb2 col col-right col-6 md-col-8 relative sm-pl1'>
+                                <WrapIFrame className='col-12'>
+                                    <ScaledFrame  src={expoClientBaseUrl+exposId} />   
+                                </WrapIFrame>
+                            </PlayerSection>
+                            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                        }
+                    </React.Fragment>
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }

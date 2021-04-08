@@ -9,7 +9,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { useParams, Prompt } from 'react-router';
 import { ExposTabs } from './ExposTabs';
 import { GeneralComponentProps } from '../Videos/General';
-import { getContentDetailsAction, Action, editContentDetailsAction, uploadFileAction, deleteFileAction } from '../../redux-flow/store/Content/General/actions';
+import { getContentDetailsAction, Action, editContentDetailsAction, uploadFileAction, deleteFileAction, getUploadUrlAction } from '../../redux-flow/store/Content/General/actions';
 import { ContentDetails, ExpoDetails } from '../../redux-flow/store/Content/General/types';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
@@ -101,6 +101,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
             await dispatch(editContentDetailsAction(contentType)(data))
+        },
+        getUploadUrl: async (uploadType: ContentUploadType, contentId: string, extension: string, contentType: ContentType) => {
+            await dispatch(getUploadUrlAction(contentType)({assetType: uploadType, contentId: contentId, extension: extension}))
         },
         uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
             await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))

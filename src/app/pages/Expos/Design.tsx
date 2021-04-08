@@ -1,6 +1,5 @@
 import React from 'react';
 import { ControlsCard, ControlToggleContainer, TitleSection } from '../../shared/Theming/ThemingStyle';
-import { PlayerSection } from '../Videos/ChapterMarkers/ChaptersStyle';
 import { Text } from '../../../components/Typography/Text';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
@@ -10,13 +9,11 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import styled from 'styled-components';
 import { DesignComponentProps } from '../../containers/Expos/Design';
+import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ImageAreaExpo } from './ImageAreaExpo';
-import { isProduction } from '../../utils/services/player/stage';
-import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 
-export const DesignPage = (props: DesignComponentProps & { designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
-    const expoClientBaseUrl = isProduction() ? 'https://dacastexpo.com/?id=' : 'https://singularity-expo.dacast.com/?id='
+export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
 
     const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item): DropdownSingleListItem => {
@@ -25,15 +22,15 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
             data: item.id
         }
     })
+
+    const handleSaveHeader = (headerColor: string) => {
+        setStateContentDetails({...stateContentDetails, coverBackgroundColor: headerColor})
+        props.save({...stateContentDetails, coverBackgroundColor: headerColor, coverBackgroundUrl: null})
+    }
     
     return (
         <React.Fragment>
-            <PlayerSection className='xs-mb2 col col-right col-12 md-col-8 relative sm-pl1'>
-                <WrapIFrame className='col-12'>
-                    <ScaledFrame  src={expoClientBaseUrl+props.exposId} />   
-                </WrapIFrame>
-            </PlayerSection>
-            <ControlsCard>
+            <ControlsCard className='col col-6 md-col-4'>
                 <TitleSection className="justify-center mb1">
                     <Text size={20} weight='med'> Appearance </Text>
                 </TitleSection>
@@ -51,14 +48,7 @@ export const DesignPage = (props: DesignComponentProps & { designState: ExposThe
                     <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
                 </ControlToggleContainer>
                 {
-                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo 
-                        updateColor={(color: string) => setStateContentDetails({...stateContentDetails, coverBackgroundColor: color, coverBackgroundUrl: undefined})} 
-                        submit={props.uploadFile}
-                        updateHeader={() => props.save({...stateContentDetails, coverBackgroundColor: null}) }
-                        uploadUrl={props.themeState.expo[props.exposId].uploadurl ? props.themeState.expo[props.exposId].uploadurl : undefined} 
-                        getUploadUrl={props.getUploadUrl} contentId={props.exposId} headerEnable={stateContentDetails.coverBackgroundEnable} 
-                        headerColor={stateContentDetails.coverBackgroundColor} 
-                        headerUrl={stateContentDetails.coverBackgroundUrl}/>
+                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo saveHeaderColor={handleSaveHeader} uploadUrl={props.uploadUrl} submit={props.uploadFile} contentId={props.exposId} getUploadUrl={props.getUploadUrl} headerEnable={stateContentDetails.coverBackgroundEnable} headerColor={stateContentDetails.coverBackgroundColor} headerUrl={stateContentDetails.coverBackgroundUrl}/>
                 }
                 <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
                     When disabled, white will be the default cover background.
