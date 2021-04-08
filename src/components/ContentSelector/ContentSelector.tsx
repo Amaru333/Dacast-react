@@ -95,7 +95,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         if (checkedFolders.length < 1) return;
         const wait = async () => {
             await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id, (data) => {
-                setSelectedItems(data.data.results);
+                setSelectedItems(data.data.results ? data.data.results : []);
                 setSelectedFolderId(checkedFolders[0].id)
             })
         }
@@ -377,7 +377,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     </div>
                 </ContainerHalfSelector>
                 <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                    <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
+                    <Button disabled={selectedTab === 'folder' && (selectedItems && selectedItems.length !== 0)} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
                     <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
                 </div>
                 <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
