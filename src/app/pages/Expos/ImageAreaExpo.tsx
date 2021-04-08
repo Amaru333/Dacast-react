@@ -7,14 +7,26 @@ import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio
 import { IconStyle } from '../../../shared/Common/Icon';
 import { RadioButtonContainer, RadioButtonOption, ThumbnailFile, UploadText } from '../../shared/General/ImageModal';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: string, headerUrl?: string }) => {
+interface ImageAreaExpoProps { 
+    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>
+    submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>
+    saveHeaderColor: (headerColor: string) => void
+    headerEnable: boolean
+    contentId: string
+    uploadUrl?: string
+    headerColor?: string
+    headerUrl?: string
+}
+
+export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
 
     const [settingsModalopen, setSettingsModalopen] = React.useState<boolean>(false)
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     const [selectedOption, setSelectedOption] = React.useState<string>("upload");
     const [logoFile, setLogoFile] = React.useState<File>(null);
-    const [selectedColor, setSelectedColor] = React.useState<string>(props.headerColor);
+    const [selectedColor, setSelectedColor] = React.useState<string>(props.headerColor || '#fffff');
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
 
@@ -48,12 +60,22 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
         if(!saveButtonLoading && !isSaveDisabled) {
             setSaveButtonLoading(true);
             if(selectedOption === 'upload') {
-                //props.getUploadUrl(props.imageType, props.contentId, '.' + logoFile.type.split('/')[1], props.contentType)
+                props.getUploadUrl('expo-poster', props.contentId, '.' + logoFile.type.split('/')[1], 'expo')
             } else {
-                
+                props.saveHeaderColor(selectedColor)
             }
         }
     }
+
+    React.useEffect(() => {
+        if(props.uploadUrl && saveButtonLoading && logoFile) {
+            props.submit(logoFile, props.uploadUrl, props.contentId, 'expo')
+            .then(() => {
+                setSaveButtonLoading(false)
+                setSettingsModalopen(false)
+            })
+        }
+    }, [props.uploadUrl, saveButtonLoading])
 
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -83,7 +105,7 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
                             </Button>
                         </ButtonSection>
                         {(props.headerEnable && props.headerUrl && !props.headerColor) && <ImageSection> <SelectedImage src={props.headerUrl} /></ImageSection>}
-                        {(props.headerEnable && !props.headerUrl && props.headerColor) && <ImageSection backgroundColor={props.headerColor}> </ImageSection>}
+                        {(props.headerEnable && !props.headerUrl && props.headerColor) && <ImageSection style={{height: 100}} backgroundColor={props.headerColor}> </ImageSection>}
 
                     </ImageArea>
                 </div>
@@ -106,7 +128,7 @@ export const ImageAreaExpo = (props: { headerEnable: boolean, headerColor?: stri
                             <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
                             {logoFile &&
                                 <ThumbnailFile className="col mt1">
-                                    <UploadText className="ml2" color="gray-1" size={14} weight="reg">{''}</UploadText>
+                                    <UploadText className="ml2" color="gray-1" size={14} weight="reg">{logoFile ? logoFile.name : ''}</UploadText>
                                     <button style={{ border: "none", backgroundColor: "inherit" }}>
                                         <IconStyle onClick={() => setLogoFile(null)} customsize={14}>close</IconStyle>
                                     </button>

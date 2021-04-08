@@ -172,8 +172,8 @@ export const formatGetExpoDetailsOutput = (contentType: ContentType) => (data: G
             contentDescriptions: data.appearance.showContentsDescription,
             featuredContentEnable: data.appearance.featuredContentId ? true : false,
             featuredContentId: data.appearance.featuredContentId
-
-        }
+        },
+        uploadurl: null
     }
 
     return formattedData
