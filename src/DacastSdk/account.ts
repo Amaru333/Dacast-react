@@ -25,7 +25,7 @@ interface UserEndpoint {
     email: string
     role: string
     invitationId: string
-    status: 'active' | 'expired' | 'invited'
+    status: 'active' | 'expired' | 'invited' | 'disabled'
 }
 
 export interface GetUsersDetailsOutput {

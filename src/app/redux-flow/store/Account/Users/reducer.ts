@@ -34,15 +34,7 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
         case ActionTypes.DELETE_USER: 
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user.userId === action.payload) {
-                        return {
-                            ...user,
-                            status: 'Disabled'
-                        }
-                    }
-                    return user
-                })
+                users: state.users.filter(user => user.userId !== action.payload)
             }
         case ActionTypes.CANCEL_USER_INVITE:
             return {

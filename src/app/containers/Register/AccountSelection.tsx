@@ -47,7 +47,7 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
                 <AccountSelectionRow style={{marginBottom: 0}} onClick={() => {handleUserSelection(account.userId)}} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className='col col-11 flex'>
                         <Text size={16} weight='med'>{account.companyName}</Text>
-                        <Text size={16} weight='med' color='gray-3'>&nbsp;({account.role})</Text>
+                        {account.role && <Text size={16} weight='med' color='gray-3'>&nbsp;({account.role})</Text>}
                     </div>
                     <div  className='flex justify-end col col-1'>
                         <ActionIcon id={"subfolderTooltip" + i}>

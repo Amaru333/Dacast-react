@@ -4,7 +4,7 @@ import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 
 export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiUserDetails => {
     let formattedData: MultiUserDetails = {
-        users: data.users.map(user => {
+        users: data.users.filter(user => user.status !== 'disabled').map(user => {
             let fullName = ''
             if(user.firstName) {
                 fullName = user.firstName

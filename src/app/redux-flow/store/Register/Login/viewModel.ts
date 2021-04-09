@@ -30,9 +30,9 @@ export const formatPostLoginOutput = (data: PostLoginOuput, dataReact: LoginInfo
             availableUsers: data.availableUsers.map(user => {
                 return {
                     userId: user.userId,
-                    companyName: user.companyName,
+                    companyName: user.companyName || user.companyWebsite,
                     companyWebsite: user.companyWebsite,
-                    role: capitalizeFirstLetter(user.role.split('-')[1])
+                    role: user.role ? capitalizeFirstLetter(user.role.split('-')[1]) : null
                 }
             }),
             email: !isMultiUserPayload(dataReact) ? dataReact.email : ''
