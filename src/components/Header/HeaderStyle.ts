@@ -19,7 +19,7 @@ export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonate
 export const IconContainerStyle = styled.div<{customColor?: ColorsApp}>`
     display: flex;
     background-color: ${props => props.customColor? props.theme.colors[props.customColor] : props.theme.colors['white']};
-    height: 56px;
+    height: 55px;
     align-items: center;
     margin-right: 16px;
 `
@@ -27,6 +27,7 @@ export const HeaderIconStyle = styled.div`
     color: ${props => props.theme.colors["gray-1"]};
     cursor: pointer;
     height: 24px;
+    margin-right: 16px;
 `
 
 export const HeaderAvatar = styled(Avatar)`
