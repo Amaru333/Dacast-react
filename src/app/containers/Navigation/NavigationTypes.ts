@@ -14,7 +14,6 @@ export interface MainMenuSpecificProps {
     openPlaylist?: (b: boolean) => void;
     openExpoCreate?: (b: boolean) => void;
     infos: DashboardInfos;
-    billingInfo: BillingPageInfos;
     getBillingPageInfos: () => Promise<void>;
     getDashboardDetails: () => Promise<void>;
 }
