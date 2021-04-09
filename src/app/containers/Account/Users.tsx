@@ -10,7 +10,7 @@ import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/a
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { UpgradeAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { Plan } from '../../redux-flow/store/Account/Upgrade/types';
-import { addUserAction, cancelUserInviteAction, deleteUserAction, editUserRoleAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
+import { addUserAction, cancelUserInviteAction, deleteUserAction, editUserRoleAction, filterUsersListAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
 import { MultiUserDetails, User } from '../../redux-flow/store/Account/Users/types';
 
 export interface UsersComponentProps {
@@ -22,6 +22,7 @@ export interface UsersComponentProps {
     deleteUser: (userId: string, transferContentsToUserId: string) => Promise<void>
     cancelUserInvite: (user: User) => Promise<void>
     resendUserInvite: (user: User) => Promise<void>
+    filterUsersList: (list: User[]) => void
     multiUserDetails: MultiUserDetails
     plan?: Plan
 }
@@ -80,6 +81,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         resendUserInvite: async (user: User) => {
             await dispatch(resendUserInviteAction(user));
+        },
+        filterUsersList: async (list: User[]) => {
+            await dispatch(filterUsersListAction(list));
         }
     }
 }

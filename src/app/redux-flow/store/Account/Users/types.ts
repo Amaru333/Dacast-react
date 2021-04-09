@@ -4,7 +4,8 @@ export enum ActionTypes {
     EDIT_USER_ROLE = "@@account_users/EDIT_USER_ROLE",
     CANCEL_USER_INVITE = "@@account_users/CANCEL_USER_INVITE",
     RESEND_USER_INVITE = "@@account_users/RESEND_USER_INVITE",
-    DELETE_USER = "@@account_users/DELETE_USER"
+    DELETE_USER = "@@account_users/DELETE_USER",
+    FILTER_USERS_LIST = "@@account_users/FILTER_USERS_LIST"
 }
 export type UserStatus = 'Active' | 'Invited' | 'Expired' | 'Disabled';
 

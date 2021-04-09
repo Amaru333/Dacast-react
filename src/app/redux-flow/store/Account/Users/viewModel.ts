@@ -24,8 +24,8 @@ export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiU
                 name: fullName
             }
         }),
-        maxSeats: data.maxSeats || data.occupiedSeats,
-        occupiedSeats: data.occupiedSeats
+        maxSeats: data.maxSeats || 0,
+        occupiedSeats: data.occupiedSeats || 0
     }
 
     return formattedData

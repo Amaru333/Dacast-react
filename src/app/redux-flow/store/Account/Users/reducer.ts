@@ -43,6 +43,11 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
             }
         case ActionTypes.RESEND_USER_INVITE:
             return state
+        case ActionTypes.FILTER_USERS_LIST:
+            return {
+                ...state,
+                users: action.payload
+            }
         default: 
             return state
     }

@@ -33,18 +33,16 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
     const [planDetails, setPlanDetails] = React.useState<Plan>(props.plan)
-    const [usersTableSort, setUsersTableSort] = React.useState<string>('')
+    const [usersTableSort, setUsersTableSort] = React.useState<string>('name')
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
-    const [usersList, setUsersList] = React.useState<User[]>(props.multiUserDetails.users)
     const [userToDelete, setUserToDelete] = React.useState<User>(null)
     const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
-
-    let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.users.length
+    let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.occupiedSeats
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
     React.useEffect(() => {
-        setUsersList(filterUsersTable())
+        filterUsersTable()
     }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
 
     const handleUserRole = (role: UserRole, userId: string) => {
@@ -120,12 +118,13 @@ export const UsersPage = (props: UsersComponentProps) => {
                 {cell: <Text key="statusUsers" size={14} weight="med" color="gray-1">Status</Text>, sort: 'status'},
                 { cell: <div></div> }
             ],
-            sortCallback: (value: string) => setUsersTableSort(value)
+            sortCallback: (value: string) => setUsersTableSort(value),
+            defaultSort: 'name'
         }
     }
 
     const usersBodyElement = () => {
-        return usersList.map((user) => {
+        return props.multiUserDetails.users.map((user) => {
             return {
                 data: [
                     <div key={'userName' + user.userId} className="flex items-center">
@@ -171,8 +170,7 @@ export const UsersPage = (props: UsersComponentProps) => {
         }
 
         filteredList.sort(compareValues(usersTableSort.split('-')[0], usersTableSort.split('-')[1] as 'asc'| 'desc'))
-
-        return filteredList
+        props.filterUsersList(filteredList)
     }
     return (
         <React.Fragment>
@@ -184,7 +182,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                 <div className="flex items-center relative">
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
-                    <Text color="gray-3">{props.multiUserDetails.users.length} out of {props.multiUserDetails.maxSeats} seats used</Text>
+                    <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seats used</Text>
                     <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>

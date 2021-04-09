@@ -1,3 +1,5 @@
+import { ThunkDispatch } from "redux-thunk";
+import { ApplicationState } from "../..";
 import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
 import { applyViewModel } from "../../../../utils/utils";
 import { ActionTypes, MultiUserDetails, User } from "./types";
@@ -33,7 +35,12 @@ export interface DeleteUser {
     payload: string
 }
 
-export type UsersAction = GetUsersDetails | AddUser | EditUserRole | CancelUserInvite | ResendUserInvite | DeleteUser
+export interface FilterUserslist {
+    type: ActionTypes.FILTER_USERS_LIST
+    payload: User[]
+}
+
+export type UsersAction = GetUsersDetails | AddUser | EditUserRole | CancelUserInvite | ResendUserInvite | DeleteUser | FilterUserslist
 
 export const getMultiUsersDetailsAction = applyViewModel(dacastSdk.getUsersDetails, undefined, formatGetUsersDetailsOutput, ActionTypes.GET_USERS_DETAILS, null, 'Couldn\'t get users details')
 export const addUserAction = applyViewModel(dacastSdk.postUser, formatPostUserInput, formatPostUserOutput, ActionTypes.ADD_USER, 'User has been invited', 'Couldn\'t invite user')
@@ -41,3 +48,8 @@ export const editUserRoleAction = applyViewModel(dacastSdk.postUserRole, formatP
 export const cancelUserInviteAction = applyViewModel(dacastSdk.postCancelUserInvite, formatPostCancelUserInviteInput, formatPostCancelUserInviteOutput, ActionTypes.CANCEL_USER_INVITE, 'User invitation has been cancelled', 'Couldn\'t cancel user invitation')
 export const resendUserInviteAction = applyViewModel(dacastSdk.postResendUserInvite, formatPostResendUserInviteInput, formatPostResendUserInviteOutput, ActionTypes.RESEND_USER_INVITE, 'User invite has been resent', 'Couldn\'t rensend user invite')
 export const deleteUserAction = applyViewModel(dacastSdk.deleteUser, formatDeleteUserInput, formatDeleteUserOutput, ActionTypes.DELETE_USER, 'User has been deleted', 'Couldn\'t delete user')
+export const filterUsersListAction =  (list: User[]): ThunkDispatch<Promise<void>, {}, FilterUserslist> => {
+    return (dispatch: ThunkDispatch<ApplicationState , {}, FilterUserslist> ) => {
+        dispatch( {type: ActionTypes.FILTER_USERS_LIST, payload: list} );
+    };
+}
