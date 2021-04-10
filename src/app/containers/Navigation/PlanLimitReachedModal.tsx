@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
 
-export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now' | 'livestream_limit_reached_trial';
+export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
 
 export interface PlanLimitReachedModalProps {
     type: PlanLimitReachedModalType;
@@ -35,6 +35,11 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
         history.push('/account/plan/#purchase-data')
     }
 
+    const navigateToDashboard = () => {
+        props.toggle()
+        history.push('/dashboard')
+    }
+
     const canOpen = () => {
         if(props.type === 'end_of_trial') {
             return props.infos && props.infos.currentPlan && props.infos.currentPlan.trialExpiresIn != null && props.infos.currentPlan.trialExpiresIn <= 0
@@ -52,6 +57,23 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             case 'more_storage_needed_trial': return 'Need More Storage'
             case 'upgrade_now': return 'Upgrade Now'
             case 'livestream_limit_reached_trial': return 'Limit Reached'
+            case 'feature_not_included': return 'Upgrade Plan'
+            case 'feature_not_included_starter_paywall': return 'Upgrade Plan'
+        }
+    }
+
+    const getHasClose = () => {
+        switch(props.type) {
+            case 'end_of_trial': return true
+            case 'limit_reached': return false
+            case 'more_data_needed': return true
+            case 'more_storage_needed': return false
+            case 'more_data_needed_trial': return true
+            case 'more_storage_needed_trial': return true
+            case 'upgrade_now': return false
+            case 'livestream_limit_reached_trial': return false
+            case 'feature_not_included': return false
+            case 'feature_not_included_starter_paywall': return false
         }
     }
 
@@ -97,25 +119,43 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
                         <Text size={14} weight="med">Upgrade your plan to get more livestreams.</Text>
                     </>
                 )
+            case 'feature_not_included':
+                return (
+                    <>
+                        <Text size={14}>This feature is not included in your plan. Please upgrade to have access.</Text>
+                        <Text size={14} weight="med">Want to learn more about this feature? <a href='/help' className='a-blue-2'>Read here</a></Text>
+                    </>
+                )
+            case 'feature_not_included_starter_paywall':
+                return (
+                    <>
+                        <Text size={14}>This feature is not included in your plan. Please upgrade to have access or <a href='/help' className='a-blue-2'>request this feature</a> as an add-on to your current plan.</Text>
+                        <Text size={14} weight="med">Want to learn more about Paywall? <a href='https://www.dacast.com/support/knowledgebase/video-monetization-how-to-use-dacast-paywall/' className='a-blue-2'>Read here</a></Text>
+                    </>
+                )
         }
     }
 
     return (
-        <Modal size="medium" modalTitle={getTitle()} toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen()} hasClose={true} icon={ {name: "error_outline", color: "blue-2"} }>
+        <Modal size="medium" modalTitle={getTitle()} toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen()} hasClose={getHasClose()} icon={ {name: "error_outline", color: "blue-2"} }>
             <ModalContent className="mt2">{ renderContent() }</ModalContent>
             <ModalFooter>
                 <Button onClick={() => { navigateToUpgrade() }} typeButton="primary" buttonColor="lightBlue">Upgrade Now</Button>
                 {
                     ['upgrade_now', 'limit_reached', 'more_storage_needed'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="lightBlue" >Cancel</Button>
                 }
                 {
                     ['more_data_needed_trial', 'more_storage_needed_trial', 'livestream_limit_reached_trial'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> navigateToContactUs()} type="button" typeButton="secondary" buttonColor="blue" >Contact us</Button>
+                    <Button sizeButton="large" onClick={()=> navigateToContactUs()} type="button" typeButton="secondary" buttonColor="lightBlue" >Contact us</Button>
                 }
                 {
                     ['more_data_needed'].includes(props.type) &&
-                    <Button sizeButton="large" onClick={()=> navigateToPurchaseData()} type="button" typeButton="secondary" buttonColor="blue" >Purchase Data</Button>
+                    <Button sizeButton="large" onClick={()=> navigateToPurchaseData()} type="button" typeButton="secondary" buttonColor="lightBlue" >Purchase Data</Button>
+                }
+                {
+                    ['feature_not_included', 'feature_not_included_starter_paywall'].includes(props.type) &&
+                    <Button sizeButton="large" onClick={()=> navigateToDashboard()} type="button" typeButton="tertiary" buttonColor="lightBlue">Go Dashboard</Button>
                 }
             </ModalFooter>
         </Modal>

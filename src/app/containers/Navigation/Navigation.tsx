@@ -22,7 +22,8 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
         <ContainerElementStyle className='my1' {...props} >
             <IconStyle className="noTransition flex pr2">{props.icon}</IconStyle>
             <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
-            <IconStyle style={{right:22}} className={"noTransition flex absolute" + (!props.isOpen && !props.isMobile ? ' hide' : '')} coloricon='gray-7'>{props.arrowIcon}</IconStyle>
+            {props.isLocked && <IconStyle style={{right: props.isOpen ? 48 : 2, marginTop: props.isOpen ? 4 : 12}} className="noTransition flex absolute" customsize={16}>lock_outline</IconStyle>}
+            <IconStyle style={{right:16, marginTop: 4}} className={"noTransition flex absolute" + (!props.isOpen && !props.isMobile ? ' hide' : '')} customsize={15} coloricon='gray-7'>{props.arrowIcon}</IconStyle>
         </ContainerElementStyle>
     )
 }
@@ -74,6 +75,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         PlanLimitReachedModalOpen,
         setPlanLimitReachedModalOpen,
         planLimitReachedModalType,
+        setPlanLimitReachedModalType,
     } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
@@ -90,7 +92,18 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
     }, [])
 
-    const handleMenuToggle = (menuName: string) => {
+    const handleLockedMenu = (route, isLocked) => {
+        if(isLocked) {
+            if (route === '/paywall' && props.infos && props.infos.currentPlan && props.infos.currentPlan.planName === 'Annual Starter') {
+                setPlanLimitReachedModalType('feature_not_included_starter_paywall')
+            } else {
+                setPlanLimitReachedModalType('feature_not_included')
+            }
+            setPlanLimitReachedModalOpen(true)
+        }
+    }
+
+    const handleMenuToggle = (menuName: string, isLocked: boolean) => {
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
         }
@@ -102,8 +115,19 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         if(!menuItem.slug) {
             setSelectedSubElement('')
         }
-
+        handleLockedMenu(menuName, isLocked)
     }
+
+    const handleMenuItemClick = (route: string, slug: string, isLocked: boolean) => {
+        //setSelectedElement(route)
+        //setSelectedSubElement(slug)
+        if(props.isMobile) {
+            props.setOpen(false)
+        }
+        handleLockedMenu(route, isLocked)
+    }
+
+
 
     const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
@@ -155,18 +179,11 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         )
     }
 
-    const handleMenuItemClick = (route: string, slug: string) => {
-        //setSelectedElement(route)
-        //setSelectedSubElement(slug)
-        if(props.isMobile) {
-            props.setOpen(false)
-        }
-    }
-
     const renderMenu = () => {
 
-        return props.routes.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((element, i) => {
+        return props.routes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
+                const isLocked = element.associatePrivilege && !userToken.getPrivilege(element.associatePrivilege)
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
                 }
@@ -178,9 +195,10 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         <div key={'superkey'+i}>
                             <ElementMenu
                                 isMobile={props.isMobile}
-                                onClick={() => handleMenuToggle(element.path)}
+                                onClick={() => handleMenuToggle(element.path, isLocked)}
                                 key={'MenuElementwithSubsections'+i}
                                 isOpen={props.isOpen}
+                                isLocked={isLocked}
                                 hasSlugs={true}
                                 active={selectedElement === element.path}
                                 icon={element.iconName!}
@@ -193,7 +211,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                 {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
                                     if(!subMenuElement.notDisplayedInNavigation) {
                                         return (
-                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path, isLocked)}}  >
                                                 <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
                                                     <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                                 </SubMenuElement>
@@ -212,8 +230,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
                 else{
                     return (
-                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '')}} key={'MenuElement'+i} >
-                            <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!}>
+                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '', isLocked)}} key={'MenuElement'+i} >
+                            <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!} isLocked={isLocked}>
                                 {element.name}
                             </ElementMenu>
                         </Link>

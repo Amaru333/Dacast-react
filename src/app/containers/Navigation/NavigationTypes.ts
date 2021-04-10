@@ -24,6 +24,7 @@ export interface ElementMenuSpecificProps {
     icon: string;
     active?: boolean;
     isOpen: boolean;
+    isLocked: boolean;
     isMobile: boolean;
     arrowIcon?: string;
     hasSlugs?: boolean;

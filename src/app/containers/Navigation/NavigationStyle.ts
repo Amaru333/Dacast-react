@@ -6,11 +6,11 @@ import { Text } from '../../../components/Typography/Text';
 export const ContainerElementStyle = styled.div<ElementMenuProps>`
     display: flex;
     flex-direction: row;
-    padding: ${props => props.isOpen ? "8px 23px" : "8px 20px"};
+    padding: ${props => props.isOpen ? "8px 20px" : "8px 17px"};
     height:40px;
     box-sizing: border-box;
     cursor: pointer;
-    
+
     &:hover {
         background: ${props => props.theme.colors["gray-10"]};
         span {
@@ -28,7 +28,7 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         ${!props.isOpen && css`
         border-left: 4px solid ${props.theme.colors["dark-violet"]} ;
         `}
-        
+
         span{
             color: ${props.theme.colors["dark-violet"]};
             font-weight: 500;
