@@ -124,7 +124,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     }
 
     const usersBodyElement = () => {
-        return props.multiUserDetails.users.map((user) => {
+        return props.multiUserDetails.filteredUsers.map((user) => {
             return {
                 data: [
                     <div key={'userName' + user.userId} className="flex items-center">

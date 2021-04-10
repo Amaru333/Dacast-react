@@ -3,27 +3,30 @@ import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 
 export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiUserDetails => {
-    let formattedData: MultiUserDetails = {
-        users: data.users.filter(user => user.status !== 'disabled').map(user => {
-            let fullName = ''
-            if(user.firstName) {
-                fullName = user.firstName
-            }
 
-            if(user.lastName) {
-                fullName += ' ' + user.lastName
-            }
-            return {
-                userId: user.userId,
-                firstName: user.firstName || '',
-                lastName: user.lastName || '',
-                email: user.email || '',
-                role: capitalizeFirstLetter(user.role) as UserRole,
-                invitationId: user.invitationId,
-                status: capitalizeFirstLetter(user.status) as UserStatus,
-                name: fullName
-            }
-        }),
+    let users: User[] = data.users.filter(user => user.status !== 'disabled').map(user => {
+        let fullName = ''
+        if(user.firstName) {
+            fullName = user.firstName
+        }
+
+        if(user.lastName) {
+            fullName += ' ' + user.lastName
+        }
+        return {
+            userId: user.userId,
+            firstName: user.firstName || '',
+            lastName: user.lastName || '',
+            email: user.email || '',
+            role: capitalizeFirstLetter(user.role) as UserRole,
+            invitationId: user.invitationId,
+            status: capitalizeFirstLetter(user.status) as UserStatus,
+            name: fullName
+        }
+    })
+    let formattedData: MultiUserDetails = {
+        users: users,
+        filteredUsers: users,
         maxSeats: data.maxSeats || 0,
         occupiedSeats: data.occupiedSeats || 0
     }

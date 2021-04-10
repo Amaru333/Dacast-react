@@ -15,7 +15,8 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
             users.splice(users.length, 0, action.payload)
             return {
                 ...state,
-                users
+                users: users,
+                filteredUsers: state.filteredUsers.splice(state.filteredUsers.length, 0, action.payload)
             }
         case ActionTypes.EDIT_USER_ROLE:
             users = state.users.slice()
@@ -29,24 +30,36 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
                         }
                     }
                     return user
+                }),
+                filteredUsers: state.filteredUsers.map(user => {
+                    if(user.userId === action.payload.userId){
+                        return {
+                            ...user,
+                            ...action.payload
+                        }
+                    }
+                    return user
                 })
             }
         case ActionTypes.DELETE_USER: 
             return {
                 ...state,
-                users: state.users.filter(user => user.userId !== action.payload)
+                users: state.users.filter(user => user.userId !== action.payload),
+                filteredUsers: state.filteredUsers.filter(user => user.userId !== action.payload),
             }
         case ActionTypes.CANCEL_USER_INVITE:
             return {
                 ...state,
-                users: state.users.filter(user => user.invitationId !== action.payload.invitationId)
+                users: state.users.filter(user => user.invitationId !== action.payload.invitationId),
+                filteredUsers: state.filteredUsers.filter(user => user.invitationId !== action.payload.invitationId),
+
             }
         case ActionTypes.RESEND_USER_INVITE:
             return state
         case ActionTypes.FILTER_USERS_LIST:
             return {
                 ...state,
-                users: action.payload
+                filteredUsers: action.payload
             }
         default: 
             return state

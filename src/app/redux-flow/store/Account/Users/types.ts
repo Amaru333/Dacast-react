@@ -24,6 +24,7 @@ export interface User {
 
 export interface MultiUserDetails {
     users: User[]
+    filteredUsers: User[]
     maxSeats: number
     occupiedSeats: number
 }
@@ -41,6 +42,7 @@ export const defaultUser: User = {
 
 export const usersInitialState: MultiUserDetails = {
     users: [],
+    filteredUsers: [],
     occupiedSeats: 0,
     maxSeats: 0
 }
