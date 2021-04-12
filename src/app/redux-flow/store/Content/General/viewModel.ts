@@ -191,11 +191,12 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
                 showContentsDescription: data.appearance.contentDescriptions,
                 featuredContentId: data.appearance.featuredContentId,
                 cover: data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
-                : data.appearance.coverBackgroundEnable ? {url: data.appearance.coverBackgroundUrl, assetId: data.appearance.coverBackgroundUrl} 
+                : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, assetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
                 : null
             }
         }
     }
+    console.log(formattedData);
     return formattedData
 }
 
