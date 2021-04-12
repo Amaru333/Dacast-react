@@ -45,7 +45,7 @@ const DesignExpos = (props: DesignComponentProps) => {
     const handleSave = (data: ExposThemingState) => {
         setIsLoading(true)
         console.log(data);
-        props.saveContentDetails({...props.themeState['expo'][exposId], appearance: data}, "expo").then( ()=>  setIsLoading(false)).catch(() => {})
+        return props.saveContentDetails({...props.themeState['expo'][exposId], appearance: data}, "expo").then( ()=>  setIsLoading(false)).catch(() => {})
     }
 
     return (
@@ -92,7 +92,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             dispatch(showToastNotification(text, size, notificationType));
         },
         saveContentDetails: async (data: ContentDetails, contentType: ContentType) => {
-            await dispatch(editContentDetailsAction(contentType)(data))
+            await dispatch(editContentDetailsAction(contentType)(data as ExpoDetails))
         },
         getContentDetails: async (contentId: string, contentType: ContentType) => {
             await dispatch(getContentDetailsAction(contentType)(contentId));

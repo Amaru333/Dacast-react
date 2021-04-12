@@ -383,7 +383,8 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                 <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>
+                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>                        
+                        <Text color={"gray-5"} className='right' size={14} weight='reg'>{selectedItems.length} videos</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>

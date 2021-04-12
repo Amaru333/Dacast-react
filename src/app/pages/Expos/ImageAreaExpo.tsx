@@ -12,7 +12,7 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 interface ImageAreaExpoProps { 
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>
     submit: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>
-    saveHeaderColor: (headerColor: string) => void
+    saveHeaderColor: (headerColor: string) => Promise<void>
     headerEnable: boolean
     contentId: string
     uploadUrl?: string
@@ -62,7 +62,7 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
             if(selectedOption === 'upload') {
                 props.getUploadUrl('expo-poster', props.contentId, '.' + logoFile.type.split('/')[1], 'expo')
             } else {
-                props.saveHeaderColor(selectedColor)
+                props.saveHeaderColor(selectedColor).then(() => setSettingsModalopen(false))
             }
         }
     }

@@ -189,7 +189,7 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
             appearance: {
                 darkMode: data.appearance.darkModeEnable,
                 showContentsDescription: data.appearance.contentDescriptions,
-                featuredContentId: data.appearance.featuredContentId,
+                featuredContentId: data.appearance.featuredContentEnable ? data.appearance.featuredContentId : undefined,
                 cover: data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
                 : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, assetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
                 : null

@@ -13,7 +13,7 @@ import { ExposThemingState } from '../../redux-flow/store/Content/General/types'
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ImageAreaExpo } from './ImageAreaExpo';
 
-export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => void}) => {
+export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => Promise<void>}) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
 
     const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item): DropdownSingleListItem => {
@@ -25,7 +25,7 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
 
     const handleSaveHeader = (headerColor: string) => {
         setStateContentDetails({...stateContentDetails, coverBackgroundColor: headerColor})
-        props.save({...stateContentDetails, coverBackgroundColor: headerColor, coverBackgroundUrl: null})
+        return props.save({...stateContentDetails, coverBackgroundColor: headerColor, coverBackgroundUrl: null})
     }
     
     return (
