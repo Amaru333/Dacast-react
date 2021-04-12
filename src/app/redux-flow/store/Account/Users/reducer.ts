@@ -46,6 +46,7 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
                 ...state,
                 users: state.users.filter(user => user.userId !== action.payload),
                 filteredUsers: state.filteredUsers.filter(user => user.userId !== action.payload),
+                occupiedSeats: state.occupiedSeats - 1
             }
         case ActionTypes.CANCEL_USER_INVITE:
             return {
