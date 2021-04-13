@@ -94,13 +94,13 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
 }
 
 export const WrapIFrame = styled.div<{}>`
-    height: 800px;
+    height: 810px;
     padding: 0;
     overflow: hidden;
 `
 export const ScaledFrame = styled.iframe<{}>`
-    width: 1280px;
-    height: 786px;
+    width: 1440px;
+    height: 810px;
     border: 0;
     transform: scale(0.5);
     transform-origin: 0 0;
