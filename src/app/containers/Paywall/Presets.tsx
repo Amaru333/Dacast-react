@@ -68,6 +68,7 @@ export function mapStateToProps(state: ApplicationState) {
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
         getPresetsInfos: async (qs: string) => {
+            console.log(qs)
             await dispatch(getPricePresetsInfosAction(qs));
         },
         getPromoPresets: async (qs: string) => {

@@ -13,6 +13,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -24,12 +25,18 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
 
     React.useEffect(() => {
+        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
+            return
+        }
         if(pricePresetPaginationInfo.nbResults && pricePresetPaginationInfo.page) {
             props.getPresetsInfos(`per-page=${pricePresetPaginationInfo.nbResults}&page=${pricePresetPaginationInfo.page}`)
         }
     }, [pricePresetPaginationInfo])
 
     React.useEffect(() => {
+        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
+            return
+        }
         if(promoPresetPaginationInfo.nbResults && promoPresetPaginationInfo.page) {
             props.getPromoPresets(`per-page=${promoPresetPaginationInfo.nbResults}&page=${promoPresetPaginationInfo.page}`)
         }

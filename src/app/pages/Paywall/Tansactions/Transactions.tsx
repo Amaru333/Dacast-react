@@ -13,6 +13,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { exportCSVFile } from '../../../../utils/services/csv/csvService';
 import { formatGetPaywallTransactionsCsvInput } from '../../../redux-flow/store/Paywall/Transactions/viewModel';
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -95,6 +96,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     }, [qsParams])
 
     React.useEffect(() => {
+        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
+            return
+        }
         if(fetchContent) {
             setContentLoading(true)
             props.getTransactions(qsParams).then(() => {
