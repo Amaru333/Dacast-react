@@ -216,7 +216,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                 <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection} userName={userToDelete ? userToDelete.name : ''}/>
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
-                <ConfirmDeleteModal userStatus={userToDelete.status || null} userId={userToDelete ? userToDelete.userId : ''} invitationId={userToDelete ? userToDelete.invitationId : ''} deleteUser={props.deleteUser} cancelInvite={props.cancelUserInvite} toggle={setConfirmDeleteModalOpen} />
+                <ConfirmDeleteModal userStatus={userToDelete ? userToDelete.status : null} userId={userToDelete ? userToDelete.userId : ''} invitationId={userToDelete ? userToDelete.invitationId : ''} deleteUser={props.deleteUser} cancelInvite={props.cancelUserInvite} toggle={setConfirmDeleteModalOpen} />
             </Modal>
             {
                 transferContentModalOpen &&
