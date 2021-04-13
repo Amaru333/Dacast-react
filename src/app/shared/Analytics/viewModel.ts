@@ -200,14 +200,14 @@ export const formatRealTimeResults = (response: GetContentAnalyticsResultItemOut
                     })
                 }
                 break;
-            case 'PLAYS_BY_COUNTRY':
+            default:
                 if (metric.data.length && formattedData.playsByLocation) {
                     metric.data.forEach(data => {
                         const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         if (assosiatedCountry) {
                             formattedData.playsByLocation = {
                                 data: [...(formattedData.playsByLocation ? formattedData.playsByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.type,
                                     position: {
                                         latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                         longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -290,7 +290,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                             formattedData.playsImpressionsByDevice.table.push({ label: data.dimension_type.value.toString(), plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : 0, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : 0 })
                         }
                         break;
-                    case 'COUNTRY':
+                    default:
                         const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         if (assosiatedCountry) {
                             let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
@@ -301,7 +301,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.type,
                                         position: {
                                             latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                             longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -381,7 +381,7 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                             table: [...(formattedData.watchByDevice ? formattedData.watchByDevice.table : []), { label: data.dimension_type.value.toString(), data: data.dimension_sum, }]
                         }
                         break;
-                    case 'COUNTRY':
+                    default:
                         if (!formattedData || !formattedData.watchByLocation) {
                             formattedData.watchByLocation = { data: [], table: [] }
                         }
@@ -389,7 +389,7 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                         if (assosiatedCountry) {
                             formattedData.watchByLocation = {
                                 data: [...(formattedData.watchByLocation ? formattedData.watchByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.type,
                                     position: {
                                         latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                         longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -451,7 +451,7 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         }
 
                         break;
-                    case 'COUNTRY':
+                    default:
                         if (!formattedData || !formattedData.salesRevenuesByLocation) {
                             formattedData.salesRevenuesByLocation = { data: [], table: [] }
                         }
@@ -465,7 +465,7 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                                 formattedData.salesRevenuesByLocation = {
                                     data: [...(formattedData.salesRevenuesByLocation ? formattedData.salesRevenuesByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.type,
                                         position: {
                                             latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                             longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])

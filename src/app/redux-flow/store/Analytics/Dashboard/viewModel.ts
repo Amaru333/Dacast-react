@@ -9,7 +9,8 @@ export const formatGetDashboardNewAnalyticsOuput = (response: GetAnalyticsOutput
     let paywallData = formatSalesResults(response, data)
     let engagementData = formatWatchResults(response, data)
     let dataConsumpationdata = formatDataConsumptionResults(response, data)
-
+    console.log('raw data: ', response.results)
+    console.log('audience loc: ', audienceData.playsImpressionsByLocation)
     let formattedData: AnalyticsDashboardNewInfo = {
         audienceLocation: audienceData.playsImpressionsByLocation.data,
         engagement: formatTimeToUnit(engagementData.watchByTime.data.reduce((acc, next) => acc + next, 0), 'h'),
