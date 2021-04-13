@@ -24,12 +24,13 @@ export const ConfirmDeleteModal = (props: ConfirmDeleteUserModalProps) => {
                 setButtonLoading(false)
                 props.toggle(false)
             }).catch(() => setButtonLoading(false))
+        } else {
+            props.deleteUser(props.userId, null)
+            .then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            }).catch(() => setButtonLoading(false))
         }
-        props.deleteUser(props.userId, null)
-        .then(() => {
-            setButtonLoading(false)
-            props.toggle(false)
-        }).catch(() => setButtonLoading(false))
     }
     
     return (
