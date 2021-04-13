@@ -92,18 +92,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
     }, [])
 
-    const handleLockedMenu = (route, isLocked) => {
-        if(isLocked) {
-            if (route === '/paywall' && props.infos && props.infos.currentPlan && props.infos.currentPlan.planName === 'Annual Starter') {
-                setPlanLimitReachedModalType('feature_not_included_starter_paywall')
-            } else {
-                setPlanLimitReachedModalType('feature_not_included')
-            }
-            setPlanLimitReachedModalOpen(true)
-        }
-    }
-
-    const handleMenuToggle = (menuName: string, isLocked: boolean) => {
+    const handleMenuToggle = (menuName: string) => {
         if(menuName === selectedElement) {
             setToggleSubMenu(!toggleSubMenu)
         }
@@ -115,16 +104,14 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         if(!menuItem.slug) {
             setSelectedSubElement('')
         }
-        handleLockedMenu(menuName, isLocked)
     }
 
-    const handleMenuItemClick = (route: string, slug: string, isLocked: boolean) => {
+    const handleMenuItemClick = (route: string, slug: string) => {
         //setSelectedElement(route)
         //setSelectedSubElement(slug)
         if(props.isMobile) {
             props.setOpen(false)
         }
-        handleLockedMenu(route, isLocked)
     }
 
 
@@ -208,7 +195,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
+                                {element.slug.map((subMenuElement, index) => {
                                     if(!subMenuElement.notDisplayedInNavigation) {
                                         return (
                                             <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path, isLocked)}}  >

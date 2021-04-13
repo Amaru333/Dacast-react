@@ -93,9 +93,6 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
     let mobileWidth = useMedia('(max-width:780px');
 
     if (userToken.isLoggedIn()) {
-        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
-            return <NotFound />
-        }
         return (
             <Route
                 path={props.path}

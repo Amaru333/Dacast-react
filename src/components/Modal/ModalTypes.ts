@@ -10,6 +10,7 @@ interface ModalCustomProps {
     hasClose: boolean;
     toggle: () => void;
     overlayIndex? : number;
+    allowNavigation: boolean;
 }
 
 export type ModalProps = ModalCustomProps & React.HTMLAttributes<HTMLDivElement>;

@@ -13,6 +13,7 @@ export interface PlanLimitReachedModalProps {
     opened: boolean;
     infos: DashboardInfos;
     type: PlanLimitReachedModalType;
+    allowNavigation: boolean;
     toggle: () => void;
 }
 
@@ -137,7 +138,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
     }
 
     return (
-        <Modal size="medium" modalTitle={getTitle()} toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen()} hasClose={getHasClose()} icon={ {name: "error_outline", color: "blue-2"} }>
+        <Modal size="medium" modalTitle={getTitle()} toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen()} hasClose={getHasClose()} icon={ {name: "error_outline", color: "blue-2"}} allowNavigation={props.allowNavigation}>
             <ModalContent className="mt2">{ renderContent() }</ModalContent>
             <ModalFooter>
                 <Button onClick={() => { navigateToUpgrade() }} typeButton="primary" buttonColor="lightBlue">Upgrade Now</Button>

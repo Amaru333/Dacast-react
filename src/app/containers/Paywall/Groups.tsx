@@ -10,10 +10,14 @@ import { getFolderContentAction } from '../../redux-flow/store/Folders/actions';
 import { FoldersInfos } from '../../redux-flow/store/Folders/types';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Privilege } from '../../../utils/services/token/token';
+import { userToken } from '../../utils/services/token/tokenService';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface GroupsComponentProps {
     groupsInfos: GroupsPageInfos;
     folderData: FoldersInfos;
+    associatePrivilege: Privilege;
     getGroupPrices: () => Promise<void>;
     getGroupPromos: () => Promise<void>;
     createGroupPrice: (p: GroupPrice) => Promise<void>;
@@ -29,20 +33,27 @@ export interface GroupsComponentProps {
 const Groups = (props: GroupsComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
+
+    const isLocked = () => {
+        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
+    }
 
     React.useEffect(() => {
-        if(!props.groupsInfos.prices) {
-            props.getGroupPrices()
-            .catch(() => setNodataFetched(true))
-
-        }
-        if(!props.groupsInfos.promos) {
-            props.getGroupPromos()
-            .catch(() => setNodataFetched(true))
-
-        }
+        if (isLocked()) {
+            setPlanLimitReachedModalOpen(true)
+        } else {
+            if(!props.groupsInfos.prices) {
+                props.getGroupPrices()
+                    .catch(() => setNodataFetched(true))
+            }
+            if(!props.groupsInfos.promos) {
+                props.getGroupPromos()
+                    .catch(() => setNodataFetched(true))
+            }
             props.getFolderContent('status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist')
-            .catch(() => setNodataFetched(true))
+                .catch(() => setNodataFetched(true))
+        }
     }, [])
 
     if(noDataFetched) {
@@ -50,9 +61,12 @@ const Groups = (props: GroupsComponentProps) => {
     }
 
     return (
-        props.groupsInfos.prices && props.groupsInfos.promos && props.folderData ?
-            <GroupsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        <>
+            {props.groupsInfos.prices && props.groupsInfos.promos && props.folderData || isLocked() ?
+                <GroupsPage {...props} />
+                : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>}
+            <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>
+        </>
     )
 }
 

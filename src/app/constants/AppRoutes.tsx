@@ -67,7 +67,7 @@ import DataConsumption from '../containers/Analytics/DataConsumption';
 import DashboardNew from '../containers/Analytics/DashboardNew';
 
 
-export const AppRoutes: Routes[] = [   
+export const AppRoutes: Routes[] = [
     {
         path:'/login',
         name: 'login',
@@ -400,31 +400,37 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/presets',
                 name: 'Presets',
+                associatePrivilege: 'privilege-paywall',
                 component: Presets
             },
             {
                 path: '/paywall/groups',
                 name: 'Groups',
+                associatePrivilege: 'privilege-paywall',
                 component: Groups
             },
             {
                 path: '/paywall/transactions',
                 name: 'Transactions',
+                associatePrivilege: 'privilege-paywall',
                 component: Transactions
             },
             {
                 path: '/paywall/withdrawals',
                 name: 'Withdrawals',
+                associatePrivilege: 'privilege-paywall',
                 component: Payout
             },
             {
                 path: '/paywall/theming',
                 name: 'Theming',
+                associatePrivilege: 'privilege-paywall',
                 component: PaywallTheming
             },
             {
                 path: '/paywall/settings',
                 name: 'Settings',
+                associatePrivilege: 'privilege-paywall',
                 component: PaywallSettings
             }
         ]
@@ -476,7 +482,7 @@ export const AppRoutes: Routes[] = [
     {
         path: '/account',
         name: 'Account',
-        iconName: 'person',       
+        iconName: 'person',
         component: null,
         slug: [
             {
