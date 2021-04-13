@@ -25,6 +25,30 @@ export interface GetAnalyticsInput {
     end?: number
 }
 
+export type AnalyticsTopContentMetrics = 'plays' | 'plays-clicks' | 'viewer-sessions' | 'playtime' | 'watchtime' | 'impressions'
+
+export interface GetAnalyticsTopContentInput {
+    type: 'account'
+    metrics: AnalyticsTopContentMetrics[]
+    sort_by: AnalyticsTopContentMetrics
+    start_at?: number
+}
+
+export interface GetAnalyticsTopContentOutput {
+    user_id: string
+    time_bucket: string
+    contents: AnalyticsTopContentItem[]
+}
+
+interface AnalyticsTopContentItem {
+    id: string
+    type: 'live' | 'vod' | 'playlist'
+    title: string
+    metrics: {
+        [key in AnalyticsTopContentMetrics]: number
+    }
+}
+
 export type TimeRangeAnalyticsEndpoint = 'LAST_24_HOURS' | 'LAST_WEEK' | 'LAST_MONTH' | 'LAST_6_MONTHS' | 'YEAR_TO_DATE' |  'CUSTOM' | RealTimeRangeEndpoint
 
 export type RealTimeRangeEndpoint = 'LAST_5_MINUTES' | 'LAST_15_MINUTES' | 'LAST_30_MINUTES' | 'LAST_45_MINUTES' | 'LAST_HOUR' | 'LAST_90_MINUTES' | 'LAST_2_HOURS';

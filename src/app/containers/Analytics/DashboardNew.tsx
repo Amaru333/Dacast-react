@@ -2,7 +2,7 @@ import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardAction, getAnalyticsDashboardNewAction, AnalyticsDashboardNewInfo, AnalyticsDashboardDimension } from '../../redux-flow/store/Analytics/Dashboard';
+import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardAction, getAnalyticsDashboardNewAction, AnalyticsDashboardNewInfo, AnalyticsDashboardDimension, AnalyticsTopContentParams, getAnalyticsTopContentAction, AnalyticsTopContentInfo } from '../../redux-flow/store/Analytics/Dashboard';
 import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
 import { dateAdd, getCurrentTs } from '../../../utils/services/date/dateService';
 import { WidgetElement } from '../Dashboard/WidgetElement';
@@ -16,11 +16,13 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { useHistory } from 'react-router';
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
+    topContent: AnalyticsTopContentInfo[];
     getAnalyticsDashboard: (options: AccountAnalyticsParameters) => Promise<void>;
-
+    getAnalyticsTopContent: (options: AnalyticsTopContentParams) => Promise<void>;
 }
 
 const DashboardAnalyticsNew = (props: DashboardPageProps) => {
@@ -35,6 +37,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
     React.useEffect(() => {
         props.getAnalyticsDashboard({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AnalyticsDashboardDimension })
         .then(() => setIsFetching(false))
+        props.getAnalyticsTopContent({metrics: ['impressions'], sortBy: 'impressions'})
     }, [])
 
     React.useEffect(() => {
@@ -60,6 +63,36 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
         }
         
     }, [timeRangePick])
+
+    const handleTitleClick = (id: string, type: ContentType) => {
+        switch(type) {
+            case 'vod':
+                history.push('/videos/' + id + '/analytics')
+                break
+            case 'live': 
+                history.push('/livestreams/' + id + '/analytics')
+                break
+            case 'playlist': 
+                history.push('/playlists/' + id + '/analytics')
+                break
+            default:
+                break
+        }
+    }
+
+    const renderTopContent = () => {
+        if(props.topContent) {
+            return props.topContent.map((content, i) => {
+                return (
+                    <div className='flex col col-12' key={content.id}>
+                        <Text>{i + 1}</Text>
+                        <Text className='px2 flex-auto pointer' onClick={() => handleTitleClick(content.id, content.type)}>{content.title}</Text>
+                        <Text className='pr2'>{content.total.toLocaleString()}</Text>
+                    </div>
+                )
+            })
+        }
+    }
 
     if(isFetching && !props.dashboardAnalytics) {
         return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
@@ -136,8 +169,19 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     />
                 </div>
             </WidgetElement>
+            <WidgetElement color='dark-violet' className={classItemHalfWidthContainer} customPadding='16px'>
+                <WidgetHeader className='flex'>
+                    <IconStyle className='pr1' coloricon='dark-violet'>emoji_events</IconStyle>
+                    <Text className='flex-auto' size={14} weight='med' color='gray-3'>Top 10 Content (Last 30 Days)</Text>
+                </WidgetHeader>
+                <div className='flex pb2'>
+                    <Text weight='med'>#</Text>
+                    <Text className='px2 flex-auto' weight='med'>Name</Text>
+                    <Text className='pr2' weight='med'>Viewers</Text>
+                </div>
+                {renderTopContent()}
+            </WidgetElement>
             </div>
-
         </React.Fragment>
     )
 
@@ -145,7 +189,8 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        dashboardAnalytics: state.analytics.dashboard.newDashboardInfo
+        dashboardAnalytics: state.analytics.dashboard.newDashboardInfo,
+        topContent: state.analytics.dashboard.topContent
     };
 }
 
@@ -153,6 +198,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getAnalyticsDashboard: async (options: AccountAnalyticsParameters) => {
             await dispatch(getAnalyticsDashboardNewAction(options));
+        },
+        getAnalyticsTopContent: async (options: AnalyticsTopContentParams) => {
+            await dispatch(getAnalyticsTopContentAction(options));
         }
     };
 }
