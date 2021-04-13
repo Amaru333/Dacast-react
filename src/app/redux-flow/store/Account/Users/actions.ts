@@ -22,12 +22,12 @@ export interface EditUserRole {
 
 export interface CancelUserInvite {
     type: ActionTypes.CANCEL_USER_INVITE;
-    payload: User
+    payload: string
 }
 
 export interface ResendUserInvite {
     type: ActionTypes.RESEND_USER_INVITE;
-    payload: User
+    payload: string
 }
 
 export interface DeleteUser {

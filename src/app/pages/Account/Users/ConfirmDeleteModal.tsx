@@ -1,13 +1,30 @@
 import React from 'react';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { Text } from '../../../../components/Typography/Text';
+import { UserStatus } from '../../../redux-flow/store/Account/Users/types';
 
-export const ConfirmDeleteModal = (props: {userId: string; toggle: React.Dispatch<React.SetStateAction<boolean>>; deleteUser: (userId: string, transferContentsToUserId: null) => Promise<void>}) => {
+interface ConfirmDeleteUserModalProps {
+    userId: string; 
+    invitationId: string
+    userStatus: UserStatus; 
+    toggle: React.Dispatch<React.SetStateAction<boolean>>; 
+    deleteUser: (userId: string, transferContentsToUserId?: null) => Promise<void>
+    cancelInvite: (invitationId: string) => Promise<void>
+}
+
+export const ConfirmDeleteModal = (props: ConfirmDeleteUserModalProps) => {
     
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     const handleSubmit = () => {
         setButtonLoading(true)
+        if(props.userStatus === 'Invited') {
+            props.cancelInvite(props.invitationId)
+            .then(() => {
+                setButtonLoading(false)
+                props.toggle(false)
+            }).catch(() => setButtonLoading(false))
+        }
         props.deleteUser(props.userId, null)
         .then(() => {
             setButtonLoading(false)

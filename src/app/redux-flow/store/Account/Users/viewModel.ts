@@ -70,10 +70,10 @@ export const formatPostUserRoleInput = (data: User): PostUserRoleInput => {
 }
 
 export const formatPostUserRoleOutput = (endpointResponse: null, dataReact: User): User => dataReact
-export const formatPostCancelUserInviteOutput = formatPostUserRoleOutput
-export const formatPostResendUserInviteOutput = formatPostUserRoleOutput
+export const formatPostCancelUserInviteOutput = (endpointResponse: null, dataReact: string): string => dataReact
+export const formatPostResendUserInviteOutput = formatPostCancelUserInviteOutput
 
-export const formatPostCancelUserInviteInput = (user: User): string => user.invitationId
+export const formatPostCancelUserInviteInput = (invitationId: string): string => invitationId
 export const formatPostResendUserInviteInput = formatPostCancelUserInviteInput
 
 export const formatDeleteUserInput = (data: {userToDelete: string; transferContentsToUserId: string}): DeleteUserInput => {

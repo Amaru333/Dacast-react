@@ -80,10 +80,14 @@ export const UsersPage = (props: UsersComponentProps) => {
                 break;
             case 'Delete':
                 setUserToDelete(user)
-                setDeleteUserModalOpen(true);
+                if(user.status === 'Invited') {
+                    setConfirmDeleteModalOpen(true)
+                } else {
+                    setDeleteUserModalOpen(true);
+                }
                 break;
             case 'Resend Invite': 
-                props.resendUserInvite(user)
+                props.resendUserInvite(user.invitationId)
                 break;
         }
     }
@@ -212,7 +216,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                 <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection} userName={userToDelete ? userToDelete.name : ''}/>
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
-                <ConfirmDeleteModal userId={userToDelete ? userToDelete.userId : ''} deleteUser={props.deleteUser} toggle={setConfirmDeleteModalOpen} />
+                <ConfirmDeleteModal userStatus={userToDelete.status || null} userId={userToDelete ? userToDelete.userId : ''} invitationId={userToDelete ? userToDelete.invitationId : ''} deleteUser={props.deleteUser} cancelInvite={props.cancelUserInvite} toggle={setConfirmDeleteModalOpen} />
             </Modal>
             {
                 transferContentModalOpen &&
