@@ -18,7 +18,7 @@ export type GetCompanyRequestOutput = CompanyDetailsEndpoints & {
     logoURL: string;
 }
 
-interface UserEndpoint {
+export interface UserEndpoint {
     userId: string
     firstName: string
     lastName: string

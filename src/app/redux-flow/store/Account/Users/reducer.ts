@@ -16,7 +16,8 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
             return {
                 ...state,
                 users: users,
-                filteredUsers: state.filteredUsers.splice(state.filteredUsers.length, 0, action.payload)
+                filteredUsers: state.filteredUsers.splice(state.filteredUsers.length, 0, action.payload),
+                occupiedSeats: state.occupiedSeats + 1
             }
         case ActionTypes.EDIT_USER_ROLE:
             users = state.users.slice()
@@ -53,7 +54,7 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
                 ...state,
                 users: state.users.filter(user => user.invitationId !== action.payload),
                 filteredUsers: state.filteredUsers.filter(user => user.invitationId !== action.payload),
-
+                occupiedSeats: state.occupiedSeats - 1
             }
         case ActionTypes.RESEND_USER_INVITE:
             return state

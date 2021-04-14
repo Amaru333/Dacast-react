@@ -1,4 +1,4 @@
-import { DeleteUserInput, GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, UserId, UserRoleWhitoutOwner } from "../../../../../DacastSdk/account";
+import { DeleteUserInput, GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, UserEndpoint, UserRoleWhitoutOwner } from "../../../../../DacastSdk/account";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
 import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 
@@ -43,15 +43,15 @@ export const formatPostUserInput = (data: {email: string; isAdmin: boolean}): Po
     return formattedData
 }
 
-export const formatPostUserOutput = (endpointResponse: null, dataReact: {email: string; isAdmin: boolean}): User => {
+export const formatPostUserOutput = (endpointResponse: UserEndpoint, dataReact: {email: string; isAdmin: boolean}): User => {
     let formattedData: User = {
+        userId: endpointResponse.userId,
         email: dataReact.email,
         role: dataReact.isAdmin ? 'Admin' : 'Creator',
         status: 'Invited',
         firstName: '',
         lastName: '',
-        invitationId: null,
-        userId: null,
+        invitationId: endpointResponse.invitationId,
         name: ''
     }
 
@@ -88,3 +88,15 @@ export const formatDeleteUserInput = (data: {userToDelete: string; transferConte
 }
 
 export const formatDeleteUserOutput = (endpointResponse: null, dataReact: {userToDelete: string; transferContentsToUserId: string}): string => dataReact.userToDelete
+
+export const formatPostUserRequestError = (error: any) => {
+    if(error.details.indexOf("user with this email is already registered") !== -1) {
+        return "User with this email is already registered"
+    }
+
+    if(error.details.indexOf("user with this email was already invited") !== -1) {
+        return "User with this email was already invited"
+    }
+
+    return "Couldn\'t invite user"
+}

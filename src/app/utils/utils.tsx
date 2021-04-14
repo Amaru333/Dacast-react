@@ -93,7 +93,8 @@ export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
     outputFormatter: undefined | ((responseSdk: SdkOut, dataReact?: ReactOut) => ActionPayload), 
     action: string, 
     successMsg: string, 
-    errorMsg: string): (data: ReactOut) => (dispatch: ThunkDispatch<ApplicationState, void, ReduxAction<string> & {payload: ActionPayload | ReactOut}>) => Promise<void> {
+    errorMsg: string,
+    errorFormatter?: (error: string) => string): (data: ReactOut) => (dispatch: ThunkDispatch<ApplicationState, void, ReduxAction<string> & {payload: ActionPayload | ReactOut}>) => Promise<void> {
     return (data) => async (dispatch) => {
         try {
             let response = await sdkFunction(inputFormatter ? inputFormatter(data) : null)
@@ -102,7 +103,7 @@ export function applyViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
                 dispatch(showToastNotification(successMsg, 'fixed', "success"));
             }
         } catch(e) {
-            dispatch(showToastNotification(errorMsg, "fixed", "error"));
+            dispatch(showToastNotification((errorFormatter ? errorFormatter(e.response.data) : errorMsg), "fixed", "error"));
             return Promise.reject(e)
         }
     }
