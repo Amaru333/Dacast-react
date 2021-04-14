@@ -5,10 +5,20 @@ export const formatGetDashboardInfoOutput = (data: GetDashboardInfoOutput): Dash
     let formattedData: DashboardInfos = {
         ...data,
         currentPlan: {
-            ...data.currentPlan,
-            periodEndsAt: data.currentPlan.periodEndsAt ? data.currentPlan.periodEndsAt : null,
-            periodStartedAt: data.currentPlan.periodStartedAt ? data.currentPlan.periodStartedAt : null,
-            playbackProtectionUnitPrice: data.currentPlan.overageStorageUnitPrice ? data.currentPlan.overageStorageUnitPrice : null
+            displayName: data.currentPlan.displayName,
+            planCode: data.currentPlan.subscription.planCode,
+            planName: data.currentPlan.subscription.planName,
+            state: data.currentPlan.subscription.state,
+            playbackProtectionUnitPrice: data.currentPlan.subscription.overageStorageUnitPrice,
+            periodStartedAt: data.currentPlan.subscription.periodStartedAt,
+            periodEndsAt: data.currentPlan.subscription.periodEndsAt,
+            trialExpiresIn: data.currentPlan.trialExpiresIn,
+            price: data.currentPlan.subscription.price,
+            currency: data.currentPlan.subscription.currency,
+            paymentFrequency: data.currentPlan.subscription.paymentFrequency,
+            paymentTerm: data.currentPlan.subscription.paymentTerm,
+            nbSeats: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1,
+            extraSeats: 2
         },
         isTrial: false,
         isPayingPlan: false
@@ -22,10 +32,20 @@ export const formatGetDashboardGeneralInfoOutput = (data: GetDashboardGeneralInf
     let formattedData: DashboardGeneralInfo = {
         ...data,
         currentPlan: {
-            ...data.currentPlan,
-            periodEndsAt: data.currentPlan.periodEndsAt ? data.currentPlan.periodEndsAt : null,
-            periodStartedAt: data.currentPlan.periodStartedAt ? data.currentPlan.periodStartedAt : null,
-            playbackProtectionUnitPrice: data.currentPlan.overageStorageUnitPrice ? data.currentPlan.overageStorageUnitPrice : null
+            displayName: data.currentPlan.displayName,
+            planCode: data.currentPlan.subscription.planCode,
+            planName: data.currentPlan.subscription.planName,
+            state: data.currentPlan.subscription.state,
+            playbackProtectionUnitPrice: data.currentPlan.subscription.overageStorageUnitPrice,
+            periodStartedAt: data.currentPlan.subscription.periodStartedAt,
+            periodEndsAt: data.currentPlan.subscription.periodEndsAt,
+            trialExpiresIn: data.currentPlan.trialExpiresIn,
+            price: data.currentPlan.subscription.price,
+            currency: data.currentPlan.subscription.currency,
+            paymentFrequency: data.currentPlan.subscription.paymentFrequency,
+            paymentTerm: data.currentPlan.subscription.paymentTerm,
+            nbSeats: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1,
+            extraSeats: 2
         },
     }
 

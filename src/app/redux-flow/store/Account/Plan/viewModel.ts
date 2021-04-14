@@ -7,23 +7,23 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
         ...data,
         currentPlan: {
             displayName: data.currentPlan.displayName,
-            planCode: data.currentPlan.planCode,
-            planName: data.currentPlan.planName,
-            state: data.currentPlan.state,
-            playbackProtectionUnitPrice: data.currentPlan.overageStorageUnitPrice,
-            periodStartedAt: data.currentPlan.periodStartedAt,
-            periodEndsAt: data.currentPlan.periodEndsAt,
+            planCode: data.currentPlan.subscription.planCode,
+            planName: data.currentPlan.subscription.planName,
+            state: data.currentPlan.subscription.state,
+            playbackProtectionUnitPrice: data.currentPlan.subscription.overageStorageUnitPrice,
+            periodStartedAt: data.currentPlan.subscription.periodStartedAt,
+            periodEndsAt: data.currentPlan.subscription.periodEndsAt,
             trialExpiresIn: data.currentPlan.trialExpiresIn,
-            price: data.currentPlan.price,
-            currency: data.currentPlan.currency,
-            paymentFrequency: data.currentPlan.paymentFrequency,
-            paymentTerm: data.currentPlan.paymentTerm,
+            price: data.currentPlan.subscription.price,
+            currency: data.currentPlan.subscription.currency,
+            paymentFrequency: data.currentPlan.subscription.paymentFrequency,
+            paymentTerm: data.currentPlan.subscription.paymentTerm,
             nbSeats: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1,
             extraSeats: 2
         }
     }
     userToken.updateUserInfo({'planName': data.currentPlan.displayName})
-    userToken.updateUserInfo({'planAmount': data.currentPlan.price.toString()})
+    userToken.updateUserInfo({'planAmount': data.currentPlan.subscription.price.toString()})
     return formattedData
 }
 

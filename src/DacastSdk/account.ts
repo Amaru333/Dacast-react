@@ -197,18 +197,29 @@ export interface PostProductExtraDataOutput {
     tokenID: string;
 }
 
+interface AddOnEndpoint {
+    code: string
+    'included-in-subscription': boolean
+    'price-in-cents': number
+}
+
+interface AccountSubscription {
+    addOns: AddOnEndpoint[]
+    currency: PlanCurrencyEndpoint
+    overageStorageUnitPrice: string
+    paymentFrequency: string
+    paymentTerm: number
+    periodEndsAt: number
+    periodStartedAt: number
+    planCode: string
+    planName: string
+    price: number
+    state: string
+}
+
 export interface AccountPlan {
-    currency: string;
     displayName: string;
-    paymentFrequency: string;
-    paymentTerm: number;
-    planCode: string;
-    planName: string;
-    price: number;
-    overageStorageUnitPrice: string;
-    periodEndsAt: number;
-    periodStartedAt: number;
-    state: string;
+    subscription: AccountSubscription
     trialExpiresIn: number | null;
 }
 
