@@ -48,7 +48,19 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
                     <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
                 </ControlToggleContainer>
                 {
-                    stateContentDetails.coverBackgroundEnable && <ImageAreaExpo saveHeaderColor={handleSaveHeader} uploadUrl={props.uploadUrl} submit={props.uploadFile} contentId={props.exposId} getUploadUrl={props.getUploadUrl} headerEnable={stateContentDetails.coverBackgroundEnable} headerColor={stateContentDetails.coverBackgroundColor} headerUrl={stateContentDetails.coverBackgroundUrl}/>
+                    stateContentDetails.coverBackgroundEnable && 
+                        <ImageAreaExpo 
+                            saveHeaderColor={handleSaveHeader} 
+                            uploadUrl={props.uploadUrl} 
+                            submit={props.uploadFile} 
+                            contentId={props.exposId} 
+                            getUploadUrl={props.getUploadUrl} 
+                            deleteFile={props.deleteFile}
+                            stateContentDetails={stateContentDetails}
+                            headerEnable={stateContentDetails.coverBackgroundEnable} 
+                            headerColor={stateContentDetails.coverBackgroundColor} 
+                            headerUrl={stateContentDetails.coverBackgroundUrl}
+                        />
                 }
                 <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
                     When disabled, white will be the default cover background.

@@ -168,6 +168,7 @@ export const formatGetExpoDetailsOutput = (contentType: ContentType) => (data: G
             darkModeEnable: data.appearance.darkMode,
             coverBackgroundEnable: data.appearance.cover ? true : false,
             coverBackgroundUrl: data.appearance.cover && data.appearance.cover.url ? data.appearance.cover.url : null,
+            coverBackgroundAssetId: data.appearance.cover && data.appearance.cover.assetId ? data.appearance.cover.assetId : null,
             coverBackgroundColor: data.appearance.cover && data.appearance.cover.headerColor ? data.appearance.cover.headerColor : null,
             contentDescriptions: data.appearance.showContentsDescription,
             featuredContentEnable: data.appearance.featuredContentId ? true : false,

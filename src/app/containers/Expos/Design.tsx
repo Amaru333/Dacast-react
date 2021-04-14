@@ -28,6 +28,7 @@ export interface DesignComponentProps {
     getContentSetup: (contentId: string, contentType: string) => Promise<void>;
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>;
     uploadFile: (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => Promise<void>;
+    deleteFile: (contentId: string, targetId: string, uploadType: string) => Promise<void>;
 }
 
 const DesignExpos = (props: DesignComponentProps) => {

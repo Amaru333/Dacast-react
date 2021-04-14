@@ -8,6 +8,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { RadioButtonContainer, RadioButtonOption, ThumbnailFile, UploadText } from '../../shared/General/ImageModal';
 import { ColorPicker } from '../../../components/ColorPicker/ColorPicker';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 
 interface ImageAreaExpoProps { 
     getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType) => Promise<void>
@@ -18,6 +19,8 @@ interface ImageAreaExpoProps {
     uploadUrl?: string
     headerColor?: string
     headerUrl?: string
+    stateContentDetails?: ExposThemingState
+    deleteFile: (contentId: string, targetId: string, uploadType: string) => Promise<void>;
 }
 
 export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
@@ -29,7 +32,9 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
     const [selectedColor, setSelectedColor] = React.useState<string>(props.headerColor || '#fffff');
     const [isSaveDisabled, setIsSaveDisabled] = React.useState<boolean>(true)
     const [saveButtonLoading, setSaveButtonLoading] = React.useState<boolean>(false)
+    const [deleteLoading, setDeleteLoading] = React.useState<boolean>(false)
 
+    
     React.useEffect(() => {
         if (selectedOption === "color") {
             setIsSaveDisabled(false)
@@ -84,7 +89,16 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
         }
     }
 
-    console.log(props, props.headerEnable && props.headerUrl && 'Yo')
+    const handleDelete = () => {
+        if(selectedOption === "upload") {
+            setDeleteLoading(true);
+            props.deleteFile(props.contentId, props.stateContentDetails.coverBackgroundAssetId, 'expo').then(() => setDeleteLoading(false))
+        } else {
+            props.saveHeaderColor(undefined);
+        }
+        
+    }
+
     return (
         <>
             <ImageContainer className="col col-12">
@@ -93,7 +107,7 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
                         <ButtonSection>
                             {
                                 props.headerEnable &&
-                                <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {/** Yo find le delete */ }} >Delete</Button>
+                                <Button isLoading={deleteLoading} sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {handleDelete()}} >Delete</Button>
                             }
                             <Button
                                 className="clearfix right my1 mr1" sizeButton="xs" typeButton="secondary"

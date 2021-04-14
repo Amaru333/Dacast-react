@@ -104,6 +104,7 @@ export interface ExposThemingState {
     contentDescriptions: boolean;
     featuredContentEnable: boolean;
     featuredContentId?: string;
+    coverBackgroundAssetId?: string;
 }
 
 interface LiveStreamCountdown {
