@@ -41,9 +41,13 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
         history.push('/dashboard')
     }
 
+    const currentPathIsDashboard = () => {
+        return ['/dashboard', '/dashboard/', '/'].includes(location.pathname)
+    }
+
     const canOpen = () => {
         if(props.type === 'end_of_trial') {
-            return props.infos && props.infos.currentPlan && props.infos.currentPlan.trialExpiresIn != null && props.infos.currentPlan.trialExpiresIn <= 0
+            return currentPathIsDashboard() && props.infos && props.infos.currentPlan && props.infos.currentPlan.trialExpiresIn != null && props.infos.currentPlan.trialExpiresIn <= 0
         }
         return true;
     }

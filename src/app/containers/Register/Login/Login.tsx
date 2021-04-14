@@ -8,6 +8,8 @@ import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { segmentService } from '../../../utils/services/segment/segmentService';
+import EventHooker from '../../../../utils/services/event/eventHooker';
+import { useHistory } from 'react-router';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;
@@ -15,23 +17,27 @@ export interface LoginComponentProps {
     confirmEmail: (email: string) => Promise<void>;
 }
 const Login = (props: LoginComponentProps) => {
+    let history = useHistory()
 
     React.useEffect(() => {
-        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
+        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             userToken.addTokenInfo(props.loginInfos);
             segmentService.identify({
-                userId: userToken.getUserInfoItem('custom:dacast_user_id'), 
-                firstName: userToken.getUserInfoItem('custom:first_name'), 
-                lastName: userToken.getUserInfoItem('custom:last_name'), 
+                userId: userToken.getUserInfoItem('custom:dacast_user_id'),
+                firstName: userToken.getUserInfoItem('custom:first_name'),
+                lastName: userToken.getUserInfoItem('custom:last_name'),
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
-            location.reload()
+            setTimeout(() => {
+                EventHooker.dispatch('EVENT_LOG_IN_SUCCESS')
+            }, 1500)
+            history.push('/dashboard')
         }
     }, [props.loginInfos])
 
     return (
-        <LoginPage {...props}/> 
+        <LoginPage {...props}/>
     )
 }
 
