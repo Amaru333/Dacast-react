@@ -54,7 +54,8 @@ export const formatPostUserOutput = (endpointResponse: UserEndpoint, dataReact: 
         invitationId: endpointResponse.invitationId,
         name: ''
     }
-
+    console.log('respoinse: ', endpointResponse)
+    console.log('formatted', formattedData)
     return formattedData
 }
 
@@ -90,11 +91,11 @@ export const formatDeleteUserInput = (data: {userToDelete: string; transferConte
 export const formatDeleteUserOutput = (endpointResponse: null, dataReact: {userToDelete: string; transferContentsToUserId: string}): string => dataReact.userToDelete
 
 export const formatPostUserRequestError = (error: any) => {
-    if(error.details.indexOf("user with this email is already registered") !== -1) {
+    if(error.detail.indexOf("user with this email is already registered") !== -1) {
         return "User with this email is already registered"
     }
 
-    if(error.details.indexOf("user with this email was already invited") !== -1) {
+    if(error.detail.indexOf("user with this email was already invited") !== -1) {
         return "User with this email was already invited"
     }
 

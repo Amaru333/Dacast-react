@@ -102,7 +102,7 @@ export class DacastSdk {
     public postUserPassword = async (input: PostUserPasswordInput): Promise<void> => await this.axiosClient.post('/accounts/' + this.userId + '/change-password', {...input})
 
     public getUsersDetails = async (): Promise<GetUsersDetailsOutput> => await this.axiosClient.get('/multi-user').then(this.checkExtraData)
-    public postUser = async (input: PostUserInput): Promise<UserEndpoint> => await this.axiosClient.post('/multi-user/invites', input)
+    public postUser = async (input: PostUserInput): Promise<UserEndpoint> => await this.axiosClient.post('/multi-user/invites', input).then(this.checkExtraData)
     public postUserRole = async (input: PostUserRoleInput): Promise<void> => await this.axiosClient.post('/multi-user/' + input.id + '/set-role', input.payload)
     public postMakeUserOwner = async (input: string): Promise<void> => await this.axiosClient.post('/multi-user/' + input + '/make-owner')
     public postCancelUserInvite = async (input: string): Promise<void> => await this.axiosClient.post('/multi-user/invites/' + input + '/cancel')
