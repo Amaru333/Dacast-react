@@ -43,7 +43,6 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     z-index: 9999;
     max-height: 90%;
     overflow-x: auto;
-    overflow: inherit;
 `;
 export const ModalTitleStyle = styled.div`
     margin-bottom: 8px;
