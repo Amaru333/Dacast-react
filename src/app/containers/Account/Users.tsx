@@ -9,12 +9,12 @@ import { ApplicationState } from '../../redux-flow/store';
 import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/actions';
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { UpgradeAction } from '../../redux-flow/store/Account/Upgrade/actions';
-import { Plan } from '../../redux-flow/store/Account/Upgrade/types';
 import { addUserAction, cancelUserInviteAction, deleteUserAction, editUserRoleAction, filterUsersListAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
 import { MultiUserDetails, User } from '../../redux-flow/store/Account/Users/types';
 
 export interface UsersComponentProps {
     billingInfo: BillingPageInfos;
+    multiUserDetails: MultiUserDetails
     getBillingPageInfos: () => Promise<void>
     getMultiUsersDetails: () => Promise<void> 
     addUser: (email: string, isAdmin: boolean) => Promise<void>
@@ -23,8 +23,6 @@ export interface UsersComponentProps {
     cancelUserInvite: (invitationId: string) => Promise<void>
     resendUserInvite: (invitationId: string) => Promise<void>
     filterUsersList: (list: User[]) => void
-    multiUserDetails: MultiUserDetails
-    plan?: Plan
 }
 
 export const Users = (props: UsersComponentProps) => {
@@ -46,7 +44,7 @@ export const Users = (props: UsersComponentProps) => {
     }
     return (
         (props.multiUserDetails && props.billingInfo) ?
-            <UsersPage {...props} plan={props.billingInfo} />
+            <UsersPage {...props} />
         :
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )

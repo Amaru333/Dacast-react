@@ -18,11 +18,14 @@ import { TransferContentModal } from './TransferContentModal';
 import { CustomStepper } from '../../../../components/Stepper/Stepper';
 import { ChangeSeatsCartStep } from './ChangeSeatsCartStep';
 import { ChangeSeatsPaymentStep } from './ChangeSeatsPaymentStep';
-import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { UsersComponentProps } from '../../../containers/Account/Users';
 import { compareValues } from '../../../../utils/utils';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiUserUpgradeModal } from './MultiUserUpgradeModal';
+import { PlanSummary } from '../../../redux-flow/store/Account/Plan';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+
+export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number}
 
 export const UsersPage = (props: UsersComponentProps) => {
 
@@ -32,7 +35,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [transferContentModalOpen, setTransferContentModalOpen] = React.useState<boolean>(false)
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
-    const [planDetails, setPlanDetails] = React.useState<Plan>(props.plan)
+    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0})
     const [usersTableSort, setUsersTableSort] = React.useState<string>('name')
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
     const [userToDelete, setUserToDelete] = React.useState<User>(null)
@@ -44,6 +47,17 @@ export const UsersPage = (props: UsersComponentProps) => {
     React.useEffect(() => {
         filterUsersTable()
     }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
+
+    const purchaseAddOns = () => {
+        dacastSdk.postPurchaseAddOn({
+            addOnCode: 'MUA_ADDITIONAL_SEATS',
+            quantity: planDetails.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity,
+            preview: false
+        })
+        .then(() => {
+            setChangeSeatsStepperOpen(false)
+        })
+    }
 
     const handleUserRole = (role: UserRole, userId: string) => {
         switch (role) {
@@ -192,19 +206,23 @@ export const UsersPage = (props: UsersComponentProps) => {
             </div>
             <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
             <Text className="relative right" size={12} color="gray-3">{emptySeats} Seats Available</Text>
-            <CustomStepper
-                stepperHeader="Change Number of Seats"
-                stepList={changeSeatsStepList}
-                opened={changeSeatsStepperOpen}
-                lastStepButton="Purchase"
-                finalFunction={() => {}}
-                functionCancel={() => setChangeSeatsStepperOpen(false)}
-                stepperData={planDetails}
-                updateStepperData={(plan: Plan) => setPlanDetails(plan)}
-                emptySeats={emptySeats}
-                planData={props.plan}
-                billingInfo={props.billingInfo}
-            />
+            {
+                changeSeatsStepperOpen &&
+                <CustomStepper
+                    stepperHeader="Change Number of Seats"
+                    stepList={changeSeatsStepList}
+                    opened={changeSeatsStepperOpen}
+                    lastStepButton="Purchase"
+                    finalFunction={() => {}}
+                    functionCancel={() => setChangeSeatsStepperOpen(false)}
+                    stepperData={planDetails}
+                    updateStepperData={(plan: PlanSummaryWithAdditionalSeats) => setPlanDetails(plan)}
+                    emptySeats={emptySeats}
+                    planData={props.billingInfo.currentPlan}
+                    billingInfo={props.billingInfo}
+                    purchaseAddOn={purchaseAddOns}
+                />
+            }
             {
                 userModalOpen && 
                 <Modal modalTitle={userDetails.userId === "-1" ? "Add User" : "Edit User"} size="small" hasClose={false} toggle={() => setUserModalOpen(false)} opened={userModalOpen}>

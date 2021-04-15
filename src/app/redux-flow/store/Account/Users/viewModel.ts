@@ -54,8 +54,7 @@ export const formatPostUserOutput = (endpointResponse: UserEndpoint, dataReact: 
         invitationId: endpointResponse.invitationId,
         name: ''
     }
-    console.log('respoinse: ', endpointResponse)
-    console.log('formatted', formattedData)
+    
     return formattedData
 }
 

@@ -2,17 +2,38 @@ import React from 'react';
 import { InputCounter } from '../../../../components/FormsComponents/Input/InputCounter';
 import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
+import { handleCurrencySymbol } from '../../../../utils/utils';
 import { PlanSummary } from '../../../redux-flow/store/Account/Plan';
-import { Plan } from '../../../redux-flow/store/Account/Upgrade/types';
+import { PlanSummaryWithAdditionalSeats } from './Users';
 
-export const ChangeSeatsCartStep = (props: {stepperData: PlanSummary; updateStepperData: React.Dispatch<React.SetStateAction<PlanSummary>>; planData: PlanSummary; emptySeats: number; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;}) => {
+interface ChangeSeatsCartStep {
+    stepperData: PlanSummaryWithAdditionalSeats; 
+    planData: PlanSummary; 
+    emptySeats: number; 
+    updateStepperData: React.Dispatch<React.SetStateAction<PlanSummaryWithAdditionalSeats>>; 
+    setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
 
     const [seatChange, setSeatChange] = React.useState<number>(0)
+    const seatPricePerMonth = props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').price : 0
     let newExtraSeatPrice = 120 * seatChange
 
     React.useEffect(() => {
         props.setStepValidated(seatChange !== 0)
-        props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), seatChange: seatChange})
+        props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), addOns: props.stepperData.addOns.map(addOn => {
+            if(addOn.code === 'MUA_ADDITIONAL_SEATS') {
+                return {
+                    ...addOn,
+                    quantity: props.planData.extraSeats + seatChange,
+                    included: true
+                }
+            }
+            return addOn
+        }),
+        seatToPurchase: seatChange
+        })
 
     }, [seatChange])
 
@@ -32,7 +53,7 @@ export const ChangeSeatsCartStep = (props: {stepperData: PlanSummary; updateStep
         return [
             {
                 data: [
-                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.nbSeats!} Seat</Text>,
+                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.nbSeats} Seat</Text>,
                     <Text key="planSeatUnitPrice" size={14} weight="reg" color="gray-1">Included In Plan</Text>,
                     <></>,
                     <></>
@@ -41,26 +62,27 @@ export const ChangeSeatsCartStep = (props: {stepperData: PlanSummary; updateStep
             {
                 data: [
                     <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.extraSeats} Add-Ons</Text>,
-                    <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">$10 per month</Text>,
+                    <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">{ handleCurrencySymbol(props.stepperData.currency) + seatPricePerMonth} per month</Text>,
                     <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={props.planData.extraSeats === 0 ? 0 : - Math.abs(props.emptySeats)}/>,
-                    <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">${120 * props.stepperData.extraSeats} /yr</Text>,
+                    <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + (seatPricePerMonth * 12 * props.stepperData.extraSeats)} /yr</Text>,
                 ]
             }
         ]
     }
 
     const billingBodyElement = () => {
+        const billingPeriod = new Date(props.stepperData.periodEndsAt * 1000).toLocaleString()
         return [
             {
                 data: [
                     <Text key="totalDueNow" size={14} weight="med" color="gray-1">Total Due Now</Text>,
-                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">${seatChange > 0 ? (120 * seatChange) : 0 }</Text>
+                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (seatChange > 0 ? (seatPricePerMonth * 12 * seatChange) : 0)}</Text>
                 ]
             },
             {
                 data: [
-                    <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From 2nd Sep 2020</Text>,
-                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">${(props.stepperData.price/100) + newExtraSeatPrice}</Text>
+                    <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From {billingPeriod}</Text>,
+                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price/100) + seatPricePerMonth * 12 * props.stepperData.extraSeats)}</Text>
                 ]
             }
         ]
