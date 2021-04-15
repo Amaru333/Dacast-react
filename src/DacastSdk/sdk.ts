@@ -87,7 +87,7 @@ export class DacastSdk {
 
     public getPlansList = async (): Promise<GetPlansListOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/plans').then(this.checkExtraData)
     public postAccountPlan = async (input: PostAccountPlanInput): Promise<PostAccountPlanOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/plans/purchase', input).then(this.checkExtraData)
-    public postPurchaseAddOn = async (input: PostPurchaseAddOnInput): Promise<PostPurchaseaddOnOutput> => await this.axiosClient.post('/plans/purchase-add-on', input).then(this.checkExtraData)
+    public postPurchaseAddOn = async (input: PostPurchaseAddOnInput): Promise<PostPurchaseaddOnOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/plans/purchase-add-on', input).then(this.checkExtraData)
 
     public getProductExtraDataList = async (): Promise<GetProductExtraDataOutput> => await this.axiosClient.get('/accounts/' + this.userId + '/products').then(this.checkExtraData)
     public postProductExtraData = async (input: PostProductExtraDataInput): Promise<PostProductExtraDataOutput> => await this.axiosClient.post('/accounts/' + this.userId + '/products/purchase', input).then(this.checkExtraData)
