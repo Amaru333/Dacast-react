@@ -76,11 +76,12 @@ export const formatPostResendUserInviteOutput = formatPostCancelUserInviteOutput
 export const formatPostCancelUserInviteInput = (invitationId: string): string => invitationId
 export const formatPostResendUserInviteInput = formatPostCancelUserInviteInput
 
-export const formatDeleteUserInput = (data: {userToDelete: string; transferContentsToUserId: string}): DeleteUserInput => {
+export const formatDeleteUserInput = (data: {userToDelete: string; transferContentsToUserId: string, invitationId: string}): DeleteUserInput => {
     let formattedData: DeleteUserInput = {
         id: data.userToDelete,
         payload: {
-            transferContentsToUserId: data.transferContentsToUserId
+            transferContentsToUserId: data.transferContentsToUserId,
+            invitationId: data.invitationId
         }
     }
 

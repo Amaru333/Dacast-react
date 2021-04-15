@@ -234,12 +234,12 @@ export const UsersPage = (props: UsersComponentProps) => {
                 <DeleteUserModal toggle={setDeleteUserModalOpen} handleDeleteModalSelection={handleDeleteModalSelection} userName={userToDelete ? userToDelete.name : ''}/>
             </Modal>
             <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setConfirmDeleteModalOpen(false)} opened={confirmDeleteModalOpen}>
-                <ConfirmDeleteModal userStatus={userToDelete ? userToDelete.status : null} userId={userToDelete ? userToDelete.userId : ''} invitationId={userToDelete ? userToDelete.invitationId : ''} deleteUser={props.deleteUser} cancelInvite={props.cancelUserInvite} toggle={setConfirmDeleteModalOpen} />
+                <ConfirmDeleteModal userInfo={userToDelete} deleteUser={props.deleteUser} toggle={setConfirmDeleteModalOpen} />
             </Modal>
             {
                 transferContentModalOpen &&
                 <Modal modalTitle="Delete User" size="small" hasClose={false} toggle={() => setTransferContentModalOpen(false)} opened={transferContentModalOpen}>
-                    <TransferContentModal userToDelete={userToDelete.userId} deleteUser={props.deleteUser} users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
+                    <TransferContentModal userToDelete={userToDelete} deleteUser={props.deleteUser} users={props.multiUserDetails.users} toggle={setTransferContentModalOpen} />
                 </Modal>
             }
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >

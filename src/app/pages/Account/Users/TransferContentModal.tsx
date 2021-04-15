@@ -5,7 +5,14 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { Text } from '../../../../components/Typography/Text';
 import { User } from '../../../redux-flow/store/Account/Users/types';
 
-export const TransferContentModal = (props: {users: User[]; toggle: React.Dispatch<React.SetStateAction<boolean>>; userToDelete: string; deleteUser: (userToDelete: string, transferContentsToUserId: string) => Promise<void>}) => {
+interface TransferContentModalProps {
+    users: User[]; 
+    userToDelete: User; 
+    toggle: React.Dispatch<React.SetStateAction<boolean>>; 
+    deleteUser: (userToDelete: string, transferContentsToUserId: string, invitationId: string) => Promise<void>
+}
+
+export const TransferContentModal = (props: TransferContentModalProps) => {
 
     const createUserDropdownList = () => {
         return props.users.map((user: User): DropdownSingleListItem => {
@@ -25,7 +32,7 @@ export const TransferContentModal = (props: {users: User[]; toggle: React.Dispat
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.deleteUser(props.userToDelete, selectedUser)
+        props.deleteUser(props.userToDelete.userId, selectedUser, props.userToDelete.invitationId)
         .then(() => {
             setButtonLoading(false)
             props.toggle(false)

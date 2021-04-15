@@ -19,8 +19,7 @@ export interface UsersComponentProps {
     getMultiUsersDetails: () => Promise<void> 
     addUser: (email: string, isAdmin: boolean) => Promise<void>
     editUserRole: (user: User) => Promise<void>
-    deleteUser: (userId: string, transferContentsToUserId: string) => Promise<void>
-    cancelUserInvite: (invitationId: string) => Promise<void>
+    deleteUser: (userId: string, transferContentsToUserId: string, invitationId: string) => Promise<void>
     resendUserInvite: (invitationId: string) => Promise<void>
     filterUsersList: (list: User[]) => void
 }
@@ -71,11 +70,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         editUserRole: async (user: User) => {
             await dispatch(editUserRoleAction(user));
         },
-        deleteUser: async (userId: string, transferContentsToUserId: string) => {
-            await dispatch(deleteUserAction({userToDelete: userId, transferContentsToUserId: transferContentsToUserId}));
-        },
-        cancelUserInvite: async (invitationId: string) => {
-            await dispatch(cancelUserInviteAction(invitationId));
+        deleteUser: async (userId: string, transferContentsToUserId: string, invitationId: string) => {
+            await dispatch(deleteUserAction({userToDelete: userId, transferContentsToUserId: transferContentsToUserId, invitationId: invitationId}));
         },
         resendUserInvite: async (invitationId: string) => {
             await dispatch(resendUserInviteAction(invitationId));

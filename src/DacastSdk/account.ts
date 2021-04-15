@@ -52,6 +52,7 @@ export interface DeleteUserInput {
     id: string
     payload: {
         transferContentsToUserId: string
+        invitationId: string
     }
 }
 
