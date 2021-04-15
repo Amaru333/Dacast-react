@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { useQuery } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService'
 import { segmentService } from '../../utils/services/segment/segmentService'
+import { isProduction } from '../../utils/services/player/stage'
 
 const logo = require('../../../../public/assets/logo.png');
 
@@ -23,6 +24,8 @@ interface AccountSelectionComponentProps {
 const AccountSelection = (props: AccountSelectionComponentProps) => {
 
     const query = useQuery()
+    const signupPageUrl = isProduction() ? 'https://dacast.com/signup' : 'https://test.dacast.com/signup'
+
 
     React.useEffect(() => {
         if(props.accountData && props.accountData.token) {
@@ -62,16 +65,28 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
     return (
     <LoginContainer>
         <ImageStyle className="mx-auto" src={logo}/>
-        <ModalCard className="mx-auto" size="small" title="Choose Account">
-            <ModalContent>
-                <div className="my1">
-                    <Text size={14} weight="reg">You have multiple accounts associated with email</Text>
-                </div>
-                <div className="my1">
-                    <Text size={14} weight="reg">{query.get('email') || ''}. Select account to log in.</Text>
-                </div>
-                {renderAccountsList()}
-            </ModalContent>
+        <ModalCard className="mx-auto" size="small" title={props.accountData.availableUsers && props.accountData.availableUsers.length === 0 ? "This account does not exist" : "Choose Account"}>
+            {
+                props.accountData.availableUsers && props.accountData.availableUsers.length === 0 ?
+                <ModalContent>
+                    <div className="my1">
+                        <Text size={14} weight="reg">The email address {query.get('email') || ''} is not assciated with existing Dacast account.</Text>
+                    </div>
+                    <div className="my1">
+                        <Text size={14} weight="reg">In order to create an account, please <a href={signupPageUrl}>Sign up</a></Text>
+                    </div>
+                </ModalContent>
+                : 
+                <ModalContent>
+                    <div className="my1">
+                        <Text size={14} weight="reg">You have multiple accounts associated with email</Text>
+                    </div>
+                    <div className="my1">
+                        <Text size={14} weight="reg">{query.get('email') || ''}. Select account to log in.</Text>
+                    </div>
+                    {renderAccountsList()}
+                </ModalContent>
+            }
         </ModalCard>
     </LoginContainer>
     )
