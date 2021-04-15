@@ -88,7 +88,15 @@ export interface Product {
     unitPrice: BandwidthProductPrice;
 }
 
+interface AddOn {
+    code: string
+    included: boolean
+    price: number
+    quantity?: number
+}
+
 export interface PlanSummary {
+    addOns: AddOn[]
     displayName: string;
     planCode: string;
     planName: string;

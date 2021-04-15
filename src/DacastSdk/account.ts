@@ -201,6 +201,17 @@ interface AddOnEndpoint {
     code: string
     'included-in-subscription': boolean
     'price-in-cents': number
+    quantity?: number
+}
+
+export interface PostPurchaseAddOnInput {
+    quantity: number
+    addOnCode: string
+    preview: boolean
+}
+
+export interface PostPurchaseaddOnOutput {
+    price: number
 }
 
 interface AccountSubscription {
@@ -221,6 +232,8 @@ export interface AccountPlan {
     displayName: string;
     subscription: AccountSubscription
     trialExpiresIn: number | null;
+    maxMuaSeats: number
+    occupiedMuaSeats: number
 }
 
 interface AccountPaymentMethod {

@@ -7,23 +7,31 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
         ...data,
         currentPlan: {
             displayName: data.currentPlan.displayName,
-            planCode: data.currentPlan.subscription.planCode,
-            planName: data.currentPlan.subscription.planName,
-            state: data.currentPlan.subscription.state,
-            playbackProtectionUnitPrice: data.currentPlan.subscription.overageStorageUnitPrice,
-            periodStartedAt: data.currentPlan.subscription.periodStartedAt,
-            periodEndsAt: data.currentPlan.subscription.periodEndsAt,
+            planCode: data.currentPlan.subscription ? data.currentPlan.subscription.planCode : '',
+            planName: data.currentPlan.subscription ? data.currentPlan.subscription.planName : '',
+            state: data.currentPlan.subscription ? data.currentPlan.subscription.state : '',
+            playbackProtectionUnitPrice: data.currentPlan.subscription ? data.currentPlan.subscription.overageStorageUnitPrice: '',
+            periodStartedAt: data.currentPlan.subscription ? data.currentPlan.subscription.periodStartedAt : null,
+            periodEndsAt: data.currentPlan.subscription ? data.currentPlan.subscription.periodEndsAt : null,
             trialExpiresIn: data.currentPlan.trialExpiresIn,
-            price: data.currentPlan.subscription.price,
-            currency: data.currentPlan.subscription.currency,
-            paymentFrequency: data.currentPlan.subscription.paymentFrequency,
-            paymentTerm: data.currentPlan.subscription.paymentTerm,
-            nbSeats: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1,
-            extraSeats: 2
+            price: data.currentPlan.subscription ? data.currentPlan.subscription.price : null,
+            currency: data.currentPlan.subscription ? data.currentPlan.subscription.currency : '',
+            paymentFrequency: data.currentPlan.subscription ? data.currentPlan.subscription.paymentFrequency : null,
+            paymentTerm: data.currentPlan.subscription ? data.currentPlan.subscription.paymentTerm : null,
+            addOns:  data.currentPlan.subscription ? data.currentPlan.subscription.addOns.map(addOn => {
+                return {
+                    code: addOn.code,
+                    included: addOn["included-in-subscription"],
+                    price: addOn["price-in-cents"] / 100,
+                    quantity: addOn.quantity
+                }
+            }) : [],
+            nbSeats: data.currentPlan.maxMuaSeats,
+            extraSeats: data.currentPlan.subscription && data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS')["included-in-subscription"] ? data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity : 0
         }
     }
     userToken.updateUserInfo({'planName': data.currentPlan.displayName})
-    userToken.updateUserInfo({'planAmount': data.currentPlan.subscription.price.toString()})
+    userToken.updateUserInfo({'planAmount': data.currentPlan.subscription ? data.currentPlan.subscription.price.toString() : '0'})
     return formattedData
 }
 
