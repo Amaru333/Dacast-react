@@ -27,7 +27,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
                 }
             }) : [],
             nbSeats: data.currentPlan.maxMuaSeats,
-            extraSeats: data.currentPlan.subscription && data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS')["included-in-subscription"] ? data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity : 0
+            extraSeats: data.currentPlan.subscription && data.currentPlan.subscription.addOns && data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS')["included-in-subscription"] ? data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity : 0
         }
     }
     userToken.updateUserInfo({'planName': data.currentPlan.displayName})
