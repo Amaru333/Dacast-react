@@ -70,7 +70,7 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
                 props.accountData.availableUsers && props.accountData.availableUsers.length === 0 ?
                 <ModalContent>
                     <div className="my1">
-                        <Text size={14} weight="reg">The email address {query.get('email') || ''} is not assciated with existing Dacast account.</Text>
+                        <Text size={14} weight="reg">The email address {query.get('email') || ''} is not associated with existing Dacast account.</Text>
                     </div>
                     <div className="my1">
                         <Text size={14} weight="reg">In order to create an account, please <a href={signupPageUrl}>Sign up</a></Text>

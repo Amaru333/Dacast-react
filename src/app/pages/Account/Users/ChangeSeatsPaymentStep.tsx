@@ -31,12 +31,13 @@ export const ChangeSeatsPaymentStep = (props: ChangeSeatsPaymentStepProps) => {
         return {
             data: [
                 { cell: <Text key={"paymentTotalheaderText"} size={14} weight={extraSeatsPurchased ? "med" : "reg"} color="gray-1">{extraSeatsPurchased ? "Total Pay Now" : "Refund for Next Billing Cycle" }</Text> },
-                { cell: <Text key={"paymentTotalheaderNumber"} className='right mr2' size={14} weight={extraSeatsPurchased ? "med" : "reg"} color={extraSeatsPurchased ? "dark-violet" : "gray-1"}>{handleCurrencySymbol(props.stepperData.currency) + (props.stepperData.seatToPurchase * 12 * props.stepperData.proRatedPrice).toFixed(2)}</Text> }
+                { cell: <Text key={"paymentTotalheaderNumber"} className='right mr2' size={14} weight={extraSeatsPurchased ? "med" : "reg"} color={extraSeatsPurchased ? "dark-violet" : "gray-1"}>{handleCurrencySymbol(props.stepperData.currency) + (props.stepperData.seatToPurchase * props.stepperData.proRatedPrice).toFixed(2)}</Text> }
             ]
         }
     }
 
     const billingBodyElement = () => {
+        const billingPeriod = new Date(props.stepperData.periodEndsAt * 1000).toLocaleString()
         return [
             {
                 data: [
@@ -46,7 +47,7 @@ export const ChangeSeatsPaymentStep = (props: ChangeSeatsPaymentStepProps) => {
             },
             {
                 data: [
-                    <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From 2nd Sep 2020</Text>,
+                    <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From {billingPeriod}</Text>,
                     <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price/100) + (120 * props.stepperData.seatToPurchase))}</Text>
                 ]
             }

@@ -3,6 +3,22 @@ import { userToken } from "../../../../utils/services/token/tokenService";
 import { BillingPageInfos, Extras, PlaybackProtection, Products } from "./types";
 
 export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): BillingPageInfos => {
+    let addOns = data.currentPlan.subscription ? data.currentPlan.subscription.addOns.map(addOn => {
+        return {
+            code: addOn.code,
+            included: addOn["included-in-subscription"],
+            price: addOn["price-in-cents"] / 100,
+            quantity: addOn.quantity
+        }
+    }) : []
+    if(!addOns.find(addOn => addOn.code === 'MUA_SEATS')) {
+        addOns.push({
+            code: 'MUA_SEATS',
+            included: true,
+            price: 0,
+            quantity: data.currentPlan.displayName.indexOf('Scale') !== -1 ? 3 : 1
+        })
+    }
     let formattedData: BillingPageInfos = {
         ...data,
         currentPlan: {
@@ -18,14 +34,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             currency: data.currentPlan.subscription ? data.currentPlan.subscription.currency : '',
             paymentFrequency: data.currentPlan.subscription ? data.currentPlan.subscription.paymentFrequency : null,
             paymentTerm: data.currentPlan.subscription ? data.currentPlan.subscription.paymentTerm : null,
-            addOns:  data.currentPlan.subscription ? data.currentPlan.subscription.addOns.map(addOn => {
-                return {
-                    code: addOn.code,
-                    included: addOn["included-in-subscription"],
-                    price: addOn["price-in-cents"] / 100,
-                    quantity: addOn.quantity
-                }
-            }) : [],
+            addOns: addOns,
             nbSeats: data.currentPlan.maxMuaSeats,
             extraSeats: data.currentPlan.subscription && data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS')["included-in-subscription"] ? data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity : 0
         }
