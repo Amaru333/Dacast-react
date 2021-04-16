@@ -24,7 +24,7 @@ datadogRum.init({
     trackInteractions: true
 });
 
-if(location.href.indexOf('impersonate') !== -1) {
+if(location.href.indexOf('impersonate') !== -1 || location.href.indexOf('selectAccount') !== -1) {
     store.dispatch({type: 'USER_LOGOUT'})
     userToken.resetUserInfo()
 }

@@ -26,7 +26,7 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
     const query = useQuery()
     const signupPageUrl = isProduction() ? 'https://dacast.com/signup' : 'https://test.dacast.com/signup'
     const availableUsers: MultiUserSelectionInfo[] = Object.fromEntries(new URLSearchParams(location.search)).availableUsers ? JSON.parse(Object.fromEntries(new URLSearchParams(location.search)).availableUsers) : props.accountData.availableUsers
-    const loginToken = query.get('loginToken') || props.accountData.loginToken
+    const loginToken = query.get('loginToken') ? JSON.parse(query.get('loginToken')) : props.accountData.loginToken
 
     React.useEffect(() => {
         if(props.accountData && props.accountData.token) {
