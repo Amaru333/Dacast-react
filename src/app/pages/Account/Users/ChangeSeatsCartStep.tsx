@@ -22,10 +22,10 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
     const seatPricePerMonth = props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').price : 0
 
     React.useEffect(() => {
-        if(!firstSeatChange) {
+        if(!firstSeatChange && props.stepperData.proRatedPrice === 0) {
             setFirstSeatChange(true)
             dacastSdk.postPurchaseAddOn({
-                quantity: 1,
+                quantity: (props.stepperData.extraSeats || 0) + 1,
                 addOnCode: 'MUA_ADDITIONAL_SEATS',
                 preview: true
             })
@@ -35,7 +35,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
             } )
         }
         props.setStepValidated(seatChange !== 0)
-        props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), addOns: props.stepperData.addOns.map(addOn => {
+        props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), addOns: props.stepperData.addOns ? props.stepperData.addOns.map(addOn => {
             if(addOn.code === 'MUA_ADDITIONAL_SEATS') {
                 return {
                     ...addOn,
@@ -44,7 +44,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
                 }
             }
             return addOn
-        }),
+        }) : [],
         seatToPurchase: seatChange
         })
 
@@ -55,7 +55,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
             data: [
                 {cell: <Text key="seatQuantity" size={14} weight="med" color="gray-1">Seats</Text>},
                 {cell: <Text key="seatUnitPrice" size={14} weight="med" color="gray-1">Unit Price</Text>},
-                {cell: <Text key="seatInput" size={14} weight="med" color="gray-1">Add / Remove Seats</Text>},
+                {cell: <Text key="seatInput" size={14} weight="med" color="gray-1">Add Seats</Text>},
                 {cell: <Text key="seatTotal" size={14} weight="med" color="gray-1">Total</Text>}
 
             ]
@@ -66,7 +66,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
         return [
             {
                 data: [
-                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.stepperData.addOns.find(addOn => addOn.code === 'MUA_SEATS').quantity} Seat</Text>,
+                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_SEATS').quantity : 0} Seat</Text>,
                     <Text key="planSeatUnitPrice" size={14} weight="reg" color="gray-1">Included In Plan</Text>,
                     <></>,
                     <></>
@@ -76,7 +76,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
                 data: [
                     <Text key="extraSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.extraSeats} Add-Ons</Text>,
                     <Text key="extraSeatUnitPrice" size={14} weight="reg" color="gray-1">{ handleCurrencySymbol(props.stepperData.currency) + seatPricePerMonth} per month</Text>,
-                    <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={props.planData.extraSeats === 0 ? 0 : - Math.abs(props.emptySeats)}/>,
+                    <InputCounter counterValue={seatChange} setCounterValue={setSeatChange} minValue={0}/>,
                     <Text key="extraSeatTotal" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + (seatPricePerMonth * 12 * props.stepperData.extraSeats)} /yr</Text>,
                 ]
             }
@@ -88,8 +88,8 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
         return [
             {
                 data: [
-                    <Text key="totalDueNow" size={14} weight="med" color="gray-1">Total Due Now</Text>,
-                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (seatChange > 0 ? (props.stepperData.proRatedPrice * seatChange).toFixed(2) : 0)}</Text>
+                    <Text size={14} weight="med" color="gray-1">Total Due Now</Text>,
+                    <Text className="right pr2" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (seatChange > 0 ? (props.stepperData.proRatedPrice * seatChange).toFixed(2) : 0)}</Text>
                 ]
             },
             {
