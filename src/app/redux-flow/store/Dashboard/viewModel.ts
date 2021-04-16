@@ -31,7 +31,6 @@ export const formatGetDashboardInfoOutput = (data: GetDashboardInfoOutput): Dash
         isTrial: false,
         isPayingPlan: false
     }
-    console.log('returning data ', formattedData)
 
     return formattedData
 }
@@ -68,9 +67,26 @@ export const formatGetDashboardGeneralInfoOutput = (data: GetDashboardGeneralInf
     return formattedData
 }
 
-export const formatGetDashboardLiveOutput = (data: GetDashboardLiveOutput): DashboardLive => data.live
+export const formatGetDashboardLiveOutput = (data: GetDashboardLiveOutput): DashboardLive => {
+    let formattedData: DashboardLive = {
+        liveViewers: data.live.liveViewers || 0,
+        activeChannels: data.live.activeChannels || 0,
+        totalChannels: data.live.totalChannels || 0,
+        topChannels: data.live.topChannels || []
+    }
 
-export const formatGetDashboardVodOutput = (data: GetDashboardVodOutput): DashboardVod => data.vod
+    return formattedData
+}
+
+export const formatGetDashboardVodOutput = (data: GetDashboardVodOutput): DashboardVod => {
+    let formattedData: DashboardVod = {
+        totalVideos: data.vod.totalVideos || 0,
+        videoPlays: data.vod.videoPlays || 0,
+        topVideos: data.vod.topVideos || []
+    }
+
+    return formattedData
+}
 
 export const formatGetDashboardPaywallOutput = (data: GetDashboardPaywallOutput): DashboardPaywall => data.paywall
 

@@ -21,11 +21,15 @@ export interface DashboardLiveEndpoint {
     activeChannels: number
     errors: boolean
     totalChannels: number
+    liveViewers?: number
+    topChannels?: {name: string; viewers: number}[]
 }
 
 export interface DashboardVodEndpoint {
     errors: boolean
     totalVideos: number
+    videoPlays?: number
+    topVideos?: {name: string; viewers: number}[]
 }
 
 export interface DashboardPaywallEndpoint {

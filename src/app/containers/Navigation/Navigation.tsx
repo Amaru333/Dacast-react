@@ -5,6 +5,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { getDashboardGeneralDetailsAction } from '../../redux-flow/store/Dashboard';
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -20,7 +21,7 @@ import { CustomStepper } from "../../../components/Stepper/Stepper";
 import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
 import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
 import { Plan } from "../../redux-flow/store/Account/Upgrade/types";
-import { PlanSummary } from "../../redux-flow/store/Account/Plan";
+import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -277,7 +278,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 export function mapStateToProps(state: ApplicationState) {
     return {
         planDetails: state.account.upgrade,
-        billingInfo: state.account.plan
+        billingInfo: state.account.plan,
+        infos: state.dashboard.info
     }
 }
 
@@ -285,7 +287,13 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
     return {
         getPlanDetails: async () => {
             await dispatch(getPlanDetailsAction(undefined))
-        }
+        },
+        getDashboardDetails: async () => {
+            await dispatch(getDashboardGeneralDetailsAction(undefined));
+        },
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction(undefined));
+        },
     }
 }
 
