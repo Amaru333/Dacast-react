@@ -1,5 +1,3 @@
-import timezones from 'compact-timezone-list';
-
 //Replacement for function moment()
 export const getCurrentTs = ( format: 'ms' | 's' ) => {
     if(format === 's') {
