@@ -25,7 +25,8 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
 
     const query = useQuery()
     const signupPageUrl = isProduction() ? 'https://dacast.com/signup' : 'https://test.dacast.com/signup'
-
+    const availableUsers: MultiUserSelectionInfo[] = Object.fromEntries(new URLSearchParams(location.search)).availableUsers ? JSON.parse(Object.fromEntries(new URLSearchParams(location.search)).availableUsers) : props.accountData.availableUsers
+    const loginToken = query.get('loginToken') || props.accountData.loginToken
 
     React.useEffect(() => {
         if(props.accountData && props.accountData.token) {
@@ -42,10 +43,10 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
     }, [props.accountData])
 
     const handleUserSelection = (userId: string) => {
-        props.login({selectedUserId: userId, loginToken: props.accountData.loginToken})
+        props.login({selectedUserId: userId, loginToken: loginToken})
     }
     const renderAccountsList = () => {
-        return props.accountData.availableUsers.map((account, i) => {
+        return availableUsers.map((account, i) => {
             return (
                 <AccountSelectionRow style={{marginBottom: 0}} onClick={() => {handleUserSelection(account.userId)}} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className='col col-11 flex'>
