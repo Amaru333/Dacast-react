@@ -24,8 +24,11 @@ import { DropdownSingleListItem } from '../../../../components/FormsComponents/D
 import { MultiUserUpgradeModal } from './MultiUserUpgradeModal';
 import { PlanSummary } from '../../../redux-flow/store/Account/Plan';
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
+import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 
-export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number}
+export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
 export const UsersPage = (props: UsersComponentProps) => {
 
@@ -35,27 +38,67 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [transferContentModalOpen, setTransferContentModalOpen] = React.useState<boolean>(false)
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
-    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0})
+    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0})
     const [usersTableSort, setUsersTableSort] = React.useState<string>('name')
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
     const [userToDelete, setUserToDelete] = React.useState<User>(null)
     const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
+    const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
+    const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
     let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.occupiedSeats
-
+    const refreshSpan = 5000
+    const refreshEvery = 5000
+    let fastRefreshUntil = 0
+    let timeoutId: NodeJS.Timeout | null = null
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
     React.useEffect(() => {
         filterUsersTable()
     }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
 
+    const timeoutFunc = () => {
+        props.getMultiUsersDetails()
+        props.getBillingPageInfos()
+        if(new Date().getTime() < fastRefreshUntil) {
+            timeoutId = setTimeout(timeoutFunc, refreshEvery)
+        }
+    }
+
+    React.useEffect(() => {
+        EventHooker.subscribe('ADDITIONAL_SEATS_PURCHASED', () => {
+            fastRefreshUntil = new Date().getTime() + refreshSpan
+            if(timeoutId === null) { 
+                timeoutId = setTimeout(timeoutFunc, refreshEvery)
+            }
+        })
+
+        return () => {
+            EventHooker.unsubscribe('ADDITIONAL_SEATS_PURCHASED', () => {
+                fastRefreshUntil = new Date().getTime() + refreshSpan
+                if(timeoutId === null) { 
+                    timeoutId = setTimeout(timeoutFunc, refreshEvery)
+                }
+            })
+        }
+    }, [])
+
     const purchaseAddOns = () => {
+        setIsLoading(true)
         dacastSdk.postPurchaseAddOn({
             addOnCode: 'MUA_ADDITIONAL_SEATS',
             quantity: planDetails.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity,
             preview: false
         })
         .then(() => {
+            setIsLoading(false)
             setChangeSeatsStepperOpen(false)
+            setPaymentSuccessfulModalOpened(true)
+            EventHooker.dispatch('ADDITIONAL_SEATS_PURCHASED', undefined)
+        })
+        .catch(() => {
+            setIsLoading(false)
+            setPaymentDeclinedModalOpened(true)
         })
     }
 
@@ -221,6 +264,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     planData={props.billingInfo.currentPlan}
                     billingInfo={props.billingInfo}
                     purchaseAddOn={purchaseAddOns}
+                    isLoading={isLoading}
                 />
             }
             {
@@ -245,6 +289,12 @@ export const UsersPage = (props: UsersComponentProps) => {
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
                 <MultiUserUpgradeModal openBuySeatsStepper={() => setChangeSeatsStepperOpen(true)} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
+            <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
+                <Text size={14}>You bought {planDetails.seatToPurchase} additional seats.</Text>
+            </PaymentSuccessModal>
+            <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
+                <Text size={14}>Your payment was declined.</Text>
+            </PaymentFailedModal>
         </React.Fragment>
     )
 }

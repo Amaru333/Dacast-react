@@ -4,6 +4,7 @@ import { Table } from '../../../../components/Table/Table';
 import { Text } from '../../../../components/Typography/Text';
 import { handleCurrencySymbol } from '../../../../utils/utils';
 import { PlanSummary } from '../../../redux-flow/store/Account/Plan';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { PlanSummaryWithAdditionalSeats } from './Users';
 
 interface ChangeSeatsCartStep {
@@ -16,11 +17,23 @@ interface ChangeSeatsCartStep {
 
 export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
 
-    const [seatChange, setSeatChange] = React.useState<number>(0)
+    const [seatChange, setSeatChange] = React.useState<number>(props.stepperData.seatToPurchase)
+    const [firstSeatChange, setFirstSeatChange] = React.useState<boolean>(false)
     const seatPricePerMonth = props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').price : 0
-    let newExtraSeatPrice = 120 * seatChange
 
     React.useEffect(() => {
+        if(!firstSeatChange) {
+            setFirstSeatChange(true)
+            dacastSdk.postPurchaseAddOn({
+                quantity: 1,
+                addOnCode: 'MUA_ADDITIONAL_SEATS',
+                preview: true
+            })
+            .then((response) => {
+                console.log(response)
+                props.updateStepperData({...props.stepperData, proRatedPrice: response.price / 100})
+            } )
+        }
         props.setStepValidated(seatChange !== 0)
         props.updateStepperData({...props.stepperData, extraSeats: (props.planData.extraSeats + seatChange), addOns: props.stepperData.addOns.map(addOn => {
             if(addOn.code === 'MUA_ADDITIONAL_SEATS') {
@@ -53,7 +66,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
         return [
             {
                 data: [
-                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.planData.nbSeats} Seat</Text>,
+                    <Text key="planSeatQuantity" size={14} weight="med" color="gray-1">{props.stepperData.addOns.find(addOn => addOn.code === 'MUA_SEATS').quantity} Seat</Text>,
                     <Text key="planSeatUnitPrice" size={14} weight="reg" color="gray-1">Included In Plan</Text>,
                     <></>,
                     <></>
@@ -76,7 +89,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
             {
                 data: [
                     <Text key="totalDueNow" size={14} weight="med" color="gray-1">Total Due Now</Text>,
-                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (seatChange > 0 ? (seatPricePerMonth * 12 * seatChange) : 0)}</Text>
+                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (seatChange > 0 ? (props.stepperData.proRatedPrice * seatChange).toFixed(2) : 0)}</Text>
                 ]
             },
             {

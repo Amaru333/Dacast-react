@@ -31,7 +31,7 @@ export const ChangeSeatsPaymentStep = (props: ChangeSeatsPaymentStepProps) => {
         return {
             data: [
                 { cell: <Text key={"paymentTotalheaderText"} size={14} weight={extraSeatsPurchased ? "med" : "reg"} color="gray-1">{extraSeatsPurchased ? "Total Pay Now" : "Refund for Next Billing Cycle" }</Text> },
-                { cell: <Text key={"paymentTotalheaderNumber"} className='right mr2' size={14} weight={extraSeatsPurchased ? "med" : "reg"} color={extraSeatsPurchased ? "dark-violet" : "gray-1"}>{handleCurrencySymbol(props.stepperData.currency) + (props.stepperData.seatToPurchase * 120)}</Text> }
+                { cell: <Text key={"paymentTotalheaderNumber"} className='right mr2' size={14} weight={extraSeatsPurchased ? "med" : "reg"} color={extraSeatsPurchased ? "dark-violet" : "gray-1"}>{handleCurrencySymbol(props.stepperData.currency) + (props.stepperData.seatToPurchase * 12 * props.stepperData.proRatedPrice).toFixed(2)}</Text> }
             ]
         }
     }
@@ -41,7 +41,7 @@ export const ChangeSeatsPaymentStep = (props: ChangeSeatsPaymentStepProps) => {
             {
                 data: [
                     <Text key="totalDueNow" size={14} weight="med" color="gray-1">Total Due Now</Text>,
-                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency)}0</Text>
+                    <Text className="right pr2" key="totalDueNowValue" size={14} weight="med" color="dark-violet">{handleCurrencySymbol(props.stepperData.currency) + (props.stepperData.proRatedPrice * props.stepperData.seatToPurchase).toFixed(2)}</Text>
                 ]
             },
             {
