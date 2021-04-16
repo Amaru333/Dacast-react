@@ -18,7 +18,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             currency: data.currentPlan.subscription ? data.currentPlan.subscription.currency : '',
             paymentFrequency: data.currentPlan.subscription ? data.currentPlan.subscription.paymentFrequency : null,
             paymentTerm: data.currentPlan.subscription ? data.currentPlan.subscription.paymentTerm : null,
-            addOns: data.currentPlan.subscription ? data.currentPlan.subscription.addOns.map(addOn => {
+            addOns: data.currentPlan.subscription && data.currentPlan.subscription.addOns ? data.currentPlan.subscription.addOns.map(addOn => {
                 return {
                     code: addOn.code,
                     included: addOn["included-in-subscription"],
