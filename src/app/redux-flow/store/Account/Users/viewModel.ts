@@ -1,5 +1,6 @@
 import { DeleteUserInput, GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, UserEndpoint, UserRoleWhitoutOwner } from "../../../../../DacastSdk/account";
 import { capitalizeFirstLetter } from "../../../../../utils/utils";
+import { userToken } from "../../../../utils/services/token/tokenService";
 import { MultiUserDetails, User, UserRole, UserStatus } from "./types";
 
 export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiUserDetails => {
@@ -24,11 +25,23 @@ export const formatGetUsersDetailsOutput = (data: GetUsersDetailsOutput): MultiU
             name: fullName
         }
     })
+    if(!data.users || data.users.length === 0) {
+        users = [{
+            userId: userToken.getUserInfoItem('user-id'),
+            firstName: userToken.getUserInfoItem('custom:first_name'),
+            lastName: userToken.getUserInfoItem('custom:last_name'),
+            email: userToken.getUserInfoItem('email'),
+            role: 'Owner',
+            invitationId: null,
+            status: 'Active',
+            name: userToken.getUserInfoItem('custom:first_name') + ' ' + userToken.getUserInfoItem('custom:last_name')
+        }]
+    }
     let formattedData: MultiUserDetails = {
         users: users,
         filteredUsers: users,
-        maxSeats: data.maxSeats || 0,
-        occupiedSeats: data.occupiedSeats || 0
+        maxSeats: data.maxSeats || 1,
+        occupiedSeats: data.occupiedSeats || 1
     }
 
     return formattedData
