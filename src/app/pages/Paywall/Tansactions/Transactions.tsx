@@ -96,7 +96,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     }, [qsParams])
 
     React.useEffect(() => {
-        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             return
         }
         if(fetchContent) {

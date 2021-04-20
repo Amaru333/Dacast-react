@@ -247,13 +247,12 @@ const Header = (props: HeaderProps) => {
                     <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => history.push('/account/upgrade')}>Upgrade Now</a></span>
                 </TrialUpgradeButton>
             )
-        } else {
-            return (
-                <UpgradeButton onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
-                    Upgrade
-                </UpgradeButton>
-            )
         }
+        return (
+            <UpgradeButton onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+                Upgrade
+            </UpgradeButton>
+        )
     }
 
     return (

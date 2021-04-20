@@ -19,12 +19,8 @@ export interface TransactionsComponentProps {
 const Transactions = (props: TransactionsComponentProps) => {
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
-    const isLocked = () => {
-        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
-    }
-
     React.useEffect(() => {
-        if (isLocked()) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             setPlanLimitReachedModalOpen(true)
         }
     }, [])

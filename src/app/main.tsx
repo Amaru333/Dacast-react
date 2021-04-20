@@ -32,7 +32,7 @@ import { store } from '.';
 import { getContentListAction } from './redux-flow/store/Content/List/actions';
 import EventHooker from '../utils/services/event/eventHooker';
 import { AddExpoModal } from './containers/Navigation/AddExpoModal';
-import { axiosClient, dacastSdk } from './utils/services/axios/axiosClient';
+import { dacastSdk } from './utils/services/axios/axiosClient';
 import ScrollToTop, { useMedia } from '../utils/utils';
 import { updateTitleApp } from './utils/utils';
 import { segmentService } from './utils/services/segment/segmentService';

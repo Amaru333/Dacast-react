@@ -29,12 +29,8 @@ const Presets = (props: PresetsComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
-    const isLocked = () => {
-        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
-    }
-
     React.useEffect(() => {
-        if (isLocked()) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             setPlanLimitReachedModalOpen(true)
         } else {
             props.getPresetsInfos('per-page=10&page=1')
@@ -51,7 +47,7 @@ const Presets = (props: PresetsComponentProps) => {
 
     return (
         <>
-            {props.presetsInfos.presets && props.presetsInfos.promos || isLocked() ?
+            {props.presetsInfos.presets && props.presetsInfos.promos || userToken.isUnauthorized(props.associatePrivilege) ?
                 <PresetsPage {...props} />
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
             <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>

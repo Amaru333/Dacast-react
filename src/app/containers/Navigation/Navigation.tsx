@@ -74,8 +74,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         handleCreateExpoClick,
         PlanLimitReachedModalOpen,
         setPlanLimitReachedModalOpen,
-        planLimitReachedModalType,
-        setPlanLimitReachedModalType,
+        planLimitReachedModalType
     } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
@@ -170,7 +169,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
         return props.routes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
-                const isLocked = element.associatePrivilege && !userToken.getPrivilege(element.associatePrivilege)
+                const isLocked = userToken.isUnauthorized(props.associatePrivilege)
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
                 }
@@ -182,7 +181,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         <div key={'superkey'+i}>
                             <ElementMenu
                                 isMobile={props.isMobile}
-                                onClick={() => handleMenuToggle(element.path, isLocked)}
+                                onClick={() => handleMenuToggle(element.path)}
                                 key={'MenuElementwithSubsections'+i}
                                 isOpen={props.isOpen}
                                 isLocked={isLocked}
@@ -198,7 +197,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                 {element.slug.map((subMenuElement, index) => {
                                     if(!subMenuElement.notDisplayedInNavigation) {
                                         return (
-                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path, isLocked)}}  >
+                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                                 <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
                                                     <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                                 </SubMenuElement>
@@ -217,7 +216,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
                 else{
                     return (
-                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '', isLocked)}} key={'MenuElement'+i} >
+                        <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '')}} key={'MenuElement'+i} >
                             <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!} isLocked={isLocked}>
                                 {element.name}
                             </ElementMenu>

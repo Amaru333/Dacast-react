@@ -35,12 +35,8 @@ const Groups = (props: GroupsComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
-    const isLocked = () => {
-        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
-    }
-
     React.useEffect(() => {
-        if (isLocked()) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             setPlanLimitReachedModalOpen(true)
         } else {
             if(!props.groupsInfos.prices) {
@@ -62,7 +58,7 @@ const Groups = (props: GroupsComponentProps) => {
 
     return (
         <>
-            {props.groupsInfos.prices && props.groupsInfos.promos && props.folderData || isLocked() ?
+            {props.groupsInfos.prices && props.groupsInfos.promos && props.folderData || userToken.isUnauthorized(props.associatePrivilege) ?
                 <GroupsPage {...props} />
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>}
             <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>

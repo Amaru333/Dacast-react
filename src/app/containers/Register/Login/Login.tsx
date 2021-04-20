@@ -32,7 +32,7 @@ const Login = (props: LoginComponentProps) => {
             setTimeout(() => {
                 EventHooker.dispatch('EVENT_LOG_IN_SUCCESS')
             }, 1500)
-            history.push('/dashboard')
+            history.push('/')
         }
     }, [props.loginInfos])
 

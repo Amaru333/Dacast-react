@@ -26,12 +26,8 @@ const PaywallSettings = (props: PaywallSettingsComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
-    const isLocked = () => {
-        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
-    }
-
     React.useEffect(() => {
-        if (isLocked()) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             setPlanLimitReachedModalOpen(true)
         } else {
             props.getPaywallSettingsInfos()
@@ -45,7 +41,7 @@ const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
     return (
         <>
-            {props.paywallSettingsInfos || isLocked() ?
+            {props.paywallSettingsInfos || userToken.isUnauthorized(props.associatePrivilege) ?
                 <PaywallSettingsPage {...props} />
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
             <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>

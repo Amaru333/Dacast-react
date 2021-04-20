@@ -34,12 +34,8 @@ const Payout = (props: PayoutComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
-    const isLocked = () => {
-        return props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)
-    }
-
     React.useEffect(() => {
-        if (isLocked()) {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
             setPlanLimitReachedModalOpen(true)
         } else {
             props.getPaymentMethods()
@@ -58,7 +54,7 @@ const Payout = (props: PayoutComponentProps) => {
 
     return (
         <>
-            {props.payoutInfos || isLocked() ?
+            {props.payoutInfos || userToken.isUnauthorized(props.associatePrivilege) ?
                 <PayoutPage {...props} />
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
             <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>

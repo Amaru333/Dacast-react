@@ -59,13 +59,12 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <Text className="mr1" size={32} weight="reg" color="white">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="white" > Days remaining</Text>
                 </div>
             )
-        } else {
-            return (
-                <Text className="mb15 mt1" size={20} weight="reg" color="white">
-                    Your trial has ended, <a href='/account/upgrade' className='a-blue-2 text-semibold'>Upgrade Now</a>
-                </Text>
-            )
         }
+        return (
+            <Text className="mb15 mt1" size={20} weight="reg" color="white">
+                Your trial has ended, <a href='/account/upgrade' className='a-blue-2 text-semibold'>Upgrade Now</a>
+            </Text>
+        )
     }
 
     const renderPlanWidget = () => {
