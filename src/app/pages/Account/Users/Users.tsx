@@ -241,7 +241,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     <InputTags oneTag noBorder={true} placeholder="Search Users..." style={{ display: "inline-block" }} defaultTags={usersTableKeyword ? [usersTableKeyword] : []} callback={(value: string[]) => setUsersTableKeyword(value[0])} />
                 </div>
                 <div className="flex items-center relative">
-                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Change Number of Seats</Text>
+                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Buy more seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seats used</Text>
                     <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
@@ -252,7 +252,7 @@ export const UsersPage = (props: UsersComponentProps) => {
             {
                 changeSeatsStepperOpen &&
                 <CustomStepper
-                    stepperHeader="Change Number of Seats"
+                    stepperHeader="Buy more Seats"
                     stepList={changeSeatsStepList}
                     opened={changeSeatsStepperOpen}
                     lastStepButton="Purchase"

@@ -20,8 +20,8 @@ import { connect } from "react-redux";
 import { CustomStepper } from "../../../components/Stepper/Stepper";
 import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
 import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
-import { Plan } from "../../redux-flow/store/Account/Upgrade/types";
 import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
+import { Label } from "../../../components/FormsComponents/Label/Label";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -196,10 +196,26 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                     if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan.nbSeats === 1){
                                         return (
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
-                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                <div className='flex'>
+                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                    <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
+                                                </div>
+
                                             </SubMenuElement>
                                         )
                                     } else {
+                                        if(subMenuElement.name === "Users") {
+                                            return (
+                                                <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                                    <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                        <div className='flex items-center'>
+                                                            <TextStyle className='pr2' selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                            <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
+                                                        </div>
+                                                    </SubMenuElement>
+                                                </Link>
+                                            )
+                                        }
                                     return (
                                         <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                             <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
