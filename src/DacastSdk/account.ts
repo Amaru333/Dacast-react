@@ -1,3 +1,5 @@
+import { UserLoginToken } from "./session";
+
 export interface CompanyDetailsEndpoints {
     id: string;
     accountName: string;
@@ -26,6 +28,7 @@ export interface UserEndpoint {
     role: string
     invitationId: string
     status: 'active' | 'expired' | 'invited' | 'disabled'
+    token?: UserLoginToken
 }
 
 export interface GetUsersDetailsOutput {

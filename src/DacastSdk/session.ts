@@ -20,7 +20,7 @@ interface MultiAccountUser {
     loginToken: string
 }
 
-interface UserLoginToken {
+export interface UserLoginToken {
     token: string
     accessToken: string
     refresh: string

@@ -67,6 +67,10 @@ export const formatPostUserOutput = (endpointResponse: UserEndpoint, dataReact: 
         invitationId: endpointResponse.invitationId,
         name: ''
     }
+
+    if(endpointResponse.token) {
+        userToken.addTokenInfo(endpointResponse.token)
+    }
     
     return formattedData
 }
