@@ -31,6 +31,7 @@ import { UpgradePaymentStep } from './UpgradePaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { countries } from 'countries-list';
+import { ContactOwnerModal } from '../Users/ContactOwnerModal';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const defaultCurrency: string = localStorage.getItem('currency') ? localStorage.getItem('currency') : (props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country]) ? countries[props.companyInfo.country].currency : 'USD'
@@ -50,6 +51,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
+    const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
 
     let history = useHistory()
 
@@ -142,8 +144,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             'user_id': userToken.getUserInfoItem('user-id'),
             'plan_name': plan,
             step: 1,
-        })  
-        setStepperPlanOpened(true)
+        })
+        if(userToken.getPrivilege('privilege-billing')) {
+            setStepperPlanOpened(true)
+        } else {
+            setContactOwnerModalOpened(true)
+        }
     }
 
     const handleContactUsButtonClick = () => {
@@ -476,7 +482,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 selectedCurrency={selectedCurrency}
                                 setSelectedCurrency={setSelectedCurrency}
                             />
-
+                        }
+                        {
+                            contactOwnerModalOpened && 
+                            <ContactOwnerModal title="Access restricted" specificText='upgrade.' toggle={setContactOwnerModalOpened} opened={contactOwnerModalOpened} />
                         }
 
                     </Elements>

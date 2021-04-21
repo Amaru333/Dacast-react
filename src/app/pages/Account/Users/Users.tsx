@@ -309,7 +309,7 @@ export const UsersPage = (props: UsersComponentProps) => {
             <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
                 <Text size={14}>Your payment was declined.</Text>
             </PaymentFailedModal>
-            <ContactOwnerModal toggle={setContactOwnerModalOpened} opened={contactOwnerModalOpened} />
+            <ContactOwnerModal title="Access restricted" specificText='buy more seats.' toggle={setContactOwnerModalOpened} opened={contactOwnerModalOpened} />
         </React.Fragment>
     )
 }
