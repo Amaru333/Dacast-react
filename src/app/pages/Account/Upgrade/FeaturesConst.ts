@@ -127,7 +127,7 @@ export const FeaturesCustomPlan =[
 export const MainFeatures: {name: string; tooltip: string}[] = [
     {name: "Data", tooltip: "Data is consumed when viewers watch your content"},
     {name: "Storage", tooltip: "Storage is consumed by Video on Demand assets"},
-    {name: "Users", tooltip: "You can buy as many additional Users as you need at any point for $10 per user /month"},
+    // {name: "Users", tooltip: "You can buy as many additional Users as you need at any point for $10 per user /month"},
     {name: "M3U8", tooltip: "A direct M3U8 link allows you to stream to TVs and other smart devices"},
     {name: "Advertising", tooltip: "Monetise your content with Pre-, Mid- and Post-Roll Ads"},
     {name: "Paywall", tooltip: "Sell your content vie Pay Per View or Subscription"},
