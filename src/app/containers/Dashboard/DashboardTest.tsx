@@ -16,6 +16,7 @@ import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
 import { WidgetElement } from './WidgetElement';
 import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from './DashboardStyles';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -65,7 +66,10 @@ const DashboardTest = (props: DashboardProps) => {
                 <React.Fragment>
                     <LiveDashboard profile={props.infos.live} />
                     <VodDashboard profile={props.infos.vod} rightSide={true} fullWidth={false} />
-                    <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                    {
+                        userToken.getPrivilege('privilege-paywall') &&
+                        <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                    }
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
