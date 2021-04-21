@@ -28,7 +28,7 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if(userToken.getUserInfoItem('privilege-billing')) {
+        if(userToken.getPrivilege('privilege-billing')) {
             props.getBillingPageInfos()
             .catch(() => setNodataFetched(true))
         }

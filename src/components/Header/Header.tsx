@@ -110,7 +110,7 @@ const Header = (props: HeaderProps) => {
                 props.getProfilePageDetails()
             }
     
-            if(!props.billingInfo && userToken.getUserInfoItem('privilege-billing')) {
+            if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
                 props.getBillingInfo()
             }
 

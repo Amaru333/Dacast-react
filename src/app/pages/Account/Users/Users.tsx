@@ -67,7 +67,7 @@ export const UsersPage = (props: UsersComponentProps) => {
 
     const timeoutFunc = () => {
         props.getMultiUsersDetails()
-        if(userToken.getUserInfoItem('privilege-billing')) {
+        if(userToken.getPrivilege('privilege-billing')) {
             props.getBillingPageInfos()
         }
         if(new Date().getTime() < fastRefreshUntil) {
