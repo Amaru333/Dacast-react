@@ -126,10 +126,6 @@ export const ContentListPage = (props: ContentListProps) => {
         return (props.contentType === "live"|| props.contentType === "vod") && planIsTrial()
     }
 
-    const dailyPlaybackLimitReached = () => {
-        return false
-    }
-
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
     React.useEffect(() => {
@@ -271,14 +267,6 @@ export const ContentListPage = (props: ContentListProps) => {
             case 'expo':
                 return 'expos'
         }
-    }
-
-    const renderPlaybackLimitReached = () => {
-        return (
-            <Bubble className="flex items-center mb2" type='warning' icon="info_outlined">
-                You reached your daily 100 playbacks limit for the trial plan today. <a href='/account/upgrade' className="text-semibold">Upgrade your plan</a> to get more playbacks.
-            </Bubble>
-        )
     }
 
     const contentListHeaderElement = () => {
@@ -451,8 +439,6 @@ export const ContentListPage = (props: ContentListProps) => {
                 </div>
 
             </div>
-
-            { isTrialVodOrLive() && dailyPlaybackLimitReached() && renderPlaybackLimitReached() }
 
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
