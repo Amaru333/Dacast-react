@@ -27,6 +27,7 @@ import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { ContactOwnerModal } from './ContactOwnerModal';
 
 export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
@@ -38,7 +39,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [transferContentModalOpen, setTransferContentModalOpen] = React.useState<boolean>(false)
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
     const [userDetails, setUserDetails] = React.useState<User>(defaultUser)
-    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0})
+    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>(props.billingInfo ? {...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0} : null)
     const [usersTableSort, setUsersTableSort] = React.useState<string>('name')
     const [usersTableKeyword, setUsersTableKeyword] = React.useState<string>(null)
     const [userToDelete, setUserToDelete] = React.useState<User>(null)
@@ -46,6 +47,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [ contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
     let emptySeats: number = props.multiUserDetails.maxSeats - props.multiUserDetails.occupiedSeats
     const refreshSpan = 5000
     const refreshEvery = 5000
@@ -56,6 +58,12 @@ export const UsersPage = (props: UsersComponentProps) => {
     React.useEffect(() => {
         filterUsersTable()
     }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
+
+    React.useEffect(() => {
+        if(props.billingInfo && !planDetails) {
+            setPlanDetails({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0})
+        }
+    }, [props.billingInfo])
 
     const timeoutFunc = () => {
         props.getMultiUsersDetails()
@@ -241,7 +249,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     <InputTags oneTag noBorder={true} placeholder="Search Users..." style={{ display: "inline-block" }} defaultTags={usersTableKeyword ? [usersTableKeyword] : []} callback={(value: string[]) => setUsersTableKeyword(value[0])} />
                 </div>
                 <div className="flex items-center relative">
-                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => setChangeSeatsStepperOpen(true)} size={14} color="dark-violet">Buy more seats</Text>
+                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => {userToken.getPrivilege('privilege-billing') ? setChangeSeatsStepperOpen(true) : setContactOwnerModalOpened(true)}} size={14} color="dark-violet">Buy more seats</Text>
                     <SeparatorHeader className="mx1 inline-block" />
                     <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seats used</Text>
                     <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
@@ -289,12 +297,17 @@ export const UsersPage = (props: UsersComponentProps) => {
             <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
                 <MultiUserUpgradeModal openBuySeatsStepper={() => setChangeSeatsStepperOpen(true)} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
-            <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
-                <Text size={14}>You bought {planDetails.seatToPurchase} additional seats.</Text>
-            </PaymentSuccessModal>
+            {
+                paymentSuccessfulModalOpened && 
+                <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
+                    <Text size={14}>You bought {planDetails.seatToPurchase} additional seats.</Text>
+                </PaymentSuccessModal>
+            }
+
             <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
                 <Text size={14}>Your payment was declined.</Text>
             </PaymentFailedModal>
+            <ContactOwnerModal toggle={setContactOwnerModalOpened} opened={contactOwnerModalOpened} />
         </React.Fragment>
     )
 }

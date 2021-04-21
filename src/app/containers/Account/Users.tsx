@@ -11,6 +11,7 @@ import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { UpgradeAction } from '../../redux-flow/store/Account/Upgrade/actions';
 import { addUserAction, cancelUserInviteAction, deleteUserAction, editUserRoleAction, filterUsersListAction, getMultiUsersDetailsAction, resendUserInviteAction, UsersAction } from '../../redux-flow/store/Account/Users/actions';
 import { MultiUserDetails, User } from '../../redux-flow/store/Account/Users/types';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface UsersComponentProps {
     billingInfo: BillingPageInfos;
@@ -32,9 +33,9 @@ export const Users = (props: UsersComponentProps) => {
         props.getMultiUsersDetails()
         .catch(() => setNoDataFetched(true))
 
-        if(!props.billingInfo) {
+        if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
             props.getBillingPageInfos()
-            .catch(() => noDataFetched)
+            .catch(() => setNoDataFetched(true))
         }
     }, [])
 
@@ -42,7 +43,7 @@ export const Users = (props: UsersComponentProps) => {
         return <ErrorPlaceholder />
     }
     return (
-        (props.multiUserDetails && props.billingInfo) ?
+        props.multiUserDetails ?
             <UsersPage {...props} />
         :
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
