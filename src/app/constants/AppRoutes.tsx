@@ -60,11 +60,13 @@ import Revenue from '../containers/Analytics/Revenue';
 import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
+import Users from '../containers/Account/Users';
 import Audience from '../containers/Analytics/Audience';
 import Paywall from '../containers/Analytics/Paywall';
 import Engagement from '../containers/Analytics/Engagement';
 import DataConsumption from '../containers/Analytics/DataConsumption';
 import DashboardNew from '../containers/Analytics/DashboardNew';
+import AccountSelection from '../containers/Register/AccountSelection';
 
 
 export const AppRoutes: Routes[] = [   
@@ -116,6 +118,13 @@ export const AppRoutes: Routes[] = [
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ForgotPasswordEmail
+    },
+    {
+        path:'/selectAccount',
+        name: 'selectAccount',
+        notDisplayedInNavigation: true,
+        isPublic: true,
+        component: AccountSelection
     },
     {
         path: '/dashboard',
@@ -415,7 +424,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/paywall/withdrawals',
                 name: 'Withdrawals',
-                component: Payout
+                component: Payout,
+                associatePrivilege: 'privilege-payment-request'
             },
             {
                 path: '/paywall/theming',
@@ -438,6 +448,7 @@ export const AppRoutes: Routes[] = [
         name: 'Settings',
         iconName: 'settings',
         component: null,
+        associatePrivilege: 'privilege-account-settings',
         slug: [
             {
                 path: '/settings/encoding',
@@ -482,7 +493,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/plan',
                 name: 'Plan',
-                component: Plan
+                component: Plan,
+                associatePrivilege: 'privilege-billing'
             },
             {
                 path: '/account/upgrade',
@@ -497,12 +509,20 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/company',
                 name: 'Company',
-                component: Company
+                component: Company,
+                associatePrivilege: 'privilege-account-settings'
+            },
+            {
+                path: '/account/users',
+                name: 'Users',
+                component: Users,
+                associatePrivilege: 'privilege-multi-access-beta'
             },
             {
                 path: '/account/billing',
                 name: 'Billing',
-                component: Billing
+                component: Billing,
+                associatePrivilege: 'privilege-billing'
             },
             // {
             //     path: '/account/pending-orders',
@@ -512,7 +532,8 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/account/invoices',
                 name: 'Invoices',
-                component: Invoices
+                component: Invoices,
+                associatePrivilege: 'privilege-billing'
             }
         ]
     },

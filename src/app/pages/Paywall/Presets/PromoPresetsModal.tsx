@@ -38,8 +38,8 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({...promoPreset, startDate: tsToUtc(startDate, promoPreset.timezone), endDate:  tsToUtc(endDate, promoPreset.timezone)})
-        .then(() => {   
+        props.action({...promoPreset, startDate: tsToUtc(startDate, promoPreset.timezone, new Date(startDate * 1000)), endDate:  tsToUtc(endDate, promoPreset.timezone, new Date(endDate * 1000))})
+        .then(() => {
             props.toggle(false)
             setButtonLoading(false)
         }).catch(() => setButtonLoading(false))
@@ -56,7 +56,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                 <Input className='col sm-col-3 col-6 px1' value={promoPreset.limit ? promoPreset.limit.toString() : ''} label='Limit' tooltip="The maximum number of times the promo code can be redeemed" onChange={(event) => setPromoPreset({...promoPreset, limit: parseInt(event.currentTarget.value)})} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DateTimePicker 
+                <DateTimePicker
                     fullLineTz
                     showTimezone={false}
                     defaultTs={promoPreset.startDate}
@@ -64,7 +64,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     hideOption="Always"
                     id="startDate"
                     dropdownTitle="Available"
-                /> 
+                />
             </div>
             <div className='col col-12 mb2 flex items-end'>
                 <DateTimePicker
@@ -76,18 +76,18 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                     hideOption="Forever"
                     id="endDate"
                     dropdownTitle="Until"
-                /> 
+                />
             </div>
             <div className=' col col-12 mb25'>
                 {
                     (endDate >  0 || startDate > 0) &&
-                    <DropdownSingle 
-                        hasSearch 
-                        id='promoPresetTimezoneDropdown' 
-                        className={ClassHalfXsFullMd + ' pr1'}  
-                        dropdownTitle='Timezone' 
-                        callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})} 
-                        list={timezoneDropdownList} 
+                    <DropdownSingle
+                        hasSearch
+                        id='promoPresetTimezoneDropdown'
+                        className={ClassHalfXsFullMd + ' pr1'}
+                        dropdownTitle='Timezone'
+                        callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, timezone: item.title.split(' ')[0]})}
+                        list={timezoneDropdownList}
                         tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                     />
                 }

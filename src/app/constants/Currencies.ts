@@ -18,5 +18,6 @@ export const CURRENCY = [
     'KES',
     'AED',
     'JMD',
-    'ZMW'
+    'ZMW',
+    'SGD'
 ]

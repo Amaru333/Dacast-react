@@ -11,6 +11,7 @@ import { getBillingPageInfosAction } from '../../redux-flow/store/Account/Plan/a
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan/types';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/store/Account/Company';
+import { userToken } from '../../utils/services/token/tokenService';
 
 
 export interface UpgradeContainerProps {
@@ -27,8 +28,10 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getBillingPageInfos()
-        .catch(() => setNodataFetched(true))
+        if(userToken.getPrivilege('privilege-billing')) {
+            props.getBillingPageInfos()
+            .catch(() => setNodataFetched(true))
+        }
 
         props.getPlanDetails()
         .catch(() => setNodataFetched(true))
@@ -43,7 +46,7 @@ const UpgradeContainer = (props: UpgradeContainerProps) => {
     }
 
     return (
-        (props.planDetails && props.billingInfos) ? 
+        props.planDetails ? 
             <UpgradePage planDetails={props.planDetails} billingInfos={props.billingInfos} {...props}/>
             : 
             <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>

@@ -88,7 +88,15 @@ export interface Product {
     unitPrice: BandwidthProductPrice;
 }
 
+interface AddOn {
+    code: string
+    included: boolean
+    price: number
+    quantity?: number
+}
+
 export interface PlanSummary {
+    addOns: AddOn[]
     displayName: string;
     planCode: string;
     planName: string;
@@ -100,7 +108,9 @@ export interface PlanSummary {
     price: number;
     currency: string;
     paymentFrequency: string;
-    paymentTerm: number
+    paymentTerm: number;
+    nbSeats: number;
+    extraSeats: number;
 }
 
 export const planInitialState: BillingPageInfos = {

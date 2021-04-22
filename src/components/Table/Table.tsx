@@ -59,7 +59,7 @@ export const Table = (props: TableProps) => {
             props.body.map((bodyRow, i) => {
                 if(bodyRow.isSubRow) {
                     return (
-                        <TableBodyRow style={{width: '100%'}} isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
+                        <TableBodyRow noCells={props.noCells} style={{width: '100%'}} isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                             <td colSpan={props.body[i - 1].data.length} style={{width: '100%'}}>
                             { bodyRow.data.map((bodyCell: any, item) => {
                                 return bodyCell
@@ -70,7 +70,7 @@ export const Table = (props: TableProps) => {
                     )
                 }
                 return (
-                    <TableBodyRow isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
+                    <TableBodyRow noCells={props.noCells} isProcessing={bodyRow.isProcessing} isSelected={bodyRow.isSelected} isDisabled={bodyRow.isDisabled} contentLoading={props.contentLoading} onClick={() => {}} key={props.id+"tableBodyRow"+i.toString()}>
                         {
                             bodyRow.data.map((bodyCell: any, item) => {
                                 return (

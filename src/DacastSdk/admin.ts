@@ -121,6 +121,7 @@ export interface GetAccountPlanOutput {
     itemLimit: number;
     folderDepth: number;
     renditionsPerRecipe: number;
+    maxSeats: number;
     liveStream: PlanSettingEndpoint;
     compatibleStreams: PlanSettingEndpoint;
     chinaStreams: PlanSettingEndpoint;
@@ -141,6 +142,8 @@ export interface GetAccountPlanOutput {
     expo: PlanSettingEndpoint;
     ultraSecureChannel: PlanSettingEndpoint;
     phoneSupport: PlanSettingEndpoint;
+    multiUserAccess: PlanSettingEndpoint;
+    multiUserAccessBeta: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

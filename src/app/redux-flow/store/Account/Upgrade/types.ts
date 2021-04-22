@@ -24,6 +24,7 @@ export interface Plan {
     privilegesTotal: number;
     termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
+    nbSeats: number;
 }
 
 export interface Allowances {

@@ -4,12 +4,12 @@ import { userToken } from '../../../../utils/services/token/tokenService';
 import { axiosClient } from '../../../../utils/services/axios/axiosClient';
 
 const getPlanDetailsService = async () => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     return await axiosClient.get('/accounts/' + userId + '/plans')
 }
 
 export const purchasePlanService = async (data: Plan, recurlyToken: any, token3Ds?: string) => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     return await axiosClient.post('/accounts/' + userId + '/plans/purchase',
         {
             planCode: data.code,

@@ -28,7 +28,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
         props.setStepValidated(selectedItems.length > 0)
     }, [selectedItems])
 
-    let userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    let accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     const fetchFolderData = async (tempArray: FolderAsset[]) => {
 
@@ -72,7 +72,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     React.useEffect(() => {
         if(folderData && !selectedFolder && !searchString) {
             setSelectedItems(folderData.filter((content) => {
-                return groupContents.includes(userId + '-' + content.type + '-' + content.objectID)
+                return groupContents.includes(accountId + '-' + content.type + '-' + content.objectID)
             }))
         }
     }, [folderData, groupContents])

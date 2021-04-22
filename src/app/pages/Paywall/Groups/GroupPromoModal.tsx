@@ -52,7 +52,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
 
     const handleSubmit = () => {
         setButtonLoading(true)
-        props.action({ ...groupPromo, startDate: tsToUtc(startDate, groupPromo.timezone), endDate:  tsToUtc(endDate, groupPromo.timezone) })
+        props.action({ ...groupPromo, startDate: tsToUtc(startDate, groupPromo.timezone, new Date(startDate * 1000)), endDate:  tsToUtc(endDate, groupPromo.timezone, new Date(endDate * 1000)) })
             .then(() => {
                 props.toggle(false)
                 setButtonLoading(false)
