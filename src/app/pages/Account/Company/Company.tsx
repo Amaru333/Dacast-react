@@ -23,7 +23,6 @@ import { Divider } from '../../../../shared/MiscStyles';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { User } from '../../../redux-flow/store/Account/Users/types';
 import EventHooker from '../../../../utils/services/event/eventHooker';
-import { userToken } from '../../../utils/services/token/tokenService';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
