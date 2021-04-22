@@ -52,7 +52,7 @@ export const ContentListPage = (props: ContentListProps) => {
 
     let qs = useQuery()
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     const formatFilters = () => {
         let filters: FilteringContentState = {
@@ -287,7 +287,7 @@ export const ContentListPage = (props: ContentListProps) => {
     }
 
     const handleThumbnailClick = (contentId: string) => {
-        setPreviewedContent(`${userId}-${props.contentType}-${contentId}`)
+        setPreviewedContent(`${accountId}-${props.contentType}-${contentId}`)
         setPreviewModalOpen(true)
     }
 

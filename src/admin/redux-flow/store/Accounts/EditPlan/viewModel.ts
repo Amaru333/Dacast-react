@@ -5,7 +5,15 @@ export const formatGetAccountPlanInput = (data: string): string => data
 export const formatGetAccountPlanOutput = (data: GetAccountPlanOutput): PlanInfo => {
     let formattedData: PlanInfo = {
         ...data,
-        expiresAt: data.expiresAt ? new Date(data.expiresAt * 1000).toISOString().replace('T', ' T') : ''
+        expiresAt: data.expiresAt ? new Date(data.expiresAt * 1000).toISOString().replace('T', ' T') : '',
+        multiUserAccess: data.multiUserAccess ? data.multiUserAccess : {
+            planValue: false,
+            userValue: null
+        },
+        multiUserAccessBeta: data.multiUserAccessBeta ? data.multiUserAccessBeta : {
+            planValue: false,
+            userValue: null
+        },
     }
 
     return formattedData

@@ -5,6 +5,7 @@ export enum ActionTypes {
     GET_UPLOAD_LOGO_URL = "@@account_company/GET_UPLOAD_LOGO_URL",
     UPLOAD_COMPANY_LOGO = "@@account_company/UPLOAD_COMPANY_LOGO",
     DELETE_COMPANY_LOGO = "@@account_company/DELETE_COMPANY_LOGO",
+    MAKE_USER_OWNER = "@@account_company/MAKE_USER_OWNER"
 }
 
 

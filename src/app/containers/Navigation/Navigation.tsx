@@ -5,13 +5,23 @@ import { Link, useLocation, useHistory } from 'react-router-dom'
 import {MainMenuProps, ElementMenuProps } from './NavigationTypes'
 import { ContainerStyle, ImageStyle, SectionStyle, SectionTitle, ButtonMenuStyle, BreakStyle, ContainerElementStyle, OverlayMobileStyle, SubMenuElement, SubMenu, TextStyle} from './NavigationStyle'
 import { DropdownItem, DropdownItemText, DropdownList } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
+import { getDashboardGeneralDetailsAction } from '../../redux-flow/store/Dashboard';
 const logo = require('../../../../public/assets/logo.png');
 const logoSmall = require('../../../../public/assets/logo_small.png');
 import { useOutsideAlerter } from '../../../utils/utils';
-import Scrollbar from "react-scrollbars-custom";
 import { userToken } from '../../utils/services/token/tokenService';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
-
+import { Modal } from "../../../components/Modal/Modal";
+import { MultiUserUpgradeModal } from "../../pages/Account/Users/MultiUserUpgradeModal";
+import { ApplicationState } from "../../redux-flow/store";
+import { getPlanDetailsAction, UpgradeAction } from "../../redux-flow/store/Account/Upgrade/actions";
+import { ThunkDispatch } from "redux-thunk";
+import { connect } from "react-redux";
+import { CustomStepper } from "../../../components/Stepper/Stepper";
+import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartStep";
+import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
+import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
+import { Label } from "../../../components/FormsComponents/Label/Label";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -24,7 +34,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
     )
 }
 
-export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
+const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     let location = useLocation();
     let history = useHistory();
@@ -56,7 +66,18 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [addDropdownIsOpened, setAddDropdownIsOpened] = React.useState<boolean>(false)
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
+
+    //REMOVE ALL MOCK DATA WHEN BACKEND DONE
+    const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
+    const [planDetails, setPlanDetails] = React.useState<PlanSummary>(props.billingInfo.currentPlan)
+    const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
+
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
+
+    React.useEffect(() => {
+        props.getPlanDetails()
+    }, [])
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
@@ -85,8 +106,6 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
-    
-
     //Funtions for Add button dropdown
 
     useOutsideAlerter(addDropdownListRef, () => {
@@ -113,6 +132,11 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             default:
                 return
         }
+    }
+
+    const openBuySeatsStepper = () => {
+        setChangeSeatsStepperOpen(true)
+        setUpgradeMultiUserModalOpen(false)
     }
 
     const renderAddList = () => {
@@ -168,17 +192,38 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
-                                    if(!subMenuElement.notDisplayedInNavigation) {
+                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
+                                    if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan.nbSeats === 1){
                                         return (
-                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
-                                                <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                            <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
+                                                <div className='flex'>
                                                     <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                                </SubMenuElement>
-                                            </Link>
+                                                    <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
+                                                </div>
+
+                                            </SubMenuElement>
                                         )
+                                    } else {
+                                        if(subMenuElement.name === "Users") {
+                                            return (
+                                                <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                                    <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                        <div className='flex items-center'>
+                                                            <TextStyle className='pr2' selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                            <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
+                                                        </div>
+                                                    </SubMenuElement>
+                                                </Link>
+                                            )
+                                        }
+                                    return (
+                                        <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                            <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                            </SubMenuElement>
+                                        </Link>
+                                    )
                                     }
-                                    return 
                                 })
 
                                 }
@@ -202,7 +247,7 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
     return (
         <>
-        {props.isMobile ? <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } /> : null }
+        {props.isMobile && <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } />}
        
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
                     <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
@@ -220,10 +265,52 @@ export const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                         {renderMenu()}
                     </SectionStyle>
                 <IconStyle onClick={() => {props.setMenuLocked(!props.menuLocked)}} className="ml-auto mt-auto mr2 mb2" >{props.menuLocked? "arrow_back" : 'arrow_forward'}</IconStyle>
-           
-                  
             </ContainerStyle>
+            {
+                changeSeatsStepperOpen && 
+                    <CustomStepper
+                    stepperHeader="Change Number of Seats"
+                    stepList={changeSeatsStepList}
+                    opened={changeSeatsStepperOpen}
+                    lastStepButton="Purchase"
+                    finalFunction={() => {}}
+                    functionCancel={() => setChangeSeatsStepperOpen(false)}
+                    stepperData={planDetails}
+                    updateStepperData={(plan: PlanSummary) => setPlanDetails(plan)}
+                    emptySeats={1}
+                    planData={planDetails}
+                    billingInfo={props.billingInfo}
+                />
+            }
+
+            <Modal modalTitle="Upgrade for Multi-User Access?" size="small" hasClose={false} toggle={() => setUpgradeMultiUserModalOpen(false)} opened={upgradeMultiUserModalOpen} >
+                <MultiUserUpgradeModal openBuySeatsStepper={openBuySeatsStepper} toggle={setUpgradeMultiUserModalOpen} />
+            </Modal>
 
         </>
     )
 }
+
+export function mapStateToProps(state: ApplicationState) {
+    return {
+        planDetails: state.account.upgrade,
+        billingInfo: state.account.plan,
+        infos: state.dashboard.info
+    }
+}
+
+export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
+    return {
+        getPlanDetails: async () => {
+            await dispatch(getPlanDetailsAction(undefined))
+        },
+        getDashboardDetails: async () => {
+            await dispatch(getDashboardGeneralDetailsAction(undefined));
+        },
+        getBillingPageInfos: async () => {
+            await dispatch(getBillingPageInfosAction(undefined));
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (MainMenu);

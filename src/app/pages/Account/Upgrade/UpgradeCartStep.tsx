@@ -28,7 +28,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
     if(props.stepperData.name.indexOf('scale') !== -1) {
         segmentService.track('Upgrade Form Completed', {
             action: 'Features Form Submitted',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             'plan_name': props.stepperData.name,
             step: 2,
         })

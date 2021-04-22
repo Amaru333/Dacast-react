@@ -31,6 +31,8 @@ export const reducer = (state = companyInitialState, action: CompanyAction): Com
             return {
                 ...state,
             }
+        case ActionTypes.MAKE_USER_OWNER:
+            return state
         default:
             return state;
     }

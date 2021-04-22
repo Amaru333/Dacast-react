@@ -45,7 +45,7 @@ export const formatPutContentPaywallInfoOutput = (contentType: ContentType) => (
 }
 
 export const formatGetContentPricesInput = (data: {id: string; contentType: ContentType}): string => {
-    let returnedString: string = userToken.getUserInfoItem('custom:dacast_user_id') + '-' + data.contentType + '-' + data.id
+    let returnedString: string = userToken.getUserInfoItem('user-id') + '-' + data.contentType + '-' + data.id
     return returnedString
 }
 
@@ -83,7 +83,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
 }
 
 export const formatPostContentPriceInput = (data: {price: Preset; id: string; contentType: ContentType}): PostContentPriceInput => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     const dateAvailable = data.price.settings.startMethod === "Upon Purchase" ? "immediately" : new Date(data.price.settings.startDate * 1000).toLocaleString()
 
     let parsedPrice: PostContentPriceInput = null
@@ -142,7 +142,7 @@ export const formatPostContentPriceOutput = (endpointResponse: PostContentPriceO
 }
 
 export const formatPutContentPriceInput = (data: {price: Preset; contentId: string; contentType: ContentType}): PutContentPriceInput => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     let parsedPrice: PutContentPriceInput = null
     if(data.price.priceType === 'Subscription') {
         parsedPrice = {
@@ -189,7 +189,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
 }
 
 export const formatDeleteContentPriceInput = (data: {price: Preset; contentId: string; contentType: ContentType}): DeleteContentPriceInput => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     let formattedData: DeleteContentPriceInput = {
         id: data.price.id,
@@ -212,7 +212,7 @@ export const formatDeleteContentPriceOutput = (endpointResponse: null, dataReact
 export const formatGetContentPromosInput = (data: {contentId: string; contentType: ContentType}): string => 'page=1&per-page=100'
 
 export const formatGetContentPromosOutput = (endpointResponse: GetPromoOutput, dataReact: {contentId: string; contentType: ContentType}): {data: Promo[], contentId: string, contentType: ContentType} => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
     let formattedData: {data: Promo[], contentId: string, contentType: ContentType} = {
         data: endpointResponse.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${dataReact.contentType}-${dataReact.contentId}`) !== -1),
         contentType: dataReact.contentType,
