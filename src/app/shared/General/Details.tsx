@@ -15,7 +15,7 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: ContentType, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-    const userId = userToken.getUserInfoItem('user-id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     function saveFile(filename: string) {
         dacastSdk.getDownloadVodUrl(props.contentDetails.id)
@@ -93,8 +93,8 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                     <Text size={14} weight="med">Content ID</Text>
                 </LinkBoxLabel>
                 <LinkBox>
-                    <LinkText size={14} weight="reg">{userId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
-                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(userId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                    <LinkText size={14} weight="reg">{accountId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
+                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(accountId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
                     <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                 </LinkBox>
             </div>

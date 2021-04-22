@@ -53,14 +53,14 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
         if (savePreset) {
             props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToUtc(startDate, newPromoPreset.timezone), endDate:  tsToUtc(endDate, newPromoPreset.timezone) })
         }
-        const userId = userToken.getUserInfoItem('user-id')
+        const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
         props.action(
             {
                 ...newPromoPreset,
                 startDate: tsToUtc(startDate, newPromoPreset.timezone),
                 endDate: tsToUtc(endDate, newPromoPreset.timezone),
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
-                assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
+                assignedContentIds: [`${accountId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
                 id: props.actionButton === 'Create' ? null : newPromoPreset.id
