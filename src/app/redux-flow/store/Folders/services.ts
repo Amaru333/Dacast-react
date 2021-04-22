@@ -18,7 +18,7 @@ const restoreContent = async (content: ContentType[]) => {
     content.map(async (c) => {
         switch(c.type) {
             case 'vod':
-                return await dacastSdk.restoreVod(c.id)
+                return await dacastSdk.postRestoreVod(c.id)
             case 'channel':
             case'playlist':
                 return
