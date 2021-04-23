@@ -18,8 +18,7 @@ export const MultiCurrencyDropdown = (props: MultiCurrencyDropdownProps) => {
             id={props.id}
             style={{ maxHeight: 30, width: 110, zIndex: 100 }} 
             dropdownDefaultSelect={props.defaultCurrency} 
-            list={Object.keys(props.currenciesList).map(key => {
-                if( key !== 'aud') {
+            list={Object.keys(props.currenciesList).map(key => {console.log(key)
                     return {
                         title: key.toUpperCase() + ' - ' + handleCurrencySymbol(key),
                         data: {
@@ -27,7 +26,6 @@ export const MultiCurrencyDropdown = (props: MultiCurrencyDropdownProps) => {
                             id: key
                         }
                     }
-                }
             }).filter(f => f)} 
             callback={(value: DropdownSingleListItem) => props.callback(value)} 
         />
