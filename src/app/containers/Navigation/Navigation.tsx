@@ -22,7 +22,7 @@ const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
         <ContainerElementStyle className='my1' {...props} >
             <IconStyle className="noTransition flex pr2">{props.icon}</IconStyle>
             <Text hidden={!props.isOpen && !props.isMobile} size={14} weight="reg" > {props.children} </Text>
-            {props.isLocked && <IconStyle style={{right: props.isOpen ? 48 : 2, marginTop: props.isOpen ? 4 : 12}} className="noTransition flex absolute" customsize={16}>lock_outline</IconStyle>}
+            {props.isLocked && <IconStyle style={{right: props.isOpen ? 16 : 2, marginTop: props.isOpen ? 4 : 12}} className="noTransition flex absolute" customsize={16}>lock_outline</IconStyle>}
             <IconStyle style={{right:16, marginTop: 4}} className={"noTransition flex absolute" + (!props.isOpen && !props.isMobile ? ' hide' : '')} customsize={15} coloricon='gray-7'>{props.arrowIcon}</IconStyle>
         </ContainerElementStyle>
     )
@@ -169,14 +169,14 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
         return props.routes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
-                const isLocked = userToken.isUnauthorized(props.associatePrivilege)
+                const isLocked = element.slug && !element.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
                 }
                 else if(element.path === 'title') {
                     return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
                 }
-                else if(element.slug) {
+                else if(element.slug && element.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length) {
                     return (
                         <div key={'superkey'+i}>
                             <ElementMenu

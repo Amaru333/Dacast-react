@@ -10,13 +10,9 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { Privilege } from '../../../utils/services/token/token';
-import { userToken } from '../../utils/services/token/tokenService';
-import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface PaywallSettingsComponentProps {
     paywallSettingsInfos: PaywallSettingsInfos;
-    associatePrivilege: Privilege;
     getPaywallSettingsInfos: () => Promise<void>;
     savePaywallSettingsInfos: (data: PaywallSettingsInfos) => Promise<void>;
     showDiscardToast: (text: string, size: Size, notificationType: NotificationType) => void;
@@ -24,15 +20,10 @@ export interface PaywallSettingsComponentProps {
 const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
-            setPlanLimitReachedModalOpen(true)
-        } else {
-            props.getPaywallSettingsInfos()
-                .catch(() => setNodataFetched(true))
-        }
+        props.getPaywallSettingsInfos()
+            .catch(() => setNodataFetched(true))
     }, [])
 
     if(noDataFetched) {
@@ -40,12 +31,9 @@ const PaywallSettings = (props: PaywallSettingsComponentProps) => {
     }
 
     return (
-        <>
-            {props.paywallSettingsInfos || userToken.isUnauthorized(props.associatePrivilege) ?
-                <PaywallSettingsPage {...props} />
-                : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
-            <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>
-        </>
+        props.paywallSettingsInfos ?
+            <PaywallSettingsPage {...props} />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

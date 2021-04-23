@@ -8,14 +8,10 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { CompanyPageInfos, getCompanyPageDetailsAction } from '../../redux-flow/store/Account/Company';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { Privilege } from '../../../utils/services/token/token';
-import { userToken } from '../../utils/services/token/tokenService';
-import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface PaywallThemingComponentProps {
     paywallThemes: PaywallThemingData;
     companyState: CompanyPageInfos;
-    associatePrivilege: Privilege;
     getPaywallThemes: () => Promise<void>;
     savePaywallTheme: (data: PaywallTheme) => Promise<void>;
     createPaywallTheme: (data: PaywallTheme) => Promise<void>;
@@ -26,19 +22,14 @@ export interface PaywallThemingComponentProps {
 const PaywallTheming = (props: PaywallThemingComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
-            setPlanLimitReachedModalOpen(true)
-        } else {
-            props.getPaywallThemes()
-                .catch(() => setNodataFetched(true))
+        props.getPaywallThemes()
+            .catch(() => setNodataFetched(true))
 
-            if(!props.companyState) {
-                props.getCompanyState()
-                    .catch(() => setNodataFetched(true))
-            }
+        if(!props.companyState) {
+            props.getCompanyState()
+                .catch(() => setNodataFetched(true))
         }
     }, [])
 
@@ -47,12 +38,9 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
     }
 
     return (
-        <>
-            {props.paywallThemes && props.companyState || userToken.isUnauthorized(props.associatePrivilege) ?
-                <PaywallThemingPage {...props} />
-                : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
-            <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>
-        </>
+        props.paywallThemes && props.companyState ?
+            <PaywallThemingPage {...props} />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 

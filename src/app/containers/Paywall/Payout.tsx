@@ -10,15 +10,11 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
-import { Privilege } from '../../../utils/services/token/token';
-import { userToken } from '../../utils/services/token/tokenService';
-import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface PayoutComponentProps {
     payoutInfos: PayoutInfos;
     getPaymentMethods: () => Promise<void>;
     getWithdrawalRequests: () => Promise<void>;
-    associatePrivilege: Privilege;
     addPaymentMethod: (data: PaymentMethodPut) => Promise<void>;
     updatePaymentMethod: (data: PaymentMethodPut) => Promise<void>;
     deletePaymentMethod: (data: PaymentMethod) => Promise<void>;
@@ -32,20 +28,15 @@ export interface PayoutComponentProps {
 const Payout = (props: PayoutComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
-    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
-            setPlanLimitReachedModalOpen(true)
-        } else {
-            props.getPaymentMethods()
-                .catch(() => setNodataFetched(true))
+        props.getPaymentMethods()
+            .catch(() => setNodataFetched(true))
 
-            props.getWithdrawalRequests()
-                .catch(() => setNodataFetched(true))
+        props.getWithdrawalRequests()
+            .catch(() => setNodataFetched(true))
 
-            props.getBalance()
-        }
+        props.getBalance()
     }, [])
 
     if(noDataFetched) {
@@ -53,12 +44,9 @@ const Payout = (props: PayoutComponentProps) => {
     }
 
     return (
-        <>
-            {props.payoutInfos || userToken.isUnauthorized(props.associatePrivilege) ?
-                <PayoutPage {...props} />
-                : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
-            <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>
-        </>
+        props.payoutInfos ?
+            <PayoutPage {...props} />
+            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
     )
 }
 
