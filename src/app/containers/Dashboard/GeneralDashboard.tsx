@@ -185,7 +185,7 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
             return <Text size={12} weight="reg" color="red"> Upgrade before you run out of {props.widget}</Text>
         }
         if(props.percentage <= 0) {
-            if(props.widget === 'storage' || props.widget === 'encoding') {
+            if(props.widget === 'storage' || props.widget === 'encoding' || props.widget === 'bandwidth') {
                 return <Text size={12} weight="reg" color="red">You have no {props.widget} remaining</Text>
             }
         }

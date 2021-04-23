@@ -9,7 +9,7 @@ export const handleButtonToPurchase = (percentage: number, purchaseItem: string,
 
     if(percentage <= 25 ) {
         return (
-            <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="red" sizeButton="xs" onClick={() => history.push("/account/upgrade")}>Upgrade</Button></Text>
+            <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="blue" sizeButton="xs" onClick={() => history.push("/account/upgrade")}>Upgrade</Button></Text>
         )
     } else {
         return (

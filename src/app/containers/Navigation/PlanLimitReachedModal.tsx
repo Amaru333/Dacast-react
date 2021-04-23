@@ -38,7 +38,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
 
     const navigateToDashboard = () => {
         props.toggle()
-        history.push('/dashboard')
+        history.push('/')
     }
 
     const currentPathIsDashboard = () => {

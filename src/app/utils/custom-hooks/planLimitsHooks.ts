@@ -62,13 +62,13 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
             setPlanLimitReachedModalOpen(true)
             return
         }
-        if(bandwidthLimitReached()) {
-            setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
+        if(storageLimitReached()) {
+            setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
             setPlanLimitReachedModalOpen(true)
             return
         }
-        if(storageLimitReached()) {
-            setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
+        if(bandwidthLimitReached()) {
+            setPlanLimitReachedModalType('more_data_needed' + (planIsTrial() ? '_trial' : ''))
             setPlanLimitReachedModalOpen(true)
             return
         }
