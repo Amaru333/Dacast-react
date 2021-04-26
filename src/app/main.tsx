@@ -66,7 +66,7 @@ const companyLogoTimeoutFunc = () => {
 
 EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) { 
+    if(timeoutId === null) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
 })
@@ -83,7 +83,7 @@ EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
 
 EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) { 
+    if(timeoutId === null) {
         timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 })
@@ -92,9 +92,6 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
     let mobileWidth = useMedia('(max-width:780px');
 
     if (userToken.isLoggedIn()) {
-        if (props.associatePrivilege && !userToken.getPrivilege(props.associatePrivilege)) {
-            return <NotFound />
-        }
         return (
             <Route
                 path={props.path}
@@ -279,6 +276,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
+                const routeIsLocked = route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
                 if(route.name === 'impersonate') {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
@@ -296,12 +294,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                         } else {
                             <Route key={route.path} path={route.path}><route.component /></Route>
                         }
-                        
+
                     } else {
                         return <Route key={route.path} path={route.path}><route.component /></Route>;
                     }
                 }
-                if (!route.slug) {
+                if (!route.slug || routeIsLocked) {
                     return <PrivateRoute key={i.toString()}
                         path={route.path}
                         associatePrivilege={route.associatePrivilege}

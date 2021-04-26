@@ -23,8 +23,7 @@ const PaywallSettings = (props: PaywallSettingsComponentProps) => {
 
     React.useEffect(() => {
         props.getPaywallSettingsInfos()
-        .catch(() => setNodataFetched(true))
-
+            .catch(() => setNodataFetched(true))
     }, [])
 
     if(noDataFetched) {

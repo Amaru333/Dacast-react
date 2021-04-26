@@ -11,7 +11,6 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 
-
 export interface PayoutComponentProps {
     payoutInfos: PayoutInfos;
     getPaymentMethods: () => Promise<void>;
@@ -32,14 +31,13 @@ const Payout = (props: PayoutComponentProps) => {
 
     React.useEffect(() => {
         props.getPaymentMethods()
-        .catch(() => setNodataFetched(true))
+            .catch(() => setNodataFetched(true))
 
         props.getWithdrawalRequests()
-        .catch(() => setNodataFetched(true))
+            .catch(() => setNodataFetched(true))
 
         props.getBalance()
-
-    }, []) 
+    }, [])
 
     if(noDataFetched) {
         return <ErrorPlaceholder />

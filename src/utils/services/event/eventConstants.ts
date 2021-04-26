@@ -20,6 +20,7 @@ const EventDefinitions = [
     defineEvent('EVENT_FORCE_TOKEN_REFRESH', {} as unknown),
     defineEvent('EVENT_RENDITIONS_ENCODED', {} as unknown),
     defineEvent('EVENT_COMPANY_PAGE_EDITED', {} as unknown),
+    defineEvent('EVENT_LOG_IN_SUCCESS', {} as unknown),
     defineEvent('ADDITIONAL_SEATS_PURCHASED', {} as unknown)
 ]
 export const Events = EventDefinitions.map(event => event[0])

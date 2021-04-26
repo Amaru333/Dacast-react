@@ -11,22 +11,23 @@ import { Action, getContentListAction, deleteContentAction } from '../../redux-f
 
 const ExposList = (props: ContentListProps) => {
 
-    
     return  <ContentListPage
-                contentType='expo'
-                items={props.contentListState['expo']}
-                themesList={props.themesList}
-                getContentList={props.getContentList}
-                deleteContentList={props.deleteContentList}
-                getThemesList={props.getThemesList}
-                showToast={props.showToast}
-            />
+        contentType='expo'
+        items={props.contentListState['expo']}
+        themesList={props.themesList}
+        getContentList={props.getContentList}
+        deleteContentList={props.deleteContentList}
+        getThemesList={props.getThemesList}
+        showToast={props.showToast}
+        infos={props.infos}
+    />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
-        themeList: state.settings.theming
+        themeList: state.settings.theming,
+        infos: state.dashboard.info
     };
 }
 

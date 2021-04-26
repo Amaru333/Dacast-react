@@ -61,7 +61,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             }).catch(() => {
                 setSaveButtonLoading(false)
             })
-        } 
+        }
     }
 
     const PaywallThemingList = () => {
@@ -75,7 +75,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         }
 
         const paywallThemingTableBody = () => {
-            return props.paywallThemes.themes.map((theme, key) => {
+            return props.paywallThemes.themes && props.paywallThemes.themes.map((theme, key) => {
                 return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
                     theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
@@ -84,18 +84,18 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                 <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>
                                 <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                             </ActionIcon>
-                        {theme.name !== "Standard Theme" && 
+                        {theme.name !== "Standard Theme" &&
                             <ActionIcon>
                                 <IconStyle id={"deleteTooltip" + key} onClick={(event) => { event.preventDefault();props.deletePaywallTheme(theme)}} >delete</IconStyle>
                                 <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
                             </ActionIcon>
                         }
-                        {theme.name !== "Standard Theme" && 
+                        {theme.name !== "Standard Theme" &&
                             <ActionIcon>
                                 <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.paywallThemes.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
                                 <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
                             </ActionIcon>
-                        }  
+                        }
                     </IconContainer>
 
                 ]}
@@ -147,24 +147,24 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Button Colour</Text>
                             </ColorPickerLabel>
-                            <ColorPicker 
-                                className='mb1' 
-                                defaultColor={selectedTheme.splashScreen.buttonColor} 
+                            <ColorPicker
+                                className='mb1'
+                                defaultColor={selectedTheme.splashScreen.buttonColor}
                                 callback={(color: string) => {
                                     inPlayerPreviewIframeRef.current.contentWindow.postMessage({
                                         action: 'setButtonColor',
                                         value: { hex: color }
                                     });
                                     setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonColor: color}})
-                                }} 
+                                }}
                             />
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
                                 <Text className="mt2" size={14} weight='med'>Button Text Colour</Text>
                             </ColorPickerLabel>
-                            <ColorPicker 
-                                className='mb1' 
+                            <ColorPicker
+                                className='mb1'
                                 defaultColor={selectedTheme.splashScreen.buttonTextColor}
                                 callback={(color: string) => {
                                     inPlayerPreviewIframeRef.current.contentWindow.postMessage({
@@ -172,20 +172,20 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                         value: { hex: color }
                                     });
                                     setSelectedTheme({...selectedTheme, splashScreen:{...selectedTheme.splashScreen, buttonTextColor: color}})
-                                }} 
+                                }}
                             />
                         </div>
-                        
+
                     </div>
-                    <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>   
+                    <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>
                         <Text className="mt2" size={14} weight='reg'>The Login Screen is shown before the user is allowed to purchase the content.</Text>
-                        <div className="mt2">        
+                        <div className="mt2">
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Button Colour</Text>
                             </ColorPickerLabel>
-                            <ColorPicker 
-                                className='mb1' 
-                                defaultColor={selectedTheme.loginScreen.buttonColor} 
+                            <ColorPicker
+                                className='mb1'
+                                defaultColor={selectedTheme.loginScreen.buttonColor}
                                 callback={(color: string) => {
                                     inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                         action: 'setButtonColor',
@@ -194,15 +194,15 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                     setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, buttonColor: color}})
 
                                 }
-                                } 
+                                }
                             />
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Primary Colour</Text></ColorPickerLabel>
-                            <ColorPicker 
-                                className='mb1' 
-                                defaultColor={selectedTheme.loginScreen.primaryColor} 
+                            <ColorPicker
+                                className='mb1'
+                                defaultColor={selectedTheme.loginScreen.primaryColor}
                                 callback={(color: string) => {
                                     inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                         action: 'setPrimaryColor',
@@ -211,16 +211,16 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                     setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, primaryColor: color}})
 
                                 }
-                                } 
+                                }
                             />
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
                                 <Text size={14} weight='med'>Header Colour</Text>
                             </ColorPickerLabel>
-                            <ColorPicker 
-                                className='mb1' 
-                                defaultColor={selectedTheme.loginScreen.headerColor} 
+                            <ColorPicker
+                                className='mb1'
+                                defaultColor={selectedTheme.loginScreen.headerColor}
                                 callback={(color: string) => {
                                     inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                         action: 'setHeaderColor',
@@ -228,22 +228,22 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                     });
                                     setSelectedTheme({...selectedTheme, loginScreen:{...selectedTheme.loginScreen, headerColor: color}})
                                 }
-                                } 
+                                }
                             />
                         </div>
-                        <Toggle 
-                            id='companyLogoToggle' 
+                        <Toggle
+                            id='companyLogoToggle'
                             label='Company Logo'
-                            className="mt25" 
-                            defaultChecked={selectedTheme.loginScreen.hasCompanyLogo} 
+                            className="mt25"
+                            defaultChecked={selectedTheme.loginScreen.hasCompanyLogo}
                             onChange={() => {
                                 setSelectedTheme({...selectedTheme, loginScreen: {...selectedTheme.loginScreen, hasCompanyLogo: ! selectedTheme.loginScreen.hasCompanyLogo}})
                                 inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                     action: 'setThemeLogo',
                                     value: !selectedTheme.loginScreen.hasCompanyLogo
-                                });  
+                                });
                             }}
-                                
+
                         />
                     </div>
                 </Card>
@@ -259,7 +259,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     return (
         currentPage === 'list' ?
             PaywallThemingList()
-            : 
+            :
             <div className='col col-12'>
                 <Card className='col-12 sm-col-8 right pl1 xs-mb2'>
                     <iframe className={selectedTab !== 'Splash Screen' ? 'hide' : ''} ref={inPlayerPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/public/iframe/InPlayerPaywallPreview.html"
@@ -273,21 +273,21 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                                 value: { hex: selectedTheme.splashScreen.buttonTextColor }
                             });
                         }}
-                    />                   
-                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/public/iframe/InPlayerConnectionPreview.html" 
+                    />
+                    <iframe className={selectedTab === 'Splash Screen' ? 'hide' : ''} ref={inPlayerConnectionPreviewIframeRef} frameBorder="0" height="550px" scrolling="no" width="100%" src="/public/iframe/InPlayerConnectionPreview.html"
                         onLoad={() => {
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setButtonColor',
                                 value: {hex : selectedTheme.loginScreen.buttonColor}
-                            });  
+                            });
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setPrimaryColor',
                                 value: {hex : selectedTheme.loginScreen.primaryColor}
-                            });  
+                            });
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setHeaderColor',
                                 value: {hex : selectedTheme.loginScreen.headerColor}
-                            });  
+                            });
                             inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                 action: 'setThemeLogo',
                                 value: selectedTheme.loginScreen.hasCompanyLogo
@@ -295,15 +295,15 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                             if(props.companyState.logoURL) {
                                 inPlayerConnectionPreviewIframeRef.current.contentWindow.postMessage({
                                     action: 'setLogoSrc',
-                                    value: props.companyState.logoURL 
+                                    value: props.companyState.logoURL
                                 });
                             }
-                            
+
                         }}
                     />
                 </Card>
                 {PaywallThemingInPlayerCustomization()}
-                
+
             </div>
     )
 }

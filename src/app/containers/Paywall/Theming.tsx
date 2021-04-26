@@ -25,13 +25,12 @@ const PaywallTheming = (props: PaywallThemingComponentProps) => {
 
     React.useEffect(() => {
         props.getPaywallThemes()
-        .catch(() => setNodataFetched(true))
+            .catch(() => setNodataFetched(true))
 
         if(!props.companyState) {
             props.getCompanyState()
-        .catch(() => setNodataFetched(true))
+                .catch(() => setNodataFetched(true))
         }
-        
     }, [])
 
     if(noDataFetched) {

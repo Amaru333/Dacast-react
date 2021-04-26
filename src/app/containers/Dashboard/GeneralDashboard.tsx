@@ -1,5 +1,5 @@
 import React from 'react'
-import { classContainer, WidgetHeader, classItemThirdWidthContainer, classItemHalfWidthContainer } from './DashboardStyles'
+import { classContainer, WidgetHeader, classItemThirdWidthContainer, classItemHalfWidthContainer, WidgetHeaderTop } from './DashboardStyles'
 import { WidgetElement } from './WidgetElement'
 import { Text } from '../../../components/Typography/Text';
 import { ProgressBar } from '../../../components/FormsComponents/Progress/ProgressBar/ProgressBar';
@@ -15,7 +15,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService';
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number; }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
+export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
@@ -23,17 +23,17 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     let classItem =  props.isPlanPage || (props.plan && props.plan.displayName === "30 Day Trial") ? classItemThirdWidthContainer : classItemHalfWidthContainer
 
     let allowanceDataFetching = Number.isNaN(props.profile.storage.consumed)
-   
+
     const storage = {
         percentage: getPercentage(props.profile.storage.limit-props.profile.storage.consumed, props.profile.storage.limit),
         left: props.profile.storage.limit-props.profile.storage.consumed,
         limit: props.profile.storage.limit,
-    } 
+    }
     const bandwidth = {
         percentage: getPercentage(props.profile.bandwidth.limit-props.profile.bandwidth.consumed, props.profile.bandwidth.limit),
         left: props.profile.bandwidth.limit-props.profile.bandwidth.consumed,
         limit: props.profile.bandwidth.limit,
-    } 
+    }
 
     const handleBillingPeriod = () => {
         if(!props.plan || props.plan.displayName === "Free" || !props.plan.periodEndsAt || !props.plan.periodStartedAt) {
@@ -43,43 +43,65 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
     }
 
+    const renderUpgradeText = () => {
+        if(props.plan.trialExpiresIn > 7) {
+            return <span><a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
+        } else if(props.plan.trialExpiresIn > 0) {
+            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade Now</a></span>
+        } else {
+            return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
+        }
+    }
+
+    const renderDaysRemaining = () => {
+        if(props.plan.trialExpiresIn > 0) {
+            return (
+                <div className="flex flex-wrap items-baseline mb1">
+                    <Text className="mr1" size={32} weight="reg" color="white">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="white" > Days remaining</Text>
+                </div>
+            )
+        }
+        return (
+            <Text className="mb15 mt1" size={20} weight="reg" color="white">
+                Your trial has ended, <a href='/account/upgrade' className='a-blue-2 text-semibold'>Upgrade Now</a>
+            </Text>
+        )
+    }
+
     const renderPlanWidget = () => {
         if(!props.plan) {
             return null
         }
+
         if(props.plan.displayName === "30 Day Trial") {
             return (
-                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
-                <WidgetHeader className="flex">
-                    <Text size={16} weight="med" color="gray-3"> 30 Day Trial </Text>
-                    <Button className="ml-auto" typeButton='secondary' sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
-                </WidgetHeader>
-                <div className="flex flex-wrap items-baseline mb1">
-                    <Text className="mr1" size={32} weight="reg" color="gray-1">{props.plan.trialExpiresIn}</Text><Text size={16} weight="reg" color="gray-4" > Days remaining</Text>
-                </div>
-                <Text size={12} weight="reg" color="gray-1">Upgrade to enable all features</Text>
-            </WidgetElement>
+                <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer} backgroundColor="gray-1">
+                    <WidgetHeaderTop className="flex">
+                        <Text size={16} weight="med" color="white"> 30 Day Trial </Text>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
+                    </WidgetHeaderTop>
+                    {renderDaysRemaining()}
+                    <Text size={14} weight="reg" color="white">{renderUpgradeText()}</Text>
+                </WidgetElement>
             )
         }
 
         if(props.isPlanPage && props.plan.displayName !== "30 Day Trial") {
             return (
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
-                    <WidgetHeader className="flex">
+                    <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                        <Button className="ml-auto" buttonColor="red" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
-                    </WidgetHeader>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                    </WidgetHeaderTop>
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
                     }
                     <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price/100}</Text>
-                </WidgetElement> 
-
+                </WidgetElement>
             )
         }
 
         return null
-
     }
 
     return (
@@ -95,10 +117,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             </div>
             <div className={classContainer}>
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
-                    <WidgetHeader className="flex">
+                    <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
                         {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
-                    </WidgetHeader>
+                    </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
                     </div>
@@ -106,7 +128,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 </WidgetElement>
 
                 {/* {
-                    getPrivilege('privilege-china') && 
+                    getPrivilege('privilege-china') &&
                     <WidgetElement className={classItem}>
                         <WidgetHeader className="flex">
                             <Text size={16} weight="med" color="gray-3"> China Data Remaining </Text>
@@ -120,11 +142,11 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 } */}
 
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
-                    <WidgetHeader className="flex">
+                    <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
                         <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
                         <Tooltip target="storageTooltip">Storage consumed include both source file size and sizes of renditions</Tooltip>
-                    </WidgetHeader>
+                    </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>
                     </div>
@@ -164,13 +186,13 @@ export const ProgressBarDashboard = (props: { openOverage?: (b: boolean) => void
             return <Text size={12} weight="reg" color="red"> Upgrade before you run out of {props.widget}</Text>
         }
         if(props.percentage <= 0) {
-            if(props.widget === 'storage' || props.widget === 'encoding') {
+            if(props.widget === 'storage' || props.widget === 'encoding' || props.widget === 'bandwidth') {
                 return <Text size={12} weight="reg" color="red">You have no {props.widget} remaining</Text>
-            } 
+            }
         }
     }
 
-    return( 
+    return(
         <>
             {handleProgressBar(props.percentage)}
             {handleInfos()}

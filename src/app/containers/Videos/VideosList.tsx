@@ -9,10 +9,12 @@ import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/ac
 import { ThemesData } from '../../redux-flow/store/Settings/Theming/types';
 import {ContentListPage} from '../../shared/List/contentList'
 import { ContentListState } from '../../redux-flow/store/Content/List/types';
+import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
 export interface ContentListProps {
     contentListState: ContentListState;
     themesList: ThemesData;
+    infos: DashboardInfos;
     getContentList: (qs: string) => Promise<void>;
     deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
@@ -22,20 +24,22 @@ export interface ContentListProps {
 const VideosList = (props: ContentListProps) => {
 
     return <ContentListPage
-            contentType="vod" 
-            items={props.contentListState['vod']}
-            themesList={props.themesList}
-            getContentList={props.getContentList}
-            deleteContentList={props.deleteContentList}
-            getThemesList={props.getThemesList}
-            showToast={props.showToast}
-         />
+        contentType="vod"
+        items={props.contentListState['vod']}
+        themesList={props.themesList}
+        getContentList={props.getContentList}
+        deleteContentList={props.deleteContentList}
+        getThemesList={props.getThemesList}
+        showToast={props.showToast}
+        infos={props.infos}
+    />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
-        themesList: state.settings.theming
+        themesList: state.settings.theming,
+        infos: state.dashboard.info
     };
 }
 
