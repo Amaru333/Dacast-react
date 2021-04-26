@@ -85,7 +85,7 @@ export class UserTokenService {
     }
 
     public getTokenInfo = () => {
-        return this.setTokenInfo() 
+        return this.setTokenInfo()
     }
 
     public getUserInfoItem = (item: Privilege | ExtraUserInfo | GroupIds | 'impersonatedUserIdentifier') => {
@@ -98,12 +98,17 @@ export class UserTokenService {
             return this.tokenInfo.impersonatedUserIdentifier
         }
         return this.tokenInfo.userInfo[item] || ''
-    
+
     }
 
     public getPrivilege = (privilege: Privilege) => {
         //Remove this by updating type on backend
         return this.getUserInfoItem(privilege) === 'true';
+    }
+
+    public isUnauthorized = (privilege: Privilege) => {
+        //Remove this by updating type on backend
+        return privilege && this.getUserInfoItem(privilege) !== 'true';
     }
 
     public resetUserInfo = () => {
@@ -125,7 +130,7 @@ export class UserTokenService {
         if(localStorage.getItem('userToken')) {
             this.setTokenInfo()
             return true
-        } 
+        }
         return false
     }
 

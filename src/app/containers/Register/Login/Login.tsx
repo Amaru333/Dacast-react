@@ -8,6 +8,7 @@ import { LoginInfos, TokenInfos } from '../../../redux-flow/store/Register/Login
 import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEmail/actions';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { segmentService } from '../../../utils/services/segment/segmentService';
+import EventHooker from '../../../../utils/services/event/eventHooker';
 import { useHistory } from 'react-router';
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 
@@ -17,21 +18,23 @@ export interface LoginComponentProps {
     confirmEmail: (email: string) => Promise<void>;
 }
 const Login = (props: LoginComponentProps) => {
-
     let history = useHistory()
 
     React.useEffect(() => {
-        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {  
+        if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             userToken.addTokenInfo(props.loginInfos);
             segmentService.identify({
-                userId: userToken.getUserInfoItem('user-id'), 
-                firstName: userToken.getUserInfoItem('custom:first_name'), 
-                lastName: userToken.getUserInfoItem('custom:last_name'), 
+                userId: userToken.getUserInfoItem('user-id'),
+                firstName: userToken.getUserInfoItem('custom:first_name'),
+                lastName: userToken.getUserInfoItem('custom:last_name'),
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
             dacastSdk.updateToken(userToken)
-            location.reload()
+            setTimeout(() => {
+                EventHooker.dispatch('EVENT_LOG_IN_SUCCESS')
+            }, 1500)
+            history.push('/')
         }
 
         if(props.loginInfos && props.loginInfos.loginToken) {
@@ -40,7 +43,7 @@ const Login = (props: LoginComponentProps) => {
     }, [props.loginInfos])
 
     return (
-        <LoginPage {...props}/> 
+        <LoginPage {...props}/>
     )
 }
 

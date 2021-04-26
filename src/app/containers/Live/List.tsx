@@ -8,27 +8,26 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
-import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 
-export const LiveList = (props: ContentListProps & {billingInfo: BillingPageInfos}) => {
+export const LiveList = (props: ContentListProps) => {
 
     return <ContentListPage
-            contentType="live" 
-            items={props.contentListState['live']}
-            themesList={props.themesList}
-            getContentList={props.getContentList}
-            deleteContentList={props.deleteContentList}
-            getThemesList={props.getThemesList}
-            showToast={props.showToast}
-            billingInfo={props.billingInfo}
-         />
+        contentType="live"
+        items={props.contentListState['live']}
+        themesList={props.themesList}
+        getContentList={props.getContentList}
+        deleteContentList={props.deleteContentList}
+        getThemesList={props.getThemesList}
+        showToast={props.showToast}
+        infos={props.infos}
+    />
 }
 
 export function mapStateToProps(state: ApplicationState) {
     return {
         contentListState: state.content.list,
         themesList: state.settings.theming,
-        billingInfo: state.account.plan
+        infos: state.dashboard.info
     };
 }
 

@@ -1,6 +1,6 @@
 import { ColorsApp } from "../../styled/types";
 
-type Size = "large" | "small";
+type Size = "large" | "medium" | "small";
 
 interface ModalCustomProps {
     size: string;
@@ -10,6 +10,7 @@ interface ModalCustomProps {
     hasClose: boolean;
     toggle: () => void;
     overlayIndex? : number;
+    allowNavigation: boolean;
 }
 
 export type ModalProps = ModalCustomProps & React.HTMLAttributes<HTMLDivElement>;
