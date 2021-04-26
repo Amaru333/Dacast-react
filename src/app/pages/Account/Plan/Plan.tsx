@@ -37,7 +37,7 @@ interface PlanComponentProps {
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
 
-    
+    const defaultCurrency = props.billingInfos.currentPlan ? props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency : 'usd'
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
@@ -46,13 +46,13 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         code: null,
         quantity: null,
         totalPrice: null,
-        currency: props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency
+        currency: defaultCurrency
     })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: props.billingInfos.currentPlan.currency + ' - ' + handleCurrencySymbol(props.billingInfos.currentPlan.currency), data: {img: props.billingInfos.currentPlan.currency.toLowerCase(), id: props.billingInfos.currentPlan.currency.toLowerCase()}})
+    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
 
 
     const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
@@ -188,7 +188,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(selectedCurrency.data.id) + (price/100)): "-"}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(selectedCurrency.data.id) + (price)): "-"}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
@@ -295,7 +295,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         <Text size={14}>You bought {purchaseDataStepperData.quantity}GB of data</Text>
                     </PaymentSuccessModal>
                     <PaymentFailedModal opened={dataPaymentFailedOpen} toggle={() => setDataPaymentFailedOpen(!dataPaymentSuccessOpen)}>
-                        <Text size={14}>Your payment of {handleCurrencySymbol(props.billingInfos.currentPlan.currency) + purchaseDataStepperData.totalPrice} was declined</Text>
+                        <Text size={14}>Your payment of {handleCurrencySymbol(selectedCurrency.data.id) + purchaseDataStepperData.totalPrice} was declined</Text>
                     </PaymentFailedModal>
                 </>
             }

@@ -1,5 +1,6 @@
 import { GetPlansListOutput, PlanCurrencyEndpoint, PlanKey, PostAccountPlanInput } from "../../../../../DacastSdk/account";
-import { ChangePlanData, Plans, upgradeInitialState } from "./types";
+import { BandwidthProductCurrency } from "../Plan";
+import { ChangePlanData, Currency, Plans, upgradeInitialState } from "./types";
 
 export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
     let formattedData: Plans = Object.keys(data).reduce((acc, next: PlanKey ) => {
@@ -10,6 +11,7 @@ export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
                 privileges: data[next].privileges.map(privilege => {
                     return {...privilege, checked: false}
                 }),
+                price: Object.keys(data[next].price).reduce((accPrice, nextPrice: BandwidthProductCurrency) => { return {...accPrice, [nextPrice]: data[next].price[nextPrice] / 100 }}, {}),
                 selectedPrivileges: undefined,
                 privilegesTotal: 0,
                 termsAndConditions: false,
