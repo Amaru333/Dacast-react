@@ -1,12 +1,11 @@
-import { ActionTypes, LoginInfos, TokenInfos } from "./types";
-import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "../..";
-import { loginService } from './services';
-import { showToastNotification } from '../../Toasts';
+import { ActionTypes, TokenInfos } from "./types";
+import { applyViewModel } from "../../../../utils/utils";
+import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
+import { formatPostLoginInput, formatPostLoginOutput } from "./viewModel";
 
 export interface Login {
     type: ActionTypes.LOGIN;
-    payload: {data: TokenInfos} | false;
+    payload: TokenInfos | false;
 }
 
 export interface LoginRequest {
@@ -19,18 +18,6 @@ export interface LoginError {
     payload: null;
 }
 
-
-export const loginAction = (data: LoginInfos): ThunkDispatch<Promise<void>, {}, Login> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, Login | LoginError> ) => {
-        await loginService(data)
-            .then( response => {
-                dispatch( {type: ActionTypes.LOGIN, payload: response.data} );
-            }).catch(() => {
-                dispatch({type: ActionTypes.LOGIN_ERROR, payload: null});
-                return Promise.reject()
-            })
-    };
-
-}
+export const loginAction = applyViewModel(dacastSdk.postLogin, formatPostLoginInput, formatPostLoginOutput, ActionTypes.LOGIN, null, null)
 
 export type Action = Login | LoginRequest | LoginError;

@@ -48,7 +48,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         code: null,
         quantity: null,
         totalPrice: null,
-        currency: props.billingInfos.currentPlan && props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency
+        currency: props.billingInfos && props.billingInfos.currentPlan ? props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency : 'usd'
     })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -209,7 +209,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     return (
         <div>
-            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.plan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
+            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.billingInfos.currentPlan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
             <Card>
                 <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>

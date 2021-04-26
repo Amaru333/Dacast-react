@@ -31,6 +31,7 @@ import { UpgradePaymentStep } from './UpgradePaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { countries } from 'countries-list';
+import { ContactOwnerModal } from '../Users/ContactOwnerModal';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const defaultCurrency: string = localStorage.getItem('currency') ? localStorage.getItem('currency') : (props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country]) ? countries[props.companyInfo.country].currency : 'USD'
@@ -50,6 +51,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
+    const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
 
     let history = useHistory()
 
@@ -79,7 +81,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                 EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)            
                 segmentService.track('Upgrade Form Completed', {
                     action: 'Payment Form Submitted',
-                    'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'user_id': userToken.getUserInfoItem('user-id'),
                     'plan_name': stepperData.name,
                     step: 4,
                 })  
@@ -112,7 +114,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             EventHooker.dispatch('EVENT_FORCE_TOKEN_REFRESH', undefined)
             segmentService.track('Upgrade Form Completed', {
                 action: 'Payment Form Submitted',
-                'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+                'user_id': userToken.getUserInfoItem('user-id'),
                 'plan_name': stepperData.name,
                 step: 4,
             })  
@@ -139,17 +141,21 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         }
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Clicked',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             'plan_name': plan,
             step: 1,
-        })  
-        setStepperPlanOpened(true)
+        })
+        if(userToken.getPrivilege('privilege-billing')) {
+            setStepperPlanOpened(true)
+        } else {
+            setContactOwnerModalOpened(true)
+        }
     }
 
     const handleContactUsButtonClick = () => {
         segmentService.track('Upgrade Form Completed', {
             action: 'Contact Us Clicked',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             step: 1,
         })  
         history.push('/help')
@@ -201,7 +207,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} GB</Text>
-
+                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>1</Text> */}
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
@@ -240,7 +246,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB</Text>
-
+                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>1</Text> */}
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -284,7 +290,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
                                         </div>
-
+                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>3</Text> */}
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -476,7 +482,10 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 selectedCurrency={selectedCurrency}
                                 setSelectedCurrency={setSelectedCurrency}
                             />
-
+                        }
+                        {
+                            contactOwnerModalOpened && 
+                            <ContactOwnerModal title="Access restricted" specificText='upgrade.' toggle={setContactOwnerModalOpened} opened={contactOwnerModalOpened} />
                         }
 
                     </Elements>

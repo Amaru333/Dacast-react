@@ -23,7 +23,7 @@ const Login = (props: LoginComponentProps) => {
         if(props.loginInfos && props.loginInfos.token && props.loginInfos.token.length > 0) {
             userToken.addTokenInfo(props.loginInfos);
             segmentService.identify({
-                userId: userToken.getUserInfoItem('custom:dacast_user_id'),
+                userId: userToken.getUserInfoItem('user-id'),
                 firstName: userToken.getUserInfoItem('custom:first_name'),
                 lastName: userToken.getUserInfoItem('custom:last_name'),
                 email: userToken.getUserInfoItem('email'),
@@ -33,6 +33,10 @@ const Login = (props: LoginComponentProps) => {
                 EventHooker.dispatch('EVENT_LOG_IN_SUCCESS')
             }, 1500)
             history.push('/')
+        }
+
+        if(props.loginInfos && props.loginInfos.loginToken) {
+            history.push('/selectAccount?email=' + props.loginInfos.email)
         }
     }, [props.loginInfos])
 

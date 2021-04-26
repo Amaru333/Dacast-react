@@ -18,14 +18,18 @@ export type WebDownloadPrivilege = "privilege-web-download";
 export type AnalyticsPrivilege = "privilege-analytics";
 export type ExposPrivilege = "privilege-expo";
 export type PhoneSupportPrivilege = "privilege-phone-support"
+export type BillingPrivilege = "privilege-billing"
+export type PaymentRequestPrivilege = "privilege-payment-request"
+export type AccoutSettingsPrivilege ="privilege-account-settings"
+export type MultiUserBetaPrivilege = "privilege-multi-access-beta"
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege;
 
-type ExtraUserInfo = 'custom:dacast_user_id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
+type ExtraUserInfo = 'user-id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 
-type GroupIds = 'credit-group-id' | 'live-channel-group-id' | 'monetization-group-id' | 'restriction-group-id' | 'billing-group-id' | 'privilege-group-id' | 'expo-group-id' | 'transcoding-recipe-group-id' | 'vod-storage-id' | 'policy-group-id' | 'folder-group-id' | 'salesforce-group-id' | 'playlist-group-id' | 'theme-group-id' | 'payment-group-id' | 'ads-group-id'
+type GroupIds = 'credit-group-id' | 'live-channel-group-id' | 'monetization-group-id' | 'restriction-group-id' | 'billing-group-id' | 'privilege-group-id' | 'expo-group-id' | 'transcoding-recipe-group-id' | 'vod-storage-id' | 'policy-group-id' | 'folder-group-id' | 'salesforce-group-id' | 'playlist-group-id' | 'theme-group-id' | 'payment-group-id' | 'ads-group-id' | 'parent-id'
 
 type UserInfo = {
     [key in ExtraUserInfo | Privilege | GroupIds]: string
@@ -70,6 +74,7 @@ export class UserTokenService {
                 return this.tokenInfo
             } catch(error) {
                 console.log(error)
+                debugger
                 localStorage.clear()
                 location.href = '/login'
                 return null

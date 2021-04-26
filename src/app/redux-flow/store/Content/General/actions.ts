@@ -32,7 +32,7 @@ export interface DeleteContentSubtitle {
 
 export interface GetUploadUrl {
     type: ActionTypes.GET_UPLOAD_URL;
-    payload: { contentId: string; url: string, contentType: ContentType, data?: SubtitleInfo };
+    payload: { contentId: string; url: string, contentType: ContentType, subtitleInfo?: SubtitleInfo };
 }
 
 export interface UploadImage {

@@ -70,7 +70,7 @@ export const formatPostUserBrandImageUrlInput = (): PostUploadUrlInput => {
     let formattedData: PostUploadUrlInput = {
         uploadType: 'player-watermark',
         uploadRequestBody: {
-            userID: userToken.getUserInfoItem('custom:dacast_user_id')
+            userID: userToken.getUserInfoItem('user-id')
         }
     }
     return formattedData

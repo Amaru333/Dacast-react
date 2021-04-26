@@ -1,5 +1,3 @@
-import timezones from 'compact-timezone-list';
-
 //Replacement for function moment()
 export const getCurrentTs = ( format: 'ms' | 's' ) => {
     if(format === 's') {
@@ -10,19 +8,23 @@ export const getCurrentTs = ( format: 'ms' | 's' ) => {
 }
 
 //Replacement for function moment().tz().guess()
-//Offset is weird 
+//Offset is weird
 export const guessTimezone = (offset: boolean = true) => {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
+export const getTimezoneOffsetInSecs = (tzCode: string, date: Date) => {
+    const tzDate = date || new Date()
+    const day = tzDate.getFullYear() + "/" + (tzDate.getMonth() + 1) + "/" + tzDate.getDate()
+    const datetime = `${day} 00:00:00 +0000`
+    const timezoneDate = new Date(new Date(datetime).toLocaleString('en-US', {timeZone: tzCode || 'UTC'})) // DST Aware
+    const gmtDate = new Date(new Date(datetime).toLocaleString('en-US', {timeZone: 'Etc/GMT'})) // Ignores DST
+    return (timezoneDate - gmtDate) / 1000
+}
 
-export const inputTimeToTs = (value: string, timezoneName: string) => {
-    if(timezoneName == "UTC") {
-        var offset = 0;
-    } else {
-        let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-        var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
-    }
+
+export const inputTimeToTs = (value: string, timezoneName: string, date?: Date) => {
+    const offset = getTimezoneOffsetInSecs(timezoneName, date)
     let splitValue = value.split(':')
     let hours = parseInt(splitValue[0]) * 3600
     if (isNaN(hours)) {
@@ -36,25 +38,15 @@ export const inputTimeToTs = (value: string, timezoneName: string) => {
     return total
 }
 
-export const tsToInputTime = (value: number, timezoneName?: string  ) => {
-    if(timezoneName == "UTC" || !timezoneName) {
-        var offset = 0;
-    } else {
-        let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-        var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
-    }
+export const tsToInputTime = (value: number, timezoneName?: string, date?: Date) => {
+    const offset = getTimezoneOffsetInSecs(timezoneName, date)
     let total = offset <= 0 ? value - Math.abs(offset) : value + offset
     return total
 }
 
 
-export const tsToUtc = (value: number, timezoneName?: string  ) => {
-    if(timezoneName == "UTC" || !timezoneName) {
-        var offset = 0;
-    } else {
-        let offsetitem = timezones.find(el => el.tzCode === timezoneName)
-        var offset = offsetitem ? utcOffsetToMin(offsetitem.offset) * 60 : 0;
-    }
+export const tsToUtc = (value: number, timezoneName?: string, date?: Date) => {
+    const offset = getTimezoneOffsetInSecs(timezoneName, date)
     let total = offset <= 0 ? value + Math.abs(offset) : value - offset
     return total
 }
@@ -64,7 +56,7 @@ export const tsToUtc = (value: number, timezoneName?: string  ) => {
  * Adds time to a date. Modelled after MySQL DATE_ADD function.
  * Example: dateAdd(new Date(), 'minute', 30)  //returns 30 minutes from now.
  * https://stackoverflow.com/a/1214753/18511
- * 
+ *
  * @param date  Date to start with
  * @param interval  One of: year, quarter, month, week, day, hour, minute, second
  * @param units  Number of units of the given interval to add.
@@ -90,9 +82,9 @@ export const dateAdd = (date: Date, interval: 'year' | 'quarter' | 'month' | 'we
 
 export const utcOffsetToMin = (offset: string) => {
     let [h, m] = offset.split(':');
-    
+
     let hours = Number.parseInt(h);
     let minutes = Number.parseInt(m);
-    
+
     return hours * 60 + (hours < 0 ? (-minutes) : minutes);
-} 
+}

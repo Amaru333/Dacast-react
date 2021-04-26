@@ -132,7 +132,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
 
 export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInput => {
 
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     let formattedPrice: PostPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
@@ -145,7 +145,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+            contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
         }
     } else {
@@ -159,7 +159,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+                contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
             }
         } else {
@@ -173,7 +173,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+                contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
     }
@@ -191,7 +191,7 @@ export const formatPostPriceGroupOutput = (endpointResponse: PricePackageId, dat
 }
 
 export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput => {
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     let formattedPrice: PutPricePackageInput = null
     if(data.groupSettings.type === 'Subscription') {
         formattedPrice = {
@@ -204,7 +204,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
                     value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
-            contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+            contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
         }
     } else {
@@ -219,7 +219,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
                         value: data.groupSettings.duration.value
                     }
                 },
-                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+                contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
 
             }
         } else {
@@ -234,7 +234,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
                     },
                     startDate: data.groupSettings.startDate
                 },
-                contents: data.contents.map((content: any) => userId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+                contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
             }
         }
     }

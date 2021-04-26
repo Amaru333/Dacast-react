@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route, Redirect, useLocation, useHistory } from 
 import { ApplicationState } from "./redux-flow/store";
 import MainMenu from './containers/Navigation/Navigation';
 import { AppRoutes } from './constants/AppRoutes';
-import { ThemeProvider, css } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { Theme } from '../styled/themes/dacast-theme';
 import { createBrowserHistory } from 'history';
 

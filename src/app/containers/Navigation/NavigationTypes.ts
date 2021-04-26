@@ -1,3 +1,5 @@
+import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
+import { Plans } from '../../redux-flow/store/Account/Upgrade/types';
 import { Privilege } from "../../../utils/services/token/token";
 import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
@@ -16,6 +18,9 @@ export interface MainMenuSpecificProps {
     infos: DashboardInfos;
     getBillingPageInfos: () => Promise<void>;
     getDashboardDetails: () => Promise<void>;
+    planDetails: Plans;
+    billingInfo: BillingPageInfos;
+    getPlanDetails: () => Promise<void>;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;

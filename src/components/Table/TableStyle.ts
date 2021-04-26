@@ -52,7 +52,7 @@ export const TableHeaderCell = styled.td<{sortApplied: boolean; contentLoading: 
 export const TableBodyContainer = styled.tbody<{}>`
 `;
 
-export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: boolean; isDisabled: boolean; isProcessing: boolean;}>`
+export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: boolean; isDisabled: boolean; isProcessing: boolean; noCells: boolean}>`
     width: auto;
     height: 48px;
     background-color: ${props => props.isSelected ? props.theme.colors['violet20'] : props.isDisabled ? props.theme.colors['gray-5'] : props.theme.colors["white"] };
@@ -65,6 +65,9 @@ export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: bool
     `}
     :not(:last-child) {
         border-bottom: 1px solid ${props => props.theme.colors["gray-8"]};
+        ${props => props.noCells && css `
+        border-bottom: none;
+    `};
     }
     padding-left: 16px;
     &:hover {
@@ -89,10 +92,11 @@ export const TableBodyRow = styled.tr<{contentLoading: boolean; isSelected: bool
 }
 `;
 
-export const TableBodyCell = styled.td<{contentLoading: boolean}>`
+export const TableBodyCell = styled.td<{contentLoading: boolean;}>`
     padding-left: 16px;
     min-width: 100px;
     box-sizing: border-box;
+    
     ${props => props.contentLoading && css`
         cursor: not-allowed !important;
         pointer-events: none;

@@ -89,7 +89,7 @@ const Header = (props: HeaderProps) => {
     React.useEffect(() => {
         segmentService.page('App')
         segmentService.identify({
-            userId: userToken.getUserInfoItem('custom:dacast_user_id'),
+            userId: userToken.getUserInfoItem('user-id'),
             firstName: userToken.getUserInfoItem('custom:first_name'),
             lastName: userToken.getUserInfoItem('custom:last_name'),
             company: userToken.getUserInfoItem('companyName'),
@@ -106,24 +106,24 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
 
     React.useEffect(() => {
-        if(!props.ProfileInfo) {
-            props.getProfilePageDetails()
-        }
+            if(!props.ProfileInfo) {
+                props.getProfilePageDetails()
+            }
 
-        if(!props.billingInfo) {
-            props.getBillingInfo()
-        }
+            if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
+                props.getBillingInfo()
+            }
 
         TagManager.initialize(
             {
                 gtmId: 'GTM-PHZ3Z7F',
                 dataLayer: {
                     'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'accountId': userToken.getUserInfoItem('user-id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
                     'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                     'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userId': userToken.getUserInfoItem('user-id'),
                     'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                     'userLastName': userToken.getUserInfoItem('custom:last_name'),
                     'userEmail': userToken.getUserInfoItem('email'),
@@ -139,11 +139,11 @@ const Header = (props: HeaderProps) => {
                 {
                     dataLayer: {
                         'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'accountId': userToken.getUserInfoItem('user-id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userId': userToken.getUserInfoItem('user-id'),
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
@@ -162,11 +162,11 @@ const Header = (props: HeaderProps) => {
                 {
                     dataLayer: {
                         'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'accountId': userToken.getUserInfoItem('user-id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userId': userToken.getUserInfoItem('user-id'),
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),

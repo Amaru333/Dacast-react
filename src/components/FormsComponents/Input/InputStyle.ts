@@ -118,6 +118,7 @@ export const InputStyle = styled.input<InputProps>`
     `}
     ${props => props.disabled && css`
         background: ${props => props.theme.colors["gray-8"]};
+        color: ${props => props.theme.colors["gray-5"]};
     `}
     ::placeholder{
         font-family: Roboto;

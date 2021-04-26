@@ -35,7 +35,7 @@ const Setup = (props: SetupComponentProps) => {
     const [maxNumberItems, setMaxNumberItems] = React.useState<number>(NaN);
     const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
-    const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+    const userId = userToken.getUserInfoItem('user-id')
 
     React.useEffect(() => {
         props.getContentSetup(playlistId, 'playlist')

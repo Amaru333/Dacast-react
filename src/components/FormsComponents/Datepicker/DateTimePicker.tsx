@@ -26,7 +26,7 @@ interface DateTimePickerProps {
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
 
-    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(tsToInputTime(props.defaultTs, props.timezone)*1000) : null ;
+    let defaultTimestamp = props.defaultTs && props.defaultTs > 0 ? new Date(tsToInputTime(props.defaultTs, props.timezone, new Date())*1000) : null ;
     const [method, setMethod] = React.useState<string>(props.defaultTs === 0 ? props.hideOption : "Set Date and Time")
     const [day, setDay] = React.useState<number>(defaultTimestamp ? Math.round(new Date(props.defaultTs*1000).setHours(0,0,0,0) / 1000)  : null)
     const [time, setTime] = React.useState<string>(defaultTimestamp ? ("0" + defaultTimestamp.getUTCHours()).slice(-2)+':'+("0" + defaultTimestamp.getUTCMinutes()).slice(-2): '00:00')
@@ -37,7 +37,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
 
     React.useEffect(() => {
         var dayStart = new Date(day * 1000).setUTCHours(0,0,0,0);
-        var timeStamp = dateAdd(new Date(dayStart), 'second', inputTimeToTs(time , timezone || 'UTC')).getTime() 
+        const dayStartDate = new Date(dayStart)
+        var timeStamp = dateAdd(dayStartDate, 'second', inputTimeToTs(time , timezone || 'UTC', dayStartDate)).getTime()
         props.callback(method === "Set Date and Time" ? new Date(timeStamp).getTime() < 0 ? 0 :  Math.round(new Date(timeStamp).getTime() / 1000) : 0, timezone)
     }, [time, day, method, timezone])
 
@@ -76,7 +77,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
 
                     }
                     {
-                        props.isConvertedToUtc && 
+                        props.isConvertedToUtc &&
                         <div className='flex px1 mt1'>
                             <IconStyle>info_outlined</IconStyle>
                             <Text size={14} weight="reg">This will change to Upon Purchase at the scheduled time.</Text>

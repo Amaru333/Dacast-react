@@ -52,6 +52,9 @@ export const replaceAt = (string: string, index: number, replace: string | numbe
 }
 
 export const capitalizeFirstLetter = (string: string) => {
+    if(!string || string.length === 0) {
+        return ''
+    }
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 

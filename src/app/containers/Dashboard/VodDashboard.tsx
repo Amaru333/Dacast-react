@@ -8,6 +8,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { IconStyle } from '../../../shared/Common/Icon'
 import { DoughnutChart } from '../../../components/Analytics/DoughnutChart/DoughnutChart';
 import { DashboardVod } from '../../redux-flow/store/Dashboard/types';
+import { userToken } from '../../utils/services/token/tokenService';
 
 const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: DashboardVod }) => {
 
@@ -41,66 +42,71 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
                     </div>
                 </WidgetElement>
+                {
+                    userToken.getPrivilege('privilege-analytics') &&
+                    <>
+                        <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> Impressions </Text>
+                                <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
+                                <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
+                            </WidgetHeader>
+                            <div className="flex minContentDash justify-center items-center mb1">
+                                <Text size={48} weight="reg" color="gray-1">{props.profile.impressions ? props.profile.impressions : 0}</Text>
+                            </div>
+                        </WidgetElement>
 
-                <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Impressions </Text>
-                        <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
-                    </WidgetHeader>
-                    <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{props.profile.impressions ? props.profile.impressions : 0}</Text>
-                    </div>
-                </WidgetElement>
+                        <WidgetElement placeholderWidget={vodDataFetching}  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
+                            </WidgetHeader>
+                            <div className="flex minContentDash justify-center items-center mb1">
+                                <Text size={48} weight="reg" color="gray-1">{videoPlays}</Text>
+                            </div>
+                        </WidgetElement>
 
-                <WidgetElement placeholderWidget={vodDataFetching}  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
-                    </WidgetHeader>
-                    <div className="flex minContentDash justify-center items-center mb1">
-                        <Text size={48} weight="reg" color="gray-1">{videoPlays}</Text>
-                    </div>
-                </WidgetElement>
-
-                <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
-                        <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
-                    </WidgetHeader>
-                    <div className="flex minContentDash justify-center items-center mb1">
-                        <DoughnutChart value={props.profile.impressions? getPercentage(props.profile.videoPlays, props.profile.impressions) : 0}/>
-                    </div>
-                </WidgetElement>
-                <WidgetElement placeholderWidget={vodDataFetching} failed={!props.profile.topVideos} className={classItemFullWidth}>
-                    <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
-                    </WidgetHeader>
-                    <div className="flex mb1">
-                        <TableListStyle>
-                            <thead>
-                                <tr>
-                                    <th className="col-2" ><Text size={14} weight="reg" ><b>#</b></Text></th>
-                                    <th className="col-7"><Text size={14} weight="reg" ><b>Name</b></Text></th>
-                                    <th className="col-3"><Text size={14} weight="reg" ><b>Viewers</b></Text></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    props.profile.topVideos && props.profile.topVideos.map((value, key) => {
-                                        return (
-                                            <tr key={value.viewers+"-"+key}>
-                                                <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>
-                                                <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
-                                                <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </TableListStyle>
-                    </div>
-                </WidgetElement>
+                        <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
+                                <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
+                                <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
+                            </WidgetHeader>
+                            <div className="flex minContentDash justify-center items-center mb1">
+                                <DoughnutChart value={props.profile.impressions? getPercentage(props.profile.videoPlays, props.profile.impressions) : 0}/>
+                            </div>
+                        </WidgetElement>
+                        <WidgetElement placeholderWidget={vodDataFetching} failed={!props.profile.topVideos} className={classItemFullWidth}>
+                            <WidgetHeader className="flex">
+                                <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
+                            </WidgetHeader>
+                            <div className="flex mb1">
+                                <TableListStyle>
+                                    <thead>
+                                        <tr>
+                                            <th className="col-2" ><Text size={14} weight="reg" ><b>#</b></Text></th>
+                                            <th className="col-7"><Text size={14} weight="reg" ><b>Name</b></Text></th>
+                                            <th className="col-3"><Text size={14} weight="reg" ><b>Viewers</b></Text></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            props.profile.topVideos && props.profile.topVideos.map((value, key) => {
+                                                return (
+                                                    <tr key={value.viewers+"-"+key}>
+                                                        <td className="col-2"><Text size={14} weight="reg" >{key+1}</Text></td>
+                                                        <td className="col-7"><Text size={14} weight="reg" >{value.name}</Text></td>
+                                                        <td className="col-3"><Text size={14} weight="reg" >{numberFormatter(value.viewers, 'comma')}</Text></td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </TableListStyle>
+                            </div>
+                        </WidgetElement>
+                    </>
+                }
+                
             </div>
         </section>
     )

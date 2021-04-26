@@ -43,6 +43,7 @@ export interface VodDetails {
     embedScaling: string;
     embedSize: number;
     uploadurl: string;
+    tempSubtitleFileId?: string;
 }
 
 export interface LiveDetails {
