@@ -9,6 +9,7 @@ import { confirmEmailAction } from '../../../redux-flow/store/Register/ConfirmEm
 import { userToken } from '../../../utils/services/token/tokenService';
 import { segmentService } from '../../../utils/services/segment/segmentService';
 import { useHistory } from 'react-router';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 
 export interface LoginComponentProps {
     login: (data: LoginInfos) => Promise<void>;
@@ -29,6 +30,7 @@ const Login = (props: LoginComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
+            dacastSdk.updateToken(userToken)
             location.reload()
         }
 

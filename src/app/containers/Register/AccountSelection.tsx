@@ -13,6 +13,7 @@ import { useQuery } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService'
 import { segmentService } from '../../utils/services/segment/segmentService'
 import { isProduction } from '../../utils/services/player/stage'
+import { dacastSdk } from '../../utils/services/axios/axiosClient'
 
 const logo = require('../../../../public/assets/logo.png');
 
@@ -38,6 +39,7 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
+            dacastSdk.updateToken(userToken)
             location.href = '/'
         }
     }, [props.accountData])
