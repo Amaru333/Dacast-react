@@ -24,7 +24,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
 
     const encoderList = [
         {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
-        {title: "OBS Open Broadcaster Software", data: {encoderKey: "Encoder Key"}},
+        {title: "OBS Open Broadcaster Software", data: {encoderKey: "Stream Key"}},
         {title: "Sling Studio", data: {primaryPublishURL: "Stream URL", streamKey: "Stream Name"}},
         {title: "Telestream Wirecast", data: {primaryPublishURL: "Address", backupPublishURL: "Backup Address", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "Teradeks", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
@@ -144,7 +144,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.encoderKey, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
-                            <Button className='mr2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
+                            <Button className='mr2 mt1' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
                                 Refresh
                             </Button>
                         </div>
