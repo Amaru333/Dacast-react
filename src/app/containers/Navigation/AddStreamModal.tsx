@@ -89,17 +89,17 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 action: 'Create Livestream',
                 'channel_id': response.data.data.id,
                 step: 1,
-            })    
-            history.push(`/livestreams/${response.data.data.id}/general`)    
+            })
+            history.push(`/livestreams/${response.data.data.id}/general`)
         }).catch((error) => {
             setButtonLoading(false)
-            let errorMsg = 'There was a problem while creating a channel'
+            let errorMsg = 'Sorry, the platform is really busy right now. Please try again in 10 minutes.'
             console.log('error message: ', error.response.data.error)
             if(error.response.data.error.indexOf('only 1 channel is allowed for free trials') > -1) {
                 errorMsg = 'Only 1 channel is allowed for free trials. Please click here to'
             }
             if(error.response.data.error.indexOf('there was a problem while creating a channel') > -1) {
-                errorMsg = 'There was a problem while creating a channel'
+                errorMsg = 'Sorry, the platform is really busy right now. Please try again in 10 minutes.'
             }
             setErrorMessage(errorMsg)
         })
@@ -126,8 +126,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                         className='col col-12'
                         id='channelRegionTypeDropdown'
                         dropdownDefaultSelect={streamSetupOptions.region}
-                        list={regionDropdownList} 
-                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})} 
+                        list={regionDropdownList}
+                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})}
                     />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
@@ -137,13 +137,13 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 {
                     !(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') &&
                     <div className='col col-12 mt1 flex relative' >
-                        <DropdownSingle 
-                            dropdownTitle='Number of Renditions' 
-                            className='col col-12' 
-                            id='numberOfRenditionsDropdown' 
+                        <DropdownSingle
+                            dropdownTitle='Number of Renditions'
+                            className='col col-12'
+                            id='numberOfRenditionsDropdown'
                             dropdownDefaultSelect="1 Rendition"
-                            list={numberOfRenditionsList} 
-                            callback={(item: DropdownSingleListItem) => setRenditionCount(item.data)} 
+                            list={numberOfRenditionsList}
+                            callback={(item: DropdownSingleListItem) => setRenditionCount(item.data)}
                         />
                         <IconStyle className='absolute top-0 right-0' id="numberOfRenditionsDropdownTooltip">info_outlined</IconStyle>
                         <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
