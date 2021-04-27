@@ -134,8 +134,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                         })
                     }
                     { selectedEncoder.data.encoderKey &&
-                        <div>
-                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                        <div className='flex items-center'>
+                            <LinkBoxContainer className="col col-6 mb2">
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{selectedEncoder.data.encoderKey}</Text>
                                 </LinkBoxLabel>
@@ -144,8 +144,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.encoderKey, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
-                            <Button className='right mr2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
-                                Generate
+                            <Button className='mr2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
+                                Refresh
                             </Button>
                         </div>
                     }
@@ -154,7 +154,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                 <div className="flex flex-column col col-12 mt2">
                     {
                         selectedEncoder.title === 'OBS Open Broadcaster Software' &&
-                        <Text className='py2' >For OBS Studio Versions prior to 27.0.0, please use Generic RTMP Encoder settings.</Text>
+                        <Text className='py2' >For OBS Studio Versions prior to 27.0.0, please use <Text weight='med' color='dark-violet' className='link' onClick={() => {setSelectedEncoder(encoderList.find(e => e.title === 'Generic RTMP Encoder'))}}>Generic RTMP Encoder settings.</Text></Text>
                     }
                     <Text className='py2' size={14} weight="reg">Quick guide for live streaming with <a href={getKnowledgebaseLink(selectedEncoder.title)} target="_blank" rel="noopener noreferrer">{selectedEncoder.title}</a></Text>
                 </div>
