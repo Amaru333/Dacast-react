@@ -42,7 +42,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
     }
 
     const currentPathIsDashboard = () => {
-        return ['/dashboard', '/dashboard/', '/'].includes(location.pathname)
+        return location.pathname === '/'
     }
 
     const canOpen = () => {
