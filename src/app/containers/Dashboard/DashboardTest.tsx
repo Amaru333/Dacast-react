@@ -146,7 +146,7 @@ const DashboardTest = (props: DashboardProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        infos: state.dashboard.info,
+        infos: { ...state.dashboard.info, playbackProtection: state.account.plan.playbackProtection }
     };
 }
 
