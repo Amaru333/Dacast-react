@@ -26,7 +26,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
         {title: "OBS Open Broadcaster Software", data: {primaryPublishURL: "Server", backupPublishURL: "Backup Server", username: "Username", password: "Password", streamKey: "Stream Key"}},
         {title: "Sling Studio", data: {primaryPublishURL: "Stream URL", streamKey: "Stream Name"}},
         {title: "Telestream Wirecast", data: {primaryPublishURL: "Address", backupPublishURL: "Backup Address", username: "Username", password: "Password", streamKey: "Stream"}},
-        {title: "Teradeks", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
+        {title: "Teradek", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "Vid Blaster", data: {primaryPublishURL: "URL/IP: Port", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "vMix", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}
     ]
@@ -40,7 +40,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
 
     const formatURL = (baseURL: string) => {
         switch(selectedEncoder.title) {
-            case 'Teradeks':
+            case 'Teradek':
                 return baseURL + '/_definst_'
             case 'Sling Studio': 
                 const splitURL = baseURL.split('rtmp://')
