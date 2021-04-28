@@ -18,7 +18,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boolean>>; opened: boolean; generateEncoderKey: (liveId: string) => Promise<void>; contentDetails: ContentDetails; }) => {
 
     let encoderPreference = JSON.parse(localStorage.getItem('userEncoderPreference'))
-
+    const teradeksConfigOption = '/_definst_'
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [selectedEncoder, setSelectedEncoder] = React.useState(encoderPreference ? encoderPreference : {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
 
@@ -71,8 +71,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <Tooltip target="primaryPublishURLTooltip">This is your server address for live streaming.</Tooltip>
                             </LinkBoxLabel>
                             <LinkBox backgroundColour="white">
-                                <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
-                                <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
+                                <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL + (selectedEncoder.title === 'Teradeks' ? teradeksConfigOption : '')}</LinkText>
+                                <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL + (selectedEncoder.title === 'Teradeks' ? teradeksConfigOption : ''), "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
                             </LinkBox>
                         </LinkBoxContainer>
                         {
@@ -84,8 +84,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                         <Tooltip target="backupPublishURLTooltip">This is your backup stream in case the Server/Stream URL/ Address does not work.</Tooltip>
                                     </LinkBoxLabel>
                                     <LinkBox backgroundColour="white">
-                                        <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                        <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL + (selectedEncoder.title === 'Teradeks' ? teradeksConfigOption : '')}</LinkText>
+                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL + (selectedEncoder.title === 'Teradeks' ? teradeksConfigOption : ''), "Copied to clipboard")}>file_copy</IconStyle>
                                     </LinkBox>
                                 </LinkBoxContainer>
                         }
