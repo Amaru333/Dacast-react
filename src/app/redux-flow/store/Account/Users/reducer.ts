@@ -4,6 +4,7 @@ import { UsersAction } from "./actions";
 
 const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: UsersAction) => {
     let users = null
+    let filteredUsers = null
     switch(action.type) {
         case ActionTypes.GET_USERS_DETAILS:
             return {
@@ -13,10 +14,12 @@ const reducer: Reducer<MultiUserDetails> = (state = usersInitialState, action: U
         case ActionTypes.ADD_USER:
             users = state.users.slice()
             users.splice(users.length, 0, action.payload)
+            filteredUsers = state.filteredUsers.slice()
+            filteredUsers.splice(filteredUsers.length, 0, action.payload)
             return {
                 ...state,
                 users: users,
-                filteredUsers: state.filteredUsers.splice(state.filteredUsers.length, 0, action.payload),
+                filteredUsers: filteredUsers,
                 occupiedSeats: state.occupiedSeats + 1
             }
         case ActionTypes.EDIT_USER_ROLE:

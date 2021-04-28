@@ -57,7 +57,7 @@ export const UsersPage = (props: UsersComponentProps) => {
 
     React.useEffect(() => {
         filterUsersTable()
-    }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
+    }, [usersTableSort, usersTableKeyword])
 
     React.useEffect(() => {
         if(props.billingInfo && !planDetails) {
@@ -262,7 +262,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                     <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
-            <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
+            <Table className='tableOverflow' customClassName=' tableOverflow' id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white" noScrollY></Table>
             <Text className="relative right" size={12} color="gray-3">{emptySeats} Seats Available</Text>
             {
                 changeSeatsStepperOpen &&
