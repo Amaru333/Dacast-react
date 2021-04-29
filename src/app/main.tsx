@@ -282,7 +282,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 }
                 if (route.isPublic) {
                     if (userToken.isLoggedIn()) {
-                        if(route.path !== '*' || ['/dashboard', '/dashboard/'].includes(location.pathname)) {
+                        console.log(location.hash)
+                        if(
+                            route.path !== '*' ||
+                            ['/dashboard', '/dashboard/'].includes(location.pathname) ||
+                            ['#!/dashboard', '#!/dashboard?', '#!/dashboard/', '#!/dashboard/?'].includes(location.hash)
+                        ) {
                             return (<Route key={route.path} path={route.path}>
                                 <Redirect
                                     to={{
