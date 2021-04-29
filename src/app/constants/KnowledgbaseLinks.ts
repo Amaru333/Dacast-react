@@ -39,11 +39,11 @@ export const getKnowledgebaseLink = (name: string) => {
         case "OBS Open Broadcaster Software":
             return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-the-obs-studio-dacast-encoder-on-windows/"
         case "Sling Studio":
-            return "https://www.dacast.com/support/knowledgebase/walkthrough-encoder-setup-guide/"
+            return "https://www.dacast.com/support/knowledgebase/slingstudio-encoder-software/"
         case "Telestream Wirecast":
             return "https://www.dacast.com/support/knowledgebase/how-to-live-stream-with-wirecast/"
-        case "Teradeks":
-            return "https://www.dacast.com/support/knowledgebase/teradek-vidiu-documentation/"
+        case "Teradek":
+            return "https://www.dacast.com/support/knowledgebase/what-profile-should-i-set-in-teradek-encoders-for-the-html5/"
         case "Vid Blaster":
             return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-vidblasterx/"
         case "vMix":
