@@ -282,7 +282,6 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                 }
                 if (route.isPublic) {
                     if (userToken.isLoggedIn()) {
-                        console.log(location.hash)
                         if(
                             route.path !== '*' ||
                             ['/dashboard', '/dashboard/'].includes(location.pathname) ||
