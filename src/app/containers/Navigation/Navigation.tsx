@@ -218,8 +218,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => {
-                                    if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan.nbSeats === 1){
+                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
+                                    if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.nbSeats === 1){
                                         return (
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
                                                 <div className='flex'>

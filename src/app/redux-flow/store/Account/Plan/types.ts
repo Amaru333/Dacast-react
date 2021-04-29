@@ -73,7 +73,7 @@ export type BandWidthProduct = {
     [key in BandwidthProductKey]: Product
 }
 
-export type BandwidthProductCurrency = 'usd' | 'eur' | 'gbp';
+export type BandwidthProductCurrency = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy';
 
 type BandwidthProductPrice = {
     [key in BandwidthProductCurrency]: number

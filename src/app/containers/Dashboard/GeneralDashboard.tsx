@@ -96,8 +96,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
                     }
-                    <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price/100}</Text>
-                </WidgetElement>
+                    <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>
+                </WidgetElement> 
+
             )
         }
 
