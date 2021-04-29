@@ -50,7 +50,8 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        subtitles: vodContent.subtitles.filter((item) => item.targetID != action.payload.id)
+                        subtitles: vodContent.subtitles.filter((item) => item.targetID != action.payload.id),
+                        tempSubtitleFileId: null
                     }
                 }   
             }
@@ -61,7 +62,8 @@ const reducer: Reducer<ContentDetailsState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType],
                     [action.payload.contentId] : {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        uploadurl: action.payload.url
+                        uploadurl: action.payload.url,
+                        tempSubtitleFileId: action.payload.subtitleInfo ? action.payload.subtitleInfo.targetID : null
                     }
                 }
             }

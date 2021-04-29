@@ -1,10 +1,9 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer, UpgradeButton, TrialUpgradeButton } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory, Link } from 'react-router-dom';
-import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter, capitalizeFirstLetter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
@@ -21,6 +20,7 @@ import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flo
 import { segmentService } from '../../app/utils/services/segment/segmentService';
 import TagManager from 'react-gtm-module'
 import { ContentType } from "../../app/redux-flow/store/Common/types";
+const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -89,7 +89,7 @@ const Header = (props: HeaderProps) => {
     React.useEffect(() => {
         segmentService.page('App')
         segmentService.identify({
-            userId: userToken.getUserInfoItem('custom:dacast_user_id'),
+            userId: userToken.getUserInfoItem('user-id'),
             firstName: userToken.getUserInfoItem('custom:first_name'),
             lastName: userToken.getUserInfoItem('custom:last_name'),
             company: userToken.getUserInfoItem('companyName'),
@@ -109,8 +109,8 @@ const Header = (props: HeaderProps) => {
             if(!props.ProfileInfo) {
                 props.getProfilePageDetails()
             }
-    
-            if(!props.billingInfo) {
+
+            if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
                 props.getBillingInfo()
             }
 
@@ -119,16 +119,16 @@ const Header = (props: HeaderProps) => {
                 gtmId: 'GTM-PHZ3Z7F',
                 dataLayer: {
                     'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                    'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'accountId': userToken.getUserInfoItem('user-id'),
                     'companyName': userToken.getUserInfoItem('custom:website'),
                     'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                     'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                    'userId': userToken.getUserInfoItem('user-id'),
                     'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                     'userLastName': userToken.getUserInfoItem('custom:last_name'),
                     'userEmail': userToken.getUserInfoItem('email'),
                     'bid': userToken.getUserInfoItem('salesforce-group-id')
-                }, 
+                },
                 // dataLayerName: 'Uapp'
             });
     }, [])
@@ -139,16 +139,16 @@ const Header = (props: HeaderProps) => {
                 {
                     dataLayer: {
                         'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'accountId': userToken.getUserInfoItem('user-id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userId': userToken.getUserInfoItem('user-id'),
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
                         'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    }, 
+                    },
                     // dataLayerName: 'Uapp'
                 });
         }
@@ -162,16 +162,16 @@ const Header = (props: HeaderProps) => {
                 {
                     dataLayer: {
                         'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'accountId': userToken.getUserInfoItem('user-id'),
                         'companyName': userToken.getUserInfoItem('custom:website'),
                         'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
                         'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('custom:dacast_user_id'),
+                        'userId': userToken.getUserInfoItem('user-id'),
                         'userFirstName': userToken.getUserInfoItem('custom:first_name'),
                         'userLastName': userToken.getUserInfoItem('custom:last_name'),
                         'userEmail': userToken.getUserInfoItem('email'),
                         'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    }, 
+                    },
                     // dataLayerName: 'Uapp'
                 });
         }
@@ -187,7 +187,6 @@ const Header = (props: HeaderProps) => {
     const handleLogOut = () => {
         userToken.resetUserInfo()
         window.location.href = '/login'
-        
     }
 
     const handleClick = (name: string) => {
@@ -238,6 +237,24 @@ const Header = (props: HeaderProps) => {
         })
     }
 
+    const renderUpgradeButton = () => {
+        if (!props.billingInfo) {
+            return
+        }
+        if(!props.isMobile && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
+            return (
+                <TrialUpgradeButton className="mr2">
+                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => history.push('/account/upgrade')}>Upgrade Now</a></span>
+                </TrialUpgradeButton>
+            )
+        }
+        return (
+            <UpgradeButton onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+                Upgrade
+            </UpgradeButton>
+        )
+    }
+
     return (
         <HeaderStyle userType={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'impersonatedUser' : 'user'}>
             {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
@@ -246,14 +263,15 @@ const Header = (props: HeaderProps) => {
                 {renderHeaderBreadcrumb()}
             </BreadcrumbContainer>
             {
-                userToken.getUserInfoItem('impersonatedUserIdentifier') && 
+                userToken.getUserInfoItem('impersonatedUserIdentifier') &&
                 <div>
                     <Text> Impersonating user: {userToken.getUserInfoItem('impersonatedUserIdentifier')}</Text>
                 </div>
             }
 
+            {renderUpgradeButton()}
+            <VerticalDivider />
             <IconContainerStyle customColor={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'red10' : null}>
-                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
                     {avatarFirstName && avatarLastName ?
 
@@ -264,9 +282,8 @@ const Header = (props: HeaderProps) => {
                         {renderAddList()}
                     </UserOptionsDropdownList>
                 </div>
+                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
             </IconContainerStyle>
-            <VerticalDivider />
-            <Button onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
         </HeaderStyle>
     )
 }
@@ -296,4 +313,4 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header); 
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

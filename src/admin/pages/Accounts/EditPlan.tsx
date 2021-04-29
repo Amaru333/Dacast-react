@@ -84,6 +84,13 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
 
                     <Divider className='pt2' />
 
+                    {/* Make this section actually do something when the backend is done */}
+                    <Text className='py2' size={20} weight='med' color='gray-3'>User Management</Text>
+
+                    <Input type="number" className='my1 col col-2' id='seatsInput' placeholder='100' label='User Seats' defaultValue={props.accountPlan.maxSeats ? props.accountPlan.maxSeats.toString() : ''} onChange={(event) => handleKeyChange('maxSeats', parseInt(event.currentTarget.value))} />
+
+                    <Divider className='pt2' />
+
                     <Text className='py2' size={20} weight='med' color='gray-3'>Manage Modules</Text>
 
                     <Text className='py1' size={14} weight='med'>Live Streams</Text>
@@ -149,6 +156,16 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.phoneSupport.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.phoneSupport.planValue || props.accountPlan.phoneSupport.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('phoneSupport', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>Multi User Access</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccess.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccess.planValue || props.accountPlan.multiUserAccess.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccess', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccessBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccessBeta.planValue || props.accountPlan.multiUserAccessBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccessBeta', value === 'On' ? true : false)} />
                     </div>
 
                     <Divider className='pt2' />
@@ -223,7 +240,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <Modal modalTitle='Extend Trial' toggle={() => setExtendTrialModalOpened(!extendTrialModalOpened)} opened={extendTrialModalOpened}>
                     <div className='flex flex-column'>
                         <DateTimePicker
-                            minDate={defaultTs}
+                            //minDate={defaultTs}
                             fullLineTz
                             dropShowing={false}
                             showTimezone={true}

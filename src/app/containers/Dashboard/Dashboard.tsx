@@ -14,6 +14,7 @@ import { PlaybackProtection, editBillingPagePaymenPlaybackProtectionAction, addB
 import { ProtectionModal } from '../../pages/Account/Plan/ProtectionModal';
 import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -26,11 +27,8 @@ export interface DashboardProps {
 
 const Dashboard = (props: DashboardProps) => {
 
-    const [profileDataisFetching, setProfileDataIsFetching] = React.useState<boolean>(true)
-    const [billingDataisFetching, setBillingDataIsFetching] = React.useState<boolean>(true)
-
     React.useEffect(() => {
-        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
+        props.getDashboardDetails()
     }, [])
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
@@ -68,24 +66,25 @@ const Dashboard = (props: DashboardProps) => {
                         </Modal>
                     }
                     <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
-                <DisableProtectionModal
-                    price={props.infos.playbackProtection.price}
-                    editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                    setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
-                />
-            </Modal>
-                    <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
-                </>
-            )
-
-        } else {
-            return (
-                <>
-                    <GeneralDashboard plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
-                    <TrialAdditionalDashboard />
+                        <DisableProtectionModal
+                            price={props.infos.playbackProtection.price}
+                            editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
+                            setDisableProtectionModalOpened={setDisableProtectionModalOpened}
+                            />
+                    </Modal>
+                    {
+                        userToken.getPrivilege('privilege-paywall') &&
+                        <PaywallDashboard profile={props.infos.paywall} rightSide={false} />
+                    }
                 </>
             )
         }
+        return (
+            <>
+                <GeneralDashboard plan={props.infos.currentPlan} profile={props.infos.generalInfos} />
+                <TrialAdditionalDashboard />
+            </>
+        )
     }
 
     return (

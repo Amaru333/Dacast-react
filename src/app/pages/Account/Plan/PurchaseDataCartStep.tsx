@@ -10,11 +10,11 @@ import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDrop
 import { handleCurrencySymbol } from '../../../../utils/utils';
 
 interface PurchaseDataCartStepProps {
-    stepperData: Extras; 
+    stepperData: Extras;
     bandwidthProduct: BandWidthProduct;
     selectedCurrency: DropdownSingleListItem;
-    updateStepperData: React.Dispatch<React.SetStateAction<Extras>>; 
-    setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; 
+    updateStepperData: React.Dispatch<React.SetStateAction<Extras>>;
+    setStepValidated: React.Dispatch<React.SetStateAction<boolean>>;
     setSelectedCurrency: React.Dispatch<React.SetStateAction<DropdownSingleListItem>>;
 }
 
@@ -57,8 +57,10 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
 
     const handleDataPrice = (data: number) => {
         setDataAmount(data)
-        if(data <= 4999 ){
+        if(data <= 2400){
             props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", quantity: data, totalPrice: (props.bandwidthProduct['eventBw1to4TB'].unitPrice[props.selectedCurrency.data.id as BandwidthProductCurrency] * data)})
+        } else if(data <= 4999) {
+            props.updateStepperData({...props.stepperData, code: "eventBw1to4TB", quantity: data, totalPrice: (props.bandwidthProduct['eventBw5to10TB'].unitPrice[props.selectedCurrency.data.id as BandwidthProductCurrency] * 5000)})
         } else if(data >= 5000 && data <= 9999){
             props.updateStepperData({...props.stepperData, code: "eventBw5to10TB", quantity: data, totalPrice: (props.bandwidthProduct['eventBw5to10TB'].unitPrice[props.selectedCurrency.data.id as BandwidthProductCurrency] * data)})
         } else {
@@ -69,21 +71,21 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
     return (
         <div className="col col-12 flex flex-column">
             <div style={{position: 'absolute', right: 24, top: 24}}>
-                {/* <MultiCurrencyDropdown 
+                {/* <MultiCurrencyDropdown
 
-                    defaultCurrency={props.selectedCurrency} 
-                    currenciesList={props.bandwidthProduct.eventBw10to100TB.unitPrice} 
+                    defaultCurrency={props.selectedCurrency}
+                    currenciesList={props.bandwidthProduct.eventBw10to100TB.unitPrice}
                     callback={(value: DropdownSingleListItem) => {props.setSelectedCurrency(value);props.updateStepperData({...props.stepperData, totalPrice: props.bandwidthProduct[props.stepperData.code].unitPrice[value.data.id as BandwidthProductCurrency] * dataAmount})}}
                 /> */}
             </div>
-            <Input 
-                defaultValue={dataAmount && dataAmount.toString()} 
-                type="number" 
-                className="col col-6 mb1" 
-                label="Amount in Gigabytes (GB)" 
-                isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)} 
-                help={handleInputError(dataAmount)} 
-                onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value))}} 
+            <Input
+                defaultValue={dataAmount && dataAmount.toString()}
+                type="number"
+                className="col col-6 mb1"
+                label="Amount in Gigabytes (GB)"
+                isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)}
+                help={handleInputError(dataAmount)}
+                onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value))}}
             />
             <div className="col col-12">
             <Table id="PurchaseDataCart" headerBackgroundColor="gray-10" body={cartTableBodyElement()} footer={cartTableFooterElement()} />

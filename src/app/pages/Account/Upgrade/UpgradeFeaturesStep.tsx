@@ -62,7 +62,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                         <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>
                     </div>,
                     <div className="right mr2">
-                        <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency] / 100).toLocaleString() + "/yr"}</Text>
+                        <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr"}</Text>
                     </div>
 
                 ]

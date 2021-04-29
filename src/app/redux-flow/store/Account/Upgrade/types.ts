@@ -24,6 +24,7 @@ export interface Plan {
     privilegesTotal: number;
     termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
+    nbSeats: number;
 }
 
 export interface Allowances {
@@ -38,7 +39,7 @@ export interface Privilege {
     checked: boolean;
 }
 
-export type Currency = 'usd' | 'eur' | 'gbp'
+export type Currency = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy'
 
 export type Price = {
     [key in Currency]: number

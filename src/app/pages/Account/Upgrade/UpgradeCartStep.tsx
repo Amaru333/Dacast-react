@@ -28,15 +28,15 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
     if(props.stepperData.name.indexOf('scale') !== -1) {
         segmentService.track('Upgrade Form Completed', {
             action: 'Features Form Submitted',
-            'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+            'user_id': userToken.getUserInfoItem('user-id'),
             'plan_name': props.stepperData.name,
             step: 2,
         })
     }
 
     const totalFeatures = calcTotalFeatures((props.stepperData.name !== "Starter" || !(props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)) ? props.stepperData.privileges.filter(p => p.checked).map(p => p.price) : [], props.selectedCurrency.data.id as Currency)
-    const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100, props.stepperData.discount)
-    const totalPrice: number = calculateDiscount(((props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100) + totalFeatures), props.stepperData.discount)
+    const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency], props.stepperData.discount)
+    const totalPrice: number = calculateDiscount(((props.stepperData.price[props.selectedCurrency.data.id as Currency]) + totalFeatures), props.stepperData.discount)
     const currencySymbol = handleCurrencySymbol(props.selectedCurrency.data.id)
     // const [newSelectedPrivileges, setNewSelectedPrivileges] = React.useState<Privilege[]>([])
     // const isFirstPurchase = (props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)
@@ -87,7 +87,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
                 {
                     data: [
                         <Text key="cartTablePlanHeading" size={14} weight="med" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{currencySymbol + (props.stepperData.price[props.selectedCurrency.data.id as Currency] /100) + ' /yr'}</Text>
+                        <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{currencySymbol + (props.stepperData.price[props.selectedCurrency.data.id as Currency]) + ' /yr'}</Text>
                     ]
                 },
                 {
@@ -102,7 +102,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
             {
                 data: [
                     <Text key="cartTablePlanHeading" size={14} weight="reg" color="gray-1">{PlansName[props.stepperData.name]}</Text>,
-                    <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.name === "Starter") ? currencySymbol + (props.stepperData.price[props.selectedCurrency.data.id as Currency] /100) + ' /yr' : currencySymbol + (props.stepperData.paymentTerm === 1 ? props.stepperData.price[props.selectedCurrency.data.id as Currency] /100 : (props.stepperData.price[props.selectedCurrency.data.id as Currency] /12)/100) + ' /mo'}</Text>
+                    <Text className='right pr2' key="cartTablePlanIncludedTotal" size={14} weight="reg" color="gray-1">{(props.stepperData.name === "Starter") ? currencySymbol + (props.stepperData.price[props.selectedCurrency.data.id as Currency]) + ' /yr' : currencySymbol + (props.stepperData.paymentTerm === 1 ? props.stepperData.price[props.selectedCurrency.data.id as Currency] : (props.stepperData.price[props.selectedCurrency.data.id as Currency] /12)) + ' /mo'}</Text>
                 ]
             }]
     }

@@ -29,13 +29,13 @@ export const UpgradePaymentStep = (props: UpgradePaymentStepProps) => {
 
     segmentService.track('Upgrade Form Completed', {
         action: 'Cart Form Submitted',
-        'user_id': userToken.getUserInfoItem('custom:dacast_user_id'),
+        'user_id': userToken.getUserInfoItem('user-id'),
         'plan_name': props.stepperData.name,
         step: 3,
     })  
-    const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100, props.stepperData.discount)
+    const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency], props.stepperData.discount)
     const featuresTotal: number = calcTotalFeatures((props.stepperData.name !== "Starter" || !(props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)) ? props.stepperData.privileges.filter(p => p.checked).map(p => p.price) : [], props.selectedCurrency.data.id as Currency)
-    const totalPrice: number = calculateDiscount((props.stepperData.price[props.selectedCurrency.data.id as Currency] / 100) + featuresTotal, props.stepperData.discount)
+    const totalPrice: number = calculateDiscount((props.stepperData.price[props.selectedCurrency.data.id as Currency]) + featuresTotal, props.stepperData.discount)
 
     React.useEffect(() => {
         props.setStepValidated(props.stepperData.termsAndConditions)

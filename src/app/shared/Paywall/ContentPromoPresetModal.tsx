@@ -51,16 +51,16 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
     const handleSubmit = () => {
         setButtonLoading(true)
         if (savePreset) {
-            props.savePresetGlobally({ ...newPromoPreset, startDate:  tsToUtc(startDate, newPromoPreset.timezone), endDate:  tsToUtc(endDate, newPromoPreset.timezone) })
+            props.savePresetGlobally({ ...newPromoPreset, startDate: tsToUtc(startDate, newPromoPreset.timezone, new Date(startDate * 1000)), endDate: tsToUtc(endDate, newPromoPreset.timezone, new Date(endDate * 1000)) })
         }
-        const userId = userToken.getUserInfoItem('custom:dacast_user_id')
+        const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
         props.action(
             {
                 ...newPromoPreset,
-                startDate: tsToUtc(startDate, newPromoPreset.timezone),
-                endDate: tsToUtc(endDate, newPromoPreset.timezone),
+                startDate: tsToUtc(startDate, newPromoPreset.timezone, new Date(startDate * 1000)),
+                endDate: tsToUtc(endDate, newPromoPreset.timezone, new Date(endDate * 1000)),
                 discountApplied: newPromoPreset.discountApplied.toLowerCase(),
-                assignedContentIds: [`${userId}-${props.contentType}-${props.contentId}`],
+                assignedContentIds: [`${accountId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
                 id: props.actionButton === 'Create' ? null : newPromoPreset.id
@@ -112,7 +112,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                 />
             </div>
             <div className='col col-12 mb2 flex items-end'>
-                <DateTimePicker 
+                <DateTimePicker
                     fullLineTz
                     minDate={startDate}
                     defaultTs={endDate}

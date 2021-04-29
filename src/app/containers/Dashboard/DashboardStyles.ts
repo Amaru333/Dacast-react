@@ -2,11 +2,11 @@ import styled, { css } from 'styled-components';
 import { Card } from '../../../components/Card/Card';
 
 export const classContainer = "clearfix mxn2";
-export const classItemFullWidth = "col col-12 px2 mb3";
-export const classItemHalfWidthContainer = "col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3";
-export const classItemFullWidthContainer = "col lg-col-3 md-col-6 sm-col-12 col-12 px2 mb3";
-export const classItemThirdWidthContainer = "col lg-col-4 md-col-4 sm-col-12 col-12 px2 mb3";
-export const classItemQuarterWidthContainer = "col lg-col-3 md-col-3 sm-col-12 col-12 px2 mb3";
+export const classItemFullWidth = "col col-12 px15 mb25";
+export const classItemHalfWidthContainer = "col lg-col-6 md-col-6 sm-col-12 col-12 px15 mb25";
+export const classItemFullWidthContainer = "col lg-col-3 md-col-6 sm-col-12 col-12 px15 mb25";
+export const classItemThirdWidthContainer = "col lg-col-4 md-col-4 sm-col-12 col-12 px15 mb25";
+export const classItemQuarterWidthContainer = "col lg-col-3 md-col-3 sm-col-12 col-12 px15 mb25";
 
 export const SupportCard = styled(Card)`
     background-color: ${props => props.theme.colors['violet20']};
@@ -14,6 +14,10 @@ export const SupportCard = styled(Card)`
 
 export const WidgetHeader = styled.div<{}>`
     margin-bottom: 16px;
+`;
+
+export const WidgetHeaderTop = styled.div<{}>`
+    margin-bottom: 24px;
 `;
 
 export const TableListStyle = styled.table<{}>`

@@ -5,6 +5,7 @@ import { Text } from '../Typography/Text'
 
 interface BubbleSpecificProps {
     type: 'warning' | 'info' | 'error' | 'success';
+    icon: string;
 }
 
 type BubbleProps = BubbleSpecificProps & React.HTMLAttributes<HTMLDivElement>
@@ -14,14 +15,18 @@ export const Bubble = (props: BubbleProps) => {
         return <></>
     }
     const renderIcon = () => {
+        if (props.icon) {
+            return props.icon
+        }
+
         switch(props.type) {
-            case 'info': 
+            case 'info':
                 return 'info_outlined'
             case 'warning':
                 return 'warning_outlined'
-            case 'error': 
+            case 'error':
                 return 'warning_outined'
-            case 'success': 
+            case 'success':
                 return 'check_outlined'
             default:
                 return 'info_outlined'

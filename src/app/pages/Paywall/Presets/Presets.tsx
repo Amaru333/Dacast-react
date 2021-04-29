@@ -13,6 +13,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Pagination } from '../../../../components/Pagination/Pagination';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
+import { userToken } from '../../../utils/services/token/tokenService';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -24,12 +25,18 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
 
     React.useEffect(() => {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
+            return
+        }
         if(pricePresetPaginationInfo.nbResults && pricePresetPaginationInfo.page) {
             props.getPresetsInfos(`per-page=${pricePresetPaginationInfo.nbResults}&page=${pricePresetPaginationInfo.page}`)
         }
     }, [pricePresetPaginationInfo])
 
     React.useEffect(() => {
+        if (userToken.isUnauthorized(props.associatePrivilege)) {
+            return
+        }
         if(promoPresetPaginationInfo.nbResults && promoPresetPaginationInfo.page) {
             props.getPromoPresets(`per-page=${promoPresetPaginationInfo.nbResults}&page=${promoPresetPaginationInfo.page}`)
         }
@@ -65,7 +72,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         <Tooltip target={"deleteTooltip" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
                             <IconStyle onClick={() =>  {setSelectedPreset(preset);setPricePresetsModalOpened(true)}}>edit</IconStyle>
-                        </ActionIcon> 
+                        </ActionIcon>
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
                 ]}
@@ -98,7 +105,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
                             <IconStyle onClick={() =>  {setSelectedPromo(promo);setPromoPresetsModalOpened(true)}}>edit</IconStyle>
                         </ActionIcon>
-                        <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>   
+                        <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
                 ]}
             })
@@ -137,7 +144,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href={getKnowledgebaseLink('Price Preset')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
-                {props.presetsInfos.presets.totalItems === 0 ? 
+                {!props.presetsInfos.presets || props.presetsInfos.presets.totalItems === 0 ?
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
                     <>
@@ -155,7 +162,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href={getKnowledgebaseLink("Promo Preset")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
-                { props.presetsInfos.promos.totalItems === 0 ?
+                { !props.presetsInfos.promos || props.presetsInfos.promos.totalItems === 0 ?
                     <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
                     :
                     <>
@@ -163,7 +170,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         <Pagination totalResults={props.presetsInfos.promos.promos ? props.presetsInfos.promos.totalItems : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPromoPresetPaginationInfo({page:page,nbResults:nbResults})}} />
                     </>
                 }
-                
+
             </Card>
             <Modal hasClose={false} modalTitle={selectedPreset ? 'Edit Price Preset' : 'Create Price Preset'} opened={pricePresetsModalOpened} toggle={() => setPricePresetsModalOpened(false)}>
                 {

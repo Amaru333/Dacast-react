@@ -1,3 +1,5 @@
+import { UserLoginToken } from "./session";
+
 export interface CompanyDetailsEndpoints {
     id: string;
     accountName: string;
@@ -16,6 +18,49 @@ export interface CompanyDetailsEndpoints {
 
 export type GetCompanyRequestOutput = CompanyDetailsEndpoints & {
     logoURL: string;
+}
+
+export interface UserEndpoint {
+    userId: string
+    firstName: string
+    lastName: string
+    email: string
+    role: string
+    invitationId: string
+    status: 'active' | 'expired' | 'invited' | 'disabled'
+    token?: UserLoginToken
+}
+
+export interface GetUsersDetailsOutput {
+    users: UserEndpoint[]
+    maxSeats: number
+    occupiedSeats: number
+}
+
+export interface PostUserInput {
+    email: string
+    isAdmin: boolean
+}
+
+export type UserRoleWhitoutOwner = 'creator' | 'admin'
+
+export interface PostUserRoleInput {
+    id: string
+    payload: {
+        role: UserRoleWhitoutOwner
+    }
+}
+
+export interface DeleteUserInput {
+    id: string
+    payload: {
+        transferContentsToUserId: string
+        invitationId: string
+    }
+}
+
+export interface UserId {
+    id: string
 }
 
 interface Invoice {
@@ -63,7 +108,7 @@ export interface PostUserPasswordInput {
     accessToken: string;
 }
 
-export type CurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud'
+export type CurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy'
 
 type PriceEndpointStruct = {
     [key in CurrencyKey] : number;
@@ -106,7 +151,7 @@ interface PrivilegePostEndpoint {
     quantity: number;
 }
 
-export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD'
+export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CAD' | 'SGD' | 'JPY'
 
 export interface PostAccountPlanInput { 
     planCode: string;
@@ -156,19 +201,43 @@ export interface PostProductExtraDataOutput {
     tokenID: string;
 }
 
+interface AddOnEndpoint {
+    code: string
+    'included-in-subscription': boolean
+    'price-in-cents': number
+    quantity?: number
+}
+
+export interface PostPurchaseAddOnInput {
+    quantity: number
+    addOnCode: string
+    preview: boolean
+}
+
+export interface PostPurchaseaddOnOutput {
+    price: number
+}
+
+interface AccountSubscription {
+    addOns: AddOnEndpoint[]
+    currency: PlanCurrencyEndpoint
+    overageStorageUnitPrice: string
+    paymentFrequency: string
+    paymentTerm: number
+    periodEndsAt: number
+    periodStartedAt: number
+    planCode: string
+    planName: string
+    price: number
+    state: string
+}
+
 export interface AccountPlan {
-    currency: string;
     displayName: string;
-    paymentFrequency: string;
-    paymentTerm: number;
-    planCode: string;
-    planName: string;
-    price: number;
-    overageStorageUnitPrice: string;
-    periodEndsAt: number;
-    periodStartedAt: number;
-    state: string;
+    subscription: AccountSubscription
     trialExpiresIn: number | null;
+    maxMuaSeats: number
+    occupiedMuaSeats: number
 }
 
 interface AccountPaymentMethod {

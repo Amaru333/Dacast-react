@@ -33,6 +33,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
     const renderList = () => {
         return (
             props.list && props.list.map((item, key) => {
+                console.log(item)
                 return (
                     <DropdownItem 
                         isSingle

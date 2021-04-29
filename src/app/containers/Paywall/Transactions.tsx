@@ -8,13 +8,15 @@ import { TransactionsInfo } from '../../redux-flow/store/Paywall/Transactions/ty
 
 export interface TransactionsComponentProps {
     transactionsInfo: TransactionsInfo;
-    getTransactions: (qs:string) => Promise<void>;
+    getTransactions: (qs: string) => Promise<void>;
     getTransactionsCsv: (qs: string) => Promise<void>;
 }
 
 const Transactions = (props: TransactionsComponentProps) => {
 
-    return <TransactionsPage {...props} />
+    return (
+        <TransactionsPage {...props} />
+    )
 }
 
 export function mapStateToProps(state: ApplicationState) {
@@ -25,7 +27,7 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getTransactions: async (qs:string) => {
+        getTransactions: async (qs: string) => {
             await dispatch(getTransactionsAction(qs))
         },
         getTransactionsCsv: async (qs: string) => {

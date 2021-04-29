@@ -24,11 +24,14 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     ${props => props.size === "small" && css`
         width: 400px;
     `};
+    ${props => props.size === "medium" && css`
+        width: 500px;
+    `};
     @media (max-width: 40em) {
         padding: 16px;
         width: 80%;
     }
- 
+
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);
     display: none;
@@ -43,7 +46,6 @@ export const ModalContainerStyle = styled.div<ModalProps & {isMobile: boolean}>`
     z-index: 9999;
     max-height: 90%;
     overflow-x: auto;
-    overflow: inherit;
 `;
 export const ModalTitleStyle = styled.div`
     margin-bottom: 8px;
@@ -63,13 +65,13 @@ export const ModalBodyStyle = styled.div`
     flex-direction: row;
     margin-bottom: 24px;
     flex-wrap: wrap;
-    & > * { 
+    & > * {
         margin-bottom: 8px;
     }
 `;
 
 export const ModalFooterStyle = styled.div`
-    & > * { 
+    & > * {
         margin-right: 12px;
     }
 `;
@@ -80,6 +82,9 @@ export const ModalCardContainerStyle = styled.div<ModalCardProps>`
     width: 600px;
     ${props => props.size === "small" && css`
         width: 400px;
+    `};
+    ${props => props.size === "medium" && css`
+        width: 500px;
     `};
     border-radius: ${props => props.theme.borderRadius};
     box-shadow: 0px 4px 4px rgba(34, 47, 62, 0.2);

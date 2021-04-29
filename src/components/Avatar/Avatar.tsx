@@ -4,15 +4,7 @@ import styled from 'styled-components';
 import { AvatarProps } from './AvatarTypes';
 import { AvatarColorsArray } from '../../styled/types';
 
-const getInitials = (name: string) => {
-    var names = name.split(' '),
-        initials = names[0].substring(0, 1).toUpperCase();
-    initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    
-    return initials;
-}
-
-const getColor = (name: string) => {
+export const getRandomColor = (name: string) => {
     var hash = 0;
 
     if (name.length === 0) return hash;
@@ -23,8 +15,31 @@ const getColor = (name: string) => {
     return Math.abs(hash % AvatarColorsArray.length);
 }
 
+const assignAvatarColor = (userRole: string, name: string) => {
+    switch (userRole) {
+        case "Owner":
+            return "green"
+        case "Admin":
+            return "pink"
+        case "Creator":
+            return "blue-2"
+        default:
+            return AvatarColorsArray[getRandomColor(name)]
+    }
+}
+
 export const Avatar = (props: AvatarProps) => {
 
+    const getInitials = (name: string) => {
+        var names = name.split(' '),
+            initials = names[0].substring(0, 1).toUpperCase();
+        initials += names[names.length - 1].substring(0, 1).toUpperCase();
+        
+        return initials;
+    }
+    
+    
+    
     return (
         <AvatarStyle {...props}>
             
@@ -37,7 +52,7 @@ export const Avatar = (props: AvatarProps) => {
 Avatar.defaultProps = {size: "small"}
 
 export const AvatarStyle = styled.div<AvatarProps>`
-    background-color: ${props => props.theme.colors[AvatarColorsArray[getColor(props.name)]]};
+    background-color: ${props => props.userRole ? props.theme.colors[assignAvatarColor(props.userRole, props.name)] : props.theme.colors[AvatarColorsArray[getRandomColor(props.name)]]};
     width: ${props => props.size === "small" ? "24px" : "40px"};
     height: ${props => props.size === "small" ? "24px" : "40px"};
     border-radius: 50%;
