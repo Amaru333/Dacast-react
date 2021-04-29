@@ -63,10 +63,10 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                     props.getEngagementSettings(props.contentId, props.contentType)
                 }, 3000)
             })
-            
+
         }
     }, [props.localEngagementSettings.uploadurl])
-    
+
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
@@ -80,7 +80,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
         if (!props.contentType) {
             props.deleteFile(props.localEngagementSettings.brandImageSettings.brandImageURL)
          } else {
-            props.deleteFile(props.contentId, props.contentType) 
+            props.deleteFile(props.contentId, props.contentType)
          }
     }
 
@@ -91,13 +91,13 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                 }
                 props.lockSection('brand-image', props.contentId, props.contentType).then(() => {
                     props.setLocalEngagementSettings({
-                        ...props.localEngagementSettings, 
+                        ...props.localEngagementSettings,
                         brandImageSettings: {
                             locked: true,
-                            brandImageLink: props.globalEngagementSettings.brandImageSettings.brandImageLink, 
-                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding, 
-                            brandImagePosition: props.globalEngagementSettings.brandImageSettings.brandImagePosition, 
-                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize, 
+                            brandImageLink: props.globalEngagementSettings.brandImageSettings.brandImageLink,
+                            brandImagePadding: props.globalEngagementSettings.brandImageSettings.brandImagePadding,
+                            brandImagePosition: props.globalEngagementSettings.brandImageSettings.brandImagePosition,
+                            brandImageSize: props.globalEngagementSettings.brandImageSettings.brandImageSize,
                             brandImageURL: props.globalEngagementSettings.brandImageSettings.brandImageURL
                         }
                     })
@@ -137,7 +137,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
     return (
         <Card className="my2">
                 <Header className="mb2">
-                    <div> 
+                    <div>
                         <Text size={20} weight='med'>Brand Image</Text>
                     </div>
                     { props.contentType &&
@@ -145,9 +145,9 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                         {!props.localEngagementSettings.brandImageSettings.locked ? "lock_open" : "lock"}
                         </IconStyle>
                     }
-                    
+
                 </Header>
-                
+
                 <DisabledSection settingsEditable={!props.localEngagementSettings.brandImageSettings.locked || !props.contentType}>
                     <Text className="py2" size={14} weight='reg' color='gray-3'>This will display on the video player on top of the content.</Text>
                     <div className={"lg-col lg-col-12 mb1 mt25 flex " + (isMobile ? "flex-column" : '')}>
@@ -156,7 +156,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                                 {uploadedFileUrl ?
                                     <>
                                         {uploadButtonLoading && <SpinnerContainer style={{zIndex: 1000}}>
-                                            <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                            <LoadingSpinner className='mx-auto' color='violet' size='small' />
                                         </SpinnerContainer>}
                                         <ImageStyle src={uploadedFileUrl}></ImageStyle>
                                         <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageChangeButtonRef} style={{display:'none'}} id='changeButton' />
@@ -166,16 +166,17 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                                     :
                             <>
                             <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
-                            <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                            <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
+                            <div className='center' style={{ marginTop: 2 }}><Text size={14} weight='reg' color='gray-3'>Image will automatically adjust if bigger than your player.</Text></div>
                             <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                             <ButtonStyle className='my1'>
                                 <input type='file' onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} ref={brandImageBrowseButtonRef} style={{display:'none'}} id='browseButton' />
-                                <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                                <Button onClick={() => {brandImageBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>
                                     Browse Files
                                 </Button>
                             </ButtonStyle>
                             </>
-                                } 
+                                }
                             </DragAndDrop>
                             <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                         </div>
@@ -187,7 +188,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                             <Input className="sm-col sm-col-4 col-6 pr2" value={props.localEngagementSettings.brandImageSettings.brandImageSize ? props.localEngagementSettings.brandImageSettings.brandImageSize.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageSize: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} label="Image Size" suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                             <Input className="sm-col sm-col-4 col-6" label="Padding (px)" value={props.localEngagementSettings.brandImageSettings.brandImagePadding ? props.localEngagementSettings.brandImageSettings.brandImagePadding.toString() : ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePadding: parseInt(event.currentTarget.value)}});props.setSettingsEdited(true)}} />
                             </div>
-                            
+
                             <Input className="col col-12 mt2" label="Image Link" indicationLabel="optional" value={props.localEngagementSettings.brandImageSettings.brandImageLink || ''} onChange={(event) => {props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImageLink: event.currentTarget.value }});props.setSettingsEdited(true)}} />
                         </div>
                     </div>
