@@ -45,7 +45,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         return (
             <LeafletMap 
                 markers={props.data.salesRevenuesByLocation.data} 
-                markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value + (element.label[index] === "revenues" ? "$" : "") +" "+element.label[index] }).join() } />
+                markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + (element.label[index] === "revenues" ? "$" : "") + value  +" "+element.label[index] }).join() } />
         )
     }
 

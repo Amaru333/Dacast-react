@@ -7,7 +7,6 @@ import { AccountAnalyticsEngagement, AccountAnalyticsEngagementState } from './t
 export const formatGetAccountAnalyticsEngagementOutput = (response: GetAnalyticsOutput, data: AccountAnalyticsParameters): AccountAnalyticsEngagementState => {
 
     var audienceData: AccountAnalyticsEngagement = formatWatchResults(response, data);
-
     return {
         data: Object.keys(audienceData).length === 0 && audienceData.constructor === Object ? undefined : audienceData
     }

@@ -164,6 +164,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 </WidgetHeader>
                 <div>
                     <LeafletMap
+                        smallMap
                         markers={props.dashboardAnalytics.audienceLocation}
                         markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value+" "+element.label[index] }).join() } 
                     />

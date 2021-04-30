@@ -6,13 +6,15 @@ import { LatLngTuple, Layer, LeafletMouseEvent } from 'leaflet';
 import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 import { EmptyAnalytics } from './EmptyAnalytics';
 import { world } from '../../app/constants/CountriesList';
+import { useMedia } from '../../utils/utils';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 1;
 
 
-const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem, index: number) => string }) => {
+const LeafletMap = (props: { markers: LocationItem[]; markerNameTranform: (element: LocationItem, index: number) => string; smallMap?: boolean }) => {
 
+  const smallMap = props.smallMap && useMedia('(max-width: 720px)')
   if(!props.markers.length) {
     return (
         <EmptyAnalytics />
@@ -127,7 +129,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
 
   return (
     <>
-      <Map zoomControl={false} center={defaultLatLng} zoom={zoom} style={{ height: '500px' }} minZoom={1.5}  >
+      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{ height: smallMap ? 450 : 550, paddingBottom: 0.5625 }} minZoom={smallMap ? 1 : 1.5}  >
         <TileLayer
           noWrap={true}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
