@@ -131,7 +131,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
     <>
       <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{ height: smallMap ? 450 : 550, paddingBottom: 0.5625 }} minZoom={smallMap ? 1 : 1.5}  >
         <TileLayer
-          noWrap={true}
+          noWrap={false}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
         //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"

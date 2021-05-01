@@ -491,3 +491,7 @@ a {
 .rt-table {
     background-color: white;
 }
+
+.leaflet-zoom-animated {
+    transition: none !important;
+}
