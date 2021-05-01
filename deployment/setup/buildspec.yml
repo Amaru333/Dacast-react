@@ -13,13 +13,14 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
+      - apt-key adv --refresh-keys --keyserver keyserver.ubuntu.com
       - apt update
       - apt install jq zip -y
       - git clone --branch $BRANCH https://$GITHUB_TOKEN@github.com/Dacast-Inc/dacast-backoffice-react.git
       - cd dacast-backoffice-react/deployment/deploy
       # - zip redirect.zip redirect.js
       # - zip admin.zip admin.js
-      - ./terraform init -input=false -get=true -backend=true -backend-config="bucket=$STATE_BUCKET" -backend-config="key=$ENV_NAME_CLIENT-terraform-state"
+      - ./terraform init -input=false -get=true -backend=true -backend-config="bucket=$STATE_BUCKET" -backend-config="key=$ENV_NAME_CLIENT-terraform-state" -verify-plugins=false
       - ./terraform apply -auto-approve -var domain_name=$DOMAIN_NAME -var env_name_client=$ENV_NAME_CLIENT -var env_name_admin=$ENV_NAME_ADMIN
       - OUTPUT=$(./terraform output -json)
       - ARTIFACT_BUCKET=$(echo $OUTPUT | jq -r -e '.s3.value')
