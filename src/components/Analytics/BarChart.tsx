@@ -72,9 +72,11 @@ export const BarChart = (props: BarChartProps) => {
                 yAxes: [{
                     ...(props.unit && {
                         ticks: {
-                            callback: (value) => {
-                                return value + " " + props.unit;
+                            callback: (value: number) => {
+                                return value.toLocaleString() + " " + props.unit;
                             },
+                            suggestedMin: 0,
+                            beginAtZero: true
                         }
                     }),
                     id: 'A',
@@ -82,8 +84,8 @@ export const BarChart = (props: BarChartProps) => {
                     position: 'left',
                     ticks: {
                         ...(props.unit && {
-                            callback: (value) => {
-                                return value + " " + props.unit;
+                            callback: (value: number) => {
+                                return value.toLocaleString() + " " + props.unit;
                             }
                         }),
                         ...(props.step && {
@@ -97,9 +99,9 @@ export const BarChart = (props: BarChartProps) => {
                     id: 'B',
                     ...(props.unitRight && {
                         ticks: {
-                            callback:  (value) => {
+                            callback:  (value: number) => {
                                 if(value >= 0) {
-                                    return value + " " + props.unitRight;
+                                    return value.toLocaleString() + " " + props.unitRight;
                                 }
                             },
                             suggestedMin: 0,

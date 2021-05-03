@@ -67,16 +67,13 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
     const handleTitleClick = (id: string, type: ContentType) => {
         switch(type) {
             case 'vod':
-                history.push('/videos/' + id + '/analytics')
-                break
+                return '/videos/' + id + '/analytics'
             case 'live': 
-                history.push('/livestreams/' + id + '/analytics')
-                break
+                return'/livestreams/' + id + '/analytics'
             case 'playlist': 
-                history.push('/playlists/' + id + '/analytics')
-                break
+                return '/playlists/' + id + '/analytics'
             default:
-                break
+                return null
         }
     }
 
@@ -86,7 +83,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 return (
                     <div className='flex col col-12' key={content.id}>
                         <Text>{i + 1}</Text>
-                        <Text className='px2 flex-auto pointer' onClick={() => handleTitleClick(content.id, content.type)}>{content.title}</Text>
+                        <Text className='px2 flex-auto pointer' weight='med'><a href={handleTitleClick(content.id, content.type)}>{content.title}</a></Text>
                         <Text className='pr2'>{content.total.toLocaleString()}</Text>
                     </div>
                 )
@@ -115,7 +112,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.dataConsumption.toLocaleString()}</Text>
-                    <Text size={32} weight='reg' color='gray-3'>GBs</Text>
+                    <Text size={20} weight='reg' color='gray-3'>gbs</Text>
                 </div>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
@@ -125,7 +122,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.plays.toLocaleString()}</Text>
-                    <Text size={32} weight='reg' color='gray-3'>plays</Text>
+                    <Text size={20} weight='reg' color='gray-3'>plays</Text>
                 </div>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
@@ -135,7 +132,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.engagement.toLocaleString()}</Text>
-                    <Text size={32} weight='reg' color='gray-3'>hours</Text>
+                    <Text size={20} weight='reg' color='gray-3'>hours</Text>
                 </div>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
@@ -149,7 +146,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                         userToken.getPrivilege('privilege-paywall') ? 
                             <div className='flex items-center'>
                                 <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
-                                <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
+                                <Text size={20} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
                             </div>
                             : <Text >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a> to have access.
                             </Text>

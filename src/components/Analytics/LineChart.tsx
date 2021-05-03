@@ -16,7 +16,7 @@ export const LineChart = (props: LineChartProps) => {
     const createDataset = (item: BaseItemAnalytics) => {
 
         var returnLine = {
-            data: item.data.map((element, index) => element),
+            data: item.data.map((element, index) => element.toLocaleString()),
             label: item.label,
             borderColor: item.color,
             pointBackgroundColor: item.color,
