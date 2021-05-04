@@ -45,7 +45,8 @@ export const formatGetAnalyticsTopContentInput = (data: AnalyticsTopContentParam
 }
 
 export const formatGetAnalyticsTopContentOutput = (data: GetAnalyticsTopContentOutput): AnalyticsTopContentInfo[] => {
-    let tempArray = data.contents.length > 10 ? data.contents.slice(0, 10) : data.contents
+    const filteredEmptyTitle = data.contents.filter(c => c.title && c.title.length > 0)
+    let tempArray = filteredEmptyTitle.length > 10 ? filteredEmptyTitle.slice(0, 10) : filteredEmptyTitle
     let formattedData: AnalyticsTopContentInfo[] = tempArray.map(content => {
         return {
             id: content.id,
