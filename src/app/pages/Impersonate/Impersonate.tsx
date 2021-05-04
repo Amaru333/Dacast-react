@@ -17,7 +17,7 @@ export const Impersonate = () => {
             impersonatedUserIdentifier: getUrlParam('identifier') || null
         })
         dacastSdk.updateToken(userToken)
-        history.push('/dashboard')
+        history.push('/')
     }, [])
 
     return (

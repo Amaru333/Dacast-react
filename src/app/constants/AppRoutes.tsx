@@ -127,12 +127,6 @@ export const AppRoutes: Routes[] = [
         component: AccountSelection
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        iconName: 'dashboard',
-        component: DashboardTest,
-    },
-    {
         path: '/livestreams',
         name: 'Live Streams',
         isExact: true,
@@ -560,5 +554,11 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: NotFound
+    },
+    {
+        path: '/',
+        name: 'Dashboard',
+        iconName: 'dashboard',
+        component: DashboardTest,
     },
 ];

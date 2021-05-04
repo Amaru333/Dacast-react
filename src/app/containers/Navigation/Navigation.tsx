@@ -43,14 +43,14 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     let location = useLocation();
     let history = useHistory();
     const firstSelectedItem = (): {main: string; slug: string} => {
-        let matchingRoute = {main: '/dashboard', slug: ''};
+        let matchingRoute = {main: '/', slug: ''};
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
         }
         props.routes.map((route) => {
             if(location.pathname.includes(route.path)) {
-                if(matchingRoute.main === '/dashboard') {
+                if(matchingRoute.main === '/') {
                     matchingRoute.main =  route.path
                 }
             }
@@ -190,8 +190,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
 
     const renderMenu = () => {
-
-        return props.routes.map((element, i) => {
+        const sortedRoutes = [props.routes.find(({ name }) => name === 'Dashboard')].concat(props.routes.filter(({ name }) => name !== 'Dashboard'))
+        return sortedRoutes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
                 const isLocked = element.slug && !element.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
                 if(element.path === 'break') {
@@ -276,7 +276,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         {props.isMobile && <OverlayMobileStyle onClick={() => props.setOpen(false)} className="noTransition" opened={props.isOpen } />}
 
             <ContainerStyle id='scrollbarWrapper' isOpen={props.isOpen} menuLocked={props.menuLocked} {...props} >
-                    <ImageStyle onClick={() => history.push('/dashboard')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
+                    <ImageStyle onClick={() => history.push('/')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
                         <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary" disabled={profileDataisFetching}>{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
