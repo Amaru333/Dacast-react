@@ -144,6 +144,7 @@ export interface GetAccountPlanOutput {
     phoneSupport: PlanSettingEndpoint;
     multiUserAccess: PlanSettingEndpoint;
     multiUserAccessBeta: PlanSettingEndpoint;
+    paymentRequest: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {
