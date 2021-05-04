@@ -290,17 +290,17 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                             formattedData.playsImpressionsByDevice.table.push({ label: data.dimension_type.value.toString(), plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : 0, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : 0 })
                         }
                         break;
-                    default:
-                        if (data.dimension_type.type !== 'Unknown') {
-                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === data.dimension_type.type);
-                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => obj.label === CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type as string)["\"Country\""]);
+                    case 'COUNTRY':
+                        if (data.dimension_type.value !== 'Unknown') {
+                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === data.dimension_type.value);
+                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => obj.label === CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""]);
 
                             let type: 'plays' | 'impressions' = metric.data_dimension.includes("PLAYS") ? 'plays' : 'impressions';
                             if(index === -1 ) {
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: data.dimension_type.type,
+                                        city: data.dimension_type.value as string,
                                         position: {
                                             latitude: 0,
                                             longitude: 0
@@ -309,7 +309,7 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                         label: [type]
                                     }
                                     ],
-                                    table: [...(formattedData.playsImpressionsByLocation.table ? formattedData.playsImpressionsByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type)["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
+                                    table: [...(formattedData.playsImpressionsByLocation.table ? formattedData.playsImpressionsByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value)["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
                                 }
                             } else {
                                 formattedData.playsImpressionsByLocation.data[index].value.push(data.dimension_sum)
@@ -326,6 +326,8 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                 formattedData.playsImpressionsByLocation.table = [...( formattedData.playsImpressionsByLocation ?  formattedData.playsImpressionsByLocation.table : []), { label: data.dimension_type.value.toString(),  plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'impressions' ? data.dimension_sum : 0 }  ]
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             })
@@ -380,11 +382,11 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                             table: [...(formattedData.watchByDevice ? formattedData.watchByDevice.table : []), { label: data.dimension_type.value.toString(), data: data.dimension_sum, }]
                         }
                         break;
-                    default:
-                        if (data.dimension_type.type !== 'Unknown') {
+                    case 'COUNTRY':
+                        if (data.dimension_type.value !== 'Unknown') {
                             formattedData.watchByLocation = {
                                 data: [...(formattedData.watchByLocation ? formattedData.watchByLocation.data : []), {
-                                    city: data.dimension_type.type,
+                                    city: data.dimension_type.value as string,
                                     position: {
                                         latitude: 0,
                                         longitude: 0
@@ -392,13 +394,15 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                                     value: [data.dimension_sum],
                                     label: [formatTimeValue([data.dimension_sum]).unitLong]
                                 }],
-                                table: [...(formattedData.watchByLocation.table ? formattedData.watchByLocation.table : []), {  label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type)["\"Country\""], data: data.dimension_sum }]
+                                table: [...(formattedData.watchByLocation.table ? formattedData.watchByLocation.table : []), {  label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value)["\"Country\""], data: data.dimension_sum }]
                             }
                         } else {
                             formattedData.watchByLocation.table = [...( formattedData.watchByLocation ?  formattedData.watchByLocation.table : []), { label: data.dimension_type.value.toString(),  data: data.dimension_sum }  ] 
                         }
 
                         break;
+                    default:
+                        break
                 }
             })
         }
@@ -447,7 +451,7 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         }
 
                         break;
-                    default:
+                    case 'COUNTRY':
                         if (!formattedData || !formattedData.salesRevenuesByLocation) {
                             formattedData.salesRevenuesByLocation = { data: [], table: [] }
                         }
