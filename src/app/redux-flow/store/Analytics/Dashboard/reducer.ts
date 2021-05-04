@@ -56,11 +56,19 @@ const reducer: Reducer<AnalyticsDashboardState> = (state = AnalyticsDashboardIni
                         failed: false
                     }
                 },
-                newDashboardInfo: state.newDashboardInfo
+                newDashboardInfo: state.newDashboardInfo,
+                topContent: state.topContent
             }
         case ActionTypes.GET_ANALYTICS_DASHBOARD_NEW:
             return {
+                ...state,
                 newDashboardInfo: action.payload,
+                data: state.data
+            }
+        case ActionTypes.GET_ANALYTICS_TOP_CONTENT: 
+            return {
+                ...state,
+                topContent: action.payload,
                 data: state.data
             }
         default:

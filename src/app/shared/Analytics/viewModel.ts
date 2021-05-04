@@ -1,5 +1,5 @@
 import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
-import { tsToLocaleDate } from "../../../utils/formatUtils";
+import { formatTimeValue, tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
 import { CountriesDetail } from "../../constants/CountriesDetails";
 import { AccountAnalyticsData } from "../../redux-flow/store/Analytics/Data/types";
@@ -200,14 +200,14 @@ export const formatRealTimeResults = (response: GetContentAnalyticsResultItemOut
                     })
                 }
                 break;
-            case 'PLAYS_BY_COUNTRY':
+            default:
                 if (metric.data.length && formattedData.playsByLocation) {
                     metric.data.forEach(data => {
                         const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         if (assosiatedCountry) {
                             formattedData.playsByLocation = {
                                 data: [...(formattedData.playsByLocation ? formattedData.playsByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.type,
                                     position: {
                                         latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                         longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -290,27 +290,26 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                             formattedData.playsImpressionsByDevice.table.push({ label: data.dimension_type.value.toString(), plays: metric.data_dimension.includes("PLAYS") ? data.dimension_sum : 0, impressions: metric.data_dimension.includes("IMPRESSIONS") ? data.dimension_sum : 0 })
                         }
                         break;
-                    case 'COUNTRY':
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                        if (assosiatedCountry) {
-                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
-                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
+                    default:
+                        if (data.dimension_type.type !== 'Unknown') {
+                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === data.dimension_type.type);
+                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => obj.label === CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type as string)["\"Country\""]);
 
                             let type: 'plays' | 'impressions' = metric.data_dimension.includes("PLAYS") ? 'plays' : 'impressions';
                             if(index === -1 ) {
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.type,
                                         position: {
-                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            latitude: 0,
+                                            longitude: 0
                                         },
                                         value: [data.dimension_sum],
                                         label: [type]
                                     }
                                     ],
-                                    table: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.table : []), { label: assosiatedCountry["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
+                                    table: [...(formattedData.playsImpressionsByLocation.table ? formattedData.playsImpressionsByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type)["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
                                 }
                             } else {
                                 formattedData.playsImpressionsByLocation.data[index].value.push(data.dimension_sum)
@@ -381,22 +380,19 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                             table: [...(formattedData.watchByDevice ? formattedData.watchByDevice.table : []), { label: data.dimension_type.value.toString(), data: data.dimension_sum, }]
                         }
                         break;
-                    case 'COUNTRY':
-                        if (!formattedData || !formattedData.watchByLocation) {
-                            formattedData.watchByLocation = { data: [], table: [] }
-                        }
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                        if (assosiatedCountry) {
+                    default:
+                        if (data.dimension_type.type !== 'Unknown') {
                             formattedData.watchByLocation = {
                                 data: [...(formattedData.watchByLocation ? formattedData.watchByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.type,
                                     position: {
-                                        latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                        longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        latitude: 0,
+                                        longitude: 0
                                     },
-                                    value: [data.dimension_sum]
+                                    value: [data.dimension_sum],
+                                    label: [formatTimeValue([data.dimension_sum]).unitLong]
                                 }],
-                                table: [...(formattedData.watchByLocation ? formattedData.watchByLocation.table : []), {  label: assosiatedCountry["\"Country\""], data: data.dimension_sum }]
+                                table: [...(formattedData.watchByLocation.table ? formattedData.watchByLocation.table : []), {  label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.type)["\"Country\""], data: data.dimension_sum }]
                             }
                         } else {
                             formattedData.watchByLocation.table = [...( formattedData.watchByLocation ?  formattedData.watchByLocation.table : []), { label: data.dimension_type.value.toString(),  data: data.dimension_sum }  ] 
@@ -451,30 +447,30 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         }
 
                         break;
-                    case 'COUNTRY':
+                    default:
                         if (!formattedData || !formattedData.salesRevenuesByLocation) {
                             formattedData.salesRevenuesByLocation = { data: [], table: [] }
                         }
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
-                        if (assosiatedCountry) {
-                            let index = formattedData.salesRevenuesByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
-                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
+                        if (data.dimension_type.value !== 'Unknown') {
+                            let index = formattedData.salesRevenuesByLocation.data.findIndex(obj => obj.city === data.dimension_type.value);
+                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => obj.label === CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""]);
 
                             if(index === -1 ) {
                                 formattedData.salesRevenuesByLocation = {
-                                    data: [...(formattedData.salesRevenuesByLocation ? formattedData.salesRevenuesByLocation.data : []),
+                                    data: [...(formattedData.salesRevenuesByLocation.data ? formattedData.salesRevenuesByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.value as string,
                                         position: {
-                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            latitude: 0,
+                                            longitude: 0
                                         },
                                         value: [data.dimension_sum],
                                         label: [type]
                                     }
                                     ],
-                                    table: [...( formattedData.salesRevenuesByLocation ?  formattedData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
+                                    
+                                    table: [...( formattedData.salesRevenuesByLocation.table ?  formattedData.salesRevenuesByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""], sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
                                 }
                             } else {
                                 formattedData.salesRevenuesByLocation.data[index].value.push(data.dimension_sum)
