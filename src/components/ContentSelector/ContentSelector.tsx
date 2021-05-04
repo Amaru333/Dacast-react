@@ -377,8 +377,8 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     </div>
                 </ContainerHalfSelector>
                 <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                    <Button disabled={selectedTab === 'folder' && (selectedItems && selectedItems.length !== 0)} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                    <Button disabled={selectedTab === 'folder' && (selectedItems && selectedItems.length !== 0)} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}  >chevron_left</IconStyle></Button>
                 </div>
                 <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >

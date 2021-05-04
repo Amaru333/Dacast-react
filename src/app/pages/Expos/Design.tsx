@@ -29,8 +29,8 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
     }
     
     return (
-        <React.Fragment>
-            <ControlsCard className='col col-6 md-col-4'>
+        <div className='col col-12 md-col-4'>
+            <ControlsCard>
                 <TitleSection className="justify-center mb1">
                     <Text size={20} weight='med'> Appearance </Text>
                 </TitleSection>
@@ -43,7 +43,7 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
                     <Tooltip  target="darkModeTooltip">Change design to a dark theme.</Tooltip>
                 </ControlToggleContainer>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Cover Background' defaultChecked={stateContentDetails.coverBackgroundEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, coverBackgroundEnable: !stateContentDetails.coverBackgroundEnable }) } }/>
+                    <Toggle label='Cover' defaultChecked={stateContentDetails.coverBackgroundEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, coverBackgroundEnable: !stateContentDetails.coverBackgroundEnable }) } }/>
                     <IconStyle id="coverBackgroundTooltip">info_outlined</IconStyle>
                     <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
                 </ControlToggleContainer>
@@ -62,9 +62,13 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
                             headerUrl={stateContentDetails.coverBackgroundUrl}
                         />
                 }
-                <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
-                    When disabled, white will be the default cover background.
-                </Text>
+                {
+                    !stateContentDetails.coverBackgroundEnable && 
+                    <Text className="inline-block"  size={10} color="gray-3" weight='reg'>
+                        When disabled, grey will be the default cover background.
+                    </Text>
+                }
+                
                 <Divider className="pt1 pb1" />
                 <TitleSection className="justify-center mb1 mt2">
                     <Text size={20} weight='med'> Content Layout </Text>
@@ -91,13 +95,13 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
                         list={assetsDropdownList}
                     />
                 }
-                <div className='col my1 flex'>
-                    <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                    <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
-                </div>
+                
             </ControlsCard>
-            
-        </React.Fragment>
+            <div className='col mt25 flex'>
+                <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+            </div>
+        </div>
         
 
     )
@@ -106,14 +110,15 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
 }
 
 export const WrapIFrame = styled.div<{}>`
-    height: 810px;
+    height: 504px;
     padding: 0;
     overflow: hidden;
 `
 export const ScaledFrame = styled.iframe<{}>`
-    width: 1440px;
-    height: 810px;
+    width: 1462px;
+    height: 960px;
     border: 0;
     transform: scale(0.5);
     transform-origin: 0 0;
+    border: 2px solid #C8D1E0;
 `

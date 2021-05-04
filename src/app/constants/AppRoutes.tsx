@@ -267,15 +267,6 @@ export const AppRoutes: Routes[] = [
         component: VodAnalytics
     },
     {
-        path: '/expos/:exposId/content',
-        name: 'Content',
-        iconName: null,
-        isExact: true,
-        associatePrivilege: 'privilege-expo',
-        notDisplayedInNavigation: true,
-        component: ExposSetup,
-    },
-    {
         path: '/expos/:exposId/general',
         name: 'General',
         iconName: null,
@@ -283,6 +274,15 @@ export const AppRoutes: Routes[] = [
         associatePrivilege: 'privilege-expo',
         notDisplayedInNavigation: true,
         component: GeneralExpos,
+    },
+    {
+        path: '/expos/:exposId/setup',
+        name: 'Setup',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: 'privilege-expo',
+        notDisplayedInNavigation: true,
+        component: ExposSetup,
     },
     {
         path: '/expos/:exposId/design',

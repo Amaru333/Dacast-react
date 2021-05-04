@@ -40,7 +40,7 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
                 'expo_id': response.data.id,
                 step: 1,
             })
-            history.push(`/expos/${response.data.id}/content`)
+            history.push(`/expos/${response.data.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
             store.dispatch(showToastNotification('Error while creating your expos.', 'fixed', 'error'));

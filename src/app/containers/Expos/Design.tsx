@@ -55,6 +55,15 @@ const DesignExpos = (props: DesignComponentProps) => {
             { (props.themeState['expo'] && props.themeState['expo'][exposId])  && props.contentDataState['expo'] && props.contentDataState['expo'][exposId] ?
                 (
                     <React.Fragment>
+                        {
+                            !isLoading ?
+                            <PlayerSection className='xs-mb2 col col-right col-12 md-col-8 relative sm-pl1'>
+                                <WrapIFrame className='col-12'>
+                                    <ScaledFrame  src={expoClientBaseUrl+exposId} />   
+                                </WrapIFrame>
+                            </PlayerSection>
+                            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                        }
                         <DesignPage 
                             uploadUrl={(props.themeState['expo'][exposId] as ExpoDetails).uploadurl}
                             designState={ (props.themeState['expo'][exposId] as ExpoDetails).appearance } 
@@ -62,15 +71,7 @@ const DesignExpos = (props: DesignComponentProps) => {
                             {...props}
                             save={handleSave}
                         />
-                        {
-                            !isLoading ?
-                            <PlayerSection className='xs-mb2 col col-right col-6 md-col-8 relative sm-pl1'>
-                                <WrapIFrame className='col-12'>
-                                    <ScaledFrame  src={expoClientBaseUrl+exposId} />   
-                                </WrapIFrame>
-                            </PlayerSection>
-                            : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-                        }
+                        
                     </React.Fragment>
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
