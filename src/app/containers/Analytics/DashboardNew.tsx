@@ -83,7 +83,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 return (
                     <div className='flex col col-12' key={content.id}>
                         <Text>{i + 1}</Text>
-                        <Text className='px3 flex-auto pointer' weight='med'><a href={handleTitleClick(content.id, content.type)}>{content.title}</a></Text>
+                        <Text className='px3 flex-auto pointer'><a href={handleTitleClick(content.id, content.type)}>{content.title}</a></Text>
                         <Text className='pr2'>{content.total.toLocaleString()}</Text>
                     </div>
                 )
