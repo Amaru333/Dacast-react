@@ -12,7 +12,7 @@ interface AppearanceEndpoint {
     darkMode: boolean;
     showContentsDescription: boolean;
     featuredContentId?: string;
-    cover?: {url: string; assetId: string} | {headerColor: string}
+    cover?: {url: string; posterAssetId: string} | {headerColor: string}
 }
 
 export interface PutExpoDetailsInput {
