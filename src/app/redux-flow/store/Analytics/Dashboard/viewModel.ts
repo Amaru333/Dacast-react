@@ -9,8 +9,7 @@ export const formatGetDashboardNewAnalyticsOuput = (response: GetAnalyticsOutput
     let paywallData = formatSalesResults(response, data)
     let engagementData = formatWatchResults(response, data)
     let dataConsumpationdata = formatDataConsumptionResults(response, data)
-    console.log('raw data: ', response.results)
-    console.log('audience loc: ', audienceData.playsImpressionsByLocation)
+
     let formattedData: AnalyticsDashboardNewInfo = {
         audienceLocation: audienceData.playsImpressionsByLocation.data,
         engagement: formatTimeToUnit(engagementData.watchByTime.data.reduce((acc, next) => acc + next, 0), 'h'),
@@ -45,12 +44,12 @@ export const formatGetAnalyticsTopContentInput = (data: AnalyticsTopContentParam
 }
 
 export const formatGetAnalyticsTopContentOutput = (data: GetAnalyticsTopContentOutput): AnalyticsTopContentInfo[] => {
-    const filteredEmptyTitle = data.contents.filter(c => c.title && c.title.length > 0)
-    let tempArray = filteredEmptyTitle.length > 10 ? filteredEmptyTitle.slice(0, 10) : filteredEmptyTitle
+
+    let tempArray = data.contents.length > 10 ? data.contents.slice(0, 10) : data.contents
     let formattedData: AnalyticsTopContentInfo[] = tempArray.map(content => {
         return {
             id: content.id,
-            title: content.title,
+            title: content.title && content.title.length > 0 ? content.title : 'Deleted Content' ,
             type: content.type,
             total: content.metrics.impressions ? content.metrics.impressions : 0
         }
