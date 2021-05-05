@@ -59,7 +59,7 @@ export const formatPutContentThemeInput = (data: {contentId: string, theme: Them
     let formattedData: PutContentThemeInput = {
         contentId: data.contentId,
         payload: data.theme,
-        actionWord: data.theme.isCustom ? '/set' : ''
+        actionWord: !data.theme.isCustom ? '/set' : ''
     }
 
     return formattedData
