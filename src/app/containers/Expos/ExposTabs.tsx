@@ -15,10 +15,8 @@ export const ExposTabs = (props: {exposId: string}) => {
     }
 
     return (
-        <div>
-            <TabsContainer>
-                <Tab orientation='horizontal' list={handleExposSubRoutes()} />
-            </TabsContainer>
-        </div>
+        <TabsContainer className="mb25">
+            <Tab orientation='horizontal' list={handleExposSubRoutes()} />
+        </TabsContainer>
     )
 }
