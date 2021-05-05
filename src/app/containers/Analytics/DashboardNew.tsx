@@ -83,7 +83,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 return (
                     <div className='flex col col-12' key={content.id}>
                         <Text>{i + 1}</Text>
-                        <Text style={i === props.topContent.length - 1 ? {paddingLeft: 24} : {}} className={(i === props.topContent.length - 1 ? '' : 'px3') +' flex-auto pointer'}><a href={handleTitleClick(content.id, content.type)}>{content.title}</a></Text>
+                        <Text style={i === props.topContent.length - 1 ? {paddingLeft: 24} : {}} className={(i === props.topContent.length - 1 ? '' : 'px3') +' flex-auto pointer'}>{content.title !== 'Deleted Content' ? <a href={handleTitleClick(content.id, content.type)}>{content.title}</a> : content.title}</Text>
                         <Text className='pr2'>{content.total.toLocaleString()}</Text>
                     </div>
                 )
@@ -170,7 +170,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
             <WidgetElement color='dark-violet' className={classItemHalfWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex'>
                     <IconStyle className='pr1' coloricon='dark-violet'>emoji_events</IconStyle>
-                    <Text className='flex-auto' size={14} weight='med' color='gray-3'>Top 10 Content (Last 30 Days)</Text>
+                    <Text className='flex-auto' size={14} weight='med' color='gray-3'>Top Content (Last 30 Days)</Text>
                 </WidgetHeader>
                 <div className='flex pb2'>
                     <Text weight='med'>#</Text>
