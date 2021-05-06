@@ -16,7 +16,7 @@ export const LineChart = (props: LineChartProps) => {
     const createDataset = (item: BaseItemAnalytics) => {
 
         var returnLine = {
-            data: item.data.map((element, index) => element.toLocaleString()),
+            data: item.data.map((element, index) => element),
             label: item.label,
             borderColor: item.color,
             pointBackgroundColor: item.color,
@@ -75,7 +75,8 @@ export const LineChart = (props: LineChartProps) => {
                             stepSize: props.step,
                             suggestedMin: 0,
                             beginAtZero: true,
-                            min: 0
+                            min: 0,
+                            autoSkip: false
                         }),
                     }
                 }],
@@ -83,7 +84,7 @@ export const LineChart = (props: LineChartProps) => {
                         xAxes: [{
                             type: 'time',
                             ticks: {
-                                autoSkip: true,
+                                autoSkip: false,
                                 maxTicksLimit: 20
                             }
                         }],
@@ -95,6 +96,7 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'left',
                             ticks:{
+                                autoSkip: false,
                                 suggestedMin: 0,
                                 beginAtZero: true,
                                 min: 0
@@ -104,6 +106,7 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'right',
                             ticks: {
+                                autoSkip: false,
                                 suggestedMin: 0,
                                 beginAtZero: true,
                                 min: 0
