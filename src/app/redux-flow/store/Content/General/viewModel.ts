@@ -168,7 +168,7 @@ export const formatGetExpoDetailsOutput = (contentType: ContentType) => (data: G
             darkModeEnable: data.appearance.darkMode,
             coverBackgroundEnable: data.appearance.cover ? true : false,
             coverBackgroundUrl: data.appearance.cover && data.appearance.cover.url ? data.appearance.cover.url : null,
-            coverBackgroundAssetId: data.appearance.cover && data.appearance.cover.assetId ? data.appearance.cover.assetId : null,
+            coverBackgroundAssetId: data.appearance.cover && data.appearance.cover.posterAssetId ? data.appearance.cover.posterAssetId : null,
             coverBackgroundColor: data.appearance.cover && data.appearance.cover.headerColor ? data.appearance.cover.headerColor : null,
             contentDescriptions: data.appearance.showContentsDescription,
             featuredContentEnable: data.appearance.featuredContentId ? true : false,
@@ -192,7 +192,7 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
                 showContentsDescription: data.appearance.contentDescriptions,
                 featuredContentId: data.appearance.featuredContentEnable ? data.appearance.featuredContentId : '',
                 cover: data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
-                : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, assetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
+                : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, posterAssetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
                 : null
             }
         }
