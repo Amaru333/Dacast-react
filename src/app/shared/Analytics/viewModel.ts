@@ -256,14 +256,13 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                             formattedData.playsImpressionsByTime = { plays: Array(labels.length).fill(0, 0, labels.length), impressions: Array(labels.length).fill(0, 0, labels.length), labels: labels, table: labels.map(label => { return { label: label, plays: 0, impressions: 0 } }) }
                         }
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
-                        let indexLabel = labels.indexOf(label);
                         if (metric.data_dimension.includes("PLAYS")) {
-                            formattedData.playsImpressionsByTime.plays[indexLabel] = data.dimension_sum;
                             let index = formattedData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                            formattedData.playsImpressionsByTime.plays[index] = data.dimension_sum;
                             formattedData.playsImpressionsByTime.table[index] ? formattedData.playsImpressionsByTime.table[index].plays = data.dimension_sum : null;
                         } else if (metric.data_dimension.includes("IMPRESSIONS")) {
-                            formattedData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                             let index = formattedData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                            formattedData.playsImpressionsByTime.impressions[index] = data.dimension_sum;
                             formattedData.playsImpressionsByTime.table[index] ? formattedData.playsImpressionsByTime.table[index].impressions = data.dimension_sum : null;
                         }
 
@@ -520,10 +519,9 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
                             formattedData.dataConsumptionByTime.table = labels.map(label => { return { label: label, data: 0 } })
                         }
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
-                        let indexLabel = labels.indexOf(label);
-                        if(indexLabel !== -1) {
-                            let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
-                            formattedData.dataConsumptionByTime.data[indexLabel] = data.dimension_sum / 1000000000;
+                        let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
+                        if(index !== -1) {
+                            formattedData.dataConsumptionByTime.data[index] = data.dimension_sum / 1000000000;
                             formattedData.dataConsumptionByTime.table[index].data = data.dimension_sum / 1000000000;
                         }
 
