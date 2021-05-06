@@ -506,6 +506,7 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
             table: []
         }
     }
+    console.log('response endpoint:', response)
     let labels = formatLabels(input.timeRange, input.start, input.end, response)
     response.results.filter(metric => metric.data_dimension.includes("DATA_CONSUMPTION")).forEach(metric => {
         if(metric.data) {
@@ -530,7 +531,7 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
             })
         }
     })
-
+    console.log('formatted Date: ', formattedData)
     return formattedData
 }
 
