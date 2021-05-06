@@ -67,7 +67,7 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
             if(selectedOption === 'upload') {
                 props.getUploadUrl('expo-poster', props.contentId, '.' + logoFile.type.split('/')[1], 'expo')
             } else {
-                props.saveHeaderColor(selectedColor).then(() => setSettingsModalopen(false))
+                props.saveHeaderColor(selectedColor).then(() => {setSettingsModalopen(false);setSaveButtonLoading(false)})
             }
         }
     }
@@ -99,6 +99,7 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
         
     }
 
+    console.log(props.headerEnable, props.headerUrl, props.headerColor)
     return (
         <>
             <ImageContainer className="col col-12">
