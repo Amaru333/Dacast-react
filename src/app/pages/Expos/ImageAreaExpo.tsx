@@ -90,11 +90,11 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
     }
 
     const handleDelete = () => {
-        if(selectedOption === "upload") {
+        if(props.headerUrl) {
             setDeleteLoading(true);
             props.deleteFile(props.contentId, props.stateContentDetails.coverBackgroundAssetId, 'expo').then(() => setDeleteLoading(false))
         } else {
-            props.saveHeaderColor(undefined);
+            props.saveHeaderColor(null);
         }
         
     }
@@ -106,7 +106,7 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
                     <ImageArea className="mt2 col col-12">
                         <ButtonSection>
                             {
-                                props.headerEnable &&
+                                props.headerEnable && (props.headerUrl || props.headerColor) &&
                                 <Button isLoading={deleteLoading} sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => {handleDelete()}} >Delete</Button>
                             }
                             <Button
