@@ -132,6 +132,16 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         if(props.isMobile) {
             props.setOpen(false)
         }
+        if (slug === '/account/upgrade') {
+            segmentService.track('Upgrade Form Completed', {
+                action: 'Upgrade Source Clicked',
+                userId: userToken.getUserInfoItem('user-id'),
+                customers: 'all',
+                type: 'button',
+                location: 'submenu sidebar',
+                step: -1
+            })
+        }
     }
 
 
