@@ -340,15 +340,15 @@ export const ContentListPage = (props: ContentListProps) => {
                                 {
 
                                     value.thumbnail ?
-                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1 pointer" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
-                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center pointer' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
                                 }
                             </div>,
                         <TitleContainer>
-                            <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
+                            <ListContentTitle className='pointer' onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
                         props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
