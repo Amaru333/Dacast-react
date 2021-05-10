@@ -69,6 +69,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     }, [sortSettings, searchString])
 
 
+
+    React.useEffect(() => {
+        setSelectedItems(props.selectedItems)
+    }, [props.selectedItems])
+
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
@@ -178,6 +183,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
 
     let foldersTree = new FolderTree(() => { }, setCurrentNode)
 
+    console.log(props.selectedItems, selectedItems, "indide ist")
     React.useEffect(() => {
         const wait = async () => {
             await foldersTree.initTree()
