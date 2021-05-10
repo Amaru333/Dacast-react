@@ -46,11 +46,13 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
     const renderUpgradeText = () => {
         if(props.plan.trialExpiresIn > 7) {
             return <span><a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
-        } else if(props.plan.trialExpiresIn > 0) {
-            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade Now</a></span>
-        } else {
-            return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
         }
+
+        if(props.plan.trialExpiresIn > 0) {
+            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade Now</a></span>
+        }
+
+        return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
     }
 
     const renderDaysRemaining = () => {
@@ -96,7 +98,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
                     }
-                    <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>
+                    {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>}
                 </WidgetElement> 
 
             )

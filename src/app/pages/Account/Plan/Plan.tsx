@@ -39,7 +39,7 @@ interface PlanComponentProps {
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
 
-    const defaultCurrency = props.billingInfos.currentPlan ? props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency : 'usd'
+    const defaultCurrency = props.billingInfos.currentPlan && props.billingInfos.currentPlan.currency ? props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency : 'usd'
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
