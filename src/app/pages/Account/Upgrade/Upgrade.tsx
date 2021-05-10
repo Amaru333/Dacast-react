@@ -40,11 +40,9 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const customInfoIconSize = 16;
     const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const upgradeStepList = [{title: 'Features', content: UpgradeFeaturesStep}, {title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
-    const scalePlanStepList = [{title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
     const [stepperPlanOpened, setStepperPlanOpened] = React.useState<boolean>(false);
     const [allFeaturesOpen, setAllFeaturesOpen] = React.useState<boolean>(false);
     const [stepperData, setStepperData] = React.useState<Plan>(null);
-    const [stepList, setStepList] = React.useState(upgradeStepList);
     const [currentPlan, setCurrentPlan] = React.useState<string>(defaultCurrentPlan && defaultCurrentPlan.name)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
@@ -131,14 +129,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handleSteps = (plan: string) => {
-        switch (plan) {
-            case 'scale':
-                setStepList(scalePlanStepList);
-                break;
-            default :
-                setStepList(upgradeStepList);
-                break;
-        }
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Clicked',
             'user_id': userToken.getUserInfoItem('user-id'),
@@ -467,7 +457,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                             <CustomStepper
                                 opened={stepperPlanOpened}
                                 stepperHeader='Upgrade Plan'
-                                stepList={stepList}
+                                stepList={upgradeStepList}
                                 lastStepButton="Purchase"
                                 stepperData={stepperData}
                                 updateStepperData={(value: Plan) => setStepperData(value)}

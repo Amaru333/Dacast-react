@@ -15,7 +15,6 @@ export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
                 selectedPrivileges: undefined,
                 privilegesTotal: 0,
                 termsAndConditions: false,
-                nbSeats: data[next].name === "Event" || data[next].name === 'Annual Starter' ? 1 : 3
             }
         }
     }, upgradeInitialState)

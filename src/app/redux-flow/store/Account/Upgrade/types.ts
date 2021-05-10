@@ -24,19 +24,20 @@ export interface Plan {
     privilegesTotal: number;
     termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
-    nbSeats: number;
 }
 
 export interface Allowances {
     code: string;
     bandwidth: number;
     storage: number;
+    seats: number;
 }
 
 export interface Privilege {
     code: string;
     price: Price;
     checked: boolean;
+    quantity?: number;
 }
 
 export type Currency = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy'

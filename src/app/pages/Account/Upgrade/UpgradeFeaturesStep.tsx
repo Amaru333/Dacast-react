@@ -8,6 +8,7 @@ import { BillingPageInfos } from '../../../redux-flow/store/Account/Plan/types';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { handleCurrencySymbol } from '../../../../utils/utils';
+import { InputCounter } from '../../../../components/FormsComponents/Input/InputCounter';
 
 interface UpgradeFeaturesStepProps { 
     stepperData: Plan; 
@@ -20,10 +21,42 @@ interface UpgradeFeaturesStepProps {
 
 export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
 
-    const availableAddOns = ["ads", "paywall", "phone-support"]
+    const availableAddOns = ["ads", "paywall", "phone-support", "extra-seats"]
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)
+    const nbPlanSeats = props.stepperData.allowances.find(a => a.code === props.stepperData.allowanceCode).seats
     const extraSeatAddOnLocked = props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > 0 || 
-    props.billingInfo.currentPlan.displayName !== '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > props.stepperData.nbSeats
+    props.billingInfo.currentPlan.displayName !== '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > nbPlanSeats
+    const minMuaExtraSeats = props.billingInfo.currentPlan.nbSeats - (props.stepperData.allowances.find(a => a.code === props.stepperData.allowanceCode).seats) > 0 ? props.billingInfo.currentPlan.nbSeats - (props.stepperData.allowances.find(a => a.code === props.stepperData.allowanceCode).seats) : 0
+    const [additionalSeats, setAdditionalSeats] = React.useState<number>(minMuaExtraSeats)
+
+    React.useEffect(() => {
+        if(extraSeatAddOnLocked) {
+            props.updateStepperData({
+                ...props.stepperData,
+                privileges: props.stepperData.privileges.map((privilege) => {
+                    if (privilege.code === 'extra-seats') {
+                        return { ...privilege, checked: true, quantity: minMuaExtraSeats }
+                    }
+                    return privilege
+                })
+            })
+        }
+    }, [])
+
+    React.useEffect(() => {
+        console.log('updating bro')
+        console.log('locked', props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > 0 || 
+        props.billingInfo.currentPlan.displayName !== '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > nbPlanSeats)
+        props.updateStepperData({
+            ...props.stepperData,
+            privileges: props.stepperData.privileges.map((privilege) => {
+                if (privilege.code === 'extra-seats') {
+                    return { ...privilege, quantity: minMuaExtraSeats }
+                }
+                return privilege
+            })
+        })
+    }, [additionalSeats])
 
     const handleAddOnNames = (addOn: string) => {
         switch(addOn){
@@ -33,17 +66,17 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                 return "Paywall"
             case "phone-support": 
                 return "24/7 Phone Support"
-            case "MUA_ADDITIONAL_SEATS":
+            case "extra-seats":
                 return "Extra Seats"
             default: 
             return null
         }
     }
 
-    const featuresTableBody = () => {
-        return props.stepperData.privileges && props.stepperData.privileges.filter(item => availableAddOns.includes(item.code)).map((item: Privilege) => {
-            return {
-                data: [
+    const renderFeatureTableRow = (item: Privilege) => {
+        if(item.code === 'extra-seats') {
+            return [
+                <div className='flex flex-column'>
                     <div className='flex'>
                         <InputCheckbox
                             className="mr1"
@@ -64,31 +97,58 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                                 })
                             }}
                         />
-                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>
-                    </div>,
-                    <div className="right mr2">
-                        <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr"}</Text>
+                        <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>&nbsp;
+                        <Text color='gray-3'>({nbPlanSeats} Seats Included in Plan)</Text>
                     </div>
+                    {props.stepperData.privileges.find(p => p.code === item.code).checked && 
+                        <div className='my2 ml2'>
+                            <InputCounter counterValue={additionalSeats} setCounterValue={setAdditionalSeats} minValue={props.billingInfo.currentPlan.nbSeats}/>
+                        </div>
+                    }
+                </div>,
+                <div className="right mr2 flex flex-column">
+                    <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={props.stepperData.privileges.find(p => p.code === item.code).checked ? 'gray-3' : 'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr per seat"}</Text>
+                    {props.stepperData.privileges.find(p => p.code === item.code).checked && <Text className='flex justify-end right py2'>{handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency] * additionalSeats).toLocaleString() + "/yr"}</Text>}
+                </div>
+            ]
+        }
 
-                ]
+        return [
+            <div className='flex'>
+                <InputCheckbox
+                    className="mr1"
+                    id={'chekbox' + item.code}
+                    key={'secondStepCheckbox' + item.code}
+                    defaultChecked={item.checked}
+                    disabled={extraSeatAddOnLocked}
+                    onChange={() => {
+                        props.updateStepperData({
+                            ...props.stepperData,
+                            privileges: props.stepperData.privileges.map((privilege) => {
+                                if (privilege.code === item.code) {
+                                    return { ...privilege, checked: !privilege.checked }
+                                }
+                                return privilege
+                            })
+
+                        })
+                    }}
+                />
+                <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>
+            </div>,
+            <div className="right mr2">
+                <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr"}</Text>
+            </div>
+        ]
+    }
+
+    const featuresTableBody = () => {
+        return props.stepperData.privileges && props.stepperData.privileges.filter(item => availableAddOns.includes(item.code)).map((item: Privilege) => {
+            return {
+                data: renderFeatureTableRow(item)
             }
         })
     }
-
-    // React.useEffect(() => {
-    //         let subTotal = 0;
-    //         let tempSelectedPrivileges: string[] = []
-    //         props.stepperData.privileges.map((item: Privilege) => {
-    //             if (item.checked) {
-    //                 tempSelectedPrivileges.push(item.code)
-    //                 if(props.stepperData.name !== "Starter" || !isFreeAddOnTrial) {
-    //                     subTotal += (item.price.usd / 100)
-    //                 }
-    //             }
-    //         props.updateStepperData({ ...props.stepperData, privilegesTotal: subTotal, selectedPrivileges: tempSelectedPrivileges })
-    //     })
-    //     props.setStepValidated(true)
-    // }, [props.stepperData.privileges])
 
     return (
         <div>

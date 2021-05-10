@@ -34,7 +34,7 @@ export const UpgradeCartStep = (props: UpgradeCartStepProps) => {
         })
     }
 
-    const totalFeatures = calcTotalFeatures((props.stepperData.name !== "Starter" || !(props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)) ? props.stepperData.privileges.filter(p => p.checked).map(p => p.price) : [], props.selectedCurrency.data.id as Currency)
+    const totalFeatures = calcTotalFeatures(props.stepperData.privileges.filter(p => p.checked).map(p => {return {price: p.price, quantity: p.quantity}}), props.selectedCurrency.data.id as Currency)
     const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency], props.stepperData.discount)
     const totalPrice: number = calculateDiscount(((props.stepperData.price[props.selectedCurrency.data.id as Currency]) + totalFeatures), props.stepperData.discount)
     const currencySymbol = handleCurrencySymbol(props.selectedCurrency.data.id)
