@@ -69,7 +69,7 @@ export const DesignPage = (props: DesignComponentProps & { uploadUrl: string; de
                     </Text>
                 }
                 
-                <Divider className="pt1 pb1" />
+                <Divider className="pt1 pb1 col-12" />
                 <TitleSection className="justify-center mb1 mt2">
                     <Text size={20} weight='med'> Content Layout </Text>
                 </TitleSection>
