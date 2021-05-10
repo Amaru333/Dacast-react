@@ -1,4 +1,4 @@
-import { GetPlansListOutput, PlanCurrencyEndpoint, PlanKey, PostAccountPlanInput } from "../../../../../DacastSdk/account";
+import { CurrencyKey, GetPlansListOutput, PlanCurrencyEndpoint, PlanKey, PostAccountPlanInput } from "../../../../../DacastSdk/account";
 import { BandwidthProductCurrency } from "../Plan";
 import { ChangePlanData, Currency, Plans, upgradeInitialState } from "./types";
 
@@ -9,8 +9,8 @@ export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
                 ...data[next],
                 name: data[next].name === 'Annual Starter' ? 'Starter' : data[next].name,
                 privileges: data[next].privileges.map(privilege => {
-                    return {...privilege, checked: false}
-                }),
+                    return {...privilege, checked: false, price: Object.keys(privilege.price).reduce((acc, next: CurrencyKey) => {return {...acc, [next]: privilege.price[next] / 100}}, {})}
+                    }),
                 price: Object.keys(data[next].price).reduce((accPrice, nextPrice: BandwidthProductCurrency) => { return {...accPrice, [nextPrice]: data[next].price[nextPrice] / 100 }}, {}),
                 selectedPrivileges: undefined,
                 privilegesTotal: 0,

@@ -22,6 +22,8 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
 
     const availableAddOns = ["ads", "paywall", "phone-support"]
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)
+    const extraSeatAddOnLocked = props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > 0 || 
+    props.billingInfo.currentPlan.displayName !== '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > props.stepperData.nbSeats
 
     const handleAddOnNames = (addOn: string) => {
         switch(addOn){
@@ -31,6 +33,8 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                 return "Paywall"
             case "phone-support": 
                 return "24/7 Phone Support"
+            case "MUA_ADDITIONAL_SEATS":
+                return "Extra Seats"
             default: 
             return null
         }
@@ -46,6 +50,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                             id={'chekbox' + item.code}
                             key={'secondStepCheckbox' + item.code}
                             defaultChecked={item.checked}
+                            disabled={extraSeatAddOnLocked}
                             onChange={() => {
                                 props.updateStepperData({
                                     ...props.stepperData,
