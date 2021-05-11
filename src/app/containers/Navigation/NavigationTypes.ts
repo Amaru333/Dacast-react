@@ -47,7 +47,7 @@ export interface Routes {
     slug?: Routes[];
     isExact?: boolean;
     isPublic?: boolean;
-    associatePrivilege?: Privilege;
+    associatePrivilege?: Privilege[];
     notDisplayedInNavigation?: boolean;
 }
 

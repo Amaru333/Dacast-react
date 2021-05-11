@@ -11,7 +11,7 @@ export const PlaylistsTabs = (props: {playlistId: string}) => {
     let history = useHistory()
 
     const handlePlaylistSubRoutes = () => {
-        return AppRoutes.filter((route) => route.path.indexOf('playlists') > -1 && route.name !== 'Playlists' && (route.associatePrivilege ? userToken.getPrivilege(route.associatePrivilege) : true ) ).map((route) => {
+        return AppRoutes.filter((route) => route.path.indexOf('playlists') > -1 && route.name !== 'Playlists' && (route.associatePrivilege ? route.associatePrivilege.some(p => userToken.getPrivilege(p)) : true ) ).map((route) => {
             return {
                 ...route, path: '/playlists/' + props.playlistId + '/' + route.path.split('/')[route.path.split('/').length -1]
             }

@@ -25,7 +25,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
+        if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
             return
         }
         if(pricePresetPaginationInfo.nbResults && pricePresetPaginationInfo.page) {
@@ -34,7 +34,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }, [pricePresetPaginationInfo])
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
+        if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
             return
         }
         if(promoPresetPaginationInfo.nbResults && promoPresetPaginationInfo.page) {
