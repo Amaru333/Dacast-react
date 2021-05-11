@@ -110,7 +110,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/data')} coloricon='dark-violet'>wifi</IconStyle>
                     <Text className='pointer' onClick={() => history.push('/analytics/data')} size={14} weight='med' color='gray-3'>Data Usage</Text>
                 </WidgetHeader>
-                <div className='flex minContentDash items-center'>
+                <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.dataConsumption.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>GB</Text>
                 </div>
@@ -120,7 +120,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/audience')}coloricon='dark-violet'>play_circle_outlined</IconStyle>
                     <Text className='pointer' onClick={() => history.push('/analytics/audience')} size={14} weight='med' color='gray-3'>Audience</Text>
                 </WidgetHeader>
-                <div className='flex minContentDash items-center'>
+                <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.plays.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>plays</Text>
                 </div>
@@ -130,7 +130,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <IconStyle  className='pointer pr1' onClick={() => history.push('/analytics/engagement')} coloricon='dark-violet'>access_time</IconStyle>
                     <Text className='pointer' onClick={() => history.push('/analytics/engagement')} size={14} weight='med' color='gray-3'>Engagement</Text>
                 </WidgetHeader>
-                <div className='flex minContentDash items-center'>
+                <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.engagement.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>hours</Text>
                 </div>
@@ -141,12 +141,12 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
 
                     <Text className='pointer' onClick={() => history.push('/analytics/paywall')} size={14} weight='med' color='gray-3'>Paywall</Text>
                 </WidgetHeader>
-                <div className="flex minContentDash items-center">
+                <div className="flex flex-wrap minContentDash items-center">
                     {
                         userToken.getPrivilege('privilege-paywall') ? 
                             <div className='flex items-center'>
                                 <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
-                                <Text size={20} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
+                                <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
                             </div>
                             : <Text >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a> to have access.
                             </Text>
