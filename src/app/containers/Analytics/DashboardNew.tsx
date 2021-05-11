@@ -112,7 +112,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 </WidgetHeader>
                 <div className='flex minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.dataConsumption.toLocaleString()}</Text>
-                    <Text size={20} weight='reg' color='gray-3'>gbs</Text>
+                    <Text size={20} weight='reg' color='gray-3'>GB</Text>
                 </div>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
