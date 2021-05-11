@@ -64,7 +64,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
-            selectedPrivileges: stepperData.selectedPrivileges,
             token: recurlyToken,
             token3Ds: threeDSecureToken
         }))
@@ -100,7 +99,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
-            selectedPrivileges: stepperData.selectedPrivileges,
             token: recurlyToken,
             token3Ds: threeDSecureResultToken
         }))

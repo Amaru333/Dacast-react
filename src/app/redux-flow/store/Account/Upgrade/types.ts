@@ -20,7 +20,6 @@ export interface Plan {
     paymentFrequency: string;
     paymentTerm: number;
     commitment: number;
-    selectedPrivileges: string[]
     privilegesTotal: number;
     termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
@@ -64,7 +63,6 @@ export interface ChangePlanData {
     currency: Currency;
     allowanceCode: string;
     privileges: Privilege[];
-    selectedPrivileges: string[];
     token: string;
     token3Ds?: string;
 }
