@@ -83,7 +83,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 return (
                     <div className='flex col col-12' key={content.id}>
                         <Text>{i + 1}</Text>
-                        <Text style={i === props.topContent.length - 1 ? {paddingLeft: 24} : {}} className={(i === props.topContent.length - 1 ? '' : 'px3') +' flex-auto'}>{content.title !== 'Deleted Content' ? <a className='pointer' href={handleTitleClick(content.id, content.type)}>{content.title}</a> : content.title}</Text>
+                        <Text style={i === 9 ? {paddingLeft: 24} : {}} className={(i === 9 ? '' : 'px3') +' flex-auto'}>{content.title !== 'Deleted Content' ? <a className='pointer' href={handleTitleClick(content.id, content.type)}>{content.title}</a> : content.title}</Text>
                         <Text className='pr2'>{content.total.toLocaleString()}</Text>
                     </div>
                 )
