@@ -48,7 +48,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
             ...props.stepperData,
             privileges: props.stepperData.privileges.map((privilege) => {
                 if (privilege.code === 'extra-seats') {
-                    return { ...privilege, checked: true, quantity: additionalSeats }
+                    return { ...privilege, checked: privilege.checked, quantity: additionalSeats }
                 }
                 return privilege
             })

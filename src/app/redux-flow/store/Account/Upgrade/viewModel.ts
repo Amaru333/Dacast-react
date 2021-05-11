@@ -29,7 +29,7 @@ export const formatPostPlanInput = (data: ChangePlanData): PostAccountPlanInput 
         couponCode: '',
         allowances: data.allowanceCode,
         threeDSecureToken: data.token3Ds ? data.token3Ds : undefined,
-        paidPrivileges: data.privileges ? data.privileges.map((privilege) => { return { code: privilege.code, quantity: privilege.quantity || 1 }}).filter(f => f) : null
+        paidPrivileges: data.privileges ? data.privileges.filter(p => p.checked).map((privilege) => { return { code: privilege.code, quantity: privilege.quantity || 1 }}).filter(f => f) : null
     }
 
     return formattedData
