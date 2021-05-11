@@ -82,7 +82,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                             className="mr1"
                             id={'chekbox' + item.code}
                             key={'secondStepCheckbox' + item.code}
-                            defaultChecked={item.checked}
+                            defaultChecked={extraSeatAddOnLocked ? extraSeatAddOnLocked : item.checked}
                             disabled={extraSeatAddOnLocked}
                             onChange={() => {
                                 props.updateStepperData({
