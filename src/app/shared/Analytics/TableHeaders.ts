@@ -112,7 +112,7 @@ export const HeaderDataConsumptionTime = [
         accessor: 'label',
     },
     {
-        Header: 'Data Usage (GBs)',
+        Header: 'Data Usage (GB)',
         accessor: 'data'
     }
 ]
