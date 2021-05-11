@@ -35,23 +35,20 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                 ...props.stepperData,
                 privileges: props.stepperData.privileges.map((privilege) => {
                     if (privilege.code === 'extra-seats') {
-                        return { ...privilege, checked: true, quantity: minMuaExtraSeats }
+                        return { ...privilege, checked: true, quantity: additionalSeats }
                     }
                     return privilege
                 })
             })
         }
-    }, [])
+    }, [extraSeatAddOnLocked])
 
     React.useEffect(() => {
-        console.log('updating bro')
-        console.log('locked', props.billingInfo.currentPlan.displayName === '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > 0 || 
-        props.billingInfo.currentPlan.displayName !== '30 Day Trial' && props.billingInfo.currentPlan.nbSeats > nbPlanSeats)
         props.updateStepperData({
             ...props.stepperData,
             privileges: props.stepperData.privileges.map((privilege) => {
                 if (privilege.code === 'extra-seats') {
-                    return { ...privilege, quantity: minMuaExtraSeats }
+                    return { ...privilege, checked: true, quantity: additionalSeats }
                 }
                 return privilege
             })
@@ -100,15 +97,15 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                         <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>&nbsp;
                         <Text color='gray-3'>({nbPlanSeats} Seats Included in Plan)</Text>
                     </div>
-                    {props.stepperData.privileges.find(p => p.code === item.code).checked && 
+                    {(props.stepperData.privileges.find(p => p.code === item.code).checked || extraSeatAddOnLocked) && 
                         <div className='my2 ml2'>
-                            <InputCounter counterValue={additionalSeats} setCounterValue={setAdditionalSeats} minValue={props.billingInfo.currentPlan.nbSeats}/>
+                            <InputCounter counterValue={additionalSeats} setCounterValue={setAdditionalSeats} minValue={minMuaExtraSeats}/>
                         </div>
                     }
                 </div>,
                 <div className="right mr2 flex flex-column">
                     <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={props.stepperData.privileges.find(p => p.code === item.code).checked ? 'gray-3' : 'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr per seat"}</Text>
-                    {props.stepperData.privileges.find(p => p.code === item.code).checked && <Text className='flex justify-end right py2'>{handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency] * additionalSeats).toLocaleString() + "/yr"}</Text>}
+                    {(props.stepperData.privileges.find(p => p.code === item.code).checked || extraSeatAddOnLocked) && <Text className='flex justify-end right py2'>{handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency] * additionalSeats).toLocaleString() + "/yr"}</Text>}
                 </div>
             ]
         }
