@@ -191,7 +191,7 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
                 darkMode: data.appearance.darkModeEnable,
                 showContentsDescription: data.appearance.contentDescriptions,
                 featuredContentId: data.appearance.featuredContentEnable ? data.appearance.featuredContentId : '',
-                cover: data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
+                cover: data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
                 : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, posterAssetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
                 : null
             }
