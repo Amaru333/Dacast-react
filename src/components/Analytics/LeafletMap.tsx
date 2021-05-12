@@ -78,7 +78,7 @@ const LeafletMap = (props: { markers: LocationItem[]; markerNameTranform: (eleme
       fillColor: fillColor,
       weight: 2,
       opacity: 1,
-      color: 'white',
+      color: '#C8D1E0',
       dashArray: '3',
       fillOpacity: 0.7
   };
@@ -126,10 +126,10 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
     })
     return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
   }
-
+ 
   return (
     <>
-      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{ height: smallMap ? 450 : 550, paddingBottom: 0.5625 }} minZoom={smallMap ? 1 : 1.5}  >
+      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{ height: smallMap ? 450 : 550, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.5}  >
         <TileLayer
           noWrap={false}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

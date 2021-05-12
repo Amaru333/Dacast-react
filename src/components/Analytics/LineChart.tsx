@@ -71,13 +71,10 @@ export const LineChart = (props: LineChartProps) => {
             scales: {
                 yAxes: [{
                     ticks: {
-                        ...(props.step && {
                             stepSize: props.step,
-                            suggestedMin: 0,
                             beginAtZero: true,
                             min: 0,
                             autoSkip: false
-                        }),
                     }
                 }],
                 ...( props.options.isTime && {
@@ -97,7 +94,6 @@ export const LineChart = (props: LineChartProps) => {
                             position: 'left',
                             ticks:{
                                 autoSkip: false,
-                                suggestedMin: 0,
                                 beginAtZero: true,
                                 min: 0
                             }
@@ -107,7 +103,6 @@ export const LineChart = (props: LineChartProps) => {
                             position: 'right',
                             ticks: {
                                 autoSkip: false,
-                                suggestedMin: 0,
                                 beginAtZero: true,
                                 min: 0
                             }
