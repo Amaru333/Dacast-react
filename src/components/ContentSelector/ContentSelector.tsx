@@ -330,7 +330,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     <div className="inline-flex items-center flex col-5 justify-end mb2">
                         <div className="relative">
                             <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
-                            <Tooltip style={{minWidth: 200}} target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
+                            <Tooltip style={{minWidth: 155}} target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
                         </div>
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: " + sortSettings.name : 'Sort'}</Button>
