@@ -177,7 +177,6 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
 
     let foldersTree = new FolderTree(() => { }, setCurrentNode)
 
-    console.log(props.selectedItems, selectedItems, "indide ist")
     React.useEffect(() => {
         const wait = async () => {
             await foldersTree.initTree()
