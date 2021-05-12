@@ -45,8 +45,12 @@ const DesignExpos = (props: DesignComponentProps) => {
 
     const handleSave = (data: ExposThemingState) => {
         setIsLoading(true)
-        console.log(data);
         return props.saveContentDetails({...props.themeState['expo'][exposId], appearance: data}, "expo").then( ()=>  setIsLoading(false)).catch(() => {})
+    }
+
+    const handleRefresh = () => {
+        setIsLoading(true)
+        return props.getContentDetails(exposId, 'expo').then( ()=>  setIsLoading(false)).catch(() => {})
     }
 
     return (
@@ -70,6 +74,7 @@ const DesignExpos = (props: DesignComponentProps) => {
                             exposId={exposId}
                             {...props}
                             save={handleSave}
+                            refresh={handleRefresh}
                         />
                         
                     </React.Fragment>

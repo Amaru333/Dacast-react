@@ -169,7 +169,7 @@ export const formatGetExpoDetailsOutput = (contentType: ContentType) => (data: G
             coverBackgroundEnable: data.appearance.cover ? true : false,
             coverBackgroundUrl: data.appearance.cover && data.appearance.cover.url ? data.appearance.cover.url : null,
             coverBackgroundAssetId: data.appearance.cover && data.appearance.cover.posterAssetId ? data.appearance.cover.posterAssetId : null,
-            coverBackgroundColor: data.appearance.cover && data.appearance.cover.headerColor ? data.appearance.cover.headerColor : null,
+            coverBackgroundColor: data.appearance.cover && data.appearance.cover.headerColor && !data.appearance.cover.url ? data.appearance.cover.headerColor : null,
             contentDescriptions: data.appearance.showContentsDescription,
             featuredContentEnable: data.appearance.featuredContentId ? true : false,
             featuredContentId: data.appearance.featuredContentId
@@ -197,7 +197,6 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
             }
         }
     }
-    console.log(formattedData);
     return formattedData
 }
 
@@ -212,8 +211,6 @@ export const formatPutExpoDetailsOutput = (contentType: ContentType) => (endpoin
 
 export const formatPostVodAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string, subtitleInfo?: SubtitleInfo}): PostUploadUrlInput => {
     
-    console.log('view model data', data)
-
     if (data.subtitleInfo) {
         let formattedData: PostUploadUrlInput = {
             uploadType: 'subtitle',

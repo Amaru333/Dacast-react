@@ -13,7 +13,6 @@ export const formatGetDashboardInfoOutput = (data: GetDashboardInfoOutput): Dash
         isTrial: false,
         isPayingPlan: false
     }
-    console.log('returning data ', formattedData)
 
     return formattedData
 }

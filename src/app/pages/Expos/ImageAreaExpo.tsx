@@ -74,10 +74,15 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
 
     React.useEffect(() => {
         if(props.uploadUrl && saveButtonLoading && logoFile) {
+
             props.submit(logoFile, props.uploadUrl, props.contentId, 'expo')
             .then(() => {
-                setSaveButtonLoading(false)
-                setSettingsModalopen(false)
+                setTimeout(() => {
+                    setSaveButtonLoading(false)
+                    setSettingsModalopen(false)
+                    props.getDetails();
+                }, 8000)
+                
             })
         }
     }, [props.uploadUrl, saveButtonLoading])
@@ -92,14 +97,13 @@ export const ImageAreaExpo = (props: ImageAreaExpoProps) => {
     const handleDelete = () => {
         if(props.headerUrl) {
             setDeleteLoading(true);
-            props.deleteFile(props.contentId, props.stateContentDetails.coverBackgroundAssetId, 'expo').then(() => setDeleteLoading(false))
+            props.saveHeaderColor(null, null).then(() => setDeleteLoading(false))
         } else {
-            props.saveHeaderColor(null);
+            props.saveHeaderColor(null).then(() => {setDeleteLoading(false)} )
         }
         
     }
 
-    console.log(props.headerEnable, props.headerUrl, props.headerColor)
     return (
         <>
             <ImageContainer className="col col-12">
