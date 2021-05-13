@@ -75,7 +75,7 @@ export const BarChart = (props: BarChartProps) => {
                             callback: (value: number) => {
                                 return value.toLocaleString() + " " + props.unit;
                             },
-                            suggestedMin: 0,
+                            min: 0,
                             beginAtZero: true
                         }
                     }),
@@ -91,7 +91,7 @@ export const BarChart = (props: BarChartProps) => {
                         ...(props.step && {
                             stepSize: props.step,
                         }),
-                        suggestedMin: 0,
+                        min: 0,
                         beginAtZero: true
                     }
                 },
@@ -104,7 +104,7 @@ export const BarChart = (props: BarChartProps) => {
                                     return value.toLocaleString() + " " + props.unitRight;
                                 }
                             },
-                            suggestedMin: 0,
+                            min: 0,
                             beginAtZero: true
                         },
 
