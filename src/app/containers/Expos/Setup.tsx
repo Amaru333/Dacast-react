@@ -89,6 +89,7 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
             { (props.folderData && props.contentDataState['expo'] && props.contentDataState['expo'][exposId]) ? 
                 <div className='flex flex-column'>
                     <ContentSelector 
+                        emptyText="Start adding videos to your Expo by selecting folders/content from the left using the arrows."
                         showSort={true}
                         loading={saveLoading}
                         showFolders={true}

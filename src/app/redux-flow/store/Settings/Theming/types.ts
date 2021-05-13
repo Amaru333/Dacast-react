@@ -1,5 +1,3 @@
-
-
 export enum ActionTypes {
     GET_SETTING_THEMING_LIST = "@@settings_theming/GET_SETTINGS_THEMING_LIST",
     SAVE_SETTING_THEME = "@@settings_theming/SAVE_SETTINGS_THEME",

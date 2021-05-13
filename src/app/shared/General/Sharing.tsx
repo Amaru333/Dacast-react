@@ -66,7 +66,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
             </header>
             {
                 props.contentType === 'expo' ?
-                    <div className={ClassThirdXsFullMd + "mt2 pr2 flex flex-column"}>
+                    <div className={"mt2 col lg-col-6 md-col-6 sm-col-12 col-12 xs-no-gutter pr2 flex flex-column"}>
                         <LinkBoxLabel>
                             <Text size={14} weight="med">Share Link</Text>
                         </LinkBoxLabel>
