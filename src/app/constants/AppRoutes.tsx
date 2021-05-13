@@ -398,6 +398,7 @@ export const AppRoutes: Routes[] = [
         name: 'Paywall',
         iconName: 'attach_money',
         associatePrivilege: 'privilege-paywall',
+        isExact: true,
         component: Presets,
         slug: [
             {

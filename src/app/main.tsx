@@ -276,7 +276,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
-                const routeIsLocked = route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
+                const routeIsLocked = userToken.isLoggedIn() && route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
                 if(route.name === 'impersonate') {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
