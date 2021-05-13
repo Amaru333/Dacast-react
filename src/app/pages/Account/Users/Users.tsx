@@ -259,7 +259,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                         </>
                     }
                     <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seats used</Text>
-                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
+                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getPrivilege('privilege-multi-access') ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
             <Table className='tableOverflow' customClassName=' tableOverflow' id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white" noScrollY></Table>
