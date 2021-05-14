@@ -69,7 +69,6 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         props.getFolderContent(parseFiltersToQueryString())
     }, [sortSettings, searchString])
 
-
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
