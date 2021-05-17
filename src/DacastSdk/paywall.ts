@@ -1,3 +1,5 @@
+import { AccountType } from "../app/redux-flow/store/Paywall/Payout"
+
 export interface PromoDetails {
     alphanumericCode: string;
     discount: number;
@@ -130,6 +132,7 @@ export interface BankAccountUSDetails {
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
     accountNumber: string;
+    accountType: AccountType,
     routingNumber: string;
     firstName?: string;
     lastName?: string;
@@ -153,6 +156,7 @@ export interface BankAccountInternationalDetails {
     paymentMethodType: 'international-transfer';
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
+    accountType: AccountType,
     swift: string;
     iban: string;
     firstName?: string;

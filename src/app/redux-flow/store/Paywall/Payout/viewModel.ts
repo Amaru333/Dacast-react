@@ -35,7 +35,8 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
                 bankAddress2: data.bankAddress2US,
                 bankState: data.bankStateUS,
                 bankTown: data.bankTownUS,
-                bankZipCode: data.bankZipCodeUS
+                bankZipCode: data.bankZipCodeUS,
+                accountType: data.accountType
              }
             return us
         case PaymentMethodType.BankAccountInternational:
@@ -60,7 +61,8 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
                 bankState: data.bankStateInternational,
                 bankTown: data.bankTownInternational,
                 bankZipCode: data.bankZipCodeInternational,
-                bankCountry: data.bankCountryInternational
+                bankCountry: data.bankCountryInternational,
+                accountType: data.accountType
              }            
              return inter
         case PaymentMethodType.Check: 

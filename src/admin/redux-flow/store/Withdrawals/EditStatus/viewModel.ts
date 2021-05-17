@@ -49,6 +49,10 @@ export const formatGetWithdrawalsDetailsOutput = (data: GetWithdrawalDetailsOutp
                 value: data.paymentMethod.paymentMethodType === 'us-transfer' || data.paymentMethod.paymentMethodType === 'international-transfer' ? capitalizeFirstLetter(data.paymentMethod.recipientType) : null,
                 label: 'Recipient Type'
             },
+            accountType: {
+                value: data.paymentMethod.accountType,
+                label: 'Account Type'
+            },
             firstName: {
                 value: data.paymentMethod.firstName,
                 label: 'First Name'

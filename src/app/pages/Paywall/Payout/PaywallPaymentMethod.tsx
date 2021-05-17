@@ -4,7 +4,7 @@ import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { Input } from '../../../../components/FormsComponents/Input/Input';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
-import { PaymentMethod, PaymentMethodPut, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
+import { AccountType, PaymentMethod, PaymentMethodPut, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout/types';
 import { Tab } from '../../../../components/Tab/Tab';
 import { Routes } from '../../../containers/Navigation/NavigationTypes';
 import { Divider } from '../../../../shared/MiscStyles';
@@ -13,10 +13,11 @@ import { handleValidationForm } from '../../../utils/custom-hooks/formValidation
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : PaymentMethodType.BankAccountUS);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : "Select payout type");
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [accountType, setAccountType] = React.useState<AccountType>(props.selectedPaymentMethod && props.selectedPaymentMethod.accountType ? props.selectedPaymentMethod.accountType : null);
 
     const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International)"}, {title: "Check"}, {title: "PayPal"}]
 
@@ -50,6 +51,11 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         })
     }
 
+    const accountTypesList: {title: AccountType}[] = [
+        {title: "Checking"},
+        {title: "Savings"}
+    ]
+
     const tabsList: Routes[] = [
         {
             name: "Business",
@@ -61,6 +67,20 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         }
 
     ]
+
+    const handleAccountTypeDropdown = () => {
+        return (
+            <DropdownSingle 
+                isInModal
+                className='col col-12 sm-col-4 pl1 xs-no-gutter'
+                id='accountType' 
+                dropdownTitle='Account Type' 
+                list={accountTypesList} 
+                callback={(item: DropdownSingleListItem) => {setAccountType(item.title)}}
+                dropdownDefaultSelect={accountType ? accountType : 'Select account type'}
+            />
+        )
+    }
 
     return (
         <div>
@@ -106,9 +126,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                {selectedPaymentMethod === PaymentMethodType.BankAccountUS &&
                 <div className='flex flex-column'>
                 <Text size={20} weight='reg'>Account Details</Text>
-                 <div className='col col-12 sm-col-9 my2'>
+                 <div className='col col-12 sm-col-11 my2'>
                     <Input 
-                        className='col col-12 sm-col-7 pr1 xs-no-gutter' 
+                        className='col col-12 sm-col-4 pr1 xs-no-gutter xs-mb2' 
                         id='accountNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.accountNumber : ''} 
                         label='Account Number' 
@@ -118,7 +138,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         onChange={(event) =>  handleChange('accountNumberUS', event.currentTarget.value)} 
                     />
                     <Input 
-                        className='col col-12 sm-col-5 pl1 xs-no-gutter' 
+                        className='col col-12 sm-col-4 pl1 pr1 xs-no-gutter xs-mb2' 
                         id='routingNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.routingNumber : ''} 
                         label='Routing Number' 
@@ -127,11 +147,12 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('routingNumberUS', event.currentTarget.value)}    
                     />
+                    {handleAccountTypeDropdown()}
                 </div>
                 
-                <div className='col sm-col-9 col-12 mb2'>
+                <div className='col sm-col-11 col-12 mb2'>
                     {
-                        paymentMethodRecipientType === 'Personal' ?
+                        paymentMethodRecipientType === 'Personal' &&
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 xs-no-gutter pr1' 
                                 id='firstNameUS' 
@@ -141,19 +162,10 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 {...handleValidationForm('firstNameUS', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('firstNameUS', event.currentTarget.value)}  
-                            /> :
-                            <Input 
-                                className='col col-12 sm-col-4 xs-mb2 xs-no-gutter pr1' 
-                                id='firstNameUS' 
-                                defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
-                                label="Account Holder's First Name" 
-                                placeholder='First Name' 
-                                indicationLabel='Optional'
-                                ref={register()}
-                                onChange={(event) =>  handleChange('firstNameUS', event.currentTarget.value)}                             />
+                            /> 
                     }
                     {
-                        paymentMethodRecipientType === 'Personal' ?
+                        paymentMethodRecipientType === 'Personal' &&
                             <Input 
                                 className='col col-12 sm-col-4 xs-mb2 px1 xs-no-gutter' 
                                 id='lastNameUS' 
@@ -163,23 +175,13 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 {...handleValidationForm('lastNameUS', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('lastNameUS', event.currentTarget.value)}     
-                            /> :
-                            <Input 
-                                className='col col-12 sm-col-4 xs-mb2 px1 xs-no-gutter' 
-                                id='lastNameUS' 
-                                defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
-                                label="Account Holder's Last Name" 
-                                placeholder='Last Name' 
-                                indicationLabel='Optional'
-                                ref={register()}
-                                onChange={(event) =>  handleChange('lastNameUS', event.currentTarget.value)}     
                             /> 
                     }
 
                     {
-                        paymentMethodRecipientType === 'Business' ?
+                        paymentMethodRecipientType === 'Business' &&
                             <Input 
-                                className='col col-12 sm-col-4 pl1 xs-no-gutter' 
+                                className='col col-12 sm-col-4 xs-no-gutter pr1' 
                                 id='accountNameUS' 
                                 defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                 label='Account Name' 
@@ -187,21 +189,10 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 {...handleValidationForm('accountNameUS', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('accountNameUS', event.currentTarget.value)} 
-                            /> :
-                            <Input 
-                                className='col col-12 sm-col-4 pl1 xs-no-gutter' 
-                                id='accountNameUS' 
-                                defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
-                                label='Account Name' 
-                                placeholder='Account Name' 
-                                indicationLabel='Optional' 
-                                ref={register()}
-                                onChange={(event) =>  handleChange('accountNameUS', event.currentTarget.value)} 
                             />
                     }
-
                 </div>
-                <div className='col col-12 sm-col-9 mb2'>
+                <div className='col col-12 sm-col-11 mb2'>
                     <Input 
                         className='col col-12 sm-col-7 xs-no-gutter xs-mb2 pr1' 
                         id='addressUS' 
@@ -226,6 +217,16 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 <div className='col col-12 sm-col-6 mb2 clearfix'>
                     <Input 
                         className='col col-6 sm-col-4 pr1 xs-mb2' 
+                        id='townUS' 
+                        label='City' 
+                        defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
+                        placeholder='City' 
+                        {...handleValidationForm('townUS', errors)}
+                        ref={register({ required: "Required"})}
+                        onChange={(event) =>  handleChange('townUS', event.currentTarget.value)}  
+                    />
+                    <Input 
+                        className='col col-6 sm-col-4 px1' 
                         id='stateUS' 
                         label='State/Province' 
                         defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
@@ -233,16 +234,6 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         {...handleValidationForm('stateUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('stateUS', event.currentTarget.value)}  
-                    />
-                    <Input 
-                        className='col col-6 sm-col-4 px1' 
-                        id='townUS' 
-                        label='Town/City' 
-                        defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
-                        placeholder='Town/City' 
-                        {...handleValidationForm('townUS', errors)}
-                        ref={register({ required: "Required"})}
-                        onChange={(event) =>  handleChange('townUS', event.currentTarget.value)}  
                     />
                     <Input 
                         className='col col-12 sm-col-4 xs-no-gutter pl1 mb2' 
@@ -270,7 +261,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         onChange={(event) =>  handleChange('bankNameUS', event.currentTarget.value)}  
                     />
                 </div>
-                <div className='col col-12 sm-col-9 mb2'>
+                <div className='col col-12 sm-col-11 mb2'>
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
                         id='bankAddressUS' 
@@ -342,7 +333,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 onChange={(event) =>  handleChange('swiftInternational', event.currentTarget.value)} 
                             />
                             <Input 
-                                className='col xs-no-gutter col-12 sm-col-4 pl1' 
+                                className='col xs-no-gutter col-12 sm-col-4 pl1 pr1 xs-mb2' 
                                 id='ibanInternational' 
                                 label='IBAN/Account Number' 
                                 defaultValue={paymentMethodData ? paymentMethodData.iban : ''} 
@@ -351,10 +342,11 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('ibanInternational', event.currentTarget.value)} 
                             />
+                            {handleAccountTypeDropdown()}
                         </div>
                         <div className='col col-12 sm-col-11 mt2'>
                             {
-                                paymentMethodRecipientType === 'Personal' ? 
+                                paymentMethodRecipientType === 'Personal' && 
                                 <Input 
                                 className='col xs-no-gutter col-12 sm-col-4 xs-mb2 pr1' 
                                     id='firstNameInternational' 
@@ -364,20 +356,10 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                     {...handleValidationForm('firstNameInternational', errors)}
                                     ref={register({ required: "Required"})}
                                     onChange={(event) =>  handleChange('firstNameInternational', event.currentTarget.value)} 
-                                /> :
-                                <Input 
-                                    className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='firstNameInternational' 
-                                    defaultValue={paymentMethodData ? paymentMethodData.firstName : ''} 
-                                    label='First Name' 
-                                    placeholder='First Name' 
-                                    indicationLabel='Optional' 
-                                    ref={register()}
-                                    onChange={(event) =>  handleChange('firstNameInternational', event.currentTarget.value)} 
-                                />
+                                /> 
                             }
                             {
-                                paymentMethodRecipientType === 'Personal' ? 
+                                paymentMethodRecipientType === 'Personal' &&
                                 <Input 
                                     className='col xs-no-gutter col-12 sm-col-4 xs-mb2 px1' 
                                     id='lastNameInternational' 
@@ -387,22 +369,12 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                     {...handleValidationForm('lastNameInternational', errors)}
                                     ref={register({ required: "Required"})}
                                     onChange={(event) =>  handleChange('lastNameInternational', event.currentTarget.value)} 
-                                /> :
-                                <Input 
-                                    className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='lastNameInternational' 
-                                    defaultValue={paymentMethodData ? paymentMethodData.lastName : ''} 
-                                    label='Last Name' 
-                                    placeholder='Last Name' 
-                                    indicationLabel='Optional' 
-                                    ref={register()}
-                                    onChange={(event) =>  handleChange('lastNameInternational', event.currentTarget.value)} 
-                                />
+                                /> 
                             }
                             {
-                                paymentMethodRecipientType === 'Business' ? 
+                                paymentMethodRecipientType === 'Business' &&
                                 <Input 
-                                    className='col xs-no-gutter col-12 sm-col-4 pl1' 
+                                    className='col xs-no-gutter col-12 sm-col-4 pr1' 
                                     id='accountNameInternational' 
                                     defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
                                     label='Account Name' 
@@ -410,17 +382,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                     {...handleValidationForm('accountNameInternational', errors)}
                                     ref={register({ required: "Required"})}
                                     onChange={(event) =>  handleChange('accountNameInternational', event.currentTarget.value)} 
-                                /> :
-                                <Input 
-                                    className='col xs-no-gutter col-12 sm-col-4 pl1' 
-                                    id='accountNameInternational' 
-                                    defaultValue={paymentMethodData ? paymentMethodData.accountName : ''} 
-                                    label='Account Name' 
-                                    placeholder='Account Name' 
-                                    indicationLabel='Optional' 
-                                    ref={register()}
-                                    onChange={(event) =>  handleChange('accountNameInternational', event.currentTarget.value)} 
-                                />
+                                /> 
                             }
                         </div>
                         <div className='col col-12 sm-col-11 my2'>
@@ -572,7 +534,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         selectedPaymentMethod === PaymentMethodType.Check &&
                         <div>
                 <Text className='col col-12' size={20} weight='reg'>Check Details</Text>
-                <div className='col col-12 sm-col-9 my2'>
+                <div className='col col-12 sm-col-11 my2'>
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-7 pr1 xs-mb2' 
                         id='payee' 
@@ -594,7 +556,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         onChange={(event) => handleChange('companyName', event.currentTarget.value)}      
                     />
                 </div>
-                <div className='col col-12 sm-col-9'>
+                <div className='col col-12 sm-col-11'>
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-7 pr1 xs-mb2' 
                         id='checkAddress' 
