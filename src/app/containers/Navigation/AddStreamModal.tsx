@@ -107,7 +107,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
 
     return (
-        <Modal size="small" modalTitle="Create Live Stream" toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened} hasClose={false}>
+        <Modal size="small" modalTitle="Create Live Stream" toggle={props.toggle} className={'x-visible'} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <Bubble className="mt1" type="info">
                     Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>

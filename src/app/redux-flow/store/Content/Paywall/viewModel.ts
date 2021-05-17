@@ -166,7 +166,8 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
                     duration: {
                         unit: data.price.settings.duration.unit.toLowerCase().substr(0, data.price.settings.duration.unit.length - 1),
                         value: data.price.settings.duration.value
-                    }
+                    },
+                    startDate: Math.round(new Date() / 1000) - 10
                 }
             }
         } else {

@@ -88,7 +88,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 value={props.localContentDetails.description ? props.localContentDetails.description : ''}
                 onChange={event => {props.setLocalContentDetails({ ...props.localContentDetails, description: event.currentTarget.value });props.setHasChanged(true)}}
             />
-            <div className={"col col-3 flex flex-column"}>
+            <div className={"col col-12 sm-col-6  flex flex-column"}>
                 <LinkBoxLabel>
                     <Text size={14} weight="med">Content ID</Text>
                 </LinkBoxLabel>

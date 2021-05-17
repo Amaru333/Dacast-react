@@ -5,11 +5,12 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { Modal } from '../../../components/Modal/Modal'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Text } from '../../../components/Typography/Text'
-import { showToastNotification } from '../../redux-flow/store/Toasts'
 import { useHistory } from 'react-router'
 import { axiosClient } from '../../utils/services/axios/axiosClient'
 import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook'
 import { segmentService } from '../../utils/services/segment/segmentService'
+import { store } from '../..'
+import { showToastNotification } from '../../redux-flow/store/Toasts'
 
 export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
 
@@ -32,17 +33,17 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
             }
         ).then((response) => {
             setButtonLoading(false)
-            showToastNotification(`Expos ${data.title} created!`, 'fixed', 'success')
+            store.dispatch(showToastNotification(`Expo successfully created`, 'fixed', 'success'));
             props.toggle();
             segmentService.track('Expo Created', {
                 action: 'Create Expo',
                 'expo_id': response.data.id,
                 step: 1,
             })
-            history.push(`/expos/${response.data.id}/general`)
+            history.push(`/expos/${response.data.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
-            showToastNotification('Error while creating your expos.', 'fixed', 'error')
+            store.dispatch(showToastNotification('Error while creating your expos.', 'fixed', 'error'));
         })
     }
     return (

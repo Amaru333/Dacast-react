@@ -29,6 +29,7 @@ export interface ContentSelectorComponentProps {
     showSort?: boolean;
     showFolders?: boolean;
     openSettings?: Function;
+    emptyText?: string;
 }
 
 export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
@@ -68,7 +69,6 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         props.getFolderContent(parseFiltersToQueryString())
     }, [sortSettings, searchString])
 
-
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
@@ -94,7 +94,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         if (checkedFolders.length < 1) return;
         const wait = async () => {
             await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id, (data) => {
-                setSelectedItems(data.data.results);
+                setSelectedItems(data.data.results ? data.data.results : []);
                 setSelectedFolderId(checkedFolders[0].id)
             })
         }
@@ -223,6 +223,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     }
 
     const renderSelectedItems = () => {
+        if(selectedItems.length == 0) {
+            return (
+                <Text className="col-8 mr-auto ml-auto block mt2">{props.emptyText}</Text>
+            )
+        }
         return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
@@ -322,9 +327,9 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                 {
                     props.showSort &&
                     <div className="inline-flex items-center flex col-5 justify-end mb2">
-                        <div>
+                        <div className="relative">
                             <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
-                            <Tooltip target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
+                            <Tooltip style={{minWidth: 155}} target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
                         </div>
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: " + sortSettings.name : 'Sort'}</Button>
@@ -371,13 +376,14 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     </div>
                 </ContainerHalfSelector>
                 <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                    <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                    <Button disabled={selectedTab === 'folder' && (selectedItems && selectedItems.length !== 0)} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}  >chevron_left</IconStyle></Button>
                 </div>
                 <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>
+                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>                        
+                        <Text color={"gray-5"} className='right' size={14} weight='reg'>{selectedItems.length} videos</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>
