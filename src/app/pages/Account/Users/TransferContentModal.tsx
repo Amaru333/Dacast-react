@@ -15,7 +15,7 @@ interface TransferContentModalProps {
 export const TransferContentModal = (props: TransferContentModalProps) => {
 
     const createUserDropdownList = () => {
-        return props.users.map((user: User): DropdownSingleListItem => {
+        return props.users.filter(u => u.status === 'Active' && u.userId !== props.userToDelete.userId).map((user: User): DropdownSingleListItem => {
             return {
                 title: user.firstName + ' ' + user.lastName,
                 data: {

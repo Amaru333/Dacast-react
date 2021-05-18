@@ -104,7 +104,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                     }
                 </div>,
                 <div className="right mr2 flex flex-column">
-                    <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={props.stepperData.privileges.find(p => p.code === item.code).checked ? 'gray-3' : 'gray-1'}>{isFreeAddOnTrial ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr per seat"}</Text>
+                    <Text key={'secondStepPrice' + item.code} size={14} weight='reg' color={props.stepperData.privileges.find(p => p.code === item.code).checked ? 'gray-3' : 'gray-1'}>{isFreeAddOnTrial && item.code !== 'extra-seats' ? "6 Months Trial" : handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency]).toLocaleString() + "/yr per seat"}</Text>
                     {(props.stepperData.privileges.find(p => p.code === item.code).checked || extraSeatAddOnLocked) && <Text className='flex justify-end right py2'>{handleCurrencySymbol(props.selectedCurrency.data.id) + (item.price[props.selectedCurrency.data.id as Currency] * additionalSeats).toLocaleString() + "/yr"}</Text>}
                 </div>
             ]
