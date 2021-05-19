@@ -14,7 +14,7 @@ const zoom: number = 1;
 
 const LeafletMap = (props: { markers: LocationItem[]; markerNameTranform: (element: LocationItem, index: number) => string; smallMap?: boolean }) => {
 
-  const smallMap = props.smallMap && useMedia('(max-width: 720px)')
+  const smallMap = props.smallMap || useMedia('(max-width: 1024px)')
   if(!props.markers.length) {
     return (
         <EmptyAnalytics />
@@ -129,7 +129,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
  
   return (
     <>
-      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{ height: smallMap ? 450 : 550, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.5}  >
+      <Map dragging={false} zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.3} style={{width:'100%', height: smallMap ? 450 : 600, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.3}  >
         <TileLayer
           noWrap={false}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
