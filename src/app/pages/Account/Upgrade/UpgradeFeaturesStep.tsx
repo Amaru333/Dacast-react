@@ -25,7 +25,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)
     const nbPlanSeats = props.stepperData.allowances.find(a => a.code === props.stepperData.allowanceCode).seats
     const extraSeatAddOnLocked = props.billingInfo.currentPlan.occupiedSeats > nbPlanSeats
-    const minMuaExtraSeats = props.billingInfo.currentPlan.occupiedSeats - nbPlanSeats
+    const minMuaExtraSeats = props.billingInfo.currentPlan.occupiedSeats - nbPlanSeats > 0 ? props.billingInfo.currentPlan.occupiedSeats - nbPlanSeats : 0
     const [additionalSeats, setAdditionalSeats] = React.useState<number>(props.stepperData.privileges.find(p => p.code === 'extra-seats') && props.stepperData.privileges.find(p => p.code === 'extra-seats').quantity ? props.stepperData.privileges.find(p => p.code === 'extra-seats').quantity : minMuaExtraSeats)
 
     React.useEffect(() => {
