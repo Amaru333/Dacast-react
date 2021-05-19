@@ -82,7 +82,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     React.useEffect(() => {
         if(!contentLoading) {
             setContentLoading(true)
-            props.getAccounts(`page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            props.getAccounts(`page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? '&search=' + encodeURIComponent(keyword) : ''))
             .then(() => {
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
@@ -180,7 +180,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             setContentLoading(true)
             const previousPagination = pagination
             setPagination({page: 1, nbResults: pagination.nbResults})
-            props.getAccounts((`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
+            props.getAccounts((`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? '&search=' + encodeURIComponent(search) : '')))
             .then(() => {
                 query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
                 setContentLoading(false)
@@ -196,7 +196,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         if(pagination.page && pagination.nbResults && !contentLoading) {
             setPagination({page:page,nbResults:nbResults})
             setContentLoading(true)
-            props.getAccounts(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
+            props.getAccounts(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? '&search=' + encodeURIComponent(keyword) : ''))
             .then(() => {
                 localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: tableColumn, perPage: nbResults}))
                 setContentLoading(false)
