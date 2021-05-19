@@ -25,7 +25,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
     const isFreeAddOnTrial = (props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)
     const nbPlanSeats = props.stepperData.allowances.find(a => a.code === props.stepperData.allowanceCode).seats
     const extraSeatAddOnLocked = props.billingInfo.currentPlan.occupiedSeats > nbPlanSeats
-    const minMuaExtraSeats = props.billingInfo.currentPlan.occupiedSeats
+    const minMuaExtraSeats = props.billingInfo.currentPlan.occupiedSeats - nbPlanSeats
     const [additionalSeats, setAdditionalSeats] = React.useState<number>(props.stepperData.privileges.find(p => p.code === 'extra-seats') && props.stepperData.privileges.find(p => p.code === 'extra-seats').quantity ? props.stepperData.privileges.find(p => p.code === 'extra-seats').quantity : minMuaExtraSeats)
 
     React.useEffect(() => {
@@ -63,7 +63,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
             case "phone-support": 
                 return "24/7 Phone Support"
             case "extra-seats":
-                return "Extra Seats"
+                return "Extra Seat(s)"
             default: 
             return null
         }
@@ -94,7 +94,7 @@ export const UpgradeFeaturesStep = (props: UpgradeFeaturesStepProps) => {
                             }}
                         />
                         <Text key={'secondStepText' + item.code} size={14} weight='reg' color='gray-1'>{handleAddOnNames(item.code)}</Text>&nbsp;
-                        <Text color='gray-3'>({nbPlanSeats} Seats Included in Plan)</Text>
+                        <Text color='gray-3'>({nbPlanSeats} Seat(s) Included in Plan)</Text>
                     </div>
                     {(props.stepperData.privileges.find(p => p.code === item.code).checked || extraSeatAddOnLocked) && 
                         <div className='my2 ml2'>
