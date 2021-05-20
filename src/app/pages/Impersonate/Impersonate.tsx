@@ -10,11 +10,11 @@ export const Impersonate = () => {
     React.useEffect(() => {
         userToken.resetUserInfo()
         userToken.addTokenInfo({
-            token: getUrlParam('token'),
-            accessToken: getUrlParam('accessToken') || null,
+            token: JSON.parse(getUrlParam('token')),
+            accessToken: JSON.parse(getUrlParam('accessToken')) || null,
             refresh: getUrlParam('refresh') || null,
             expires: parseInt(getUrlParam('expires')) || 9999999999,
-            impersonatedUserIdentifier: getUrlParam('identifier') || null
+            impersonatedUserIdentifier: JSON.parse(getUrlParam('identifier')) || null
         })
         dacastSdk.updateToken(userToken)
         history.push('/')
