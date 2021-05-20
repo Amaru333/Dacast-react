@@ -13,7 +13,7 @@ import { Text } from '../../../components/Typography/Text'
 import { HeaderStyle, VerticalDivider } from '../../../components/Header/HeaderStyle'
 import Burger from '../Navigation/Burger'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
-import { formatPostImpersonateInput } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
 
 interface AdminHeaderProps {
     isOpen: boolean;
@@ -50,7 +50,8 @@ const Header = (props: AdminHeaderProps) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
             setIsLoading(false)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click()
+            const qs = formatPostImpersonateOutput(response)
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?${qs}&identifier=${userIdentifier}`}).click()
         })
         .catch(() => setIsLoading(false))
     }

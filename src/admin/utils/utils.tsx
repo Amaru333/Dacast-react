@@ -3,7 +3,7 @@ import { AdminState } from "../redux-flow/store"
 import { showToastNotification } from "../redux-flow/store/Toasts/actions"
 import { Action as ReduxAction } from 'redux';
 import { Routes } from "../shared/Navigation/NavigationTypes";
-import { PostImpersonateAccountInput } from "../../DacastSdk/admin";
+import { PostImpersonateAccountInput, PostImpersonateAccountOutput } from "../../DacastSdk/admin";
 import { store } from "..";
 
 
@@ -28,6 +28,14 @@ export const formatPostImpersonateInput = (data: string): PostImpersonateAccount
         userIdentifier: data.replace(/,/g, '').trim()
     }
     return formattedData
+}
+
+export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput): string => {
+    let str = '?' + Object.keys(data).reduce(function(a, k){
+        a.push(k + '=' + encodeURIComponent(data[k]));
+        return a;
+    }, []).join('&');
+    return str
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(

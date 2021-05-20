@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '../../../components/Typography/Text'
 import { Tab } from '../../../components/Tab/Tab'
-import { formatPostImpersonateInput, makeRoute } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput, makeRoute } from '../../utils/utils'
 import { Table } from '../../../components/Table/Table'
 import { Pagination } from '../../../components/Pagination/Pagination'
 import { WithdrawalsComponentsProps } from '../../containers/Withdrawals/Withdrawals'
@@ -29,7 +29,8 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
+            const qs = formatPostImpersonateOutput(response)
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?${qs}&identifier=${userIdentifier}`}).click();
         })
     }
 

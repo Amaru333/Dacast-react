@@ -11,7 +11,7 @@ import { useQuery } from '../../../utils/utils'
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle'
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
-import { formatPostImpersonateInput } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
 
 
 export const BalancesPage = (props: BalancesComponentProps) => {
@@ -38,7 +38,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
+            const qs = formatPostImpersonateOutput(response)
+            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?${qs}&identifier=${userIdentifier}`}).click();
         })
     }
 
