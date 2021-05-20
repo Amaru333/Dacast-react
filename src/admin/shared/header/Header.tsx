@@ -50,8 +50,7 @@ const Header = (props: AdminHeaderProps) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
             setIsLoading(false)
-            const qs = formatPostImpersonateOutput(response)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?${qs}&identifier=${userIdentifier}`}).click()
+            formatPostImpersonateOutput(response, userIdentifier)
         })
         .catch(() => setIsLoading(false))
     }

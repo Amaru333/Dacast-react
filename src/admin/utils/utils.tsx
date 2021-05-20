@@ -5,6 +5,7 @@ import { Action as ReduxAction } from 'redux';
 import { Routes } from "../shared/Navigation/NavigationTypes";
 import { PostImpersonateAccountInput, PostImpersonateAccountOutput } from "../../DacastSdk/admin";
 import { store } from "..";
+import { isMultiUserToken } from "../../DacastSdk/session";
 
 
 export const makeRoute = (name: string, path?: string, component?: any): Routes => {
@@ -30,12 +31,16 @@ export const formatPostImpersonateInput = (data: string): PostImpersonateAccount
     return formattedData
 }
 
-export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput): string => {
+export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput, userIdentifier: string) => {
     let str = '?' + Object.keys(data).reduce(function(a, k){
         a.push(k + '=' + encodeURIComponent(data[k]));
         return a;
     }, []).join('&');
-    return str
+    let appPage = '/impersonate'
+    if(isMultiUserToken(data)) {
+        appPage = '/selectAccount'
+    }
+    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}${appPage}?${str}&identifier=${userIdentifier}`}).click();
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(

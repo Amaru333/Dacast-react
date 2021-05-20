@@ -8,9 +8,6 @@ export const Impersonate = () => {
     let history = useHistory()
 
     React.useEffect(() => {
-        if(getUrlParam('loginToken')) {
-            history.push('/selectAccount' + history.location.search)
-        }
         userToken.resetUserInfo()
         userToken.addTokenInfo({
             token: getUrlParam('token'),

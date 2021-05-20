@@ -1,16 +1,10 @@
-import { MultiAccountUserInfo } from "./session";
+import { PostLoginOuput } from "./session";
 
 export interface PostImpersonateAccountInput {
     userIdentifier: string;
 }
 
-export interface PostImpersonateAccountOutput {
-    token?: string;
-    accessToken?: string;
-    expireAt?: number;
-    loginToken?: string;
-    availableUsers?: MultiAccountUserInfo[];
-}
+export type PostImpersonateAccountOutput = PostLoginOuput
 
 interface AccountDetailsEndpoint {
     userId: string;

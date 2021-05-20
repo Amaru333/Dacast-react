@@ -149,8 +149,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            const qs = formatPostImpersonateOutput(response)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?${qs}&identifier=${userIdentifier}`}).click();
+            formatPostImpersonateOutput(response, userIdentifier)
         })
     }
 
