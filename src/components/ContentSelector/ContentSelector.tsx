@@ -320,7 +320,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
             <div className="flex items-center">
                 <div className="inline-flex items-center flex col-7 mb1">
                     {
-                        true &&
+                        selectedTab === 'content' &&
                         <>
                             <IconStyle coloricon='gray-3'>search</IconStyle>
                             <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]) }} />
