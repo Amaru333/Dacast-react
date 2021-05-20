@@ -221,6 +221,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (returnedString.indexOf('status') === -1) {
             returnedString += '&status=online,offline'
         }
+        returnedString = returnedString.replace('=,', '=')
         setQsParams(returnedString)
     }
 
