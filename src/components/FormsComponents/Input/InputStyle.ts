@@ -281,6 +281,19 @@ export const TagsInputStyle = styled(InputStyle)`
         border: none;
     }
 `
+
+export const InputSearchStyle = styled.input<{}>`
+    background: white;
+    border-radius: 4px;
+    height:24px;
+    padding: 8px 38px 8px 8px;
+    border: 0;
+    ::placeholder {
+        color: ${props => props.theme.colors["gray-5"]};
+        font-size: 14px;
+    }
+`
+
 export const TagListStyle = styled.ul`
     padding: 0;
     list-style: none;

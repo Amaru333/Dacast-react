@@ -39,6 +39,7 @@ import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -399,10 +400,13 @@ export const ContentListPage = (props: ContentListProps) => {
     return (
         <>
             <div className={'flex mb2 ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
-                <div className="flex-auto items-center flex">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
-                </div>
+                <InputSearch 
+                    className="flex-auto" 
+                    placeholder="Search by Title..." 
+                    callback={(value: string) => { setSearchString(value); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value) }}
+                    isSearching={searchString !== null && searchString !== ''}
+                    value={searchString}
+                />
                 <div className={'flex items-center relative ' + (isMobile ? 'mt2 ml-2' : '')}>
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
