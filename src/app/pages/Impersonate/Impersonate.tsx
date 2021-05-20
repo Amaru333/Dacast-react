@@ -14,7 +14,7 @@ export const Impersonate = () => {
             accessToken: JSON.parse(getUrlParam('accessToken')) || null,
             refresh: getUrlParam('refresh') || null,
             expires: parseInt(getUrlParam('expires')) || 9999999999,
-            impersonatedUserIdentifier: JSON.parse(getUrlParam('identifier')) || null
+            impersonatedUserIdentifier: getUrlParam('identifier') || null
         })
         dacastSdk.updateToken(userToken)
         history.push('/')

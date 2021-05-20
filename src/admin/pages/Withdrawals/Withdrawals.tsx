@@ -13,6 +13,9 @@ import { Input } from '../../../components/FormsComponents/Input/Input'
 import { IconStyle } from '../../../shared/Common/Icon'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
+import { ImpersonateAccountSelectionModal } from '../../shared/modal/ImpersonateAccountSelectionModal'
+import { isMultiUserToken } from '../../../DacastSdk/session'
+import { PostImpersonateAccountOutput } from '../../../DacastSdk/admin'
 
 export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
 
@@ -25,11 +28,18 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
+    const [impersonateBody, setImpersonateBody] = React.useState<PostImpersonateAccountOutput>(null)
+    const [impersonateAccountSelectionModalOpened, setImpersonateAccountSelectionModalOpened] = React.useState<boolean>(false)
 
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            formatPostImpersonateOutput(response, userIdentifier)
+            if(isMultiUserToken(response)) {
+                setImpersonateBody(response)
+                setImpersonateAccountSelectionModalOpened(true)
+            } else {
+                formatPostImpersonateOutput(response, userIdentifier)
+            }
         })
     }
 
@@ -159,6 +169,10 @@ export const WithdrawalsPage = (props: WithdrawalsComponentsProps) => {
             </div>
             <Table contentLoading={contentLoading} id='withdrawalsTable' headerBackgroundColor='gray-8' header={withdrawalsTableHeader()} body={withdrawalsTableBody()} />
             <Pagination totalResults={props.withdrawals.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
+            {
+                impersonateAccountSelectionModalOpened && 
+                    <ImpersonateAccountSelectionModal availableUsers={impersonateBody.availableUsers ? impersonateBody.availableUsers : []} loginToken={impersonateBody.loginToken ? impersonateBody.loginToken : null} opened={impersonateAccountSelectionModalOpened} toggle={setImpersonateAccountSelectionModalOpened} />
+            }
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 }

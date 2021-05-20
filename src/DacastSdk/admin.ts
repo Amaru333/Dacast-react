@@ -1,7 +1,9 @@
 import { PostLoginOuput } from "./session";
 
 export interface PostImpersonateAccountInput {
-    userIdentifier: string;
+    userIdentifier?: string;
+    selectedUserId?: string;
+    loginToken?: string;
 }
 
 export type PostImpersonateAccountOutput = PostLoginOuput

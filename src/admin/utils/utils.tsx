@@ -36,11 +36,8 @@ export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput, 
         a.push(k + '=' + encodeURIComponent(JSON.stringify(data[k])));
         return a;
     }, []).join('&');
-    let appPage = '/impersonate'
-    if(isMultiUserToken(data)) {
-        appPage = '/selectAccount'
-    }
-    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}${appPage}${str}&identifier=${userIdentifier}`}).click();
+
+    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate${str}&identifier=${userIdentifier}`}).click();
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(

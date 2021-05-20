@@ -12,6 +12,9 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
 import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
+import { isMultiUserToken } from '../../../DacastSdk/session'
+import { PostImpersonateAccountOutput } from '../../../DacastSdk/admin'
+import { ImpersonateAccountSelectionModal } from '../../shared/modal/ImpersonateAccountSelectionModal'
 
 
 export const BalancesPage = (props: BalancesComponentProps) => {
@@ -23,7 +26,8 @@ export const BalancesPage = (props: BalancesComponentProps) => {
     const [accountId, setAccountId] = React.useState<string>(qs.get('salesforceId') || null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [pagination, setPagination] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: accountPreferences && accountPreferences.perPage ? accountPreferences.perPage : 10})
-
+    const [impersonateBody, setImpersonateBody] = React.useState<PostImpersonateAccountOutput>(null)
+    const [impersonateAccountSelectionModalOpened, setImpersonateAccountSelectionModalOpened] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         setContentLoading(true)
@@ -38,7 +42,12 @@ export const BalancesPage = (props: BalancesComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            formatPostImpersonateOutput(response, userIdentifier)
+            if(isMultiUserToken(response)) {
+                setImpersonateBody(response)
+                setImpersonateAccountSelectionModalOpened(true)
+            } else {
+                formatPostImpersonateOutput(response, userIdentifier)
+            }
         })
     }
 
@@ -117,6 +126,10 @@ export const BalancesPage = (props: BalancesComponentProps) => {
                 <div>
                     <Table contentLoading={contentLoading} className='mt1 mb2' id='balancesTable' headerBackgroundColor='gray-8' header={balancesTableHeader()} body={balancesTableBody()} />
                     <Pagination totalResults={props.balanceInfo.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
+                    {
+                        impersonateAccountSelectionModalOpened && 
+                            <ImpersonateAccountSelectionModal availableUsers={impersonateBody.availableUsers ? impersonateBody.availableUsers : []} loginToken={impersonateBody.loginToken ? impersonateBody.loginToken : null} opened={impersonateAccountSelectionModalOpened} toggle={setImpersonateAccountSelectionModalOpened} />
+                    }
                 </div>
                 : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
             }
