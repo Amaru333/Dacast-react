@@ -33,7 +33,7 @@ export const formatPostImpersonateInput = (data: string): PostImpersonateAccount
 
 export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput, userIdentifier: string) => {
     let str = '?' + Object.keys(data).reduce(function(a, k){
-        a.push(k + '=' + encodeURIComponent(data[k]));
+        a.push(k + '=' + encodeURIComponent(JSON.stringify(data[k])));
         return a;
     }, []).join('&');
     let appPage = '/impersonate'
