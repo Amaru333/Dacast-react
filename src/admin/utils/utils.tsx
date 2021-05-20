@@ -40,7 +40,7 @@ export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput, 
     if(isMultiUserToken(data)) {
         appPage = '/selectAccount'
     }
-    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}${appPage}?${str}&identifier=${userIdentifier}`}).click();
+    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}${appPage}${str}&identifier=${userIdentifier}`}).click();
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(
