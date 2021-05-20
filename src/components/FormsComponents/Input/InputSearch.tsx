@@ -6,9 +6,14 @@ export const InputSearch =  (props: {placeholder?: string, className?: string, c
 
     const [value, setValue] = React.useState(props.value)
 
+    const checkEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.which === 13) {
+            props.callback(value)
+       }
+    }
     return (
         <div className={"flex items-center relative " + props.className}>
-            <InputSearchStyle value={value} onChange={event => setValue(event.target.value)} className="flex-auto"  placeholder={props.placeholder} />
+            <InputSearchStyle onKeyPress={(e) => checkEnterPress(e)} value={value} onChange={event => setValue(event.target.value)} className="flex-auto"  placeholder={props.placeholder} />
             {
                 props.isSearching ? 
                 <Icon onClick={() => { setValue(''); props.callback('') } } style={{color: "#58606e", right: 12}} fontSize="small" className="absolute pointer">close</Icon>
