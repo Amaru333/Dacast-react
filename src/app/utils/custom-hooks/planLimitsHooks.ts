@@ -46,11 +46,6 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
             setPlanLimitReachedModalOpen(true)
             return
         }
-        if(storageLimitReached()) {
-            setPlanLimitReachedModalType('more_storage_needed' + (planIsTrial() ? '_trial' : ''))
-            setPlanLimitReachedModalOpen(true)
-            return
-        }
         if(callbacks && callbacks.openAddStream) {
             callbacks.openAddStream();
         }
