@@ -71,7 +71,7 @@ const LeafletMap = (props: { markers: LocationItem[]; markerNameTranform: (eleme
     let lerpPercent = logScale(feature.properties.maxVal, 0, max, 100, 1000);
       lerpPercent -= 100;
       lerpPercent /= 1000;
-    fillColor = lerpColor('#93d5ed', '#2f5ec4', lerpPercent)
+    fillColor = lerpColor('#92A4F5', '#203DBC', lerpPercent)
   }
 
   return {
@@ -129,7 +129,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
  
   return (
     <>
-      <Map dragging={false} zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.3} style={{width:'100%', height: smallMap ? 450 : 600, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.3}  >
+      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{width:'100%', height: smallMap ? 350 : 550, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.5} >
         <TileLayer
           noWrap={false}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -140,10 +140,10 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
       </Map>
       <div className="flex mt2 justify-center">
         <span className="mr2">{min}</span>
-        <div style={{ backgroundColor: '#93d5ed', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#45a5f5', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#4285f4', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#2f5ec4', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#92A4F5', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#6D86F1', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#4967EE', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#203DBC', height: '20px', width: '30px' }}></div>
         <span className="ml2">{max}</span>
       </div>
     </>)
