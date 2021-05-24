@@ -12,7 +12,14 @@ export const TableAnalytics = (props: TableAnalyticsProps) => {
     return (
         <ReactTable 
             {...props}
-            data={props.data}
+            data={props.data.map(d => {
+                return Object.keys(d).reduce((acc, next) => {
+                    if(next !== 'label') {
+                        return {...acc, [next]: d[next].toLocaleString()}
+                    }
+                    return {...acc, [next]: d[next]}
+                }, {})
+            })}
             columns={props.header}
         />
     )

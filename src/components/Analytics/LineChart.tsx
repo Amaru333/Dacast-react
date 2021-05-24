@@ -60,7 +60,7 @@ export const LineChart = (props: LineChartProps) => {
                     },
                     label: (i, d) => {
                       return (
-                        d.datasets[i.datasetIndex].label + ": " + i.yLabel
+                        d.datasets[i.datasetIndex].label + ": " + i.yLabel.toLocaleString()
                       );
                     }
                 }
@@ -71,10 +71,13 @@ export const LineChart = (props: LineChartProps) => {
             scales: {
                 yAxes: [{
                     ticks: {
-                            stepSize: props.step,
-                            beginAtZero: true,
-                            min: 0,
-                            autoSkip: false
+                        callback: (value: number) => {
+                            return value.toLocaleString();
+                        },
+                        stepSize: props.step,
+                        beginAtZero: true,
+                        min: 0,
+                        autoSkip: false
                     }
                 }],
                 ...( props.options.isTime && {
@@ -93,6 +96,9 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'left',
                             ticks:{
+                                callback: (value: number) => {
+                                    return value.toLocaleString();
+                                },
                                 autoSkip: false,
                                 beginAtZero: true,
                                 min: 0
@@ -102,6 +108,9 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'right',
                             ticks: {
+                                callback: (value: number) => {
+                                    return value.toLocaleString();
+                                },
                                 autoSkip: false,
                                 beginAtZero: true,
                                 min: 0

@@ -50,13 +50,11 @@ export const BarChart = (props: BarChartProps) => {
             },
             tooltips: {
                 mode: "nearest",
-                ...(props.unit && {
-                    callbacks: {
-                        label: (tooltipItems, data) => {
-                            return tooltipItems.yLabel + " " + props.unit;
-                        }
+                callbacks: {
+                    label: (tooltipItems, data) => {
+                        return tooltipItems.yLabel.toLocaleString() + (props.unit ? " " + props.unit : "");
                     }
-                })
+                }
             },
             scales: {
                 ...(props.options.isTime && {
@@ -88,6 +86,9 @@ export const BarChart = (props: BarChartProps) => {
                                 return value.toLocaleString() + " " + props.unit;
                             }
                         }),
+                        callback: (value: number) => {
+                            return value.toLocaleString();
+                        },
                         ...(props.step && {
                             stepSize: props.step,
                         }),
