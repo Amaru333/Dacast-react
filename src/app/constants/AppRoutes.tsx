@@ -430,8 +430,8 @@ export const AppRoutes: Routes[] = [
                 component: Transactions
             },
             {
-                path: '/paywall/payout',
-                name: 'Payout',
+                path: '/paywall/withdrawals',
+                name: 'Withdrawals',
                 component: Payout,
                 associatePrivilege: 'privilege-payment-request'
             },
