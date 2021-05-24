@@ -229,20 +229,19 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={!props.groupsInfos.promos || props.groupsInfos.promos.promos.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={!props.groupsInfos.promos || props.groupsInfos.promos.promos.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
             </Card>
-            <Modal className="x-visible" hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 {
                     groupPromosModalOpened && <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.packages} />
 
                 }
             </Modal>
-            <Modal className="x-visible" hasClose modalTitle="Access Paywall Groups" opened={accessPaywallGroupsModalOpened} toggle={() => {setAccessPaywallGroupsModalOpened(false)}} >
+            <Modal hasClose modalTitle="Access Paywall Groups" opened={accessPaywallGroupsModalOpened} toggle={() => {setAccessPaywallGroupsModalOpened(false)}} >
                 <AccessPaywallGroupsModal />
             </Modal>
 
             {
                 groupPricesStepperOpened &&
                 <CustomStepper
-                    className="x-visible"
                     opened={groupPricesStepperOpened}
                     stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
                     stepList={groupPriceSteps}
