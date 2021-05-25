@@ -13,7 +13,7 @@ import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedM
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;
-    associatePrivilege: Privilege;
+    associatePrivilege: Privilege[];
     getPresetsInfos: (qs: string) => Promise<void>;
     getPromoPresets: (qs: string) => Promise<void>;
     createPricePreset: (p: Preset) => Promise<void>;
@@ -30,7 +30,7 @@ const Presets = (props: PresetsComponentProps) => {
     const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (userToken.isUnauthorized(props.associatePrivilege)) {
+        if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
             setPlanLimitReachedModalOpen(true)
         } else {
             props.getPresetsInfos('per-page=10&page=1')

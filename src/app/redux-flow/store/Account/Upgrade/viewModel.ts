@@ -12,10 +12,8 @@ export const formatGetPlansListOutput = (data: GetPlansListOutput): Plans => {
                     return {...privilege, checked: false, price: Object.keys(privilege.price).reduce((acc, next: CurrencyKey) => {return {...acc, [next]: privilege.price[next] / 100}}, {})}
                     }),
                 price: Object.keys(data[next].price).reduce((accPrice, nextPrice: BandwidthProductCurrency) => { return {...accPrice, [nextPrice]: data[next].price[nextPrice] / 100 }}, {}),
-                selectedPrivileges: undefined,
                 privilegesTotal: 0,
                 termsAndConditions: false,
-                nbSeats: data[next].name === "Event" || data[next].name === 'Annual Starter' ? 1 : 3
             }
         }
     }, upgradeInitialState)
@@ -31,7 +29,7 @@ export const formatPostPlanInput = (data: ChangePlanData): PostAccountPlanInput 
         couponCode: '',
         allowances: data.allowanceCode,
         threeDSecureToken: data.token3Ds ? data.token3Ds : undefined,
-        paidPrivileges: data.privileges ? data.privileges.map((privilege) => { return data.selectedPrivileges && data.selectedPrivileges.includes(privilege.code) ? { code: privilege.code, quantity: 1 } : null }).filter(f => f) : null
+        paidPrivileges: data.privileges ? data.privileges.filter(p => p.checked).map((privilege) => { return { code: privilege.code, quantity: privilege.quantity || 1 }}).filter(f => f) : null
     }
 
     return formattedData

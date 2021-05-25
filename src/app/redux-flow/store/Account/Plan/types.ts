@@ -110,6 +110,7 @@ export interface PlanSummary {
     paymentFrequency: string;
     paymentTerm: number;
     nbSeats: number;
+    occupiedSeats: number;
     extraSeats: number;
 }
 

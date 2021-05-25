@@ -123,6 +123,7 @@ interface AllowanceEndpoint {
     code: string;
     bandwidth: number;
     storage: number;
+    seats: number;
 }
 
 interface PlanDetails {

@@ -193,14 +193,14 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         const sortedRoutes = [props.routes.find(({ name }) => name === 'Dashboard')].concat(props.routes.filter(({ name }) => name !== 'Dashboard'))
         return sortedRoutes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
-                const isLocked = element.slug && !element.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
+                const isLocked = element.slug && !element.slug.filter(item => !item.associatePrivilege || item.associatePrivilege.some(p => userToken.getPrivilege(p))).length
                 if(element.path === 'break') {
                     return  <BreakStyle key={'breakSection'+i} />
                 }
                 else if(element.path === 'title') {
                     return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
                 }
-                else if(element.slug && element.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length) {
+                else if(element.slug && element.slug.filter(item => !item.associatePrivilege || item.associatePrivilege.some(p => userToken.getPrivilege(p))).length) {
                     return (
                         <div key={'superkey'+i}>
                             <ElementMenu
@@ -218,7 +218,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => item.associatePrivilege ? userToken.getPrivilege(item.associatePrivilege) : true).map((subMenuElement, index) => { 
+                                {element.slug.filter(item => item.associatePrivilege ? item.associatePrivilege.some(p => userToken.getPrivilege(p)) : true).map((subMenuElement, index) => { 
                                     if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.nbSeats === 1){
                                         return (
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
@@ -230,25 +230,13 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                             </SubMenuElement>
                                         )
                                     } else {
-                                        if(subMenuElement.name === "Users") {
-                                            return (
-                                                <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
-                                                    <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
-                                                        <div className='flex items-center'>
-                                                            <TextStyle className='pr2' selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                                            <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
-                                                        </div>
-                                                    </SubMenuElement>
-                                                </Link>
-                                            )
-                                        }
-                                    return (
-                                        <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
-                                            <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
-                                                <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                            </SubMenuElement>
-                                        </Link>
-                                    )
+                                        return (
+                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                                <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
+                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                </SubMenuElement>
+                                            </Link>
+                                        )
                                     }
                                 })
 
