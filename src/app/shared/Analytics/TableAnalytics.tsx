@@ -15,7 +15,7 @@ export const TableAnalytics = (props: TableAnalyticsProps) => {
             data={props.data.map(d => {
                 return Object.keys(d).reduce((acc, next) => {
                     if(next !== 'label') {
-                        return {...acc, [next]: d[next].toLocaleString()}
+                        return {...acc, [next]: d[next] ? d[next].toLocaleString(): d[next]}
                     }
                     return {...acc, [next]: d[next]}
                 }, {})
