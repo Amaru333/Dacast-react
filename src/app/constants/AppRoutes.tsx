@@ -292,7 +292,7 @@ export const AppRoutes: Routes[] = [
         name: 'Design',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-expo',
+        associatePrivilege: ['privilege-expo'],
         notDisplayedInNavigation: true,
         component: DesignExpos,
     },
