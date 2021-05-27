@@ -67,6 +67,7 @@ import Paywall from '../containers/Analytics/Paywall';
 import Engagement from '../containers/Analytics/Engagement';
 import DataConsumption from '../containers/Analytics/DataConsumption';
 import DashboardNew from '../containers/Analytics/DashboardNew';
+import AnalyticsContent from '../containers/Analytics/Content';
 import AccountSelection from '../containers/Register/AccountSelection';
 
 
@@ -386,6 +387,11 @@ export const AppRoutes: Routes[] = [
                 component: Audience,
             },
             {
+                path: '/analytics/content',
+                name: 'Content',
+                component: AnalyticsContent,
+            },
+            {
                 path: '/analytics/engagement',
                 name: 'Engagement',
                 component: Engagement,
@@ -407,7 +413,7 @@ export const AppRoutes: Routes[] = [
         path: '/paywall',
         name: 'Paywall',
         iconName: 'attach_money',
-        associatePrivilege: 'privilege-paywall',
+        associatePrivilege: ['privilege-paywall'],
         isExact: true,
         component: Presets,
         slug: [
