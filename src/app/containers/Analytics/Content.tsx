@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk'
 import styled from 'styled-components'
 import { BarChart } from '../../../components/Analytics/BarChart'
+import { EmptyAnalytics } from '../../../components/Analytics/EmptyAnalytics'
 import { LineChart } from '../../../components/Analytics/LineChart'
 import { Button } from '../../../components/FormsComponents/Button/Button'
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle'
@@ -42,7 +43,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
 
     React.useEffect(() => {
-        props.getAnalyticsContentList({metrics: ['impressions', 'plays'], sortBy: 'impressions', startAt: Math.floor(new Date(new Date().setDate(new Date().getDate() - 30)).valueOf() / 1000)})
+        props.getAnalyticsContentList({metrics: ['impressions', 'plays'], sortBy: 'impressions'})
     }, [])
 
     React.useEffect(() => {
@@ -72,6 +73,9 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     }
 
     const renderChart = () => {
+        if(!props.analyticsContent.contentData) {
+            return <EmptyAnalytics />
+        }
         if(currentTab === 'audience' && props.analyticsContent.contentData.impressions) {
             return <LineChart
                 title="Plays & Impressions by Time"
@@ -91,13 +95,13 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
             />
         }
 
-        return null
+        return <EmptyAnalytics />
 
     }
 
-    if(!props.analyticsContent.contentData && props.analyticsContent.contentList.length === 0) {
-        return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-    }
+        // if(!props.analyticsContent.contentData && props.analyticsContent.contentList.length === 0) {
+        //     return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+        // }
 
     return (
         <div className='flex flex-column'>
@@ -123,7 +127,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
                     <Text size={16} weight='med'>Content - {selectedContent ? selectedContent.title : "All"}</Text>
                 </WidgetHeader>
                 {
-                    props.analyticsContent.contentData && renderChart()
+                    renderChart()
                 }
             </WidgetElement>
             <WidgetElement className='mt2'>
