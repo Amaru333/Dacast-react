@@ -315,9 +315,21 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const handleUpgradeClick = () => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: 'trial',
+            type: 'text',
+            location: props.contentType === 'live' ? 'trial limit livestream' : 'trial limit video',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade' className="text-semibold">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold">Upgrade Now</a></div>} />
         )
     }
 

@@ -31,7 +31,7 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
     const handleCreateStreamClick = () => {
         if(planIsTrial()) {
             if(trialExpired()) {
-                setPlanLimitReachedModalType('upgrade_now')
+                setPlanLimitReachedModalType('upgrade_now_stream')
                 setPlanLimitReachedModalOpen(true)
                 return
             }
@@ -53,7 +53,7 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
 
     const handleUploadVideoClick = () => {
         if(planIsTrial() && trialExpired()) {
-            setPlanLimitReachedModalType('upgrade_now')
+            setPlanLimitReachedModalType('upgrade_now_video')
             setPlanLimitReachedModalOpen(true)
             return
         }
@@ -74,7 +74,7 @@ export const usePlanLimitsValidator = (infos: DashboardInfos, callbacks?: PlanLi
 
     const handleCreateExpoClick = () => {
         if(planIsTrial() && trialExpired()) {
-            setPlanLimitReachedModalType('upgrade_now')
+            setPlanLimitReachedModalType('upgrade_now_expo')
             setPlanLimitReachedModalOpen(true)
             return
         }

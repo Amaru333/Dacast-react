@@ -206,6 +206,18 @@ const Header = (props: HeaderProps) => {
         }
     }
 
+    const handleUpgradeClick = (options: { trial: boolean } = {}) => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: options.trial ? 'trial' : 'paid',
+            type: 'button',
+            location: options.trial ? 'sticky header trial' : 'sticky header paid plan',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
     const renderAddList = () => {
         return (
             userOptionsList.map((name) => {
@@ -238,18 +250,23 @@ const Header = (props: HeaderProps) => {
     }
 
     const renderUpgradeButton = () => {
-        if (!props.billingInfo) {
+        if(!props.billingInfo) {
             return
         }
-        if(!props.isMobile && props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
+        if(props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
+            if (props.isMobile) {
+                <UpgradeButton onClick={() => handleUpgradeClick({ trial: true })} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+                    Upgrade
+                </UpgradeButton>
+            }
             return (
                 <TrialUpgradeButton className="mr2">
-                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => history.push('/account/upgrade')}>Upgrade Now</a></span>
+                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => handleUpgradeClick({ trial: true })}>Upgrade Now</a></span>
                 </TrialUpgradeButton>
             )
         }
         return (
-            <UpgradeButton onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+            <UpgradeButton onClick={() => handleUpgradeClick()} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
                 Upgrade
             </UpgradeButton>
         )
