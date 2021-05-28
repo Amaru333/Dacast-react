@@ -101,7 +101,7 @@ export const GeneralSettings = (props: {localContentDetails: LiveDetails, setLoc
                     </div>
                     <Modal size='small' allowNavigation={false} icon={{name: "error_outline", color: "blue-2"}} modalTitle='Live Stream Recording' toggle={() => setLiveStreamRecordingModalOpened(false)} opened={liveStreamRecordingModalOpened}>
                         <div className='flex flex-column'>
-                            <Text>Live recording is a great feature. However, this action can sometimes be unreliable due to many factors beyond our control (e.g. your internet connexion), the industry best practices recommend to also setup local recording through your encoder.</Text>
+                            <Text>Live recording is a great feature. However, this action can sometimes be unreliable due to many factors beyond our control (e.g. your internet connection), the industry best practices recommend to also setup local recording through your encoder.</Text>
                             <div className='mt2'>
                                 <Button className='col col-3' onClick={() => setLiveStreamRecordingModalOpened(false)} typeButton='primary' sizeButton='large' buttonColor='lightBlue'>Okay</Button>
                             </div>
