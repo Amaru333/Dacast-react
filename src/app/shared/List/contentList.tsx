@@ -39,6 +39,7 @@ import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 interface ContentListProps {
     contentType: ContentType;

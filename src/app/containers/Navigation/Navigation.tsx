@@ -25,6 +25,7 @@ import { ChangeSeatsCartStep } from "../../pages/Account/Users/ChangeSeatsCartSt
 import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPaymentStep";
 import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
 import { Label } from "../../../components/FormsComponents/Label/Label";
+import { segmentService } from "../../utils/services/segment/segmentService";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 

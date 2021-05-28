@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
 import { userToken } from '../../../app/utils/services/token/tokenService';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now_video' | 'upgrade_now_stream' | 'upgrade_now_expo' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
 

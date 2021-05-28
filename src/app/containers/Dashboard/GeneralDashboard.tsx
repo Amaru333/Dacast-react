@@ -14,6 +14,7 @@ import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
