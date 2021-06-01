@@ -31,6 +31,7 @@ import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus } from '../../redux-flow/store/Common/types'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
+import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -449,8 +450,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                         dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
                                     />
                                     <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
-                                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}} />
+                                    <InputSearch 
+                                        style={{width: 360}}
+                                        placeholder="Search by Title..." 
+                                        callback={(value: string) => {setSearchString(value); if(!fetchContent) { setFetchContent(true)}}}
+                                        isSearching={searchString !== null && searchString !== ''}
+                                        value={searchString}
+                                    />
                                 </div>
                             </div>
 

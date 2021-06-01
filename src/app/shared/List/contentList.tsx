@@ -399,9 +399,9 @@ export const ContentListPage = (props: ContentListProps) => {
 
     return (
         <>
-            <div className={'flex mb2 ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
+            <div className={'flex mb2 justify-between ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
                 <InputSearch 
-                    className="flex-auto" 
+                    style={{width: 360}}
                     placeholder="Search by Title..." 
                     callback={(value: string) => { setSearchString(value); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value) }}
                     isSearching={searchString !== null && searchString !== ''}

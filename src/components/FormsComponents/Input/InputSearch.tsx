@@ -2,8 +2,9 @@ import { Icon } from "@material-ui/core";
 import * as React from "react";
 import { InputSearchStyle } from "./InputStyle";
 
-export const InputSearch =  (props: {placeholder?: string, className?: string, callback: (value: string) => void, isSearching?: boolean, value?: string} ) => {
-
+export const InputSearch =  (props: {placeholder?: string, callback: (value: string) => void, isSearching?: boolean, value?: string} & React.HTMLAttributes<HTMLInputElement> ) => {
+    
+    let {className, placeholder, callback, isSearching, ...other} = props;
     const [value, setValue] = React.useState(props.value)
 
     const checkEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -12,7 +13,7 @@ export const InputSearch =  (props: {placeholder?: string, className?: string, c
        }
     }
     return (
-        <div className={"flex items-center relative " + props.className}>
+        <div {...other} className={"flex items-center relative " + props.className} >
             <InputSearchStyle onKeyPress={(e) => checkEnterPress(e)} value={value} onChange={event => setValue(event.target.value)} className="flex-auto"  placeholder={props.placeholder} />
             {
                 props.isSearching ? 
