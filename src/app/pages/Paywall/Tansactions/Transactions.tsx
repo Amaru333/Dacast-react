@@ -84,7 +84,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
         // if(returnedString.indexOf('currency') === -1) {
         //     returnedString += 'currency=aud,gbp,usd,eur'
         // }
-
+        returnedString = returnedString.replace('=,', '=')
 
         setQsParams(returnedString)
     }
