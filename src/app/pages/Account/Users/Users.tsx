@@ -250,7 +250,7 @@ export const UsersPage = (props: UsersComponentProps) => {
                 <div className="flex-auto flex items-center">
                     <InputSearch 
                         style={{width: 360}}
-                        placeholder="Search by Title..." 
+                        placeholder="Search by name or email" 
                         callback={(value: string) => setUsersTableKeyword(value)}
                         isSearching={usersTableKeyword !== null && usersTableKeyword !== ''}
                         value={usersTableKeyword}
