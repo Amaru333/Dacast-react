@@ -29,9 +29,8 @@ export const PlayerContainer = styled.div`
 `
 
 export const ControlsCard = styled(Card)`
-    height: 765px;
+    height: auto;
     display: block;
-    overflow-y: scroll;
 `
 
 export const ControlToggleContainer = styled.div`

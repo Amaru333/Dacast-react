@@ -3,11 +3,13 @@ import { Text } from '../../../components/Typography/Text'
 import { userToken } from '../../utils/services/token/tokenService';
 import { Toggle } from '../../../components/Toggle/toggle'
 import { ToggleTextInfo } from '../Security/SecurityStyle';
-import { ContentDetails, DateTimeValue } from '../../redux-flow/store/Content/General/types';
+import { DateTimeValue, LiveDetails } from '../../redux-flow/store/Content/General/types';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { Modal } from '../../../components/Modal/Modal';
+import { Button } from '../../../components/FormsComponents/Button/Button';
 
 
-export const GeneralSettings = (props: {localContentDetails: ContentDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, contentDetails: ContentDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
+export const GeneralSettings = (props: {localContentDetails: LiveDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<LiveDetails>>, contentDetails: LiveDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
     const initTimestampValues = (ts: number, timezone: string): DateTimeValue => {
         timezone = timezone ? timezone : null;
@@ -16,7 +18,8 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
 
     const [liveStreamCountdownToggle, setLiveStreamCountdownToggle] = React.useState<boolean>((props.contentDetails.countdown.startTime && props.contentDetails.countdown.startTime !== 0) ? true : false)
     const [startDateTimeValue, setStartDateTimeValue] = React.useState<DateTimeValue>({...initTimestampValues(props.contentDetails.countdown.startTime, props.contentDetails.countdown.timezone) })
-
+    const [liveStreamRecordingModalOpened, setLiveStreamRecordingModalOpened] = React.useState<boolean>(false)
+    
     React.useEffect(() => {
         if (liveStreamCountdownToggle) {
             let countdownTs = liveStreamCountdownToggle ? startDateTimeValue.date : 0
@@ -28,6 +31,14 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
         }
     }, [liveStreamCountdownToggle, startDateTimeValue])
 
+    const handleLiveRecordingButtonClick = () => {
+        if(!props.localContentDetails.recording) {
+            setLiveStreamRecordingModalOpened(true)
+        }
+        props.setLocalContentDetails({ ...props.localContentDetails, recording: !props.localContentDetails.recording })
+        props.setHasChanged(true)
+    }
+
     return (
         <div className="settings col col-12">
                     <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
@@ -35,7 +46,7 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                         {
                             userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={props.localContentDetails.recording} onChange={() => {props.setLocalContentDetails({ ...props.localContentDetails, recording: !props.localContentDetails.recording });props.setHasChanged(true)}}></Toggle>
+                                <Toggle label="Live Stream Recording" defaultChecked={props.localContentDetails.recording} onChange={handleLiveRecordingButtonClick}></Toggle>
                                 <ToggleTextInfo className="mt1">
                                     <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
                                 </ToggleTextInfo>
@@ -88,6 +99,14 @@ export const GeneralSettings = (props: {localContentDetails: ContentDetails, set
                             </div>
                         } */}
                     </div>
+                    <Modal size='small' allowNavigation={false} icon={{name: "error_outline", color: "blue-2"}} modalTitle='Live Stream Recording' toggle={() => setLiveStreamRecordingModalOpened(false)} opened={liveStreamRecordingModalOpened}>
+                        <div className='flex flex-column'>
+                            <Text>Live recording is a great feature. However, this action can sometimes be unreliable due to many factors beyond our control (e.g. your internet connection), the industry best practices recommend to also setup local recording through your encoder.</Text>
+                            <div className='mt2'>
+                                <Button className='col col-3' onClick={() => setLiveStreamRecordingModalOpened(false)} typeButton='primary' sizeButton='large' buttonColor='lightBlue'>Okay</Button>
+                            </div>
+                        </div>
+                    </Modal>
                 </div>
     )
 }

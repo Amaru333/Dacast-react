@@ -54,10 +54,8 @@ import Plan from '../containers/Account/Plan';
 import { Impersonate } from '../pages/Impersonate/Impersonate';
 import ExposList from '../containers/Expos/ExposList';
 import GeneralExpos from '../containers/Expos/General';
+import DesignExpos from '../containers/Expos/Design';
 import ExposSetup from '../containers/Expos/Setup';
-import Viewership from '../containers/Analytics/Viewership';
-import Revenue from '../containers/Analytics/Revenue';
-import DashboardAnalytics from '../containers/Analytics/Dashboard';
 import RealTime from '../containers/Analytics/RealTime';
 import ActivatedAccount from '../containers/Register/ActivatedAccount';
 import Users from '../containers/Account/Users';
@@ -127,16 +125,10 @@ export const AppRoutes: Routes[] = [
         component: AccountSelection
     },
     {
-        path: '/dashboard',
-        name: 'Dashboard',
-        iconName: 'dashboard',
-        component: DashboardTest,
-    },
-    {
         path: '/livestreams',
         name: 'Live Streams',
         isExact: true,
-        associatePrivilege: 'privilege-live',
+        associatePrivilege: ['privilege-live'],
         iconName: 'videocam',
         component: LiveList
     },
@@ -145,7 +137,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-live',
+        associatePrivilege: ['privilege-live'],
         notDisplayedInNavigation: true,
         component: LiveGeneral
     },
@@ -156,14 +148,14 @@ export const AppRoutes: Routes[] = [
         iconName: null,
         isExact: true,
         notDisplayedInNavigation: true,
-        associatePrivilege: 'privilege-paywall'
+        associatePrivilege: ['privilege-paywall']
     },
     {
         path: '/livestreams/:liveId/engagement',
         name: 'Engagement',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-live',
+        associatePrivilege: ['privilege-live'],
         notDisplayedInNavigation: true,
         component: LiveEngagement,
     },
@@ -172,7 +164,7 @@ export const AppRoutes: Routes[] = [
         name: 'Security',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-live',
+        associatePrivilege: ['privilege-live'],
         notDisplayedInNavigation: true,
         component: LiveSecurity
     },
@@ -181,7 +173,7 @@ export const AppRoutes: Routes[] = [
         name: 'Theme',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-live',
+        associatePrivilege: ['privilege-live'],
         notDisplayedInNavigation: true,
         component: LiveTheming
     },
@@ -190,7 +182,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-analytics',
+        associatePrivilege: ['privilege-analytics'],
         notDisplayedInNavigation: true,
         component: LiveAnalytics
     },
@@ -198,7 +190,7 @@ export const AppRoutes: Routes[] = [
         path: '/videos',
         name: 'Videos',
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         iconName: 'play_arrow',
         component: VodList,
     },
@@ -207,7 +199,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: General,
     },
@@ -216,7 +208,7 @@ export const AppRoutes: Routes[] = [
         name: 'Chapters',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: Chapters,
     },
@@ -227,14 +219,14 @@ export const AppRoutes: Routes[] = [
         isExact: true,
         notDisplayedInNavigation: true,
         component: VodPaywall,
-        associatePrivilege: 'privilege-paywall'
+        associatePrivilege: ['privilege-paywall']
     },
     {
         path: '/videos/:vodId/engagement',
         name: 'Engagement',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: VodEngagement,
     },
@@ -243,7 +235,7 @@ export const AppRoutes: Routes[] = [
         name: 'Security',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: VodSecurity,
     },
@@ -252,7 +244,7 @@ export const AppRoutes: Routes[] = [
         name: 'Theme',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: VodTheming,
     },
@@ -261,7 +253,7 @@ export const AppRoutes: Routes[] = [
         name: 'Renditions',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-vod',
+        associatePrivilege: ['privilege-vod'],
         notDisplayedInNavigation: true,
         component: VodRenditions,
     },
@@ -270,7 +262,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-analytics',
+        associatePrivilege: ['privilege-analytics'],
         notDisplayedInNavigation: true,
         component: VodAnalytics
     },
@@ -279,7 +271,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-expo',
+        associatePrivilege: ['privilege-expo'],
         notDisplayedInNavigation: true,
         component: GeneralExpos,
     },
@@ -288,15 +280,24 @@ export const AppRoutes: Routes[] = [
         name: 'Setup',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-expo',
+        associatePrivilege: ['privilege-expo'],
         notDisplayedInNavigation: true,
         component: ExposSetup,
+    },
+    {
+        path: '/expos/:exposId/design',
+        name: 'Design',
+        iconName: null,
+        isExact: true,
+        associatePrivilege: ['privilege-expo'],
+        notDisplayedInNavigation: true,
+        component: DesignExpos,
     },
     {
         path: '/folders',
         name: 'Folders',
         iconName: 'folder_open',
-        associatePrivilege: 'privilege-folders',
+        associatePrivilege: ['privilege-folders'],
         component: Folders
     },
     {
@@ -304,7 +305,7 @@ export const AppRoutes: Routes[] = [
         name: 'Expos',
         isExact: true,
         iconName: 'desktop_mac',
-        associatePrivilege: 'privilege-expo',
+        associatePrivilege: ['privilege-expo'],
         component: ExposList
     },
     {
@@ -312,7 +313,7 @@ export const AppRoutes: Routes[] = [
         name: 'Playlists',
         isExact: true,
         iconName: 'playlist_play',
-        associatePrivilege: 'privilege-playlists',
+        associatePrivilege: ['privilege-playlists'],
         component: PlaylistList
     },
     {
@@ -320,7 +321,7 @@ export const AppRoutes: Routes[] = [
         name: 'General',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-playlists',
+        associatePrivilege: ['privilege-playlists'],
         notDisplayedInNavigation: true,
         component: GeneralPlaylist
     },
@@ -329,7 +330,7 @@ export const AppRoutes: Routes[] = [
         name: 'Setup',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-playlists',
+        associatePrivilege: ['privilege-playlists'],
         notDisplayedInNavigation: true,
         component: Setup
     },
@@ -340,14 +341,14 @@ export const AppRoutes: Routes[] = [
         iconName: null,
         isExact: true,
         notDisplayedInNavigation: true,
-        associatePrivilege: 'privilege-paywall'
+        associatePrivilege: ['privilege-paywall']
     },
     {
         path: '/playlists/:playlistId/security',
         name: 'Security',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-playlists',
+        associatePrivilege: ['privilege-playlists'],
         notDisplayedInNavigation: true,
         component: PlaylistSecurity
     },
@@ -356,7 +357,7 @@ export const AppRoutes: Routes[] = [
         name: 'Theme',
         iconName: null,
         isExact: true,
-        associatePrivilege: 'privilege-playlists',
+        associatePrivilege: ['privilege-playlists'],
         notDisplayedInNavigation: true,
         component: PlaylistTheming
     },
@@ -364,7 +365,7 @@ export const AppRoutes: Routes[] = [
         path: '/analytics',
         name: 'Analytics',
         iconName: 'bar_chart',
-        associatePrivilege: 'privilege-analytics',
+        associatePrivilege: ['privilege-analytics'],
         slug: [
             {
                 path: '/analytics/dashboard',
@@ -390,7 +391,7 @@ export const AppRoutes: Routes[] = [
                 path: '/analytics/paywall',
                 name: 'Paywall',
                 component: Paywall,
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
             },
             {
                 path: '/analytics/real-time',
@@ -404,42 +405,43 @@ export const AppRoutes: Routes[] = [
         name: 'Paywall',
         iconName: 'attach_money',
         associatePrivilege: 'privilege-paywall',
+        isExact: true,
         component: Presets,
         slug: [
             {
                 path: '/paywall/presets',
                 name: 'Presets',
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
                 component: Presets
             },
             {
                 path: '/paywall/groups',
                 name: 'Groups',
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
                 component: Groups
             },
             {
                 path: '/paywall/transactions',
                 name: 'Transactions',
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
                 component: Transactions
             },
             {
                 path: '/paywall/withdrawals',
                 name: 'Withdrawals',
                 component: Payout,
-                associatePrivilege: 'privilege-payment-request'
+                associatePrivilege: ['privilege-payment-request']
             },
             {
                 path: '/paywall/theming',
                 name: 'Theming',
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
                 component: PaywallTheming
             },
             {
                 path: '/paywall/settings',
                 name: 'Settings',
-                associatePrivilege: 'privilege-paywall',
+                associatePrivilege: ['privilege-paywall'],
                 component: PaywallSettings
             }
         ]
@@ -453,7 +455,7 @@ export const AppRoutes: Routes[] = [
         name: 'Settings',
         iconName: 'settings',
         component: null,
-        associatePrivilege: 'privilege-account-settings',
+        associatePrivilege: ['privilege-account-settings'],
         slug: [
             {
                 path: '/settings/encoding',
@@ -499,7 +501,7 @@ export const AppRoutes: Routes[] = [
                 path: '/account/plan',
                 name: 'Plan',
                 component: Plan,
-                associatePrivilege: 'privilege-billing'
+                associatePrivilege: ['privilege-billing']
             },
             {
                 path: '/account/upgrade',
@@ -515,19 +517,19 @@ export const AppRoutes: Routes[] = [
                 path: '/account/company',
                 name: 'Company',
                 component: Company,
-                associatePrivilege: 'privilege-account-settings'
+                associatePrivilege: ['privilege-account-settings']
             },
             {
                 path: '/account/users',
                 name: 'Users',
                 component: Users,
-                associatePrivilege: 'privilege-multi-access-beta'
+                associatePrivilege: ['privilege-multi-access-beta', 'privilege-multi-access']
             },
             {
                 path: '/account/billing',
                 name: 'Billing',
                 component: Billing,
-                associatePrivilege: 'privilege-billing'
+                associatePrivilege: ['privilege-billing']
             },
             // {
             //     path: '/account/pending-orders',
@@ -538,7 +540,7 @@ export const AppRoutes: Routes[] = [
                 path: '/account/invoices',
                 name: 'Invoices',
                 component: Invoices,
-                associatePrivilege: 'privilege-billing'
+                associatePrivilege: ['privilege-billing']
             }
         ]
     },
@@ -560,5 +562,11 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: NotFound
+    },
+    {
+        path: '/',
+        name: 'Dashboard',
+        iconName: 'dashboard',
+        component: DashboardTest,
     },
 ];

@@ -1,12 +1,12 @@
+import { PostLoginOuput } from "./session";
+
 export interface PostImpersonateAccountInput {
-    userIdentifier: string;
+    userIdentifier?: string;
+    selectedUserId?: string;
+    loginToken?: string;
 }
 
-export interface PostImpersonateAccountOutput {
-    token: string;
-    accessToken: string;
-    expireAt: number;
-}
+export type PostImpersonateAccountOutput = PostLoginOuput
 
 interface AccountDetailsEndpoint {
     userId: string;
@@ -144,6 +144,7 @@ export interface GetAccountPlanOutput {
     phoneSupport: PlanSettingEndpoint;
     multiUserAccess: PlanSettingEndpoint;
     multiUserAccessBeta: PlanSettingEndpoint;
+    paymentRequest: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

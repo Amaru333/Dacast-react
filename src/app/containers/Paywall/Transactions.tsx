@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import { TransactionsPage } from '../../pages/Paywall/Tansactions/Transactions';
 import { getTransactionsAction, Action, getTransactionsCsvAction, syncTransactionsAction } from '../../redux-flow/store/Paywall/Transactions/actions';
 import { TransactionsInfo } from '../../redux-flow/store/Paywall/Transactions/types';
+import { Privilege } from '../../../utils/services/token/token';
 
 export interface TransactionsComponentProps {
     transactionsInfo: TransactionsInfo;
+    associatePrivilege?: Privilege[];
     getTransactions: (qs: string) => Promise<void>;
     getTransactionsCsv: (qs: string) => Promise<void>;
 }
@@ -34,7 +36,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
             await dispatch(getTransactionsCsvAction(qs))
         },
         syncTransactions: async () => {
-            await dispatch(syncTransactionsAction())
+            await dispatch(syncTransactionsAction(undefined))
         }
     }
 }

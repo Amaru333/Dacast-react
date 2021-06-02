@@ -38,20 +38,30 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
         }
     }, [])
 
-    const formateData: FolderAsset[] = props.contentDataState['expo'] && props.contentDataState['expo'][exposId] && props.contentDataState['expo'][exposId].contentList ? props.contentDataState['expo'][exposId].contentList.map(item =>{
-        return {
-            ownerID: "",
-            objectID: item['id'],
-            title: item.title,
-            thumbnail: item.thumbnailURL,
-            type: item.contentType,
-            createdAt: 0,
-            duration: '',
-            featuresList: {},
-            status: 'online'
-        }
-    }) : [];
+    React.useEffect(() => {
+        setSelectedItems(initFormateData())
+    }, [props.contentDataState])
+
+    const initFormateData = ():FolderAsset[] => {
+        return props.contentDataState['expo'] && props.contentDataState['expo'][exposId] && props.contentDataState['expo'][exposId].contentList ? props.contentDataState['expo'][exposId].contentList.map(item =>{
+            return {
+                ownerID: "",
+                objectID: item['id'],
+                title: item.title,
+                thumbnail: item.thumbnailURL,
+                type: item.contentType,
+                createdAt: 0,
+                duration: '',
+                featuresList: {},
+                status: 'online'
+            }
+        }) : []
+    }
     
+    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>(initFormateData())
+    
+
+
     const [saveLoading, setSaveLoading] = React.useState<boolean>(false)
 
     const handleSave = (items: FolderAsset[], selectedTab: ContentSelectorType, selectedFolderId: string, sortSettings: SortSettingsContentSelector) => {
@@ -82,20 +92,20 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
         .catch(() => setSaveLoading(false))
     }
 
-    
     return (
         <>
             <ExposTabs exposId={exposId} />
             { (props.folderData && props.contentDataState['expo'] && props.contentDataState['expo'][exposId]) ? 
                 <div className='flex flex-column'>
                     <ContentSelector 
+                        emptyText="Start adding videos to your Expo by selecting folders/content from the left using the arrows."
                         showSort={true}
                         loading={saveLoading}
                         showFolders={true}
                         folderId={props.contentDataState['expo'][exposId].folderId} 
                         folderData={props.folderData}
                         type={props.contentDataState['expo'][exposId].type} 
-                        selectedItems={formateData} 
+                        selectedItems={selectedItems} 
                         getFolderContent={props.getFolderContent} 
                         title={props.contentDataState['expo'][exposId].title} 
                         callback={handleSave} 

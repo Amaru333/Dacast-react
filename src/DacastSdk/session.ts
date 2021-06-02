@@ -10,13 +10,15 @@ interface MultiUserSelectedAccountLoginInput {
     selectedUserId: string
 }
 
+export interface MultiAccountUserInfo {
+    userId: string
+    companyName: string
+    companyWebsite: string
+    role: string
+}
+
 interface MultiAccountUser {
-    availableUsers: {
-        userId: string
-        companyName: string
-        companyWebsite: string
-        role: string
-    }[]
+    availableUsers: MultiAccountUserInfo[]
     loginToken: string
 }
 

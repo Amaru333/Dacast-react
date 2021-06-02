@@ -1,5 +1,5 @@
 import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
-import { tsToLocaleDate } from "../../../utils/formatUtils";
+import { formatTimeValue, tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
 import { CountriesDetail } from "../../constants/CountriesDetails";
 import { AccountAnalyticsData } from "../../redux-flow/store/Analytics/Data/types";
@@ -24,11 +24,11 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
                         return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                     }
-                    return tsToLocaleDate(ts);
+                    return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                 }
-                return tsToLocaleDate(ts);
+                return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', day: '2-digit', timeZone: 'UTC' });
             }
-            return tsToLocaleDate(ts);
+            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', day: '2-digit', timeZone: 'UTC' });
         case 'LAST_5_MINUTES':
         case 'LAST_24_HOURS':
         case 'LAST_15_MINUTES':
@@ -200,14 +200,14 @@ export const formatRealTimeResults = (response: GetContentAnalyticsResultItemOut
                     })
                 }
                 break;
-            case 'PLAYS_BY_COUNTRY':
+            default:
                 if (metric.data.length && formattedData.playsByLocation) {
                     metric.data.forEach(data => {
                         const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         if (assosiatedCountry) {
                             formattedData.playsByLocation = {
                                 data: [...(formattedData.playsByLocation ? formattedData.playsByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.type,
                                     position: {
                                         latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
                                         longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
@@ -256,14 +256,13 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                             formattedData.playsImpressionsByTime = { plays: Array(labels.length).fill(0, 0, labels.length), impressions: Array(labels.length).fill(0, 0, labels.length), labels: labels, table: labels.map(label => { return { label: label, plays: 0, impressions: 0 } }) }
                         }
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
-                        let indexLabel = labels.indexOf(label);
                         if (metric.data_dimension.includes("PLAYS")) {
-                            formattedData.playsImpressionsByTime.plays[indexLabel] = data.dimension_sum;
                             let index = formattedData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                            formattedData.playsImpressionsByTime.plays[index] = data.dimension_sum;
                             formattedData.playsImpressionsByTime.table[index] ? formattedData.playsImpressionsByTime.table[index].plays = data.dimension_sum : null;
                         } else if (metric.data_dimension.includes("IMPRESSIONS")) {
-                            formattedData.playsImpressionsByTime.impressions[indexLabel] = data.dimension_sum;
                             let index = formattedData.playsImpressionsByTime.table.findIndex(obj => obj.label === label);
+                            formattedData.playsImpressionsByTime.impressions[index] = data.dimension_sum;
                             formattedData.playsImpressionsByTime.table[index] ? formattedData.playsImpressionsByTime.table[index].impressions = data.dimension_sum : null;
                         }
 
@@ -291,26 +290,25 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                         }
                         break;
                     case 'COUNTRY':
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                        if (assosiatedCountry) {
-                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
-                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
+                        if (data.dimension_type.value !== 'Unknown') {
+                            let index = formattedData.playsImpressionsByLocation.data.findIndex(obj => obj.city === data.dimension_type.value);
+                            let indexTable = formattedData.playsImpressionsByLocation.table.findIndex(obj => CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) && CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)['"Country"'] === obj.label ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown');
 
                             let type: 'plays' | 'impressions' = metric.data_dimension.includes("PLAYS") ? 'plays' : 'impressions';
                             if(index === -1 ) {
                                 formattedData.playsImpressionsByLocation = {
                                     data: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.value as string,
                                         position: {
-                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            latitude: 0,
+                                            longitude: 0
                                         },
                                         value: [data.dimension_sum],
                                         label: [type]
                                     }
                                     ],
-                                    table: [...(formattedData.playsImpressionsByLocation ? formattedData.playsImpressionsByLocation.table : []), { label: assosiatedCountry["\"Country\""], plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
+                                    table: [...(formattedData.playsImpressionsByLocation.table ? formattedData.playsImpressionsByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value) ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value)["\"Country\""] : 'Unknown', plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'plays' ? 0 : data.dimension_sum }  ]
                                 }
                             } else {
                                 formattedData.playsImpressionsByLocation.data[index].value.push(data.dimension_sum)
@@ -327,6 +325,8 @@ export const formatAudienceResults = (response: GetAnalyticsOutput, input: Conte
                                 formattedData.playsImpressionsByLocation.table = [...( formattedData.playsImpressionsByLocation ?  formattedData.playsImpressionsByLocation.table : []), { label: data.dimension_type.value.toString(),  plays: type === 'plays' ? data.dimension_sum : 0, impressions: type === 'impressions' ? data.dimension_sum : 0 }  ]
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             })
@@ -382,27 +382,26 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
                         }
                         break;
                     case 'COUNTRY':
-                        if (!formattedData || !formattedData.watchByLocation) {
-                            formattedData.watchByLocation = { data: [], table: [] }
-                        }
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
-                        if (assosiatedCountry) {
+                        if (data.dimension_type.value !== 'Unknown') {
                             formattedData.watchByLocation = {
                                 data: [...(formattedData.watchByLocation ? formattedData.watchByLocation.data : []), {
-                                    city: assosiatedCountry["\"Country\""],
+                                    city: data.dimension_type.value as string,
                                     position: {
-                                        latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                        longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        latitude: 0,
+                                        longitude: 0
                                     },
-                                    value: [data.dimension_sum]
+                                    value: [data.dimension_sum],
+                                    label: [formatTimeValue([data.dimension_sum]).unitLong]
                                 }],
-                                table: [...(formattedData.watchByLocation ? formattedData.watchByLocation.table : []), {  label: assosiatedCountry["\"Country\""], data: data.dimension_sum }]
+                                table: [...(formattedData.watchByLocation.table ? formattedData.watchByLocation.table : []), {  label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value) ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value)["\"Country\""] : 'Unknown', data: data.dimension_sum }]
                             }
                         } else {
                             formattedData.watchByLocation.table = [...( formattedData.watchByLocation ?  formattedData.watchByLocation.table : []), { label: data.dimension_type.value.toString(),  data: data.dimension_sum }  ] 
                         }
 
                         break;
+                    default:
+                        break
                 }
             })
         }
@@ -455,26 +454,26 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
                         if (!formattedData || !formattedData.salesRevenuesByLocation) {
                             formattedData.salesRevenuesByLocation = { data: [], table: [] }
                         }
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
                         let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
-                        if (assosiatedCountry) {
-                            let index = formattedData.salesRevenuesByLocation.data.findIndex(obj => obj.city === assosiatedCountry["\"Country\""]);
-                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => obj.label === assosiatedCountry["\"Country\""]);
+                        if (data.dimension_type.value !== 'Unknown') {
+                            let index = formattedData.salesRevenuesByLocation.data.findIndex(obj => obj.city === data.dimension_type.value);
+                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) && CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)['"Country"'] === obj.label ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown');
 
                             if(index === -1 ) {
                                 formattedData.salesRevenuesByLocation = {
-                                    data: [...(formattedData.salesRevenuesByLocation ? formattedData.salesRevenuesByLocation.data : []),
+                                    data: [...(formattedData.salesRevenuesByLocation.data ? formattedData.salesRevenuesByLocation.data : []),
                                     {
-                                        city: assosiatedCountry["\"Country\""],
+                                        city: data.dimension_type.value as string,
                                         position: {
-                                            latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                            longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                            latitude: 0,
+                                            longitude: 0
                                         },
                                         value: [data.dimension_sum],
                                         label: [type]
                                     }
                                     ],
-                                    table: [...( formattedData.salesRevenuesByLocation ?  formattedData.salesRevenuesByLocation.table : []), { label: assosiatedCountry["\"Country\""],  sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
+                                    
+                                    table: [...( formattedData.salesRevenuesByLocation.table ?  formattedData.salesRevenuesByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown', sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
                                 }
                             } else {
                                 formattedData.salesRevenuesByLocation.data[index].value.push(data.dimension_sum)
@@ -507,6 +506,7 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
             table: []
         }
     }
+    console.log('response endpoint:', response)
     let labels = formatLabels(input.timeRange, input.start, input.end, response)
     response.results.filter(metric => metric.data_dimension.includes("DATA_CONSUMPTION")).forEach(metric => {
         if(metric.data) {
@@ -520,10 +520,9 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
                             formattedData.dataConsumptionByTime.table = labels.map(label => { return { label: label, data: 0 } })
                         }
                         let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
-                        let indexLabel = labels.indexOf(label);
-                        if(indexLabel !== -1) {
-                            let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
-                            formattedData.dataConsumptionByTime.data[indexLabel] = data.dimension_sum / 1000000000;
+                        let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
+                        if(index !== -1) {
+                            formattedData.dataConsumptionByTime.data[index] = data.dimension_sum / 1000000000;
                             formattedData.dataConsumptionByTime.table[index].data = data.dimension_sum / 1000000000;
                         }
 
@@ -532,7 +531,7 @@ export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input
             })
         }
     })
-
+    console.log('formatted Date: ', formattedData)
     return formattedData
 }
 

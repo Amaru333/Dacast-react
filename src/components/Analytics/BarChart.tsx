@@ -50,13 +50,11 @@ export const BarChart = (props: BarChartProps) => {
             },
             tooltips: {
                 mode: "nearest",
-                ...(props.unit && {
-                    callbacks: {
-                        label: (tooltipItems, data) => {
-                            return tooltipItems.yLabel + " " + props.unit;
-                        }
+                callbacks: {
+                    label: (tooltipItems, data) => {
+                        return tooltipItems.yLabel.toLocaleString() + (props.unit ? " " + props.unit : "");
                     }
-                })
+                }
             },
             scales: {
                 ...(props.options.isTime && {
@@ -72,9 +70,11 @@ export const BarChart = (props: BarChartProps) => {
                 yAxes: [{
                     ...(props.unit && {
                         ticks: {
-                            callback: (value) => {
-                                return value + " " + props.unit;
+                            callback: (value: number) => {
+                                return value.toLocaleString() + " " + props.unit;
                             },
+                            min: 0,
+                            beginAtZero: true
                         }
                     }),
                     id: 'A',
@@ -82,14 +82,17 @@ export const BarChart = (props: BarChartProps) => {
                     position: 'left',
                     ticks: {
                         ...(props.unit && {
-                            callback: (value) => {
-                                return value + " " + props.unit;
+                            callback: (value: number) => {
+                                return value.toLocaleString() + " " + props.unit;
                             }
                         }),
+                        callback: (value: number) => {
+                            return value.toLocaleString();
+                        },
                         ...(props.step && {
                             stepSize: props.step,
                         }),
-                        suggestedMin: 0,
+                        min: 0,
                         beginAtZero: true
                     }
                 },
@@ -97,12 +100,12 @@ export const BarChart = (props: BarChartProps) => {
                     id: 'B',
                     ...(props.unitRight && {
                         ticks: {
-                            callback:  (value) => {
+                            callback:  (value: number) => {
                                 if(value >= 0) {
-                                    return value + " " + props.unitRight;
+                                    return value.toLocaleString() + " " + props.unitRight;
                                 }
                             },
-                            suggestedMin: 0,
+                            min: 0,
                             beginAtZero: true
                         },
 

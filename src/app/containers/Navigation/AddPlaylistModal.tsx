@@ -9,6 +9,7 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { axiosClient } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { segmentService } from '../../utils/services/segment/segmentService';
+import { store } from '../..'
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -27,17 +28,17 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
             }
         ).then((response) => {
             setButtonLoading(false)
-            showToastNotification(`Playlist ${playlistTitle} created!`, 'fixed', 'success')
             props.toggle()
             segmentService.track('Playlist Created', {
                 action: 'Create Playlist',
                 'playlist_id': response.data.data.id,
                 step: 1,
             })  
-            history.push(`/playlists/${response.data.data.id}/general`)
+            store.dispatch(showToastNotification(`Playlist ${playlistTitle} created!`, 'fixed', 'success'))
+            history.push(`/playlists/${response.data.data.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
-            showToastNotification('Ooops, something went wrong...', 'fixed', 'error')
+            store.dispatch(showToastNotification('Ooops, something went wrong...', 'fixed', 'error'))
         })
     }
 

@@ -108,7 +108,7 @@ export interface PostUserPasswordInput {
     accessToken: string;
 }
 
-export type CurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud'
+export type CurrencyKey = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy'
 
 type PriceEndpointStruct = {
     [key in CurrencyKey] : number;
@@ -123,6 +123,7 @@ interface AllowanceEndpoint {
     code: string;
     bandwidth: number;
     storage: number;
+    seats: number;
 }
 
 interface PlanDetails {
@@ -151,7 +152,7 @@ interface PrivilegePostEndpoint {
     quantity: number;
 }
 
-export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD'
+export type PlanCurrencyEndpoint = 'USD' | 'EUR' | 'GBP' | 'AUD' | 'CAD' | 'SGD' | 'JPY'
 
 export interface PostAccountPlanInput { 
     planCode: string;

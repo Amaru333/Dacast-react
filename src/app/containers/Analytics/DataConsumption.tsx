@@ -68,8 +68,8 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
                 <BarChart
                     type="vertical"
                     title="Data Usage"
-                    dataSets={[{ data: props.dataConsumption.data.dataConsumptionByTime.data, label: "Data (GBs)", color: ThemeAnalyticsColors.blue }]}
-                    labels={props.dataConsumption.data.dataConsumptionByTime.labels} />
+                    dataSets={[{ data: props.dataConsumption.data.dataConsumptionByTime.table.map(m => m.data), label: "Data (GB)", color: ThemeAnalyticsColors.blue }]}
+                    labels={props.dataConsumption.data.dataConsumptionByTime.table.map(m => m.label)} />
             )
         }
 

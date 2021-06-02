@@ -499,3 +499,15 @@ a {
 .rt-table {
     background-color: white;
 }
+
+.leaflet-zoom-animated {
+    transition: none !important;
+}
+
+.leaflet-container {
+    background-color: #ffffff;
+}
+
+// .leaflet-tile-container {
+//     display: none;
+// }

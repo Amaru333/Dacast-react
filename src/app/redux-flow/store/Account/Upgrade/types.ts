@@ -20,26 +20,26 @@ export interface Plan {
     paymentFrequency: string;
     paymentTerm: number;
     commitment: number;
-    selectedPrivileges: string[]
     privilegesTotal: number;
     termsAndConditions: boolean;
     selectedScalePlan?: Allowances;
-    nbSeats: number;
 }
 
 export interface Allowances {
     code: string;
     bandwidth: number;
     storage: number;
+    seats: number;
 }
 
 export interface Privilege {
     code: string;
     price: Price;
     checked: boolean;
+    quantity?: number;
 }
 
-export type Currency = 'usd' | 'eur' | 'gbp'
+export type Currency = 'usd' | 'eur' | 'gbp' | 'aud' | 'cad' | 'sgd' | 'jpy'
 
 export type Price = {
     [key in Currency]: number
@@ -63,7 +63,6 @@ export interface ChangePlanData {
     currency: Currency;
     allowanceCode: string;
     privileges: Privilege[];
-    selectedPrivileges: string[];
     token: string;
     token3Ds?: string;
 }

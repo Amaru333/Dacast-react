@@ -247,13 +247,16 @@ export const responsiveMenu = () => {
 export const handleCurrencySymbol = (currency: string) => {
     switch(currency.toUpperCase()) {
         case 'USD':
-            return '$'
         case 'AUD':
-            return 'AU$'
+        case 'CAD':
+        case 'SGD':
+            return '$'
         case 'GBP':
             return '£'
         case 'EUR':
             return '€'
+        case 'JPY':
+            return '¥'
         default:
             return '$'
     }

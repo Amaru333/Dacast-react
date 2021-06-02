@@ -48,11 +48,11 @@ export const createContentCustomThemeAction = (contentType: ContentType) => {
 export const saveContentThemeAction = (contentType: ContentType) => {
     switch(contentType) {
         case 'vod': 
-            return applyViewModel(dacastSdk.postVodCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
+            return applyViewModel(dacastSdk.putVodCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
         case 'live':
-            return applyViewModel(dacastSdk.postChannelCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
+            return applyViewModel(dacastSdk.putChannelCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
         case 'playlist': 
-            return applyViewModel(dacastSdk.postPlaylistCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
+            return applyViewModel(dacastSdk.putPlaylistCustomTheme, formatPutContentThemeInput, formatPutContentThemeOutput(contentType), ActionTypes.SAVE_CONTENT_THEME, 'Changes saved', 'Couldn\'t save changes')
         default:
             throw new Error('Error applying content view model')
     }

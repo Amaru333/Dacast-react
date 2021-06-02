@@ -57,6 +57,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
         if(sortValue) {
             returnedString += `&sortBy=${sortValue}`
         }
+        returnedString = returnedString.replace('=,', '=')
 
         setQsParams(returnedString)
     }

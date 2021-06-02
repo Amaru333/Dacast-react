@@ -95,7 +95,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
             {
                 data: [
                     <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From {billingPeriod}</Text>,
-                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price/100) + seatPricePerMonth * 12 * props.stepperData.extraSeats)}</Text>
+                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price) + seatPricePerMonth * 12 * props.stepperData.extraSeats)}</Text>
                 ]
             }
         ]

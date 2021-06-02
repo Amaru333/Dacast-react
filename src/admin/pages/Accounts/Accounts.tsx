@@ -16,7 +16,10 @@ import { Account } from '../../redux-flow/store/Accounts/List/types'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/DropdownCheckbox'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
-import { formatPostImpersonateInput } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
+import { ImpersonateAccountSelectionModal } from '../../shared/modal/ImpersonateAccountSelectionModal'
+import { isMultiUserToken } from '../../../DacastSdk/session'
+import { PostImpersonateAccountOutput } from '../../../DacastSdk/admin'
 
 interface UserAccountsPagePreferences {
     columnsDiplayed: {
@@ -78,11 +81,13 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         edit: boolean;
         allowances: boolean;
     }>(tableColumnsDefault)
+    const [impersonateBody, setImpersonateBody] = React.useState<PostImpersonateAccountOutput>(null)
+    const [impersonateAccountSelectionModalOpened, setImpersonateAccountSelectionModalOpened] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(!contentLoading) {
             setContentLoading(true)
-            props.getAccounts(`page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
+            props.getAccounts(`page=${pagination.page - 1}&perPage=${pagination.nbResults}` +  (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? '&search=' + encodeURIComponent(keyword) : ''))
             .then(() => {
                 setContentLoading(false)
                 query.push(location.pathname + `?page=${pagination.page}&perPage=${pagination.nbResults}` + (accountId ? `&salesforceId=${accountId}` : '') + (keyword ? `&search=${keyword}` : ''))
@@ -149,7 +154,12 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
+            if(isMultiUserToken(response)) {
+                setImpersonateBody(response)
+                setImpersonateAccountSelectionModalOpened(true)
+            } else {
+                formatPostImpersonateOutput(response, userIdentifier)
+            }
         })
     }
 
@@ -180,7 +190,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
             setContentLoading(true)
             const previousPagination = pagination
             setPagination({page: 1, nbResults: pagination.nbResults})
-            props.getAccounts((`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : '')))
+            props.getAccounts((`page=0&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? '&search=' + encodeURIComponent(search) : '')))
             .then(() => {
                 query.push(location.pathname + `?page=1&perPage=${pagination.nbResults}` + (salesforceId ? `&salesforceId=${salesforceId.replace(/,/g, '')}` : '') + (search ? `&search=${search}` : ''))
                 setContentLoading(false)
@@ -196,7 +206,7 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         if(pagination.page && pagination.nbResults && !contentLoading) {
             setPagination({page:page,nbResults:nbResults})
             setContentLoading(true)
-            props.getAccounts(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? `&search=${keyword}` : ''))
+            props.getAccounts(`page=${page - 1}&perPage=${nbResults}` +  (accountId ? `&salesforceId=${accountId.replace(/,/g, '')}` : '') + (keyword ? '&search=' + encodeURIComponent(keyword) : ''))
             .then(() => {
                 localStorage.setItem('userAccountsPagePreferences', JSON.stringify({columnsDiplayed: tableColumn, perPage: nbResults}))
                 setContentLoading(false)
@@ -242,6 +252,10 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
+            {
+                impersonateAccountSelectionModalOpened && 
+                    <ImpersonateAccountSelectionModal availableUsers={impersonateBody.availableUsers ? impersonateBody.availableUsers : []} loginToken={impersonateBody.loginToken ? impersonateBody.loginToken : null} opened={impersonateAccountSelectionModalOpened} toggle={setImpersonateAccountSelectionModalOpened} />
+            }
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 

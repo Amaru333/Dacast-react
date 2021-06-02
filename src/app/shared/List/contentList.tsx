@@ -39,6 +39,7 @@ import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
 import { Bubble } from '../../../components/Bubble/Bubble';
 import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -221,6 +222,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (returnedString.indexOf('status') === -1) {
             returnedString += '&status=online,offline'
         }
+        returnedString = returnedString.replace('=,', '=')
         setQsParams(returnedString)
     }
 
@@ -315,9 +317,21 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const handleUpgradeClick = () => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: 'trial',
+            type: 'text',
+            location: props.contentType === 'live' ? 'trial limit livestream' : 'trial limit video',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade' className="text-semibold">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold">Upgrade Now</a></div>} />
         )
     }
 
@@ -340,15 +354,15 @@ export const ContentListPage = (props: ContentListProps) => {
                                 {
 
                                     value.thumbnail ?
-                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1 pointer" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
-                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center pointer' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
                                 }
                             </div>,
                         <TitleContainer>
-                            <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
+                            <ListContentTitle className='pointer' onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
                         props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,

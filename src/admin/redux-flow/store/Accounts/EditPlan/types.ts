@@ -38,7 +38,8 @@ export interface PlanInfo {
     ultraSecureChannel: PlanSetting;
     phoneSupport: PlanSetting;
     multiUserAccess: PlanSetting;
-    multiUserAccessBeta: PlanSetting
+    multiUserAccessBeta: PlanSetting;
+    paymentRequest: PlanSetting;
 }
 
 export interface PlanInfoPut {

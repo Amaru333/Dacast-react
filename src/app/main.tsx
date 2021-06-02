@@ -88,7 +88,7 @@ EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
     }
 })
 
-export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
+export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege[]}) => {
     let mobileWidth = useMedia('(max-width:780px');
 
     if (userToken.isLoggedIn()) {
@@ -276,13 +276,17 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
     const returnRouter = (props: Routes[]) => {
         return (
             props.map((route: Routes, i: number) => {
-                const routeIsLocked = route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
+                const routeIsLocked = userToken.isLoggedIn() && route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
                 if(route.name === 'impersonate') {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
                 if (route.isPublic) {
                     if (userToken.isLoggedIn()) {
-                        if(route.path !== '*') {
+                        if(
+                            route.path !== '*' ||
+                            ['/dashboard', '/dashboard/'].includes(location.pathname) ||
+                            ['#!/dashboard', '#!/dashboard?', '#!/dashboard/', '#!/dashboard/?'].includes(location.hash)
+                        ) {
                             return (<Route key={route.path} path={route.path}>
                                 <Redirect
                                     to={{

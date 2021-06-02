@@ -6,12 +6,13 @@ export interface GetExpoDetailsOutput {
     description: string
     online: boolean
     appearance: AppearanceEndpoint
-    poster: AssetTypeEndpoint
 }
 
 interface AppearanceEndpoint {
-    fontColor: string
-    headerColor: string
+    darkMode: boolean;
+    showContentsDescription: boolean;
+    featuredContentId?: string;
+    cover?: {url: string; posterAssetId: string} | {headerColor: string}
 }
 
 export interface PutExpoDetailsInput {
@@ -21,13 +22,24 @@ export interface PutExpoDetailsInput {
         description: string
         online: boolean
         appearance: AppearanceEndpoint
-        poster: AssetTypeEndpoint
+        poster?: AssetTypeEndpoint
     }
 }
 
 export interface GetExpoAssetUploadUrl {
     extension: string
     expoID: string
+}
+
+export interface PutExpoDesign {
+    titleTextColor: string;
+    descriptionTextColor: string;
+    coverBackgroundEnable: boolean;
+    coverBackgroundImage: string; 
+    darkModeEnable: boolean;
+    contentDescriptionsEnable: boolean;
+    featuredContentEnable: boolean;
+    featuredContentId: string;
 }
 
 export interface ExpoContentSetup {

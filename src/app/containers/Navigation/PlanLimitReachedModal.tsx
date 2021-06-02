@@ -5,8 +5,10 @@ import { Text } from '../../../components/Typography/Text';
 import { useHistory } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
+import { userToken } from '../../../app/utils/services/token/tokenService';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
-export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
+export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now_video' | 'upgrade_now_stream' | 'upgrade_now_expo' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
 
 export interface PlanLimitReachedModalProps {
     type: PlanLimitReachedModalType;
@@ -22,6 +24,34 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
     let history = useHistory()
 
     const navigateToUpgrade = () => {
+        if ([
+            'end_of_trial',
+            'feature_not_included_starter_paywall',
+            'livestream_limit_reached_trial',
+            'more_data_needed',
+            'more_data_needed_trial',
+            'more_storage_needed',
+            'more_storage_needed_trial'
+        ].includes(props.type)) {
+            const location = {
+                'end_of_trial': 'expired trial landing pop up',
+                'feature_not_included_starter_paywall': 'unavailable feature pop up',
+                'livestream_limit_reached_trial': 'max live stream reached pop up',
+                'more_data_needed': 'max data reached pop up',
+                'more_data_needed_trial': 'max data reached pop up',
+                'more_storage_needed': 'max storage reached pop up',
+                'more_storage_needed_trial': 'max storage reached pop up'
+            }[props.type]
+            const customers = ['end_of_trial', 'upgrade_now'].includes(props.type) ? 'trial' : 'all';
+            segmentService.track('Upgrade Form Completed', {
+                action: 'Upgrade Source Clicked',
+                userId: userToken.getUserInfoItem('user-id'),
+                customers,
+                type: 'button',
+                location,
+                step: -1
+            })
+        }
         props.toggle()
         history.push('/account/upgrade')
     }
@@ -42,7 +72,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
     }
 
     const currentPathIsDashboard = () => {
-        return ['/dashboard', '/dashboard/', '/'].includes(location.pathname)
+        return location.pathname === '/'
     }
 
     const canOpen = () => {
@@ -54,31 +84,43 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
 
     const getTitle = () => {
         switch(props.type) {
-            case 'end_of_trial': return 'End of Trial'
-            case 'limit_reached': return 'Limit Reached'
-            case 'more_data_needed': return 'Need More Data'
-            case 'more_storage_needed': return 'Need More Storage'
-            case 'more_data_needed_trial': return 'Need More Data'
-            case 'more_storage_needed_trial': return 'Need More Storage'
-            case 'upgrade_now': return 'Upgrade Now'
-            case 'livestream_limit_reached_trial': return 'Limit Reached'
-            case 'feature_not_included': return 'Upgrade Plan'
-            case 'feature_not_included_starter_paywall': return 'Upgrade Plan'
+            case 'end_of_trial':
+                return 'End of Trial'
+            case 'limit_reached':
+            case 'livestream_limit_reached_trial':
+                return 'Limit Reached'
+            case 'more_data_needed':
+            case 'more_data_needed_trial':
+                return 'Need More Data'
+            case 'more_storage_needed':
+            case 'more_storage_needed_trial':
+                return 'Need More Storage'
+            case 'upgrade_now_video':
+            case 'upgrade_now_stream':
+            case 'upgrade_now_expo':
+                return 'Upgrade Now'
+            case 'feature_not_included':
+            case 'feature_not_included_starter_paywall':
+                return 'Upgrade Plan'
         }
     }
 
     const getHasClose = () => {
         switch(props.type) {
-            case 'end_of_trial': return true
-            case 'limit_reached': return false
-            case 'more_data_needed': return true
-            case 'more_storage_needed': return false
-            case 'more_data_needed_trial': return true
-            case 'more_storage_needed_trial': return true
-            case 'upgrade_now': return false
-            case 'livestream_limit_reached_trial': return false
-            case 'feature_not_included': return false
-            case 'feature_not_included_starter_paywall': return false
+            case 'end_of_trial':
+            case 'more_data_needed':
+            case 'more_data_needed_trial':
+                return true
+            case 'limit_reached':
+            case 'more_storage_needed':
+            case 'more_storage_needed_trial':
+            case 'upgrade_now_video':
+            case 'upgrade_now_stream':
+            case 'upgrade_now_expo':
+            case 'livestream_limit_reached_trial':
+            case 'feature_not_included':
+            case 'feature_not_included_starter_paywall':
+                return false
         }
     }
 
@@ -113,7 +155,9 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
                 return (
                     <Text size={14}>You have reached your storage limit for this plan.  Upgrade your plan or contact us in order to extend trial.</Text>
                 )
-            case 'upgrade_now':
+            case 'upgrade_now_video':
+            case 'upgrade_now_stream':
+            case 'upgrade_now_expo':
                 return (
                     <Text size={14}>You have reached the end of your 30-day trial. To continue, please upgrade your plan.</Text>
                 )
@@ -145,7 +189,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
         <Modal size="medium" modalTitle={getTitle()} toggle={props.toggle} className={isMobile && 'x-visible'} opened={props.opened && canOpen()} hasClose={getHasClose()} icon={ {name: "error_outline", color: "blue-2"}} allowNavigation={props.allowNavigation}>
             <ModalContent className="mt2">{ renderContent() }</ModalContent>
             <ModalFooter>
-                <Button onClick={() => { navigateToUpgrade() }} typeButton="primary" buttonColor="lightBlue">Upgrade Now</Button>
+                <Button onClick={() => navigateToUpgrade()} typeButton="primary" buttonColor="lightBlue">Upgrade Now</Button>
                 {
                     ['upgrade_now', 'limit_reached', 'more_storage_needed'].includes(props.type) &&
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="lightBlue" >Cancel</Button>

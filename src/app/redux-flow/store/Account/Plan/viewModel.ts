@@ -14,7 +14,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
             periodStartedAt: data.currentPlan.subscription ? data.currentPlan.subscription.periodStartedAt : null,
             periodEndsAt: data.currentPlan.subscription ? data.currentPlan.subscription.periodEndsAt : null,
             trialExpiresIn: data.currentPlan.trialExpiresIn,
-            price: data.currentPlan.subscription ? data.currentPlan.subscription.price : null,
+            price: data.currentPlan.subscription ? data.currentPlan.subscription.price / 100 : null,
             currency: data.currentPlan.subscription ? data.currentPlan.subscription.currency : '',
             paymentFrequency: data.currentPlan.subscription ? data.currentPlan.subscription.paymentFrequency : null,
             paymentTerm: data.currentPlan.subscription ? data.currentPlan.subscription.paymentTerm : null,
@@ -27,6 +27,7 @@ export const formatGetBillingInfoOutput = (data: GetAccountBillingInfoOutput): B
                 }
             }) : [],
             nbSeats: data.currentPlan.maxMuaSeats,
+            occupiedSeats: data.currentPlan.occupiedMuaSeats,
             extraSeats: data.currentPlan.subscription && data.currentPlan.subscription.addOns && data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS')["included-in-subscription"] ? data.currentPlan.subscription.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity : 0
         }
     }

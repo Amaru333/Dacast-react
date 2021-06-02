@@ -61,7 +61,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
                     duration: price.settings.duration ? {
                         value: price.settings.duration.value,
                         unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
-                    } 
+                    }
                     : null,
                     startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
                     recurrence: price.settings.recurrence ? {
@@ -69,7 +69,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
                         : price.settings.recurrence.value > 4 ? 'Biannual'
                         : price.settings.recurrence.value > 1 ? 'Quarterly'
                         : 'Monthly'
-                    } 
+                    }
                     : null
                 },
                 priceType: price.settings.recurrence ? 'Subscription' : 'Pay Per View'
@@ -94,7 +94,7 @@ export const formatPostContentPriceInput = (data: {price: Preset; id: string; co
             settings: {
                 recurrence: {
                     unit: data.price.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.price.settings.recurrence.unit === 'Quarterly' ? 4 : data.price.settings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.price.settings.recurrence.unit === 'Quarterly' ? 3 : data.price.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -102,7 +102,7 @@ export const formatPostContentPriceInput = (data: {price: Preset; id: string; co
         if(data.price.settings.startMethod === 'Upon Purchase') {
             parsedPrice = {
                 contentId: `${userId}-${data.contentType}-${data.id}`,
-                prices: data.price.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),  
+                prices: data.price.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),
                 settings: {
                     duration: {
                         unit: data.price.settings.duration.unit.toLowerCase().substr(0, data.price.settings.duration.unit.length - 1),
@@ -152,7 +152,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
             settings: {
                 recurrence: {
                     unit: data.price.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.price.settings.recurrence.unit === 'Quarterly' ? 4 : data.price.settings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.price.settings.recurrence.unit === 'Quarterly' ? 3 : data.price.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -166,7 +166,8 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
                     duration: {
                         unit: data.price.settings.duration.unit.toLowerCase().substr(0, data.price.settings.duration.unit.length - 1),
                         value: data.price.settings.duration.value
-                    }
+                    },
+                    startDate: Math.round(new Date() / 1000) - 10
                 }
             }
         } else {
@@ -183,7 +184,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
                 }
             }
         }
-    } 
+    }
 
     return parsedPrice
 }

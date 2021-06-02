@@ -3,7 +3,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { Modal, ModalContent, ModalFooter } from '../../../components/Modal/Modal';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { ContentDetails, LiveDetails } from '../../redux-flow/store/Content/General/types';
+import { LiveDetails } from '../../redux-flow/store/Content/General/types';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { updateClipboard } from '../../utils/utils';
 import { BubbleContent } from '../Security/SecurityStyle';
@@ -18,16 +18,15 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boolean>>; opened: boolean; generateEncoderKey: (liveId: string) => Promise<void>; contentDetails: LiveDetails; }) => {
 
     let encoderPreference = JSON.parse(localStorage.getItem('userEncoderPreference'))
-
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [selectedEncoder, setSelectedEncoder] = React.useState(encoderPreference ? encoderPreference : {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}) 
 
     const encoderList = [
         {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
-        {title: "OBS Open Broadcaster Software", data: {encoderKey: "Stream Key"}},
+        {title: "OBS Open Broadcaster Software", data: {encoderKey: "Encoder Key"}},
         {title: "Sling Studio", data: {primaryPublishURL: "Stream URL", streamKey: "Stream Name"}},
         {title: "Telestream Wirecast", data: {primaryPublishURL: "Address", backupPublishURL: "Backup Address", username: "Username", password: "Password", streamKey: "Stream"}},
-        {title: "Teradeks", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
+        {title: "Teradek", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "Vid Blaster", data: {primaryPublishURL: "URL/IP: Port", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "vMix", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}}
     ]
@@ -39,12 +38,24 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
         .catch(() => setButtonLoading(false))
     }
 
+    const formatURL = (baseURL: string) => {
+        switch(selectedEncoder.title) {
+            case 'Teradek':
+                return baseURL + '/_definst_'
+            case 'Sling Studio': 
+                const splitURL = baseURL.split('rtmp://')
+                return 'rtmp://' + props.contentDetails.username + ':' + props.contentDetails.password + '@' + splitURL[1]
+            default:
+                return baseURL
+        }
+    }
+
     const handleSelectedEncoder = (encoder: DropdownSingleListItem) => {
         setSelectedEncoder(encoder)
         localStorage.setItem('userEncoderPreference', JSON.stringify(encoder))
     }
     return (
-        <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
+        <Modal allowNavigation={false} hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
         <ModalContent>
             <div className="col col-12">
                 <Bubble type='info' className='my2'>
@@ -86,8 +97,8 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                         <Tooltip target="backupPublishURLTooltip">This is your backup stream in case the Server/Stream URL/ Address does not work.</Tooltip>
                                     </LinkBoxLabel>
                                     <LinkBox backgroundColour="white">
-                                        <LinkText size={14} weight="reg">{props.contentDetails.backupPublishURL}</LinkText>
-                                        <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.backupPublishURL, "Copied to clipboard")}>file_copy</IconStyle>
+                                        <LinkText size={14} weight="reg">{formatURL(props.contentDetails.backupPublishURL)}</LinkText>
+                                        <IconStyle className='pointer' onClick={() => updateClipboard(formatURL(props.contentDetails.backupPublishURL), "Copied to clipboard")}>file_copy</IconStyle>
                                     </LinkBox>
                                 </LinkBoxContainer>
                         }

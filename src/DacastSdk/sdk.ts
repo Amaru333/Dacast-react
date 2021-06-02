@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios'
 import { GetPromoPresetOutput, PromoPresetDetails, PromoId, PromoPreset, GetPromoOutput, PromoDetails, PromoEndpoints, GetPricePresetOutput, PricePresetDetails, PricePresetId, PricePresetEndpoint, GetPricePackageOutput, PostPricePackageInput, PricePackageId, PutPricePackageInput, GetPaymentMethodOutput, PaymentMethodDetails, PaymentMethodId, PaymentMethodEndpoints, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestId, PaymentRequestEndpoints, PaywallSettings, GetPaywallThemesOutput, PaywallThemeDetails, PaywallThemeId, PaywallThemeEndpoints, GetPaywallTransactionsOutput, GetPaywallBalanceOutput } from './paywall'
 import { DeleteContentImageAssetIdInput, DeleteContentPriceInput, GetContentPaywallInfoOutput, GetContentPricesOutput, GetContentSecuritySettingsOutput, GetContentThemeOutput, GetSearchContentOutput, PostBulkActionInput, PostBulkActionOutput, PostContentCustomThemeInput, PostContentPriceInput, PostContentPriceOutput, PostUploadUrlInput, PostUploadUrlOutput, PutContentAdsInput, PutContentThemeInput, PutContentEngagementSettingsInput, PutContentLockEngagementSettingsInput, PutContentPaywallInfoInput, PutContentPriceInput, PutContentSecuritySettingsInput, PutUploadFileInput } from './common'
 import { GetCompanyRequestOutput, CompanyDetailsEndpoints, GetInvoicesOutput, ProfileDetails, PutProfileDetailsInput, PostUserPasswordInput, GetPlansListOutput, PostAccountPlanInput, PostAccountPlanOutput, GetProductExtraDataOutput, PostProductExtraDataInput, PostProductExtraDataOutput, GetAccountBillingInfoOutput, PostBillingPaymentMethodInput, PostBillingPaymentMethodOutput, PutPlaybackProtectionInput, GetUsersDetailsOutput, PostUserInput, PostUserRoleInput, DeleteUserInput, UserEndpoint, PostPurchaseAddOnInput, PostPurchaseaddOnOutput } from './account'
-import { GetAnalyticsInput, GetAnalyticsOutput } from './analytics'
+import { GetAnalyticsInput, GetAnalyticsOutput, GetAnalyticsTopContentInput, GetAnalyticsTopContentOutput } from './analytics'
 var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndpoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint } from './settings'
 import { isProduction } from '../app/utils/services/player/stage'
@@ -65,7 +65,8 @@ export class DacastSdk {
     public postAccountTransaction = async (input: PostAccountTransactionInput): Promise<void> => await this.axiosClient.post('/paywall-transactions', input)
     public getPirateInfo = async (input: string): Promise<GetPirateInfoOutput> => await this.axiosClient.get('/identify-cdn-url?url=' + input).then(this.checkExtraData)
     public putExtendTrial = async (input: PutExtendTrialInput): Promise<void> => await this.axiosClient.put('/accounts/' + input.userId + '/extend-trial', input.payload)
-    
+    public postForceInplayerSetup = async (salesforceID: string): Promise<void> => await this.axiosClient.post(`/accounts/${salesforceID}/force-inplayer-setup`)
+
     public getJobsList = async (): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs').then(this.checkExtraData)
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
@@ -189,6 +190,7 @@ export class DacastSdk {
     
     public getAccountAnalytics = async (options: GetAnalyticsInput): Promise<GetAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
     public getContentAnalytics = async (options: GetAnalyticsInput): Promise<GetAnalyticsOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/${options.id}/analytics`, {params: { time_range: options.time_range,  dimension: options.dimension, end: options.end, start: options.start }, paramsSerializer: params => { return qs.stringify(params, {arrayFormat: 'comma'})} }).then(this.checkExtraData)
+    public getTopContentAnalytics = async (options: GetAnalyticsTopContentInput): Promise<GetAnalyticsTopContentOutput> => await this.axiosClient.get(`${isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING}${options.type}/analytics/top-contents`).then(this.checkExtraData)
 
     public getExpos = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/expos?' + input).then(this.checkExtraData)
     public deleteExpo = async (input: string): Promise<void> => await this.axiosClient.delete('/expos/' + input)

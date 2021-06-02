@@ -40,11 +40,9 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const customInfoIconSize = 16;
     const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const upgradeStepList = [{title: 'Features', content: UpgradeFeaturesStep}, {title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
-    const scalePlanStepList = [{title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
     const [stepperPlanOpened, setStepperPlanOpened] = React.useState<boolean>(false);
     const [allFeaturesOpen, setAllFeaturesOpen] = React.useState<boolean>(false);
     const [stepperData, setStepperData] = React.useState<Plan>(null);
-    const [stepList, setStepList] = React.useState(upgradeStepList);
     const [currentPlan, setCurrentPlan] = React.useState<string>(defaultCurrentPlan && defaultCurrentPlan.name)
     const [planBillingFrequency, setPlanBillingFrequency] = React.useState<'Annually' | 'Monthly'>('Annually')
     const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
@@ -66,7 +64,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
-            selectedPrivileges: stepperData.selectedPrivileges,
             token: recurlyToken,
             token3Ds: threeDSecureToken
         }))
@@ -102,7 +99,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
             currency: selectedCurrency.data.id as Currency,
             allowanceCode: stepperData.allowanceCode,
             privileges: stepperData.privileges,
-            selectedPrivileges: stepperData.selectedPrivileges,
             token: recurlyToken,
             token3Ds: threeDSecureResultToken
         }))
@@ -131,14 +127,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handleSteps = (plan: string) => {
-        switch (plan) {
-            case 'scale':
-                setStepList(scalePlanStepList);
-                break;
-            default :
-                setStepList(upgradeStepList);
-                break;
-        }
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Clicked',
             'user_id': userToken.getUserInfoItem('user-id'),
@@ -198,7 +186,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 <PlanCard className='mt1' isSelected={currentPlan === 'Starter'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{handleCurrencySymbol(selectedCurrency.data.id) + ((props.planDetails.starterPlan.price[selectedCurrency.data.id as Currency] / 100) / 12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{handleCurrencySymbol(selectedCurrency.data.id) + ((props.planDetails.starterPlan.price[selectedCurrency.data.id as Currency]) / 12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
@@ -207,7 +195,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].storage} GB</Text>
-                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>1</Text> */}
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.starterPlan.allowances[0].seats}</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
                                         <Text className={textClassName} lineHeight={24} size={12} weight='reg' color='gray-1'>Add-On</Text>
@@ -236,7 +224,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 <PlanCard className="mt1" backgroundColor='violet10' isSelected={currentPlan === 'Event'}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{handleCurrencySymbol(selectedCurrency.data.id) + ((props.planDetails.eventPlan.price[selectedCurrency.data.id as Currency] / 100)/12).toFixed(0)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{handleCurrencySymbol(selectedCurrency.data.id) + ((props.planDetails.eventPlan.price[selectedCurrency.data.id as Currency])/12).toFixed(0)}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <Text className={textClassName + ' mb1'} size={12} weight='reg' color='gray-5'>Billed Annually</Text>
@@ -246,7 +234,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                             <Text className={textClassName} size={12} weight='reg' color='gray-5'>/yr</Text>
                                         </div>
                                         <Text className={textClassName} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].storage} GB</Text>
-                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>1</Text> */}
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.eventPlan.allowances[0].seats}</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -276,7 +264,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                 <PlanCard className='mt1' isSelected={currentPlan === "Annual Scale" || currentPlan === "Monthly Scale"}>
                                     <PlanInfosContainer isMobile={isMobile}>
                                         <div className='flex items-end'>
-                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? handleCurrencySymbol(selectedCurrency.data.id) + (calculateDiscount(props.planDetails.scalePlanAnnual.price[selectedCurrency.data.id as Currency] / 100, props.planDetails.scalePlanAnnual.discount) / 12).toFixed(0) : handleCurrencySymbol(selectedCurrency.data.id) + (props.planDetails.scalePlanMonthly.price[selectedCurrency.data.id as Currency] / 100)}</Text>
+                                            <Text className={textClassName} size={32} weight='med' color='gray-1'>{planBillingFrequency === 'Annually' ? handleCurrencySymbol(selectedCurrency.data.id) + (calculateDiscount(props.planDetails.scalePlanAnnual.price[selectedCurrency.data.id as Currency], props.planDetails.scalePlanAnnual.discount) / 12).toFixed(0) : handleCurrencySymbol(selectedCurrency.data.id) + (props.planDetails.scalePlanMonthly.price[selectedCurrency.data.id as Currency])}</Text>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-5'> /mo</Text>
                                         </div>
                                         <div className='flex flex-baseline mb1'>
@@ -290,7 +278,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                                         <div className='flex items-center'>
                                             <Text className={textClassName} size={16} weight='reg' color='gray-1'>{(props.planDetails.scalePlanAnnual.allowances[0].storage).toLocaleString()} GB</Text>
                                         </div>
-                                        {/* <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>3</Text> */}
+                                        <Text className={textClassName} lineHeight={24} size={16} weight='reg' color='gray-1'>{props.planDetails.scalePlanAnnual.allowances[0].seats}</Text>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
                                         <IconStyle coloricon='green' className={textClassName}>check</IconStyle>
@@ -467,7 +455,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
                             <CustomStepper
                                 opened={stepperPlanOpened}
                                 stepperHeader='Upgrade Plan'
-                                stepList={stepList}
+                                stepList={upgradeStepList}
                                 lastStepButton="Purchase"
                                 stepperData={stepperData}
                                 updateStepperData={(value: Plan) => setStepperData(value)}
