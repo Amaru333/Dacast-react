@@ -1,4 +1,3 @@
-import { Icon } from "@material-ui/core";
 import * as React from "react";
 import { IconStyle } from "../../../shared/Common/Icon";
 import { InputSearchStyle } from "./InputStyle";
