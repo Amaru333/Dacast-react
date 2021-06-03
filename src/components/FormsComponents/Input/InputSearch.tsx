@@ -1,5 +1,6 @@
 import { Icon } from "@material-ui/core";
 import * as React from "react";
+import { IconStyle } from "../../../shared/Common/Icon";
 import { InputSearchStyle } from "./InputStyle";
 
 export const InputSearch =  (props: {placeholder?: string, callback: (value: string) => void, isSearching?: boolean, value?: string} & React.HTMLAttributes<HTMLInputElement> ) => {
@@ -17,9 +18,9 @@ export const InputSearch =  (props: {placeholder?: string, callback: (value: str
             <InputSearchStyle onKeyPress={(e) => checkEnterPress(e)} value={value} onChange={event => setValue(event.target.value)} className="flex-auto"  placeholder={props.placeholder} />
             {
                 props.isSearching ? 
-                <Icon onClick={() => { setValue(''); props.callback('') } } style={{color: "#58606e", right: 12}} fontSize="small" className="absolute pointer">close</Icon>
+                <IconStyle onClick={() => { setValue(''); props.callback('') } } style={{color: "#58606e", right: 12}} fontSize="small" className="absolute pointer">close</IconStyle>
                 :
-                <Icon onClick={() => props.callback(value)} style={{color: "#58606e", right: 12}} fontSize="small" className="absolute pointer">search</Icon>
+                <IconStyle onClick={() => props.callback(value)} style={{color: "#58606e", right: 12}} fontSize="small" className="absolute pointer">search</IconStyle>
                 
             }
         </div>
