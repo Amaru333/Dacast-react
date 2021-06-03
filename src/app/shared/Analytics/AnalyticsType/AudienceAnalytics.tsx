@@ -9,6 +9,8 @@ import { AudienceAnalyticsState } from '../../../redux-flow/store/Content/Analyt
 
 export interface AudienceAnalyticsProps {
     data: AudienceAnalyticsState
+    showTable?: boolean
+    title?: string
 }
 
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
@@ -45,8 +47,8 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
-                title="Audience (Plays & Impressions) by "
-                showTable={true}
+                title={props.title ? props.title : "Audience (Plays & Impressions) by "}
+                showTable={props.showTable === false ? props.showTable : true}
                 csvType="Audience"
                 tabs={
                     {

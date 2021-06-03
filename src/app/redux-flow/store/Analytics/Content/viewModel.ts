@@ -19,20 +19,10 @@ export const formatGetAnalyticsContentListOutput = (data: GetAnalyticsTopContent
 export const formatGetSpecificContentAnalyticsOutput = (response: GetAnalyticsOutput, data: ContentAnalyticsParameters): AnalyticsContentData => {
     if(data.dimension.some(d => d.indexOf('IMPRESSIONS') !== -1 || d.indexOf('PLAYS') !== -1)) {
         let audienceData = formatAudienceResults(response, data)
-        let formattedData: AnalyticsContentData = {
-            'labels': audienceData.playsImpressionsByTime.labels,
-            'impressions': audienceData.playsImpressionsByTime.impressions,
-            'plays': audienceData.playsImpressionsByTime.plays
-        }
-
-        return formattedData
+        return audienceData
     }
 
     let watchData = formatWatchResults(response, data)
-    let formattedData: AnalyticsContentData = {
-        'labels': watchData.watchByTime.labels,
-        'watchtime': watchData.watchByTime.data
-    }
 
-    return formattedData
+    return watchData
 }

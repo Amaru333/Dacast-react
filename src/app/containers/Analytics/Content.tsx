@@ -14,13 +14,16 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { Text } from '../../../components/Typography/Text'
 import { ThemeAnalyticsColors } from '../../../styled/themes/dacast-theme'
 import { formatTimeValue } from '../../../utils/formatUtils'
+import { capitalizeFirstLetter } from '../../../utils/utils'
 import { ApplicationState } from '../../redux-flow/store'
 import { Action, getAnalyticsContentListAction, getSpecificContentAnalyticsAction } from '../../redux-flow/store/Analytics/Content/actions'
 import { AnalyticsContentState } from '../../redux-flow/store/Analytics/Content/types'
 import { AnalyticsTopContentDimensions, AnalyticsTopContentParams } from '../../redux-flow/store/Analytics/Dashboard'
 import { ContentType } from '../../redux-flow/store/Common/types'
-import { ContentAnalyticsParameters } from '../../redux-flow/store/Content/Analytics/types'
+import { AudienceAnalyticsState, ContentAnalyticsParameters, WatchAnalyticsState } from '../../redux-flow/store/Content/Analytics/types'
 import { AudienceDimension, WatchDurationDimension } from '../../shared/Analytics/AnalyticsCommun'
+import { AudienceAnalytics } from '../../shared/Analytics/AnalyticsType/AudienceAnalytics'
+import { WatchDurationAnalytics } from '../../shared/Analytics/AnalyticsType/WatchDurationAnalytics'
 import { ContentAnalyticsDropdownValues } from '../../shared/Analytics/ContentAnalytics'
 import { WidgetHeader } from '../Dashboard/DashboardStyles'
 import { WidgetElement } from '../Dashboard/WidgetElement'
@@ -35,6 +38,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [selectedContent, setSelectedContent] = React.useState<{id: string; type: ContentType; title: string} | null>(null)
+    const colTable = currentTab !== 'engagement' ? 'col col-3' : 'col col-4'
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
         // { title: "Paywall", data: "paywall" },
@@ -47,10 +51,33 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     }, [])
 
     React.useEffect(() => {
+        if(!selectedContent) {
+            setSelectedContent(props.analyticsContent.contentList[0])
+        }
+    }, [props.analyticsContent.contentList])
+
+    React.useEffect(() => {
+        console.log(selectedContent)
         if(selectedContent) {
             props.getSpecificContentAnalytics({ id: selectedContent.id, timeRange: 'LAST_MONTH', type: selectedContent.type as 'live' | 'vod', dimension: currentTab === 'audience' ? AudienceDimension : WatchDurationDimension })
         }
-    }, [selectedContent, currentTab])
+    }, [selectedContent])
+
+    React.useEffect(() => {
+        switch(currentTab) {
+            case 'audience':
+                props.getAnalyticsContentList({metrics: ['impressions', 'plays'], sortBy: 'impressions'})
+                break
+            case 'engagement':
+                props.getAnalyticsContentList({metrics: ['watchtime'], sortBy: 'watchtime'})
+                break
+            default:
+                break
+        }
+        if(selectedContent) {
+            props.getSpecificContentAnalytics({ id: selectedContent.id, timeRange: 'LAST_MONTH', type: selectedContent.type as 'live' | 'vod', dimension: currentTab === 'audience' ? AudienceDimension : WatchDurationDimension })
+        }
+    }, [currentTab])
 
     const handleContentClick = (contentId: string, contentType: ContentType, contentTitle: string) => {
         setSelectedContent({id: contentId, type: contentType, title: contentTitle})
@@ -60,11 +87,11 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         return props.analyticsContent.contentList.map(content => {
             return (
                 <ContentTableRow selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className='flex flex-justify border-bottom col col-12 py1 pointer'>
-                    <Text className='col col-3'>{content.title}</Text>
-                    <Text className='col col-3'>{content.type}</Text>
+                    <Text className={colTable}>{content.title}</Text>
+                    <Text className={colTable}>{content.type}</Text>
                     {
                         Object.keys(content.metrics).map((metric: AnalyticsTopContentDimensions) => {
-                            return <Text className='col col-3'>{content.metrics[metric]}</Text>
+                            return <Text className={colTable}>{content.metrics[metric]}</Text>
                         })
                     }
                 </ContentTableRow>
@@ -76,23 +103,12 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         if(!props.analyticsContent.contentData) {
             return <EmptyAnalytics />
         }
-        if(currentTab === 'audience' && props.analyticsContent.contentData.impressions) {
-            return <LineChart
-                title="Plays & Impressions by Time"
-                options={{ fill: true, curve: 0, rightYAxes: false }}
-                lines={[{ data: props.analyticsContent.contentData.plays as number[], label: "Plays", color: ThemeAnalyticsColors.blue }, { data: props.analyticsContent.contentData.impressions as number[], label: "Impressions", color: ThemeAnalyticsColors.yellow }]}
-                labels={props.analyticsContent.contentData.labels} />
+        if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.playsImpressionsByTime) {
+            return <AudienceAnalytics data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
         }
 
-        if(currentTab === 'engagement' && props.analyticsContent.contentData.watchtime) {
-            const watchDurationPerTime = formatTimeValue(props.analyticsContent.contentData.watchtime as number[])
-
-            return <BarChart
-                title="Engagement by Time"
-                dataSets={ [ {data: watchDurationPerTime.values, label: "Engagement (" + watchDurationPerTime.unitLong + ')', type:"bar", color: ThemeAnalyticsColors.blue}] }
-                labels={props.analyticsContent.contentData.labels}
-                unit={watchDurationPerTime.unitShort} 
-            />
+        if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.watchByTime) {
+           return <WatchDurationAnalytics data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
         }
 
         return <EmptyAnalytics />
@@ -105,9 +121,8 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     return (
         <div className='flex flex-column'>
-            <Text size={32} className='pb2'>Last 30 Days - {selectedContent ? selectedContent.title : 'All Content'}</Text>
+           { selectedContent && <Text size={32} className='pb2'>Last 30 Days - {selectedContent.title}</Text>}
             <div className='flex col col-12 mb2'>
-            <div className='flex-auto'>
                 <DropdownSingle
                     isWhiteBackground
                     className='col col-3'
@@ -118,28 +133,22 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
                     callback={(item: DropdownSingleListItem) => { setCurrentTab(item.data) }}
                 />
             </div>
-            <Button onClick={() => setSelectedContent(null)} sizeButton='small' typeButton='primary' buttonColor='blue'>See All Content</Button>
-            </div>
-
-            <WidgetElement>
-                <WidgetHeader className='flex flex-column'>
-                    <Text size={16} weight='med'>{currentTab === 'audience' ? "Audience (Plays & Impression)" : "Engagement"}</Text>
-                    <Text size={16} weight='med'>Content - {selectedContent ? selectedContent.title : "All"}</Text>
-                </WidgetHeader>
-                {
-                    renderChart()
-                }
-            </WidgetElement>
+            {
+                renderChart()
+            }
             <WidgetElement className='mt2'>
                 <WidgetHeader>
                     <Text size={16} weight='med'>Top Content</Text>
                     <Text size={16} color='gray-3'>(Last 30 Days)</Text>
                 </WidgetHeader>
                     <div className='flex flex-justify border-bottom col col-12 py1'>
-                        <Text className='col col-3' weight='med'>Title</Text>
-                        <Text className='col col-3' weight='med'>Type</Text>
-                        <Text className='col col-3' weight='med'>Plays</Text>
-                        <Text className='col col-3' weight='med'>Impressions</Text>
+                        <Text className={colTable}>Title</Text>
+                        <Text className={colTable}>Type</Text>
+                        {
+                            props.analyticsContent.contentList.length > 0 && Object.keys(props.analyticsContent.contentList[0].metrics).map((key: AnalyticsTopContentDimensions) => {
+                                return <Text className={colTable}>{capitalizeFirstLetter(key)}</Text>
+                            })
+                        }
                     </div>
                     {
                         renderContentList()

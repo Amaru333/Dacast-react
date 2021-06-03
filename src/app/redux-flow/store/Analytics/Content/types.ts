@@ -1,4 +1,5 @@
 import { ContentType } from "../../Common/types";
+import { AudienceAnalyticsState, WatchAnalyticsState } from "../../Content/Analytics";
 import { AnalyticsTopContentDimensions } from "../Dashboard/types";
 
 export enum ActionTypes {
@@ -15,9 +16,7 @@ export interface AnalyticsContent{
     }
 }
 
-export type AnalyticsContentData = {
-    [key in AnalyticsTopContentDimensions | 'labels']?: number[] | string[]
-}
+export type AnalyticsContentData = AudienceAnalyticsState | WatchAnalyticsState
 
 export interface AnalyticsContentState {
     contentList: AnalyticsContent[]
