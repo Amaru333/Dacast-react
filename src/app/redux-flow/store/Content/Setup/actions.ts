@@ -30,7 +30,7 @@ export const postContentSetupAction = (contentType: ContentType) => {
         case 'playlist': 
             return applyViewModel(dacastSdk.putPlaylistSetup, formatPutPlaylistSetupInput, formatPutContentSetupOutput(contentType), ActionTypes.POST_CONTENT_SETUP, 'Changes saved', 'Couldn\'t save changes')
         case 'expo':
-            return applyViewModel(dacastSdk.putExpoSetup, formatPutExpoSetupInput, formatPutContentSetupOutput(contentType), ActionTypes.GET_CONTENT_SETUP, 'Changes saved', 'Couldn\'t save changes')
+            return applyViewModel(dacastSdk.putExpoSetup, formatPutExpoSetupInput, formatPutContentSetupOutput(contentType), ActionTypes.POST_CONTENT_SETUP, 'Changes saved', 'Couldn\'t save changes')
         default:
             throw new Error('Error applying put lock content view model')
     }

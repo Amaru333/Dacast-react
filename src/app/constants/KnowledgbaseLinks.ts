@@ -37,7 +37,7 @@ export const getKnowledgebaseLink = (name: string) => {
         case 'Generic RTMP Encoder':
             return "https://www.dacast.com/support/knowledgebase/walkthrough-encoder-setup-guide/"
         case "OBS Open Broadcaster Software":
-            return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-the-obs-studio-dacast-encoder-on-windows/"
+            return "https://www.dacast.com/support/knowledgebase/video-guide-how-to-start-live-streaming-using-dacast-obs-studio/"
         case "Sling Studio":
             return "https://www.dacast.com/support/knowledgebase/slingstudio-encoder-software/"
         case "Telestream Wirecast":

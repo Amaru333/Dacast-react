@@ -18,6 +18,7 @@ import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { connect } from 'react-redux';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { guessTimezone } from '../../../utils/services/date/dateService';
+import { store } from '../..'
 
 const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
@@ -82,7 +83,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
             }
         ).then((response) => {
             setButtonLoading(false)
-            showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success')
+            store.dispatch(showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success'))
             props.toggle()
             setStreamSetupOptions(defaultStreamSetup)
             segmentService.track('Livestream Created', {

@@ -23,7 +23,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
 
     const encoderList = [
         {title: "Generic RTMP Encoder", data: {primaryPublishURL: "URL", backupPublishURL: "Backup URL", username: "Username", password: "Password", streamKey: "Stream Name or Key"}},
-        {title: "OBS Open Broadcaster Software", data: {primaryPublishURL: "Server", backupPublishURL: "Backup Server", username: "Username", password: "Password", streamKey: "Stream Key"}},
+        {title: "OBS Open Broadcaster Software", data: {encoderKey: "Encoder Key"}},
         {title: "Sling Studio", data: {primaryPublishURL: "Stream URL", streamKey: "Stream Name"}},
         {title: "Telestream Wirecast", data: {primaryPublishURL: "Address", backupPublishURL: "Backup Address", username: "Username", password: "Password", streamKey: "Stream"}},
         {title: "Teradek", data: {primaryPublishURL: "Server URL", backupPublishURL: "Backup Server URL", username: "Username", password: "Password", streamKey: "Stream"}},
@@ -55,7 +55,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
         localStorage.setItem('userEncoderPreference', JSON.stringify(encoder))
     }
     return (
-        <Modal hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
+        <Modal allowNavigation={false} hasClose={false} size="large" modalTitle="Encoder Setup" opened={props.opened} toggle={() => props.toggle(!props.opened)} >
         <ModalContent>
             <div className="col col-12">
                 <Bubble type='info' className='my2'>
@@ -75,17 +75,19 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     />
                     <EncoderSettingsContainer className="col col-12">
                     <div className="col col-12">
-                        <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
-                                <IconStyle id="primaryPublishURLTooltip">info_outlined</IconStyle>
-                                <Tooltip target="primaryPublishURLTooltip">This is your server address for live streaming.</Tooltip>
-                            </LinkBoxLabel>
-                            <LinkBox backgroundColour="white">
-                                <LinkText size={14} weight="reg">{formatURL(props.contentDetails.primaryPublishURL)}</LinkText>
-                                <IconStyle className='pointer' onClick={() => {updateClipboard(formatURL(props.contentDetails.primaryPublishURL), "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
-                            </LinkBox>
-                        </LinkBoxContainer>
+                       { selectedEncoder.data.primaryPublishURL && 
+                            <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">{selectedEncoder.data.primaryPublishURL}</Text>
+                                    <IconStyle id="primaryPublishURLTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="primaryPublishURLTooltip">This is your server address for live streaming.</Tooltip>
+                                </LinkBoxLabel>
+                                <LinkBox backgroundColour="white">
+                                    <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                        }
                         {
                             selectedEncoder.data.backupPublishURL &&
                                 <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
@@ -125,41 +127,47 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 </LinkBox>
                             </LinkBoxContainer>
                     }
-                    {props.contentDetails.streamKeys.map((streamKey, i) => {
-                        return(
-                        <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
-                        <LinkBoxLabel>
-                            <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
-                            <IconStyle id={"streamKeyTooltip" + i}>info_outlined</IconStyle>
-                            <Tooltip target={"streamKeyTooltip" + i}>This is the name/key for a rendition of your stream.</Tooltip>
-                        </LinkBoxLabel>
-                        <LinkBox backgroundColour="white">
-                            <LinkText size={14} weight="reg">{streamKey}</LinkText>
-                            <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
-                        </LinkBox>
-                    </LinkBoxContainer>
-                        )
-                    })}
+                    { selectedEncoder.data.streamKey && 
+                        props.contentDetails.streamKeys.map((streamKey, i) => {
+                            return(
+                                <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
+                                    <LinkBoxLabel>
+                                        <Text size={14} weight="med">{selectedEncoder.data.streamKey + (i >= 1 ? ` ${i + 1}` : '')}</Text>
+                                        <IconStyle id={"streamKeyTooltip" + i}>info_outlined</IconStyle>
+                                        <Tooltip target={"streamKeyTooltip" + i}>This is the name/key for a rendition of your stream.</Tooltip>
+                                    </LinkBoxLabel>
+                                    <LinkBox backgroundColour="white">
+                                        <LinkText size={14} weight="reg">{streamKey}</LinkText>
+                                        <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
+                                    </LinkBox>
+                                </LinkBoxContainer>
+                            )
+                        })
+                    }
+                    { selectedEncoder.data.encoderKey &&
+                        <div className='flex items-center'>
+                            <LinkBoxContainer className="col col-6 mb2">
+                                <LinkBoxLabel>
+                                    <Text size={14} weight="med">{selectedEncoder.data.encoderKey}</Text>
+                                </LinkBoxLabel>
+                                <LinkBox backgroundColour="white">
+                                    <LinkText size={14} weight="reg">{props.contentDetails.encoderKey}</LinkText>
+                                    <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.encoderKey, "Copied to clipboard")}>file_copy</IconStyle>
+                                </LinkBox>
+                            </LinkBoxContainer>
+                            <Button className='mr2 mt2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
+                                Refresh
+                            </Button>
+                        </div>
+                    }
                     </EncoderSettingsContainer>
-                    {/* <div>
-                        <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
-                            <LinkBoxLabel>
-                                <Text size={14} weight="med">Encoder Key</Text>
-                            </LinkBoxLabel>
-                            <LinkBox>
-                                <LinkText size={14} weight="reg">{props.contentDetails.encoderKey}</LinkText>
-                                <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.encoderKey, "Copied to clipboard")}>file_copy</IconStyle>
-                            </LinkBox>
-                        </LinkBoxContainer>
-                        <Button className='right mr2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
-                            Generate
-                        </Button>
-                    </div> */}
-
                 </div>
-                
-                <div className="flex col col-12 mt2">
-                    <Text size={14} weight="reg">Quick guide for live streaming with <a href={getKnowledgebaseLink(selectedEncoder.title)} target="_blank" rel="noopener noreferrer">{selectedEncoder.title}</a></Text>
+                <div className="flex flex-column col col-12 mt2">
+                    {
+                        selectedEncoder.title === 'OBS Open Broadcaster Software' &&
+                        <Text className='py2' >For OBS Studio Versions prior to 27.0.0, please use <Text weight='med' color='dark-violet' className='link' onClick={() => {setSelectedEncoder(encoderList.find(e => e.title === 'Generic RTMP Encoder'))}}>Generic RTMP Encoder settings.</Text></Text>
+                    }
+                    <Text className='py2' size={14} weight="reg">Quick guide for live streaming with <a href={getKnowledgebaseLink(selectedEncoder.title)} target="_blank" rel="noopener noreferrer">{selectedEncoder.title}</a></Text>
                 </div>
             </ModalContent>
             <ModalFooter className="mt1" >
