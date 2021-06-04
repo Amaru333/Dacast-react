@@ -22,7 +22,8 @@ import { userToken } from '../../../utils/services/token/tokenService';
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
-    getSettingsIntegrationAction: Function;
+    getApiKeys: () => Promise<void>;
+    createApiKey: (name: string) => Promise<void>;
 }
 
 
@@ -54,9 +55,6 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     const [postS3KeysModalOpened, setPostS3KeysModalOpened] = React.useState<boolean>(false);
     const [putS3KeysModalOpened, setPutS3KeysModalOpened] = React.useState<boolean>(false);
     const [selectedEditS3Keys, setSelectedEditS3Keys] = React.useState<S3KeyItem | false>(false);
-
-    const [originalStateGa, setOriginalStateGa] = React.useState<GaItem>(props.infos.ga);
-    const [currentStateGa, setCurrentStateGa] = React.useState<GaItem>(props.infos.ga);
 
     let smScreen = useMedia('(max-width: 780px)');
 
@@ -227,17 +225,21 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     return (
         <>
             <Card className='clearfix col-12'>
-                {/* V2 TODO API INTEGRATION
-                 <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your API Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
-                <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
-                <HrStyle /> */}
-                {
+
+                { true && 
+                    <React.Fragment>
+                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
+                        <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                        <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
+                            <IconStyle className="mr1" >info_outlined</IconStyle>
+                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your API Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                        </div>
+                        <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+                        <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
+                        <HrStyle />
+                    </React.Fragment>
+                }
+                {/* {
                     privilegeApi && 
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
@@ -250,8 +252,8 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         <Table className="col-12" id="webHooksTable" headerBackgroundColor="gray-10" header={webHooksHeaderElement()} body={webHooksBodyElement()} />
                         <HrStyle />
                     </>
-                }
-                {
+                } */}
+                {/* {
                     privilegeLive && 
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
@@ -264,8 +266,8 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         <Table className="col-12" id="encoderKeysTable" headerBackgroundColor="gray-10" header={encoderKeyHeaderElement()} body={encoderKeyBodyElement()} />
                         <HrStyle />
                     </>
-                }
-                {
+                } */}
+                {/* {
                     privilegeVod && 
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
@@ -315,60 +317,44 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                             </div>
                             <HrStyle />
                     </>
-                }
-                <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Google Analytics</Text>
-                <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Some text about where to find the Google Analytics number or whatever.</Text>
-                <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
-                    <IconStyle className="mr1" >info_outlined</IconStyle>
-                    <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with setting up Google Analytics? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
-                </div>
-                <Toggle onChange={() => setCurrentStateGa({ enabled: !currentStateGa.enabled, key: currentStateGa.key })} checked={currentStateGa.enabled} defaultChecked={props.infos.ga.enabled} label="Google Analytics" className="col col-12 mb2" />
-                {currentStateGa.enabled ?
-                    <Input value={currentStateGa.key} onChange={e => setCurrentStateGa({ enabled: currentStateGa.enabled, key: e.currentTarget.value })} defaultValue={props.infos.ga.key} disabled={false} id="gaTag" type="text" className="col col-6 mb2" label="Key" placeholder="UA-xxxxxx" />
-                    : null
-                }
+                } */}
             </Card>
-            <ButtonContainer hidden={JSON.stringify(currentStateGa) === JSON.stringify(originalStateGa)} >
+            {/* <ButtonContainer hidden={JSON.stringify(currentStateGa) === JSON.stringify(originalStateGa)} >
                 <ButtonStyle typeButton="primary" onClick={() => alert("Post GA Tag")}>Save</ButtonStyle>
                 <ButtonStyle onClick={() => setCurrentStateGa(originalStateGa)} typeButton="secondary">Cancel</ButtonStyle>
-            </ButtonContainer>
-            <Modal modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
+            </ButtonContainer> */}
+            <Modal allowNavigation={false} modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                 <ApiKeysForm toggle={setPostApiKeyModalOpened} />
             </Modal>
-            {selectedEditApiKey ?
-                <Modal modalTitle="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
+            {selectedEditApiKey &&
+                <Modal allowNavigation={false} modalTitle="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
                     <ApiKeysForm item={selectedEditApiKey} toggle={setPutApiKeyModalOpened} />
-                </Modal> :
-                null
+                </Modal> 
             }
-            <Modal className="x-visible" modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
+            {/* <Modal allowNavigation={false} className="x-visible" modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
                 <EncoderKeysForm toggle={setPostEncoderKeyModalOpened} />
             </Modal>
-            {selectedEditEncoderKey ?
-                <Modal modalTitle="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} >
+            {selectedEditEncoderKey &&
+                <Modal allowNavigation={false} modalTitle="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} >
                     <EncoderKeysForm item={selectedEditEncoderKey} toggle={setPutEncoderKeyModalOpened} />
-                </Modal> :
-                null
+                </Modal> 
             }
-            <Modal modalTitle="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} >
+            <Modal allowNavigation={false} modalTitle="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} >
                 <WebHooksForm toggle={setPostWebHooksModalOpened} />
             </Modal>
-            {selectedEditWebHooks ?
-                <Modal modalTitle="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
+            {selectedEditWebHooks &&
+                <Modal allowNavigation={false} modalTitle="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
                     <WebHooksForm item={selectedEditWebHooks} toggle={setPutWebHooksModalOpened} />
-                </Modal> :
-                null
+                </Modal> 
             }
-            <Modal modalTitle="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
+            <Modal allowNavigation={false} modalTitle="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
                 <S3KeysForm toggle={setPostS3KeysModalOpened} />
             </Modal>
-            {selectedEditS3Keys ?
-                <Modal modalTitle="Edit S3 Key" toggle={() => setPutS3KeysModalOpened(!putS3KeysModalOpened)} size="small" opened={putS3KeysModalOpened} >
+            {selectedEditS3Keys &&
+                <Modal allowNavigation={false} modalTitle="Edit S3 Key" toggle={() => setPutS3KeysModalOpened(!putS3KeysModalOpened)} size="small" opened={putS3KeysModalOpened} >
                     <S3KeysForm item={selectedEditS3Keys} toggle={setPutS3KeysModalOpened} />
-                </Modal> :
-                null
-            }
-            <Prompt when={currentStateGa !== props.infos.ga} message='' />
+                </Modal>
+            } */}
         </>
     )
 

@@ -180,3 +180,28 @@ export interface GetThemeSettingsOutput {
     themes: ThemeEndpoint[]
 }
 
+interface AclEndpoint {
+    folder: number
+    live: number
+    playlist: number
+    vod: number
+}
+
+export interface ApiKeyEndpoint {
+    name: string
+    key: string
+    status: string
+    created_at: number
+    updated_at: number
+    resource_id: string
+    resource_type: string
+    acl: AclEndpoint
+}
+
+export type GetApiKeysOutput = ApiKeyEndpoint[]
+
+export interface PostApiKeyInput {
+    name: string
+}
+
+export type PostApiKeyOutput = ApiKeyEndpoint

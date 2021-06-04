@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 
 import { ApplicationState } from "../../redux-flow/store";
-import { Action, getSettingsIntegrationAction} from "../../redux-flow/store/Settings/ApiIntegration";
+import { Action, createApiKeyAction, getApiKeysAction} from "../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -15,7 +15,8 @@ const ApiIntegration = (props: ApiIntegrationProps) => {
 
     React.useEffect(() => {
         if(!props.infos) {
-            props.getSettingsIntegrationAction()
+            props.getApiKeys()
+            .then(() => console.log('test'))
             .catch(() => setNodataFetched(true))
 
         }
@@ -43,8 +44,11 @@ export function mapStateToProps( state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
-        getSettingsIntegrationAction: () => {
-            dispatch(getSettingsIntegrationAction());
+        getApiKeys: async () => {
+            await dispatch(getApiKeysAction(undefined));
+        },
+        createApiKey: async (name: string) => {
+            await dispatch(createApiKeyAction(name));
         },
     };
 }

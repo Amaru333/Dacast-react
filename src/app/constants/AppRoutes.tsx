@@ -404,7 +404,7 @@ export const AppRoutes: Routes[] = [
         path: '/paywall',
         name: 'Paywall',
         iconName: 'attach_money',
-        associatePrivilege: 'privilege-paywall',
+        associatePrivilege: ['privilege-paywall'],
         isExact: true,
         component: Presets,
         slug: [
@@ -472,12 +472,12 @@ export const AppRoutes: Routes[] = [
                 name: 'Security',
                 component: Security
             },
-            // {
-            //     path: '/settings/integrations',
-            //     name: 'Integrations',
-            //     component: ApiIntegration,
-            //     associatePrivilege: 'privilege-api'
-            // },
+            {
+                path: '/settings/integrations',
+                name: 'Integrations',
+                component: ApiIntegration,
+                // associatePrivilege: ['privilege-api']
+            },
 
             {
                 path: '/settings/theming',

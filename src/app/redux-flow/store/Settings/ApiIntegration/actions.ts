@@ -1,25 +1,19 @@
-import { ActionTypes } from "./types";
-import { ThunkDispatch } from "redux-thunk";
-import { ApplicationState } from "../..";
-import { SettingsIntegrationServices } from './services';
-import { showToastNotification } from '../../Toasts';
-import { ApiIntegrationPageInfos } from './types';
+import { ActionTypes, ApiKeyItem } from "./types";
+import { applyViewModel } from "../../../../utils/utils";
+import { dacastSdk } from "../../../../utils/services/axios/axiosClient";
+import { formatGetApiKeysOutput, formatPostApiKeyInput, formatPostApiKeyOutput } from "./viewModel";
 
 export interface GetSettingsIntegrationDetails {
-    type: ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS;
-    payload: ApiIntegrationPageInfos;
+    type: ActionTypes.GET_API_KEYS;
+    payload: ApiKeyItem[];
 }
 
-export const getSettingsIntegrationAction = (): ThunkDispatch<Promise<void>, {}, GetSettingsIntegrationDetails> => {
-    return async (dispatch: ThunkDispatch<ApplicationState , {}, GetSettingsIntegrationDetails> ) => {
-        await SettingsIntegrationServices.getSettingsIntegrationService()
-            .then( response => {
-                dispatch( {type: ActionTypes.GET_SETTINGS_INTEGRATIONS_INFOS, payload: response.data} );
-            }).catch(() => {
-                dispatch(showToastNotification("Oops! Something went wrong..", 'fixed', "error"));
-                return Promise.reject()
-            })
-    };
+export interface CreateApiKey {
+    type: ActionTypes.CREATE_API_KEY
+    payload: ApiKeyItem
 }
 
-export type Action = GetSettingsIntegrationDetails;
+export const getApiKeysAction = applyViewModel(dacastSdk.getApiKeys, undefined, formatGetApiKeysOutput, ActionTypes.GET_API_KEYS, null, 'Couldn\'t get api keys')
+export const createApiKeyAction = applyViewModel(dacastSdk.postApiKey, formatPostApiKeyInput, formatPostApiKeyOutput, ActionTypes.CREATE_API_KEY, null, 'Couldn\'t get api keys')
+
+export type Action = GetSettingsIntegrationDetails | CreateApiKey;
