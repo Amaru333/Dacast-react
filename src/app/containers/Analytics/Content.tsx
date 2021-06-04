@@ -15,6 +15,7 @@ import { Text } from '../../../components/Typography/Text'
 import { ThemeAnalyticsColors } from '../../../styled/themes/dacast-theme'
 import { formatTimeValue } from '../../../utils/formatUtils'
 import { capitalizeFirstLetter } from '../../../utils/utils'
+import { ListContentTitle } from '../../pages/Folders/FoldersStyle'
 import { ApplicationState } from '../../redux-flow/store'
 import { Action, getAnalyticsContentListAction, getSpecificContentAnalyticsAction } from '../../redux-flow/store/Analytics/Content/actions'
 import { AnalyticsContentState } from '../../redux-flow/store/Analytics/Content/types'
@@ -87,8 +88,8 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         return props.analyticsContent.contentList.map(content => {
             return (
                 <ContentTableRow selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className='flex flex-justify border-bottom col col-12 py1 pointer'>
-                    <Text className={colTable}>{content.title}</Text>
-                    <Text className={colTable}>{content.type}</Text>
+                    <ListContentTitle className={colTable}>{content.title}</ListContentTitle>
+                    <Text className={colTable}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
                     {
                         Object.keys(content.metrics).map((metric: AnalyticsTopContentDimensions) => {
                             return <Text className={colTable}>{content.metrics[metric]}</Text>
@@ -121,7 +122,10 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     return (
         <div className='flex flex-column'>
-           { selectedContent && <Text size={32} className='pb2'>Last 30 Days - {selectedContent.title}</Text>}
+            <div className='mb2'>
+                <Text size={32} className='pb2'>Last 30 Days - </Text>
+                {selectedContent && <Text size={32} color='dark-violet'>{selectedContent.title}</Text>}
+            </div>
             <div className='flex col col-12 mb2'>
                 <DropdownSingle
                     isWhiteBackground
@@ -141,15 +145,15 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
                     <Text size={16} weight='med'>Top Content</Text>
                     <Text size={16} color='gray-3'>(Last 30 Days)</Text>
                 </WidgetHeader>
-                    <div className='flex flex-justify border-bottom col col-12 py1'>
-                        <Text className={colTable}>Title</Text>
-                        <Text className={colTable}>Type</Text>
+                    <ContentTableRow className='flex flex-justify border-bottom col col-12 py1'>
+                        <Text weight='med' className={colTable}>Title</Text>
+                        <Text weight='med' className={colTable}>Type</Text>
                         {
                             props.analyticsContent.contentList.length > 0 && Object.keys(props.analyticsContent.contentList[0].metrics).map((key: AnalyticsTopContentDimensions) => {
-                                return <Text className={colTable}>{capitalizeFirstLetter(key)}</Text>
+                                return <Text weight='med' className={colTable}>{capitalizeFirstLetter(key)}</Text>
                             })
                         }
-                    </div>
+                    </ContentTableRow>
                     {
                         renderContentList()
                     }
@@ -182,4 +186,5 @@ const ContentTableRow = styled.div<{selected?: boolean;}>`
     &:hover {
         background-color: ${props => props.theme.colors["violet10"]};
     }
+    border-bottom: 1px solid ${props => props.theme.colors['gray-7']}
 `
