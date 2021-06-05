@@ -92,6 +92,10 @@ export class AxiosClient {
         return await this.getInstance().put(url, data, this.setConfig(config))
     }
 
+    public async patch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
+        return await this.getInstance().patch(url, data, this.setConfig(config))
+    }
+
     private setConfig = (config: AxiosRequestConfig & RequestConfig) => {
         config = config || {}
         let headers = config.headers || {}

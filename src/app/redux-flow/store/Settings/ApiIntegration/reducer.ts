@@ -14,6 +14,21 @@ const reducer: Reducer<ApiIntegrationPageInfos> = (state = defaultStateApiIntegr
                 ...state,
                 apiKeys: [...state.apiKeys, action.payload]
             }
+        case ActionTypes.UPDATE_API_KEY:
+            return {
+                ...state,
+                apiKeys: state.apiKeys.map(key => {
+                    if(action.payload.authToken === key.authToken) {
+                        return action.payload
+                    }
+                    return key
+                })
+            }
+        case ActionTypes.DELETE_API_KEY: 
+            return {
+                ...state,
+                apiKeys: state.apiKeys.filter(f => f.authToken !== action.payload)
+            }
         default:
             return state;
     }

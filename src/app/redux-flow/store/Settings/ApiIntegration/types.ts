@@ -1,6 +1,8 @@
 export enum ActionTypes {
     GET_API_KEYS = "@@settings_integration/GET_API_KEYS",
     CREATE_API_KEY = "@@settings_integration/CREATE_API_KEY",
+    UPDATE_API_KEY = "@@settings_integration/UPDATE_API_KEY",
+    DELETE_API_KEY = "@@settings_integration/DELETE_API_KEY"
 }
 
 export interface ApiIntegrationPageInfos {

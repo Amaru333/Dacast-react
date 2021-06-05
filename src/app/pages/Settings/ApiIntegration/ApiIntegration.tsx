@@ -23,7 +23,9 @@ import { userToken } from '../../../utils/services/token/tokenService';
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
     getApiKeys: () => Promise<void>;
-    createApiKey: (name: string) => Promise<void>;
+    createApiKey: (apiKey: ApiKeyItem) => Promise<void>;
+    updateApiKey: (apiKey: ApiKeyItem) => Promise<void>;
+    deleteApiKey: (key: string) => Promise<void>;
 }
 
 
@@ -84,13 +86,12 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 return {
                     data: [
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.label}</Text>,
-                        <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.clientId}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction right" key={key + value.clientId}>
                             <ActionIcon id={"deleteTooltip" + key}>
-                                <IconStyle>delete</IconStyle>
+                                <IconStyle onClick={() => {props.deleteApiKey(value.authToken)}}>delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltip" + key}>Delete</Tooltip>
                             <ActionIcon id={"editTooltip" + key}>
@@ -108,8 +109,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
         return {
             data: [
                 { cell: <Text key="nameArrayApiKeys" size={14} weight="med" color="gray-1">Name</Text> },
-                { cell: <Text key="idArrayApiKeys" size={14} weight="med" color="gray-1">ID</Text> },
-                { cell: <Text key="tokenArrayApiKeys" size={14} weight="med" color="gray-1">Token</Text> },
+                { cell: <Text key="tokenArrayApiKeys" size={14} weight="med" color="gray-1">API Key</Text> },
                 { cell: <Text key="typeArrayApiKeys" size={14} weight="med" color="gray-1">Type</Text> },
                 { cell: <Text key="createdArrayApiKeys" size={14} weight="med" color="gray-1">Created Date</Text> },
                 { cell: <Button key="actionArrayApiKeys" className={"right mr2 " + (smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button> }
@@ -323,12 +323,16 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 <ButtonStyle typeButton="primary" onClick={() => alert("Post GA Tag")}>Save</ButtonStyle>
                 <ButtonStyle onClick={() => setCurrentStateGa(originalStateGa)} typeButton="secondary">Cancel</ButtonStyle>
             </ButtonContainer> */}
-            <Modal allowNavigation={false} modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
-                <ApiKeysForm toggle={setPostApiKeyModalOpened} />
-            </Modal>
+            {
+                postApiKeyModalOpened &&
+                <Modal allowNavigation={false} modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
+                    <ApiKeysForm action={props.createApiKey} toggle={setPostApiKeyModalOpened} />
+                </Modal>
+            }
+
             {selectedEditApiKey &&
                 <Modal allowNavigation={false} modalTitle="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
-                    <ApiKeysForm item={selectedEditApiKey} toggle={setPutApiKeyModalOpened} />
+                    <ApiKeysForm action={props.updateApiKey} item={selectedEditApiKey} toggle={setPutApiKeyModalOpened} />
                 </Modal> 
             }
             {/* <Modal allowNavigation={false} className="x-visible" modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >

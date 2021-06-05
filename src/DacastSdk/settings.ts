@@ -205,3 +205,12 @@ export interface PostApiKeyInput {
 }
 
 export type PostApiKeyOutput = ApiKeyEndpoint
+
+export interface PatchApiKeyInput {
+    id: string
+    payload: {
+        name: string
+    }
+}
+
+export type PatchApiKeyOutput = ApiKeyEndpoint
