@@ -226,7 +226,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
         <>
             <Card className='clearfix col-12'>
 
-                { true && 
+                { privilegeApi && 
                     <React.Fragment>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
                         <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
