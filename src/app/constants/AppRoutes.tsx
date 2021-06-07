@@ -383,12 +383,12 @@ export const AppRoutes: Routes[] = [
                 name: 'Audience',
                 component: Audience,
             },
-            {
-                path: '/analytics/content',
-                name: 'Content',
-                notDisplayedInNavigation: true,
-                component: AnalyticsContent,
-            },
+            // {
+            //     path: '/analytics/content',
+            //     name: 'Content',
+            //     notDisplayedInNavigation: true,
+            //     component: AnalyticsContent,
+            // },
             {
                 path: '/analytics/engagement',
                 name: 'Engagement',
