@@ -95,10 +95,10 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
             return (
                 <ContentTableRow tableRow selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className='flex flex-justify border-bottom col col-12 py1 pointer'>
                     <ListContentTitle className={colTable}>{content.title}</ListContentTitle>
-                    <Text className={colTable}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
+                    <Text className={colTable + ' px4'}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
                     {
                         Object.keys(content.metrics).map((metric: AnalyticsTopContentDimensions) => {
-                            return <Text className={colTable}>{content.metrics[metric]}</Text>
+                            return <Text className={colTable}>{currentTab === 'engagement' ? formatTimeValue([content.metrics[metric]]).values + formatTimeValue([content.metrics[metric]]).unitShort : content.metrics[metric]}</Text>
                         })
                     }
                 </ContentTableRow>
@@ -146,18 +146,17 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
             {
                 renderChart()
             }
-            <WidgetElement className='mt2'>
+            <div className='my2 mx-auto'>
+                <Button onClick={() => { exportCsvAnalytics() }} sizeButton='small' buttonColor='blue' typeButton='primary'>Export CSV</Button>
+            </div>
+            <WidgetElement>
                 <WidgetHeader>
                     <Text size={16} weight='med'>Top Content</Text>
                     <Text size={16} color='gray-3'>(Last 30 Days)</Text>
-                    <ActionIcon id={"download"}>
-                            <IconStyle onClick={() => { exportCsvAnalytics() }} >get_app</IconStyle>
-                        </ActionIcon>
-                        <Tooltip target={"download"}>Download csv</Tooltip>
                 </WidgetHeader>
                     <ContentTableRow className='flex flex-justify border-bottom col col-12 py1'>
                         <Text weight='med' className={colTable}>Title</Text>
-                        <Text weight='med' className={colTable}>Type</Text>
+                        <Text weight='med' className={colTable + ' px4'}>Type</Text>
                         {
                             props.analyticsContent.contentList.length > 0 && Object.keys(props.analyticsContent.contentList[0].metrics).map((key: AnalyticsTopContentDimensions) => {
                                 return <Text weight='med' className={colTable}>{capitalizeFirstLetter(key)}</Text>
