@@ -9,7 +9,7 @@ export const formatGetAnalyticsContentListOutput = (data: GetAnalyticsTopContent
             title: content.title,
             type: content.type,
             id: content.id,
-            metrics: content.metrics
+            metrics: (content.metrics.impressions || content.metrics.plays) ? {plays: content.metrics.plays, impressions: content.metrics.impressions} : {watchtime: content.metrics.watchtime}
         }
     })
 
