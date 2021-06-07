@@ -29,6 +29,7 @@ import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { ContactOwnerModal } from './ContactOwnerModal';
 import { InputSearch } from '../../../../components/FormsComponents/Input/InputSearch';
+import { InputSearchStyle } from '../../../shared/General/GeneralStyle';
 
 export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
@@ -248,8 +249,7 @@ export const UsersPage = (props: UsersComponentProps) => {
         <React.Fragment>
             <div className="flex items-center mb2">
                 <div className="flex-auto flex items-center">
-                    <InputSearch 
-                        style={{width: 360}}
+                    <InputSearchStyle 
                         placeholder="Search by name or email" 
                         callback={(value: string) => setUsersTableKeyword(value)}
                         isSearching={usersTableKeyword !== null && usersTableKeyword !== ''}

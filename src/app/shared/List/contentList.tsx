@@ -40,6 +40,7 @@ import { Bubble } from '../../../components/Bubble/Bubble';
 import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch';
+import { InputSearchStyle } from '../General/GeneralStyle';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -400,8 +401,7 @@ export const ContentListPage = (props: ContentListProps) => {
     return (
         <>
             <div className={'flex mb2 justify-between ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
-                <InputSearch 
-                    style={{width: 360}}
+                <InputSearchStyle
                     placeholder="Search by Title..." 
                     callback={(value: string) => { setSearchString(value); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value) }}
                     isSearching={searchString !== null && searchString !== ''}
@@ -497,3 +497,4 @@ export const PlanDetailsCardWrapper = styled.div`
     margin-top: 8px;
     border: ${props => isMobile ? 'none' : '1px solid ' + props.theme.colors["violet"]};
 `
+

@@ -32,6 +32,7 @@ import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus } from '../../redux-flow/store/Common/types'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch'
+import { InputSearchStyle } from '../../shared/General/GeneralStyle'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -450,8 +451,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                         dropdownCallback={(value: string) => { handleFolderDropdownOptions(value) }}
                                     />
                                     <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
-                                    <InputSearch 
-                                        style={{width: 360}}
+                                    <InputSearchStyle 
                                         placeholder="Search by Title..." 
                                         callback={(value: string) => {setSearchString(value); if(!fetchContent) { setFetchContent(true)}}}
                                         isSearching={searchString !== null && searchString !== ''}
