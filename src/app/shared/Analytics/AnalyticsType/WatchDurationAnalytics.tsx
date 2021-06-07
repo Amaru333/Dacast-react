@@ -9,6 +9,7 @@ import { WatchAnalyticsState } from '../../../redux-flow/store/Content/Analytics
 
 export interface WatchDurationAnalyticsProps {
     data: WatchAnalyticsState
+    showTable?: boolean
 }
 
 export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
@@ -59,7 +60,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
         <React.Fragment>
             <AnalyticsCard
                 title="Engagement by"
-                showTable={true}
+                showTable={props.showTable === false ? props.showTable : true}
                 csvType='Engagement'
                 tabs={
                     {

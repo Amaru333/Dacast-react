@@ -11,6 +11,8 @@ import { AnalyticsEngagementReducer } from './Engagement/reducer';
 import { AccountAnalyticsEngagementState, defaultStateAccountAnalyticsEngagement } from './Engagement/types';
 import { AccountAnalyticsDataState, defaultStateAccountAnalyticsData } from './Data/types';
 import { AnalyticsDataReducer } from './Data/reducer';
+import { AnalyticsContentState, defaultAnalyticsContentState } from './Content/types';
+import { AnalyticsContentReducer } from './Content/reducer';
 
 export interface  AnalyticsState {
     dashboard: AnalyticsDashboardState;
@@ -20,7 +22,8 @@ export interface  AnalyticsState {
     audience: AccountAnalyticsAudienceState;
     paywall: AccountAnalyticsPaywallState;
     engagement: AccountAnalyticsEngagementState;
-    dataConsumption: AccountAnalyticsDataState
+    dataConsumption: AccountAnalyticsDataState;
+    content: AnalyticsContentState;
 }
 
 export const analyticsInitialState: AnalyticsState = {
@@ -31,7 +34,8 @@ export const analyticsInitialState: AnalyticsState = {
     audience: defaultStateAccountAnalyticsAudience,
     paywall: defaultStateAccountAnalyticsPaywall,
     engagement: defaultStateAccountAnalyticsEngagement,
-    dataConsumption: defaultStateAccountAnalyticsData
+    dataConsumption: defaultStateAccountAnalyticsData,
+    content: defaultAnalyticsContentState
 }
 
 export const AnalyticsReducer: Reducer<AnalyticsState> = combineReducers({
@@ -42,7 +46,8 @@ export const AnalyticsReducer: Reducer<AnalyticsState> = combineReducers({
     audience: AudienceReducer,
     paywall: AnalyticsPaywallReducer,
     engagement: AnalyticsEngagementReducer,
-    dataConsumption: AnalyticsDataReducer
+    dataConsumption: AnalyticsDataReducer,
+    content: AnalyticsContentReducer,
 })
 
 export interface AccountAnalyticsParameters {
