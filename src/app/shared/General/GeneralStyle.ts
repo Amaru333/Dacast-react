@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Text } from '../../../components/Typography/Text'
 import { Input } from '../../../components/FormsComponents/Input/Input';
+import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch';
 
 export const ClassHalfXsFullMd = "col lg-col-6 md-col-6 sm-col-12 col-12 xs-no-gutter ";
 
@@ -96,4 +97,8 @@ export const EncoderSettingsContainer = styled.div`
     border: 1px dashed #C8D1E0;
     padding: 20px 0px 8px 16px;
     background-color: ${props => props.theme.colors["gray-10"]};
+`
+
+export const InputSearchStyle = styled(InputSearch)`
+    width: 350px;
 `

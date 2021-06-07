@@ -28,6 +28,8 @@ import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { ContactOwnerModal } from './ContactOwnerModal';
+import { InputSearch } from '../../../../components/FormsComponents/Input/InputSearch';
+import { InputSearchStyle } from '../../../shared/General/GeneralStyle';
 
 export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
@@ -257,8 +259,12 @@ export const UsersPage = (props: UsersComponentProps) => {
         <React.Fragment>
             <div className="flex items-center mb2">
                 <div className="flex-auto flex items-center">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search Users..." style={{ display: "inline-block" }} defaultTags={usersTableKeyword ? [usersTableKeyword] : []} callback={(value: string[]) => setUsersTableKeyword(value[0])} />
+                    <InputSearchStyle 
+                        placeholder="Search by name or email" 
+                        callback={(value: string) => setUsersTableKeyword(value)}
+                        isSearching={usersTableKeyword !== null && usersTableKeyword !== ''}
+                        value={usersTableKeyword}
+                    />
                 </div>
                 <div className="flex items-center relative">
                     <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={handleAddMoreSeatsClick} size={14} color="dark-violet">Buy more seats</Text>
