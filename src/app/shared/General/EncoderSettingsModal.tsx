@@ -156,7 +156,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 </LinkBox>
                             </LinkBoxContainer>
                             <Button className='mr2 mt2' onClick={handleGenerateKeyClick} isLoading={buttonLoading} sizeButton='small' buttonColor='blue' typeButton='primary'>
-                                Refresh
+                                {props.contentDetails.encoderKey ? 'Refresh' : 'Generate'}
                             </Button>
                         </div>
                     }
