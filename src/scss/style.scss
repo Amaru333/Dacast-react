@@ -134,6 +134,14 @@ a {
     cursor: pointer;
 }
 
+.link {
+    cursor: pointer;
+    &:hover {
+        color: #203DBC;
+        text-decoration: underline;
+    }
+}
+
 .navigation {
     a:hover {
         color: initial;
@@ -500,6 +508,6 @@ a {
     background-color: #ffffff;
 }
 
-.leaflet-tile-container {
-    display: none;
-}
+// .leaflet-tile-container {
+//     display: none;
+// }

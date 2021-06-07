@@ -165,11 +165,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccess.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccess.planValue || props.accountPlan.multiUserAccess.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccess', value === 'On' ? true : false)} />
                     </div>
-                    <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
+                    {/* <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccessBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccessBeta.planValue || props.accountPlan.multiUserAccessBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccessBeta', value === 'On' ? true : false)} />
-                    </div>
+                    </div> */}
 
                     <Divider className='pt2' />
 

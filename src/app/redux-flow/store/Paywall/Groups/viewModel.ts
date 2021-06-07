@@ -142,7 +142,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 3 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
             contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
@@ -201,7 +201,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
             settings: {
                 recurrence: {
                     unit: data.groupSettings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 4 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.groupSettings.recurrence.unit === 'Quarterly' ? 3 : data.groupSettings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             },
             contents: data.contents.map((content: any) => accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)

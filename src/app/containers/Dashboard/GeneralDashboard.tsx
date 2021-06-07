@@ -14,6 +14,7 @@ import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService';
+import { segmentService } from '../../utils/services/segment/segmentService';
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
@@ -43,13 +44,25 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
     }
 
+    const handleUpgradeClick = (options: { type: string } = {}) => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: 'trial',
+            type: options.type,
+            location: props.isPlanPage ? 'countdown widget plan trial' : 'countdown widget dashboard trial',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
     const renderUpgradeText = () => {
         if(props.plan.trialExpiresIn > 7) {
-            return <span><a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
+            return <span><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
         }
-
+        
         if(props.plan.trialExpiresIn > 0) {
-            return <span>Your free trial is about to end, <a href='/account/upgrade' className='a-blue-260 text-semibold'>Upgrade Now</a></span>
+            return <span>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></span>
         }
 
         return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
@@ -65,7 +78,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
         return (
             <Text className="mb15 mt1" size={20} weight="reg" color="white">
-                Your trial has ended, <a href='/account/upgrade' className='a-blue-2 text-semibold'>Upgrade Now</a>
+                Your trial has ended, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-2 text-semibold'>Upgrade Now</a>
             </Text>
         )
     }
@@ -80,7 +93,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer} backgroundColor="gray-1">
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="white"> 30 Day Trial </Text>
-                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade </Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => handleUpgradeClick({ type: 'button' })}>Upgrade </Button>
                     </WidgetHeaderTop>
                     {renderDaysRemaining()}
                     <Text size={14} weight="reg" color="white">{renderUpgradeText()}</Text>

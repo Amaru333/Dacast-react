@@ -24,11 +24,11 @@ const formateTimestampAnalytics = (ts: number, timeRange: TimeRangeAnalytics, re
                     if(response.results[index].data[0].dimension_type.type === "MONTH") {
                         return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                     }
-                    return tsToLocaleDate(ts);
+                    return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', timeZone: 'UTC' });
                 }
-                return tsToLocaleDate(ts);
+                return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', day: '2-digit', timeZone: 'UTC' });
             }
-            return tsToLocaleDate(ts);
+            return tsToLocaleDate(ts, { month: '2-digit', year: 'numeric', day: '2-digit', timeZone: 'UTC' });
         case 'LAST_5_MINUTES':
         case 'LAST_24_HOURS':
         case 'LAST_15_MINUTES':

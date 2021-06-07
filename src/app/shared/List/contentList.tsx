@@ -11,7 +11,6 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader, TitleContainer, ListContentTitle } from '../../../app/pages/Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../shared/Common/Features';
@@ -36,11 +35,11 @@ import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
 import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types';
 import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
-import { Bubble } from '../../../components/Bubble/Bubble';
 import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
-import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch';
 import { InputSearchStyle } from '../General/GeneralStyle';
+import { segmentService } from '../../utils/services/segment/segmentService';
+import { DashboardInfos } from '../../redux-flow/store/Dashboard/types';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -223,6 +222,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (returnedString.indexOf('status') === -1) {
             returnedString += '&status=online,offline'
         }
+        returnedString = returnedString.replace('=,', '=')
         setQsParams(returnedString)
     }
 
@@ -317,9 +317,21 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const handleUpgradeClick = () => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: 'trial',
+            type: 'text',
+            location: props.contentType === 'live' ? 'trial limit livestream' : 'trial limit video',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a href='/account/upgrade' className="text-semibold">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold">Upgrade Now</a></div>} />
         )
     }
 
@@ -460,18 +472,18 @@ export const ContentListPage = (props: ContentListProps) => {
                     <PlanDetailsCard type={props.contentType === 'vod' ? 'vod' : 'regular'}/>
                 </PlanDetailsCardWrapper>
             }
-            <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+            <Modal allowNavigation={false} hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
                     <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} movedContent={selectedContent.map( contentId => { return { id: contentId, type: props.contentType } })} initialSelectedFolder={currentFolder.fullPath} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
-            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal allowNavigation={false} style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => { }} />
                 }
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+            <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
                     <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id).then(() => setListUpdate('Deleted')) }} />
@@ -485,7 +497,7 @@ export const ContentListPage = (props: ContentListProps) => {
             {
                 previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
             }
-            <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
+            <PlanLimitReachedModal allowNavigation type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
         </>
 
     )

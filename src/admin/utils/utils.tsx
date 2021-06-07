@@ -3,8 +3,9 @@ import { AdminState } from "../redux-flow/store"
 import { showToastNotification } from "../redux-flow/store/Toasts/actions"
 import { Action as ReduxAction } from 'redux';
 import { Routes } from "../shared/Navigation/NavigationTypes";
-import { PostImpersonateAccountInput } from "../../DacastSdk/admin";
+import { PostImpersonateAccountInput, PostImpersonateAccountOutput } from "../../DacastSdk/admin";
 import { store } from "..";
+import { isMultiUserToken } from "../../DacastSdk/session";
 
 
 export const makeRoute = (name: string, path?: string, component?: any): Routes => {
@@ -28,6 +29,15 @@ export const formatPostImpersonateInput = (data: string): PostImpersonateAccount
         userIdentifier: data.replace(/,/g, '').trim()
     }
     return formattedData
+}
+
+export const formatPostImpersonateOutput = (data: PostImpersonateAccountOutput, userIdentifier: string) => {
+    let str = '?' + Object.keys(data).reduce(function(a, k){
+        a.push(k + '=' + encodeURIComponent(JSON.stringify(data[k])));
+        return a;
+    }, []).join('&');
+
+    Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate${str}&identifier=${userIdentifier}`}).click();
 }
 
 export function applyAdminViewModel<ActionPayload, ReactOut, SdkIn, SdkOut>(

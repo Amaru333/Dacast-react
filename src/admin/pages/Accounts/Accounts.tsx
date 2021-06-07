@@ -16,7 +16,10 @@ import { Account } from '../../redux-flow/store/Accounts/List/types'
 import { DropdownListType } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { DropdownCheckbox } from '../../../components/FormsComponents/Dropdown/DropdownCheckbox'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
-import { formatPostImpersonateInput } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
+import { ImpersonateAccountSelectionModal } from '../../shared/modal/ImpersonateAccountSelectionModal'
+import { isMultiUserToken } from '../../../DacastSdk/session'
+import { PostImpersonateAccountOutput } from '../../../DacastSdk/admin'
 
 interface UserAccountsPagePreferences {
     columnsDiplayed: {
@@ -78,6 +81,8 @@ export const AccountsPage = (props: AccountsComponentProps) => {
         edit: boolean;
         allowances: boolean;
     }>(tableColumnsDefault)
+    const [impersonateBody, setImpersonateBody] = React.useState<PostImpersonateAccountOutput>(null)
+    const [impersonateAccountSelectionModalOpened, setImpersonateAccountSelectionModalOpened] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(!contentLoading) {
@@ -149,7 +154,12 @@ export const AccountsPage = (props: AccountsComponentProps) => {
     const handleImpersonate = (userIdentifier: string) => {
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click();
+            if(isMultiUserToken(response)) {
+                setImpersonateBody(response)
+                setImpersonateAccountSelectionModalOpened(true)
+            } else {
+                formatPostImpersonateOutput(response, userIdentifier)
+            }
         })
     }
 
@@ -242,6 +252,10 @@ export const AccountsPage = (props: AccountsComponentProps) => {
 
             <Table contentLoading={contentLoading} className='my1' id='accountsTable' headerBackgroundColor='gray-8' header={accountsTableHeader()} body={accountsTableBody()} />
             <Pagination totalResults={props.accounts.total} defaultPage={pagination.page} displayedItemsOptions={[10, 50, 100, 500]} defaultDisplayedOption={pagination.nbResults} callback={(page: number, nbResults: number) => handlePaginationChange(page, nbResults)} />
+            {
+                impersonateAccountSelectionModalOpened && 
+                    <ImpersonateAccountSelectionModal availableUsers={impersonateBody.availableUsers ? impersonateBody.availableUsers : []} loginToken={impersonateBody.loginToken ? impersonateBody.loginToken : null} opened={impersonateAccountSelectionModalOpened} toggle={setImpersonateAccountSelectionModalOpened} />
+            }
         </div>
         : <SpinnerContainer><LoadingSpinner size='medium' color='violet'></LoadingSpinner></SpinnerContainer>
 

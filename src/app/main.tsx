@@ -88,7 +88,7 @@ EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
     }
 })
 
-export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege }) => {
+export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege[]}) => {
     let mobileWidth = useMedia('(max-width:780px');
 
     if (userToken.isLoggedIn()) {

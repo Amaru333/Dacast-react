@@ -11,7 +11,7 @@ export const VideoTabs = (props: {videoId: string}) => {
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
 
     const handleVideoSubRoutes = () => {
-        return AppRoutes.filter((route) => route.path.indexOf('videos') > -1 && route.name !== 'Videos' && (route.associatePrivilege ? userToken.getPrivilege(route.associatePrivilege) : true ) ).map((route) => {
+        return AppRoutes.filter((route) => route.path.indexOf('videos') > -1 && route.name !== 'Videos' && (route.associatePrivilege ? route.associatePrivilege.some(p => userToken.getPrivilege(p)) : true ) ).map((route) => {
             return {
                 ...route, path: '/videos/' + props.videoId + '/' + route.path.split('/')[route.path.split('/').length -1]
             }

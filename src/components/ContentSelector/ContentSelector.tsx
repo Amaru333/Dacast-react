@@ -69,6 +69,10 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         props.getFolderContent(parseFiltersToQueryString())
     }, [sortSettings, searchString])
 
+    React.useEffect(() => {
+        setSelectedItems(props.selectedItems)
+    }, [props.selectedItems])
+    
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })

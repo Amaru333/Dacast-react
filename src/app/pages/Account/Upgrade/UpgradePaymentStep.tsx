@@ -34,7 +34,7 @@ export const UpgradePaymentStep = (props: UpgradePaymentStepProps) => {
         step: 3,
     })  
     const planPrice: number = calculateDiscount(props.stepperData.price[props.selectedCurrency.data.id as Currency], props.stepperData.discount)
-    const featuresTotal: number = calcTotalFeatures((props.stepperData.name !== "Starter" || !(props.stepperData.name === "Starter" && !props.billingInfo.currentPlan.planCode)) ? props.stepperData.privileges.filter(p => p.checked).map(p => p.price) : [], props.selectedCurrency.data.id as Currency)
+    const featuresTotal: number = calcTotalFeatures(props.stepperData.privileges.filter(p => p.checked).map(p => {return {price:p.price, quantity: p.quantity}}), props.selectedCurrency.data.id as Currency)
     const totalPrice: number = calculateDiscount((props.stepperData.price[props.selectedCurrency.data.id as Currency]) + featuresTotal, props.stepperData.discount)
 
     React.useEffect(() => {
