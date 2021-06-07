@@ -386,6 +386,7 @@ export const AppRoutes: Routes[] = [
             {
                 path: '/analytics/content',
                 name: 'Content',
+                notDisplayedInNavigation: true,
                 component: AnalyticsContent,
             },
             {
