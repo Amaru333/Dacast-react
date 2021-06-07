@@ -64,6 +64,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         setPasswordModalErrorHidden(true)
         setPasswordModalToggle(false)
         SetChangePasswordButtonLoading(false)
+        EventHooker.dispatch('EVENT_FORCE_LOGOUT', undefined)
     }
 
     const handlePasswordError = () => {
@@ -185,7 +186,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     </div>
             }
 
-            <Modal hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" modalTitle="Change Password">
+            <Modal allowNavigation={false} hasClose={false} opened={passwordModalToggle} toggle={() => setPasswordModalToggle(!passwordModalToggle)} size="small" modalTitle="Change Password">
                 {passwordModalToggle &&
                     <>
                         <ModalContent>
@@ -229,9 +230,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                                 />
                                 <IconStyle onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)} className='absolute pointer top-0 right-0 pt35 pr2' coloricon='gray-3'>{!confirmPasswordVisible ? 'visibility_off' : 'visibility_on'}</IconStyle>
                                 </div>
-                                <div className="col col-12 mt2 flex relative">
-                                </div>
                             </form>
+                            <Bubble type='info' className='my2'>After changing your password, you will be logged out of your session.</Bubble>
                             <Bubble hidden={passwordModalErrorHidden} type='error' className='my2'>
                             Unable to change your password. Please check your details and try again.
                     </Bubble>
