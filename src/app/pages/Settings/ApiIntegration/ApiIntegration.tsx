@@ -86,7 +86,13 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                 return {
                     data: [
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.label}</Text>,
-                        <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>,
+                        <div className='flex items-center'>
+                            <Text className='pr2' key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>
+                            <ActionIcon id={"editTooltip" + value.authToken}>
+                                <IconStyle onClick={() => {updateClipboard(value.authToken, 'Api Key copied')}} className="right mr1" >file_copy_outlined</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"editTooltip" + value.authToken}>Copy to clipboard</Tooltip>
+                        </div>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction right" key={key + value.clientId}>
@@ -236,7 +242,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         </div>
                         <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                         <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
-                        <HrStyle />
+                        {/* <HrStyle /> */}
                     </React.Fragment>
                 }
                 {/* {
