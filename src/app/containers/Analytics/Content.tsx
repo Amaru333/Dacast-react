@@ -51,7 +51,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
 
     React.useEffect(() => {
-        props.getAnalyticsContentList({metrics: ['plays', 'impressions'], sortBy: 'plays'})
+        props.getAnalyticsContentList({metrics: ['plays', 'impressions'], sortBy: 'impressions'})
     }, [])
 
     React.useEffect(() => {
@@ -69,7 +69,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     React.useEffect(() => {
         switch(currentTab) {
             case 'audience':
-                props.getAnalyticsContentList({metrics: ['plays', 'impressions'], sortBy: 'plays'})
+                props.getAnalyticsContentList({metrics: ['plays', 'impressions'], sortBy: 'impressions'})
                 break
             case 'engagement':
                 props.getAnalyticsContentList({metrics: ['watchtime'], sortBy: 'watchtime'})
