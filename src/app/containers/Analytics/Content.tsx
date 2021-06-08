@@ -128,10 +128,10 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     return (
         <div className='flex flex-column'>
-            <div className='mb2'>
+            <ListContentTitle className='mb2 col col-12'>
                 <Text size={32} className='pb2'>Last 30 Days - </Text>
-                {selectedContent && <Text size={32} color='dark-violet'>{selectedContent.title}</Text>}
-            </div>
+                {selectedContent && <Text size={32} color='dark-violet'>&nbsp;{selectedContent.title}</Text>}
+            </ListContentTitle>
             <div className='flex col col-12 mb2'>
                 <DropdownSingle
                     isWhiteBackground
