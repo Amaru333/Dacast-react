@@ -87,7 +87,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     }
 
     const exportCsvAnalytics = () => {
-        exportCSVFile(props.analyticsContent.contentList.map(item => {return {title: item.title, type: item.type === 'vod' ? 'Video' : 'Live Stream', id: item.id, ...Object.keys(item.metrics).reduce((acc, next) => {return {...acc, [next]: item.metrics[next]}}, {})}}), "TopContent", {title: 'Title', type: 'Type', id: 'Id', ...Object.keys(props.analyticsContent.contentList[0].metrics).reduce((acc, next) => {return {...acc, [next]: capitalizeFirstLetter(next)}}, {})});
+        exportCSVFile(props.analyticsContent.contentList.map(item => {return {title: `\"${item.title}\"`, type: item.type === 'vod' ? 'Video' : 'Live Stream', id: item.id, ...Object.keys(item.metrics).reduce((acc, next) => {return {...acc, [next]: item.metrics[next]}}, {})}}), "TopContent", {title: 'Title', type: 'Type', id: 'Id', ...Object.keys(props.analyticsContent.contentList[0].metrics).reduce((acc, next) => {return {...acc, [next]: capitalizeFirstLetter(next)}}, {})});
     }
 
     const renderContentList = () => {
