@@ -93,7 +93,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.authToken}>Copy to clipboard</Tooltip>
                         </div>,
-                        <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
+                        // <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction right" key={key + value.clientId}>
                             <ActionIcon id={"deleteTooltip" + key}>
@@ -116,7 +116,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             data: [
                 { cell: <Text key="nameArrayApiKeys" size={14} weight="med" color="gray-1">Name</Text> },
                 { cell: <Text key="tokenArrayApiKeys" size={14} weight="med" color="gray-1">API Key</Text> },
-                { cell: <Text key="typeArrayApiKeys" size={14} weight="med" color="gray-1">Type</Text> },
+                // { cell: <Text key="typeArrayApiKeys" size={14} weight="med" color="gray-1">Type</Text> },
                 { cell: <Text key="createdArrayApiKeys" size={14} weight="med" color="gray-1">Created Date</Text> },
                 { cell: <Button key="actionArrayApiKeys" className={"right mr2 " + (smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button> }
             ]

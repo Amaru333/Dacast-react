@@ -190,7 +190,7 @@ interface AclEndpoint {
 export interface ApiKeyEndpoint {
     name: string
     key: string
-    status: string
+    status: 'active' | 'deleted' | 'deactivated'
     created_at: number
     updated_at: number
     resource_id: string

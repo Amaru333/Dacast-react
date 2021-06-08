@@ -2,7 +2,7 @@ import { GetApiKeysOutput, PatchApiKeyInput, PatchApiKeyOutput, PostApiKeyInput,
 import { ApiKeyItem } from "./types"
 
 export const formatGetApiKeysOutput = (data: GetApiKeysOutput): ApiKeyItem[] => {
-    let formattedData: ApiKeyItem[] = data.map(key => {
+    let formattedData: ApiKeyItem[] = data.filter(k => k.status === 'active').map(key => {
         return {
             label: key.name,
             authToken: key.key,
