@@ -27,8 +27,8 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: React.Dispatch<React.Set
         <div>
             <Input defaultValue={apiKey.label}  
                 id="encoder" className="col col-12 mb2" label="Name" placeholder="Name" onChange={(event) => setApiKey({...apiKey, label: event.currentTarget.value})}  />
-            <Text size={14} weight="med" className='inline-block mb1' >Access Type</Text>
-            {/* <div className="mb3">
+            {/* <Text size={14} weight="med" className='inline-block mb1' >Access Type</Text>
+            <div className="mb3">
                 <InputRadio defaultChecked={apiKey.type == 'rw'} className="col col-6" value="rw" name="type" label="Read-Write"></InputRadio>
                 <InputRadio defaultChecked={apiKey.type == 'ro'} className="col col-6" value="ro" name="type" label="Read-Only"></InputRadio>
                 <div className="clearfix"></div>
