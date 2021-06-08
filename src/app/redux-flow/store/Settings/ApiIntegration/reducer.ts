@@ -29,9 +29,26 @@ const reducer: Reducer<ApiIntegrationPageInfos> = (state = defaultStateApiIntegr
                 ...state,
                 apiKeys: state.apiKeys.filter(f => f.authToken !== action.payload)
             }
+        case ActionTypes.REGENERATE_API_KEY:
+            return {
+                ...state,
+                apiKeys: state.apiKeys.map(key => {
+                    if(action.payload.previousKey === key.authToken) {
+                        return {
+                            label: action.payload.label,
+                            authToken: action.payload.authToken,
+                            created: action.payload.created,
+                            clientId: action.payload.clientId,
+                            type: 'rw',
+                        }
+                    }
+                    return key
+                })
+            }
         default:
             return state;
     }
+
 };
 
 // Named export

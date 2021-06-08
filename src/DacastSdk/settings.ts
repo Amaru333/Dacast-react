@@ -214,3 +214,5 @@ export interface PatchApiKeyInput {
 }
 
 export type PatchApiKeyOutput = ApiKeyEndpoint
+
+export type PostRegenerateApiKeyOutput = ApiKeyEndpoint

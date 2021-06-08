@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 
 import { ApplicationState } from "../../redux-flow/store";
-import { Action, ApiKeyItem, createApiKeyAction, deleteApiKeyAction, getApiKeysAction, updateApiKeyAction} from "../../redux-flow/store/Settings/ApiIntegration";
+import { Action, ApiKeyItem, createApiKeyAction, deleteApiKeyAction, getApiKeysAction, regenerateApiKeyAction, updateApiKeyAction} from "../../redux-flow/store/Settings/ApiIntegration";
 import React from 'react';
 
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
@@ -55,6 +55,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         deleteApiKey: async (key: string) => {
             await dispatch(deleteApiKeyAction(key));
+        },
+        regenerateApiKey: async (key: string) => {
+            await dispatch(regenerateApiKeyAction(key));
         },
     };
 }

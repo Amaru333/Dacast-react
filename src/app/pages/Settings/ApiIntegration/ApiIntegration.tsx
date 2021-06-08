@@ -26,6 +26,7 @@ export interface ApiIntegrationProps {
     createApiKey: (apiKey: ApiKeyItem) => Promise<void>;
     updateApiKey: (apiKey: ApiKeyItem) => Promise<void>;
     deleteApiKey: (key: string) => Promise<void>;
+    regenerateApiKey: (key: string) => Promise<void>;
 }
 
 
@@ -96,6 +97,10 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         // <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.type === 'ro' ? 'Read-Only' : 'Read-Write'}</Text>,
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.created)}</Text>,
                         <IconContainer className="iconAction right" key={key + value.clientId}>
+                            <ActionIcon id={"regenerateTooltip" + key}>
+                                <IconStyle onClick={() => {props.regenerateApiKey(value.authToken)}}>autorenew</IconStyle>
+                            </ActionIcon>
+                            <Tooltip target={"regenerateTooltip" + key}>Regenerate</Tooltip>
                             <ActionIcon id={"deleteTooltip" + key}>
                                 <IconStyle onClick={() => {props.deleteApiKey(value.authToken)}}>delete</IconStyle>
                             </ActionIcon>

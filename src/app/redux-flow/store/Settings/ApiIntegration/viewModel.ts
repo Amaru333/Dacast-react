@@ -1,4 +1,4 @@
-import { GetApiKeysOutput, PatchApiKeyInput, PatchApiKeyOutput, PostApiKeyInput, PostApiKeyOutput } from "../../../../../DacastSdk/settings"
+import { GetApiKeysOutput, PatchApiKeyInput, PatchApiKeyOutput, PostApiKeyInput, PostApiKeyOutput, PostRegenerateApiKeyOutput } from "../../../../../DacastSdk/settings"
 import { ApiKeyItem } from "./types"
 
 export const formatGetApiKeysOutput = (data: GetApiKeysOutput): ApiKeyItem[] => {
@@ -57,3 +57,17 @@ export const formatPatchApiKeyOutput = (key: PatchApiKeyOutput): ApiKeyItem => {
 }
 
 export const formatDeleteApiKeyInput = (key: string): string => key
+
+export const formatPostRegenerateApiKeyInput = (key: string): string => key
+
+export const formatPostRegenerateApiKeyOutput = (key: PostRegenerateApiKeyOutput, previousKey: string): ApiKeyItem & {previousKey: string} => {
+    let formattedData: ApiKeyItem & {previousKey: string} = {
+        label: key.name,
+        authToken: key.key,
+        created: key.created_at,
+        clientId: key.resource_id,
+        type: 'rw',
+        previousKey: previousKey
+    }
+    return formattedData
+}
