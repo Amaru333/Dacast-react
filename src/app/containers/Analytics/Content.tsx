@@ -42,6 +42,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [selectedContent, setSelectedContent] = React.useState<{id: string; type: ContentType; title: string} | null>(null)
+    const [loading, setLoading] = React.useState<boolean>(false)
     const colTable = currentTab !== 'engagement' ? 'col col-3' : 'col col-4'
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
@@ -62,7 +63,10 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     React.useEffect(() => {
         if(selectedContent) {
+            setLoading(true)
             props.getSpecificContentAnalytics({ id: selectedContent.id, timeRange: 'LAST_MONTH', type: selectedContent.type as 'live' | 'vod', dimension: currentTab === 'audience' ? AudienceDimension : WatchDurationDimension })
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false))
         }
     }, [selectedContent])
 
@@ -111,11 +115,11 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
             return <EmptyAnalytics />
         }
         if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.playsImpressionsByTime) {
-            return <AudienceAnalytics data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
+            return <AudienceAnalytics loading={loading} data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
         }
 
         if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.watchByTime) {
-           return <WatchDurationAnalytics data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
+           return <WatchDurationAnalytics loading={loading} data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
         }
 
         return <EmptyAnalytics />

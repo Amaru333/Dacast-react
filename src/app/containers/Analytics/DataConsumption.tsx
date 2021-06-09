@@ -8,12 +8,10 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { ThemeAnalyticsColors } from '../../../styled/themes/dacast-theme'
 import { dateAdd } from '../../../utils/services/date/dateService'
 import { ApplicationState } from '../../redux-flow/store'
-import { Action, getAccountAnalyticsAudienceAction } from '../../redux-flow/store/Analytics/Audience/actions'
-import { AccountAnalyticsAudienceState, AccountAudienceDimension } from '../../redux-flow/store/Analytics/Audience/types'
+import { Action } from '../../redux-flow/store/Analytics/Audience/actions'
 import { getAccountAnalyticsDataAction } from '../../redux-flow/store/Analytics/Data/actions'
 import { AccountAnalyticsDataState, AccountDataDimension } from '../../redux-flow/store/Analytics/Data/types'
 import { AccountAnalyticsParameters, TimeRangeAccountAnalytics } from '../../redux-flow/store/Analytics/types'
-import { AudienceAnalytics } from '../../shared/Analytics/AnalyticsType/AudienceAnalytics'
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
 import { HeaderDataConsumptionTime } from '../../shared/Analytics/TableHeaders'
 
@@ -81,7 +79,6 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
             <div className="flex mb2">
                 <DateFilteringAnalytics
                     selectedPreset={timeRangePick.timeRange}
-                    isDisabled={loading}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                     callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
@@ -90,6 +87,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
             {
             props.dataConsumption.data ?
             <AnalyticsCard
+                loading={loading}
                 title="Data Usage by "
                 showTable={true}
                 csvType="Data Usage"

@@ -4,7 +4,7 @@ import { LineChart } from '../../../../components/Analytics/LineChart'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 
 export interface EngagementAnalyticsProps {
-
+    loading: boolean
 }
 
 export const EngagementAnalytics = (props: EngagementAnalyticsProps) => {
@@ -18,6 +18,7 @@ export const EngagementAnalytics = (props: EngagementAnalyticsProps) => {
     return (
         <React.Fragment>
             <AnalyticsCard
+                loading={props.loading}
                 title="Engagement Duration"
             >
                 <LineChart

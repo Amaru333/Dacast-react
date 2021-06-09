@@ -9,6 +9,7 @@ import { HeaderSalesDevice, HeaderSalesLocation, HeaderSalesTime } from '../Tabl
 
 export interface SalesAnalyticsProps {
     data: SalesAnalyticsState
+    loading: boolean
 }
 
 export const SalesAnalytics = (props: SalesAnalyticsProps) => {
@@ -55,6 +56,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 title="Paywall by"
                 showTable={true}
                 csvType="Paywall"
+                loading={props.loading}
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.salesRevenuesByTime.table, header: HeaderSalesTime} },

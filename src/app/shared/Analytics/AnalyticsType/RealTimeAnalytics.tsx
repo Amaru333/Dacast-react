@@ -9,6 +9,7 @@ import { HalfSmFullXs } from '../AnalyticsCommun'
 
 export interface RealTimeAnalyticsProps {
     data: RealTimeAnalyticsState
+    loading: boolean
 }
 
 export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
@@ -17,6 +18,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
         <div className="clearfix mxn2">
             <div className={HalfSmFullXs}>
                 <AnalyticsCard
+                    loading={props.loading}
                     title="Concurrent Viewers"
                     infoText='Concurrent Viewers represents an approximative number of active sessions on your stream. It is able to report on large numbers of concurrent viewers, however you may see some discrepancies when the number is unusually low.'
                 >
@@ -30,6 +32,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
             </div>
             <div className={HalfSmFullXs}>
                 <AnalyticsCard
+                    loading={props.loading}
                     title="Plays"
                 >
                     <LineChart
@@ -44,6 +47,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
             <div className={HalfSmFullXs}>
 
                 <AnalyticsCard
+                    loading={props.loading}
                     title="Play Duration"
                 >
                     <BarChart
@@ -57,6 +61,7 @@ export const RealTimeAnalytics = (props: RealTimeAnalyticsProps) => {
             <div className={HalfSmFullXs}>
 
                 <AnalyticsCard
+                    loading={props.loading}
                     title="Plays by Location"
                 >
                     <LeafletMap

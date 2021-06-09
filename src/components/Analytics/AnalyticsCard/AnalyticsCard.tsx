@@ -9,10 +9,12 @@ import { TableAnalytics, TableAnalyticsProps } from '../../../app/shared/Analyti
 import { Button } from '../../FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../Tooltip/Tooltip';
+import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 
 export interface AnalyticsCardProps {
     tabs?: { [name: string]: TabAnalytics },
     title: string,
+    loading: boolean
     infoText?: string,
     showTable?: boolean,
     csvType?: string
@@ -41,8 +43,9 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
         <>
             <AnalyticsCardStyle className={props.className}>
                 <AnalyticsCardHeader className='mb2 items-center'>
-                    <div className="flex">
-                        <Text  size={16} weight="med" color="gray-1">{props.title + " " + selectedTab}</Text>
+                    <div className="flex items-center">
+                        <Text className='pr2' size={16} weight="med" color="gray-1">{props.title + " " + selectedTab}</Text>
+                        {props.loading && <LoadingSpinner color='violet' size='xs' />}
                         {
                             props.infoText && 
                             <>

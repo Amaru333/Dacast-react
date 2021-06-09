@@ -11,6 +11,7 @@ export interface AudienceAnalyticsProps {
     data: AudienceAnalyticsState
     showTable?: boolean
     title?: string
+    loading: boolean
 }
 
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
@@ -50,6 +51,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
                 title={props.title ? props.title : "Audience (Plays & Impressions) by "}
                 showTable={props.showTable === false ? props.showTable : true}
                 csvType="Audience"
+                loading={props.loading}
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.playsImpressionsByTime.table, header: HeaderAudienceTime} },

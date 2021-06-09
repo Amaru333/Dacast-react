@@ -62,7 +62,6 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             <div className="flex mb2">
                 <DateFilteringAnalytics
                     selectedPreset={timeRangePick.timeRange}
-                    isDisabled={loading}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                     callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
@@ -70,7 +69,7 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             </div>
             {
             props.audience.data ?
-                <AudienceAnalytics data={props.audience.data} /> 
+                <AudienceAnalytics data={props.audience.data} loading={loading} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>

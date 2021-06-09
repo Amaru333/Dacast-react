@@ -9,6 +9,7 @@ import { WatchAnalyticsState } from '../../../redux-flow/store/Content/Analytics
 
 export interface WatchDurationAnalyticsProps {
     data: WatchAnalyticsState
+    loading: boolean
     showTable?: boolean
 }
 
@@ -62,6 +63,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 title="Engagement by"
                 showTable={props.showTable === false ? props.showTable : true}
                 csvType='Engagement'
+                loading={props.loading}
                 tabs={
                     {
                         "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.watchByTime.table.map((el, i) => {return {data: watchDurationPerTime.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchTime, watchDurationPerTime.unitShort)} },
