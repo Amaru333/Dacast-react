@@ -301,8 +301,8 @@ export const formatMetricResult = (response: GetAnalyticsOutput, input: ContentA
                             formattedData.time.table[index] ? formattedData.time.table[index].data = Math.round(formattedData.time.table[index].data + data.dimension_sum) : null;
 
                         } else if(metricToFilter === 'DATA_CONSUMPTION') {
-                            formattedData.time.data[index] = data.dimension_sum / 1000000000;
-                            formattedData.time.table[index].data = data.dimension_sum / 1000000000;
+                            formattedData.time.data[indexLabel] = data.dimension_sum / 1000000000;
+                            formattedData.time.table[index] ? formattedData.time.table[index].data = data.dimension_sum / 1000000000 : null;
                         } else if(indexLabel !== -1) {
                             formattedData.time.data[indexLabel] = data.dimension_sum;
                             formattedData.time.table[indexLabel].data = data.dimension_sum
