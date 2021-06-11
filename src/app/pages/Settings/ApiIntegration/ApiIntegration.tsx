@@ -89,7 +89,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         <Text key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.label}</Text>,
                         <div className='flex items-center'>
                             <Text className='pr2' key={key + value.clientId} size={14} weight="reg" color="gray-1">{value.authToken}</Text>
-                            <ActionIcon id={"editTooltip" + value.authToken}>
+                            <ActionIcon className='pointer' id={"editTooltip" + value.authToken}>
                                 <IconStyle onClick={() => {updateClipboard(value.authToken, 'Api Key copied')}} className="right mr1" >file_copy_outlined</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"editTooltip" + value.authToken}>Copy to clipboard</Tooltip>
