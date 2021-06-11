@@ -70,7 +70,7 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
             </div>
             {
             props.paywall.data ?
-                <SalesAnalytics loading={loading} data={props.paywall.data} /> 
+                <SalesAnalytics showTable={true} loading={loading} data={props.paywall.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>

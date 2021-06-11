@@ -100,12 +100,17 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                     {tabs[selectedTab].content()}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
-                <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>Export CSV</Button>
-                <TableAnalyticsStyled
-                    className="striped highlight mr-auto ml-auto mt2"
-                    data={tabs[selectedTab].table.data}
-                    header={tabs[selectedTab].table.header}
-                />
+            {
+                props.showTable &&
+                <>
+                    <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>Export CSV</Button>
+                    <TableAnalyticsStyled
+                        className="striped highlight mr-auto ml-auto mt2"
+                        data={tabs[selectedTab].table.data}
+                        header={tabs[selectedTab].table.header}
+                    />
+                </>
+            }
         </React.Fragment>
 
     )

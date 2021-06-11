@@ -6,7 +6,7 @@ import { AnalyticsContent, AnalyticsContentData } from "./types";
 export const formatGetAnalyticsContentListOutput = (data: GetAnalyticsTopContentOutput): AnalyticsContent[] => {
     let formattedData: AnalyticsContent[] = data.contents.map(content => {
         return {
-            title: content.title,
+            title: content.title || 'Deleted Content',
             type: content.type,
             id: content.id,
             metrics: (content.metrics.impressions || content.metrics.plays) ? {plays: content.metrics.plays, impressions: content.metrics.impressions} : {watchtime: content.metrics.watchtime}

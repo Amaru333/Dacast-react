@@ -68,7 +68,7 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
             </div>
             {
             props.engagement.data ?
-                <WatchDurationAnalytics loading={loading} data={props.engagement.data} /> 
+                <WatchDurationAnalytics showTable={true} loading={loading} data={props.engagement.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>

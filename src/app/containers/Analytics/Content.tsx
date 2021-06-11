@@ -57,7 +57,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     React.useEffect(() => {
         if(!selectedContent) {
-            setSelectedContent(props.analyticsContent.contentList[0])
+            setSelectedContent(props.analyticsContent.contentList.filter(f => f.title !== 'Deleted Content')[0])
         }
     }, [props.analyticsContent.contentList])
 
@@ -97,7 +97,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     const renderContentList = () => {
         return props.analyticsContent.contentList.map(content => {
             return (
-                <ContentTableRow tableRow selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className='flex flex-justify border-bottom col col-12 py1 pointer'>
+                <ContentTableRow tableRow disabled={content.title === 'Deleted Content'} selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className={'flex flex-justify border-bottom col col-12 py1 ' + content.title === 'Deleted Content' ? 'pointer' : ''}>
                     <ListContentTitle className={colTable}>{content.title}</ListContentTitle>
                     <Text className={colTable + ' px4'}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
                     {
@@ -190,12 +190,18 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContent);
 
-const ContentTableRow = styled.div<{selected?: boolean; tableRow?: boolean}>`
+const ContentTableRow = styled.div<{selected?: boolean; tableRow?: boolean; disabled?: boolean}>`
     ${props => props.tableRow && css`
         background-color: ${props.selected ? props.theme.colors['violet20'] : props.theme.colors["white"] };
         &:hover {
             background-color: ${props.theme.colors["violet10"]};
+            cursor: pointer;
         }
+    `}
+    ${props => props.disabled && css`
+        background-color: ${props.theme.colors['gray-8']};
+        pointer-events: none;
+        opacity: 0.5;
     `}
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']}
 `

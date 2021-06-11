@@ -68,7 +68,7 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             </div>
             {
             props.audience.data ?
-                <AudienceAnalytics data={props.audience.data} loading={loading} /> 
+                <AudienceAnalytics showTable={true} data={props.audience.data} loading={loading} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>
