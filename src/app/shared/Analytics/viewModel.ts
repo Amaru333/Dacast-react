@@ -254,39 +254,7 @@ export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentA
 }
 
 export const formatDataConsumptionResults = (response: GetAnalyticsOutput, input: AccountAnalyticsParameters): AccountAnalyticsData => {
-    let formattedData: AccountAnalyticsData = {
-        dataConsumptionByTime: {
-            labels: [],
-            data: [],
-            table: []
-        }
-    }
-    console.log('response endpoint:', response)
-    let labels = formatLabels(input.timeRange, input.start, input.end, response)
-    response.results.filter(metric => metric.data_dimension.includes("DATA_CONSUMPTION")).forEach(metric => {
-        if(metric.data) {
-            metric.data.forEach(data => {
-                switch (data.dimension_type.type) {
-                    case 'HOURLY':
-                    case 'MONTH':
-                    case 'DAY':
-                        if(formattedData.dataConsumptionByTime.labels.length === 0) {
-                            formattedData.dataConsumptionByTime.labels = labels
-                            formattedData.dataConsumptionByTime.table = labels.map(label => { return { label: label, data: 0 } })
-                        }
-                        let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
-                        let index = formattedData.dataConsumptionByTime.table.findIndex(obj => obj.label === label);
-                        if(index !== -1) {
-                            formattedData.dataConsumptionByTime.data[index] = data.dimension_sum / 1000000000;
-                            formattedData.dataConsumptionByTime.table[index].data = data.dimension_sum / 1000000000;
-                        }
-
-                        break
-                }
-            })
-        }
-    })
-    console.log('formatted Date: ', formattedData)
+    let formattedData: AccountAnalyticsData = formatMetricResult(response, input, 'DATA_CONSUMPTION')
     return formattedData
 }
 
@@ -321,9 +289,21 @@ export const formatMetricResult = (response: GetAnalyticsOutput, input: ContentA
                             formattedData.time.labels = labels
                             formattedData.time.table = labels.map(label => { return { label: label, data: 0 } })
                         }
-                        let label = formateTimestampAnalytics(parseInt(data.dimension_type.value as string), input.timeRange, response);
+                        let label = formateTimestampAnalytics(metricToFilter === 'SALES' ? parseInt( data.dimension_type.value as string) / 1000 : parseInt(data.dimension_type.value as string), input.timeRange, response);
                         let indexLabel = labels.indexOf(label);
-                        if(indexLabel !== -1) {
+                        let index = formattedData.time.table.findIndex(obj => obj.label === label);
+                        if (metricToFilter === "SALES") {
+                            formattedData.time.data[indexLabel] += data.dimension_sum;
+                            formattedData.time.table[index] ? formattedData.time.table[index].data += data.dimension_sum : null;
+
+                        } else if (metricToFilter === "REVENUES") {
+                            formattedData.time.data[indexLabel] = Math.round(formattedData.time.data[indexLabel] + data.dimension_sum);
+                            formattedData.time.table[index] ? formattedData.time.table[index].data = Math.round(formattedData.time.table[index].data + data.dimension_sum) : null;
+
+                        } else if(metricToFilter === 'DATA_CONSUMPTION') {
+                            formattedData.time.data[index] = data.dimension_sum / 1000000000;
+                            formattedData.time.table[index].data = data.dimension_sum / 1000000000;
+                        } else if(indexLabel !== -1) {
                             formattedData.time.data[indexLabel] = data.dimension_sum;
                             formattedData.time.table[indexLabel].data = data.dimension_sum
                         }

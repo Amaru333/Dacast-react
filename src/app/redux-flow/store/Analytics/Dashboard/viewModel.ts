@@ -14,7 +14,7 @@ export const formatGetDashboardNewAnalyticsOuput = (response: GetAnalyticsOutput
         audienceLocation: audienceData.plays.location.data,
         engagement: formatTimeToUnit(engagementData.time.data.reduce((acc, next) => acc + next, 0), 'h'),
         paywall: paywallData.revenue.time.data.reduce((acc, next) => acc + next, 0),
-        dataConsumption: dataConsumpationdata.dataConsumptionByTime.data.reduce((acc, next) => acc + next, 0),
+        dataConsumption: dataConsumpationdata.time.data.reduce((acc, next) => acc + next, 0),
         plays: audienceData.plays.time.data.reduce((acc, next) => acc + next, 0)
     }
 

@@ -55,7 +55,7 @@ export const BarChart = (props: BarChartProps) => {
                 mode: "nearest",
                 callbacks: {
                     label: (tooltipItems, data) => {
-                        return tooltipItems.yLabel.toLocaleString() + (props.unit ? " " + props.unit : "");
+                        return (props.unit ? " " + props.unit : "") + tooltipItems.yLabel.toLocaleString() + (props.unitRight ? " " + props.unitRight : "");
                     }
                 }
             },
@@ -71,26 +71,12 @@ export const BarChart = (props: BarChartProps) => {
                 }
                 ),
                 yAxes: [{
-                    ...(props.unit && {
-                        ticks: {
-                            callback: (value: number) => {
-                                return value.toLocaleString() + " " + props.unit;
-                            },
-                            min: 0,
-                            beginAtZero: true
-                        }
-                    }),
                     id: 'A',
                     type: 'linear',
                     position: 'left',
                     ticks: {
-                        ...(props.unit && {
-                            callback: (value: number) => {
-                                return value.toLocaleString() + " " + props.unit;
-                            }
-                        }),
                         callback: (value: number) => {
-                            return value.toLocaleString();
+                            return (props.unit ? " " + props.unit : "") + value.toLocaleString() + (props.unitRight ? " " + props.unitRight : "");
                         },
                         ...(props.step && {
                             stepSize: props.step,
@@ -98,25 +84,7 @@ export const BarChart = (props: BarChartProps) => {
                         min: 0,
                         beginAtZero: true
                     }
-                },
-                ...(props.options.rightYAxes ? [{
-                    id: 'B',
-                    ...(props.unitRight && {
-                        ticks: {
-                            callback:  (value: number) => {
-                                if(value >= 0) {
-                                    return value.toLocaleString() + " " + props.unitRight;
-                                }
-                            },
-                            min: 0,
-                            beginAtZero: true
-                        },
-
-                    }),
-                    type: 'linear',
-                    position: 'right',
-                }] : [])
-                ]
+                }]
             }
         }
     }

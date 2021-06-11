@@ -31,9 +31,8 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
             <BarChart
                 id="uniqueStuff"
                 title="Paywall by Time"
-                options={ {rightYAxes: true} }
                 type="vertical"
-                unitRight="$"
+                unit={selectedMetric === 'Revenue' ? "$" : null}
                 step={1}
                 dataSets={[{ data: props.data[selectedMetric.toLowerCase() as SalesKeys].time.data, label: selectedMetric, color: selectedMetric === 'Sales' ? ThemeAnalyticsColors.blue : ThemeAnalyticsColors.yellow, type: selectedMetric === 'Sales' ? 'bar' : 'line'}]}
                 labels={props.data[selectedMetric.toLowerCase() as SalesKeys].time.labels} />
@@ -55,14 +54,14 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         return (
             <LeafletMap 
                 markers={props.data[selectedMetric.toLowerCase() as SalesKeys].location.data} 
-                markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + (element.label[index] === "revenues" ? "$" : "") + value  +" "+element.label[index] }).join() } />
+                markerNameTranform={(element, index) => element.value.map((value, index): string => { console.log(element);return (index === 0 ? element.city+": " : ' ' ) + (element.label[0] !== "revenues" ? "$" : "") + value  +" "+element.label[index] }).join() } />
         )
     }
 
     let tabs = {
-        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].time.table, header: [{Header: 'Date', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}]} },
+        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].time.table, header: [{Header: 'Date', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}]} },
         // "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].device.table, header: [{Header: 'Device', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}]} },
-        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}] } },
+        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}] } },
     }
 
     const tabsList: Routes[] = Object.keys(tabs).map((value: string, index: number) => { return { name: value, path: value } });
@@ -90,7 +89,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                 </AnalyticsCardHeader>
                 <div>
                     <Text weight='med' size={16}>Total {selectedMetric + ': ' }</Text>
-                    <Text weight='med' size={16} color='dark-violet'>{totalMetric}</Text>
+                    <Text weight='med' size={16} color='dark-violet'>{(selectedMetric === 'Revenue' ? '$' : '') + totalMetric}</Text>
                 </div>
                 <AnalyticsCardBody className='col col-12 mx-auto' table={props.showTable}>
                     <LabelSelector className='mb2 center' labels={MetricsList} callback={(label: 'Sales' | 'Revenue') => setSelectedMetric(label)} />

@@ -42,7 +42,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 title="Engagement by Time"
                 dataSets={ [ {data: watchDurationPerTime.values, label: "Engagement (" + watchDurationPerTime.unitLong + ')', type:"bar", color: ThemeAnalyticsColors.blue}] }
                 labels={props.data.time.labels}
-                unit={watchDurationPerTime.unitShort} />
+                unitRight={watchDurationPerTime.unitShort} />
         )
     }
 
@@ -52,7 +52,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 title="Engagement by Device"
                 dataSets={ [ {data: watchDurationPerDevice.values, label: "Engagement (device)", color: ThemeAnalyticsColors.blue } ] }
                 labels={props.data.device.labels} 
-                unit={watchDurationPerDevice.unitShort}/>
+                unitRight={watchDurationPerDevice.unitShort}/>
         )
     }
     const returnLocationAnalytics = () => {
