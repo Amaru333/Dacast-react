@@ -94,7 +94,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                 </AnalyticsCardHeader>
                 <div className='mb2'>
                     <Text weight='med' size={16}>Total Watchtime: </Text>
-                    <Text weight='med' size={16} color='dark-violet'>{formatTimeValue([totalMetric]).values[0] + formatTimeValue([totalMetric]).unitLong}</Text>
+                    <Text weight='med' size={16} color='dark-violet'>{formatTimeValue([totalMetric]).values[0] + ' ' + formatTimeValue([totalMetric]).unitLong}</Text>
                 </div>
                 <AnalyticsCardBody className='col col-12 mx-auto' table={props.showTable}>
                     {tabs[selectedTab].content()}
