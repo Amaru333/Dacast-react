@@ -42,8 +42,11 @@ export const BarChart = (props: BarChartProps) => {
         },
         options: {
             title: {
-                display: true,
+                display: false,
                 text: props.title
+            },
+            legend: {
+                display: false
             },
             plugins: {
                 crosshair: false

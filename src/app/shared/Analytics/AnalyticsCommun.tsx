@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
 import { AnalyticsDimensions } from '../../redux-flow/store/Content/Analytics/types';
+import { Card } from '../../../components/Card/Card';
+import { TableAnalytics } from './TableAnalytics';
 
 export const ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export const HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
@@ -56,3 +58,22 @@ export const handleRowIconType = (item: FolderAsset) => {
             return <IconStyle coloricon={"gray-5"} key={'foldersTableIcon' + item.id}>folder_open</IconStyle>
     }
 }
+
+export const AnalyticsCardStyle = styled(Card) <{}>`
+    min-height: 273px;
+`
+export const TableAnalyticsStyled = styled(TableAnalytics) <{}>`
+    width: 80%;
+`
+
+export const AnalyticsCardHeader = styled.div<{}>`
+    display: flex;
+    justify-content: space-between;
+`
+
+export const AnalyticsCardBody = styled.div<{table: boolean}>`
+    margin-left: auto;
+    margin-right: auto;
+    width: ${props => props.table ? '80%' : '100%'};
+    position: relative;
+`

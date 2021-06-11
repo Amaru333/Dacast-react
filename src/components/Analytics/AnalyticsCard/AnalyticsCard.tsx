@@ -10,14 +10,17 @@ import { Button } from '../../FormsComponents/Button/Button';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { Tooltip } from '../../Tooltip/Tooltip';
 import { LoadingSpinner } from '../../FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { LabelSelector } from '../../LabelSelector/LabelSelector';
 
 export interface AnalyticsCardProps {
     tabs?: { [name: string]: TabAnalytics },
     title: string,
     loading: boolean
+    metricOptions?: string[]
     infoText?: string,
     showTable?: boolean,
     csvType?: string
+    callback?: (input: string) => void
 }
 
 type TabAnalytics = {
@@ -57,6 +60,7 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     { (props.tabs && Object.keys(props.tabs).length > 1) && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
                 <AnalyticsCardBody table={props.showTable}>
+                    <LabelSelector labels={props.metricOptions} callback={(label: string) => props.callback(label)} />
                     { props.tabs ? props.tabs[selectedTab].content() : props.children}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
