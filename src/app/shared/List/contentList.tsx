@@ -331,7 +331,7 @@ export const ContentListPage = (props: ContentListProps) => {
 
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div className='pointer'>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold">Upgrade Now</a></div>} />
         )
     }
 
