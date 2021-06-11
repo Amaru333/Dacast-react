@@ -42,25 +42,10 @@ export type AudienceAnalyticsState  = {
     [key in AudienceKeys]: AnalyticsMetricInfo
 }
 
-export interface SalesAnalyticsState {
-    salesRevenuesByTime: {
-        labels: string[];
-        sales: number[];
-        revenues: number[];
-        table: {sales: number; revenues: number; label: string}[]
-    };
-    // salesRevenuesByDevice: {
-    //     labels: string[];
-    //     sales: number[];
-    //     revenues: number[];
-    //     table: {sales: number; revenues: number; label: string}[]
-    // };
-    salesRevenuesByLocation: { 
-        data: LocationItem[];
-        table: {revenues: number; sales: number; label: string}[]
-    }
-    sales: AnalyticsTableInfo
-    revenue: AnalyticsTableInfo
+export type SalesKeys = 'sales' | 'revenue'
+
+export type SalesAnalyticsState  = {
+    [key in SalesKeys]: AnalyticsMetricInfo
 }
 
 export type WatchAnalyticsState = AnalyticsMetricInfo

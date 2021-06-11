@@ -36,7 +36,6 @@ const Audience = (props: AccountAnalyticsAudienceProps) => {
             if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
 
             } else {
-                console.log('request')
                 setLoading(true)
                 props.getAccountAnalyticsAudience({
                     id: null,

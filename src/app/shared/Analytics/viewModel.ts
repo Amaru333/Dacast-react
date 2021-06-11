@@ -243,89 +243,12 @@ export const formatWatchResults = (response: GetAnalyticsOutput, input: ContentA
 }
 
 export const formatSalesResults = (response: GetAnalyticsOutput, input: ContentAnalyticsParameters | AccountAnalyticsParameters): SalesAnalyticsState => {
+    let sales = formatMetricResult(response, input, 'SALES')
+    let revenue = formatMetricResult(response, input, 'REVENUES')
     let formattedData: SalesAnalyticsState = {
-        salesRevenuesByLocation: {
-            data: [],
-            table: []
-        },
-        salesRevenuesByTime: {
-            labels: [],
-            sales: [],
-            revenues: [],
-            table: []
-        }
+        sales: sales,
+        revenue: revenue
     }
-    let labels = formatLabels(input.timeRange, input.start, input.end, response)
-    response.results.filter(metric => metric.data_dimension.includes("SALES") || metric.data_dimension.includes("REVENUES")).forEach(metric => {
-        if(metric.data) {
-            metric.data.forEach(data => {
-                switch (data.dimension_type.type) {
-                    case 'HOURLY':
-                    case 'MONTH':
-                    case 'DAY':
-                        let label = formateTimestampAnalytics(metric.data_dimension.includes("SALES") ? parseInt( data.dimension_type.value as string) / 1000 : parseInt(data.dimension_type.value as string), input.timeRange, response );
-                        let indexLabel = labels.indexOf(label);
-
-                        if (!formattedData || !formattedData.salesRevenuesByTime || (metric.data_dimension.includes("SALES") && !formattedData.salesRevenuesByTime.sales.length) || (metric.data_dimension.includes("REVENUES") && !formattedData.salesRevenuesByTime.revenues.length)) {
-                            formattedData.salesRevenuesByTime = { labels: labels, revenues: Array(labels.length).fill(0, 0, labels.length), sales: Array(labels.length).fill(0, 0, labels.length), table: labels.map(label => { return { label: label, sales: 0, revenues: 0 } }) }
-                        }
-                        if (metric.data_dimension.includes("SALES")) {
-                            formattedData.salesRevenuesByTime.sales[indexLabel] += data.dimension_sum;
-                        } else if (metric.data_dimension.includes("REVENUES")) {
-                            formattedData.salesRevenuesByTime.revenues[indexLabel] = Math.round(formattedData.salesRevenuesByTime.revenues[indexLabel] + data.dimension_sum);
-                        }
-                        let index = formattedData.salesRevenuesByTime.table.findIndex(obj => obj.label === label);
-                        if (metric.data_dimension.includes("SALES")) {
-                            formattedData.salesRevenuesByTime.table[index] ? formattedData.salesRevenuesByTime.table[index].sales += data.dimension_sum : null;
-                        } else {
-                            formattedData.salesRevenuesByTime.table[index] ? formattedData.salesRevenuesByTime.table[index].revenues = Math.round(formattedData.salesRevenuesByTime.table[index].revenues + data.dimension_sum) : null;
-                        }
-
-                        break;
-                    case 'COUNTRY':
-                        if (!formattedData || !formattedData.salesRevenuesByLocation) {
-                            formattedData.salesRevenuesByLocation = { data: [], table: [] }
-                        }
-                        let type: 'sales' | 'revenues' = metric.data_dimension.includes("SALES") ? 'sales' : 'revenues';
-                        if (data.dimension_type.value !== 'Unknown') {
-                            let index = formattedData.salesRevenuesByLocation.data.findIndex(obj => obj.city === data.dimension_type.value);
-                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) && CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)['"Country"'] === obj.label ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown');
-
-                            if(index === -1 ) {
-                                formattedData.salesRevenuesByLocation = {
-                                    data: [...(formattedData.salesRevenuesByLocation.data ? formattedData.salesRevenuesByLocation.data : []),
-                                    {
-                                        city: data.dimension_type.value as string,
-                                        position: {
-                                            latitude: 0,
-                                            longitude: 0
-                                        },
-                                        value: [data.dimension_sum],
-                                        label: [type]
-                                    }
-                                    ],
-                                    
-                                    table: [...( formattedData.salesRevenuesByLocation.table ?  formattedData.salesRevenuesByLocation.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown', sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
-                                }
-                            } else {
-                                formattedData.salesRevenuesByLocation.data[index].value.push(data.dimension_sum)
-                                formattedData.salesRevenuesByLocation.data[index].label.push(type)
-                                formattedData.salesRevenuesByLocation.table[indexTable][type] = data.dimension_sum;
-                            }
-                        
-                        } else {
-                            let indexTable = formattedData.salesRevenuesByLocation.table.findIndex(obj => obj.label === data.dimension_type.value.toString());
-                            if(indexTable >= 0) {
-                                formattedData.salesRevenuesByLocation.table[indexTable][type] = data.dimension_sum;
-                            } else {
-                                formattedData.salesRevenuesByLocation.table = [...( formattedData.salesRevenuesByLocation ?  formattedData.salesRevenuesByLocation.table : []), { label: data.dimension_type.value.toString(),  sales: type === 'sales' ? data.dimension_sum : 0, revenues: type === 'revenues' ? data.dimension_sum : 0 }  ]
-                            }
-                        }
-                        break;
-                }
-            })
-        }
-    })
 
     return formattedData
 }

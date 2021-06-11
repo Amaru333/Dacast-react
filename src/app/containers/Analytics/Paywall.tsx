@@ -38,7 +38,6 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
             if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
 
             } else {
-                console.log('request')
                 setLoading(true)
                 props.getAccountAnalyticsPaywall({
                     id: null,

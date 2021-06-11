@@ -114,21 +114,17 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         if(!props.analyticsContent.contentData) {
             return <EmptyAnalytics />
         }
-        if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.playsImpressionsByTime) {
+        if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.impressions) {
             return <AudienceAnalytics loading={loading} data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
         }
 
-        if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.watchByTime) {
+        if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.time) {
            return <WatchDurationAnalytics loading={loading} data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
         }
 
         return <EmptyAnalytics />
 
     }
-
-        // if(!props.analyticsContent.contentData && props.analyticsContent.contentList.length === 0) {
-        //     return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-        // }
 
     return (
         <div className='flex flex-column'>

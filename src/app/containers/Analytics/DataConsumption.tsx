@@ -40,7 +40,6 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
             if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
 
             } else {
-                console.log('request')
                 setLoading(true)
                 props.getAccountAnalyticsData({
                     id: null,
