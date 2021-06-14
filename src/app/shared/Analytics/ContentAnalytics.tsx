@@ -6,7 +6,6 @@ import { SpinnerContainer } from '../../../components/FormsComponents/Progress/L
 import { AnalyticsDimensions, ContentAnalyticsFinalState, ContentAnalyticsParameters, RealTimeRange, TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics';
 import { AudienceDimension, RealTimeDimension, SalesDimension, WatchDurationDimension } from './AnalyticsCommun';
 import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
-import { EngagementAnalytics } from './AnalyticsType/EngagementAnalytics';
 import { RealTimeAnalytics } from './AnalyticsType/RealTimeAnalytics';
 import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
 import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
@@ -75,7 +74,6 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                 return (
                     <DateFilteringAnalytics
                         selectedPreset={timeRangePick.timeRange}
-                        isDisabled={loading}
                         className='col col-9'
                         defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                         callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
@@ -96,20 +94,20 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         switch (currentTab) {
             case 'audience':
                 return props.contentAnalyticsData.audience ?
-                    <AudienceAnalytics data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <AudienceAnalytics loading={loading} data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'engagement':
                 return props.contentAnalyticsData.watch && Object.keys(props.contentAnalyticsData.watch).length !== 0 ?
-                    <WatchDurationAnalytics data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <WatchDurationAnalytics loading={loading} data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'paywall':
                 return props.contentAnalyticsData.sales ?
-                    <SalesAnalytics data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <SalesAnalytics loading={loading} data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             // case 'engagement':
             //     return (
             //         <EngagementAnalytics />
             //     )
             case 'real-time':
                 return props.contentAnalyticsData.realtime ?
-                    <RealTimeAnalytics data={props.contentAnalyticsData.realtime} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <RealTimeAnalytics loading={loading} data={props.contentAnalyticsData.realtime} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             default:
                 break;
         }

@@ -104,7 +104,7 @@ const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
     let returnedString = ''
 
     values.map((v, i) => {
-      returnedString += v + ' ' + labels[i]
+      returnedString += (labels[i] === 'revenues' ? '$' : '') + v + ' ' + labels[i]
       if(i < values.length - 1) {
         returnedString += ', '
       } 

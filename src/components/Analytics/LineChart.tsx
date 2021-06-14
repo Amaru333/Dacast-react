@@ -38,8 +38,11 @@ export const LineChart = (props: LineChartProps) => {
         labels: props.labels,
         options: {
             title: {
-                display: true,
+                display: false,
                 text: props.title
+            },
+            legend: {
+                display: false
             },
             plugins: {
                 crosshair: {

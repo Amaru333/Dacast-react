@@ -61,7 +61,6 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
             <div className="flex mb2">
                 <DateFilteringAnalytics
                     selectedPreset={timeRangePick.timeRange}
-                    isDisabled={loading}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                     callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
@@ -69,7 +68,7 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
             </div>
             {
             props.engagement.data ?
-                <WatchDurationAnalytics data={props.engagement.data} /> 
+                <WatchDurationAnalytics showTable={true} loading={loading} data={props.engagement.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>

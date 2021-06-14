@@ -38,7 +38,6 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
             if(timeRangePick.timeRange === 'CUSTOM' && (isNaN(timeRangePick.custom.start) || isNaN(timeRangePick.custom.end)) ) {
 
             } else {
-                console.log('request')
                 setLoading(true)
                 props.getAccountAnalyticsPaywall({
                     id: null,
@@ -64,7 +63,6 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
             <div className="flex mb2">
                 <DateFilteringAnalytics
                     selectedPreset={timeRangePick.timeRange}
-                    isDisabled={loading}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
                     callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
@@ -72,7 +70,7 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
             </div>
             {
             props.paywall.data ?
-                <SalesAnalytics data={props.paywall.data} /> 
+                <SalesAnalytics showTable={true} loading={loading} data={props.paywall.data} /> 
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
         </React.Fragment>
