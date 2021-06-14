@@ -74,6 +74,6 @@ export const AnalyticsCardHeader = styled.div<{}>`
 export const AnalyticsCardBody = styled.div<{table: boolean}>`
     margin-left: auto;
     margin-right: auto;
-    width: ${props => props.table ? '80%' : '100%'};
+    width: 80%;
     position: relative;
 `
