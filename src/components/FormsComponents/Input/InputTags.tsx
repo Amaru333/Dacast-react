@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper, TagsTooltipStyle } from './InputStyle';
+import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper, TagsTooltipStyle, TagTextContainer } from './InputStyle';
 import { Text } from '../../Typography/Text';
 import { TagProps } from './InputTypes';
 import Icon from '@material-ui/core/Icon';
@@ -55,9 +55,9 @@ export const InputTags = (props: TagProps) => {
                     <TagListStyle>
                         { tags.map((tag, i) => (
                             <TagStyle id={tag} key={tag}>
-                                <Text style={{maxWidth: "90%"}} size={14} weight="reg">
+                                <TagTextContainer disabled={props.disabled} size={14} weight="reg">
                                     <TagTextStyle>{tag}</TagTextStyle>
-                                </Text>
+                                </TagTextContainer>
                                 <Tooltip target={tag}>
                                     <TagsTooltipStyle>{tag}</TagsTooltipStyle>
                                 </Tooltip>

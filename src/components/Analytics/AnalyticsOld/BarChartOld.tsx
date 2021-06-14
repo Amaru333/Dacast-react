@@ -36,6 +36,9 @@ export const BarChartOld = (props: any) => {
             position: title ? 'top' : 'none',
             text: title
         },
+        legend: {
+            display: false
+        },
         scales: {
             yAxes: [
                 {

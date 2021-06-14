@@ -11,11 +11,11 @@ export const formatGetDashboardNewAnalyticsOuput = (response: GetAnalyticsOutput
     let dataConsumpationdata = formatDataConsumptionResults(response, data)
 
     let formattedData: AnalyticsDashboardNewInfo = {
-        audienceLocation: audienceData.playsImpressionsByLocation.data,
-        engagement: formatTimeToUnit(engagementData.watchByTime.data.reduce((acc, next) => acc + next, 0), 'h'),
-        paywall: paywallData.salesRevenuesByTime.revenues.reduce((acc, next) => acc + next, 0),
-        dataConsumption: dataConsumpationdata.dataConsumptionByTime.data.reduce((acc, next) => acc + next, 0),
-        plays: audienceData.playsImpressionsByTime.plays.reduce((acc, next) => acc + next, 0)
+        audienceLocation: audienceData.plays.location.data,
+        engagement: formatTimeToUnit(engagementData.time.data.reduce((acc, next) => acc + next, 0), 'h'),
+        paywall: paywallData.revenue.time.data.reduce((acc, next) => acc + next, 0),
+        dataConsumption: dataConsumpationdata.time.data.reduce((acc, next) => acc + next, 0),
+        plays: audienceData.plays.time.data.reduce((acc, next) => acc + next, 0)
     }
 
     return formattedData

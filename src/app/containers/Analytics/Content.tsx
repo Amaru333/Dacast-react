@@ -42,6 +42,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
     const [selectedContent, setSelectedContent] = React.useState<{id: string; type: ContentType; title: string} | null>(null)
+    const [loading, setLoading] = React.useState<boolean>(false)
     const colTable = currentTab !== 'engagement' ? 'col col-3' : 'col col-4'
     const contentAnalyticsDropdownItems = [
         { title: "Audience", data: "audience" },
@@ -56,13 +57,16 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
 
     React.useEffect(() => {
         if(!selectedContent) {
-            setSelectedContent(props.analyticsContent.contentList[0])
+            setSelectedContent(props.analyticsContent.contentList.filter(f => f.title !== 'Deleted Content')[0])
         }
     }, [props.analyticsContent.contentList])
 
     React.useEffect(() => {
         if(selectedContent) {
+            setLoading(true)
             props.getSpecificContentAnalytics({ id: selectedContent.id, timeRange: 'LAST_MONTH', type: selectedContent.type as 'live' | 'vod', dimension: currentTab === 'audience' ? AudienceDimension : WatchDurationDimension })
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false))
         }
     }, [selectedContent])
 
@@ -93,7 +97,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     const renderContentList = () => {
         return props.analyticsContent.contentList.map(content => {
             return (
-                <ContentTableRow tableRow selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className='flex flex-justify border-bottom col col-12 py1 pointer'>
+                <ContentTableRow tableRow disabled={content.title === 'Deleted Content'} selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className={'flex flex-justify border-bottom col col-12 py1 ' + content.title === 'Deleted Content' ? 'pointer' : ''}>
                     <ListContentTitle className={colTable}>{content.title}</ListContentTitle>
                     <Text className={colTable + ' px4'}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
                     {
@@ -110,21 +114,17 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         if(!props.analyticsContent.contentData) {
             return <EmptyAnalytics />
         }
-        if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.playsImpressionsByTime) {
-            return <AudienceAnalytics data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
+        if(currentTab === 'audience' && props.analyticsContent.contentData && props.analyticsContent.contentData.impressions) {
+            return <AudienceAnalytics loading={loading} data={props.analyticsContent.contentData as AudienceAnalyticsState} showTable={false} />
         }
 
-        if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.watchByTime) {
-           return <WatchDurationAnalytics data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
+        if(currentTab === 'engagement' && props.analyticsContent.contentData && props.analyticsContent.contentData.time) {
+           return <WatchDurationAnalytics loading={loading} data={props.analyticsContent.contentData as WatchAnalyticsState} showTable={false} />
         }
 
         return <EmptyAnalytics />
 
     }
-
-        // if(!props.analyticsContent.contentData && props.analyticsContent.contentList.length === 0) {
-        //     return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
-        // }
 
     return (
         <div className='flex flex-column'>
@@ -190,12 +190,18 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContent);
 
-const ContentTableRow = styled.div<{selected?: boolean; tableRow?: boolean}>`
+const ContentTableRow = styled.div<{selected?: boolean; tableRow?: boolean; disabled?: boolean}>`
     ${props => props.tableRow && css`
         background-color: ${props.selected ? props.theme.colors['violet20'] : props.theme.colors["white"] };
         &:hover {
             background-color: ${props.theme.colors["violet10"]};
+            cursor: pointer;
         }
+    `}
+    ${props => props.disabled && css`
+        background-color: ${props.theme.colors['gray-8']};
+        pointer-events: none;
+        opacity: 0.5;
     `}
     border-bottom: 1px solid ${props => props.theme.colors['gray-7']}
 `
