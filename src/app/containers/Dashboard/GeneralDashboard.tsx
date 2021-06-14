@@ -44,7 +44,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         return <Text className={smallScreen ? 'mb1' : "ml-auto mb2"} size={16} weight="reg" color="gray-2" ><b>For Billing Period</b> {tsToLocaleDate( props.plan.periodStartedAt )} - {tsToLocaleDate( props.plan.periodEndsAt )}</Text>
     }
 
-    const handleUpgradeClick = (options: { type: string } = {}) => {
+    const handleUpgradeClick = (options: { type: string } = {type: null}) => {
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Source Clicked',
             userId: userToken.getUserInfoItem('user-id'),
@@ -109,9 +109,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                         <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
                     </WidgetHeaderTop>
                     {
-                        props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
+                        props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Your current plan expires {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
                     }
-                    {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>}
+                    <Text>Please <a href='/help'><Text color='light-blue' weight='med'>contact us</Text></a> or <a href='/upgrade'><Text color='light-blue' weight='med'>upgrade</Text></a>in order to renew your plan.</Text>
+                    {/* {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>} */}
                 </WidgetElement> 
 
             )

@@ -55,7 +55,8 @@ const Theme: DefaultTheme = {
         'orange': '#DE8536',
         'overlay70': 'rgba(34, 47, 62, 0.7)',
         'overlay40': 'rgba(34, 47, 62, 0.4)',
-        'overlay20': 'rgba(34, 47, 62, 0.2)'
+        'overlay20': 'rgba(34, 47, 62, 0.2)',
+        'light-blue': '#2899F6'
     },
 }
 
