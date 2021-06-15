@@ -141,23 +141,20 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
                     <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/paywall')} coloricon='dark-violet'>account_balance</IconStyle>
-
                     <Text className='pointer' onClick={() => history.push('/analytics/paywall')} size={14} weight='med' color='gray-3'>Paywall</Text>
                 </WidgetHeader>
-                <div className="flex flex-wrap minContentDash items-center">
                     {
                         userToken.getPrivilege('privilege-paywall') ? 
                             <>
-                                <div className='flex items-center'>
+                                <div className="flex flex-wrap minContentDash items-center">
                                     <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
                                     <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
                                 </div>
                                 <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/paywall'>Paywall Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
                             </>
-                            : <Text >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a> to have access.
+                            : <Text className="flex flex-wrap minContentDash items-center" >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a>&nbsp;to have access.
                             </Text>
                     }
-                </div>
             </WidgetElement>
             <div className='col col-12'>
             <WidgetElement className={classItemHalfWidthContainer} customPadding='16px'>
