@@ -143,7 +143,7 @@ const Header = (props: HeaderProps) => {
 
     const handleOnLogin = () => {
         if(props.billingInfo && props.billingInfo.paymentMethod && props.billingInfo.paymentMethod.expiryYear) {
-            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth), 1)
+            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, 1)
             const today = new Date()
             const thirtyDaysFromNow = new Date(today.setDate(today.getDate() + 30))
             if(expirationDate.valueOf() <= Date.now().valueOf()) {
@@ -348,7 +348,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))
         },
-        // showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position))
+        showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position))
     }
 
 }
