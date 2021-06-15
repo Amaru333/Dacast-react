@@ -1,5 +1,6 @@
 export type Size = "flexible" | "fixed";
-export type NotificationType = "error" | "success" | "information" | "warning" | "other";
+export type NotificationType = "error" | "success" | "information" | "warning" | "notification" | "other";
+export type NotificationPosition = "left" | "center" | "right";
 
 export interface ToastType {
     text: string;
@@ -7,6 +8,8 @@ export interface ToastType {
     className?: string;
     size: Size;
     notificationType: NotificationType;
+    permanent?: boolean;
+    position?: NotificationPosition;
 }
 
 export interface ToastProps {
