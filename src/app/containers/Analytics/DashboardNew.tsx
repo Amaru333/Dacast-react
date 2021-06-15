@@ -114,6 +114,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.dataConsumption.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>GB</Text>
                 </div>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/data'>Data Usage Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
@@ -124,6 +125,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.plays.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>plays</Text>
                 </div>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/audience'>Audience Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
@@ -134,6 +136,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.engagement.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>hours</Text>
                 </div>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/engagement'>Engagement Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
@@ -144,10 +147,13 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 <div className="flex flex-wrap minContentDash items-center">
                     {
                         userToken.getPrivilege('privilege-paywall') ? 
-                            <div className='flex items-center'>
-                                <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
-                                <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
-                            </div>
+                            <>
+                                <div className='flex items-center'>
+                                    <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
+                                    <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
+                                </div>
+                                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/paywall'>Paywall Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
+                            </>
                             : <Text >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a> to have access.
                             </Text>
                     }

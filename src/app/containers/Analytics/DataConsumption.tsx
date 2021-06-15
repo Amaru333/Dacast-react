@@ -85,7 +85,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
     }
 
     const selectedTab = 'Time'
-    let totalMetric = props.dataConsumption.data ? props.dataConsumption.data.time.data.reduce((acc, next) => acc + next, 0) : 0
+    let totalMetric = props.dataConsumption.data ? props.dataConsumption.data.time.data.reduce((acc, next) => acc + next, 0).toFixed(2) : 0
 
     const exportCsvAnalytics = () => {
         let tableHeader = tabs[selectedTab].table.header.map(element => element.Header)
