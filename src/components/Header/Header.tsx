@@ -24,7 +24,7 @@ import { Modal, ModalContent, ModalFooter } from "../Modal/Modal";
 import { Button } from "../FormsComponents/Button/Button";
 import EventHooker from '../../utils/services/event/eventHooker'
 import { NotificationPosition, NotificationType, Size } from "../Toast/ToastTypes";
-import { showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
+import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
 import { ToastLink } from "../Toast/ToastStyle";
 const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
@@ -40,6 +40,7 @@ export interface HeaderProps {
     getProfilePageDetails: () => Promise<void>;
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => void;
+    hideToast: () => void;
 }
 
 const Header = (props: HeaderProps) => {
@@ -143,7 +144,7 @@ const Header = (props: HeaderProps) => {
 
     const handleOnLogin = () => {
         if(props.billingInfo && props.billingInfo.paymentMethod && props.billingInfo.paymentMethod.expiryYear) {
-            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, 1)
+            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, 30)
             const today = new Date()
             const thirtyDaysFromNow = new Date(today.setDate(today.getDate() + 30))
             if(expirationDate.valueOf() <= Date.now().valueOf()) {
@@ -153,7 +154,7 @@ const Header = (props: HeaderProps) => {
 
             if(expirationDate.valueOf() <= thirtyDaysFromNow.valueOf()) {
                 const text = <Text size={16} weight="reg" color="white">
-                    Your payment method is about to expire. <ToastLink onClick={() => history.push('/account/billing/#update-payment-method')}>Update Now</ToastLink>
+                    Your payment method is about to expire. <ToastLink onClick={() => {history.push('/account/billing/#update-payment-method');props.hideToast()}}>Update Now</ToastLink>
                 </Text>
                 props.showToast(text, 'fixed', 'notification', true, 'right')
                 return
@@ -314,7 +315,7 @@ const Header = (props: HeaderProps) => {
                 </div>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
             </IconContainerStyle>
-            <Modal allowNavigation={false} icon={{ name: "error_outlined", color: "light-blue" }} hasClose modalTitle="Your last payment failed!" size='small' toggle={() => setCardExpiredModalOpened(!cardExpiredModalOpened)} opened={cardExpiredModalOpened}>
+            <Modal allowNavigation={false} icon={{ name: "error_outlined", color: "light-blue" }} hasClose modalTitle="Payment method expired" size='small' toggle={() => setCardExpiredModalOpened(!cardExpiredModalOpened)} opened={cardExpiredModalOpened}>
                     <ModalContent>
                         <Text size={14} weight="reg">The payment method linked to your Dacast account is expired</Text>
                         <Text weight='med'>Plase update your payment details today so you can keep working without interruption</Text>
@@ -348,7 +349,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))
         },
-        showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position))
+        showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position)),
+        hideToast: () => dispatch(hideAllToastsAction())
     }
 
 }

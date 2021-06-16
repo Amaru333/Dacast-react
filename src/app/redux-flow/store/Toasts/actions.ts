@@ -11,6 +11,11 @@ export interface ToastShowAction {
     payload: {toast: ToastType};
 }
 
+export interface ToastHideAllAction {
+    type: ActionTypes.HIDE_ALL_TOASTS
+    payload: null
+}
+
 const showToast = (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition): ToastAction => ({
     type: ActionTypes.SHOW_TOAST,
     payload: {
@@ -39,5 +44,9 @@ export const showToastNotification = (text: string, size: Size, notificationType
     return toastAction.payload.toast
 };
 
-export type ToastAction = ToastHideAction | ToastShowAction
+export const hideAllToastsAction = () => (dispatch: React.Dispatch<ToastAction>) => {
+    dispatch({type: ActionTypes.HIDE_ALL_TOASTS, payload: null})
+}
+
+export type ToastAction = ToastHideAction | ToastShowAction | ToastHideAllAction
 
