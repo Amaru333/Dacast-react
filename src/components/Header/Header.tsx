@@ -26,6 +26,7 @@ import EventHooker from '../../utils/services/event/eventHooker'
 import { NotificationPosition, NotificationType, Size } from "../Toast/ToastTypes";
 import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
 import { ToastLink } from "../Toast/ToastStyle";
+import { getNbDaysForMonth } from "../../utils/services/date/dateService";
 const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
@@ -144,15 +145,14 @@ const Header = (props: HeaderProps) => {
 
     const handleOnLogin = () => {
         if(props.billingInfo && props.billingInfo.paymentMethod && props.billingInfo.paymentMethod.expiryYear) {
-            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, 30)
+            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, getNbDaysForMonth(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1))
             const today = new Date()
-            const thirtyDaysFromNow = new Date(today.setDate(today.getDate() + 30))
+            const warningDate = new Date(today.setDate(today.getDate() + 45))
             if(expirationDate.valueOf() <= Date.now().valueOf()) {
                 setCardExpiredModalOpened(true)
                 return
             }
-
-            if(expirationDate.valueOf() <= thirtyDaysFromNow.valueOf()) {
+            if(expirationDate.valueOf() <= warningDate.valueOf()) {
                 const text = <Text size={16} weight="reg" color="white">
                     Your payment method is about to expire. <ToastLink onClick={() => {history.push('/account/billing/#update-payment-method');props.hideToast()}}>Update Now</ToastLink>
                 </Text>

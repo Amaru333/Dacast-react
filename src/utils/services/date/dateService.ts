@@ -88,3 +88,7 @@ export const utcOffsetToMin = (offset: string) => {
 
     return hours * 60 + (hours < 0 ? (-minutes) : minutes);
 }
+
+export const getNbDaysForMonth = (month: number, year: number) => {
+    return new Date(year, month, 0).getDate()
+}

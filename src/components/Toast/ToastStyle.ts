@@ -16,7 +16,7 @@ export const ToastContainer = styled.div<ToastProps>`
 `;
 
 export const ToastStyle = styled.div<ToastProps>`
-    max-width: 440px;
+    max-width: 500px;
     min-height: 40px;
     margin: auto;
     border: none;
