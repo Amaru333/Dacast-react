@@ -60,8 +60,8 @@ export const AnalyticsCard = (props: React.HTMLAttributes<HTMLDivElement> & Anal
                     { (props.tabs && Object.keys(props.tabs).length > 1) && <Tab orientation='horizontal' list={tabsList} callback={(name) => setSelectedTab(name)} /> }
                 </AnalyticsCardHeader>
                 <AnalyticsCardBody table={props.showTable}>
-                    <LabelSelector labels={props.metricOptions} callback={(label: string) => props.callback(label)} />
-                    { props.tabs ? props.tabs[selectedTab].content() : props.children}
+                { props.metricOptions && <LabelSelector labels={props.metricOptions} callback={(label: string) => props.callback(label)} />}
+                { props.tabs ? props.tabs[selectedTab].content() : props.children}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
             {props.showTable && 
