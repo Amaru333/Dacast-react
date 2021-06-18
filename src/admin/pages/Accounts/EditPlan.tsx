@@ -165,6 +165,16 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccess.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccess.planValue || props.accountPlan.multiUserAccess.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccess', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>API</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.api.planValue || props.accountPlan.api.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('api', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>API Beta</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.apiBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.apiBeta.planValue || props.accountPlan.apiBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('apiBeta', value === 'On' ? true : false)} />
+                    </div>
                     {/* <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccessBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
@@ -210,11 +220,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.signedKeys.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                     <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.signedKeys.planValue || props.accountPlan.signedKeys.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('signedKeys', value === 'On' ? true : false)} />
                 </div>
-                <Text className='py1' size={14} weight='med'>API</Text>
-                <div className='flex items-center my1'>
-                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
-                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.api.planValue || props.accountPlan.api.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('api', value === 'On' ? true : false)} />
-                </div>
+
 
 
 

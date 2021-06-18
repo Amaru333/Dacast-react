@@ -134,6 +134,7 @@ export interface GetAccountPlanOutput {
     aes: PlanSettingEndpoint;
     signedKeys: PlanSettingEndpoint;
     api: PlanSettingEndpoint;
+    apiBeta: PlanSettingEndpoint;
     webDownload: PlanSettingEndpoint;
     paywall: PlanSettingEndpoint;
     advertising: PlanSettingEndpoint;
