@@ -15,8 +15,8 @@ import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutp
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
 import { PostLoginInput, PostLoginOuput } from './session'
-const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
-const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
+const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
+const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
 
 export class DacastSdk {
 
@@ -139,11 +139,11 @@ export class DacastSdk {
     public putTheme = async (input: ThemeEndpoint): Promise<void> => await this.axiosClient.put('/accounts/' + this.userId + '/settings/themes/' + input.id, {...input})
     public deleteTheme = async (input: string): Promise<void> => await this.axiosClient.delete('/accounts/' + this.userId + '/settings/themes/' + input)
 
-    public getApiKeys = async (): Promise<GetApiKeysOutput> => await this.axiosClient.get(isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING + 'api_keys').then(this.checkExtraData)
-    public postApiKey = async (input: PostApiKeyInput): Promise<PostApiKeyOutput> => await this.axiosClient.post(isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING + 'api_keys', input).then(this.checkExtraData)
-    public patchApiKey = async (input: PatchApiKeyInput): Promise<PatchApiKeyOutput> => await this.axiosClient.patch(isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING + 'api_keys/' + input.id, input.payload).then(this.checkExtraData)
-    public deleteApiKey = async (input: string): Promise<void> => await this.axiosClient.delete(isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING + 'api_keys/' + input)
-    public postRegenerateApiKey = async (input: string): Promise<PostRegenerateApiKeyOutput> => await this.axiosClient.post(isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING + 'api_keys/' + input + '/regenerate').then(this.checkExtraData)
+    public getApiKeys = async (): Promise<GetApiKeysOutput> => await this.axiosClient.get((isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING) + 'api_keys').then(this.checkExtraData)
+    public postApiKey = async (input: PostApiKeyInput): Promise<PostApiKeyOutput> => await this.axiosClient.post((isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING) + 'api_keys', input).then(this.checkExtraData)
+    public patchApiKey = async (input: PatchApiKeyInput): Promise<PatchApiKeyOutput> => await this.axiosClient.patch((isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING) + 'api_keys/' + input.id, input.payload).then(this.checkExtraData)
+    public deleteApiKey = async (input: string): Promise<void> => await this.axiosClient.delete((isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING) + 'api_keys/' + input)
+    public postRegenerateApiKey = async (input: string): Promise<PostRegenerateApiKeyOutput> => await this.axiosClient.post((isProduction() ? GRAPHQL_API_BASE_URL_PROD : GRAPHQL_API_BASE_URL_STAGING) + 'api_keys/' + input + '/regenerate').then(this.checkExtraData)
     
     public getPromoPreset = async (input: string): Promise<GetPromoPresetOutput> => await this.axiosClient.get('/paywall/promos/presets?' + input).then(this.checkExtraData)
     public postPromoPreset = async (input: PromoPresetDetails): Promise<PromoId> => await this.axiosClient.post('/paywall/promos/presets', {...input}).then(this.checkExtraData)
