@@ -15,8 +15,8 @@ import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutp
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
 import { PostLoginInput, PostLoginOuput } from './session'
-const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
-const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
+const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v3/'
+const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v3/'
 
 export class DacastSdk {
 
