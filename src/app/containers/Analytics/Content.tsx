@@ -97,7 +97,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     const renderContentList = () => {
         return props.analyticsContent.contentList.map(content => {
             return (
-                <ContentTableRow tableRow disabled={content.title === 'Deleted Content'} selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className={'flex flex-justify border-bottom col col-12 py1 ' + content.title === 'Deleted Content' ? 'pointer' : ''}>
+                <ContentTableRow tableRow disabled={content.title === 'Deleted Content'} selected={ selectedContent ? content.id === selectedContent.id : false} key={content.id} onClick={() => handleContentClick(content.id, content.type, content.title)} className={'flex flex-justify border-bottom col col-12 py1'}>
                     <ListContentTitle className={colTable}>{content.title}</ListContentTitle>
                     <Text className={colTable + ' px4'}>{content.type === 'vod' ? 'Video' : 'Live Stream'}</Text>
                     {
