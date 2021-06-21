@@ -15,6 +15,8 @@ export const reducer = (state= toastsInitialState, action: ToastAction): ToastsS
                 ...state,
                 data: [...state.data, action.payload.toast]
             }
+        case ActionTypes.HIDE_ALL_TOASTS:
+            return {...state, data: []}
         default:
             return state;
     }

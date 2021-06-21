@@ -49,7 +49,8 @@ export const ColorsAppArray: ColorsApp[] = [
     'orange',
     'overlay70',
     'overlay40',
-    'overlay20'
+    'overlay20',
+    'light-blue'
 ]
 
 export const AvatarColorsArray: ColorsApp[] = [
@@ -113,4 +114,5 @@ export type ColorsApp =
     'orange'  |
     'overlay70' |
     'overlay40'|
-    'overlay20';
+    'overlay20' |
+    'light-blue';

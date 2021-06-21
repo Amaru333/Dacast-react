@@ -24,6 +24,13 @@ export const BillingPage = (props: BillingContainerProps) => {
         setBillingInfo(props.billingInfos)
     }, [props.billingInfos])
 
+    React.useEffect(() => {
+        if (location.hash === '#update-payment-method') {
+            setPaymentMethodModalOpened(true)
+            history.replaceState(null, null, ' ');
+        }
+    }, [location.hash])
+
     let smScreen = useMedia('(max-width: 780px)');
 
     const savePaymentMethod = (token: string, threeDSecureActionToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {

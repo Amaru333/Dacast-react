@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Toast } from './Toast';
-import { ToastType, Size, NotificationType } from './ToastTypes';
+import { ToastType, Size, NotificationType, NotificationPosition } from './ToastTypes';
 import { ToastContainer } from './ToastStyle'
 
 type ToastsProps = ToastStateProps & DispatchToastProps;
@@ -11,7 +11,7 @@ export interface ToastStateProps {
 
 export interface DispatchToastProps {
     hideToast: (toast: ToastType) => void;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => void;
 }
 
 export const ToastsComponent = ({ toasts, hideToast }: ToastsProps) => {

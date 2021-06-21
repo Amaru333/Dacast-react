@@ -20,6 +20,13 @@ import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flo
 import { segmentService } from '../../app/utils/services/segment/segmentService';
 import TagManager from 'react-gtm-module'
 import { ContentType } from "../../app/redux-flow/store/Common/types";
+import { Modal, ModalContent, ModalFooter } from "../Modal/Modal";
+import { Button } from "../FormsComponents/Button/Button";
+import EventHooker from '../../utils/services/event/eventHooker'
+import { NotificationPosition, NotificationType, Size } from "../Toast/ToastTypes";
+import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
+import { ToastLink } from "../Toast/ToastStyle";
+import { getNbDaysForMonth } from "../../utils/services/date/dateService";
 const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
@@ -33,6 +40,8 @@ export interface HeaderProps {
     getBillingInfo: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => void;
+    hideToast: () => void;
 }
 
 const Header = (props: HeaderProps) => {
@@ -104,53 +113,73 @@ const Header = (props: HeaderProps) => {
     const [selectedUserOptionDropdownItem, setSelectedUserOptionDropdownItem] = React.useState<string>('');
     const [avatarFirstName, setAvatarFirstName] = React.useState<string>(null)
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
+    const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
+    const [modalShown, setModalShown] = React.useState<boolean>(false)
+
+    const setTagManager = (init: boolean) => {
+        let dataset = {
+            'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
+            'accountId': userToken.getUserInfoItem('user-id'),
+            'companyName': userToken.getUserInfoItem('custom:website'),
+            'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
+            'signedUp': 'Unknown yet',
+            'userId': userToken.getUserInfoItem('user-id'),
+            'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+            'userLastName': userToken.getUserInfoItem('custom:last_name'),
+            'userEmail': userToken.getUserInfoItem('email'),
+            'bid': userToken.getUserInfoItem('salesforce-group-id')
+        }
+        if(init) {
+            TagManager.initialize(
+                {
+                    gtmId: 'GTM-PHZ3Z7F',
+                    dataLayer: dataset,
+                    // dataLayerName: 'Uapp'
+                });
+        } else {
+            TagManager.dataLayer({
+                dataset: dataset
+            })
+        }
+    }
+
+    const handleOnLogin = () => {
+        if(props.billingInfo && props.billingInfo.paymentMethod && props.billingInfo.paymentMethod.expiryYear) {
+            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, getNbDaysForMonth(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1))
+            const today = new Date()
+            const warningDate = new Date(today.setDate(today.getDate() + 45))
+            if(expirationDate.valueOf() <= Date.now().valueOf()) {
+                setCardExpiredModalOpened(true)
+                return
+            }
+            if(expirationDate.valueOf() <= warningDate.valueOf()) {
+                const text = <Text size={16} weight="reg" color="white">
+                    Your payment method is about to expire. <ToastLink onClick={() => {history.push('/account/billing/#update-payment-method');props.hideToast()}}>Update Now</ToastLink>
+                </Text>
+                props.showToast(text, 'fixed', 'notification', true, 'right')
+                return
+            }
+        }
+    }
 
     React.useEffect(() => {
-            if(!props.ProfileInfo) {
-                props.getProfilePageDetails()
-            }
+        if(!props.ProfileInfo) {
+            props.getProfilePageDetails()
+        }
 
-            if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
-                props.getBillingInfo()
-            }
-
-        TagManager.initialize(
-            {
-                gtmId: 'GTM-PHZ3Z7F',
-                dataLayer: {
-                    'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                    'accountId': userToken.getUserInfoItem('user-id'),
-                    'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                    'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('user-id'),
-                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                    'userEmail': userToken.getUserInfoItem('email'),
-                    'bid': userToken.getUserInfoItem('salesforce-group-id')
-                },
-                // dataLayerName: 'Uapp'
-            });
+        if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
+            props.getBillingInfo()
+        }
+        setTagManager(true)
     }, [])
 
     React.useEffect(() => {
         if(props.billingInfo) {
-            TagManager.dataLayer(
-                {
-                    dataLayer: {
-                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('user-id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('user-id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                        'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    },
-                    // dataLayerName: 'Uapp'
-                });
+            setTagManager(false)
+            if(!modalShown) {
+                setModalShown(true)
+                handleOnLogin()
+            }
         }
     }, [props.billingInfo])
 
@@ -158,22 +187,7 @@ const Header = (props: HeaderProps) => {
         if(props.ProfileInfo) {
             setAvatarFirstName(props.ProfileInfo.firstName)
             setAvatarLastName(props.ProfileInfo.lastName)
-            TagManager.dataLayer(
-                {
-                    dataLayer: {
-                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('user-id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('user-id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                        'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    },
-                    // dataLayerName: 'Uapp'
-                });
+            setTagManager(false)
         }
 
     }, [props.ProfileInfo])
@@ -206,7 +220,7 @@ const Header = (props: HeaderProps) => {
         }
     }
 
-    const handleUpgradeClick = (options: { trial: boolean } = {}) => {
+    const handleUpgradeClick = (options: { trial: boolean } = {trial: false}) => {
         segmentService.track('Upgrade Form Completed', {
             action: 'Upgrade Source Clicked',
             userId: userToken.getUserInfoItem('user-id'),
@@ -301,6 +315,15 @@ const Header = (props: HeaderProps) => {
                 </div>
                 <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
             </IconContainerStyle>
+            <Modal allowNavigation={false} icon={{ name: "error_outlined", color: "light-blue" }} hasClose modalTitle="Payment method expired" size='small' toggle={() => setCardExpiredModalOpened(!cardExpiredModalOpened)} opened={cardExpiredModalOpened}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">The payment method linked to your Dacast account is expired</Text>
+                        <Text weight='med'>Plase update your payment details today so you can keep working without interruption</Text>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button buttonColor='lightBlue' typeButton='primary' onClick={() => {history.push('/account/billing/#update-payment-method');setCardExpiredModalOpened(false)}}>Update payment details</Button>
+                    </ModalFooter>
+                </Modal>
         </HeaderStyle>
     )
 }
@@ -325,7 +348,9 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))
-        }
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position)),
+        hideToast: () => dispatch(hideAllToastsAction())
     }
 
 }
