@@ -345,13 +345,22 @@ export const formatPutWithdrawalMethodOutput = (endpointResponse: null, data: Pa
 
 export const formatDeleteWithdrawalMethodInput = (data: PaymentMethod): string => data.id
 
-export const formatGetWithdrawalRequestsOutput = (data: GetPaymentRequestOutput): WithdrawalRequest[] => {
-    return data.withdrawals.map(withdrawal => {
+export const formatGetWithdrawalRequestsOutput = (data: GetPaymentRequestOutput): {withdrawalRequests: WithdrawalRequest[]; maxWithdrawalRequestAmount: number;} => {
+    let maxAmount: number = 0
+    const withdrawalRequests: WithdrawalRequest[] = data.withdrawals.map(withdrawal => {
+        if(withdrawal.status === 'pending') {
+            maxAmount += withdrawal.amount
+        }
         return {
             ...withdrawal,
             status: capitalizeFirstLetter(withdrawal.status) as 'Completed' | 'Cancelled' | 'Pending'
         }
     })
+
+    return {
+        withdrawalRequests: withdrawalRequests,
+        maxWithdrawalRequestAmount: maxAmount
+    }
 }
 
 export const formatPostWithdrawalRequestInput = (data: WithdrawalRequest): PostPaymentRequestInput => {

@@ -120,10 +120,12 @@ export interface PayoutInfos {
     paymentMethods?: PaymentMethod[];
     withdrawalRequests?: WithdrawalRequest[];
     paywallBalance: number;
+    maxWithdrawalRequestAmount: number;
 }
 
 export const payoutInitialState: PayoutInfos = {
     paymentMethods: null,
     withdrawalRequests: [],
-    paywallBalance: 0
+    paywallBalance: 0,
+    maxWithdrawalRequestAmount: 0
 }

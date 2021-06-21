@@ -10,7 +10,7 @@ export interface GetPaymentMethods {
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: WithdrawalRequest[];
+    payload: {withdrawalRequests: WithdrawalRequest[]; maxWithdrawalRequestAmount: number;};
 }
 
 export interface AddPaymentMethod {

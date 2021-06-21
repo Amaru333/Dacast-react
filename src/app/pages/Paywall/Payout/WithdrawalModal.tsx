@@ -69,8 +69,8 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
                 <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
-                    <Input className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
-                    <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
+                    <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} help={withdrawalRequest.amount && props.balance < withdrawalRequest.amount ? 'Requested Amount cannot be higher than current balance (paywall balance - sum of pending requests)' : null} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
+                    <Text className={withdrawalRequest.amount && props.balance < withdrawalRequest.amount ? 'pb3' : 'pt25'} size={14} weight='med'>Available: ${props.balance}</Text>
                 </div>
             </div>
             <div className=' col col-12 flex flex-column'>
@@ -91,7 +91,7 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
             <Text size={12} weight='reg' color='gray-3'>*Your first payment request will be delayed at least 35 days</Text>
             <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
             <div className='flex col col-12 my2'>
-                <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
+                <Button disabled={!withdrawalRequest.amount || props.balance < withdrawalRequest.amount} isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
                 <Button onClick={() => props.toggle(false)} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
             </div>
         </div>

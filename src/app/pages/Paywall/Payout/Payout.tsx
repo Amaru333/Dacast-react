@@ -17,10 +17,11 @@ import { Divider } from '../../../../shared/MiscStyles';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
+    const displayedBalance: number = props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount > 0 ? props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount : 0
     const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentMethod>(null)
     const [deletePaymentMethodWarningModalOpened, setDeletePaymentMethodWarningModalOpened] = React.useState<boolean>(false)
-    
+
 
     const paymentMethodTableHeader = () => {
         return {
@@ -165,7 +166,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
                 <div className='flex mt2 my1'>
                 <Text className='pr2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
-                <Text size={14} weight='med'>Available: ${props.payoutInfos.paywallBalance}</Text>
+                <Text size={14} weight='med'>Available: ${displayedBalance}</Text>
                 </div>
                 {props.payoutInfos.paymentMethods &&
                     <Button key='withdrawalTableHeaderActionButton' className='xs-show' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>
@@ -179,7 +180,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
             <Modal hasClose={false} modalTitle='New Withdrawal Request' opened={withdrawalModalOpened} toggle={() => setWithdrawalModalOpened(!withdrawalModalOpened)}>
                 {
                     withdrawalModalOpened &&
-                    <WithdrawalModal balance={props.payoutInfos.paywallBalance} paymentList={props.payoutInfos.paymentMethods} action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
+                    <WithdrawalModal balance={displayedBalance} paymentList={props.payoutInfos.paymentMethods} action={props.addWithdrawalRequest} toggle={setWithdrawalModalOpened} />
 
                 }
             </Modal>
