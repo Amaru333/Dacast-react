@@ -10,7 +10,7 @@ export const HeaderStyle = styled.div<{userType: 'user' | 'admin' | 'impersonate
     width: inherit;
     position: fixed;
     transition: none;
-    z-index:999;
+    z-index:9999;
     height: 55px;
     align-items: center;
     display: flex;
