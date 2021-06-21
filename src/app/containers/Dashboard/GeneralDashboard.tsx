@@ -102,6 +102,20 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
 
         if(props.isPlanPage && props.plan.displayName !== "30 Day Trial") {
+            if(props.plan.state === 'active') {
+                return (
+                    <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
+                        <WidgetHeaderTop className="flex">
+                            <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
+                            <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                        </WidgetHeaderTop>
+                        {
+                            props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
+                        }
+                        {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>}
+                    </WidgetElement> 
+                )
+            }
             return (
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                     <WidgetHeaderTop className="flex">

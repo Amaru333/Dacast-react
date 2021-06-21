@@ -10,7 +10,7 @@ export const ToastContainer = styled.div<ToastProps>`
     left: 0;
     z-index:9999;
     right: 0;
-    padding: 6px 16px 16px;
+    padding: 15px 16px 16px;
     display: flex;
     flex-direction: column;
 `;
