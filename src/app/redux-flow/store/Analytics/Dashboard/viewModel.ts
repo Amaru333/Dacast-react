@@ -1,5 +1,4 @@
 import { GetAnalyticsInput, GetAnalyticsOutput, GetAnalyticsTopContentInput, GetAnalyticsTopContentOutput } from "../../../../../DacastSdk/analytics"
-import { formatTimeToUnit } from "../../../../../utils/formatUtils"
 import { formatAudienceResults, formatDataConsumptionResults, formatSalesResults, formatWatchResults } from "../../../../shared/Analytics/viewModel"
 import { AccountAnalyticsParameters } from "../types"
 import { AnalyticsDashboardNewInfo, AnalyticsTopContentInfo, AnalyticsTopContentParams } from "./types"
@@ -12,7 +11,7 @@ export const formatGetDashboardNewAnalyticsOuput = (response: GetAnalyticsOutput
 
     let formattedData: AnalyticsDashboardNewInfo = {
         audienceLocation: audienceData.plays.location.data,
-        engagement: formatTimeToUnit(engagementData.time.data.reduce((acc, next) => acc + next, 0), 'h'),
+        engagement: engagementData.time.data.reduce((acc, next) => acc + next, 0),
         paywall: paywallData.revenue.time.data.reduce((acc, next) => acc + next, 0),
         dataConsumption: dataConsumpationdata.time.data.reduce((acc, next) => acc + next, 0),
         plays: audienceData.plays.time.data.reduce((acc, next) => acc + next, 0)

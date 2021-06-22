@@ -17,6 +17,7 @@ import { LoadingSpinner } from '../../../components/FormsComponents/Progress/Loa
 import { useHistory } from 'react-router';
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { formatTimeValue } from '../../../utils/formatUtils';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
@@ -133,8 +134,8 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     <Text className='pointer' onClick={() => history.push('/analytics/engagement')} size={14} weight='med' color='gray-3'>Engagement</Text>
                 </WidgetHeader>
                 <div className='flex flex-wrap minContentDash items-center'>
-                    <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.engagement.toLocaleString()}</Text>
-                    <Text size={20} weight='reg' color='gray-3'>hours</Text>
+                    <Text className='pr2' size={32} weight='reg'>{formatTimeValue([props.dashboardAnalytics.engagement]).values[0]}</Text>
+                    <Text size={20} weight='reg' color='gray-3'>{formatTimeValue([props.dashboardAnalytics.engagement]).unitLong.toLowerCase()}</Text>
                 </div>
                 <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/engagement'>Engagement Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
