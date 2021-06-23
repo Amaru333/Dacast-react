@@ -3,9 +3,11 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import styled from 'styled-components';
 import { Text } from '../../../components/Typography/Text';
 import { FolderAsset } from '../../redux-flow/store/Folders/types';
-import { AnalyticsDimensions } from '../../redux-flow/store/Content/Analytics/types';
+import { AnalyticsDimensions, TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 import { Card } from '../../../components/Card/Card';
 import { TableAnalytics } from './TableAnalytics';
+import { getUrlParam } from '../../../utils/utils';
+import { useHistory } from 'react-router';
 
 export const ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export const HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
@@ -77,3 +79,66 @@ export const AnalyticsCardBody = styled.div<{table: boolean}>`
     width: 80%;
     position: relative;
 `
+
+export const getAnalyticsQsParams = () => {
+    const timeRange = getUrlParam('timeRange') || 'LAST_WEEK'
+    const qsMetric = getUrlParam('metric').toLowerCase()
+    const defaultFormat = getUrlParam('format').toLowerCase()
+    const startDate = getUrlParam('startDate')
+    const endDate = getUrlParam('endDate')
+
+    if(qsMetric === 'audience' || qsMetric === 'plays') {
+        return {timeRange, startDate, endDate, defaultMetric: {name: 'audience', sudMetric: 'plays'}, defaultFormat}
+    }
+
+    if(qsMetric === 'impressions') {
+        return {timeRange, startDate, endDate,  defaultMetric: {name: 'audience', sudMetric: 'impressions'}, defaultFormat}
+    }
+
+    if(qsMetric === 'paywall' || qsMetric === 'sales') {
+        return {timeRange, startDate, endDate,  defaultMetric: {name: 'paywall', sudMetric: 'sales'}, defaultFormat}
+    }
+
+    if(qsMetric === 'revenue') {
+        return {timeRange, startDate, endDate,  defaultMetric: {name: 'paywall', sudMetric: 'revenue'}, defaultFormat}
+    }
+
+    return {timeRange, startDate, endDate, defaultMetric: {name: qsMetric}, defaultFormat}
+}
+
+export const setAnalyticsQsParams = (qsParam: {key: string, value: string}, newStartDate?: number, newEndDate?: number) => {
+    let {timeRange, defaultMetric, defaultFormat, startDate, endDate} = getAnalyticsQsParams()
+    let selectedMetric = qsParam.key === 'metric' ? qsParam.value : defaultMetric ? defaultMetric.sudMetric || defaultMetric.name : ''
+    let selectedTimeRange = qsParam.key === 'timeRange' ? qsParam.value : timeRange || ''
+    let selectedFormat = qsParam.key === 'format' ? qsParam.value : defaultFormat || ''
+    let selectedStartDate = newStartDate ? newStartDate : startDate || ''
+    let selectedEndDate = newEndDate ? newEndDate : endDate || ''
+    let qs = ''
+
+    if(selectedMetric) {
+        qs += `metric=${selectedMetric}`
+    }
+
+    if(selectedTimeRange) {
+        qs += `&timeRange=${selectedTimeRange}`
+    }
+
+    if(selectedStartDate) {
+        qs += `&startDate=${selectedStartDate}`
+    }
+
+    if(selectedEndDate) {
+        qs += `&endDate=${selectedEndDate}`
+    }
+
+    if(selectedFormat) {
+        qs += `&format=${selectedFormat}`
+    }
+
+    qs = qs.replace(/^&/, '')
+
+    if (history.pushState) {
+        let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + qs;
+        window.history.pushState({path:newurl},'',newurl);
+    }
+}

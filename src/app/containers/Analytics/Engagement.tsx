@@ -10,6 +10,7 @@ import { AccountAnalyticsParameters, TimeRangeAccountAnalytics } from '../../red
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
 import { AccountAnalyticsEngagementState, AccountEngagementDimension } from '../../redux-flow/store/Analytics/Engagement/types'
 import { WatchDurationAnalytics } from '../../shared/Analytics/AnalyticsType/WatchDurationAnalytics'
+import { getAnalyticsQsParams, setAnalyticsQsParams } from '../../shared/Analytics/AnalyticsCommun'
 
 interface AccountAnalyticsEngagementProps {
     engagement: AccountAnalyticsEngagementState
@@ -18,7 +19,9 @@ interface AccountAnalyticsEngagementProps {
 
 const Engagement = (props: AccountAnalyticsEngagementProps) => {
 
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
+    const {timeRange, startDate, endDate} = getAnalyticsQsParams()
+
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
     const [isFetching, setIsFetching] = React.useState<boolean>(false)
 
@@ -27,7 +30,7 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
     React.useEffect(() => {
         if(!isFetching || !props.engagement) {
             setIsFetching(true);
-            props.getAccountAnalyticsEngagement({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountEngagementDimension }).then(() => setIsFetching(false))
+            props.getAccountAnalyticsEngagement({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AccountEngagementDimension, start: parseInt(startDate), end: parseInt(endDate) }).then(() => setIsFetching(false))
         }
     }, [])
 
@@ -55,6 +58,12 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
         
     }, [timeRangePick])
 
+    const handleDatepickerChange = (info: {value?: TimeRangeAccountAnalytics, startDate?: number, endDate?: number}) => {
+        if(info.endDate && info.startDate) {
+            setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom })
+            setAnalyticsQsParams({key: 'timeRange', value: info.value}, info.startDate, info.endDate)
+        }
+    }
 
     return (
         <React.Fragment>
@@ -63,7 +72,7 @@ const Engagement = (props: AccountAnalyticsEngagementProps) => {
                     selectedPreset={timeRangePick.timeRange}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                    callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
+                    callback={(info) =>  handleDatepickerChange(info) }
                 />
             </div>
             {

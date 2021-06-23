@@ -14,7 +14,7 @@ import { Action } from '../../redux-flow/store/Analytics/Audience/actions'
 import { getAccountAnalyticsDataAction } from '../../redux-flow/store/Analytics/Data/actions'
 import { AccountAnalyticsDataState, AccountDataDimension } from '../../redux-flow/store/Analytics/Data/types'
 import { AccountAnalyticsParameters, TimeRangeAccountAnalytics } from '../../redux-flow/store/Analytics/types'
-import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, TableAnalyticsStyled } from '../../shared/Analytics/AnalyticsCommun'
+import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, getAnalyticsQsParams, setAnalyticsQsParams, TableAnalyticsStyled } from '../../shared/Analytics/AnalyticsCommun'
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
 import { HeaderDataConsumptionTime } from '../../shared/Analytics/TableHeaders'
 import { Routes } from '../Navigation/NavigationTypes'
@@ -27,7 +27,9 @@ interface AccountAnalyticsDataProps {
 
 const DataConsumption = (props: AccountAnalyticsDataProps) => {
 
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
+    const {timeRange, startDate, endDate} = getAnalyticsQsParams()
+
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
     const [isFetching, setIsFetching] = React.useState<boolean>(false)
 
@@ -36,7 +38,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
     React.useEffect(() => {
         if(!isFetching || !props.dataConsumption) {
             setIsFetching(true);
-            props.getAccountAnalyticsData({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountDataDimension }).then(() => setIsFetching(false))
+            props.getAccountAnalyticsData({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AccountDataDimension, start: parseInt(startDate), end: parseInt(endDate) }).then(() => setIsFetching(false))
         }
     }, [])
 
@@ -92,7 +94,14 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
         if(tabs[selectedTab].table.data.some(row => row.label.indexOf(',') !== -1)) {
             tableHeader.splice(1, 0 , 'Time')
         }
-        exportCSVFile(tabs[selectedTab].table.data, 'Audience'+'-'+selectedTab, tableHeader);
+        exportCSVFile(tabs[selectedTab].table.data, 'Data Consumption'+'-'+selectedTab, tableHeader);
+    }
+
+    const handleDatepickerChange = (info: {value?: TimeRangeAccountAnalytics, startDate?: number, endDate?: number}) => {
+        if(info.endDate && info.startDate) {
+            setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom })
+            setAnalyticsQsParams({key: 'timeRange', value: info.value}, info.startDate, info.endDate)
+        }
     }
 
 
@@ -103,7 +112,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
                     selectedPreset={timeRangePick.timeRange}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                    callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
+                    callback={(info) =>  handleDatepickerChange(info) }
                 />
             </div>
             {

@@ -7,7 +7,7 @@ import {HeaderWatchTime, HeaderWatchDevice, HeaderWatchLocation} from '../TableH
 import { WatchAnalyticsState } from '../../../redux-flow/store/Content/Analytics'
 import { exportCSVFile } from '../../../../utils/services/csv/csvService'
 import { Routes } from '../../../containers/Navigation/NavigationTypes'
-import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, TableAnalyticsStyled } from '../AnalyticsCommun'
+import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, getAnalyticsQsParams, setAnalyticsQsParams, TableAnalyticsStyled } from '../AnalyticsCommun'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Tab } from '../../../../components/Tab/Tab'
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
@@ -20,6 +20,8 @@ export interface WatchDurationAnalyticsProps {
 }
 
 export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
+    
+    const { defaultFormat } = getAnalyticsQsParams()
     const watchDurationPerTime = formatTimeValue(props.data.time.data)
     const watchDurationPerDevice = formatTimeValue(props.data.device.data)
     const watchDurationPerLocationData = formatTimeValue(props.data.location.table.map(item => item.data))
@@ -65,21 +67,21 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
 
 
     let tabs = {
-        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.time.table.map((el, i) => {return {data: watchDurationPerTime.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchTime, watchDurationPerTime.unitShort)} },
-        "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.device.table.map((el, i) => {return {data: watchDurationPerDevice.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchDevice, watchDurationPerDevice.unitShort)}},
-        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.location.table.map((el, i) => {return {data: formatTimeValue([el.data]).values[0], label: el.label}}), header: handleDynamiceHeader(HeaderWatchLocation, watchDurationPerLocationData.unitShort)}  },
+        "time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data.time.table.map((el, i) => {return {data: watchDurationPerTime.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchTime, watchDurationPerTime.unitShort)} },
+        "device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.device.table.map((el, i) => {return {data: watchDurationPerDevice.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchDevice, watchDurationPerDevice.unitShort)}},
+        "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.location.table.map((el, i) => {return {data: formatTimeValue([el.data]).values[0], label: el.label}}), header: handleDynamiceHeader(HeaderWatchLocation, watchDurationPerLocationData.unitShort)}  },
     }
 
-    const tabsList: Routes[] = Object.keys(tabs).map((value: string, index: number) => { return { name: value, path: value } });
-    const [selectedTab, setSelectedTab] = React.useState<'Time' | 'Device' | 'Location'>(tabsList[0].name as 'Time' | 'Device' | 'Location')
-    let totalMetric = selectedTab === 'Location' ? props.data.location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedTab.toLowerCase() as 'time' | 'device'].data.reduce((acc, next) => acc + next, 0)
+    const tabsList: Routes[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { name: tabs[value].name, path: value } });
+    const [selectedTab, setSelectedTab] = React.useState<'time' | 'device' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'device' | 'location' : 'time')
+    let totalMetric = selectedTab === 'location' ? props.data.location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedTab.toLowerCase() as 'time' | 'device'].data.reduce((acc, next) => acc + next, 0)
 
     const exportCsvAnalytics = () => {
         let tableHeader = tabs[selectedTab].table.header.map(element => element.Header)
         if(tabs[selectedTab].table.data.some(row => row.label.indexOf(',') !== -1)) {
             tableHeader.splice(1, 0 , 'Time')
         }
-        exportCSVFile(tabs[selectedTab].table.data, 'Audience'+'-'+selectedTab, tableHeader);
+        exportCSVFile(tabs[selectedTab].table.data, 'Engagement'+'-'+selectedTab, tableHeader);
     }
 
     return (
@@ -90,7 +92,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                         <Text className='pr2' size={16} weight="med" color="gray-1">{"Engagement by " + selectedTab}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <Tab orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Device' | 'Location') => setSelectedTab(name)} />
+                    <Tab tabDefaultValue={Object.keys(tabs).findIndex(f => f === selectedTab)} orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Device' | 'Location') => {setSelectedTab(name.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: name.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div className='mb2'>
                     <Text weight='med' size={16}>Total Watchtime: </Text>

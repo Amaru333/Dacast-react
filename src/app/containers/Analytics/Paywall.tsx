@@ -12,6 +12,7 @@ import { AccountAnalyticsPaywallState, AccountPaywallDimension } from '../../red
 import { AccountAnalyticsParameters } from '../../redux-flow/store/Analytics/types'
 import { SalesAnalytics } from '../../shared/Analytics/AnalyticsType/SalesAnalytics'
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics'
+import { getAnalyticsQsParams, setAnalyticsQsParams } from '../../shared/Analytics/AnalyticsCommun'
 
 interface AccountAnalyticsPaywallProps {
     paywall: AccountAnalyticsPaywallState
@@ -20,7 +21,9 @@ interface AccountAnalyticsPaywallProps {
 
 const Paywall = (props: AccountAnalyticsPaywallProps) => {
 
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
+    const {timeRange, startDate, endDate} = getAnalyticsQsParams()
+
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
     const [isFetching, setIsFetching] = React.useState<boolean>(false)
 
@@ -29,7 +32,7 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
     React.useEffect(() => {
         if(!isFetching || !props.paywall) {
             setIsFetching(true);
-            props.getAccountAnalyticsPaywall({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AccountPaywallDimension }).then(() => setIsFetching(false))
+            props.getAccountAnalyticsPaywall({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AccountPaywallDimension, start: parseInt(startDate), end: parseInt(endDate) }).then(() => setIsFetching(false))
         }
     }, [])
 
@@ -57,6 +60,12 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
         
     }, [timeRangePick])
 
+    const handleDatepickerChange = (info: {value?: TimeRangeAccountAnalytics, startDate?: number, endDate?: number}) => {
+        if(info.endDate && info.startDate) {
+            setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom })
+            setAnalyticsQsParams({key: 'timeRange', value: info.value}, info.startDate, info.endDate)
+        }
+    }
 
     return (
         <React.Fragment>
@@ -65,7 +74,7 @@ const Paywall = (props: AccountAnalyticsPaywallProps) => {
                     selectedPreset={timeRangePick.timeRange}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                    callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
+                    callback={(info) =>  handleDatepickerChange(info) }
                 />
             </div>
             {

@@ -24,10 +24,12 @@ export type AccoutSettingsPrivilege ="privilege-account-settings"
 export type MultiUserBetaPrivilege = "privilege-multi-access-beta"
 export type MultiAccessPrivilege = "privilege-multi-access"
 export type ApiBetaPrivilege = "privilege-api-beta"
+export type AdminPrivilege = "privilege-admin"
+export type PerContentAnalyticsPrivilege = "privilege-per-content-analytics"
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege;
 
 type ExtraUserInfo = 'user-id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 

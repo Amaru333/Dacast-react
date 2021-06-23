@@ -8,6 +8,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action as ReduxAction } from 'redux';
 import { ApplicationState } from '../redux-flow/store';
 import { Currency, Price } from '../redux-flow/store/Account/Upgrade/types';
+import { getUrlParam } from '../../utils/utils';
+import Audience from '../containers/Analytics/Audience';
 
 export function updateClipboard(copiedValue: string, toastMessage: string): void {
     navigator.clipboard.writeText(copiedValue).then(function () {

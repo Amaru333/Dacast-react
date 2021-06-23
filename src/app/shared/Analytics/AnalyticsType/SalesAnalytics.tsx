@@ -1,5 +1,4 @@
 import React from 'react'
-import { AnalyticsCard } from '../../../../components/Analytics/AnalyticsCard/AnalyticsCard'
 import { BarChart } from '../../../../components/Analytics/BarChart'
 import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
@@ -7,13 +6,12 @@ import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/
 import { LabelSelector } from '../../../../components/LabelSelector/LabelSelector'
 import { Tab } from '../../../../components/Tab/Tab'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
-import { displayBytesForHumans } from '../../../../utils/formatUtils'
 import { exportCSVFile } from '../../../../utils/services/csv/csvService'
 import { Routes } from '../../../containers/Navigation/NavigationTypes'
 import { SalesAnalyticsState, SalesKeys } from '../../../redux-flow/store/Content/Analytics'
-import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, TableAnalyticsStyled } from '../AnalyticsCommun'
-import { HeaderSalesDevice, HeaderSalesLocation, HeaderSalesTime } from '../TableHeaders'
+import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, getAnalyticsQsParams, setAnalyticsQsParams, TableAnalyticsStyled } from '../AnalyticsCommun'
 import { Text } from '../../../../components/Typography/Text'
+import { capitalizeFirstLetter } from '../../../../utils/utils'
 
 export interface SalesAnalyticsProps {
     data: SalesAnalyticsState
@@ -23,8 +21,10 @@ export interface SalesAnalyticsProps {
 
 export const SalesAnalytics = (props: SalesAnalyticsProps) => {
 
+    const {defaultMetric, defaultFormat} = getAnalyticsQsParams()
+
     const MetricsList = ['Sales', 'Revenue']
-    const [selectedMetric, setSelectedMetric] = React.useState<'Sales' | 'Revenue'>('Sales')
+    const [selectedMetric, setSelectedMetric] = React.useState<'Sales' | 'Revenue'>(defaultMetric && defaultMetric.sudMetric ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Sales' | 'Revenue' : 'Sales')
 
     const returnTimeAnalytics = () => {
         return (
@@ -49,7 +49,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     //             labels={props.data.salesRevenuesByDevice.labels} />
     //     )
     // }
-    
+
     const returnLocationAnalytics = () => {
         return (
             <LeafletMap 
@@ -59,14 +59,14 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     }
 
     let tabs = {
-        "Time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].time.table, header: [{Header: 'Date', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}]} },
+        "time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].time.table, header: [{Header: 'Date', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}]} },
         // "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].device.table, header: [{Header: 'Device', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}]} },
-        "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}] } },
+        "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}] } },
     }
 
-    const tabsList: Routes[] = Object.keys(tabs).map((value: string, index: number) => { return { name: value, path: value } });
-    const [selectedTab, setSelectedTab] = React.useState<'Time' | 'Location'>(tabsList[0].name as 'Time' | 'Location')
-    let totalMetric = selectedTab === 'Location' ? props.data[selectedMetric.toLowerCase() as SalesKeys].location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedMetric.toLowerCase() as SalesKeys][selectedTab.toLowerCase() as 'time'].data.reduce((acc, next) => acc + next, 0)
+    const tabsList: Routes[] = Object.keys(tabs).map((value: 'time' | 'location') => { return { name: tabs[value].name, path: value } });
+    const [selectedTab, setSelectedTab] = React.useState<'time' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'location' : 'time')
+    let totalMetric = selectedTab === 'location' ? props.data[selectedMetric.toLowerCase() as SalesKeys].location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedMetric.toLowerCase() as SalesKeys][selectedTab.toLowerCase() as 'time'].data.reduce((acc, next) => acc + next, 0)
 
     const exportCsvAnalytics = () => {
         let tableHeader = tabs[selectedTab].table.header.map(element => element.Header)
@@ -76,7 +76,6 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         exportCSVFile(tabs[selectedTab].table.data, selectedMetric+'-'+selectedTab, tableHeader);
     }
 
-
     return (
         <React.Fragment>
             <AnalyticsCardStyle>
@@ -85,14 +84,14 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                         <Text className='pr2' size={16} weight="med" color="gray-1">{selectedMetric + " by " + selectedTab}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <Tab orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Location') => setSelectedTab(name)} />
+                    <Tab tabDefaultValue={Object.keys(tabs).findIndex(f => f === selectedTab)} orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Location') => {setSelectedTab(name.toLowerCase() as 'time' | 'location');setAnalyticsQsParams({key: 'format', value: name.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div>
                     <Text weight='med' size={16}>Total {selectedMetric + ': ' }</Text>
                     <Text weight='med' size={16} color='dark-violet'>{(selectedMetric === 'Revenue' ? '$' : '') + totalMetric}</Text>
                 </div>
                 <AnalyticsCardBody className='col col-12 mx-auto' table={props.showTable}>
-                    <LabelSelector className='mb2 center' labels={MetricsList} callback={(label: 'Sales' | 'Revenue') => setSelectedMetric(label)} />
+                    <LabelSelector className='mb2 center' labels={MetricsList} callback={(label: 'Sales' | 'Revenue') => {setSelectedMetric(label);setAnalyticsQsParams({key: 'metric', value: label.toLowerCase()})}} />
                     {tabs[selectedTab].content()}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>

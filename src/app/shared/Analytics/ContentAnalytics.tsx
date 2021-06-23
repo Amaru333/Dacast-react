@@ -4,7 +4,7 @@ import { DropdownSingleListItem } from '../../../components/FormsComponents/Drop
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { AnalyticsDimensions, ContentAnalyticsFinalState, ContentAnalyticsParameters, RealTimeRange, TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics';
-import { AudienceDimension, RealTimeDimension, SalesDimension, WatchDurationDimension } from './AnalyticsCommun';
+import { AudienceDimension, getAnalyticsQsParams, RealTimeDimension, SalesDimension, setAnalyticsQsParams, WatchDurationDimension } from './AnalyticsCommun';
 import { AudienceAnalytics } from './AnalyticsType/AudienceAnalytics';
 import { RealTimeAnalytics } from './AnalyticsType/RealTimeAnalytics';
 import { SalesAnalytics } from './AnalyticsType/SalesAnalytics';
@@ -32,9 +32,10 @@ const TabsDimensionLink: { [key: string]: AnalyticsDimensions[] } = {
 }
 
 export const ContentAnalytics = (props: ContentAnalyticsProps) => {
+    const {timeRange, defaultMetric, startDate, endDate} = getAnalyticsQsParams()
 
-    const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>('audience')
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
+    const [currentTab, setCurrentTab] = React.useState<ContentAnalyticsDropdownValues>(defaultMetric && defaultMetric.name ? defaultMetric.name as ContentAnalyticsDropdownValues : 'audience')
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAnalytics, custom: { start: number; end: number } }>( {timeRange: timeRange as TimeRangeAnalytics, custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime() } } )
     const [realTimeRangePick, setRealTimeRangePick] = React.useState<RealTimeRange>('LAST_45_MINUTES')
 
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -66,6 +67,13 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         
     }, [currentTab, timeRangePick, realTimeRangePick])
 
+    const handleDatepickerChange = (info: {value?: TimeRangeAnalytics, startDate?: number, endDate?: number}) => {
+        if(info.endDate && info.startDate) {
+            setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom })
+            setAnalyticsQsParams({key: 'timeRange', value: info.value}, info.startDate, info.endDate)
+        }
+    }
+
     const handleExtraSettings = () => {
         switch (currentTab) {
             case 'audience':
@@ -76,7 +84,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                         selectedPreset={timeRangePick.timeRange}
                         className='col col-9'
                         defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                        callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
+                        callback={(info) =>  handleDatepickerChange(info) }
                     />
                 )
             case 'real-time':
@@ -131,13 +139,12 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     id='content-analytics-dropdown'
                     list={contentAnalyticsDropdownItems}
                     dropdownTitle=""
-                    dropdownDefaultSelect={"Audience"}
-                    callback={(item: DropdownSingleListItem) => { setCurrentTab(item.data) }}
+                    dropdownDefaultSelect={contentAnalyticsDropdownItems.find(f => f.data === currentTab) ? contentAnalyticsDropdownItems.find(f => f.data === currentTab).title : 'Audience'}
+                    callback={(item: DropdownSingleListItem) => { setCurrentTab(item.data);setAnalyticsQsParams({key: 'metric', value: item.data.toLowerCase()}) }}
                 />
                 {handleExtraSettings()}
             </div>
             {
-                loading ? <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer> :
                     <div>
                         {handleAnalyticsType()}
                     </div>

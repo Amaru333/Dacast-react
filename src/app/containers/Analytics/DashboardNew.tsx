@@ -18,6 +18,7 @@ import { useHistory } from 'react-router';
 import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnalytics';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { formatTimeValue } from '../../../utils/formatUtils';
+import { getAnalyticsQsParams, setAnalyticsQsParams } from '../../shared/Analytics/AnalyticsCommun';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
@@ -28,15 +29,16 @@ export interface DashboardPageProps {
 
 const DashboardAnalyticsNew = (props: DashboardPageProps) => {
 
+    const {timeRange, startDate, endDate} = getAnalyticsQsParams()
     let history = useHistory()
-    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>( {timeRange: 'LAST_WEEK', custom: { end: new Date().getTime(), start: dateAdd(new Date, 'week', -1).getTime() } } )
+    const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
     const loaded = React.useRef(false);
 
 
     React.useEffect(() => {
-        props.getAnalyticsDashboard({ id: null, timeRange: 'LAST_WEEK', type: "account", dimension: AnalyticsDashboardDimension })
+        props.getAnalyticsDashboard({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AnalyticsDashboardDimension, start: parseInt(startDate), end: parseInt(endDate) })
         .then(() => setIsFetching(false))
         props.getAnalyticsTopContent({metrics: ['impressions'], sortBy: 'impressions'})
     }, [])
@@ -92,6 +94,13 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
         }
     }
 
+    const handleDatepickerChange = (info: {value?: TimeRangeAccountAnalytics, startDate?: number, endDate?: number}) => {
+        if(info.endDate && info.startDate) {
+            setTimeRangePick(  {timeRange: info.value, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom })
+            setAnalyticsQsParams({key: 'timeRange', value: info.value}, info.startDate, info.endDate)
+        }
+    }
+
     if(isFetching && !props.dashboardAnalytics) {
         return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
     }
@@ -103,7 +112,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                     isDisabled={loading}
                     className='col col-9'
                     defaultDates={{ start: timeRangePick.custom.start, end: timeRangePick.custom.end }}
-                    callback={(info) => {  info.endDate && info.startDate ?  setTimeRangePick(  {timeRange: info.value as TimeRangeAccountAnalytics, custom: info.value === "CUSTOM" ?  { start: info.startDate, end: info.endDate} : timeRangePick.custom } ) : null } }
+                    callback={(info) =>  handleDatepickerChange(info) }
                 />
             </div>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>

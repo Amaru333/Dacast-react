@@ -183,7 +183,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: null,
         isExact: true,
-        associatePrivilege: ['privilege-analytics'],
+        associatePrivilege: ['privilege-per-content-analytics'],
         notDisplayedInNavigation: true,
         component: LiveAnalytics
     },
@@ -263,7 +263,7 @@ export const AppRoutes: Routes[] = [
         name: 'Analytics',
         iconName: null,
         isExact: true,
-        associatePrivilege: ['privilege-analytics'],
+        associatePrivilege: ['privilege-per-content-analytics'],
         notDisplayedInNavigation: true,
         component: VodAnalytics
     },
