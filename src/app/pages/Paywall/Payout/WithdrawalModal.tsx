@@ -68,10 +68,14 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                     callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data.id}) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
-                <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
-                    <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} help={withdrawalRequest.amount && props.balance < withdrawalRequest.amount ? 'Requested Amount cannot be higher than current balance (paywall balance - sum of pending requests)' : null} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
-                    <Text className={withdrawalRequest.amount && props.balance < withdrawalRequest.amount ? 'pb3' : 'pt25'} size={14} weight='med'>Available: ${props.balance}</Text>
+                <div className='col col-12 flex flex-column'>
+                    <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
+                        <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
+                        <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
+                    </div>
+                    {(withdrawalRequest.amount && props.balance < withdrawalRequest.amount) ? <Text color='red'>Withdrawal Amount cannot be higher than Available balance (i.e. total paywall balance minus sum of pending requests).</Text> : null}
                 </div>
+
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>

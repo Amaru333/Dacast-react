@@ -80,7 +80,7 @@ export const PayoutPage = (props: PayoutComponentProps) => {
         if (props.payoutInfos.paymentMethods && props.payoutInfos.paymentMethods.length !== 0) {
             setWithdrawalModalOpened(true)
         } else {
-            props.showToast("You must add a Payment Request Method before you can Request a Withdrawal", 'fixed', "error")
+            props.showToast("You must add a Withdrawal Method before you can Request a Withdrawal", 'fixed', "error")
         }
     }
 
@@ -164,9 +164,9 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 }
                 <Divider className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
-                <div className='flex mt2 my1'>
-                <Text className='pr2' size={14} weight='reg'>Request a withdrawal from your paywall balance.</Text>
-                <Text size={14} weight='med'>Available: ${displayedBalance}</Text>
+                <div className='mt2 my1'>
+                    <Text className='pr1' size={14} weight='reg'>Request a withdrawal from your available paywall balance (i.e. total paywall balance minus sum of pending requests).</Text>
+                    <Text size={14} weight='med'>Available: ${displayedBalance}</Text>
                 </div>
                 {props.payoutInfos.paymentMethods &&
                     <Button key='withdrawalTableHeaderActionButton' className='xs-show' onClick={() => handleNewWithdrawlRequest()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Withdrawal Request</Button>
