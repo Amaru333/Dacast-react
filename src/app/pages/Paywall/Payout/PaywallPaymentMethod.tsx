@@ -34,7 +34,6 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
 
     const onSubmit = (data: PaymentMethodPut) => { 
         setButtonLoading(true)
-        debugger
         props.addPaymentMethodRequest(
             {
                 ...data, 

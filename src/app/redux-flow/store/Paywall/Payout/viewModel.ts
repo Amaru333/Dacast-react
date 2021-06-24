@@ -78,7 +78,7 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
                 town: data.checkTown,
                 zipCode: data.checkZipCode,
                 country: data.checkCountry
-            }            
+            }
             return check
         case PaymentMethodType.PayPal:
             let paypal: PaypalDetails = {
@@ -93,13 +93,87 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
     }
 }
 
-export const formatPostWithdrawalMethodOuput = (endpointResponse: PaymentMethodId, dataReact: PaymentMethod ): PaymentMethod => {
-    let formattedData: PaymentMethod = {
-        ...dataReact,
-        id: endpointResponse.id
+export const formatPostWithdrawalMethodOuput = (endpointResponse: PaymentMethodId, data: PaymentMethodPut ): PaymentMethod => {
+    switch(data.paymentMethodType) {
+        case PaymentMethodType.BankAccountUS:
+            let us: PaymentMethod= {
+                id: endpointResponse.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                recipientType: data.recipientType,
+                accountNumber: data.accountNumberUS,
+                routingNumber: data.routingNumberUS,
+                firstName: data.firstNameUS,
+                lastName: data.lastNameUS,
+                accountName: data.accountNameUS,
+                address: data.addressUS,
+                address2: data.address2US,
+                state: data.stateUS,
+                town: data.townUS,
+                zipCode: data.zipCodeUS,
+                bankName: data.bankNameUS,
+                bankAddress: data.bankAddressUS,
+                bankAddress2: data.bankAddress2US,
+                bankState: data.bankStateUS,
+                bankTown: data.bankTownUS,
+                bankZipCode: data.bankZipCodeUS,
+                accountType: data.accountType
+             }
+            return us
+        case PaymentMethodType.BankAccountInternational:
+            let inter: PaymentMethod = {
+                id: endpointResponse.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                recipientType: data.recipientType,
+                swift: data.swiftInternational,
+                iban: data.ibanInternational,
+                firstName: data.firstNameInternational,
+                lastName: data.lastNameInternational,
+                accountName: data.accountNameInternational,
+                address: data.addressInternational,
+                address2: data.address2International,
+                state: data.stateInternational,
+                town: data.townInternational,
+                zipCode: data.zipCodeInternational,
+                country: data.countryInternational,
+                bankName: data.bankNameInternational,
+                bankAddress: data.bankAddressInternational,
+                bankAddress2: data.bankAddress2International,
+                bankState: data.bankStateInternational,
+                bankTown: data.bankTownInternational,
+                bankZipCode: data.bankZipCodeInternational,
+                bankCountry: data.bankCountryInternational,
+                accountType: data.accountType
+             }
+             return inter
+        case PaymentMethodType.Check: 
+            let check: PaymentMethod = {
+                id: endpointResponse.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                payee: data.payee,
+                companyName: data.companyName,
+                address: data.checkAddress,
+                address2: data.checkAddressLine2,
+                state: data.checkState,
+                town: data.checkTown,
+                zipCode: data.checkZipCode,
+                country: data.checkCountry
+            }
+            return check
+        case PaymentMethodType.PayPal:
+            let paypal: PaymentMethod = {
+                id: endpointResponse.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                emailAddress: data.emailAddress,
+                comments: data.comments
+            }
+            return paypal
+        default: 
+            return null
     }
-
-    return formattedData
 }
 
 export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentMethodEndpoints => {
@@ -155,7 +229,7 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentM
                 bankZipCode: data.bankZipCodeInternational,
                 bankCountry: data.bankCountryInternational,
                 accountType: data.accountType.toLowerCase() as 'checking' | 'savings'
-             }            
+             }
              return inter
         case PaymentMethodType.Check: 
             let check: Check = {
@@ -170,12 +244,95 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentM
                 town: data.checkTown,
                 zipCode: data.checkZipCode,
                 country: data.checkCountry
-            }            
+            }
             return check
         case PaymentMethodType.PayPal:
             let paypal: Paypal = {
                 id: data.id,
                 paymentMethodType: 'paypal',
+                paymentMethodName: data.paymentMethodName,
+                emailAddress: data.emailAddress,
+                comments: data.comments
+            }
+            return paypal
+        default: 
+            return null
+    }
+}
+
+export const formatPutWithdrawalMethodOutput = (endpointResponse: null, data: PaymentMethodPut ): PaymentMethod => {
+    switch(data.paymentMethodType) {
+        case PaymentMethodType.BankAccountUS:
+            let us: PaymentMethod= {
+                id: data.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                recipientType: data.recipientType,
+                accountNumber: data.accountNumberUS,
+                routingNumber: data.routingNumberUS,
+                firstName: data.firstNameUS,
+                lastName: data.lastNameUS,
+                accountName: data.accountNameUS,
+                address: data.addressUS,
+                address2: data.address2US,
+                state: data.stateUS,
+                town: data.townUS,
+                zipCode: data.zipCodeUS,
+                bankName: data.bankNameUS,
+                bankAddress: data.bankAddressUS,
+                bankAddress2: data.bankAddress2US,
+                bankState: data.bankStateUS,
+                bankTown: data.bankTownUS,
+                bankZipCode: data.bankZipCodeUS,
+                accountType: data.accountType
+             }
+            return us
+        case PaymentMethodType.BankAccountInternational:
+            let inter: PaymentMethod = {
+                id: data.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                recipientType: data.recipientType,
+                swift: data.swiftInternational,
+                iban: data.ibanInternational,
+                firstName: data.firstNameInternational,
+                lastName: data.lastNameInternational,
+                accountName: data.accountNameInternational,
+                address: data.addressInternational,
+                address2: data.address2International,
+                state: data.stateInternational,
+                town: data.townInternational,
+                zipCode: data.zipCodeInternational,
+                country: data.countryInternational,
+                bankName: data.bankNameInternational,
+                bankAddress: data.bankAddressInternational,
+                bankAddress2: data.bankAddress2International,
+                bankState: data.bankStateInternational,
+                bankTown: data.bankTownInternational,
+                bankZipCode: data.bankZipCodeInternational,
+                bankCountry: data.bankCountryInternational,
+                accountType: data.accountType
+             }
+             return inter
+        case PaymentMethodType.Check: 
+            let check: PaymentMethod = {
+                id: data.id,
+                paymentMethodType: data.paymentMethodType,
+                paymentMethodName: data.paymentMethodName,
+                payee: data.payee,
+                companyName: data.companyName,
+                address: data.checkAddress,
+                address2: data.checkAddressLine2,
+                state: data.checkState,
+                town: data.checkTown,
+                zipCode: data.checkZipCode,
+                country: data.checkCountry
+            }
+            return check
+        case PaymentMethodType.PayPal:
+            let paypal: PaymentMethod = {
+                id: data.id,
+                paymentMethodType: data.paymentMethodType,
                 paymentMethodName: data.paymentMethodName,
                 emailAddress: data.emailAddress,
                 comments: data.comments
