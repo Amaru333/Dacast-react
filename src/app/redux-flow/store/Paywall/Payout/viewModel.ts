@@ -1,4 +1,4 @@
-import { PaymentMethodType, PaymentMethod, WithdrawalRequest, PaymentMethodPut } from './types';
+import { PaymentMethodType, PaymentMethod, WithdrawalRequest, PaymentMethodPut, AccountType } from './types';
 import { capitalizeFirstLetter } from '../../../../../utils/utils';
 import { GetPaymentMethodOutput, isBankAccountMethod, PaymentMethodDetails, BankAccountUSDetails, BankAccountInternationalDetails, CheckDetails, PaypalDetails, PaymentMethodEndpoints, BankAccountUS, BankAccountInternational, Check, Paypal, GetPaymentRequestOutput, PostPaymentRequestInput, PaymentRequestEndpoints, PaymentMethodId, PaymentRequestId, GetPaywallBalanceOutput } from '../../../../../DacastSdk/paywall';
 
@@ -7,7 +7,8 @@ export const formatGetWithdrawalMethodsOutput = (input: GetPaymentMethodOutput):
         return {
             ...p,
             paymentMethodType: p.paymentMethodType === 'us-transfer' ? PaymentMethodType.BankAccountUS : p.paymentMethodType === 'international-transfer' ? PaymentMethodType.BankAccountInternational : p.paymentMethodType === 'check' ? PaymentMethodType.Check : PaymentMethodType.PayPal,
-            recipientType: isBankAccountMethod(p) ? capitalizeFirstLetter(p.recipientType) as 'Business' | 'Personal' : 'Business'
+            recipientType: isBankAccountMethod(p) ? capitalizeFirstLetter(p.recipientType) as 'Business' | 'Personal' : 'Business',
+            accountType: isBankAccountMethod(p) ? capitalizeFirstLetter(p.accountType) as AccountType : 'Checking'
         }
     })
 } 
@@ -36,7 +37,7 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
                 bankState: data.bankStateUS,
                 bankTown: data.bankTownUS,
                 bankZipCode: data.bankZipCodeUS,
-                accountType: data.accountType
+                accountType: data.accountType.toLowerCase() as 'checking' | 'savings'
              }
             return us
         case PaymentMethodType.BankAccountInternational:
@@ -62,7 +63,7 @@ export const formatPostWithdrawalMethodInput = (data: PaymentMethodPut): Payment
                 bankTown: data.bankTownInternational,
                 bankZipCode: data.bankZipCodeInternational,
                 bankCountry: data.bankCountryInternational,
-                accountType: data.accountType
+                accountType: data.accountType.toLowerCase() as 'checking' | 'savings'
              }            
              return inter
         case PaymentMethodType.Check: 
@@ -125,7 +126,8 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentM
                 bankAddress2: data.bankAddress2US,
                 bankState: data.bankStateUS,
                 bankTown: data.bankTownUS,
-                bankZipCode: data.bankZipCodeUS
+                bankZipCode: data.bankZipCodeUS,
+                accountType: data.accountType.toLowerCase() as 'checking' | 'savings'
              }
             return us
         case PaymentMethodType.BankAccountInternational:
@@ -151,7 +153,8 @@ export const formatPutWithdrawalMethodInput = (data: PaymentMethodPut): PaymentM
                 bankState: data.bankStateInternational,
                 bankTown: data.bankTownInternational,
                 bankZipCode: data.bankZipCodeInternational,
-                bankCountry: data.bankCountryInternational
+                bankCountry: data.bankCountryInternational,
+                accountType: data.accountType.toLowerCase() as 'checking' | 'savings'
              }            
              return inter
         case PaymentMethodType.Check: 

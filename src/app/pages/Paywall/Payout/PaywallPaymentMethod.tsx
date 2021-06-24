@@ -13,11 +13,11 @@ import { handleValidationForm } from '../../../utils/custom-hooks/formValidation
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : "Select payout type");
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : "Bank Account (US)");
     const [paymentMethodData, setPaymentMethodData] = React.useState<PaymentMethod>(props.selectedPaymentMethod);
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-    const [accountType, setAccountType] = React.useState<AccountType>(props.selectedPaymentMethod && props.selectedPaymentMethod.accountType ? props.selectedPaymentMethod.accountType : null);
+    const [accountType, setAccountType] = React.useState<AccountType>(props.selectedPaymentMethod && props.selectedPaymentMethod.accountType ? props.selectedPaymentMethod.accountType : 'Checking');
 
     const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International)"}, {title: "Check"}, {title: "PayPal"}]
 
@@ -40,6 +40,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 ...data, 
                 paymentMethodType: selectedPaymentMethod, 
                 recipientType: paymentMethodRecipientType,
+                accountType: accountType,
                 id: paymentMethodData ? paymentMethodData.id : null
             }
         )
@@ -76,8 +77,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 id='accountType' 
                 dropdownTitle='Account Type' 
                 list={accountTypesList} 
-                callback={(item: DropdownSingleListItem) => {setAccountType(item.title)}}
-                dropdownDefaultSelect={accountType ? accountType : 'Select account type'}
+                callback={(item: DropdownSingleListItem) => {setAccountType(item.title as AccountType)}}
+                dropdownDefaultSelect={accountType}
             />
         )
     }

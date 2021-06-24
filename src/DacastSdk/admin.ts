@@ -202,7 +202,7 @@ interface AdminPaymentMethodDetailsEndpoint {
     bankCountry?: string;
     emailAddress?: string;
     comments?: string;
-    accountType?: 'buisness' | 'personal'
+    accountType?: 'checking' | 'savings'
 }
 
 export interface GetWithdrawalDetailsOutput {
