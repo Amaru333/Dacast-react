@@ -102,13 +102,13 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
         switch (currentTab) {
             case 'audience':
                 return props.contentAnalyticsData.audience ?
-                    <AudienceAnalytics loading={loading} data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <AudienceAnalytics showTable loading={loading} data={props.contentAnalyticsData.audience} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'engagement':
                 return props.contentAnalyticsData.watch && Object.keys(props.contentAnalyticsData.watch).length !== 0 ?
-                    <WatchDurationAnalytics loading={loading} data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <WatchDurationAnalytics showTable loading={loading} data={props.contentAnalyticsData.watch} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             case 'paywall':
                 return props.contentAnalyticsData.sales ?
-                    <SalesAnalytics loading={loading} data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+                    <SalesAnalytics showTable loading={loading} data={props.contentAnalyticsData.sales} /> : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             // case 'engagement':
             //     return (
             //         <EngagementAnalytics />
