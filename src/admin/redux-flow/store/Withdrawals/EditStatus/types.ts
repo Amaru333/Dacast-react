@@ -3,7 +3,7 @@ export enum ActionTypes {
     SAVE_WITHDRAWAL_STATUS = "@@admin_accounts/SAVE_WITHDRAWAL_STATUS"
 }
 
-type PaymentMethodKeys = 'id' | 'paymentMethodName' | 'accountNumber' | 'payee' | 'companyName' | 'recipientType' | 'swift' | 'iban' | 'routingNumber' | 'firstName' | 'lastName' | 'accountName' | 'address' | 'address2' | 'state' | 'town' | 'zipCode' | 'country' | 'emailAddress' | 'comments'
+type PaymentMethodKeys = 'id' | 'paymentMethodName' | 'accountNumber' | 'payee' | 'companyName' | 'recipientType' | 'accountType' | 'swift' | 'iban' | 'routingNumber' | 'firstName' | 'lastName' | 'accountName' | 'address' | 'address2' | 'state' | 'town' | 'zipCode' | 'country' | 'emailAddress' | 'comments'
 
 type PaymentMethodFields = {
   [key in PaymentMethodKeys]: {

@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import { Action } from "./actions";
-import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod, PaymentMethodType,  } from "./types";
+import { ActionTypes, PayoutInfos, payoutInitialState, PaymentMethod } from "./types";
 
 const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Action) => {
     let paymentMethods: PaymentMethod[] = []
@@ -13,7 +13,8 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
         case ActionTypes.GET_WITHDRAWAL_REQUESTS :
             return {
                 ...state,
-                withdrawalRequests: action.payload
+                withdrawalRequests: action.payload.withdrawalRequests,
+                maxWithdrawalRequestAmount: action.payload.maxWithdrawalRequestAmount
             }
         case ActionTypes.ADD_PAYMENT_METHOD :
             paymentMethods = state.paymentMethods.slice();
@@ -30,15 +31,13 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
             return {
                 ...state,
                 paymentMethods: state.paymentMethods.map((item) => {
-                    if(item.id !== action.payload.id) {
-                        return item;
-                    }
-                    else {
+                    if(item.id === action.payload.id) {
                         return {
                             ...item,
                             ...action.payload
                         }
                     }
+                    return item
                 })
             }
         case ActionTypes.DELETE_PAYMENT_METHOD :
@@ -57,14 +56,10 @@ const reducer: Reducer<PayoutInfos> = (state = payoutInitialState, action: Actio
             return {
                 ...state,
                 withdrawalRequests: state.withdrawalRequests.map(item => {
-                    if(item.id !== action.payload.id) {
-                        return item;
+                    if(item.id === action.payload.id) {
+                        return action.payload
                     }
-                    else {
-                        return {
-                            ...action.payload,
-                        }
-                    }
+                    return item
                 })
             }
         case ActionTypes.GET_PAYWALL_BALANCE:

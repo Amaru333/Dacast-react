@@ -203,6 +203,7 @@ interface AdminPaymentMethodDetailsEndpoint {
     bankCountry?: string;
     emailAddress?: string;
     comments?: string;
+    accountType?: 'checking' | 'savings'
 }
 
 export interface GetWithdrawalDetailsOutput {
@@ -213,7 +214,7 @@ export interface GetWithdrawalDetailsOutput {
     paymentMethod: AdminPaymentMethodDetailsEndpoint;
     requestedDate: number;
     status: string;
-    transferDate: number
+    transferDate: number;
 }
 
 export interface PutWithdrawalDetailsInput {

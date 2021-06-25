@@ -1,6 +1,6 @@
 import { ActionTypes, PaymentMethod, WithdrawalRequest } from './types';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput, formatPutWithdrawalMethodInput, formatGetWithdrawalRequestsOutput, formatPostWithdrawalRequestInput, formatPutWithdrawalRequestInput, formatPostWithdrawalMethodOuput, formatPostWithdrawalRequestOuput, formatDeleteWithdrawalMethodInput, formatGetPaywallBalanceOutput } from './viewModel';
+import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput, formatPutWithdrawalMethodInput, formatGetWithdrawalRequestsOutput, formatPostWithdrawalRequestInput, formatPutWithdrawalRequestInput, formatPostWithdrawalMethodOuput, formatPostWithdrawalRequestOuput, formatDeleteWithdrawalMethodInput, formatGetPaywallBalanceOutput, formatPutWithdrawalMethodOutput } from './viewModel';
 import { applyViewModel } from '../../../../utils/utils';
 
 export interface GetPaymentMethods {
@@ -10,7 +10,7 @@ export interface GetPaymentMethods {
 
 export interface GetWithdrawalRequests {
     type: ActionTypes.GET_WITHDRAWAL_REQUESTS;
-    payload: WithdrawalRequest[];
+    payload: {withdrawalRequests: WithdrawalRequest[]; maxWithdrawalRequestAmount: number;};
 }
 
 export interface AddPaymentMethod {
@@ -47,7 +47,7 @@ export type Action = GetPaymentMethods | GetWithdrawalRequests | AddPaymentMetho
 
 export const getPaymentMethodsAction = applyViewModel(dacastSdk.getPaymentMethod, null, formatGetWithdrawalMethodsOutput, ActionTypes.GET_PAYMENT_METHODS, null, 'Couldn\'t get withdrawal methods')
 export const addPaymentMethodAction = applyViewModel(dacastSdk.postPaymentMethod, formatPostWithdrawalMethodInput, formatPostWithdrawalMethodOuput, ActionTypes.ADD_PAYMENT_METHOD, 'Withdrawal Method has been created', 'Couldn\'t create withdrawal method')
-export const updatePaymentMethodAction = applyViewModel(dacastSdk.putPaymentMethod, formatPutWithdrawalMethodInput, null, ActionTypes.UPDATE_PAYMENT_METHOD, 'Withdrawal Method has been edited', 'Couldn\'t edit withdrawal method')
+export const updatePaymentMethodAction = applyViewModel(dacastSdk.putPaymentMethod, formatPutWithdrawalMethodInput, formatPutWithdrawalMethodOutput, ActionTypes.UPDATE_PAYMENT_METHOD, 'Withdrawal Method has been edited', 'Couldn\'t edit withdrawal method')
 export const deletePaymentMethodAction = applyViewModel(dacastSdk.deletePaymentMethod, formatDeleteWithdrawalMethodInput, null, ActionTypes.DELETE_PAYMENT_METHOD, 'Withdrawal Method has been deleted', 'Couldn\'t delete withdrawal method')
 
 export const getWithdrawalRequestsAction = applyViewModel(dacastSdk.getPaymentRequest, null, formatGetWithdrawalRequestsOutput, ActionTypes.GET_WITHDRAWAL_REQUESTS, null, 'Couldn\'t get withdrawal requests')
