@@ -1,6 +1,6 @@
 import { ActionTypes, PaymentMethod, WithdrawalRequest } from './types';
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient';
-import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput, formatPutWithdrawalMethodInput, formatGetWithdrawalRequestsOutput, formatPostWithdrawalRequestInput, formatPutWithdrawalRequestInput, formatPostWithdrawalMethodOuput, formatPostWithdrawalRequestOuput, formatDeleteWithdrawalMethodInput, formatGetPaywallBalanceOutput, formatPutWithdrawalMethodOutput } from './viewModel';
+import { formatGetWithdrawalMethodsOutput, formatPostWithdrawalMethodInput, formatPutWithdrawalMethodInput, formatGetWithdrawalRequestsOutput, formatPostWithdrawalRequestInput, formatPutWithdrawalRequestInput, formatPostWithdrawalMethodOuput, formatPostWithdrawalRequestOuput, formatDeleteWithdrawalMethodInput, formatGetPaywallBalanceOutput, formatPutWithdrawalMethodOutput, formatPostWithdrawalRequestErrorMessage } from './viewModel';
 import { applyViewModel } from '../../../../utils/utils';
 
 export interface GetPaymentMethods {
@@ -51,6 +51,6 @@ export const updatePaymentMethodAction = applyViewModel(dacastSdk.putPaymentMeth
 export const deletePaymentMethodAction = applyViewModel(dacastSdk.deletePaymentMethod, formatDeleteWithdrawalMethodInput, null, ActionTypes.DELETE_PAYMENT_METHOD, 'Withdrawal Method has been deleted', 'Couldn\'t delete withdrawal method')
 
 export const getWithdrawalRequestsAction = applyViewModel(dacastSdk.getPaymentRequest, null, formatGetWithdrawalRequestsOutput, ActionTypes.GET_WITHDRAWAL_REQUESTS, null, 'Couldn\'t get withdrawal requests')
-export const addWithdrawalRequestAction = applyViewModel(dacastSdk.postPaymentRequest, formatPostWithdrawalRequestInput, formatPostWithdrawalRequestOuput, ActionTypes.ADD_WITHDRAWAL_REQUEST, 'New Withdrawal Request submitted', 'Couldn\'t submit withdrawal request')
+export const addWithdrawalRequestAction = applyViewModel(dacastSdk.postPaymentRequest, formatPostWithdrawalRequestInput, formatPostWithdrawalRequestOuput, ActionTypes.ADD_WITHDRAWAL_REQUEST, 'New Withdrawal Request submitted', undefined, formatPostWithdrawalRequestErrorMessage)
 export const cancelWithdrawalRequestAction = applyViewModel(dacastSdk.putPaymentRequest, formatPutWithdrawalRequestInput, null, ActionTypes.CANCEL_WITHDRAWAL_REQUEST, 'Withdrawal Request cancelled', 'Couldn\'t cancel withdrawal request')
 export const getPaywallBalanceAction = applyViewModel(dacastSdk.getPaywallBalance, undefined, formatGetPaywallBalanceOutput, ActionTypes.GET_PAYWALL_BALANCE, null, 'Couldn\'t get paywall balance')

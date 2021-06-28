@@ -397,3 +397,11 @@ export const formatPutWithdrawalRequestInput = (data: WithdrawalRequest): Paymen
 export const formatGetPaywallBalanceOutput = (data: GetPaywallBalanceOutput): number => {
     return data.balance || 0
 }
+
+export const formatPostWithdrawalRequestErrorMessage = (error: any) => {
+    if(error.details.indexOf("amount provided higher than the user\’s balance") !== -1) {
+        return "The amount provided is too high for this request, please try with a lower amount."
+    }
+
+    return 'Couldn\'t submit withdrawal request'
+}
