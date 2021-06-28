@@ -115,8 +115,9 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
     const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
     const [modalShown, setModalShown] = React.useState<boolean>(false)
+    
 
-    const setTagManager = (init: boolean) => {
+    const setTagManager = () => {
         let dataset = {
             'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
             'accountId': userToken.getUserInfoItem('user-id'),
@@ -129,18 +130,8 @@ const Header = (props: HeaderProps) => {
             'userEmail': userToken.getUserInfoItem('email'),
             'bid': userToken.getUserInfoItem('salesforce-group-id')
         }
-        if(init) {
-            TagManager.initialize(
-                {
-                    gtmId: 'GTM-PHZ3Z7F',
-                    dataLayer: dataset,
-                    // dataLayerName: 'Uapp'
-                });
-        } else {
-            TagManager.dataLayer({
-                dataset: dataset
-            })
-        }
+
+        return dataset
     }
 
     const handleOnLogin = () => {
@@ -163,6 +154,7 @@ const Header = (props: HeaderProps) => {
     }
 
     React.useEffect(() => {
+        
         if(!props.ProfileInfo) {
             props.getProfilePageDetails()
         }
@@ -170,12 +162,21 @@ const Header = (props: HeaderProps) => {
         if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
             props.getBillingInfo()
         }
-        setTagManager(true)
+        TagManager.initialize(
+            {
+                gtmId: 'GTM-PHZ3Z7F',
+                dataLayer: setTagManager()
+                // dataLayerName: 'Uapp'
+            });
     }, [])
 
     React.useEffect(() => {
         if(props.billingInfo) {
-            setTagManager(false)
+            TagManager.dataLayer(
+                {
+                    dataLayer: setTagManager()
+                    // dataLayerName: 'Uapp'
+                });
             if(!modalShown) {
                 setModalShown(true)
                 handleOnLogin()
@@ -187,7 +188,11 @@ const Header = (props: HeaderProps) => {
         if(props.ProfileInfo) {
             setAvatarFirstName(props.ProfileInfo.firstName)
             setAvatarLastName(props.ProfileInfo.lastName)
-            setTagManager(false)
+            TagManager.dataLayer(
+                {
+                    dataLayer: setTagManager()
+                    // dataLayerName: 'Uapp'
+                });
         }
 
     }, [props.ProfileInfo])
