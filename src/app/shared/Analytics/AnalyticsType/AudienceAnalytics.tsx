@@ -13,6 +13,8 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { exportCSVFile } from '../../../../utils/services/csv/csvService'
 import { Text } from '../../../../components/Typography/Text' 
 import { capitalizeFirstLetter } from '../../../../utils/utils'
+import { SmallTabItem } from '../../../../components/Tab/TabTypes'
+import { TabSmall } from '../../../../components/Tab/TabSmall'
 
 export interface AudienceAnalyticsProps {
     data: AudienceAnalyticsState
@@ -62,7 +64,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
         "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}] } },
     }
 
-    const tabsList: Routes[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { name: tabs[value].name, path: value } });
+    const tabsList: SmallTabItem[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { title: tabs[value].name} });
     const [selectedTab, setSelectedTab] = React.useState<'time' | 'device' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'device' | 'location' : 'time')
     let totalMetric = selectedTab === 'location' ? props.data[selectedMetric.toLowerCase() as AudienceKeys].location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedMetric.toLowerCase() as AudienceKeys][selectedTab.toLowerCase() as 'time' | 'device'].data.reduce((acc, next) => acc + next, 0)
 
@@ -82,7 +84,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
                         <Text className='pr2' size={16} weight="med" color="gray-1">{selectedMetric + " by " + selectedTab}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <Tab tabDefaultValue={Object.keys(tabs).findIndex(f => f === selectedTab)} orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Device' | 'Location') => {setSelectedTab(name.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: name.toLowerCase()})}} />
+                    <TabSmall defaultTabSelected={Object.keys(tabs).find(f => f === selectedTab) ? tabs[selectedTab].name : null} list={tabsList} callback={(value: SmallTabItem) => {setSelectedTab(value.title.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: value.title.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div>
                     <Text weight='med' size={16}>Total {selectedMetric + ': ' }</Text>

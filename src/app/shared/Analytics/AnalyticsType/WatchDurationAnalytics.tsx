@@ -12,6 +12,8 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { Tab } from '../../../../components/Tab/Tab'
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { Text } from '../../../../components/Typography/Text'
+import { TabSmall } from '../../../../components/Tab/TabSmall'
+import { SmallTabItem } from '../../../../components/Tab/TabTypes'
 
 export interface WatchDurationAnalyticsProps {
     data: WatchAnalyticsState
@@ -72,7 +74,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
         "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.location.table.map((el, i) => {return {data: formatTimeValue([el.data]).values[0], label: el.label}}), header: handleDynamiceHeader(HeaderWatchLocation, watchDurationPerLocationData.unitShort)}  },
     }
 
-    const tabsList: Routes[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { name: tabs[value].name, path: value } });
+    const tabsList: SmallTabItem[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { title: tabs[value].name} });
     const [selectedTab, setSelectedTab] = React.useState<'time' | 'device' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'device' | 'location' : 'time')
     let totalMetric = selectedTab === 'location' ? props.data.location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedTab.toLowerCase() as 'time' | 'device'].data.reduce((acc, next) => acc + next, 0)
 
@@ -92,7 +94,7 @@ export const WatchDurationAnalytics = (props: WatchDurationAnalyticsProps) => {
                         <Text className='pr2' size={16} weight="med" color="gray-1">{"Engagement by " + selectedTab}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <Tab tabDefaultValue={Object.keys(tabs).findIndex(f => f === selectedTab)} orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Device' | 'Location') => {setSelectedTab(name.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: name.toLowerCase()})}} />
+                    <TabSmall defaultTabSelected={Object.keys(tabs).find(f => f === selectedTab) ? tabs[selectedTab].name : null} list={tabsList} callback={(value: SmallTabItem) => {setSelectedTab(value.title.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: value.title.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div className='mb2'>
                     <Text weight='med' size={16}>Total Watchtime: </Text>

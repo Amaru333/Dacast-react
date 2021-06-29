@@ -12,6 +12,8 @@ import { SalesAnalyticsState, SalesKeys } from '../../../redux-flow/store/Conten
 import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, getAnalyticsQsParams, setAnalyticsQsParams, TableAnalyticsStyled } from '../AnalyticsCommun'
 import { Text } from '../../../../components/Typography/Text'
 import { capitalizeFirstLetter } from '../../../../utils/utils'
+import { SmallTabItem } from '../../../../components/Tab/TabTypes'
+import { TabSmall } from '../../../../components/Tab/TabSmall'
 
 export interface SalesAnalyticsProps {
     data: SalesAnalyticsState
@@ -64,7 +66,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
         "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as SalesKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric === 'Revenue' ? 'Revenue ($)' : selectedMetric, accessor: 'data'}] } },
     }
 
-    const tabsList: Routes[] = Object.keys(tabs).map((value: 'time' | 'location') => { return { name: tabs[value].name, path: value } });
+    const tabsList: SmallTabItem[] = Object.keys(tabs).map((value: 'time' | 'location') => { return { title: tabs[value].name }});
     const [selectedTab, setSelectedTab] = React.useState<'time' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'location' : 'time')
     let totalMetric = selectedTab === 'location' ? props.data[selectedMetric.toLowerCase() as SalesKeys].location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedMetric.toLowerCase() as SalesKeys][selectedTab.toLowerCase() as 'time'].data.reduce((acc, next) => acc + next, 0)
 
@@ -84,7 +86,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
                         <Text className='pr2' size={16} weight="med" color="gray-1">{selectedMetric + " by " + selectedTab}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <Tab tabDefaultValue={Object.keys(tabs).findIndex(f => f === selectedTab)} orientation='horizontal' list={tabsList} callback={(name: 'Time' | 'Location') => {setSelectedTab(name.toLowerCase() as 'time' | 'location');setAnalyticsQsParams({key: 'format', value: name.toLowerCase()})}} />
+                    <TabSmall defaultTabSelected={Object.keys(tabs).find(f => f === selectedTab) ? tabs[selectedTab].name : null} list={tabsList} callback={(value: SmallTabItem) => {setSelectedTab(value.title.toLowerCase() as 'time' | 'location');setAnalyticsQsParams({key: 'format', value: value.title.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div>
                     <Text weight='med' size={16}>Total {selectedMetric + ': ' }</Text>

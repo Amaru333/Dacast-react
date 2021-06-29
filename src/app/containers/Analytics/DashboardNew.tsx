@@ -19,6 +19,9 @@ import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnal
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { formatTimeValue } from '../../../utils/formatUtils';
 import { getAnalyticsQsParams, setAnalyticsQsParams } from '../../shared/Analytics/AnalyticsCommun';
+import { TabSmall } from '../../../components/Tab/TabSmall';
+import { Pagination } from '../../../components/Pagination/Pagination';
+import { world } from '../../constants/CountriesList';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
@@ -34,6 +37,8 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
     const [isFetching, setIsFetching] = React.useState<boolean>(true)
+    const [playsByLocationView, setPlaysByLocationView] = React.useState<'Map' | 'Details'>('Map')
+    const [paginationInfo, setPaginationInfo] = React.useState<{ page: number; nbResults: number }>({ page: 1, nbResults: 5})
     const loaded = React.useRef(false);
 
 
@@ -92,6 +97,43 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 )
             })
         }
+    }
+
+    const renderPlaysByLocation = () => {
+        if(playsByLocationView === 'Map') {
+            return (
+                <div>
+                    <LeafletMap
+                        smallMap
+                        markers={props.dashboardAnalytics.audienceLocation}
+                        markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value+" "+element.label[index] }).join() } 
+                    />
+                </div>
+            )
+        }
+
+        let minIndex = paginationInfo.nbResults * (paginationInfo.page - 1)
+        return (
+            <div className='col col-12 flex flex-column'>
+                <div className='flex pb2'>
+                    <Text className='col col-6' weight='med'>Country</Text>
+                    <Text weight='med'>Plays</Text>
+                </div>
+                {
+                    props.dashboardAnalytics.audienceLocation.map((item, i) => {
+                        if(i >= minIndex && i < minIndex + paginationInfo.nbResults) {
+                            return (
+                                <div className='flex col col-12' key={i}>
+                                    <Text className='col col-6'>{world.features.filter(i => i.id.indexOf(item.city) !== -1).length > 0 ? world.features.filter(i => i.id.indexOf(item.city) !== -1)[0].properties.name : 'Unknown'}</Text>
+                                    <Text >{item.value}</Text>
+                                </div>
+                            )
+                        }
+                    })
+                }
+                <Pagination smallScreen displayedItemsOptions={[5, 10, 20]} totalResults={props.dashboardAnalytics.audienceLocation.length} callback={(page: number, nbResults: number) => setPaginationInfo({ page: page, nbResults: nbResults })} />
+            </div>
+        )
     }
 
     const handleDatepickerChange = (info: {value?: TimeRangeAccountAnalytics, startDate?: number, endDate?: number}) => {
@@ -171,14 +213,9 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                 <WidgetHeader className='flex'>
                     <IconStyle className='pr1' coloricon='dark-violet'>language</IconStyle>
                     <Text className='flex-auto' size={14} weight='med' color='gray-3'>Plays by Location</Text>
+                    <TabSmall list={[{title: 'Map'}, {title: 'Details'}]} callback={(value) => setPlaysByLocationView(value.title)} />
                 </WidgetHeader>
-                <div>
-                    <LeafletMap
-                        smallMap
-                        markers={props.dashboardAnalytics.audienceLocation}
-                        markerNameTranform={(element, index) => element.value.map((value, index) => { return (index === 0 ? element.city+": " : ' ' ) + value+" "+element.label[index] }).join() } 
-                    />
-                </div>
+                {renderPlaysByLocation()}
             </WidgetElement>
             <WidgetElement color='dark-violet' className={classItemHalfWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex'>
