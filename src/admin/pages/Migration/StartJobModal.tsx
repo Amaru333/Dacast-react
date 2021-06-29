@@ -3,6 +3,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { Input } from '../../../components/FormsComponents/Input/Input'
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox'
 import { InputRadio } from '../../../components/FormsComponents/Input/InputRadio'
 import { Modal } from '../../../components/Modal/Modal'
 import { Text } from '../../../components/Typography/Text'
@@ -11,13 +12,14 @@ import { IconStyle } from '../../../shared/Common/Icon'
 interface StartJobModalProps {
     opened: boolean
     toggle: React.Dispatch<React.SetStateAction<boolean>>
-    startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[]) => Promise<void>
+    startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[], isDifferentialMigrationJob: boolean) => Promise<void>
 }
 
 export const StartJobModal = (props: StartJobModalProps) => {
 
     const [selectedPlatform, setSelectedPlatform] = React.useState<'Vzaar' | 'Dacast'>('Dacast')
     const [selectedOption, setSelectedOption] = React.useState<'copy' | 'csv'>('copy')
+    const [isDifferentialMigrationJob, setIsDifferentialMigrationJob] = React.useState<boolean>(true)
     const [csvFile, setCsvFile] = React.useState<File>(null);
     const [usersList, setUsersList] = React.useState<string[]>([])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
@@ -26,7 +28,6 @@ export const StartJobModal = (props: StartJobModalProps) => {
     const handleDrop = (file: FileList) => {
         if(file.length > 0) {
             const reader = new FileReader();
-            console.log('file reader', reader)
             reader.onload = (e) => {
                 let contents = e.target.result;
                 formatCsvData(contents);
@@ -43,12 +44,9 @@ export const StartJobModal = (props: StartJobModalProps) => {
             users = formattedContent.split(',');
 
         } else {
-            console.log('processing csv input:', formattedContent)
             users = formattedContent.replace(/\r/g,"").split("\n");
-            console.log('users list: ', users)
         }
         users.shift()
-        console.log('testing parsed users list: ', users.map(n => n.trim()).filter(n => n || n.length > 0))
         setUsersList(users.map(n => n.trim()).filter(n => n || n.length > 0))
     }
     
@@ -61,9 +59,8 @@ export const StartJobModal = (props: StartJobModalProps) => {
 
     const handleStartButtonClick = () => {
         setButtonLoading(true)
-        props.startJob(selectedPlatform, usersList)
+        props.startJob(selectedPlatform, usersList, isDifferentialMigrationJob)
         .then(() => {
-            console.log('reaching success')
             setButtonLoading(false)
             props.toggle(false)
         }).catch(() => setButtonLoading(false))
@@ -85,6 +82,7 @@ export const StartJobModal = (props: StartJobModalProps) => {
                     <InputRadio defaultChecked={selectedOption === 'copy'} onChange={() => setSelectedOption('copy')} className="col col-6" value="copy" name="usersList" label="Copy Paste" />
                     <InputRadio defaultChecked={selectedOption === 'csv'} onChange={() => setSelectedOption('csv')} className="col col-6" value="csv" name="usersList" label="Upload CSV" />
                 </div>
+                <InputCheckbox label='Differential Migration' className='py1' id='enableDifferentialMigrationCheckbox' defaultChecked={isDifferentialMigrationJob} onChange={() => setIsDifferentialMigrationJob(!isDifferentialMigrationJob)} />
                 { selectedOption === 'copy' && 
                     <div>
                         <Input 

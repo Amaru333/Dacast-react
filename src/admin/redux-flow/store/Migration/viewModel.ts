@@ -43,10 +43,11 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
     return formattedData
 }
 
-export const formatPostStartJobInput = (data: {platform: 'Dacast' | 'Vzaar', usersList: string[]}): PostStartMigrationJobInput => {
+export const formatPostStartJobInput = (data: {platform: 'Dacast' | 'Vzaar', usersList: string[], enableDifferential: boolean}): PostStartMigrationJobInput => {
     let formattedData: PostStartMigrationJobInput = {
         platform: data.platform.toLowerCase() as 'dacast' | 'vzaar',
-        userIds: data.usersList
+        userIds: data.usersList,
+        enableDifferential: data.enableDifferential
     }
 
     return formattedData
