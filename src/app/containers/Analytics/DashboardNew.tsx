@@ -22,6 +22,7 @@ import { getAnalyticsQsParams, setAnalyticsQsParams } from '../../shared/Analyti
 import { TabSmall } from '../../../components/Tab/TabSmall';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { world } from '../../constants/CountriesList';
+import { EmptyAnalytics } from '../../../components/Analytics/EmptyAnalytics';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
@@ -100,6 +101,10 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
     }
 
     const renderPlaysByLocation = () => {
+        if(props.dashboardAnalytics.audienceLocation.length === 0 ) {
+            return <EmptyAnalytics />
+        }
+        
         if(playsByLocationView === 'Map') {
             return (
                 <div>

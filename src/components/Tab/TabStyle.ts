@@ -88,7 +88,9 @@ export const TabsLabel = styled.div`
 `
 
 export const TabSmallStyle = styled(Text)<{ selected: boolean; leftSide: boolean; rightSide: boolean}>`
-    border: 1px solid ${props => props.theme.colors['gray-5']}
+    border-width: 1px;
+    border-style: solid none solid solid;
+    border-color: ${props => props.theme.colors['gray-5']};
     color: ${props => props.theme.colors['gray-5']}
     ${props => props.leftSide && css`
         border-top-left-radius: 4px;
@@ -98,6 +100,7 @@ export const TabSmallStyle = styled(Text)<{ selected: boolean; leftSide: boolean
     ${props => props.rightSide && css`
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
+        border-style: solid;
     `}
 
     ${props => props.selected && css`
