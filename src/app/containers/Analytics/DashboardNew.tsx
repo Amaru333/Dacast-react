@@ -75,11 +75,11 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
     const handleTitleClick = (id: string, type: ContentType) => {
         switch(type) {
             case 'vod':
-                return '/videos/' + id + '/analytics'
+                return '/videos/' + id + '/analytics' + history.location.search
             case 'live': 
-                return'/livestreams/' + id + '/analytics'
+                return'/livestreams/' + id + '/analytics' + history.location.search
             case 'playlist': 
-                return '/playlists/' + id + '/analytics'
+                return '/playlists/' + id + '/analytics' + history.location.search
             default:
                 return null
         }
@@ -159,41 +159,41 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
             </div>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/data')} coloricon='dark-violet'>wifi</IconStyle>
-                    <Text className='pointer' onClick={() => history.push('/analytics/data')} size={14} weight='med' color='gray-3'>Data Usage</Text>
+                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/data' + history.location.search)} coloricon='dark-violet'>wifi</IconStyle>
+                    <Text className='pointer' onClick={() => history.push('/analytics/data' + history.location.search)} size={14} weight='med' color='gray-3'>Data Usage</Text>
                 </WidgetHeader>
                 <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.dataConsumption.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>GB</Text>
                 </div>
-                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/data'>Data Usage Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href={'/analytics/data' + history.location.search}>Data Usage Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/audience')}coloricon='dark-violet'>play_circle_outlined</IconStyle>
-                    <Text className='pointer' onClick={() => history.push('/analytics/audience')} size={14} weight='med' color='gray-3'>Audience</Text>
+                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/audience' + history.location.search)}coloricon='dark-violet'>play_circle_outlined</IconStyle>
+                    <Text className='pointer' onClick={() => history.push('/analytics/audience' + history.location.search)} size={14} weight='med' color='gray-3'>Audience</Text>
                 </WidgetHeader>
                 <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{props.dashboardAnalytics.plays.toLocaleString()}</Text>
                     <Text size={20} weight='reg' color='gray-3'>plays</Text>
                 </div>
-                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/audience'>Audience Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href={'/analytics/audience' + history.location.search}>Audience Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle  className='pointer pr1' onClick={() => history.push('/analytics/engagement')} coloricon='dark-violet'>access_time</IconStyle>
-                    <Text className='pointer' onClick={() => history.push('/analytics/engagement')} size={14} weight='med' color='gray-3'>Engagement</Text>
+                    <IconStyle  className='pointer pr1' onClick={() => history.push('/analytics/engagement' + history.location.search)} coloricon='dark-violet'>access_time</IconStyle>
+                    <Text className='pointer' onClick={() => history.push('/analytics/engagement' + history.location.search)} size={14} weight='med' color='gray-3'>Engagement</Text>
                 </WidgetHeader>
                 <div className='flex flex-wrap minContentDash items-center'>
                     <Text className='pr2' size={32} weight='reg'>{formatTimeValue([props.dashboardAnalytics.engagement]).values[0]}</Text>
                     <Text size={20} weight='reg' color='gray-3'>{formatTimeValue([props.dashboardAnalytics.engagement]).unitLong.toLowerCase()}</Text>
                 </div>
-                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/engagement'>Engagement Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
+                <Text className='flex flex-last items-center justify-end' size={14}><a href={'/analytics/engagement' + history.location.search}>Engagement Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
             </WidgetElement>
             <WidgetElement className={classItemQuarterWidthContainer} customPadding='16px'>
                 <WidgetHeader className='flex items-center'>
-                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/paywall')} coloricon='dark-violet'>account_balance</IconStyle>
-                    <Text className='pointer' onClick={() => history.push('/analytics/paywall')} size={14} weight='med' color='gray-3'>Paywall</Text>
+                    <IconStyle className='pointer pr1' onClick={() => history.push('/analytics/paywall' + history.location.search)} coloricon='dark-violet'>account_balance</IconStyle>
+                    <Text className='pointer' onClick={() => history.push('/analytics/paywall' + history.location.search)} size={14} weight='med' color='gray-3'>Paywall</Text>
                 </WidgetHeader>
                     {
                         userToken.getPrivilege('privilege-paywall') ? 
@@ -202,7 +202,7 @@ const DashboardAnalyticsNew = (props: DashboardPageProps) => {
                                     <IconStyle coloricon='gray-3' customsize={38}>attach_money</IconStyle>
                                     <Text size={32} weight="reg" color="gray-1">{props.dashboardAnalytics.paywall.toLocaleString()}</Text>
                                 </div>
-                                <Text className='flex flex-last items-center justify-end' size={14}><a href='/analytics/paywall'>Paywall Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
+                                <Text className='flex flex-last items-center justify-end' size={14}><a href={'/analytics/paywall' + history.location.search}>Paywall Report</a><IconStyle className='pl1' coloricon='dark-violet' customsize={14}>arrow_forward</IconStyle></Text>
                             </>
                             : <Text className="flex flex-wrap minContentDash items-center" >This feature is not included in your plan. <a href='/account/upgrade'>Upgrade</a>&nbsp;to have access.
                             </Text>
