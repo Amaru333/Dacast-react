@@ -12,7 +12,7 @@ export interface MigrationComponentProps {
     migrationData: MigrationData | false;
     getJobsList: () => Promise<void>;
     getJobDetails: (jobId: string) =>  Promise<void>;
-    startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[]) => Promise<void>
+    startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[], isDifferentialMigrationJob: boolean) => Promise<void>
     switchUsers: (usersList: string[], jobId: string) => Promise<void>
     getMigratedUsersList: (filters: FilteringMigrationState & {next: string}) => Promise<void>
 }
@@ -35,8 +35,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Act
         getJobDetails: async (jobId: string) => {
             await dispatch(getJobDetailsAction(jobId))
         },
-        startJob: async (platform: 'Dacast' | 'Vzaar', usersList: string[]) => {
-            await dispatch(startMigrationJobAction({platform: platform, usersList: usersList}))
+        startJob: async (platform: 'Dacast' | 'Vzaar', usersList: string[], isDifferentialMigrationJob: boolean) => {
+            await dispatch(startMigrationJobAction({platform: platform, usersList: usersList, enableDifferential: isDifferentialMigrationJob}))
         },
         switchUsers: async (usersList: string[], jobId: string) => {
             await dispatch(switchOverUsersAction(usersList, jobId))

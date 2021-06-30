@@ -303,8 +303,9 @@ export interface GetMigrationJobDetailsOutput {
 }
 
 export interface PostStartMigrationJobInput {
-    platform: 'dacast' | 'vzaar',
+    platform: 'dacast' | 'vzaar'
     userIds: string[]
+    enableDifferential: boolean
 }
 
 export interface PostSwitchOverUsersInput {
