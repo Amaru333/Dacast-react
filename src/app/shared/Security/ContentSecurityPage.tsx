@@ -41,18 +41,18 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
-    const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item) => {
-        let geoRestrictionDropdownListItem: DropdownSingleListItem = {title: null, data: null}
-        geoRestrictionDropdownListItem.title = item.name
-        geoRestrictionDropdownListItem.data = item
-        return geoRestrictionDropdownListItem
+    const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item): DropdownSingleListItem => {
+        return {
+            title: item.name,
+            data: item
+        }
     })
 
-    const domainControlDropdownList = props.globalSecuritySettings.domainControl.map((item) => {
-        let domainControlDropdownListItem: DropdownSingleListItem = {title: null, data: null}
-        domainControlDropdownListItem.title = item.name
-        domainControlDropdownListItem.data = item
-        return domainControlDropdownListItem
+    const domainControlDropdownList = props.globalSecuritySettings.domainControl.map((item): DropdownSingleListItem => {
+        return {
+            title: item.name,
+            data: item
+        }
     })
 
     const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
