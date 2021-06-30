@@ -47,10 +47,14 @@ export const formatPutContentEngagementInput = (data: ContentEngagementSettings)
             ...data.engagementSettings.brandImageSettings
         },
         brandTextSettings: {
-            ...data.engagementSettings.brandTextSettings
+            ...data.engagementSettings.brandTextSettings,
+            brandText: data.engagementSettings.brandTextSettings && data.engagementSettings.brandTextSettings.brandText ? data.engagementSettings.brandTextSettings.brandText : null,
+            brandTextLink: data.engagementSettings.brandTextSettings && data.engagementSettings.brandTextSettings.brandTextLink ? data.engagementSettings.brandTextSettings.brandTextLink : null,
         },
         endScreenSettings: {
-            ...data.engagementSettings.endScreenSettings
+            ...data.engagementSettings.endScreenSettings,
+            endScreenText: data.engagementSettings.endScreenSettings && data.engagementSettings.endScreenSettings.endScreenText ? data.engagementSettings.endScreenSettings.endScreenText : null,
+            endScreenTextLink: data.engagementSettings.endScreenSettings && data.engagementSettings.endScreenSettings.endScreenTextLink ? data.engagementSettings.endScreenSettings.endScreenTextLink : null,
         },
         googleAnalyticsSettings: {
             ...data.engagementSettings.googleAnalyticsSettings
