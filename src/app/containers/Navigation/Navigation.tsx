@@ -105,9 +105,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [])
 
     React.useEffect(() => {
-        // userToken.getUserInfoItem();
-        console.log(history)
-        console.log(location)
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
@@ -115,8 +112,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedElement(firstSelectedItem().main);
         setSelectedSubElement(firstSelectedItem().slug);
     }, [location])
-
-    React.useEffect(() => console.log('history', window.history))
 
     React.useEffect(() => {
         props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
@@ -153,8 +148,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             })
         }
     }
-
-
 
     const AddItemsList = [{name: "Video", enabled: userToken.getPrivilege('privilege-vod')}, {name: "Live Stream", enabled: userToken.getPrivilege('privilege-live')}, {name: "Expo", enabled: userToken.getPrivilege('privilege-expo')}, {name: "Playlist", enabled: userToken.getPrivilege('privilege-playlists')} ]
 
