@@ -28,7 +28,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
     const {defaultMetric, defaultFormat} = getAnalyticsQsParams()
 
     const MetricsList = ['Plays', 'Impressions']
-    const [selectedMetric, setSelectedMetric] = React.useState<'Plays' | 'Impressions'>(defaultMetric && defaultMetric.sudMetric ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Plays' | 'Impressions' : 'Plays')
+    const [selectedMetric, setSelectedMetric] = React.useState<'Plays' | 'Impressions'>(defaultMetric && defaultMetric.sudMetric && MetricsList.indexOf(capitalizeFirstLetter(defaultMetric.sudMetric)) > -1 ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Plays' | 'Impressions' : 'Plays')
 
     const returnTimeAnalytics = () => {
         return (

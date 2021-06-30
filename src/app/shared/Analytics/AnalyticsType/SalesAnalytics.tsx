@@ -4,10 +4,8 @@ import LeafletMap from '../../../../components/Analytics/LeafletMap'
 import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { LoadingSpinner } from '../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner'
 import { LabelSelector } from '../../../../components/LabelSelector/LabelSelector'
-import { Tab } from '../../../../components/Tab/Tab'
 import { ThemeAnalyticsColors } from '../../../../styled/themes/dacast-theme'
 import { exportCSVFile } from '../../../../utils/services/csv/csvService'
-import { Routes } from '../../../containers/Navigation/NavigationTypes'
 import { SalesAnalyticsState, SalesKeys } from '../../../redux-flow/store/Content/Analytics'
 import { AnalyticsCardBody, AnalyticsCardHeader, AnalyticsCardStyle, getAnalyticsQsParams, setAnalyticsQsParams, TableAnalyticsStyled } from '../AnalyticsCommun'
 import { Text } from '../../../../components/Typography/Text'
@@ -26,7 +24,7 @@ export const SalesAnalytics = (props: SalesAnalyticsProps) => {
     const {defaultMetric, defaultFormat} = getAnalyticsQsParams()
 
     const MetricsList = ['Sales', 'Revenue']
-    const [selectedMetric, setSelectedMetric] = React.useState<'Sales' | 'Revenue'>(defaultMetric && defaultMetric.sudMetric ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Sales' | 'Revenue' : 'Sales')
+    const [selectedMetric, setSelectedMetric] = React.useState<'Sales' | 'Revenue'>(defaultMetric && defaultMetric.sudMetric && MetricsList.indexOf(capitalizeFirstLetter(defaultMetric.sudMetric)) > -1 ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Sales' | 'Revenue' : 'Sales')
 
     const returnTimeAnalytics = () => {
         return (

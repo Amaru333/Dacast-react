@@ -23,6 +23,7 @@ import { TabSmall } from '../../../components/Tab/TabSmall';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { world } from '../../constants/CountriesList';
 import { EmptyAnalytics } from '../../../components/Analytics/EmptyAnalytics';
+import EventHooker from '../../../utils/services/event/eventHooker';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;

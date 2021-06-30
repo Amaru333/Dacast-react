@@ -26,6 +26,7 @@ import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPay
 import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
 import { Label } from "../../../components/FormsComponents/Label/Label";
 import { segmentService } from "../../utils/services/segment/segmentService";
+import eventHooker from "../../../utils/services/event/eventHooker";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -65,6 +66,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         })
         return matchingRoute;
     };
+
     const [selectedElement, setSelectedElement] = React.useState<string>(firstSelectedItem().main);
     const [selectedSubElement, setSelectedSubElement] = React.useState<string>(firstSelectedItem().slug);
     const [toggleSubMenu, setToggleSubMenu] = React.useState<boolean>(false)
@@ -72,6 +74,9 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [selectedAddDropdownItem, setSelectedAddDropdownItem] = React.useState<string>('');
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
+    const [analyticsQs, setAnalyticsQs] = React.useState<string>(location.search)
+
+    eventHooker.subscribe('EVENT_FORWARD_ANALYTICS_DIMENSIONS', (qs: string) => setAnalyticsQs( '?' + qs))
 
     //REMOVE ALL MOCK DATA WHEN BACKEND DONE
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
@@ -101,6 +106,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
     React.useEffect(() => {
         // userToken.getUserInfoItem();
+        console.log(history)
+        console.log(location)
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
         if (path) {
             history.replace(path);
@@ -108,6 +115,8 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
         setSelectedElement(firstSelectedItem().main);
         setSelectedSubElement(firstSelectedItem().slug);
     }, [location])
+
+    React.useEffect(() => console.log('history', window.history))
 
     React.useEffect(() => {
         props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
@@ -242,7 +251,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                         )
                                     } else {
                                         return (
-                                            <Link to={subMenuElement.path} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
+                                            <Link to={ (location) => {if(subMenuElement.path.indexOf('analytics') > -1) {return subMenuElement.path + analyticsQs} return subMenuElement.path}} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                                 <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
                                                     <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
                                                 </SubMenuElement>

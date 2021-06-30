@@ -31,14 +31,13 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
 
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
-    const [isFetching, setIsFetching] = React.useState<boolean>(false)
 
     const loaded = React.useRef(false);
 
     React.useEffect(() => {
-        if(!isFetching || !props.dataConsumption) {
-            setIsFetching(true);
-            props.getAccountAnalyticsData({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AccountDataDimension, start: parseInt(startDate), end: parseInt(endDate) }).then(() => setIsFetching(false))
+        if(!loading || !props.dataConsumption) {
+            setLoading(true);
+            props.getAccountAnalyticsData({ id: null, timeRange: timeRange as TimeRangeAccountAnalytics, type: "account", dimension: AccountDataDimension, start: parseInt(startDate), end: parseInt(endDate) }).then(() => setLoading(false))
         }
     }, [])
 
