@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import {TabProps} from './TabTypes';
-
+import { Text } from '../Typography/Text'
 
 export const TabContainer = styled.div<{mobile: boolean}>`
     display: flex;
@@ -85,4 +85,26 @@ export const TabContentStyle = styled.div<{isDisplayed: boolean}>`
 
 export const TabsLabel = styled.div`
     margin-bottom: 4px;
+`
+
+export const TabSmallStyle = styled(Text)<{ selected: boolean; leftSide: boolean; rightSide: boolean}>`
+    border-width: 1px;
+    border-style: solid none solid solid;
+    border-color: ${props => props.theme.colors['gray-5']};
+    color: ${props => props.theme.colors['gray-5']}
+    ${props => props.leftSide && css`
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    `}
+
+    ${props => props.rightSide && css`
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-style: solid;
+    `}
+
+    ${props => props.selected && css`
+        background-color: ${props.theme.colors['dark-violet']};
+        color: ${props.theme.colors['white']};
+    `}
 `

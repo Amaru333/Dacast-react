@@ -7,7 +7,7 @@ import { AnalyticsDimensions, TimeRangeAnalytics } from '../../redux-flow/store/
 import { Card } from '../../../components/Card/Card';
 import { TableAnalytics } from './TableAnalytics';
 import { getUrlParam } from '../../../utils/utils';
-import { useHistory } from 'react-router';
+import EventHooker from '../../../utils/services/event/eventHooker';
 
 export const ThirdLgHalfXmFullXs = "col col-12 sm-col-6 lg-col-4 px1 mb2";
 export const HalfSmFullXs = "col col-12 sm-col-6 px1 mb2";
@@ -140,5 +140,6 @@ export const setAnalyticsQsParams = (qsParam: {key: string, value: string}, newS
     if (history.pushState) {
         let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + qs;
         window.history.pushState({path:newurl},'',newurl);
+        EventHooker.dispatch('EVENT_FORWARD_ANALYTICS_DIMENSIONS', qs)
     }
 }
