@@ -119,7 +119,6 @@
     "react-material-ui-form-validator": "^2.0.7",
     "react-recaptcha-v3": "^2.0.1",
     "react-redux": "^6.0.1",
-    "react-responsive-carousel": "^3.1.51",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scrollbars-custom": "^4.0.21",
