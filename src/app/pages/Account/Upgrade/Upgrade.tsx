@@ -39,7 +39,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
     const pricingIframeBaseUrl = 'http://localhost:8082'
-    const pricingIframeUrl = `${pricingIframeBaseUrl}/dist/index-upgrade.html`
+    const pricingIframeUrl = 'https://singularity-unified-pricing.dacast.com/index-upgrade.html'
     const [iframeHeight, setIframeHeight] = React.useState<number>(0)
     const [idleSeconds, setIdleSeconds] = React.useState(0)
     const [upgradeToastShown, setUpgradeToastShown] = React.useState(false)
