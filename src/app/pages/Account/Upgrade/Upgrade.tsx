@@ -210,7 +210,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handlePricingIframeEvents = event => {
-        if (event.origin !== pricingIframeBaseUrl) {
+        const env = process.env.NODE_ENV || 'development'
+        if (env === 'production' && event.origin !== pricingIframeBaseUrl) {
             return
         }
         try {
