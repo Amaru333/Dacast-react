@@ -1,4 +1,5 @@
 import { GetContentSecuritySettingsOutput, PutContentSecuritySettingsInput } from "../../../../../DacastSdk/common"
+import { formatTsToMs } from "../../../../../utils/services/date/dateService"
 import { ContentType } from "../../Common/types"
 import { ContentSecuritySettings, defaultDomainControl, defaultGeoRestriction, DomainControl, GeoRestriction } from "../../Settings/Security"
 
@@ -26,7 +27,7 @@ export const formatGetContentSecuritySettingsOutput = (contentType: ContentType)
 
     let formattedData: ContentSecuritySettings & {contentType: ContentType} = {
         securitySettings: {
-            contentScheduling: {...endpointResponse.contentScheduling, startTime: endpointResponse.contentScheduling.startTime * 1000, endTime: endpointResponse.contentScheduling.endTime * 1000},
+            contentScheduling: {...endpointResponse.contentScheduling, startTime: formatTsToMs(endpointResponse.contentScheduling.startTime), endTime: formatTsToMs(endpointResponse.contentScheduling.endTime)},
             geoRestriction: geoRestrictionsList,
             domainControl: domainControlsList,
             passwordProtection: {

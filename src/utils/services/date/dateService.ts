@@ -92,3 +92,12 @@ export const utcOffsetToMin = (offset: string) => {
 export const getNbDaysForMonth = (month: number, year: number) => {
     return new Date(year, month, 0).getDate()
 }
+
+export const formatTsToMs = (ts: number): number => {
+    let startTime = 0
+    const HUNDRED_YEARS = 100 * 365 * 24 * 3600
+    if(ts > HUNDRED_YEARS * Date.now() / 1000) {
+        return startTime = ts
+    }
+    return startTime = ts * 1000
+}
