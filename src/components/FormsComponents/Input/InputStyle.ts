@@ -283,7 +283,7 @@ export const TagsInputStyle = styled(InputStyle)`
     }
 `
 
-export const InputSearchStyle = styled(InputSearch)`
+export const InputSearchStyle = styled.input<{}>`
     background: white;
     border-radius: 4px;
     height:24px;
