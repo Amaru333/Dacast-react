@@ -324,7 +324,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                         selectedTab === 'content' &&
                         <InputSearch
                             placeholder="Search by Title..." 
-                            callback={(value: string) => {}}
+                            callback={(value: string) => setSearchString(value)}
                             isSearching={searchString !== null && searchString !== ''}
                             value={searchString}
                         />
