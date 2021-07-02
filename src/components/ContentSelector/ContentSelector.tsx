@@ -15,6 +15,7 @@ import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModal
 import { handleRowIconType } from '../../app/shared/Analytics/AnalyticsCommun';
 import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
 import { ListContentTitle } from '../../app/pages/Folders/FoldersStyle';
+import { InputSearchStyle } from '../FormsComponents/Input/InputStyle';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
@@ -323,7 +324,12 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                         selectedTab === 'content' &&
                         <>
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]) }} />
+                            <InputSearchStyle
+                                placeholder="Search by Title..." 
+                                callback={(value: string) => setSearchString(value)}
+                                isSearching={searchString !== null && searchString !== ''}
+                                value={searchString}
+                            />
                         </>
                     }
                 </div>

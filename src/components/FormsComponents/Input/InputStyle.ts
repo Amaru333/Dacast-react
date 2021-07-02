@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { InputProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
+import { InputSearch } from "./InputSearch";
 
 export const ContainerStyle = styled.div`
     display: flex;
@@ -282,7 +283,7 @@ export const TagsInputStyle = styled(InputStyle)`
     }
 `
 
-export const InputSearchStyle = styled.input<{}>`
+export const InputSearchStyle = styled(InputSearch)`
     background: white;
     border-radius: 4px;
     height:24px;
