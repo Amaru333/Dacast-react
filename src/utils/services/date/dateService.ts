@@ -96,7 +96,7 @@ export const getNbDaysForMonth = (month: number, year: number) => {
 export const formatTsToMs = (ts: number): number => {
     let startTime = 0
     const HUNDRED_YEARS = 100 * 365 * 24 * 3600
-    if(ts > HUNDRED_YEARS * Date.now() / 1000) {
+    if(ts < HUNDRED_YEARS * Date.now() / 1000) {
         return startTime = ts
     }
     return startTime = ts * 1000
