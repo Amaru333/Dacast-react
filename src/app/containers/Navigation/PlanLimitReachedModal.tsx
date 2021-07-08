@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { userToken } from '../../../app/utils/services/token/tokenService';
 import { segmentService } from '../../utils/services/segment/segmentService';
 
-export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed' | 'upgrade_now_video' | 'upgrade_now_stream' | 'upgrade_now_expo' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
+export type PlanLimitReachedModalType = 'end_of_trial' | 'limit_reached' | 'more_data_needed' | 'more_storage_needed_trial' | 'upgrade_now_video' | 'upgrade_now_stream' | 'upgrade_now_expo' | 'livestream_limit_reached_trial' | 'feature_not_included' | 'feature_not_included_starter_paywall';
 
 export interface PlanLimitReachedModalProps {
     type: PlanLimitReachedModalType;
@@ -30,7 +30,6 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             'livestream_limit_reached_trial',
             'more_data_needed',
             'more_data_needed_trial',
-            'more_storage_needed',
             'more_storage_needed_trial'
         ].includes(props.type)) {
             const location = {
@@ -39,7 +38,6 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
                 'livestream_limit_reached_trial': 'max live stream reached pop up',
                 'more_data_needed': 'max data reached pop up',
                 'more_data_needed_trial': 'max data reached pop up',
-                'more_storage_needed': 'max storage reached pop up',
                 'more_storage_needed_trial': 'max storage reached pop up'
             }[props.type]
             const customers = ['end_of_trial', 'upgrade_now'].includes(props.type) ? 'trial' : 'all';
@@ -92,7 +90,6 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             case 'more_data_needed':
             case 'more_data_needed_trial':
                 return 'Need More Data'
-            case 'more_storage_needed':
             case 'more_storage_needed_trial':
                 return 'Need More Storage'
             case 'upgrade_now_video':
@@ -112,7 +109,6 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             case 'more_data_needed_trial':
                 return true
             case 'limit_reached':
-            case 'more_storage_needed':
             case 'more_storage_needed_trial':
             case 'upgrade_now_video':
             case 'upgrade_now_stream':
@@ -142,10 +138,6 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             case 'more_data_needed':
                 return (
                     <Text size={14}>You have reached your data limit for this plan. Upgrade your plan or purchase more data to continue.</Text>
-                )
-            case 'more_storage_needed':
-                return (
-                    <Text size={14}>You have reached your storage limit for this plan. Upgrade your plan or Contact Us to purchase.</Text>
                 )
             case 'more_data_needed_trial':
                 return (
@@ -191,7 +183,7 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             <ModalFooter>
                 <Button onClick={() => navigateToUpgrade()} typeButton="primary" buttonColor="lightBlue">Upgrade Now</Button>
                 {
-                    ['upgrade_now', 'limit_reached', 'more_storage_needed'].includes(props.type) &&
+                    ['upgrade_now', 'limit_reached'].includes(props.type) &&
                     <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" typeButton="tertiary" buttonColor="lightBlue" >Cancel</Button>
                 }
                 {
