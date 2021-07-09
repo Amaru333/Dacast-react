@@ -169,7 +169,7 @@ export const MigrationPage = (props: MigrationComponentProps) => {
                 selectedTab === 'Jobs' &&
                 <React.Fragment>
                     <div className='flex items-center'>
-                        <InputCheckbox label='Pending Only' className='flex-auto py1' id='pendingOnlyCheckbox' defaultChecked={pendingOnly} onChange={() => setPendingOnly(!pendingOnly)} />
+                        <InputCheckbox label='Pending Only' className='flex-auto py1' id='pendingOnlyCheckbox' defaultChecked={pendingOnly} onChange={() => { setSelectedJob(null); setPendingOnly(!pendingOnly) } } />
                         <Button className='py1 right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
                     </div>
                     <Table id='jobsTable' headerBackgroundColor='white' header={jobsTableHeader()} body={jobsTableBody()} />
