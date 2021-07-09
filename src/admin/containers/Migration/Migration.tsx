@@ -10,7 +10,7 @@ import { FilteringMigrationState } from '../../pages/Migration/MigrationFilters'
 
 export interface MigrationComponentProps {
     migrationData: MigrationData | false;
-    getJobsList: () => Promise<void>;
+    getJobsList: (pendingOnly: boolean) => Promise<void>;
     getJobDetails: (jobId: string) =>  Promise<void>;
     startJob: (platform: 'Dacast' | 'Vzaar', usersList: string[], isDifferentialMigrationJob: boolean) => Promise<void>
     switchUsers: (usersList: string[], jobId: string) => Promise<void>
@@ -29,8 +29,8 @@ export function mapStateToProps(state: AdminState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<AdminState, void, Action>) {
     return {
-        getJobsList: async () => {
-            await dispatch(getJobsListAction(undefined));
+        getJobsList: async (pendingOnly: boolean) => {
+            await dispatch(getJobsListAction(pendingOnly));
         },
         getJobDetails: async (jobId: string) => {
             await dispatch(getJobDetailsAction(jobId))

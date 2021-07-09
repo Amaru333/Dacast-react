@@ -13,6 +13,7 @@ import { makeRoute } from '../../utils/utils'
 import { FilteringMigrationState, MigrationFiltering } from './MigrationFilters'
 import { Modal } from '../../../components/Modal/Modal'
 import { Tooltip } from '../../../components/Tooltip/Tooltip'
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox'
 
 export const MigrationPage = (props: MigrationComponentProps) => {
 
@@ -39,14 +40,15 @@ export const MigrationPage = (props: MigrationComponentProps) => {
     const [currentPage, setCurrentPage] = React.useState<number>(0)
     const [selectedUserIds, setSelectedUserIds] = React.useState<string[]>([])
     const [usersModalOpened, setUsersModalOpened] = React.useState<boolean>(false)
+    const [pendingOnly, setPendingOnly] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         if(selectedTab === 'Jobs') {
-            props.getJobsList()
+            props.getJobsList(pendingOnly)
         } else {
             props.getMigratedUsersList(null)
         }
-    }, [selectedTab])
+    }, [selectedTab, pendingOnly])
 
     const handleArrowClick = (jobId: string) => {
         if(jobId !== selectedJob) {
@@ -166,8 +168,9 @@ export const MigrationPage = (props: MigrationComponentProps) => {
             {
                 selectedTab === 'Jobs' &&
                 <React.Fragment>
-                    <div>
-                    <Button className='right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
+                    <div className='flex items-center'>
+                        <InputCheckbox label='Pending Only' className='flex-auto py1' id='pendingOnlyCheckbox' defaultChecked={pendingOnly} onChange={() => setPendingOnly(!pendingOnly)} />
+                        <Button className='py1 right' onClick={() => setStartJobModalOpened(true)} buttonColor='blue' sizeButton='small' typeButton='primary'>Start Job</Button>
                     </div>
                     <Table id='jobsTable' headerBackgroundColor='white' header={jobsTableHeader()} body={jobsTableBody()} />
                     {
