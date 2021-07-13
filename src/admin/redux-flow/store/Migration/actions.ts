@@ -1,7 +1,7 @@
 import { ActionTypes, JobDetails, JobInfo, MigratedUser } from './types';
 import { applyAdminViewModel } from '../../../utils/utils';
 import { dacastSdk } from '../../../utils/services/axios/adminAxiosClient';
-import { formatGetJobDetailsInput, formatGetJobDetailsOuput, formatGetJobsListOutput, formatGetMigratedUserListInput, formatGetMigratedUserListOutput, formatPostStartJobInput, formatPostSwitchOverUsersInput } from './viewModel';
+import { formatGetJobDetailsInput, formatGetJobDetailsOuput, formatGetJobsListOutput, formatGetMigratedUserListInput, formatGetMigratedUserListOutput, formatPostStartJobInput, formatPostSwitchOverUsersInput, formatGetJobsListInput } from './viewModel';
 
 export interface GetJobsList {
     type: ActionTypes.GET_JOBS_LIST;
@@ -28,7 +28,7 @@ export interface GetMigratedUsersList {
     payload: {users: MigratedUser[]; next: string};
 }
 
-export const getJobsListAction = applyAdminViewModel(dacastSdk.getJobsList, undefined, formatGetJobsListOutput, ActionTypes.GET_JOBS_LIST, null,  'Couldn\'t get jobs list')
+export const getJobsListAction = applyAdminViewModel(dacastSdk.getJobsList, formatGetJobsListInput, formatGetJobsListOutput, ActionTypes.GET_JOBS_LIST, null,  'Couldn\'t get jobs list')
 export const getJobDetailsAction = applyAdminViewModel(dacastSdk.getJobDetails, formatGetJobDetailsInput, formatGetJobDetailsOuput, ActionTypes.GET_JOB_DETAILS, null,  'Couldn\'t get jobs details')
 
 export const startMigrationJobAction = applyAdminViewModel(dacastSdk.postStartMigrationJob, formatPostStartJobInput, undefined, ActionTypes.START_JOB, 'Job Started',  'Couldn\'t start job')

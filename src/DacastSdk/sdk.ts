@@ -67,7 +67,7 @@ export class DacastSdk {
     public putExtendTrial = async (input: PutExtendTrialInput): Promise<void> => await this.axiosClient.put('/accounts/' + input.userId + '/extend-trial', input.payload)
     public postForceInplayerSetup = async (salesforceID: string): Promise<void> => await this.axiosClient.post(`/accounts/${salesforceID}/force-inplayer-setup`)
 
-    public getJobsList = async (): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs').then(this.checkExtraData)
+    public getJobsList = async (input: string): Promise<GetJobsListOutput> => await this.axiosClient.get('/migration/jobs' + input).then(this.checkExtraData)
     public getJobDetails = async (input: string): Promise<GetMigrationJobDetailsOutput> => await this.axiosClient.get('/migration/job/' + input).then(this.checkExtraData)
     public postStartMigrationJob = async (input: PostStartMigrationJobInput) => await this.axiosClient.post('/migration/job', input)
     public postSwitchOverUsers = async (input: PostSwitchOverUsersInput, jobId: string) => await this.axiosClient.post('/migration/job/' + jobId + '/switchover', input)
