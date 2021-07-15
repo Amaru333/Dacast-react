@@ -209,17 +209,23 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.ultraSecureChannel.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.ultraSecureChannel.planValue || props.accountPlan.ultraSecureChannel.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('ultraSecureChannel', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>AES Encryption</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.aes.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.aes.planValue || props.accountPlan.aes.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aes', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>AES Encryption BETA</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.aesBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.aesBeta.planValue || props.accountPlan.aesBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aesBeta', value === 'On' ? true : false)} />
+                    </div>
                 </Card>
                 <div className='flex mt2'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
                     <Button onClick={() => {history.push('/accounts')}}  sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
                 </div>
              {/* Not implemented yet */}
-                {/* <Text className='py1' size={14} weight='med'>AES</Text>
-                <div className='flex items-center my1'>
-                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.aes.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
-                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.aes.planValue || props.accountPlan.aes.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aes', value === 'On' ? true : false)} />
-                </div>
+                {/*
                 <Text className='py1' size={14} weight='med'>Signed Keys</Text>
                 <div className='flex items-center my1'>
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.signedKeys.planValue ? 'Plan: On' : 'Plan: Off'}</Text>

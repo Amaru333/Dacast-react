@@ -1,5 +1,6 @@
 export type AdverstisingPrivilege = "privilege-advertising";
 export type AesPrivilege = "privilege-aes";
+export type AesBetaPrivilege = "privilege-aes-beta";
 export type ApiPrivilege = "privilege-api";
 export type ChinaPrivilege = "privilege-china";
 export type DvrPrivilege = "privilege-dvr";
@@ -28,7 +29,7 @@ export type ApiBetaPrivilege = "privilege-api-beta"
 export type AdminPrivilege = "privilege-admin"
 export type PerContentAnalyticsPrivilege = "privilege-per-content-analytics"
 
-export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
+export type Privilege = AdverstisingPrivilege | AesPrivilege | AesBetaPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
 VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege | UnsecureM3u8VodPrivilege;
 

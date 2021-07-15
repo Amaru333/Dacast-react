@@ -18,7 +18,7 @@ import { Divider } from '../../../shared/MiscStyles';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { DisabledSection } from '../Common/MiscStyle';
 import { ContentType } from '../../redux-flow/store/Common/types';
-
+import { userToken } from '../../utils/services/token/tokenService';
 
 interface ContentSecurityComponentProps {
     contentType: ContentType
@@ -32,7 +32,7 @@ interface ContentSecurityComponentProps {
 }
 
 export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
-    
+
     const [togglePasswordProtectedVideo, setTogglePasswordProtectedVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.passwordProtection && props.contentSecuritySettings.securitySettings.passwordProtection.password ? true : false)
     const [hasToggleChanged, setHasToggleChanged] = React.useState<boolean>(false)
     const [settingsEditable, setSettingsEditable] = React.useState<boolean>(!props.contentSecuritySettings.securitySettings.locked )
@@ -40,6 +40,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [editSettingsModalOpen, setEditSettingsModalOpen] = React.useState<boolean>(false)
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [toggleAESEncryptionVideo, setToggleAESEncryptionVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.useAES)
 
     const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item): DropdownSingleListItem => {
         return {
@@ -89,23 +90,27 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     }
 
-    
+    const handleAESVideoChange = () => {
+        setHasToggleChanged(true)
+        setToggleAESEncryptionVideo(!toggleAESEncryptionVideo)
+        setSelectedSettings({...selectedSettings, useAES: !toggleAESEncryptionVideo})
+    }
 
     const handleSave = () => {
         setButtonLoading(true)
-        
         props.saveContentSecuritySettings(
             {
                 passwordProtection: selectedSettings.passwordProtection,
                 contentScheduling: {
-                    startTime: startTime * 1000, 
+                    startTime: startTime * 1000,
                     startTimezone: startTimezone,
                     endTime: endTime * 1000,
                     endTimezone: endTimezone
-                }, 
-                selectedGeoRestriction: selectedSettings.selectedGeoRestriction, 
+                },
+                useAES: selectedSettings.useAES,
+                selectedGeoRestriction: selectedSettings.selectedGeoRestriction,
                 selectedDomainControl: selectedSettings.selectedDomainControl
-            }, 
+            },
             props.contentId, props.contentType
             ).then(() => {
                 setButtonLoading(false)
@@ -128,17 +133,18 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             {
                 passwordProtection: {
                     password: null
-                }, 
+                },
                 contentScheduling: {
-                    startTime: 0, 
+                    startTime: 0,
                     startTimezone: null,
                     endTime: 0,
                     endTimezone: null
-                }, 
-                selectedDomainControl: null, 
+                },
+                useAES: false,
+                selectedDomainControl: null,
                 selectedGeoRestriction: null,
                 locked: false
-            }, 
+            },
             props.contentId, props.contentType
         ).then(() => {
             setSettingsEditable(!settingsEditable)
@@ -148,19 +154,19 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     return (
         <div >
-            {  !settingsEditable ? 
-        
+            {  !settingsEditable ?
+
                 <Bubble type='info' className='my2'>
-                    <BubbleContent>         
+                    <BubbleContent>
                         These settings are inherited from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock</IconStyle>&nbsp;Padlock to override these settings.
-                    </BubbleContent>         
+                    </BubbleContent>
                 </Bubble>
                 :
                 <Bubble type='info' className='my2'>
-                    <BubbleContent>         
+                    <BubbleContent>
                         These settings are different from your global <a href="/settings/security">&nbsp;Security Settings&nbsp;</a> — click the&nbsp;<IconStyle>lock_open</IconStyle>&nbsp;Padlock to revert to global settings.
-                    </BubbleContent>     
-                </Bubble> 
+                    </BubbleContent>
+                </Bubble>
             }
             <Card>
                 <Header className="pb25">
@@ -168,46 +174,45 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                         <Text size={20} weight='med' color='gray-1'>Security</Text>
                     </div>
                     <IconStyle className='pointer' id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
-                        { settingsEditable ? 
+                        { settingsEditable ?
                             "lock_open"
                             : "lock"
                         }
                     </IconStyle>
                     <Tooltip target="unlockSecurityTooltip">{settingsEditable ? "Click to revert Security Settings" : "Click to edit Security Settings"}</Tooltip>
                 </Header>
-        
+
                 <DisabledSection settingsEditable={settingsEditable}>
-                
+
                     <div className='col col-12 mb2'>
-                        <Toggle 
-                            id="passwordProtectedVideosToggle" 
-                            label='Password Protection' 
+                        <Toggle
+                            id="passwordProtectedVideosToggle"
+                            label='Password Protection'
                             onChange={() => {handlePasswordProtectedVideoChange()}} defaultChecked={togglePasswordProtectedVideo}
                         />
                         <ToggleTextInfo>
                             <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
                         </ToggleTextInfo>
-                        { togglePasswordProtectedVideo && 
+                        { togglePasswordProtectedVideo &&
                             <div className='col col-12'>
-                                <Input 
+                                <Input
                                     type='text'
-                                    defaultValue={handlePasswordValue()}  
+                                    defaultValue={handlePasswordValue()}
                                     className='col col-12 md-col-4 mb2'
-                                    disabled={false} 
-                                    id='password' 
-                                    label='Password' 
+                                    disabled={false}
+                                    id='password'
+                                    label='Password'
                                     placeholder='Password'
                                     onChange={(event) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, passwordProtection: {password: event.currentTarget.value }})}}
                                     required
                                 />
                             </div>}
-                    </div> 
-
+                    </div>
                     <div className='col col-12 clearfix'>
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                         <div className='col col-12 mb2 flex items-end'>
-                            <DateTimePicker 
+                            <DateTimePicker
                                 dropdownTitle="Available"
                                 id="dateStart"
                                 hideOption="Always"
@@ -218,7 +223,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             />
                         </div>
                         <div className='col col-12 mb2 flex items-end'>
-                            <DateTimePicker 
+                            <DateTimePicker
                                 dropdownTitle="Until"
                                 id="dateEnd"
                                 minDate={startTime ? startTime : undefined}
@@ -229,8 +234,38 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                                 showTimezone={true}
                             />
                         </div>
-                        
+
                     </div>
+
+                    {
+                      userToken.getPrivilege('privilege-aes-beta') &&
+                      <div>
+                        <Divider className="p1 mb2" />
+                        <div className="col col-12">
+                          <Header className="pb25">
+                            <div>
+                              <Text size={20} weight='med' color='gray-1'>
+                                Advanced Encryption Standard (AES)
+                              </Text>
+                            </div>
+                          </Header>
+                          <div className='col col-12'>
+                            <Toggle
+                            id="AESEncryptionVideosToggle"
+                            label='AES'
+                            onChange={() => {handleAESVideoChange()}} defaultChecked={toggleAESEncryptionVideo}
+                            />
+                            <ToggleTextInfo>
+                              <Text size={14} weight='reg' color='gray-1'>
+                                When the video is encrypted, a special key scrambles the
+                                video content and prevents unauthorized downloads.&nbsp;
+                                <a href="https://www.dacast.com/blog/aes-video-encryption" target="_blank">Learn more</a>
+                              </Text>
+                            </ToggleTextInfo>
+                          </div>
+                        </div>
+                      </div>
+                    }
 
                     <Divider className="p1" />
 
@@ -243,18 +278,18 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </div>
 
-                        <DropdownSingle 
-                            className='col col-12 md-col-3 my2 mr1' 
-                            id="availableEnd" 
-                            dropdownTitle="Select Geo-Restriction Group" 
-                            list={geoRestrictionDropdownList} 
-                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name} 
-                            callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: item.data.id})}} 
+                        <DropdownSingle
+                            className='col col-12 md-col-3 my2 mr1'
+                            id="availableEnd"
+                            dropdownTitle="Select Geo-Restriction Group"
+                            list={geoRestrictionDropdownList}
+                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name}
+                            callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: item.data.id})}}
                         />
                     </div>
 
                     <Divider className="p1" />
-                
+
                     <div>
                         <div className="pt25" >
                             <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
@@ -264,22 +299,22 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
                         </div>
                         <div className="col col-12 py2">
-                            <DropdownSingle 
-                                className="col col-12 md-col-3" 
-                                id="availableEnd" 
-                                dropdownTitle="Select Domain Control Group" 
-                                list={domainControlDropdownList} 
-                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name} 
-                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: item.data.id})}} 
+                            <DropdownSingle
+                                className="col col-12 md-col-3"
+                                id="availableEnd"
+                                dropdownTitle="Select Domain Control Group"
+                                list={domainControlDropdownList}
+                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name}
+                                callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: item.data.id})}}
                             />
                         </div>
                     </div>
                 </DisabledSection>
             </Card>
-          
+
             { hasToggleChanged &&
                 <div>
-                    <Button 
+                    <Button
                         type='button' className="my2" typeButton='primary' buttonColor='blue' isLoading={buttonLoading} onClick={() => { handleSave()}}>Save</Button>
                     <Button type="button" form="vodSecurityForm" className="m2" typeButton='tertiary' buttonColor='blue' onClick={() => {{handleReset();props.showToast(`Changes have been discarded`, 'fixed', "success")}}}>Discard</Button>
                 </div>
@@ -304,6 +339,6 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             </Modal>
             <Prompt when={hasToggleChanged} message='' />
         </div>
-                    
+
     )
 }
