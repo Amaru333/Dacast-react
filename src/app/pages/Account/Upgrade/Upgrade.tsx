@@ -54,6 +54,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     React.useEffect(() => {
         if (location.hash === '#calculator') {
             setDisplayCalculator(true)
+            window.history.replaceState(null, null, ' ')
         }
     }, [location.hash])
 
