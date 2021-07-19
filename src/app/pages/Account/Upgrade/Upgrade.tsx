@@ -7,7 +7,7 @@ import { UpgradeContainerProps } from '../../../containers/Account/Upgrade';
 import { Currency, Plan } from '../../../redux-flow/store/Account/Upgrade/types';
 import { RecurlyProvider, Elements } from '@recurly/react-recurly';
 import { PlansName } from './FeaturesConst';
-import { handleCurrencySymbol } from '../../../../utils/utils';
+import { getUrlParam, handleCurrencySymbol } from '../../../../utils/utils';
 import { useHistory } from 'react-router'
 import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal';
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
@@ -25,6 +25,7 @@ import { ContactOwnerModal } from '../Users/ContactOwnerModal';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const env = process.env.NODE_ENV || 'development'
+    const displayCalculator = !!getUrlParam('calculator')
     const defaultCurrency: string = localStorage.getItem('currency') ? localStorage.getItem('currency') : (props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country]) ? countries[props.companyInfo.country].currency : 'USD'
     const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const upgradeStepList = [{title: 'Features', content: UpgradeFeaturesStep}, {title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
@@ -37,7 +38,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const initialSelectedCurrency = { title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()} }
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>(initialSelectedCurrency)
     const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
-    const [displayCalculator, setDisplayCalculator] = React.useState<boolean>(false)
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
     const pricingIframeBaseUrl = env === 'production' ? 'https://singularity-unified-pricing.dacast.com' : 'http://localhost:8082'
@@ -50,13 +50,6 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     React.useEffect(() => {
         localStorage.setItem('currency', selectedCurrency.data.id)
     }, [selectedCurrency])
-
-    React.useEffect(() => {
-        if (location.hash === '#calculator') {
-            setDisplayCalculator(true)
-            window.history.replaceState(null, null, ' ')
-        }
-    }, [location.hash])
 
     const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
