@@ -37,6 +37,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const initialSelectedCurrency = { title: defaultCurrency.toUpperCase() + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()} }
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>(initialSelectedCurrency)
     const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
+    const [displayCalculator, setDisplayCalculator] = React.useState<boolean>(false)
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
     const pricingIframeBaseUrl = env === 'production' ? 'https://singularity-unified-pricing.dacast.com' : 'http://localhost:8082'
@@ -49,6 +50,12 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     React.useEffect(() => {
         localStorage.setItem('currency', selectedCurrency.data.id)
     }, [selectedCurrency])
+
+    React.useEffect(() => {
+        if (location.hash === '#calculator') {
+            setDisplayCalculator(true)
+        }
+    }, [location.hash])
 
     const purchasePlan = (recurlyToken: string, threeDSecureToken: string, callback: React.Dispatch<React.SetStateAction<string>>) => {
         setIsLoading(true);
@@ -166,7 +173,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const sendIframeOptions = () => {
         const options = {
             currentPlan: currentPlan && currentPlan.toLowerCase(),
-            selectedCurrency: selectedCurrency && selectedCurrency.data.id
+            selectedCurrency: selectedCurrency && selectedCurrency.data.id,
+            displayCalculator: displayCalculator
         }
         const event = { type: 'IFRAME_OPTIONS_UPDATED', params: { options } }
         pricingIframeRef.current.contentWindow.postMessage(JSON.stringify(event), '*')
