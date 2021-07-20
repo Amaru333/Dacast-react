@@ -26,7 +26,11 @@ import { ChangeSeatsPaymentStep } from "../../pages/Account/Users/ChangeSeatsPay
 import { getBillingPageInfosAction, PlanSummary } from "../../redux-flow/store/Account/Plan";
 import { Label } from "../../../components/FormsComponents/Label/Label";
 import { segmentService } from "../../utils/services/segment/segmentService";
-import eventHooker from "../../../utils/services/event/eventHooker";
+import EventHooker from "../../../utils/services/event/eventHooker";
+import { PlanSummaryWithAdditionalSeats } from "../../pages/Account/Users/Users";
+import { dacastSdk } from "../../utils/services/axios/axiosClient";
+import { PaymentFailedModal } from "../../shared/Billing/PaymentFailedModal";
+import { PaymentSuccessModal } from "../../shared/Billing/PaymentSuccessModal";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -76,12 +80,35 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [upgradeMultiUserModalOpen, setUpgradeMultiUserModalOpen] = React.useState<boolean>(false)
     const [analyticsQs, setAnalyticsQs] = React.useState<string>(location.search)
 
-    eventHooker.subscribe('EVENT_FORWARD_ANALYTICS_DIMENSIONS', (qs: string) => setAnalyticsQs( '?' + qs))
+    EventHooker.subscribe('EVENT_FORWARD_ANALYTICS_DIMENSIONS', (qs: string) => setAnalyticsQs( '?' + qs))
 
     //REMOVE ALL MOCK DATA WHEN BACKEND DONE
     const [changeSeatsStepperOpen, setChangeSeatsStepperOpen] = React.useState<boolean>(false)
-    const [planDetails, setPlanDetails] = React.useState<PlanSummary>(props.billingInfo.currentPlan)
+    const [planDetails, setPlanDetails] = React.useState<PlanSummaryWithAdditionalSeats>(props.billingInfo ? {...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0} : null)
+    const [paymentSuccessfulModalOpened, setPaymentSuccessfulModalOpened] = React.useState<boolean>(false)
+    const [paymentDeclinedModalOpened, setPaymentDeclinedModalOpened] = React.useState<boolean>(false)
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
+
+    const purchaseAddOns = () => {
+        setIsLoading(true)
+        dacastSdk.postPurchaseAddOn({
+            addOnCode: 'MUA_ADDITIONAL_SEATS',
+            quantity: planDetails.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').quantity,
+            preview: false
+        })
+        .then(() => {
+            setIsLoading(false)
+            setChangeSeatsStepperOpen(false)
+            setPaymentSuccessfulModalOpened(true)
+            EventHooker.dispatch('ADDITIONAL_SEATS_PURCHASED', undefined)
+        })
+        .catch(() => {
+            setIsLoading(false)
+            setPaymentDeclinedModalOpened(true)
+        })
+    }
 
     const addDropdownListRef = React.useRef<HTMLUListElement>(null);
     const [profileDataisFetching, setProfileDataIsFetching] = React.useState<boolean>(true)
@@ -306,6 +333,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     emptySeats={1}
                     planData={planDetails}
                     billingInfo={props.billingInfo}
+                    purchaseAddOn={purchaseAddOns}
                 />
             }
 
@@ -314,6 +342,17 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             </Modal>
 
             <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
+            {
+                paymentSuccessfulModalOpened && 
+                <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
+                    <Text size={14}>You bought {planDetails.seatToPurchase} additional seats.</Text>
+                </PaymentSuccessModal>
+            }
+
+            <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
+                <Text size={14}>Your payment was declined.</Text>
+            </PaymentFailedModal>
+        
         </>
     )
 }
