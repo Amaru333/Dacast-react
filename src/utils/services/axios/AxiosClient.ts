@@ -36,32 +36,29 @@ export class AxiosClient {
     }
 
     private requestInterceptor = async (config: AxiosRequestConfig) => {
-        let {
-            authRequired = true,
-        } = config.headers['X-Api-Key']
-        
-        if(!authRequired) {
-            let newConfig = config
-            delete newConfig.headers.Authorization
-            return newConfig
-        }
+        return new Promise((resolve, reject) => {
+            let {
+                authRequired = true,
+            } = config.headers['X-Api-Key']
+            
+            if(!authRequired) {
+                let newConfig = config
+                delete newConfig.headers.Authorization
+                resolve(newConfig)
+            }
 
-
-        if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
-            this.refreshingToken = true
-            new Promise((resolve, reject) => {
-                console.log('promise')
-                this.refreshToken().then(() => {
+            if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
+                this.refreshingToken = true
+                    this.refreshToken().then(() => {
                         this.refreshingToken = false
-                        config.headers['Authorization'] = this.userToken.getTokenInfo().token
-                        resolve(config);
                     }, reject);
-                    console.log('resolving?')
-                resolve(config);
-            })
-        }
-        config.headers['Authorization'] = this.userToken.getTokenInfo().token
-        return config
+                let refreshedConfig = config
+                refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+                resolve(refreshedConfig);
+            }
+            config.headers['Authorization'] = this.userToken.getTokenInfo().token
+            resolve(config)
+        })
     }
 
     private responseInterceptor = (error: any) => {
@@ -128,7 +125,6 @@ export class AxiosClient {
             localStorage.removeItem('userToken')
             localStorage.setItem('userToken', JSON.stringify(token))
             this.userToken.addTokenInfo(token)
-
         }).catch((error: any) => {
             if(error.response.data.error.indexOf('Refresh Token has expired') > -1) {
                 EventHooker.dispatch('EVENT_FORCE_LOGOUT', undefined)
@@ -136,7 +132,6 @@ export class AxiosClient {
             return Promise.reject(error);
         })  
     }
-
 }
 
 const isNetworkError = (error: any) => {
