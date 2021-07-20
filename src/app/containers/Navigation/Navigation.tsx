@@ -237,7 +237,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
                                                 <div className='flex'>
                                                     <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
-                                                    <Label backgroundColor='violet20' color='dark-violet' label='BETA' />
                                                 </div>
 
                                             </SubMenuElement>
