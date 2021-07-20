@@ -46,11 +46,19 @@ export class AxiosClient {
             return newConfig
         }
 
+
         if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
             this.refreshingToken = true
-            await this.refreshToken().then(() => {
-                this.refreshingToken = false
-            })        
+            new Promise((resolve, reject) => {
+                console.log('promise')
+                this.refreshToken().then(() => {
+                        this.refreshingToken = false
+                        config.headers['Authorization'] = this.userToken.getTokenInfo().token
+                        resolve(config);
+                    }, reject);
+                    console.log('resolving?')
+                resolve(config);
+            })
         }
         config.headers['Authorization'] = this.userToken.getTokenInfo().token
         return config
