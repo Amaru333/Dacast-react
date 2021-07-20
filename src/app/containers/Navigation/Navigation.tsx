@@ -128,8 +128,18 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
-        props.getPlanDetails()
+        if(!props.billingInfo) {
+            props.getBillingPageInfos()
+        }
+        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
+
     }, [])
+
+    React.useEffect(() => {
+        if(props.billingInfo && props.billingInfo.currentPlan) {
+            setPlanDetails({...props.billingInfo.currentPlan, termsAndConditions: false, seatToPurchase: 0, proRatedPrice: 0 })
+        }
+    }, [props.billingInfo])
 
     React.useEffect(() => {
         const path = (/#!(\/.*)$/.exec(location.hash) || [])[1];
@@ -141,7 +151,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }, [location])
 
     React.useEffect(() => {
-        props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
     }, [])
 
     const handleMenuToggle = (menuName: string) => {
@@ -332,6 +341,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     updateStepperData={(plan: PlanSummary) => setPlanDetails(plan)}
                     emptySeats={1}
                     planData={planDetails}
+                    isLoading={isLoading}
                     billingInfo={props.billingInfo}
                     purchaseAddOn={purchaseAddOns}
                 />
@@ -359,7 +369,6 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        planDetails: state.account.upgrade,
         billingInfo: state.account.plan,
         infos: state.dashboard.info
     }
@@ -367,9 +376,6 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, UpgradeAction>) {
     return {
-        getPlanDetails: async () => {
-            await dispatch(getPlanDetailsAction(undefined))
-        },
         getDashboardDetails: async () => {
             await dispatch(getDashboardGeneralDetailsAction(undefined));
         },

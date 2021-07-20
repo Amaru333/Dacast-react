@@ -18,9 +18,7 @@ export interface MainMenuSpecificProps {
     infos: DashboardInfos;
     getBillingPageInfos: () => Promise<void>;
     getDashboardDetails: () => Promise<void>;
-    planDetails: Plans;
     billingInfo: BillingPageInfos;
-    getPlanDetails: () => Promise<void>;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
