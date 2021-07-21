@@ -36,29 +36,42 @@ export class AxiosClient {
     }
 
     private requestInterceptor = async (config: AxiosRequestConfig) => {
-        return new Promise((resolve, reject) => {
-            let {
-                authRequired = true,
-            } = config.headers['X-Api-Key']
-            
-            if(!authRequired) {
-                let newConfig = config
-                delete newConfig.headers.Authorization
-                resolve(newConfig)
-            }
-
-            if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
+        if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
+            return new Promise((resolve, reject) => {
                 this.refreshingToken = true
                     this.refreshToken().then(() => {
                         this.refreshingToken = false
+                        let refreshedConfig = config
+                        refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+                        resolve(refreshedConfig);
+                        return refreshedConfig
                     }, reject);
-                let refreshedConfig = config
-                refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
-                resolve(refreshedConfig);
-            }
-            config.headers['Authorization'] = this.userToken.getTokenInfo().token
-            resolve(config)
-        })
+            })
+        }
+
+        if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && this.refreshingToken) {
+            return new Promise((resolve, reject) => {
+                let interval = setInterval(() => {
+                    if(!this.refreshingToken) {
+                        clearInterval(interval)
+                        resolve(config)
+                    }
+                }, 5000)
+            })
+        }
+
+        let {
+            authRequired = true,
+        } = config.headers['X-Api-Key']
+        
+        if(!authRequired) {
+            let newConfig = config
+            delete newConfig.headers.Authorization
+            return newConfig
+        }
+
+        config.headers['Authorization'] = this.userToken.getTokenInfo().token
+        return config
     }
 
     private responseInterceptor = (error: any) => {
