@@ -32,8 +32,8 @@ export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails, con
                         if (item.link && item.link !== '') {
                             if(item.id === 'm3u8') {
                                 return (
-                                    <div>
-                                        <LinkBoxContainer key={item.id} className="col col-6 mt2">
+                                    <div key={item.id} className='flex flex-column col col-6 mt2'>
+                                        <LinkBoxContainer>
                                             <LinkBoxLabel>
                                                 <Text size={14} weight="med">{item.label}</Text>
                                             </LinkBoxLabel>
