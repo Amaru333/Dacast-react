@@ -243,7 +243,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                         <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
                         <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
                             <IconStyle className="mr1" >info_outlined</IconStyle>
-                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Need help with your API Keys? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/">Knowledge Base</a></Text>
+                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Our API documentation is publicly available <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/video-api-documentation/">here</a>.</Text>
                         </div>
                         <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
                         <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
