@@ -21,6 +21,8 @@ export class AxiosClient {
     private retryDelay = 8000
     private axiosInstance: AxiosInstance = null
     private refreshingToken: boolean = false
+    private loop: number = 0;
+    private subscribers: Promise<any>[] = [];
 
     private getInstance = (): AxiosInstance => {
         if(!this.axiosInstance) {
@@ -36,6 +38,16 @@ export class AxiosClient {
     }
 
     private requestInterceptor = async (config: AxiosRequestConfig) => {
+        let {
+            authRequired = true,
+        } = config.headers['X-Api-Key']
+        
+        if(!authRequired) {
+            let newConfig = config
+            delete newConfig.headers.Authorization
+            return newConfig
+        }
+
         if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
             return new Promise((resolve, reject) => {
                 this.refreshingToken = true
@@ -49,33 +61,24 @@ export class AxiosClient {
             })
         }
 
-        if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && this.refreshingToken) {
-            return new Promise((resolve, reject) => {
-                let interval = setInterval(() => {
-                    if(!this.refreshingToken) {
-                        clearInterval(interval)
-                        resolve(config)
-                    }
-                }, 5000)
-            })
-        }
-
-        let {
-            authRequired = true,
-        } = config.headers['X-Api-Key']
-        
-        if(!authRequired) {
-            let newConfig = config
-            delete newConfig.headers.Authorization
-            return newConfig
-        }
-
         config.headers['Authorization'] = this.userToken.getTokenInfo().token
         return config
     }
 
+    private subscribeTokenRefresh = (cb: any) => {
+        this.subscribers.push(cb);
+      }
+      
+      private onRrefreshed = (token: string) => {
+        this.subscribers.map((cb) => cb(token));
+      }
+
     private responseInterceptor = (error: any) => {
-        const config = error.config
+        const {
+            config,
+            response: { status },
+          } = error;
+
         if(!config){
             return Promise.reject(error)
         }
@@ -90,6 +93,32 @@ export class AxiosClient {
         }
         currentCount++
         config.headers['X-Api-Key'].currentCount = currentCount
+
+
+          const originalRequest = config;
+        
+          if (status === 401 && this.loop < 1) {
+            this.loop++;
+            if (!this.refreshingToken) {
+              this.refreshingToken = true;
+              this.refreshToken().then(() => {
+                this.refreshingToken = false
+                let refreshedConfig = config
+                refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+                this.onRrefreshed(this.userToken.getTokenInfo().token)
+                this.subscribers = []
+                return refreshedConfig
+                });
+            }
+        
+            return new Promise((resolve) => {
+              this.subscribeTokenRefresh((token: string) => {
+                originalRequest.headers.Authorization = token;
+                resolve(Axios(originalRequest));
+              });
+            });
+          }
+        //   return Promise.reject(error);
 
         return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
     }
