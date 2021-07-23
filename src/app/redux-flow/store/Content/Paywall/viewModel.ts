@@ -167,7 +167,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
                         unit: data.price.settings.duration.unit.toLowerCase().substr(0, data.price.settings.duration.unit.length - 1),
                         value: data.price.settings.duration.value
                     },
-                    startDate: Math.round(new Date() / 1000) - 10
+                    startDate: Math.round(Date.now() / 1000) - 10
                 }
             }
         } else {
@@ -214,8 +214,9 @@ export const formatGetContentPromosInput = (data: {contentId: string; contentTyp
 
 export const formatGetContentPromosOutput = (endpointResponse: GetPromoOutput, dataReact: {contentId: string; contentType: ContentType}): {data: Promo[], contentId: string, contentType: ContentType} => {
     const userId = userToken.getUserInfoItem('user-id')
+    const parentId = userToken.getUserInfoItem('parent-id')
     let formattedData: {data: Promo[], contentId: string, contentType: ContentType} = {
-        data: endpointResponse.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${dataReact.contentType}-${dataReact.contentId}`) !== -1),
+        data: endpointResponse.promos.filter(f => f.assignedContentIds.indexOf(`${userId}-${dataReact.contentType}-${dataReact.contentId}`) !== -1 || f.assignedContentIds.indexOf(`${parentId}-${dataReact.contentType}-${dataReact.contentId}` ) !== -1),
         contentType: dataReact.contentType,
         contentId: dataReact.contentId
     }
