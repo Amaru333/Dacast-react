@@ -41,6 +41,7 @@ export interface PlanInfo {
     multiUserAccess: PlanSetting;
     multiUserAccessBeta: PlanSetting;
     paymentRequest: PlanSetting;
+    unsecureVod: PlanSetting;
 }
 
 export interface PlanInfoPut {
