@@ -53,6 +53,7 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        port: '8081',
     },
     module: {
         rules: [
