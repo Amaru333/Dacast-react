@@ -48,19 +48,18 @@ export class AxiosClient {
             return newConfig
         }
 
-        if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
-            return new Promise((resolve, reject) => {
-                this.refreshingToken = true
-                    this.refreshToken().then(() => {
-                        this.refreshingToken = false
-                        let refreshedConfig = config
-                        refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
-                        resolve(refreshedConfig);
-                        return refreshedConfig
-                    }, reject);
-            })
-        }
-
+        // if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
+        //     return new Promise((resolve, reject) => {
+        //         this.refreshingToken = true
+        //             this.refreshToken().then(() => {
+        //                 this.refreshingToken = false
+        //                 let refreshedConfig = config
+        //                 refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+        //                 resolve(refreshedConfig);
+        //                 return refreshedConfig
+        //             }, reject);
+        //     })
+        // }
         config.headers['Authorization'] = this.userToken.getTokenInfo().token
         return config
     }
@@ -82,6 +81,30 @@ export class AxiosClient {
         if(!config){
             return Promise.reject(error)
         }
+
+        const originalRequest = config;
+      
+        if (status === 401) {
+          if (!this.refreshingToken) {
+            this.refreshingToken = true;
+            this.refreshToken().then(() => {
+              this.refreshingToken = false
+              let refreshedConfig = config
+              refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+              this.onRrefreshed(this.userToken.getTokenInfo().token)
+              this.subscribers = []
+
+              return refreshedConfig
+              });
+          }
+          return new Promise((resolve) => {
+            this.subscribeTokenRefresh((token: string) => {
+              originalRequest.headers.Authorization = token;
+              resolve(Axios(originalRequest));
+            });
+          });
+        }
+
         let {
             currentCount = 0,
             allowRetry = true,
@@ -94,33 +117,9 @@ export class AxiosClient {
         currentCount++
         config.headers['X-Api-Key'].currentCount = currentCount
 
+          return Promise.reject(error);
 
-          const originalRequest = config;
-        
-          if (status === 401 && this.loop < 1) {
-            this.loop++;
-            if (!this.refreshingToken) {
-              this.refreshingToken = true;
-              this.refreshToken().then(() => {
-                this.refreshingToken = false
-                let refreshedConfig = config
-                refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
-                this.onRrefreshed(this.userToken.getTokenInfo().token)
-                this.subscribers = []
-                return refreshedConfig
-                });
-            }
-        
-            return new Promise((resolve) => {
-              this.subscribeTokenRefresh((token: string) => {
-                originalRequest.headers.Authorization = token;
-                resolve(Axios(originalRequest));
-              });
-            });
-          }
-        //   return Promise.reject(error);
-
-        return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
+        // return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
     }
 
     public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
