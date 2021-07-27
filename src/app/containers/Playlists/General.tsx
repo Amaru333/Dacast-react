@@ -98,7 +98,7 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                                 deleteFile={props.deleteFile}
                             />
                             <Divider className="col col-12 mt3 mr25 mb25" />
-                            <GeneralAdvancedLinks contentDetails={stateContentDetails} />
+                            <GeneralAdvancedLinks contentDetails={stateContentDetails} contentType="playlist"/>
 
                             {
                                 imageModalOpen &&

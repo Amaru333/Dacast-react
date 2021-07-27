@@ -42,6 +42,7 @@ export interface GetVideoDetailsOutput {
     title: string
     videoInfo: VideoInfo
     vodStorageID: string
+    unsecureM3u8Url: string
 }
 
 export interface PutVideoDetailsInput {

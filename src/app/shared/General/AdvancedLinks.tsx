@@ -6,16 +6,18 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { updateClipboard } from '../../utils/utils';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { userToken } from '../../utils/services/token/tokenService';
+import { ContentType } from '../../redux-flow/store/Common/types';
 
-export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails}) => {
+export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails, contentType: ContentType}) => {
 
     const [advancedLinksExpanded, setAdvancedLinksExpanded] = React.useState<boolean>(false)
 
+    let m3u8Privilege = props.contentType === 'live' ? userToken.getPrivilege('privilege-unsecure-m3u8') : userToken.getPrivilege('privilege-unsecure-m3u8-vod');
     const advancedLinksOptions = [
         { id: "thumbnail", label: "Thumbnail", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
         { id: "splashscreen", label: "Splashscreen", enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
         { id: "poster", label: "Poster", enabled: true, link: props.contentDetails.poster ? props.contentDetails.poster.url : '' },
-        { id: "m3u8", label: "M3U8", enabled: userToken.getPrivilege('privilege-unsecure-m3u8') && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
+        { id: "m3u8", label: "M3U8", enabled: m3u8Privilege && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
 
     return (

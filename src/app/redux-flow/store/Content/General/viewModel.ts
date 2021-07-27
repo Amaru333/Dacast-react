@@ -31,6 +31,7 @@ export const formatGetVideoDetailsOutput = (contentType: ContentType) => (data: 
         embedScaling: data.embedScaling,
         embedSize: data.embedSize,
         embedType: data.embedType,
+        unsecureM3u8Url: data.unsecureM3u8Url,
         splashscreen: formatAssetType(data.splashscreen),
         thumbnail: formatAssetType(data.thumbnail),
         poster: formatAssetType(data.poster),

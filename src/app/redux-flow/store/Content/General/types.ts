@@ -44,6 +44,7 @@ export interface VodDetails {
     embedSize: number;
     uploadurl: string;
     tempSubtitleFileId?: string;
+    unsecureM3u8Url: string;
 }
 
 export interface LiveDetails {

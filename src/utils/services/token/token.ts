@@ -13,6 +13,7 @@ export type PlaylistPrivilege = "privilege-playlists";
 export type RecordingPrivilege = "privilege-recording"
 export type SignedKeysPrivilege = "privilege-signed-keys";
 export type UnsecureM3u8Privilege = "privilege-unsecure-m3u8";
+export type UnsecureM3u8VodPrivilege = "privilege-unsecure-m3u8-vod";
 export type VodPrivilege = "privilege-vod";
 export type WebDownloadPrivilege = "privilege-web-download";
 export type AnalyticsPrivilege = "privilege-analytics";
@@ -29,7 +30,7 @@ export type PerContentAnalyticsPrivilege = "privilege-per-content-analytics"
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege | UnsecureM3u8VodPrivilege;
 
 type ExtraUserInfo = 'user-id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 
