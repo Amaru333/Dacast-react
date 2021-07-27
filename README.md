@@ -13,102 +13,38 @@ $ npm install
 $ npm start
 ```
 
-## How to setup the CLI
-
-```
-$ cd cli
-```
-
-```
-$ npm install
-```
-
-```
-$ npm link
-```
-
-## How to use the CLI
-
-```
-$ dacast-generate-screen
-```
-
-Follow the step. Note: the component/container should not exist yet and the name should be CamelCase without spaces, numbers or specials characters.
-
-If it's only a component:
-- The command will create a file in src/components/YourComponentName/YourComponentName.tsx
-
-If it's a container:
-- The command will create a file in src/components/YourComponentName/YourComponentName.tsx
-- The command will create a file in src/containers/YourComponentName.tsx
-- The command will create the Redux logic at src/redux-flow/store/YourComponentName/[actions/index/reducer/types].tsx
-- The command will add your containers inital-state/reducer/state at src/redux-flow/store/index.ts
-
-Note: You can move the components or containers place without so much trouble. I will improve that later, still thinking about an easy way.
-
-For any idea, bug report or inquiry about the CLI to make it easier to develop fast and clean React/TS/Redux application contact Quentin or make a merge-request.
-
-## Other npm script : 
-
-```
-$ npm run build
-```
-To build the app (a lint is run before the build)
-
-```
-$ npm run lint
-```
-To lint the project and return errors and warning
-
-```
-$ npm run lint-fix
-```
-To lint the project and fix what eslint can automatically fix 
-
-```
-$ npm run lint-fix-dry
-```
-Dry run of the lint command
-
-```
-$ npm run storybook
-```
-Run storybook.js and stories that are located in /stories
-
-```
-$ npm run deploy-preprod / npm run deploy-prod
-```
-Clean, build and deploy the app to the associated S3 storage (currently the same for preprod / prod).
-
-
-## Project structure (so far)
+## Project structure
 
 
 ```
 *root*
 |
 ├── */src/*
-│   ├── */components/* strictly presentationnal components
-│   ├── */containers/* containers components
-│   ├── *index.html* entry point
-│   ├── *index.tsx* TS entry point
-│   ├── *main.tsx* Main component with provider
-│   └── */redux-flow/* contains all the redux flow logic
-│       ├── */store/* contains store order by context and combineReducers at the root
-│       └── *configureStore.ts* group all store apply middleware and create store
+│   ├── */components/* UI components used for the admin and the backoffice SPA
+│   ├── */admin/* Admin webapp
+│   ├── */app/* Backoffice webapp
+│   ├── */DacastSdk/* endpoints sdk to match the backend types
+│   ├── */scss/* common styles
+│   ├── */shared/* styled components common to both webapps
+│   ├── */stories/* Storybook stories
+│   ├── */styled/* common themes
+│   ├── */utils/* utils functions common to both webapps
+│   ├── *deploy.js* Deployment config
 ├── *package.json* the whole package.json with every dependency and script
-├── */stories/* stories loads by storybook 
 ├── *.eslintrc.js* eslint config
 ├── *tsconfig.json* typescript config
 ├── *.babelrc* babel config (polyfills)
 ├── *webpack.config.js* webpack config, it has a dev and prod environment
 └── *README.md* this file
 ```
+common structure for both admin and app webapps
 
-
-## Tests
-
-The testing environment will probably be in Jest and Enzyme. Still to be define
+├── */constants/* constants used for the project
+├── */containers/* webapp page with Redux logic (mapStateToProps and mapDispatchToProps)
+├── */pages/* webapp page
+├── */redux-flow/* Redux logic with actions, reducers, viewModels and types
+├── */shared/* webapp common components
+├── */utils/* webapp utils functions
 
 ## Eslint
 
@@ -116,17 +52,36 @@ This project uses @typescript-eslint and plugin:react/recommended specs so you c
 
 ## Storybook
 
-This project uses Storybook. You can write new stories in /stories. To launch storybook locally, just type 'npm run storybook' on your terminal. Storybook is also available on preprod at /storybook from the root url.
+This project uses Storybook. You can write new stories in /stories. To launch storybook locally, just type 'npm run storybook' on your terminal.
 
-## Basscss
+## Using data coming from the backend
+
+Whenever you want to use data coming from an endpoint the following needs to be done:
+
+Add the endpoint itself in the DacastSdk/sdk file like this 
+
+```
+public getAccounts = async (input: string): Promise<GetAccountsListOutput> => await this.axiosClient.get('/accounts?' + input).then(this.checkExtraData)
+```
+then if the input and/or the output are an object add the types in the proper file (the separation is done following the navigation bar sections)
+
+Then use the applyViewModel function in the proper actions.ts file (the one matching the page where you want to use the data) under the redux-flow folder like this
+
+```
+export const getAccountsAction = applyAdminViewModel(dacastSdk.getAccounts, formatGetAccountsInput, formatGetAccountsOutput, ActionTypes.GET_ACCOUNTS, null,  'User\'s plan couldn\'t be retrieved')
+```
+
+the 2 formatting functions are under the viewModel file. 
+The formatInput one is to format the data to match the backend types. 
+The formatOuput one is to format the endpoint data to the types you decided in the frontend (in the types.ts file)
+
+Once this is done add the formatted data to the reducer and you can access it from your page component 
+
+
+## External docs
 
 https://basscss.com/
 
-## Material UI Icons
-
 https://material-ui.com/components/material-icons/
 
-## Styled Components
-
 https://www.styled-components.com/docs
-
