@@ -146,6 +146,7 @@ export interface GetAccountPlanOutput {
     multiUserAccess: PlanSettingEndpoint;
     multiUserAccessBeta: PlanSettingEndpoint;
     paymentRequest: PlanSettingEndpoint;
+    unsecureVod: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {
