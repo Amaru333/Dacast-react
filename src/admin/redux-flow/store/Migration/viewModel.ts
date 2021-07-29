@@ -10,16 +10,19 @@ export const formatGetJobsListInput = (pendingOnly: boolean): string => {
             'Started Export',
             'Polling Export',
             'Done Polling Export',
-            'Verifying Export',
-            'Done Verifying Export',
+            'Started Export Verification',
+            'Polling Export Verification',
+            'Done Polling Export Verification',
             'Started Import',
             'Polling Import',
             'Done Polling Import',
             'Started Import Verification',
             'Polling Import Verification',
+            'Ready To Switch',
             'Started Switch',
             'Polling Switch',
-            'Verifying Switch',
+            'Done Switching',
+            'Verifying Switch'
         ]
         return '?' + qs.stringify({currentStep}, {arrayFormat: 'comma'})
     }
