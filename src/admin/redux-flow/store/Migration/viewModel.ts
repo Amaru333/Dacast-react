@@ -47,6 +47,10 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
             ...data.export,
             label: 'Export'
         },
+        exportVerification: {
+            ...data.exportVerification,
+            label: 'Export Verification',
+        },
         import: {
             ...data.import,
             label: 'Import'

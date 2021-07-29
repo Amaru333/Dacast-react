@@ -301,6 +301,15 @@ export interface GetMigrationJobDetailsOutput {
             success: boolean
         }[]
     }
+    exportVerification: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
 }
 
 export interface PostStartMigrationJobInput {
