@@ -1,7 +1,33 @@
-import { GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from "../../../../DacastSdk/admin";
-import { FilteringMigrationState } from "../../../pages/Migration/MigrationFilters";
-import { JobDetails, JobInfo, MigratedUser } from "./types";
+import { GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput } from '../../../../DacastSdk/admin';
+import { FilteringMigrationState } from '../../../pages/Migration/MigrationFilters';
+import { JobDetails, JobInfo, MigratedUser } from './types';
+var qs = require('qs');
 
+
+export const formatGetJobsListInput = (pendingOnly: boolean): string => {
+    if(pendingOnly){
+        let currentStep = [
+            'Started Export',
+            'Polling Export',
+            'Done Polling Export',
+            'Started Export Verification',
+            'Polling Export Verification',
+            'Done Polling Export Verification',
+            'Started Import',
+            'Polling Import',
+            'Done Polling Import',
+            'Started Import Verification',
+            'Polling Import Verification',
+            'Ready To Switch',
+            'Started Switch',
+            'Polling Switch',
+            'Done Switching',
+            'Verifying Switch'
+        ]
+        return '?' + qs.stringify({currentStep}, {arrayFormat: 'comma'})
+    }
+    return ''
+}
 export const formatGetJobsListOutput = (data: GetJobsListOutput): JobInfo[] => {
     let formattedData: JobInfo[] = data.jobs.map(job => {
         return {
@@ -21,6 +47,10 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
             ...data.export,
             label: 'Export'
         },
+        exportVerification: {
+            ...data.exportVerification,
+            label: 'Export Verification',
+        },
         import: {
             ...data.import,
             label: 'Import'
@@ -31,22 +61,23 @@ export const formatGetJobDetailsOuput = (data: GetMigrationJobDetailsOutput): Jo
         },
         switchover: {
             ...data.switchover,
-            label: "Switch Over"
+            label: 'Switch Over'
         },
         overall: {
             status: data.currentStep,
             errorDetails: data.errorDetails,
-            label: "Overall",
+            label: 'Overall',
             previousStep: data.previousStep
         }
     }
     return formattedData
 }
 
-export const formatPostStartJobInput = (data: {platform: 'Dacast' | 'Vzaar', usersList: string[]}): PostStartMigrationJobInput => {
+export const formatPostStartJobInput = (data: {platform: 'Dacast' | 'Vzaar', usersList: string[], enableDifferential: boolean}): PostStartMigrationJobInput => {
     let formattedData: PostStartMigrationJobInput = {
         platform: data.platform.toLowerCase() as 'dacast' | 'vzaar',
-        userIds: data.usersList
+        userIds: data.usersList,
+        enableDifferential: data.enableDifferential
     }
 
     return formattedData

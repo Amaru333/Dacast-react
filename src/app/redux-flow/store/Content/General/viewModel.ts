@@ -31,6 +31,7 @@ export const formatGetVideoDetailsOutput = (contentType: ContentType) => (data: 
         embedScaling: data.embedScaling,
         embedSize: data.embedSize,
         embedType: data.embedType,
+        unsecureM3u8Url: data.unsecureM3u8Url,
         splashscreen: formatAssetType(data.splashscreen),
         thumbnail: formatAssetType(data.thumbnail),
         poster: formatAssetType(data.poster),
@@ -164,6 +165,16 @@ export const formatGetExpoDetailsOutput = (contentType: ContentType) => (data: G
     let formattedData: ExpoDetails & {contentType: ContentType} = {
         ...data,
         contentType: contentType,
+        appearance: {
+            darkModeEnable: data.appearance.darkMode,
+            coverBackgroundEnable: data.appearance.cover ? true : false,
+            coverBackgroundUrl: data.appearance.cover && data.appearance.cover.url ? data.appearance.cover.url : null,
+            coverBackgroundAssetId: data.appearance.cover && data.appearance.cover.posterAssetId ? data.appearance.cover.posterAssetId : null,
+            coverBackgroundColor: data.appearance.cover && data.appearance.cover.headerColor && !data.appearance.cover.url ? data.appearance.cover.headerColor : null,
+            contentDescriptions: data.appearance.showContentsDescription,
+            featuredContentEnable: data.appearance.featuredContentId ? true : false,
+            featuredContentId: data.appearance.featuredContentId
+        },
         uploadurl: null
     }
 
@@ -176,12 +187,15 @@ export const formatPutExpoDetailsInput = (data: ExpoDetails): PutExpoDetailsInpu
         payload: {
             title: data.title,
             description: data.description,
-            appearance: data.appearance,
             online: data.online,
-            poster: data.poster ? {
-                assetId: data.poster.assetId,
-                url: data.poster.url
-            } : null
+            appearance: {
+                darkMode: data.appearance.darkModeEnable,
+                showContentsDescription: data.appearance.contentDescriptions,
+                featuredContentId: data.appearance.featuredContentEnable ? data.appearance.featuredContentId : '',
+                cover: data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundColor ? {headerColor: data.appearance.coverBackgroundColor}
+                : data.appearance.coverBackgroundEnable && data.appearance.coverBackgroundUrl ? {url: data.appearance.coverBackgroundUrl, posterAssetId: data.appearance.coverBackgroundUrl.substring(data.appearance.coverBackgroundUrl.lastIndexOf("/") + 1, data.appearance.coverBackgroundUrl.lastIndexOf("."))} 
+                : null
+            }
         }
     }
     return formattedData
@@ -198,8 +212,6 @@ export const formatPutExpoDetailsOutput = (contentType: ContentType) => (endpoin
 
 export const formatPostVodAssetUploadUrlInput = (data: {assetType: ContentUploadType, contentId: string, extension: string, subtitleInfo?: SubtitleInfo}): PostUploadUrlInput => {
     
-    console.log('view model data', data)
-
     if (data.subtitleInfo) {
         let formattedData: PostUploadUrlInput = {
             uploadType: 'subtitle',

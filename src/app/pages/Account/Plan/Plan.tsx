@@ -1,4 +1,5 @@
 import React from 'react';
+import { isMobile } from "react-device-detect";
 import { Table } from '../../../../components/Table/Table';
 import { Modal } from '../../../../components/Modal/Modal';
 import { Text } from '../../../../components/Typography/Text';
@@ -26,6 +27,7 @@ import { PurchaseDataCartStep } from './PurchaseDataCartStep';
 import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ProductExtraDataCurrencyKey } from '../../../../DacastSdk/account';
+import { PlanDetailsCard } from '../../../shared/Plan/PlanDetailsCard';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -37,7 +39,7 @@ interface PlanComponentProps {
 
 export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}) => {
 
-    
+    const defaultCurrency = props.billingInfos.currentPlan && props.billingInfos.currentPlan.currency ? props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency : 'usd'
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [playbackProtectionEnabled, setPlaybackProtectionEnabled] = React.useState<boolean>(props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.enabled : false)
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
@@ -46,13 +48,13 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         code: null,
         quantity: null,
         totalPrice: null,
-        currency: props.billingInfos.currentPlan.currency.toLowerCase() as BandwidthProductCurrency
+        currency: defaultCurrency
     })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
-    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: props.billingInfos.currentPlan.currency + ' - ' + handleCurrencySymbol(props.billingInfos.currentPlan.currency), data: {img: props.billingInfos.currentPlan.currency.toLowerCase(), id: props.billingInfos.currentPlan.currency.toLowerCase()}})
+    const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
 
 
     const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
@@ -61,7 +63,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
-            token: recurlyToken, 
+            token: recurlyToken,
             threeDSecureToken: null
         }))
         .then((response) => {
@@ -85,7 +87,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         setIsLoading(true);
         dacastSdk.postProductExtraData(formatPostProductExtraInput({
             ...purchaseDataStepperData,
-            token: recurlyToken, 
+            token: recurlyToken,
             threeDSecureToken: threeDSecureResultToken
         }))
         .then(() => {
@@ -138,7 +140,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         return [{data:[
             <div className='center'>
                 <Text key={'disabledTableText' + text} size={14} weight='reg' color='gray-3' >{text}</Text>
-            </div> 
+            </div>
         ]}]
     }
 
@@ -188,7 +190,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             const BackgroundColor: ColorsApp = color + '20' as ColorsApp;
             return [{data:[
                 <Text key={'planDetailsType'} size={14} weight='reg' color='gray-1'>{displayName === "30 Day Trial" ? "Trial" : displayName}</Text>,
-                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(selectedCurrency.data.id) + (price/100)): "-"}</Text>,
+                <Text key={'planDetailsPayment'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (handleCurrencySymbol(selectedCurrency.data.id) + (price)): "-"}</Text>,
                 <Text key={'planDetailsRecurring'} size={14} weight='reg' color='gray-1'>{displayName && displayName !== "30 Day Trial" && state === "active" ? (paymentTerm === 12 ? "Yearly" : "Monthly") : "-"}</Text>,
                 <Text key={'planDetailsNextBill'} size={14} weight='reg' color='gray-1'>{periodEndsAt ? tsToLocaleDate(periodEndsAt) : '-'}</Text>,
                 <Label key={'planDetailsStatus'} backgroundColor={BackgroundColor} color={color} label={state === "active" || state === "" ? "Active" : "Inactive"} />,
@@ -196,15 +198,22 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
             ]}]
         }
 
-    } 
-    
+    }
+
+    React.useEffect(() => {
+        if (location.hash === '#purchase-data') {
+            setPurchaseDataOpen(true)
+            history.replaceState(null, null, ' ');
+        }
+    }, [location.hash])
+
     return (
         <div>
-            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.plan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
+            <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.billingInfos.currentPlan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
             <Card>
                 <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
-               { 
+               {
                    (props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.displayName !== "30 Day Trial") &&
                     <>
                         <Divider className="py1" />
@@ -216,7 +225,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     <Table className="col-12" headerBackgroundColor="gray-10" id="protectionTableDisabled" header={disabledTableHeader()} body={disabledTableBody((props.billingInfos.paymentMethod ? 'Enable Playback Protection to ensure your content never stops playing': 'Add Payment Method before Enablind Playback Protection'))} />
                                     :<Table className="col-12" headerBackgroundColor="gray-10" id="protectionTable" header={protectionTableHeaderElement()} body={protectionBodyElement()} />
                             }
-                        
+
                             <Divider className="py1" />
                             <div className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></div>
                             <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></div>
@@ -225,7 +234,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                             <div className="col col-2 mb2">
                                 <DataPricingTable >
                                     {
-                                        props.billingInfos.products && 
+                                        props.billingInfos.products &&
                                         Object.values(props.billingInfos.products.bandwidth).sort((a, b) =>  a.minQuantity - b.minQuantity).map((item) => {
                                             return (
                                                 <DataPricingTableRow key={item.code}>
@@ -234,32 +243,38 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                                 </DataPricingTableRow>
                                             )
                                         })
-                                    }  
+                                    }
                                 </DataPricingTable>
                             </div>
                             <div className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></div>
                     </>
                 }
+                {
+                    !isMobile && props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName === "30 Day Trial" &&
+                    <PlanDetailsCardWrapper>
+                        <PlanDetailsCard/>
+                    </PlanDetailsCardWrapper>
+                }
             </Card>
-            <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}> 
-                <Elements>    
+            <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
+                <Elements>
                     {
                         protectionModalOpened &&
                         <Modal hasClose={false} modalTitle='Enable Protection' toggle={() => setProtectionModalOpened(!protectionModalOpened)} size='large' opened={protectionModalOpened}>
-                            <ProtectionModal 
-                                actionButton={handlePlaybackProtectionValue} 
-                                toggle={setProtectionModalOpened} 
-                                setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
-                                playbackProtection={props.billingInfos.playbackProtection} 
+                            <ProtectionModal
+                                actionButton={handlePlaybackProtectionValue}
+                                toggle={setProtectionModalOpened}
+                                setPlaybackProtectionEnabled={setPlaybackProtectionEnabled}
+                                playbackProtection={props.billingInfos.playbackProtection}
                                 selectedCurrency={selectedCurrency.data.id}
 
                             />
                         </Modal>
-                    }            
+                    }
 
             {
-                purchaseDataOpen && 
-                <CustomStepper 
+                purchaseDataOpen &&
+                <CustomStepper
                     opened={purchaseDataOpen}
                     stepperHeader="Purchase Data"
                     stepList={purchaseDataStepList}
@@ -278,15 +293,20 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                     bandwidthProduct={props.billingInfos.products.bandwidth}
                 />
             }
-            
             </Elements>
             </RecurlyProvider>
+            {
+                isMobile && props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName === "30 Day Trial" &&
+                <PlanDetailsCardMobileWrapper>
+                    <PlanDetailsCard/>
+                </PlanDetailsCardMobileWrapper>
+            }
             <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                 <DisableProtectionModal
                     price={props.billingInfos.playbackProtection ? props.billingInfos.playbackProtection.price : 0}
                     editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
                     setDisableProtectionModalOpened={setDisableProtectionModalOpened}
-                    setPlaybackProtectionEnabled={setPlaybackProtectionEnabled} 
+                    setPlaybackProtectionEnabled={setPlaybackProtectionEnabled}
                 />
             </Modal>
             {purchaseDataStepperData &&
@@ -295,11 +315,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                         <Text size={14}>You bought {purchaseDataStepperData.quantity}GB of data</Text>
                     </PaymentSuccessModal>
                     <PaymentFailedModal opened={dataPaymentFailedOpen} toggle={() => setDataPaymentFailedOpen(!dataPaymentSuccessOpen)}>
-                        <Text size={14}>Your payment of {handleCurrencySymbol(props.billingInfos.currentPlan.currency) + purchaseDataStepperData.totalPrice} was declined</Text>
+                        <Text size={14}>Your payment of {handleCurrencySymbol(selectedCurrency.data.id) + purchaseDataStepperData.totalPrice} was declined</Text>
                     </PaymentFailedModal>
                 </>
             }
-            
+
         </div>
 
     )
@@ -335,4 +355,14 @@ export const PriceCell = styled.td`
 export const DataCell = styled(PriceCell)`
     background-color: ${props => props.theme.colors["gray-10"]};
     border-right: 1px solid ${props => props.theme.colors["gray-8"]};
+`
+
+export const PlanDetailsCardWrapper = styled.div`
+    background-color: ${props => props.theme.colors["gray-10"]};
+    padding: 16px 16px 24px;
+    margin-top: 8px;
+`
+export const PlanDetailsCardMobileWrapper = styled.div`
+    padding: 16px 16px 7px;
+    margin: 32px 0 16px;
 `

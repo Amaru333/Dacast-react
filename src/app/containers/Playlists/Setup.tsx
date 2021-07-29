@@ -51,23 +51,31 @@ const Setup = (props: SetupComponentProps) => {
         }
     }, [])
 
+    React.useEffect(() => {
+        setSelectedItems(initFormateData())
+    }, [props.contentDataState])
+
     if(noDataFetched) {
         return <ErrorPlaceholder />
     }
 
-    const formateData: FolderAsset[] = props.contentDataState['playlist'] && props.contentDataState['playlist'][playlistId] && props.contentDataState['playlist'][playlistId].contentList ? props.contentDataState['playlist'][playlistId].contentList.map(item => {
-        return {
-            ownerID: "",
-            objectID: item.id,
-            title: item.title,
-            thumbnail: item.thumbnailURL,
-            type: item.contentType,
-            createdAt: 0,
-            duration: '',
-            featuresList: {},
-            status: 'online'
-        }
-    }) : [];
+    const initFormateData = ():FolderAsset[] => {
+        return props.contentDataState['playlist'] && props.contentDataState['playlist'][playlistId] && props.contentDataState['playlist'][playlistId].contentList ? props.contentDataState['playlist'][playlistId].contentList.map(item => {
+            return {
+                ownerID: "",
+                objectID: item.id,
+                title: item.title,
+                thumbnail: item.thumbnailURL,
+                type: item.contentType,
+                createdAt: 0,
+                duration: '',
+                featuresList: {},
+                status: 'online'
+            }
+        }) : []
+    }
+
+    const [selectedItems, setSelectedItems] = React.useState<FolderAsset[]>(initFormateData())
 
     const handleSave = (items: FolderAsset[], selectedTab: ContentSelectorType, selectedFolderId: string, sortSettings: SortSettingsContentSelector) => {
         setSaveLoading(true);
@@ -111,7 +119,7 @@ const Setup = (props: SetupComponentProps) => {
                         folderId={props.contentDataState['playlist'][playlistId].folderId}
                         folderData={props.folderData}
                         type={props.contentDataState['playlist'][playlistId].type}
-                        selectedItems={formateData}
+                        selectedItems={selectedItems}
                         getFolderContent={props.getFolderContent}
                         title={props.contentDataState['playlist'][playlistId].title} 
                         callback={handleSave}

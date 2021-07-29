@@ -1,33 +1,10 @@
+import { WatchAnalyticsState } from "../../Content/Analytics"
+
 export enum ActionTypes {
     GET_ACCOUNT_ANALYTICS_ENGAGEMENT = "@@analytics/GET_ACCOUNT_ANALYTICS_ENGAGEMENT",
 }
 
-export type LocationItem = {
-    city: string;
-    position: {
-        latitude: number;
-        longitude: number;
-    };
-    value: number[];
-    label?: string[];
-}
-
-export interface AccountAnalyticsEngagement {
-    watchByTime: {
-        labels: string[];
-        data: number[];
-        table: {data: number; label: string}[];
-    },
-    watchByDevice: {
-        labels: string[];
-        data: number[];
-        table: {data: number; label: string}[];
-    },
-    watchByLocation: { 
-        data: LocationItem[];
-        table: {data: number; label: string}[];
-    }
-}
+export type AccountAnalyticsEngagement = WatchAnalyticsState
 
 export interface AccountAnalyticsEngagementState {
     data?: AccountAnalyticsEngagement

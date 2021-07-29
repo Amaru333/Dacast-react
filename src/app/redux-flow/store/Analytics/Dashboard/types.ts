@@ -1,8 +1,10 @@
+import { ContentType } from "../../Common/types";
 import { LocationItem } from "../Audience/types";
 
 export enum ActionTypes {
     GET_ANALYTICS_DASHBOARD = "@@ANALYTICSDASHBOARD/GET_ANALYTICS_DASHBOARD",
-    GET_ANALYTICS_DASHBOARD_NEW = "@@ANALYTICS_DASHBOARD/GETANALYTICS_DASHBOARD_NEW"
+    GET_ANALYTICS_DASHBOARD_NEW = "@@ANALYTICS_DASHBOARD/GETANALYTICS_DASHBOARD_NEW",
+    GET_ANALYTICS_TOP_CONTENT = "@@ANALYTICS_DASHBOARD/GET_ANALYTICS_TOP_CONTENT"
 }
 
 export interface GetAnalyticsDashboardOptions {
@@ -79,6 +81,19 @@ export interface AnalyticsDashboardNewInfo {
     audienceLocation: LocationItem[]
 }
 
+export interface AnalyticsTopContentParams {
+    metrics: AnalyticsTopContentDimensions[]
+    sortBy: AnalyticsTopContentDimensions
+    startAt?: number
+}
+
+export interface AnalyticsTopContentInfo {
+    id: string
+    title: string
+    type: ContentType
+    total: number
+}
+
 export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
     data: {
         playtimePerTime: false,
@@ -87,8 +102,11 @@ export const AnalyticsDashboardInitialState: AnalyticsDashboardState = {
         topContents: false,
         consumptionPerLocation: false
     },
-    newDashboardInfo: null
+    newDashboardInfo: null,
+    topContent: []
 };
+
+export type AnalyticsTopContentDimensions = 'plays' | 'plays-clicks' | 'viewer-sessions' | 'playtime' | 'watchtime' | 'impressions'
 
 export type AnalyticsDashboardDimensions = 'PLAYS_BY_TIME_ACCT' | 'PLAYS_BY_COUNTRY_ACCT' | 'WATCHTIME_BY_TIME_ACCT' | 'REVENUES_BY_TIME_ACCT' | 'DATA_CONSUMPTION_ACCT'
 
@@ -96,5 +114,6 @@ export const AnalyticsDashboardDimension: AnalyticsDashboardDimensions[] = ['PLA
 
 export interface AnalyticsDashboardState {
     readonly data: AnalyticsDashboardInfos;
-    readonly newDashboardInfo: AnalyticsDashboardNewInfo
+    readonly newDashboardInfo: AnalyticsDashboardNewInfo,
+    topContent: AnalyticsTopContentInfo[]
 }

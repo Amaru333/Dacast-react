@@ -6,7 +6,6 @@ const reducer: Reducer<AccountAnalyticsAudienceState> = (state = defaultStateAcc
     switch (action.type) {
         case ActionTypes.GET_ACCOUNT_ANALYTICS_AUDIENCE:
             return {
-                ...state,
                 data: action.payload.data
             }
         default:

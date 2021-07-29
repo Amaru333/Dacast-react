@@ -7,7 +7,7 @@ import { useEasyOutsideAlerter } from '../../utils/utils';
 
 export const ColorPicker = (props: {defaultColor: string; callback?: Function; className?: string}) => {
 
-    const [selectedColor, setSelectedColor] = React.useState<Color>(props.defaultColor ? props.defaultColor : '#000000');
+    const [selectedColor, setSelectedColor] = React.useState<Color>(props.defaultColor && props.defaultColor !== null ? props.defaultColor : '#000000');
     const [isOpened, setIsOpened] = React.useState<boolean>(false);
     const colorPickerRef = React.useRef<HTMLDivElement>(null);
 
@@ -24,14 +24,10 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
         }
     }, [selectedColor])
 
-    React.useEffect(() => {
-        setSelectedColor(props.defaultColor)
-    }, [props.defaultColor])
-
     return (
         <div>
             <ColorPickerHeader className={props.className } onClick={() => setIsOpened(!isOpened)}>
-                <div className="flex"><SelectedColor selectedColor={selectedColor.toString()} />
+                <div className="flex"><SelectedColor selectedColor={selectedColor ? selectedColor.toString() : null} />
                     <Text size={14} weight='reg'>{selectedColor}</Text></div>
                 <div><IconStyle coloricon="gray-5">{isOpened ?'arrow_drop_up' : 'arrow_drop_down'}</IconStyle></div>
             </ColorPickerHeader>

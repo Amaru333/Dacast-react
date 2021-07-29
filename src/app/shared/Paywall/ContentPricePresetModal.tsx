@@ -181,7 +181,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
-                    defaultTs={newPricePreset.settings.startDate}
+                    defaultTs={newPricePreset.settings.startMethod === 'Upon Purchase' ? 0 : newPricePreset.settings.startDate}
                     timezone={newPricePreset.settings.timezone}
                     callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
                     hideOption="Upon Purchase"

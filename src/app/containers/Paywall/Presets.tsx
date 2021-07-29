@@ -7,9 +7,13 @@ import { getPricePresetsInfosAction, Action, PresetsPageInfos, createPricePreset
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
+import { Privilege } from '../../../utils/services/token/token';
+import { userToken } from '../../utils/services/token/tokenService';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 
 export interface PresetsComponentProps {
     presetsInfos: PresetsPageInfos;
+    associatePrivilege: Privilege[];
     getPresetsInfos: (qs: string) => Promise<void>;
     getPromoPresets: (qs: string) => Promise<void>;
     createPricePreset: (p: Preset) => Promise<void>;
@@ -23,14 +27,18 @@ export interface PresetsComponentProps {
 const Presets = (props: PresetsComponentProps) => {
 
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
+    const [PlanLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        props.getPresetsInfos('per-page=10&page=1')
-        .catch(() => setNodataFetched(true))
+        if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
+            setPlanLimitReachedModalOpen(true)
+        } else {
+            props.getPresetsInfos('per-page=10&page=1')
+                .catch(() => setNodataFetched(true))
 
-        props.getPromoPresets('per-page=10&page=1')
-        .catch(() => setNodataFetched(true))
-
+            props.getPromoPresets('per-page=10&page=1')
+                .catch(() => setNodataFetched(true))
+        }
     }, [])
 
     if(noDataFetched) {
@@ -38,9 +46,12 @@ const Presets = (props: PresetsComponentProps) => {
     }
 
     return (
-        props.presetsInfos.presets && props.presetsInfos.promos ?
-            <PresetsPage {...props} />
-            : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>
+        <>
+            {props.presetsInfos.presets && props.presetsInfos.promos || userToken.isUnauthorized(props.associatePrivilege) ?
+                <PresetsPage {...props} />
+                : <SpinnerContainer><LoadingSpinner size='medium' color='violet' /></SpinnerContainer>}
+            <PlanLimitReachedModal type='feature_not_included_starter_paywall' toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true}/>
+        </>
     )
 }
 

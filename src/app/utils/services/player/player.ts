@@ -28,14 +28,14 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
                 let head = document.head || document.getElementsByTagName('head')[0];
                 const playerScript = document.createElement('script');
                 playerScript.src = "https://player.dacast.com/js/player.js?contentId=" + contentId;
-                head.insertBefore(playerScript, head.firstChild);                
+                head.insertBefore(playerScript, head.firstChild);
                 playerScript.addEventListener('load', initPlayer)
             } else {
                 initPlayer()
             }
         }
         return () => {
-            // Investigate later why the state variable is null when trying to unmount 
+            // Investigate later why the state variable is null when trying to unmount
             if(typeof dacast !== 'undefined') {
                 if(dacastPlayerRef.current) {
                     dacastPlayerRef.current.dispose()
@@ -45,4 +45,3 @@ export const usePlayer = (playerRef: React.MutableRefObject<HTMLDivElement>, con
     }, [])
     return player;
 }
-

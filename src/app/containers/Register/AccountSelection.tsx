@@ -13,6 +13,7 @@ import { useQuery } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService'
 import { segmentService } from '../../utils/services/segment/segmentService'
 import { isProduction } from '../../utils/services/player/stage'
+import { dacastSdk } from '../../utils/services/axios/axiosClient'
 
 const logo = require('../../../../public/assets/logo.png');
 
@@ -38,6 +39,7 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
                 email: userToken.getUserInfoItem('email'),
                 company: userToken.getUserInfoItem('custom:website')
             })
+            dacastSdk.updateToken(userToken)
             location.href = '/'
         }
     }, [props.accountData])
@@ -50,8 +52,8 @@ const AccountSelection = (props: AccountSelectionComponentProps) => {
             return (
                 <AccountSelectionRow style={{marginBottom: 0}} onClick={() => {handleUserSelection(account.userId)}} className='col col-12 flex items-center py2 pl2 pointer'>
                     <div className='col col-11 flex'>
-                        <Text size={16} weight='med'>{account.companyName}</Text>
-                        {account.role && <Text size={16} weight='med' color='gray-3'>&nbsp;({account.role})</Text>}
+                        <Text size={16} weight='med'>{account.companyName || account.companyWebsite}</Text>
+                        <Text size={16} weight='med' color='gray-3'>&nbsp;({account.role || 'Owner'})</Text>
                     </div>
                     <div  className='flex justify-end col col-1'>
                         <ActionIcon id={"subfolderTooltip" + i}>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { isMobile } from "react-device-detect";
+import styled from 'styled-components';
 import { IconStyle, ActionIcon } from '../../../shared/Common/Icon';
 import { useOutsideAlerter, useQuery, capitalizeFirstLetter } from '../../../utils/utils';
 import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
@@ -9,7 +11,6 @@ import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCh
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { DropdownList, DropdownItem, DropdownItemText } from '../../../components/FormsComponents/Dropdown/DropdownStyle';
-import { InputTags } from '../../../components/FormsComponents/Input/InputTags';
 import { SeparatorHeader, TitleContainer, ListContentTitle } from '../../../app/pages/Folders/FoldersStyle';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { handleFeatures } from '../../shared/Common/Features';
@@ -32,14 +33,19 @@ import EventHooker from '../../../utils/services/event/eventHooker';
 import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import { PreviewModal } from '../Common/PreviewModal';
 import { userToken } from '../../utils/services/token/tokenService';
-import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types';
+import { PlanDetailsCard } from '../../shared/Plan/PlanDetailsCard';
+import { usePlanLimitsValidator } from '../../utils/custom-hooks/planLimitsHooks';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import { InputSearchStyle } from '../General/GeneralStyle';
+import { segmentService } from '../../utils/services/segment/segmentService';
+import { DashboardInfos } from '../../redux-flow/store/Dashboard/types';
 
 interface ContentListProps {
     contentType: ContentType;
     items: SearchResult;
     themesList: ThemesData;
-    billingInfo?: BillingPageInfos;
+    infos: DashboardInfos;
     getContentList: (qs: string) => Promise<void>;
     deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
@@ -101,6 +107,25 @@ export const ContentListPage = (props: ContentListProps) => {
     const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [previewedContent, setPreviewedContent] = React.useState<string>(null)
+
+    const planLimitsValidaorCallbacks = {
+        openAddStream: () => setAddStreamModalOpen(true),
+        openAddVod: () => history.push('/uploader'),
+        openExpoCreate: () => setAddExpoModalOpen(true)
+    }
+    const {
+        planIsTrial,
+        handleCreateStreamClick,
+        handleUploadVideoClick,
+        handleCreateExpoClick,
+        PlanLimitReachedModalOpen,
+        setPlanLimitReachedModalOpen,
+        planLimitReachedModalType,
+    } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
+
+    const isTrialVodOrLive = () => {
+        return (props.contentType === "live"|| props.contentType === "vod") && planIsTrial()
+    }
 
     let foldersTree = new FolderTree(() => { }, setCurrentFolder)
 
@@ -197,6 +222,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (returnedString.indexOf('status') === -1) {
             returnedString += '&status=online,offline'
         }
+        returnedString = returnedString.replace('=,', '=')
         setQsParams(returnedString)
     }
 
@@ -291,6 +317,24 @@ export const ContentListPage = (props: ContentListProps) => {
         setPreviewModalOpen(true)
     }
 
+    const handleUpgradeClick = () => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: 'trial',
+            type: 'text',
+            location: props.contentType === 'live' ? 'trial limit livestream' : 'trial limit video',
+            step: -1
+        })
+        history.push('/account/upgrade')
+    }
+
+    const renderLimitedTrialFeatures = () => {
+        return (
+            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold pointer">Upgrade Now</a></div>} />
+        )
+    }
+
     const contentListBodyElement = () => {
         if (contentList) {
             return contentList.results.map((value) => {
@@ -310,22 +354,22 @@ export const ContentListPage = (props: ContentListProps) => {
                                 {
 
                                     value.thumbnail ?
-                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
+                                        <img onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className="mr1 pointer" key={"thumbnail" + value.objectID} width={94} height={54} src={value.thumbnail} />
                                         :
-                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
+                                        <div onClick={() => props.contentType !== 'expo' && handleThumbnailClick(value.objectID)} className='mr1 relative justify-center flex items-center pointer' style={{ width: 94, height: 54, backgroundColor: '#AFBACC' }}>
                                             <IconStyle className='' coloricon='gray-1' >play_circle_outlined</IconStyle>
                                         </div>
                                 }
                             </div>,
                         <TitleContainer>
-                            <ListContentTitle onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
+                            <ListContentTitle className='pointer' onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"title" + value.objectID} size={14} weight="reg" color="gray-1">{value.title}</ListContentTitle>
                         </TitleContainer>
                         ,
                         props.contentType === 'expo' ? undefined : <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"size" + value.objectID} size={14} weight="reg" color="gray-1">{value.size ? readableBytes(value.size) : ''}</Text>,
                         props.contentType !== 'expo' ? undefined : <Text key={"views" + value.objectID} size={14} weight="reg" color="gray-1">{value.views ? readableBytes(value.views) : ''}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"created" + value.objectID} size={14} weight="reg" color="gray-1">{tsToLocaleDate(value.createdAt, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <Text onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} key={"status" + value.objectID} size={14} weight="reg" color="gray-1">{handleContentStatus(value.status, value.type, value.size)}</Text>,
-                        props.contentType === 'expo' ? undefined : <div onClick={() => !(value.type === 'vod' && !value.size) && history.push('/' + handleURLName(props.contentType) + '/' + value.objectID + '/general')} className='flex'>{value.featuresList ? handleFeatures(value, value.objectID) : null}</div>,
+                        props.contentType === 'expo' ? undefined : <div className='flex'>{isTrialVodOrLive() ? renderLimitedTrialFeatures() : (value.featuresList ? handleFeatures(value, value.objectID) : null)}</div>,
                         value.status !== 'Deleted' && !(value.type === 'vod' && !value.size) ?
                             <div key={"more" + value.objectID} className="iconAction right mr2" >
                                 <ActionIcon id={"deleteTooltip" + value.objectID}>
@@ -368,47 +412,50 @@ export const ContentListPage = (props: ContentListProps) => {
 
     return (
         <>
-            <div className='flex items-center mb2'>
-                <div className="flex-auto items-center flex">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0]) }} />
-                </div>
-                <div className="flex items-center relative" >
+            <div className={'flex mb2 justify-between ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
+                <InputSearchStyle
+                    placeholder="Search by Title..." 
+                    callback={(value: string) => { setSearchString(value); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value) }}
+                    isSearching={searchString !== null && searchString !== ''}
+                    value={searchString}
+                />
+                <div className={'flex items-center relative ' + (isMobile ? 'mt2 ml-2' : '')}>
                     {selectedContent.length > 0 &&
                         <Text className=" ml2" color="gray-3" weight="med" size={12} >{selectedContent.length} items</Text>
                     }
                     {
                         props.contentType !== 'expo' &&
                         <>
-                            <div className="relative">
-                                <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >Bulk Actions</Button>
+                            <div className={'relative ' + (isMobile ? 'mr2 flex-1 flex' : '')}>
+                                <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="secondary" >{ isMobile ? 'Actions' : 'Bulk Actions' }</Button>
                                 <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                     {renderList()}
                                 </DropdownList>
                             </div>
-                            <SeparatorHeader className="mx2 inline-block" />
+                            { !isMobile && <SeparatorHeader className="mx2 inline-block" /> }
                         </>
                     }
                     <ContentFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => { setSelectedFilter(filters); formatFiltersToQueryString(filters, paginationInfo, sort, searchString) }} contentType={props.contentType} />
                     {
                         props.contentType === "vod" &&
-                        <Button onClick={() => history.push('/uploader')} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Upload Video</Button>
+                        <Button onClick={handleUploadVideoClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.infos}>{ isMobile ? 'Upload' : 'Upload Video' }</Button>
                     }
                     {
                         props.contentType === "live" &&
-                        <Button onClick={() => setAddStreamModalOpen(true)} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" >Create Live Stream</Button>
+                        <Button onClick={handleCreateStreamClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.infos}>{ isMobile ? 'Create' : 'Create Live Stream' }</Button>
                     }
                     {
                         props.contentType === "playlist" &&
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >Create Playlist</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : 'Create Playlist' }</Button>
                     }
                     {
                         props.contentType === 'expo' &&
-                        <Button buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="primary" onClick={() => setAddExpoModalOpen(true)} >Create Expo</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.infos}>{ isMobile ? 'Create' : 'Create Expo' }</Button>
                     }
                 </div>
 
             </div>
+
             <Table contentLoading={contentLoading} className="col-12" id="videosListTable" headerBackgroundColor="white" header={contentList && contentList.results.length > 0 ? contentListHeaderElement() : emptyContentListHeader()} body={contentList && contentList.results.length > 0 ? contentListBodyElement() : emptyContentListBody('No items matched your search')} hasContainer />
             <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} defaultDisplayedOption={paginationInfo.nbResults} defaultPage={paginationInfo.page} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => { setPaginationInfo({ page: page, nbResults: nbResults }); formatFiltersToQueryString(selectedFilters, { page: page, nbResults: nbResults }, sort, searchString) }} />
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={selectedContent.map((vod) => { return { id: vod, type: props.contentType } })} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
@@ -419,18 +466,24 @@ export const ContentListPage = (props: ContentListProps) => {
                 bulkThemeOpen &&
                 <ThemeBulkForm updateList={setListUpdate} showToast={props.showToast} getThemesList={() => props.getThemesList()} themes={props.themesList ? props.themesList.themes : []} items={selectedContent.map(contentId => { return { id: contentId, type: props.contentType } })} open={bulkThemeOpen} toggle={setBulkThemeOpen} />
             }
-            <Modal hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+            {
+                isTrialVodOrLive() &&
+                <PlanDetailsCardWrapper>
+                    <PlanDetailsCard type={props.contentType === 'vod' ? 'vod' : 'regular'}/>
+                </PlanDetailsCardWrapper>
+            }
+            <Modal allowNavigation={false} hasClose={false} modalTitle={selectedContent.length === 1 ? 'Move 1 item to...' : 'Move ' + selectedContent.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
                     <MoveItemModal showToast={props.showToast} setMoveModalSelectedFolder={(s: string) => { }} movedContent={selectedContent.map( contentId => { return { id: contentId, type: props.contentType } })} initialSelectedFolder={currentFolder.fullPath} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
-            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal allowNavigation={false} style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle='Create Folder' toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened && <NewFolderModal buttonLabel={'Create'} folderPath={currentFolder.fullPath} submit={foldersTree.addFolder} toggle={setNewFolderModalOpened} showToast={() => { }} />
                 }
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+            <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
                     <DeleteContentModal showToast={props.showToast} toggle={setDeleteContentModalOpened} contentName={contentToDelete.title} deleteContent={async () => { await props.deleteContentList(contentToDelete.id).then(() => setListUpdate('Deleted')) }} />
@@ -444,8 +497,16 @@ export const ContentListPage = (props: ContentListProps) => {
             {
                 previewModalOpen && <PreviewModal contentId={previewedContent} toggle={setPreviewModalOpen} isOpened={previewModalOpen} contentType={props.contentType} />
             }
+            <PlanLimitReachedModal allowNavigation type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
         </>
 
     )
 }
+
+export const PlanDetailsCardWrapper = styled.div`
+    background-color: ${props => props.theme.colors["gray-10"]};
+    padding: 16px 16px ${isMobile ? '7px' : '32px'};
+    margin-top: 8px;
+    border: ${props => isMobile ? 'none' : '1px solid ' + props.theme.colors["violet"]};
+`
 

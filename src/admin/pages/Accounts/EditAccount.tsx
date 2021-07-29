@@ -23,6 +23,7 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
     const [openConfirmationModal, setOpenConfirmationModal] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [createPlatformLoading, setCreatePlatformLoading] = React.useState<boolean>(false)
+    const [forceInplayerLoading, setForceInplayerLoading] = React.useState<boolean>(false)
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
 
     const salesforceId = getUrlParam('salesforceId') || null
@@ -58,8 +59,16 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
         }).catch(() => setCreatePlatformLoading(false))
     }
 
+    const handleForceInplayer = () => {
+        setForceInplayerLoading(true)
+        dacastSdk.postForceInplayerSetup(salesforceId)
+        .then(() => {
+            setForceInplayerLoading(false)
+        }).catch(() => setForceInplayerLoading(false))
+    }
+
     return (
-        <div className='flex flex-column'> 
+        <div className='flex flex-column'>
 
             <Text size={16} weight='med'>Editing BID: {salesforceId}</Text>
             <div className='flex'>
@@ -79,87 +88,90 @@ export const EditAccountPage = (props: EditAccountComponentProps & {accountId: s
 
             <div className='flex'>
              <Input backgroundColor="white" className='col col-3 pr1 py1' id='passwordInput' defaultValue={''} placeholder='Password' label='Change Password' onChange={(event) => setAccountInfo({...accountInfo, newPassword: event.currentTarget.value})} />
-             <DropdownSingle 
-                    className='col col-3 pl1 my1' 
+             <DropdownSingle
+                    className='col col-3 pl1 my1'
                     id='emailVerifiedDropdown'
-                    isWhiteBackground 
-                    list={verifyEmailDropdownList} 
-                    dropdownTitle='Email Verified' 
+                    isWhiteBackground
+                    list={verifyEmailDropdownList}
+                    dropdownTitle='Email Verified'
                     disabled={accountDetails.emailVerified}
-                    dropdownDefaultSelect={props.accountInfo.emailVerified ? 'Yes' : 'No'} 
+                    dropdownDefaultSelect={props.accountInfo.emailVerified ? 'Yes' : 'No'}
                     callback={(item: DropdownSingleListItem) => setAccountInfo({...accountInfo, forceVerifyEmail: item.title == 'Yes' ? true : false})}
                 />
 
             </div>
 
             <div className="flex">
-                <DropdownSingle 
-                    hasSearch 
+                <DropdownSingle
+                    hasSearch
                     callback={(item: DropdownSingleListItem) => {setSelectedCountry(item.title)}}
-                    dropdownDefaultSelect={!props.accountInfo.country ? "" : props.accountInfo.country} className="col col-3 pr1 my1" 
-                    id='countryDropdown' dropdownTitle='Country' 
-                    list={countryDropdownList} 
+                    dropdownDefaultSelect={!props.accountInfo.country ? "" : props.accountInfo.country} className="col col-3 pr1 my1"
+                    id='countryDropdown' dropdownTitle='Country'
+                    list={countryDropdownList}
                 />
             </div>
-            
+
             <div className='flex items-center'>
-                <DropdownSingle 
-                    className='col col-3 pr1 my1' 
-                    id='playbackProtectionDropdown' 
+                <DropdownSingle
+                    className='col col-3 pr1 my1'
+                    id='playbackProtectionDropdown'
                     isWhiteBackground
-                    list={playbackProtectionDropdownList} 
-                    dropdownTitle='Playback Protection' 
-                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'Off'} 
+                    list={playbackProtectionDropdownList}
+                    dropdownTitle='Playback Protection'
+                    dropdownDefaultSelect={accountDetails.playbackProtection.enabled ? accountDetails.playbackProtection.amountGb + ' GB' : 'Off'}
                     callback={(item: DropdownSingleListItem) => setAccountInfo({...accountInfo, playbackProtection: item.title === 'Off' ?{enabled: false, amountGb: NaN} : {enabled: true, amountGb: item.data}})}
                 />
                 <Toggle
                     id='isPayingToggle'
                     className='col col-3 pl1 mt3'
                     defaultChecked={accountDetails.isPaying}
-                    onChange={() => setAccountInfo({ ...accountInfo, isPaying: accountInfo.isPaying ? !accountInfo.isPaying : !accountDetails.isPaying})} 
+                    onChange={() => setAccountInfo({ ...accountInfo, isPaying: accountInfo.isPaying ? !accountInfo.isPaying : !accountDetails.isPaying})}
                     label='Is Paying'
-                /> 
+                />
 
 
             </div>
 
             <div className='flex items-end'>
-            <DropdownSingle 
-                    className='col col-3 pr1 my1' 
+            <DropdownSingle
+                    className='col col-3 pr1 my1'
                     id='preferredDropdown'
-                    isWhiteBackground 
-                    list={preferredPlatformDropdownList} 
-                    dropdownTitle='Preferred platform' 
-                    dropdownDefaultSelect={!accountDetails.preferredPlatform || accountDetails.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'} 
+                    isWhiteBackground
+                    list={preferredPlatformDropdownList}
+                    dropdownTitle='Preferred platform'
+                    dropdownDefaultSelect={!accountDetails.preferredPlatform || accountDetails.preferredPlatform !== 'legacy' ? 'Unified App' : 'Legacy'}
                     callback={(item: DropdownSingleListItem) => {setAccountInfo({...accountInfo, preferredPlatform: item.title == 'Legacy' ? 'legacy' : 'unified-app'})}}
                 />
-                <div className='col col-3 pl1 mb2'>
+                <div className='col col-1 pl1 mb2'>
                     <Button  isLoading={createPlatformLoading} onClick={() => handleCreateLegacy()} buttonColor='blue' typeButton='primary' sizeButton='small'>Create account on legacy</Button>
+                </div>
+                <div className='col col-1 pl1 mb2'>
+                    <Button isLoading={forceInplayerLoading} onClick={() => handleForceInplayer()} buttonColor='blue' typeButton='primary' sizeButton='small'>Force inPlayer setup</Button>
                 </div>
 
             </div>
             <div className='flex flex-column'>
                 <Text className='pt2' size={20} weight='med'>Flags</Text>
                 <div className='flex mb2 mt1'>
-                <InputCheckbox 
-                    id='bannedFlag' 
+                <InputCheckbox
+                    id='bannedFlag'
                     className='mx1'
-                    defaultChecked={accountDetails.isBanned} 
+                    defaultChecked={accountDetails.isBanned}
                     onChange={() => {setAccountDetails({...accountDetails, isBanned: !accountDetails.isBanned});setAccountInfo({...accountInfo, isBanned: Object.keys(accountInfo).indexOf('isBanned') > -1 ? !accountInfo.isBanned : !accountDetails.isBanned})}}
                     label='Banned'
                     disabled={props.accountInfo.isBanned}
                 />
-                <InputCheckbox 
-                    id='adultFlag' 
+                <InputCheckbox
+                    id='adultFlag'
                     className='mx1'
-                    defaultChecked={accountDetails.isAdult} 
+                    defaultChecked={accountDetails.isAdult}
                     onChange={() => {setAccountDetails({...accountDetails, isAdult: !accountDetails.isAdult});setAccountInfo({...accountInfo, isAdult: Object.keys(accountInfo).indexOf('isAdult') > -1 ? !accountInfo.isAdult : !accountDetails.isAdult})}}
                     label='Adult'
                 />
-                <InputCheckbox 
-                    id='testFlag' 
+                <InputCheckbox
+                    id='testFlag'
                     className='mx1'
-                    defaultChecked={accountDetails.isTest} 
+                    defaultChecked={accountDetails.isTest}
                     onChange={() => {setAccountDetails({...accountDetails, isTest: !accountDetails.isTest});setAccountInfo({...accountInfo, isTest: Object.keys(accountInfo).indexOf('isTest') > -1 ? !accountInfo.isTest : !accountDetails.isTest})}}
                     label='Test'
                 />

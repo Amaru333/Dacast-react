@@ -85,6 +85,14 @@ input:focus, textarea:focus, select:focus{
 /* unvisited link */
 a:link {
     color: #284CEB;
+
+    &.a-blue-2 {
+        color: #2899F6;
+    }
+
+    &.a-blue-260 {
+        color: #7EC2FA;
+    }
 }
 
 * {
@@ -95,6 +103,14 @@ a:link {
 /* visited link */
 a:visited {
     color: #284CEB;
+
+    &.a-blue-2 {
+        color: #2899F6;
+    }
+
+    &.a-blue-260 {
+        color: #7EC2FA;
+    }
 }
 
 /* mouse over link */
@@ -116,6 +132,14 @@ a {
 
 .pointer {
     cursor: pointer;
+}
+
+.link {
+    cursor: pointer;
+    &:hover {
+        color: #203DBC;
+        text-decoration: underline;
+    }
 }
 
 .navigation {
@@ -148,14 +172,37 @@ a {
     .iconAction {
       visibility:visible;
     }
-  }
+}
+
+.text-semibold {
+    font-weight: 500;
+}
 
 .inline-flex {
     display: inline-flex;
 }
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
 .bg-w {
     background: white;
 }
+
+.px15 {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
 .p25 {
     padding: 1.5rem;
 }
@@ -175,8 +222,16 @@ a {
     padding-right: 1.5rem;
 }
 
+.ml-2 {
+    margin-left: -1rem;
+}
+
 .m25 {
     margin: 1.5rem;
+}
+
+.mb15 {
+    margin-bottom: 0.75rem;
 }
 
 .mb25 {
@@ -444,3 +499,15 @@ a {
 .rt-table {
     background-color: white;
 }
+
+.leaflet-zoom-animated {
+    transition: none !important;
+}
+
+.leaflet-container {
+    background-color: #ffffff;
+}
+
+// .leaflet-tile-container {
+//     display: none;
+// }

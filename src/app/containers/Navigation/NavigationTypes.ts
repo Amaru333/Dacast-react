@@ -1,9 +1,10 @@
 import { BillingPageInfos } from '../../redux-flow/store/Account/Plan';
 import { Plans } from '../../redux-flow/store/Account/Upgrade/types';
 import { Privilege } from "../../../utils/services/token/token";
+import { DashboardInfos } from '../../redux-flow/store/Dashboard';
 
 export interface MainMenuSpecificProps {
-    routes: Routes[]; 
+    routes: Routes[];
     history: any;
     isOpen: boolean;
     setOpen: (b: boolean) => void;
@@ -14,9 +15,10 @@ export interface MainMenuSpecificProps {
     openAddStream?: (b: boolean) => void;
     openPlaylist?: (b: boolean) => void;
     openExpoCreate?: (b: boolean) => void;
-    planDetails: Plans;
+    infos: DashboardInfos;
+    getBillingPageInfos: () => Promise<void>;
+    getDashboardDetails: () => Promise<void>;
     billingInfo: BillingPageInfos;
-    getPlanDetails: () => Promise<void>;
 }
 ​
 export type MainMenuProps = MainMenuSpecificProps & React.HTMLAttributes<HTMLDivElement>;
@@ -25,6 +27,7 @@ export interface ElementMenuSpecificProps {
     icon: string;
     active?: boolean;
     isOpen: boolean;
+    isLocked: boolean;
     isMobile: boolean;
     arrowIcon?: string;
     hasSlugs?: boolean;
@@ -42,7 +45,7 @@ export interface Routes {
     slug?: Routes[];
     isExact?: boolean;
     isPublic?: boolean;
-    associatePrivilege?: Privilege;
+    associatePrivilege?: Privilege[];
     notDisplayedInNavigation?: boolean;
 }
 

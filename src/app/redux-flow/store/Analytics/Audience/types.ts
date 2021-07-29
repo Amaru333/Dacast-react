@@ -1,3 +1,5 @@
+import { AudienceAnalyticsState } from "../../Content/Analytics/types"
+
 export enum ActionTypes {
     GET_ACCOUNT_ANALYTICS_AUDIENCE = "@@analytics/GET_ACCOUNT_ANALYTICS_AUDIENCE",
 }
@@ -12,25 +14,7 @@ export type LocationItem = {
     label?: string[];
 }
 
-export interface AccountAnalyticsAudience {
-    playsImpressionsByTime: {
-        labels: string[];
-        plays: number[];
-        impressions: number[];
-        table: {plays: number; impressions: number; label: string}[]
-    };
-    playsImpressionsByDevice: {
-        labels: string[];
-        plays: number[];
-        impressions: number[];
-        table: {plays: number; impressions: number; label: string}[]
-    };
-    playsImpressionsByLocation: {
-        data: LocationItem[];
-        table: {plays: number; impressions: number; label: string}[];
-    },
-    error?: boolean
-}
+export type AccountAnalyticsAudience = AudienceAnalyticsState
 
 export interface AccountAnalyticsAudienceState {
     data?: AccountAnalyticsAudience

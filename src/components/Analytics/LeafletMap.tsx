@@ -6,13 +6,15 @@ import { LatLngTuple, Layer, LeafletMouseEvent } from 'leaflet';
 import { LocationItem } from '../../app/redux-flow/store/Content/Analytics';
 import { EmptyAnalytics } from './EmptyAnalytics';
 import { world } from '../../app/constants/CountriesList';
+import { useMedia } from '../../utils/utils';
 
 const defaultLatLng: LatLngTuple = [48.865572, 2.283523];
 const zoom: number = 1;
 
 
-const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (element: LocationItem, index: number) => string }) => {
+const LeafletMap = (props: { markers: LocationItem[]; markerNameTranform: (element: LocationItem, index: number) => string; smallMap?: boolean }) => {
 
+  const smallMap = props.smallMap || useMedia('(max-width: 1024px)')
   if(!props.markers.length) {
     return (
         <EmptyAnalytics />
@@ -43,88 +45,105 @@ const LeafletMap = (props: { markers: LocationItem[], markerNameTranform: (eleme
   let max = Math.max(...props.markers.map(k => k.value[0]));
   let min = Math.min(...props.markers.map(k => k.value[0]));
 
-  const renderMarkers = () => {
-    return props.markers.map((element, index) => {
-      let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
+  // const renderMarkers = () => {
+  //   return props.markers.map((element, index) => {
+  //     let lerpPercent = logScale(element.value[0], 0, max, 100, 1000);
+  //     lerpPercent -= 100;
+  //     lerpPercent /= 1000;
+
+  //     return (
+  //       <CircleMarker
+  //         weight={1} radius={12} center={[element.position.latitude, element.position.longitude]}
+  //         color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
+  //       >
+  //         <Popup>
+  //           {props.markerNameTranform(element, index)}
+  //         </Popup>
+  //       </CircleMarker>)
+  //   })
+  // }
+
+  function UpdateCountryStyle(feature: any, layer: any) {
+  let fillColor = '#e2e0db'
+
+  if(feature.properties.maxVal > 0) {
+    console.log(feature)
+    let lerpPercent = logScale(feature.properties.maxVal, 0, max, 100, 1000);
       lerpPercent -= 100;
       lerpPercent /= 1000;
-
-      return (
-        <CircleMarker
-          weight={1} radius={12} center={[element.position.latitude, element.position.longitude]}
-          color={lerpColor('#93d5ed', '#2f5ec4', lerpPercent)}
-        >
-          <Popup>
-            {props.markerNameTranform(element, index)}
-          </Popup>
-        </CircleMarker>)
-    })
+    fillColor = lerpColor('#92A4F5', '#203DBC', lerpPercent)
   }
 
-//   function UpdateCountryStyle(feature: any, layer: any) {
-//   let fillColor = '#e2e0db'
+  return {
+      fillColor: fillColor,
+      weight: 2,
+      opacity: 1,
+      color: '#C8D1E0',
+      dashArray: '3',
+      fillOpacity: 0.7
+  };
+}
 
-//   if(feature.properties.plays > 0) {
-//     console.log(feature)
-//     let lerpPercent = logScale(feature.properties.plays, 0, max, 100, 1000);
-//       lerpPercent -= 100;
-//       lerpPercent /= 1000;
-//     fillColor = lerpColor('#93d5ed', '#2f5ec4', lerpPercent)
-//   }
-
-//   return {
-//       fillColor: fillColor,
-//       weight: 2,
-//       opacity: 1,
-//       color: 'white',
-//       dashArray: '3',
-//       fillOpacity: 0.7
-//   };
-// }
-
-// const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
-//   let layer = e.target
-//   layer.bindPopup('<h1>'+feature.properties.plays+'</h1><p>name: '+feature.properties.name+'</p>')
-// }
+const handleMouseOver = (e: LeafletMouseEvent, feature: any) => {
+  let layer = e.target
+  layer.bindPopup('<p>'+feature.properties.name+ ': ' + feature.properties.plays +'</p>')
+}
 
 
-//   const onEachFeature = (feature: any, layer: Layer) => {
-//     layer.on({
-//       mouseover: (e) => handleMouseOver(e, feature)
-//     })
+  const onEachFeature = (feature: any, layer: Layer) => {
+    layer.on({
+      mouseover: (e) => handleMouseOver(e, feature)
+    })
     
-//   }
+  }
 
-//   const renderGeoJSON = () => {
-//     let countries = world.features.map((country) => {
-//       return {
-//         ...country, 
-//         properties: {
-//           ...country.properties,
-//           plays: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0].value[0] : 0
-//         }
-//       }
-//     })
-//     return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
-//   }
+  const makeLabel = (item: LocationItem): string => {
+    const labels = item.label
+    const values = item.value
 
+    let returnedString = ''
+
+    values.map((v, i) => {
+      returnedString += (labels[i] === 'revenues' ? '$' : '') + v + ' ' + labels[i]
+      if(i < values.length - 1) {
+        returnedString += ', '
+      } 
+    })
+
+    return returnedString
+  }
+
+  const renderGeoJSON = () => {
+    let countries = world.features.map((country) => {
+      return {
+        ...country, 
+        properties: {
+          ...country.properties,
+          plays: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? makeLabel(props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0]) : '',
+          maxVal: props.markers.filter(c => country.id.indexOf(c.city) !== -1).length > 0 ? Math.max(...props.markers.filter(c => country.id.indexOf(c.city) !== -1)[0].value): 0
+        }
+      }
+    })
+    return <GeoJSON onEachFeature={onEachFeature} data={countries} style={UpdateCountryStyle} />
+  }
+ 
   return (
     <>
-      <Map center={defaultLatLng} zoom={zoom} style={{ height: '500px' }} minZoom={2}  >
+      <Map zoomControl={false} scrollWheelZoom={false} center={defaultLatLng} zoom={smallMap ? 1 : 1.5} style={{width:'100%', height: smallMap ? 350 : 550, paddingBottom: 0.5625}} minZoom={smallMap ? 1 : 1.5} >
         <TileLayer
-          noWrap={true}
+          noWrap={false}
           attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
         //url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
         />
-        {renderMarkers()}
+        {renderGeoJSON()}
       </Map>
       <div className="flex mt2 justify-center">
         <span className="mr2">{min}</span>
-        <div style={{ backgroundColor: '#93d5ed', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#45a5f5', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#4285f4', height: '20px', width: '30px' }}></div>
-        <div style={{ backgroundColor: '#2f5ec4', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#92A4F5', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#6D86F1', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#4967EE', height: '20px', width: '30px' }}></div>
+        <div style={{ backgroundColor: '#203DBC', height: '20px', width: '30px' }}></div>
         <span className="ml2">{max}</span>
       </div>
     </>)

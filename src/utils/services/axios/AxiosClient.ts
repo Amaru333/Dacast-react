@@ -21,6 +21,8 @@ export class AxiosClient {
     private retryDelay = 8000
     private axiosInstance: AxiosInstance = null
     private refreshingToken: boolean = false
+    private loop: number = 0;
+    private subscribers: Promise<any>[] = [];
 
     private getInstance = (): AxiosInstance => {
         if(!this.axiosInstance) {
@@ -46,21 +48,63 @@ export class AxiosClient {
             return newConfig
         }
 
-        if( new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
-            this.refreshingToken = true
-            await this.refreshToken().then(() => {
-                this.refreshingToken = false
-            })        
-        }
+        // if(new Date(this.userToken.getTokenInfo().expires * 1000).getTime() - new Date().getTime() <= 300000 && !this.refreshingToken) {
+        //     return new Promise((resolve, reject) => {
+        //         this.refreshingToken = true
+        //             this.refreshToken().then(() => {
+        //                 this.refreshingToken = false
+        //                 let refreshedConfig = config
+        //                 refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+        //                 resolve(refreshedConfig);
+        //                 return refreshedConfig
+        //             }, reject);
+        //     })
+        // }
         config.headers['Authorization'] = this.userToken.getTokenInfo().token
         return config
     }
 
+    private subscribeTokenRefresh = (cb: any) => {
+        this.subscribers.push(cb);
+      }
+      
+      private onRrefreshed = (token: string) => {
+        this.subscribers.map((cb) => cb(token));
+      }
+
     private responseInterceptor = (error: any) => {
-        const config = error.config
+        const {
+            config,
+            response: { status },
+          } = error;
+
         if(!config){
             return Promise.reject(error)
         }
+
+        const originalRequest = config;
+      
+        if (status === 401) {
+          if (!this.refreshingToken) {
+            this.refreshingToken = true;
+            this.refreshToken().then(() => {
+              this.refreshingToken = false
+              let refreshedConfig = config
+              refreshedConfig.headers['Authorization'] = this.userToken.getTokenInfo().token
+              this.onRrefreshed(this.userToken.getTokenInfo().token)
+              this.subscribers = []
+
+              return refreshedConfig
+              });
+          }
+          return new Promise((resolve) => {
+            this.subscribeTokenRefresh((token: string) => {
+              originalRequest.headers.Authorization = token;
+              resolve(Axios(originalRequest));
+            });
+          });
+        }
+
         let {
             currentCount = 0,
             allowRetry = true,
@@ -73,7 +117,9 @@ export class AxiosClient {
         currentCount++
         config.headers['X-Api-Key'].currentCount = currentCount
 
-        return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
+          return Promise.reject(error);
+
+        // return new Promise(resolve => setTimeout(() => resolve(this.axiosInstance(config)), this.retryDelay));
     }
 
     public async get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
@@ -90,6 +136,10 @@ export class AxiosClient {
 
     public async put<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
         return await this.getInstance().put(url, data, this.setConfig(config))
+    }
+
+    public async patch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig & RequestConfig): Promise<R> {
+        return await this.getInstance().patch(url, data, this.setConfig(config))
     }
 
     private setConfig = (config: AxiosRequestConfig & RequestConfig) => {
@@ -116,7 +166,6 @@ export class AxiosClient {
             localStorage.removeItem('userToken')
             localStorage.setItem('userToken', JSON.stringify(token))
             this.userToken.addTokenInfo(token)
-
         }).catch((error: any) => {
             if(error.response.data.error.indexOf('Refresh Token has expired') > -1) {
                 EventHooker.dispatch('EVENT_FORCE_LOGOUT', undefined)
@@ -124,7 +173,6 @@ export class AxiosClient {
             return Promise.reject(error);
         })  
     }
-
 }
 
 const isNetworkError = (error: any) => {

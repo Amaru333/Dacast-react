@@ -119,7 +119,7 @@ const General = (props: GeneralComponentProps) => {
                                     getUploadUrl={props.getUploadUrl}
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
-                                <GeneralAdvancedLinks contentDetails={stateContentDetails} />
+                                <GeneralAdvancedLinks contentDetails={stateContentDetails} contentType="vod"/>
 
                                 {
                                     imageModalOpen &&

@@ -16,6 +16,8 @@ import { Modal } from '../../../components/Modal/Modal';
 import { DisableProtectionModal } from '../../shared/Plan/DisableProtectionModal';
 import { WidgetElement } from './WidgetElement';
 import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from './DashboardStyles';
+import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
+import EventHooker from '../../../utils/services/event/eventHooker';
 import { userToken } from '../../utils/services/token/tokenService';
 
 export interface DashboardProps {
@@ -40,6 +42,19 @@ const DashboardTest = (props: DashboardProps) => {
 
     const [protectionModalOpened, setProtectionModalOpened] = React.useState<boolean>(false);
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
+    const [planLimitReachedModalOpen, setPlanLimitReachedModalOpen] = React.useState<boolean>(false)
+
+    const handleOnLogin = () => {
+        setPlanLimitReachedModalOpen(true)
+    }
+
+    React.useEffect(() => {
+        EventHooker.subscribe('EVENT_LOG_IN_SUCCESS', handleOnLogin)
+
+        return () => {
+            EventHooker.unsubscribe('EVENT_LOG_IN_SUCCESS', handleOnLogin)
+        }
+    }, [])
 
     const handlePlaybackProtectionValue = (value: string) => {
 
@@ -77,12 +92,12 @@ const DashboardTest = (props: DashboardProps) => {
                         </Modal>
                     }
                     {
-                        props.infos.playbackProtection && 
+                        props.infos.playbackProtection &&
                         <Modal icon={{ name: "error_outlined", color: "yellow" }} hasClose={false} modalTitle="Disable Protection" toggle={() => setDisableProtectionModalOpened(!disableProtectionModalOpened)} size="small" opened={disableProtectionModalOpened} >
                             <DisableProtectionModal
                                 price={props.infos.playbackProtection.price}
                                 editBillingPagePaymenPlaybackProtection={props.editBillingPagePaymenPlaybackProtection}
-                                setDisableProtectionModalOpened={setDisableProtectionModalOpened} 
+                                setDisableProtectionModalOpened={setDisableProtectionModalOpened}
                             />
                         </Modal>
                     }
@@ -91,7 +106,12 @@ const DashboardTest = (props: DashboardProps) => {
         }
 
         if (props.infos.currentPlan && props.infos.currentPlan.displayName === '30 Day Trial') {
-            return <TrialAdditionalDashboard />
+            return (
+                <>
+                    <TrialAdditionalDashboard />
+                    <PlanLimitReachedModal type="end_of_trial" toggle={() => setPlanLimitReachedModalOpen(false)} opened={planLimitReachedModalOpen} />
+                </>
+            )
         }
 
         return (
@@ -126,7 +146,7 @@ const DashboardTest = (props: DashboardProps) => {
 
 export function mapStateToProps(state: ApplicationState) {
     return {
-        infos: state.dashboard.info,
+        infos: { ...state.dashboard.info, playbackProtection: state.account.plan.playbackProtection }
     };
 }
 

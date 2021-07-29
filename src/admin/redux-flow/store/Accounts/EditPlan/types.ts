@@ -29,6 +29,7 @@ export interface PlanInfo {
     aes: PlanSetting;
     signedKeys: PlanSetting;
     api: PlanSetting;
+    apiBeta: PlanSetting;
     webDownload: PlanSetting;
     paywall: PlanSetting;
     advertising: PlanSetting;
@@ -38,7 +39,9 @@ export interface PlanInfo {
     ultraSecureChannel: PlanSetting;
     phoneSupport: PlanSetting;
     multiUserAccess: PlanSetting;
-    multiUserAccessBeta: PlanSetting
+    multiUserAccessBeta: PlanSetting;
+    paymentRequest: PlanSetting;
+    unsecureVod: PlanSetting;
 }
 
 export interface PlanInfoPut {

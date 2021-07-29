@@ -33,15 +33,13 @@ const Groups = (props: GroupsComponentProps) => {
     React.useEffect(() => {
         if(!props.groupsInfos.prices) {
             props.getGroupPrices()
-            .catch(() => setNodataFetched(true))
-
+                .catch(() => setNodataFetched(true))
         }
         if(!props.groupsInfos.promos) {
             props.getGroupPromos()
-            .catch(() => setNodataFetched(true))
-
+                .catch(() => setNodataFetched(true))
         }
-            props.getFolderContent('status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist')
+        props.getFolderContent('status=online&page=1&per-page=200&content-types=channel,vod,folder,playlist')
             .catch(() => setNodataFetched(true))
     }, [])
 

@@ -104,7 +104,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                     duration: preset.preset.settings.duration ? {
                         value: preset.preset.settings.duration.value,
                         unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
-                    } 
+                    }
                     : null,
                     startMethod: preset.preset.settings.startDate && preset.preset.settings.startDate > Math.floor(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
                     recurrence: preset.preset.settings.recurrence ? {
@@ -112,7 +112,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                         : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
                         : preset.preset.settings.recurrence.value > 1 ? 'Quarterly'
                         : 'Monthly'
-                    } 
+                    }
                     : null
                 },
                 priceType: preset.preset.settings.recurrence ? 'Subscription' : 'Pay Per View'
@@ -122,7 +122,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
     }
 
     return formattedData
-} 
+}
 
 export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => {
     let formattedData: PricePresetDetails = {
@@ -136,7 +136,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
             settings: {
                 recurrence: {
                     unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 3 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }
@@ -190,7 +190,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
             settings: {
                 recurrence: {
                     unit: data.settings.recurrence.unit === 'Weekly' ? 'week' : 'month',
-                    value: data.settings.recurrence.unit === 'Quarterly' ? 4 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
+                    value: data.settings.recurrence.unit === 'Quarterly' ? 3 : data.settings.recurrence.unit === 'Biannual' ? 6 : 1
                 }
             }
         }

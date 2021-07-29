@@ -1,14 +1,10 @@
+import { AnalyticsMetricInfo } from "../../Content/Analytics/types"
+
 export enum ActionTypes {
     GET_ACCOUNT_ANALYTICS_DATA = "@@analytics/GET_ACCOUNT_ANALYTICS_DATA",
 }
 
-export interface AccountAnalyticsData {
-    dataConsumptionByTime: {
-        labels: string[];
-        data: number[];
-        table: {data: number; label: string}[]
-    };
-}
+export type AccountAnalyticsData = AnalyticsMetricInfo
 
 export interface AccountAnalyticsDataState {
     data?: AccountAnalyticsData

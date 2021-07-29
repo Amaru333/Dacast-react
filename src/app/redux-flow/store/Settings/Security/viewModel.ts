@@ -1,4 +1,5 @@
 import { DomainControlDetails, DomainControlEndpoint, DomainControlId, GeoRestrictionDetails, GeoRestrictionEndpoint, GeoRestrictionId, GetSecuritySettingsOutput, PutSecuritySettingsInput } from '../../../../../DacastSdk/settings';
+import { formatTsToMs } from '../../../../../utils/services/date/dateService';
 import { defaultDomainControl, defaultGeoRestriction, DomainControl, GeoRestriction, SecuritySettings } from './types';
 
 export const formatGetSecuritySettingsOutput = (data: GetSecuritySettingsOutput): SecuritySettings => {
@@ -20,7 +21,7 @@ export const formatGetSecuritySettingsOutput = (data: GetSecuritySettingsOutput)
         }
     }
     let formattedData: SecuritySettings = {
-        contentScheduling: {...data.contentScheduling, startTime: data.contentScheduling.startTime, endTime: data.contentScheduling.endTime},
+        contentScheduling: {...data.contentScheduling, startTime: formatTsToMs(data.contentScheduling.startTime), endTime: formatTsToMs(data.contentScheduling.endTime)},
         geoRestriction: geoRestrictionsList,
         domainControl: domainControlsList,
         passwordProtection: {

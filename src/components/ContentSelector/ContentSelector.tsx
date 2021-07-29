@@ -15,6 +15,7 @@ import { SwitchTabConfirmation } from '../../app/pages/Playlist/Setup/SetupModal
 import { handleRowIconType } from '../../app/shared/Analytics/AnalyticsCommun';
 import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
 import { ListContentTitle } from '../../app/pages/Folders/FoldersStyle';
+import { InputSearch } from '../FormsComponents/Input/InputSearch';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
@@ -29,6 +30,7 @@ export interface ContentSelectorComponentProps {
     showSort?: boolean;
     showFolders?: boolean;
     openSettings?: Function;
+    emptyText?: string;
 }
 
 export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
@@ -68,7 +70,10 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         props.getFolderContent(parseFiltersToQueryString())
     }, [sortSettings, searchString])
 
-
+    React.useEffect(() => {
+        setSelectedItems(props.selectedItems)
+    }, [props.selectedItems])
+    
     useOutsideAlerter(sortDropdownRef, () => {
         setDropdownIsOpened(!dropdownIsOpened)
     })
@@ -223,6 +228,11 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     }
 
     const renderSelectedItems = () => {
+        if(selectedItems.length == 0) {
+            return (
+                <Text className="col-8 mr-auto ml-auto block mt2">{props.emptyText}</Text>
+            )
+        }
         return selectedItems.map((element: FolderAsset, i) => {
             return (
                 <ItemSetupRow className='col col-12 flex items-center p2 pointer' selected={checkedSelectedItems.includes(element)} >
@@ -312,19 +322,21 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                 <div className="inline-flex items-center flex col-7 mb1">
                     {
                         selectedTab === 'content' &&
-                        <>
-                            <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => { setSearchString(value[0]) }} />
-                        </>
+                        <InputSearch
+                            placeholder="Search by Title..." 
+                            callback={(value: string) => setSearchString(value)}
+                            isSearching={searchString !== null && searchString !== ''}
+                            value={searchString}
+                        />
                     }
                 </div>
 
                 {
                     props.showSort &&
                     <div className="inline-flex items-center flex col-5 justify-end mb2">
-                        <div>
+                        <div className="relative">
                             <IconStyle id="playlistSetupTooltip">info_outlined</IconStyle>
-                            <Tooltip target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
+                            <Tooltip style={{minWidth: 155}} target="playlistSetupTooltip">Either select content dynamically from a Folder or statically from specific pieces of content</Tooltip>
                         </div>
                         <div className="relative">
                             <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} buttonColor="blue" className="relative  ml2" sizeButton="small" typeButton="secondary" >{sortSettings.name !== "Sort" ? "Sort: " + sortSettings.name : 'Sort'}</Button>
@@ -371,13 +383,14 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     </div>
                 </ContainerHalfSelector>
                 <div className="col sm-show sm-col-2 col-12" style={{ marginTop: 180 }}>
-                    <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_right</IconStyle></Button>
-                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='secondary' sizeButton='xs' buttonColor='blue'><IconStyle>chevron_left</IconStyle></Button>
+                    <Button disabled={selectedTab === 'folder' && (selectedItems && selectedItems.length !== 0)} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}>chevron_right</IconStyle></Button>
+                    <Button onClick={() => handleRemoveFromSelected()} className='block ml-auto mr-auto' typeButton='primary' sizeButton='small' buttonColor='blue'><IconStyle coloricon='white' customsize={32}  >chevron_left</IconStyle></Button>
                 </div>
                 <Button disabled={selectedTab === 'folder' && selectedItems.length !== 0} onClick={() => handleMoveToSelected()} className='block ml-auto mr-auto mb2 col-12 mb2 mt2 xs-show' typeButton='secondary' sizeButton='xs' buttonColor='blue'>Add</Button>
                 <ContainerHalfSelector className="col sm-col-5 col-12" >
                     <HeaderBorder className="p2">
-                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>
+                        <Text color={"gray-1"} size={14} weight='med'>{props.title}</Text>                        
+                        <Text color={"gray-5"} className='right' size={14} weight='reg'>{selectedItems.length} videos</Text>
                     </HeaderBorder>
                     {renderSelectedItems()}
                 </ContainerHalfSelector>

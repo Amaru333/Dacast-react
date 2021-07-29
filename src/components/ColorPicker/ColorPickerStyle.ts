@@ -12,11 +12,11 @@ export const ColorPickerHeader = styled.div`
     }
 `
 
-export const SelectedColor = styled.div<{selectedColor: string}>`
+export const SelectedColor = styled.div<{selectedColor?: string}>`
     width: 24px;
     height: 24px;
     border-radius: 4px;
-    background-color: ${props => props.selectedColor};
+    background-color: ${props => props.selectedColor ? props.selectedColor : undefined};
     margin-right: 8px;
 `
 

@@ -28,6 +28,8 @@ import { PaymentSuccessModal } from '../../../shared/Billing/PaymentSuccessModal
 import { PaymentFailedModal } from '../../../shared/Billing/PaymentFailedModal';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { ContactOwnerModal } from './ContactOwnerModal';
+import { InputSearch } from '../../../../components/FormsComponents/Input/InputSearch';
+import { InputSearchStyle } from '../../../shared/General/GeneralStyle';
 
 export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
@@ -57,7 +59,7 @@ export const UsersPage = (props: UsersComponentProps) => {
 
     React.useEffect(() => {
         filterUsersTable()
-    }, [props.multiUserDetails.users, usersTableSort, usersTableKeyword])
+    }, [usersTableSort, usersTableKeyword])
 
     React.useEffect(() => {
         if(props.billingInfo && !planDetails) {
@@ -234,6 +236,16 @@ export const UsersPage = (props: UsersComponentProps) => {
         })
     }
 
+    const handleAddMoreSeatsClick = () => {
+        if((userToken.getUserInfoItem('planName') !== '30 Day Trial' && userToken.getUserInfoItem('planName') !== 'Free') && userToken.getPrivilege('privilege-billing')) {
+            setChangeSeatsStepperOpen(true)
+        } else if((userToken.getUserInfoItem('planName') === '30 Day Trial' || userToken.getUserInfoItem('planName') === 'Free') && userToken.getPrivilege('privilege-billing')) {
+            setUpgradeMultiUserModalOpen(true)
+        } else {
+            setContactOwnerModalOpened(true)
+        }
+    }
+
     const filterUsersTable = () => {
         let filteredList = props.multiUserDetails.users
         if(usersTableKeyword) {
@@ -247,23 +259,22 @@ export const UsersPage = (props: UsersComponentProps) => {
         <React.Fragment>
             <div className="flex items-center mb2">
                 <div className="flex-auto flex items-center">
-                    <IconStyle coloricon='gray-3'>search</IconStyle>
-                    <InputTags oneTag noBorder={true} placeholder="Search Users..." style={{ display: "inline-block" }} defaultTags={usersTableKeyword ? [usersTableKeyword] : []} callback={(value: string[]) => setUsersTableKeyword(value[0])} />
+                    <InputSearchStyle 
+                        placeholder="Search by name or email" 
+                        callback={(value: string) => setUsersTableKeyword(value)}
+                        isSearching={usersTableKeyword !== null && usersTableKeyword !== ''}
+                        value={usersTableKeyword}
+                    />
                 </div>
                 <div className="flex items-center relative">
-                    {
-                        userToken.getUserInfoItem('planName') !== '30 Day Trial' &&
-                        <>
-                            <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={() => {userToken.getPrivilege('privilege-billing') ? setChangeSeatsStepperOpen(true) : setContactOwnerModalOpened(true)}} size={14} color="dark-violet">Buy more seats</Text>
-                            <SeparatorHeader className="mx1 inline-block" />
-                        </>
-                    }
-                    <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seats used</Text>
-                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getUserInfoItem('planName').indexOf('Trial') === -1 ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
+                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={handleAddMoreSeatsClick} size={14} color="dark-violet">Buy more seats</Text>
+                    <SeparatorHeader className="mx1 inline-block" />
+                    <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seat{props.multiUserDetails.maxSeats > 1 && 's'} used</Text>
+                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getPrivilege('privilege-multi-access') ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
                 </div>
             </div>
-            <Table customClassName=" tableOverflow" id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white"></Table>
-            <Text className="relative right" size={12} color="gray-3">{emptySeats} Seats Available</Text>
+            <Table className='tableOverflow' customClassName=' tableOverflow' id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white" noScrollY></Table>
+            <Text className="relative right" size={12} color="gray-3">{emptySeats} Seat{emptySeats > 1 && 's'} Available</Text>
             {
                 changeSeatsStepperOpen &&
                 <CustomStepper

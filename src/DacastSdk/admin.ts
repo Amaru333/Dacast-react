@@ -1,12 +1,12 @@
+import { PostLoginOuput } from "./session";
+
 export interface PostImpersonateAccountInput {
-    userIdentifier: string;
+    userIdentifier?: string;
+    selectedUserId?: string;
+    loginToken?: string;
 }
 
-export interface PostImpersonateAccountOutput {
-    token: string;
-    accessToken: string;
-    expireAt: number;
-}
+export type PostImpersonateAccountOutput = PostLoginOuput
 
 interface AccountDetailsEndpoint {
     userId: string;
@@ -134,6 +134,7 @@ export interface GetAccountPlanOutput {
     aes: PlanSettingEndpoint;
     signedKeys: PlanSettingEndpoint;
     api: PlanSettingEndpoint;
+    apiBeta: PlanSettingEndpoint;
     webDownload: PlanSettingEndpoint;
     paywall: PlanSettingEndpoint;
     advertising: PlanSettingEndpoint;
@@ -144,6 +145,8 @@ export interface GetAccountPlanOutput {
     phoneSupport: PlanSettingEndpoint;
     multiUserAccess: PlanSettingEndpoint;
     multiUserAccessBeta: PlanSettingEndpoint;
+    paymentRequest: PlanSettingEndpoint;
+    unsecureVod: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {
@@ -201,6 +204,7 @@ interface AdminPaymentMethodDetailsEndpoint {
     bankCountry?: string;
     emailAddress?: string;
     comments?: string;
+    accountType?: 'checking' | 'savings'
 }
 
 export interface GetWithdrawalDetailsOutput {
@@ -211,7 +215,7 @@ export interface GetWithdrawalDetailsOutput {
     paymentMethod: AdminPaymentMethodDetailsEndpoint;
     requestedDate: number;
     status: string;
-    transferDate: number
+    transferDate: number;
 }
 
 export interface PutWithdrawalDetailsInput {
@@ -297,11 +301,21 @@ export interface GetMigrationJobDetailsOutput {
             success: boolean
         }[]
     }
+    exportVerification: {
+        status: string
+        errorDetails: string
+        reports: {
+            userId: string
+            errorDetails: string
+            success: boolean
+        }[]
+    }
 }
 
 export interface PostStartMigrationJobInput {
-    platform: 'dacast' | 'vzaar',
+    platform: 'dacast' | 'vzaar'
     userIds: string[]
+    enableDifferential: boolean
 }
 
 export interface PostSwitchOverUsersInput {

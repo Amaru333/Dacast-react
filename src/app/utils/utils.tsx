@@ -8,6 +8,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action as ReduxAction } from 'redux';
 import { ApplicationState } from '../redux-flow/store';
 import { Currency, Price } from '../redux-flow/store/Account/Upgrade/types';
+import { getUrlParam } from '../../utils/utils';
+import Audience from '../containers/Analytics/Audience';
 
 export function updateClipboard(copiedValue: string, toastMessage: string): void {
     navigator.clipboard.writeText(copiedValue).then(function () {
@@ -31,10 +33,11 @@ export const useStepperFinalStepAction = (buttonId: string, callback: Function) 
     }, [callback])
 }
 
-export const calcTotalFeatures = (prices: Price[], selectedCurrency: Currency): number => {
+export const calcTotalFeatures = (prices: {price: Price, quantity?: number}[], selectedCurrency: Currency): number => {
     let total = 0
+    console.log('prices: ', prices)
     prices.map(price => {
-        total += price[selectedCurrency] / 100
+        total += price.price[selectedCurrency] * (price.quantity || 1)
     })
 
     return total

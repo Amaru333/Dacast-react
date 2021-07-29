@@ -12,61 +12,43 @@ export type LocationItem = {
     label?: string[];
 }
 
-export interface AudienceAnalyticsState {
-    playsImpressionsByTime: {
-        labels: string[];
-        plays: number[];
-        impressions: number[];
-        table: {plays: number; impressions: number; label: string}[]
-    };
-    playsImpressionsByDevice: {
-        labels: string[];
-        plays: number[];
-        impressions: number[];
-        table: {plays: number; impressions: number; label: string}[]
-    };
-    playsImpressionsByLocation: {
-        data: LocationItem[];
-        table: {plays: number; impressions: number; label: string}[];
-    },
-    error?: boolean
+interface AnalyticsTableInfo {
+    data: number
+    label: string
 }
 
-export interface SalesAnalyticsState {
-    salesRevenuesByTime: {
-        labels: string[];
-        sales: number[];
-        revenues: number[];
-        table: {sales: number; revenues: number; label: string}[]
-    };
-    // salesRevenuesByDevice: {
-    //     labels: string[];
-    //     sales: number[];
-    //     revenues: number[];
-    //     table: {sales: number; revenues: number; label: string}[]
-    // };
-    salesRevenuesByLocation: { 
-        data: LocationItem[];
-        table: {revenues: number; sales: number; label: string}[]
+export type MetricKey = 'location' | 'device' | 'time'
+
+export interface AnalyticsMetricInfo {
+    'time': {
+        labels: string[]
+        data: number[]
+        table: AnalyticsTableInfo[]
+    }
+    'location': {
+        data: LocationItem[]
+        table: AnalyticsTableInfo[]
+    }
+    'device': {
+        labels: string[]
+        data: number[]
+        table: AnalyticsTableInfo[]
     }
 }
 
-export interface WatchAnalyticsState {
-    watchByTime: {
-        labels: string[];
-        data: number[];
-        table: {data: number; label: string}[];
-    },
-    watchByDevice: {
-        labels: string[];
-        data: number[];
-        table: {data: number; label: string}[];
-    },
-    watchByLocation: { 
-        data: LocationItem[];
-        table: {data: number; label: string}[];
-    }
+export type AudienceKeys = 'plays' | 'impressions'
+
+export type AudienceAnalyticsState  = {
+    [key in AudienceKeys]: AnalyticsMetricInfo
 }
+
+export type SalesKeys = 'sales' | 'revenue'
+
+export type SalesAnalyticsState  = {
+    [key in SalesKeys]: AnalyticsMetricInfo
+}
+
+export type WatchAnalyticsState = AnalyticsMetricInfo
 
 export interface RealTimeAnalyticsState {
     viewersByTime: {

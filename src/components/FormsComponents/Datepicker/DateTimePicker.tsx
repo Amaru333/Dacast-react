@@ -5,7 +5,7 @@ import { DateSinglePickerWrapper } from './DateSinglePickerWrapper';
 import { Input } from '../Input/Input';
 import { Text } from '../../Typography/Text';
 import { timezoneDropdownList } from '../../../utils/DropdownLists';
-import { dateAdd, inputTimeToTs, tsToInputTime } from "../../../utils/services/date/dateService";
+import { dateAdd, inputTimeToTs, tsToInputTime, getTimezoneOffsetInSecs } from "../../../utils/services/date/dateService";
 import { IconStyle } from "../../../shared/Common/Icon";
 
 
@@ -36,7 +36,8 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
     const list = [{ title: props.hideOption }, { title: "Set Date and Time" }]
 
     React.useEffect(() => {
-        var dayStart = new Date(day * 1000).setUTCHours(0,0,0,0);
+        const dayTZOffset = getTimezoneOffsetInSecs(timezone, new Date(day * 1000))
+        var dayStart = new Date((day + dayTZOffset) * 1000).setUTCHours(0, 0, 0, 0)
         const dayStartDate = new Date(dayStart)
         var timeStamp = dateAdd(dayStartDate, 'second', inputTimeToTs(time , timezone || 'UTC', dayStartDate)).getTime()
         props.callback(method === "Set Date and Time" ? new Date(timeStamp).getTime() < 0 ? 0 :  Math.round(new Date(timeStamp).getTime() / 1000) : 0, timezone)

@@ -17,6 +17,7 @@ export enum PaymentMethodType {
     PayPal = 'PayPal'
 }
 
+export type AccountType = 'Checking' | 'Savings'
 
 export interface PaymentMethod {
     id?: string;
@@ -32,6 +33,7 @@ export interface PaymentMethod {
     firstName?: string;
     lastName?: string;
     accountName?: string;
+    accountType?: AccountType;
     address?: string;
     address2?: string;
     state?: string;
@@ -54,6 +56,7 @@ export interface PaymentMethodPut {
     paymentMethodType?: string;
     paymentMethodName?: string;
     recipientType?: 'Business' | 'Personal';
+    accountType?: AccountType;
     accountNumberUS?: string;
     routingNumberUS?: string;
     firstNameUS?: string;
@@ -117,10 +120,12 @@ export interface PayoutInfos {
     paymentMethods?: PaymentMethod[];
     withdrawalRequests?: WithdrawalRequest[];
     paywallBalance: number;
+    maxWithdrawalRequestAmount: number;
 }
 
 export const payoutInitialState: PayoutInfos = {
     paymentMethods: null,
     withdrawalRequests: [],
-    paywallBalance: 0
+    paywallBalance: 0,
+    maxWithdrawalRequestAmount: 0
 }

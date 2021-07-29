@@ -13,7 +13,11 @@ import { Text } from '../../../components/Typography/Text'
 import { HeaderStyle, VerticalDivider } from '../../../components/Header/HeaderStyle'
 import Burger from '../Navigation/Burger'
 import { dacastSdk } from '../../utils/services/axios/adminAxiosClient'
-import { formatPostImpersonateInput } from '../../utils/utils'
+import { formatPostImpersonateInput, formatPostImpersonateOutput } from '../../utils/utils'
+import { Modal } from '../../../components/Modal/Modal'
+import { ImpersonateAccountSelectionModal } from '../modal/ImpersonateAccountSelectionModal'
+import { PostImpersonateAccountOutput } from '../../../DacastSdk/admin'
+import { isMultiUserToken } from '../../../DacastSdk/session'
 
 interface AdminHeaderProps {
     isOpen: boolean;
@@ -27,30 +31,31 @@ const Header = (props: AdminHeaderProps) => {
     const [userIdentifier, setUserIdentifier] = React.useState<string>('')
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [breadcrumbItems, setBreadcrumbItems] = React.useState<string[]>([])
-
-    // React.useEffect(() => {
-    //     const listener = (event: KeyboardEvent) => {
-    //         if ((event.code === "Enter" || event.code === "NumpadEnter") && event. === ) {
-    //             callback()
-    //         }
-    //     };
-    //     document.addEventListener("keydown", listener);
-    //     return () => {
-    //         document.removeEventListener("keydown", listener);
-    //     };
-    // }, [])
+    const [impersonateBody, setImpersonateBody] = React.useState<PostImpersonateAccountOutput>(null)
+    const [impersonateAccountSelectionModalOpened, setImpersonateAccountSelectionModalOpened] = React.useState<boolean>(false)
 
     React.useEffect(() => {
         let pathArray = window.location.pathname.split('/')
          setBreadcrumbItems(pathArray.filter(p => p).map(p => capitalizeFirstLetter(p)))
     }, [window.location])
 
+    React.useEffect(() => {
+        if(!impersonateAccountSelectionModalOpened) {
+            setImpersonateBody(null)
+        }
+    }, [impersonateAccountSelectionModalOpened])
+
     const handleImpersonate = () => {
         setIsLoading(true)
         dacastSdk.postImpersonateAccount(formatPostImpersonateInput(userIdentifier))
         .then((response) => {
             setIsLoading(false)
-            Object.assign(document.createElement('a'), { target: '_blank', href: `${process.env.APP_DOMAIN}/impersonate?token=${response.token}&identifier=${userIdentifier}`}).click()
+            if(isMultiUserToken(response)) {
+                setImpersonateBody(response)
+                setImpersonateAccountSelectionModalOpened(true)
+            } else {
+                formatPostImpersonateOutput(response, userIdentifier)
+            }
         })
         .catch(() => setIsLoading(false))
     }
@@ -100,6 +105,10 @@ const Header = (props: AdminHeaderProps) => {
             <div className='pointer mr2'>
                 <IconStyle onClick={() => {props.logout();history.push('/login')}}>exit_to_app_outlined</IconStyle>
             </div>
+            {
+                impersonateAccountSelectionModalOpened && 
+                    <ImpersonateAccountSelectionModal availableUsers={impersonateBody.availableUsers ? impersonateBody.availableUsers : []} loginToken={impersonateBody.loginToken ? impersonateBody.loginToken : null} opened={impersonateAccountSelectionModalOpened} toggle={setImpersonateAccountSelectionModalOpened} />
+            }
         </HeaderStyle>
     )
 }

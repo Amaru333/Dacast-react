@@ -34,8 +34,8 @@ export const GeneralSubtitles = (props: GeneralSubtitlesProps) => {
     const [subtitleButtonLoading, setSubtitleButtonLoading] = React.useState<boolean>(false);
 
     React.useEffect(() => {
-        if (props.contentDetails && props.contentDetails.uploadurl && subtitleModalOpen) {
-            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, { ...uploadedSubtitleFile, targetID: props.contentDetails.subtitles[props.contentDetails.subtitles.length - 1].targetID }, props.contentDetails.id, "vod").then(() =>
+        if (props.contentDetails && props.contentDetails.uploadurl && subtitleModalOpen && props.contentDetails.tempSubtitleFileId) {
+            props.addSubtitle(subtitleFile, props.contentDetails.uploadurl, { ...uploadedSubtitleFile, targetID: props.contentDetails.tempSubtitleFileId}, props.contentDetails.id, "vod").then(() =>
                 setSubtitleButtonLoading(false)
             ).catch(() =>
                 setSubtitleButtonLoading(false)

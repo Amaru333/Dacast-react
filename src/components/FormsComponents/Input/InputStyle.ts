@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { InputProps, SliderContainerProps } from './InputTypes';
 import { Text } from "../../Typography/Text"
+import { InputSearch } from "./InputSearch";
 
 export const ContainerStyle = styled.div`
     display: flex;
@@ -281,6 +282,19 @@ export const TagsInputStyle = styled(InputStyle)`
         border: none;
     }
 `
+
+export const InputSearchStyle = styled.input<{}>`
+    background: white;
+    border-radius: 4px;
+    height:24px;
+    padding: 8px 38px 8px 8px;
+    border: 0;
+    ::placeholder {
+        color: ${props => props.theme.colors["gray-5"]};
+        font-size: 14px;
+    }
+`
+
 export const TagListStyle = styled.ul`
     padding: 0;
     list-style: none;
@@ -300,6 +314,10 @@ export const TagStyle = styled.li`
     align-items: center;
     margin: 4px;
     max-width: 90%;
+`
+
+export const TagTextContainer = styled(Text)<{disabled: boolean}>`
+    max-width: ${props => !props.disabled && "90%"}
 `
 
 export const TagTextStyle = styled.p`

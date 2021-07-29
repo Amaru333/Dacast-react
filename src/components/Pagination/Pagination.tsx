@@ -14,6 +14,7 @@ interface PaginationProps {
     defaultDisplayedOption?: number;
     defaultPage?: number;
     className?: string;
+    smallScreen?: boolean;
 }
 
 export const Pagination = (props: PaginationProps) => {
@@ -24,7 +25,7 @@ export const Pagination = (props: PaginationProps) => {
 
     const lastPage = Math.ceil(props.totalResults / displayedOptions)
     
-    let smallScreen = useMedia('(max-width: 780px)')
+    let smallScreen = props.smallScreen || useMedia('(max-width: 780px)')
 
     React.useEffect(() => {
         if(!flag) {

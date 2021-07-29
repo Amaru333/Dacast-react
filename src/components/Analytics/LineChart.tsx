@@ -38,8 +38,11 @@ export const LineChart = (props: LineChartProps) => {
         labels: props.labels,
         options: {
             title: {
-                display: true,
+                display: false,
                 text: props.title
+            },
+            legend: {
+                display: false
             },
             plugins: {
                 crosshair: {
@@ -60,7 +63,7 @@ export const LineChart = (props: LineChartProps) => {
                     },
                     label: (i, d) => {
                       return (
-                        d.datasets[i.datasetIndex].label + ": " + i.yLabel
+                        d.datasets[i.datasetIndex].label + ": " + i.yLabel.toLocaleString()
                       );
                     }
                 }
@@ -71,19 +74,20 @@ export const LineChart = (props: LineChartProps) => {
             scales: {
                 yAxes: [{
                     ticks: {
-                        ...(props.step && {
-                            stepSize: props.step,
-                            suggestedMin: 0,
-                            beginAtZero: true,
-                            min: 0
-                        }),
+                        callback: (value: number) => {
+                            return value.toLocaleString();
+                        },
+                        stepSize: props.step,
+                        beginAtZero: true,
+                        min: 0,
+                        autoSkip: false
                     }
                 }],
                 ...( props.options.isTime && {
                         xAxes: [{
                             type: 'time',
                             ticks: {
-                                autoSkip: true,
+                                autoSkip: false,
                                 maxTicksLimit: 20
                             }
                         }],
@@ -95,7 +99,10 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'left',
                             ticks:{
-                                suggestedMin: 0,
+                                callback: (value: number) => {
+                                    return value.toLocaleString();
+                                },
+                                autoSkip: false,
                                 beginAtZero: true,
                                 min: 0
                             }
@@ -104,7 +111,10 @@ export const LineChart = (props: LineChartProps) => {
                             type: 'linear',
                             position: 'right',
                             ticks: {
-                                suggestedMin: 0,
+                                callback: (value: number) => {
+                                    return value.toLocaleString();
+                                },
+                                autoSkip: false,
                                 beginAtZero: true,
                                 min: 0
                             }

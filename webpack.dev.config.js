@@ -17,13 +17,13 @@ const faviconApp = process.env.API_BASE_URL.indexOf('universe') === -1 ? 'public
 
 console.log('favicon ', faviconApp)
 const plugins = {
-    app: { 
+    app: {
         filename: 'index.html',
         favicon: 'public/assets/stagingIcon.ico',
         template: path.resolve(__dirname, 'src/app', 'index.html'),
         excludeAssets: [/admin.*/]
     },
-    admin: { 
+    admin: {
         filename: 'index.html',
         favicon: 'public/assets/adminIcon.ico',
         template: path.resolve(__dirname, 'src/admin', 'admin.html'),
@@ -53,6 +53,7 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        port: '8081',
     },
     module: {
         rules: [

@@ -50,10 +50,13 @@ const Theme: DefaultTheme = {
         'pink': '#FC427B',
         'purple': '#7048E8',
         'blue-2': '#2899F6',
+        'blue-240': '#A9D6FB',
+        'blue-260': '#7EC2FA',
         'orange': '#DE8536',
         'overlay70': 'rgba(34, 47, 62, 0.7)',
         'overlay40': 'rgba(34, 47, 62, 0.4)',
-        'overlay20': 'rgba(34, 47, 62, 0.2)'
+        'overlay20': 'rgba(34, 47, 62, 0.2)',
+        'light-blue': '#2899F6'
     },
 }
 

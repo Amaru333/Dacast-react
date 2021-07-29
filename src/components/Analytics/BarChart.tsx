@@ -42,21 +42,22 @@ export const BarChart = (props: BarChartProps) => {
         },
         options: {
             title: {
-                display: true,
+                display: false,
                 text: props.title
+            },
+            legend: {
+                display: false
             },
             plugins: {
                 crosshair: false
             },
             tooltips: {
                 mode: "nearest",
-                ...(props.unit && {
-                    callbacks: {
-                        label: (tooltipItems, data) => {
-                            return tooltipItems.yLabel + " " + props.unit;
-                        }
+                callbacks: {
+                    label: (tooltipItems, data) => {
+                        return (props.unit ? " " + props.unit : "") + tooltipItems.yLabel.toLocaleString() + (props.unitRight ? " " + props.unitRight : "");
                     }
-                })
+                }
             },
             scales: {
                 ...(props.options.isTime && {
@@ -70,47 +71,20 @@ export const BarChart = (props: BarChartProps) => {
                 }
                 ),
                 yAxes: [{
-                    ...(props.unit && {
-                        ticks: {
-                            callback: (value) => {
-                                return value + " " + props.unit;
-                            },
-                        }
-                    }),
                     id: 'A',
                     type: 'linear',
                     position: 'left',
                     ticks: {
-                        ...(props.unit && {
-                            callback: (value) => {
-                                return value + " " + props.unit;
-                            }
-                        }),
+                        callback: (value: number) => {
+                            return (props.unit ? " " + props.unit : "") + value.toLocaleString() + (props.unitRight ? " " + props.unitRight : "");
+                        },
                         ...(props.step && {
                             stepSize: props.step,
                         }),
-                        suggestedMin: 0,
+                        min: 0,
                         beginAtZero: true
                     }
-                },
-                ...(props.options.rightYAxes ? [{
-                    id: 'B',
-                    ...(props.unitRight && {
-                        ticks: {
-                            callback:  (value) => {
-                                if(value >= 0) {
-                                    return value + " " + props.unitRight;
-                                }
-                            },
-                            suggestedMin: 0,
-                            beginAtZero: true
-                        },
-
-                    }),
-                    type: 'linear',
-                    position: 'right',
-                }] : [])
-                ]
+                }]
             }
         }
     }

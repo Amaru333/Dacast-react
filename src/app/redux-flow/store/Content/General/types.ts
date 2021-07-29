@@ -43,6 +43,8 @@ export interface VodDetails {
     embedScaling: string;
     embedSize: number;
     uploadurl: string;
+    tempSubtitleFileId?: string;
+    unsecureM3u8Url: string;
 }
 
 export interface LiveDetails {
@@ -90,16 +92,21 @@ export interface ExpoDetails {
     title: string
     description: string
     online: boolean
-    appearance: Appearance
-    poster: AssetType
-    uploadurl: string
+    appearance: ExposThemingState
+    uploadurl?: string
 }
 
 export type ContentDetails = VodDetails | LiveDetails | PlaylistDetails | ExpoDetails
 
-interface Appearance {
-    fontColor: string;
-    headerColor: string;
+export interface ExposThemingState {
+    darkModeEnable: boolean;
+    coverBackgroundEnable: boolean;
+    coverBackgroundUrl?: string;
+    coverBackgroundColor?: string;
+    contentDescriptions: boolean;
+    featuredContentEnable: boolean;
+    featuredContentId?: string;
+    coverBackgroundAssetId?: string;
 }
 
 interface LiveStreamCountdown {

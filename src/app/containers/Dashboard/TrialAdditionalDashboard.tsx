@@ -107,7 +107,7 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader style={{justifyContent: 'space-between'}} className="flex">
                         <Text size={16} weight="med" color="gray-1"> Tutorials </Text>
-                        <Button onClick={() => window.open(getKnowledgebaseLink("Default"), '_blank')} className="col col-2" sizeButton="xs" typeButton="secondary">See More</Button>
+                        <Button onClick={() => window.open(getKnowledgebaseLink("Default"), '_blank')} sizeButton="xs" typeButton="secondary">See More</Button>
                     </WidgetHeader>
                     <div className="flex mb1">
                         <TodoList items={todoItems} />
@@ -142,9 +142,9 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                             <Button className="col col-4" sizeButton="xs" typeButton="secondary" onClick={() => window.open("https://www.dacast.com/support/faq/")} >Visit FAQ</Button>
                         </WidgetElement>
                 }
-                
-                
-                
+
+
+
             </div>
             <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />
         </section>

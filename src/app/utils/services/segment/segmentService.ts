@@ -36,10 +36,11 @@ const identify = (data: IdentifyParam) => {
 const load = () => {
     window.analytics.load(isProduction() ? 'pyuOKnjfqaObRPBU1Q7Kf9eZ1ZPEHyxs' : 'i6XyHA38sV8B2ubXArU6wTkO4WlhXN29');
     window.analytics.ready(function () {
-        window.ga('require', 'linker');
-        window.ga('linker:autoLink', ['dacast.com']);
+        if(typeof window.ga === 'function') {
+            window.ga('require', 'linker');
+            window.ga('linker:autoLink', ['dacast.com']);
+        }
     });
-
 }
 const page = (name: string) => {
     window.analytics.page(

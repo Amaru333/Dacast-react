@@ -36,8 +36,6 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
         })
     }
 
-    React.useEffect(() => console.log('default ts:', trialExpirationDate), [trialExpirationDate])
-
     const handleKeyChange = (key:string, value: boolean | number) => {
         let tempPlanData = planData
         if(tempPlanData.privileges.findIndex(obj => obj.key === key) > -1) {
@@ -123,6 +121,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.paywall.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.paywall.planValue || props.accountPlan.paywall.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('paywall', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>Withdrawal</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.paymentRequest.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.paymentRequest.planValue || props.accountPlan.paymentRequest.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('paymentRequest', value === 'On' ? true : false)} />
+                    </div>
                     <Text className='py1' size={14} weight='med'>Expos</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.expo && props.accountPlan.expo.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
@@ -162,11 +165,21 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccess.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccess.planValue || props.accountPlan.multiUserAccess.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccess', value === 'On' ? true : false)} />
                     </div>
-                    <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
+                    <Text className='py1' size={14} weight='med'>API</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.api.planValue || props.accountPlan.api.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('api', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>API Beta</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='med'>{props.accountPlan.apiBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.apiBeta.planValue || props.accountPlan.apiBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('apiBeta', value === 'On' ? true : false)} />
+                    </div>
+                    {/* <Text className='py1' size={14} weight='med'>Multi User Access Beta</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='med'>{props.accountPlan.multiUserAccessBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.multiUserAccessBeta.planValue || props.accountPlan.multiUserAccessBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('multiUserAccessBeta', value === 'On' ? true : false)} />
-                    </div>
+                    </div> */}
 
                     <Divider className='pt2' />
 
@@ -185,6 +198,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.compatibleStreams.planValue || props.accountPlan.compatibleStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('compatibleStreams', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>Unsecure Vod (M3U8)</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.unsecureVod.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.unsecureVod.planValue || props.accountPlan.unsecureVod.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('unsecureVod', value === 'On' ? true : false)} />
                     </div>
                     <Text className='py1' size={14} weight='med'>Ultra Secure Streams</Text>
                     <div className='flex items-center my1'>
@@ -207,11 +225,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text className='pr2' size={14} weight='med'>{props.accountPlan.signedKeys.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                     <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.signedKeys.planValue || props.accountPlan.signedKeys.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('signedKeys', value === 'On' ? true : false)} />
                 </div>
-                <Text className='py1' size={14} weight='med'>API</Text>
-                <div className='flex items-center my1'>
-                    <Text className='pr2' size={14} weight='med'>{props.accountPlan.api.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
-                    <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.api.planValue || props.accountPlan.api.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('api', value === 'On' ? true : false)} />
-                </div>
+
 
 
 
@@ -240,7 +254,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                 <Modal modalTitle='Extend Trial' toggle={() => setExtendTrialModalOpened(!extendTrialModalOpened)} opened={extendTrialModalOpened}>
                     <div className='flex flex-column'>
                         <DateTimePicker
-                            minDate={defaultTs}
+                            //minDate={defaultTs}
                             fullLineTz
                             dropShowing={false}
                             showTimezone={true}

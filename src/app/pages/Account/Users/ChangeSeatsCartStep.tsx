@@ -19,7 +19,8 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
 
     const [seatChange, setSeatChange] = React.useState<number>(props.stepperData.seatToPurchase)
     const [firstSeatChange, setFirstSeatChange] = React.useState<boolean>(false)
-    const seatPricePerMonth = props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').price : 0
+    const seatPrice = props.stepperData.addOns && props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS') ? props.stepperData.addOns.find(addOn => addOn.code === 'MUA_ADDITIONAL_SEATS').price : 0
+    const seatPricePerMonth = props.stepperData.displayName === 'Monthly Scale' ? seatPrice : seatPrice / 12
 
     React.useEffect(() => {
         if(!firstSeatChange && props.stepperData.proRatedPrice === 0) {
@@ -95,7 +96,7 @@ export const ChangeSeatsCartStep = (props: ChangeSeatsCartStep) => {
             {
                 data: [
                     <Text key="annualBill" size={14} weight="med" color="gray-1">Annual Bill From {billingPeriod}</Text>,
-                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price/100) + seatPricePerMonth * 12 * props.stepperData.extraSeats)}</Text>
+                    <Text className="right pr2" key="annualBillValue" size={14} weight="med" color="gray-1">{handleCurrencySymbol(props.stepperData.currency) + ((props.stepperData.price) + seatPricePerMonth * 12 * props.stepperData.extraSeats)}</Text>
                 ]
             }
         ]

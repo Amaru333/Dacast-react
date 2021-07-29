@@ -130,6 +130,7 @@ export interface BankAccountUSDetails {
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
     accountNumber: string;
+    accountType: 'checking' | 'savings',
     routingNumber: string;
     firstName?: string;
     lastName?: string;
@@ -153,6 +154,7 @@ export interface BankAccountInternationalDetails {
     paymentMethodType: 'international-transfer';
     paymentMethodName: string;
     recipientType: 'business' | 'personal';
+    accountType: 'checking' | 'savings',
     swift: string;
     iban: string;
     firstName?: string;

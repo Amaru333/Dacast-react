@@ -1,10 +1,9 @@
 import * as React from "react"
 import Icon from '@material-ui/core/Icon';
-import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer } from './HeaderStyle';
+import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer, UpgradeButton, TrialUpgradeButton } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
 import { useLocation, useHistory, Link } from 'react-router-dom';
-import { Button } from '../FormsComponents/Button/Button';
 import { DropdownItem, DropdownItemText } from '../FormsComponents/Dropdown/DropdownStyle';
 import { useOutsideAlerter, capitalizeFirstLetter } from '../../utils/utils';
 import { ThunkDispatch } from 'redux-thunk';
@@ -21,6 +20,14 @@ import { BillingPageInfos, getBillingPageInfosAction } from '../../app/redux-flo
 import { segmentService } from '../../app/utils/services/segment/segmentService';
 import TagManager from 'react-gtm-module'
 import { ContentType } from "../../app/redux-flow/store/Common/types";
+import { Modal, ModalContent, ModalFooter } from "../Modal/Modal";
+import { Button } from "../FormsComponents/Button/Button";
+import EventHooker from '../../utils/services/event/eventHooker'
+import { NotificationPosition, NotificationType, Size } from "../Toast/ToastTypes";
+import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
+import { ToastLink } from "../Toast/ToastStyle";
+import { getNbDaysForMonth } from "../../utils/services/date/dateService";
+const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
     isOpen: boolean;
@@ -33,6 +40,8 @@ export interface HeaderProps {
     getBillingInfo: () => Promise<void>;
     getProfilePageDetails: () => Promise<void>;
     getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>;
+    showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => void;
+    hideToast: () => void;
 }
 
 const Header = (props: HeaderProps) => {
@@ -104,31 +113,59 @@ const Header = (props: HeaderProps) => {
     const [selectedUserOptionDropdownItem, setSelectedUserOptionDropdownItem] = React.useState<string>('');
     const [avatarFirstName, setAvatarFirstName] = React.useState<string>(null)
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
+    const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
+    const [modalShown, setModalShown] = React.useState<boolean>(false)
+    
+
+    const setTagManager = () => {
+        let dataset = {
+            'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
+            'accountId': userToken.getUserInfoItem('user-id'),
+            'companyName': userToken.getUserInfoItem('custom:website'),
+            'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
+            'signedUp': 'Unknown yet',
+            'userId': userToken.getUserInfoItem('user-id'),
+            'userFirstName': userToken.getUserInfoItem('custom:first_name'),
+            'userLastName': userToken.getUserInfoItem('custom:last_name'),
+            'userEmail': userToken.getUserInfoItem('email'),
+            'bid': userToken.getUserInfoItem('salesforce-group-id')
+        }
+
+        return dataset
+    }
+
+    const handleOnLogin = () => {
+        if(props.billingInfo && props.billingInfo.paymentMethod && props.billingInfo.paymentMethod.expiryYear) {
+            let expirationDate = new Date(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1, getNbDaysForMonth(parseInt(props.billingInfo.paymentMethod.expiryYear), parseInt(props.billingInfo.paymentMethod.expiryMonth) - 1))
+            const today = new Date()
+            const warningDate = new Date(today.setDate(today.getDate() + 45))
+            if(expirationDate.valueOf() <= Date.now().valueOf()) {
+                setCardExpiredModalOpened(true)
+                return
+            }
+            if(expirationDate.valueOf() <= warningDate.valueOf()) {
+                const text = <Text size={16} weight="reg" color="white">
+                    Your payment method is about to expire. <ToastLink onClick={() => {history.push('/account/billing/#update-payment-method');props.hideToast()}}>Update Now</ToastLink>
+                </Text>
+                props.showToast(text, 'fixed', 'notification', true, 'right')
+                return
+            }
+        }
+    }
 
     React.useEffect(() => {
-            if(!props.ProfileInfo) {
-                props.getProfilePageDetails()
-            }
-    
-            if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
-                props.getBillingInfo()
-            }
+        
+        if(!props.ProfileInfo) {
+            props.getProfilePageDetails()
+        }
 
+        if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
+            props.getBillingInfo()
+        }
         TagManager.initialize(
             {
                 gtmId: 'GTM-PHZ3Z7F',
-                dataLayer: {
-                    'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                    'accountId': userToken.getUserInfoItem('user-id'),
-                    'companyName': userToken.getUserInfoItem('custom:website'),
-                    'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                    'signedUp': 'Unknown yet',
-                    'userId': userToken.getUserInfoItem('user-id'),
-                    'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                    'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                    'userEmail': userToken.getUserInfoItem('email'),
-                    'bid': userToken.getUserInfoItem('salesforce-group-id')
-                }, 
+                dataLayer: setTagManager()
                 // dataLayerName: 'Uapp'
             });
     }, [])
@@ -137,20 +174,13 @@ const Header = (props: HeaderProps) => {
         if(props.billingInfo) {
             TagManager.dataLayer(
                 {
-                    dataLayer: {
-                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('user-id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('user-id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                        'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    }, 
+                    dataLayer: setTagManager()
                     // dataLayerName: 'Uapp'
                 });
+            if(!modalShown) {
+                setModalShown(true)
+                handleOnLogin()
+            }
         }
     }, [props.billingInfo])
 
@@ -160,18 +190,7 @@ const Header = (props: HeaderProps) => {
             setAvatarLastName(props.ProfileInfo.lastName)
             TagManager.dataLayer(
                 {
-                    dataLayer: {
-                        'adminUser': userToken.getUserInfoItem('impersonatedUserIdentifier') ? true : false,
-                        'accountId': userToken.getUserInfoItem('user-id'),
-                        'companyName': userToken.getUserInfoItem('custom:website'),
-                        'plan': userToken.getUserInfoItem('planName') ? userToken.getUserInfoItem('planName') : 'Unknown yet',
-                        'signedUp': 'Unknown yet',
-                        'userId': userToken.getUserInfoItem('user-id'),
-                        'userFirstName': userToken.getUserInfoItem('custom:first_name'),
-                        'userLastName': userToken.getUserInfoItem('custom:last_name'),
-                        'userEmail': userToken.getUserInfoItem('email'),
-                        'bid': userToken.getUserInfoItem('salesforce-group-id')
-                    }, 
+                    dataLayer: setTagManager()
                     // dataLayerName: 'Uapp'
                 });
         }
@@ -187,7 +206,6 @@ const Header = (props: HeaderProps) => {
     const handleLogOut = () => {
         userToken.resetUserInfo()
         window.location.href = '/login'
-        
     }
 
     const handleClick = (name: string) => {
@@ -205,6 +223,18 @@ const Header = (props: HeaderProps) => {
             default:
                 return
         }
+    }
+
+    const handleUpgradeClick = (options: { trial: boolean } = {trial: false}) => {
+        segmentService.track('Upgrade Form Completed', {
+            action: 'Upgrade Source Clicked',
+            userId: userToken.getUserInfoItem('user-id'),
+            customers: options.trial ? 'trial' : 'paid',
+            type: 'button',
+            location: options.trial ? 'sticky header trial' : 'sticky header paid plan',
+            step: -1
+        })
+        history.push('/account/upgrade')
     }
 
     const renderAddList = () => {
@@ -238,6 +268,29 @@ const Header = (props: HeaderProps) => {
         })
     }
 
+    const renderUpgradeButton = () => {
+        if(!props.billingInfo) {
+            return
+        }
+        if(props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
+            if (props.isMobile) {
+                <UpgradeButton onClick={() => handleUpgradeClick({ trial: true })} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+                    Upgrade
+                </UpgradeButton>
+            }
+            return (
+                <TrialUpgradeButton className="mr2">
+                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => handleUpgradeClick({ trial: true })}>Upgrade Now</a></span>
+                </TrialUpgradeButton>
+            )
+        }
+        return (
+            <UpgradeButton onClick={() => handleUpgradeClick()} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
+                Upgrade
+            </UpgradeButton>
+        )
+    }
+
     return (
         <HeaderStyle userType={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'impersonatedUser' : 'user'}>
             {props.isMobile && <Burger isOpen={props.isOpen} onClick={() => props.setOpen(!props.isOpen)} />}
@@ -246,14 +299,15 @@ const Header = (props: HeaderProps) => {
                 {renderHeaderBreadcrumb()}
             </BreadcrumbContainer>
             {
-                userToken.getUserInfoItem('impersonatedUserIdentifier') && 
+                userToken.getUserInfoItem('impersonatedUserIdentifier') &&
                 <div>
                     <Text> Impersonating user: {userToken.getUserInfoItem('impersonatedUserIdentifier')}</Text>
                 </div>
             }
 
+            {renderUpgradeButton()}
+            <VerticalDivider />
             <IconContainerStyle customColor={userToken.getUserInfoItem('impersonatedUserIdentifier') ? 'red10' : null}>
-                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
                 <div>
                     {avatarFirstName && avatarLastName ?
 
@@ -264,9 +318,17 @@ const Header = (props: HeaderProps) => {
                         {renderAddList()}
                     </UserOptionsDropdownList>
                 </div>
+                <a href="/help"><HeaderIconStyle><Icon>help</Icon></HeaderIconStyle></a>
             </IconContainerStyle>
-            <VerticalDivider />
-            <Button onClick={() => history.push('/account/upgrade')} className="mr2" sizeButton="xs" typeButton="secondary">Upgrade</Button>
+            <Modal allowNavigation={false} icon={{ name: "error_outlined", color: "light-blue" }} hasClose modalTitle="Payment method expired" size='small' toggle={() => setCardExpiredModalOpened(!cardExpiredModalOpened)} opened={cardExpiredModalOpened}>
+                    <ModalContent>
+                        <Text size={14} weight="reg">The payment method linked to your Dacast account is expired</Text>
+                        <Text weight='med'>Plase update your payment details today so you can keep working without interruption</Text>
+                    </ModalContent>
+                    <ModalFooter>
+                        <Button buttonColor='lightBlue' typeButton='primary' onClick={() => {history.push('/account/billing/#update-payment-method');setCardExpiredModalOpened(false)}}>Update payment details</Button>
+                    </ModalFooter>
+                </Modal>
         </HeaderStyle>
     )
 }
@@ -291,9 +353,11 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         getBillingInfo: () => {
             dispatch(getBillingPageInfosAction(undefined))
-        }
+        },
+        showToast: (text: string, size: Size, notificationType: NotificationType, permanent?: boolean, position?: NotificationPosition) => dispatch(showToastNotification(text, size, notificationType, permanent, position)),
+        hideToast: () => dispatch(hideAllToastsAction())
     }
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header); 
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
