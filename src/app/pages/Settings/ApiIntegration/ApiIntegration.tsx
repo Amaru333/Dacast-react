@@ -32,7 +32,7 @@ export interface ApiIntegrationProps {
 
 export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 
-    const privilegeApi = userToken.getPrivilege('privilege-api') && userToken.getPrivilege('privilege-api-beta');
+    const privilegeApi = userToken.getPrivilege('privilege-api') || userToken.getPrivilege('privilege-api-beta');
     const privilegeLive = userToken.getPrivilege('privilege-live');
     const privilegeVod = userToken.getPrivilege('privilege-vod');
     

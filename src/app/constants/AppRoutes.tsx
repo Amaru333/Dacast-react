@@ -482,7 +482,7 @@ export const AppRoutes: Routes[] = [
                 path: '/settings/integrations',
                 name: 'Integrations',
                 component: ApiIntegration,
-                associatePrivilege: ['privilege-api-beta']
+                associatePrivilege: ['privilege-api-beta', 'privilege-api']
             },
 
             {
