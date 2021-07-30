@@ -14,7 +14,7 @@ import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLive
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput, PutVodChapterMarkersInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
-import { GetFolderContentOutput } from './folder'
+import { GetFolderChildrenOutput, GetFolderContentOutput } from './folder'
 import { PostLoginInput, PostLoginOuput } from './session'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
@@ -271,4 +271,5 @@ export class DacastSdk {
     public postBulkAction = async (input: PostBulkActionInput): Promise<PostBulkActionOutput> => await this.axiosClient.post('bulk', input).then(this.checkExtraData)
 
     public getFolderContentList = async (input: string): Promise<GetFolderContentOutput> => await this.axiosClient.get('/search/content?' + input).then(this.checkExtraData)
+    public getFolderChildren = async (input: string): Promise<GetFolderChildrenOutput> => await this.axiosClient.get('/folders?parentID=' + input).then(this.checkExtraData)
 }

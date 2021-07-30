@@ -24,3 +24,13 @@ export function isFolder(content: FolderContentEndpoint): content is FolderAsset
     //@ts-ignore
     return !!content['parentID']
 }
+
+export interface GetFolderChildrenOutput {
+    folders: {
+        hasChild: boolean
+        id: string
+        name: string
+        parentId: string
+        path: string
+    }[]
+}
