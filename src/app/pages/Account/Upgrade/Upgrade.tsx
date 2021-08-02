@@ -168,7 +168,8 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
         const options = {
             currentPlan: currentPlan && currentPlan.toLowerCase(),
             selectedCurrency: selectedCurrency && selectedCurrency.data.id,
-            displayCalculator: displayCalculator
+            displayCalculator: displayCalculator,
+            isUpgradePage: true
         }
         const event = { type: 'IFRAME_OPTIONS_UPDATED', params: { options } }
         pricingIframeRef.current.contentWindow.postMessage(JSON.stringify(event), '*')
