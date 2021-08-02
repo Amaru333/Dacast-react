@@ -18,7 +18,6 @@ export const formatGetJobsListInput = (pendingOnly: boolean): string => {
             'Done Polling Import',
             'Started Import Verification',
             'Polling Import Verification',
-            'Ready To Switch',
             'Started Switch',
             'Polling Switch',
             'Done Switching',
