@@ -40,7 +40,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
-    const pricingIframeBaseUrl = env === 'production' ? 'https://singularity-unified-pricing.dacast.com' : 'http://localhost:8082'
+    const pricingIframeBaseUrl = env === 'production' ? 'https://unified-pricing.dacast.com' : 'https://singularity-unified-pricing.dacast.com'
     const pricingIframeUrl = `${pricingIframeBaseUrl}/index-upgrade.html`
     const [iframeHeight, setIframeHeight] = React.useState<number>(0)
     const [idleSeconds, setIdleSeconds] = React.useState(0)
