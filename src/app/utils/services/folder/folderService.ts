@@ -1,5 +1,6 @@
-import { FolderTreeNode, SubFolder, ContentType } from '../../../redux-flow/store/Folders/types';
-import { axiosClient, dacastSdk } from '../axios/axiosClient';
+import { FolderTreeNode, SubFolder, FolderContent } from '../../../redux-flow/store/Folders/types';
+import { formatPutMoveFolderInput } from '../../../redux-flow/store/Folders/viewModel';
+import { dacastSdk } from '../axios/axiosClient';
 
 export const rootNode: FolderTreeNode = {
     isExpanded: true,
@@ -129,7 +130,7 @@ export class FolderTree {
 
     public async addFolder(folderName: string, fullpath: string) {
         let node = await this.getNode(this.tree, fullpath)
-        return await axiosClient.post('/folders', 
+        return await dacastSdk.postFolder(
             {
                 fullPath: fullpath + folderName
             }
@@ -138,7 +139,7 @@ export class FolderTree {
                 [folderName]: {
                     isExpanded: false,
                     name: folderName,
-                    id: response.data.data.id,
+                    id: response.id,
                     path: fullpath,
                     hasChild: false,
                     subfolders: 0,
@@ -170,7 +171,7 @@ export class FolderTree {
 
     public async renameFolder(newName: string, fullPath: string) {
         let node = await this.getNode(this.tree, fullPath)
-        return await axiosClient.put('/folders/rename', 
+        return await dacastSdk.putRenameFolder(
             {
                 newName: newName,
                 id: node.id
@@ -201,7 +202,7 @@ export class FolderTree {
 
     public async deleteFolders(foldersToDelete: string[], fullPath: string) {
         let node = await this.getNode(this.tree, fullPath)
-        await axiosClient.put('/folders/delete', 
+        await dacastSdk.putDeleteFolder(
             {
                 folderIds: foldersToDelete
 
@@ -227,14 +228,9 @@ export class FolderTree {
         }, {})
     }
 
-    public async moveToFolder(folderIds: string[], movedContent: ContentType[], oldFolderId?: string) {
-        return await axiosClient.put('/folders/move', 
-            {
-                destinationFolderIds: folderIds.length == 0 ? null : folderIds,
-                movedContent: movedContent,
-                oldFolderId: oldFolderId
-            }
-        ).then(response => {
+    public async moveToFolder(folderIds: string[], movedContent: FolderContent[], oldFolderId?: string) {
+        return await dacastSdk.putMoveFolder(formatPutMoveFolderInput({foldersIds: folderIds, movedContent: movedContent, oldFolderId: oldFolderId}))
+        .then(response => {
             return response
         }).catch(error => {
             throw new Error(error)

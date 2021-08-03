@@ -13,7 +13,7 @@ import { NewFolderModal } from './NewFolderModal'
 import { MoveItemModal } from './MoveItemsModal'
 import { useMedia, useOutsideAlerter } from '../../../utils/utils'
 import { tsToLocaleDate } from '../../../utils/formatUtils'
-import { FolderTreeNode, FolderAsset, ContentType, SearchResult } from '../../redux-flow/store/Folders/types'
+import { FolderTreeNode, FolderAsset, SearchResult, FolderContent } from '../../redux-flow/store/Folders/types'
 import { BreadcrumbDropdown } from './BreadcrumbDropdown'
 import { FoldersComponentProps } from '../../containers/Folders/Folders'
 import { InputTags } from '../../../components/FormsComponents/Input/InputTags'
@@ -31,7 +31,6 @@ import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus } from '../../redux-flow/store/Common/types'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
-import { InputSearch } from '../../../components/FormsComponents/Input/InputSearch'
 import { InputSearchStyle } from '../../shared/General/GeneralStyle'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
@@ -45,7 +44,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [currentFolder, setCurrentFolder] = React.useState<FolderTreeNode>(null)
     const [selectedFolder, setSelectedFolder] = React.useState<string>('Library')
     const [moveItemsModalOpened, setMoveItemsModalOpened] = React.useState<boolean>(false)
-    const [checkedItems, setCheckedItems] = React.useState<ContentType[]>([])
+    const [checkedItems, setCheckedItems] = React.useState<FolderContent[]>([])
     const [foldersTreeHidden, setFoldersTreeHidden] = React.useState<boolean>(smallScreen)
     const [newFolderModalAction, setNewFolderModalAction] = React.useState<'Rename Folder' | 'New Folder'>('New Folder')
     const [emptyTrashModalOpened, setEmptyTrashModalOpened] = React.useState<boolean>(false)
@@ -62,7 +61,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [searchString, setSearchString] = React.useState<string>(null)
     const [sort, setSort] = React.useState<string>('created-at-desc')
-    const [assetToDelete, setAssetToDelete] = React.useState<ContentType>(null)
+    const [assetToDelete, setAssetToDelete] = React.useState<FolderContent>(null)
     const [contentLoading, setContentLoading] = React.useState<boolean>(false)
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
     const [updateList, setListUpdate] = React.useState<ContentStatus | 'Restored' | 'paywall'>('Online')
@@ -107,7 +106,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
 
         if(searchString) {
-            returnedString += `keyword=${searchString}&`
+            returnedString += `keyword=${encodeURIComponent(searchString)}&`
         }
         if(sort) {
             returnedString += `sort-by=${sort}&`
@@ -231,7 +230,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         onChange={(event) => {
                             if (event.currentTarget.checked) {
                                 let folderCounter = 0
-                                const editedItem: ContentType[] = contentList.results.map(item => {
+                                const editedItem: FolderContent[] = contentList.results.map(item => {
                                     if (item.type === 'folder') {
                                         folderCounter += 1
                                     }
@@ -259,7 +258,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleCheckboxChange = (item: ContentType, isChecked: boolean) => {
+    const handleCheckboxChange = (item: FolderContent, isChecked: boolean) => {
         if (checkedItems.find((option) => option.id === item.id)) {
             setCheckedItems(checkedItems.filter(option => { return option.id !== item.id }));
         } else {
@@ -282,12 +281,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         return [{title: 'Edit'}, {title: 'Move'}, {title: 'Delete'}]
     }
 
-    const handleEditAsset = (asset: ContentType) => {
+    const handleEditAsset = (asset: FolderContent) => {
         switch(asset.type) {
             case 'vod':
                 history.push('/videos/' + asset.id + '/general')
                 break
-            case 'channel':
+            case 'live':
                 history.push('/livestreams/' + asset.id + '/general')
                 break
             case 'playlist':
@@ -300,7 +299,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
         }
     }
 
-    const handleAssetDropdownOptions = (option: string, asset: ContentType, folderNode?: FolderTreeNode) => {
+    const handleAssetDropdownOptions = (option: string, asset: FolderContent, folderNode?: FolderTreeNode) => {
         switch (option) {
             case 'Edit':
                 handleEditAsset(asset)
@@ -545,28 +544,28 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <Pagination className='mb3' totalResults={contentList ? contentList.totalResults : 0} displayedItemsOptions={[10, 20, 100]} callback={(page: number, nbResults: number) => {setPaginationInfo({page:page,nbResults:nbResults}); if(!fetchContent) { setFetchContent(true)}}} />
                 </div>
             </ContentSection>
-            <Modal style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
+            <Modal allowNavigation={false} style={{ zIndex: 100000 }} overlayIndex={10000} hasClose={false} size='small' modalTitle={newFolderModalAction} toggle={() => setNewFolderModalOpened(!newFolderModalOpened)} opened={newFolderModalOpened} >
                 {
                     newFolderModalOpened &&
                     <NewFolderModal buttonLabel={newFolderModalAction === 'New Folder' ? 'Create' : 'Rename'} folderPath={moveModalSelectedFolder ? moveModalSelectedFolder : FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.fullPath : '/'} submit={newFolderModalAction === 'New Folder' ? foldersTree.addFolder : foldersTree.renameFolder} toggle={setNewFolderModalOpened} showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} />
                 }
             </Modal>
-            <Modal hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
+            <Modal allowNavigation={false} hasClose={false} modalTitle={checkedItems.length === 1 ? 'Move 1 item to...' : 'Move ' + checkedItems.length + ' items to...'} toggle={() => setMoveItemsModalOpened(!moveItemsModalOpened)} opened={moveItemsModalOpened}>
                 {
                     moveItemsModalOpened &&
                     <MoveItemModal movedContent={checkedItems} oldFolderId={FIXED_FOLDERS.indexOf(selectedFolder) === -1 ? currentFolder.id : null} showToast={props.showToast} setMoveModalSelectedFolder={setMoveModalSelectedFolder}  callback={() => {if(!fetchContent) { setFetchContent(true)}}} initialSelectedFolder={selectedFolder === 'Library' || selectedFolder === 'Unsorted' ? '/' : currentFolder.fullPath} toggle={setMoveItemsModalOpened} newFolderModalToggle={setNewFolderModalOpened} />
                 }
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
+            <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Empty Trash?' toggle={() => setEmptyTrashModalOpened(!emptyTrashModalOpened)} opened={emptyTrashModalOpened} >
                 <EmptyTrashModal showToast={props.showToast} loadContent={() => {props.getFolderContent(parseFiltersToQueryString(selectedFilters))}} toggle={setEmptyTrashModalOpened} />
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
+            <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
                     deleteFolderModalOpened &&
                     <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {setSelectedFolder('Library');setCurrentFolder(null)})}} />
                 }
             </Modal>
-            <Modal icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
+            <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
                     <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await foldersTree.moveToFolder([], [assetToDelete], currentFolder.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />

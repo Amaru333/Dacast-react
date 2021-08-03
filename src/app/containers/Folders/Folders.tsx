@@ -3,8 +3,8 @@ import { FoldersPage } from '../../pages/Folders/Folders';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, deleteContentAction, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
-import { FoldersInfos, ContentType } from '../../redux-flow/store/Folders/types';
+import { Action, restoreContentAction, getFolderContentAction } from '../../redux-flow/store/Folders/actions';
+import { FoldersInfos, FolderContent } from '../../redux-flow/store/Folders/types';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { getThemingListAction } from '../../redux-flow/store/Settings/Theming/actions';
@@ -14,8 +14,7 @@ export interface FoldersComponentProps {
     folderData: FoldersInfos;
     themesList: ThemesData
     getFolderContent: (qs: string) => Promise<void>;
-    deleteContent: (content: ContentType[]) => Promise<void>;
-    restoreContent: (content: ContentType[]) => Promise<void>;
+    restoreContent: (content: FolderContent[]) => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
     getThemesList: () => Promise<void>;
 }
@@ -38,10 +37,7 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         getFolderContent: async (qs: string) => {
             await dispatch(getFolderContentAction(qs))
         },
-        deleteContent: async (content: ContentType[]) => {
-            await dispatch(deleteContentAction(content))
-        },
-        restoreContent: async (content: ContentType[]) => {
+        restoreContent: async (content: FolderContent[]) => {
             await dispatch(restoreContentAction(content))
         },
         showToast: (text: string, size: Size, type: NotificationType) => {

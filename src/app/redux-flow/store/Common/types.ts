@@ -4,16 +4,18 @@ export type ContentStatus = 'Deleted' | 'Online' | 'Offline' | 'Processing' | 'R
 
 export type BulkActionType = 'delete' | 'create' | 'theme' | 'paywall' | 'online'
 
-export type BulkActionContentType = ContentType | 'rendition'
-
 export type FolderContentType = ContentType | 'folder'
 
+export type BulkActionContentType = FolderContentType | 'rendition'
+
+export interface BulkActionItem {
+    type: BulkActionContentType
+    id?: string
+    name?: string
+}
+
 export interface BulkActionInput {
-    items: {
-        type: BulkActionContentType
-        id?: string
-        name?: string
-    }[]
+    items: BulkActionItem[]
     action: BulkActionType
     targetValue?: string | boolean
 }

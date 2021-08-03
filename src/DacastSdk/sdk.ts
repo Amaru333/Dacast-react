@@ -14,7 +14,7 @@ import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLive
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput, PutVodChapterMarkersInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
 import { GetExpoDetailsOutput, GetExpoSetupOutput, PutExpoDetailsInput, PutExpoSetupInput } from './expo'
-import { GetFolderChildrenOutput, GetFolderContentOutput } from './folder'
+import { GetFolderChildrenOutput, GetFolderContentOutput, PostFolderInput, PostFolderOutput, PutDeleteFolderInput, PutMoveFolderInput, PutRenameFolderInput } from './folder'
 import { PostLoginInput, PostLoginOuput } from './session'
 const GRAPHQL_API_BASE_URL_STAGING = 'https://api-singularity.dacast.com/v2/'
 const GRAPHQL_API_BASE_URL_PROD = 'https://developer.dacast.com/v2/'
@@ -250,7 +250,8 @@ export class DacastSdk {
     public getVodRenditions = async (input: string): Promise<GetVodRenditionsOutput> => await this.axiosClient.get('/vods/' + input + '/renditions').then(this.checkExtraData)
     public getVodChapterMarkers = async (input: string): Promise<GetVodChapterMarkersOutput> => await this.axiosClient.get('/vods/' + input + '/chapter-markers').then(this.checkExtraData)
     public putVodChapterMarkers = async (input: PutVodChapterMarkersInput): Promise<void> => await this.axiosClient.put('/vods/' + input.id + '/chapter-markers', input.payload)
-    
+    public deleteEmptyTrash = async (): Promise<void> => await this.axiosClient.delete('/vods/empty-trash')
+
     public getPlaylists = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/playlists?' + input).then(this.checkExtraData)
     public deletePlaylist = async (input: string): Promise<void> => await this.axiosClient.delete('/playlists/' + input)
     public getPlaylistDetails = async (input: string): Promise<GetPlaylistDetailsOutput> => await this.axiosClient.get('/playlists/' + input).then(this.checkExtraData)
@@ -272,4 +273,8 @@ export class DacastSdk {
 
     public getFolderContentList = async (input: string): Promise<GetFolderContentOutput> => await this.axiosClient.get('/search/content?' + input).then(this.checkExtraData)
     public getFolderChildren = async (input: string): Promise<GetFolderChildrenOutput> => await this.axiosClient.get('/folders?parentID=' + input).then(this.checkExtraData)
+    public postFolder = async (input: PostFolderInput): Promise<PostFolderOutput> => await this.axiosClient.post('/folders', input).then(this.checkExtraData)
+    public putRenameFolder = async (input: PutRenameFolderInput): Promise<void> => this.axiosClient.put('/folders/rename', input)
+    public putDeleteFolder = async (input: PutDeleteFolderInput): Promise<void> => await this.axiosClient.put('/folders/delete', input)
+    public putMoveFolder = async (input: PutMoveFolderInput): Promise<void> => await this.axiosClient.put('/folders/move', input)
 }

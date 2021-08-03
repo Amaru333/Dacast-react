@@ -7,14 +7,13 @@ export enum ActionTypes {
     MOVE_ITEMS_TO_FOLDER = "@@folders/MOVE_ITEMS_TO_FOLDER",
     ADD_FOLDER = "@@folders/ADD_FOLDER",
     DELETE_FOLDER = "@@folders/DELETE_FOLDER",
-    DELETE_CONTENT = "@@folders/DELETE_CONTENT",
     RESTORE_CONTENT = "@@folders/RESTORE_CONTENT",
     RENAME_FOLDER = "@@folders/RENAME_FOLDER"
 }
 
-export interface ContentType {
+export interface FolderContent {
     id: string;
-    type: 'channel' | 'vod' | 'playlist' | 'folder' | 'live' | 'rendition' | 'expo';
+    type: FolderContentType
     fullPath?: string;
     name?: string;
 }

@@ -22,15 +22,15 @@ export interface FilteringContentState {
         rewind?: boolean;
         recording?: boolean;
     };
-    afterDate?: number | boolean;
-    beforeDate?: number | boolean;
+    afterDate?: number | boolean | null;
+    beforeDate?: number | boolean | null;
     sizeStart?: string;
     sizeEnd?: string;
 }
 
 export const ContentFiltering = (props: {defaultFilters: FilteringContentState; setSelectedFilter: (filters: FilteringContentState) => void, contentType: string}) => {
 
-    var filteringDefault = {
+    var filteringDefault: FilteringContentState = {
         status: {
             online: false,
             offline: false,
@@ -43,8 +43,8 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
             rewind: false,
             recording: false
         },
-        afterDate: false,
-        beforeDate: false,
+        afterDate: null,
+        beforeDate: null,
         sizeStart: '',
         sizeEnd: ''
     }
@@ -131,7 +131,7 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     
                     <div className="mb3" id="contentFilterAfter">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper id='startDate' date={isNaN(filteringState.afterDate as number) || !filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, afterDate: Math.round(date.getTime()/ 1000)  } }) }} />
+                        <DateSinglePickerWrapper id='startDate' date={!filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { console.log('callback');setFilteringState(prevState => { return { ...prevState, afterDate: Math.round(date.getTime()/ 1000)  } }) }} />
                     </div>
                     <div className="mb3" id="contentFilterBefore">
                         <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>

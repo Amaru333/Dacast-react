@@ -21,7 +21,6 @@ const reducer: Reducer<FoldersState> = (state = foldersInitialState, action: Act
                     }
                 }
             }
-        case ActionTypes.DELETE_CONTENT:    
         case ActionTypes.RESTORE_CONTENT:
             return state
         default: 

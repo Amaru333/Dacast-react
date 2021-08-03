@@ -32,6 +32,12 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
         focusedInput: START_DATE
     });
 
+    React.useEffect(() => {
+        if(props.defaultStartDate !== state.startDate && !isOpened) {
+            setState({...state, startDate: props.defaultStartDate})
+        }
+    }, [props.defaultStartDate])
+
     useOutsideAlerter(datepickerRef, () => {
         setIsOpened(false)
         if(props.callback) {

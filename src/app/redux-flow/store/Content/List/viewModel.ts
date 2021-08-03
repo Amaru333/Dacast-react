@@ -9,7 +9,7 @@ export const formatGetContentListInput = (qs: string): string => {
     }
 
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))
-    let endpointsQs = `page=${objectFromQs.page}&per-page=${objectFromQs.perPage}&status=${objectFromQs.status}&sort-by=${objectFromQs.sortBy}` + (objectFromQs.keyword ? `&keyword=${objectFromQs.keyword}` : '') + (objectFromQs.features ? `&features=${objectFromQs.features}` : '')
+    let endpointsQs = `page=${objectFromQs.page}&per-page=${objectFromQs.perPage}&status=${objectFromQs.status}&sort-by=${objectFromQs.sortBy}` + (objectFromQs.keyword ? `&keyword=${encodeURIComponent(objectFromQs.keyword)}` : '') + (objectFromQs.features ? `&features=${objectFromQs.features}` : '')
     if(objectFromQs.afterDate || objectFromQs.beforeDate) {
         endpointsQs+= `&created-at=${objectFromQs.afterDate ? objectFromQs.afterDate : ''},${objectFromQs.beforeDate ? objectFromQs.beforeDate : ''}`
     }

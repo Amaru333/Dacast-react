@@ -1,9 +1,9 @@
-import { GetFolderContentOutput, isFolder } from "../../../../DacastSdk/folder"
+import { GetFolderContentOutput, isFolder, PutMoveFolderInput } from "../../../../DacastSdk/folder"
 import { capitalizeFirstLetter } from "../../../../utils/utils"
 import { ContentStatus } from "../Common/types"
-import { FolderAsset, SearchResult } from "./types"
+import { FolderAsset, FolderContent, SearchResult } from "./types"
 
-export const formatGetFolderContentInput = (qs: string): string => qs
+export const formatGetFolderContentInput = (qs: string): string => encodeURIComponent(JSON.stringify(qs))
 
 export const formatGetFolderContentOutput = (data: GetFolderContentOutput): SearchResult => {
     let formattedData: SearchResult = {
@@ -34,5 +34,27 @@ export const formatGetFolderContentOutput = (data: GetFolderContentOutput): Sear
             }
         })
     }
+    return formattedData
+}
+
+export const formatPutMoveFolderInput = (data: {foldersIds: string[], movedContent: FolderContent[], oldFolderId?: string}): PutMoveFolderInput => {
+    let formattedData: PutMoveFolderInput = {
+        destinationFoldersIds: data.foldersIds.length === 0 ? null : data.foldersIds,
+        oldFolderId: data.oldFolderId,
+        movedContent: data.movedContent.map(content => {
+            if(content.type === 'live') {
+                return {
+                    ...content,
+                    type: 'channel'
+                }
+            }
+
+            return {
+                ...content,
+                type: content.type as 'folder' | 'playlist' | 'vod'
+            }
+        })
+    }
+
     return formattedData
 }

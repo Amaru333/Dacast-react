@@ -68,7 +68,7 @@ export const ContentListPage = (props: ContentListProps) => {
             },
             features: {
                 paywall: qs.toString().indexOf('paywall') > -1,
-                advertising: qs.toString().indexOf('advertising') > -1,
+                advertising: qs.toString().indexOf('ads') > -1,
                 playlists: qs.toString().indexOf('playlists') > -1,
                 // recording: qs.toString().indexOf('recording') > -1,
                 // rewind: qs.toString().indexOf('rewind') > -1
@@ -173,7 +173,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (filters) {
 
             if (filters.features) {
-                returnedString += '&features=' + (filters.features.advertising ? 'advertising' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
+                returnedString += '&features=' + (filters.features.advertising ? 'ads' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
             }
 
             if (filters.status) {
