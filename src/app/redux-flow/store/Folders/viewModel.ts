@@ -3,14 +3,14 @@ import { capitalizeFirstLetter } from "../../../../utils/utils"
 import { ContentStatus } from "../Common/types"
 import { FolderAsset, FolderContent, SearchResult } from "./types"
 
-export const formatGetFolderContentInput = (qs: string): string => encodeURIComponent(JSON.stringify(qs))
+export const formatGetFolderContentInput = (qs: string): string => qs
 
 export const formatGetFolderContentOutput = (data: GetFolderContentOutput): SearchResult => {
     let formattedData: SearchResult = {
         pageNumber: data.page,
         totalResults: data.totalResults,
         perPage: data.perPage,
-        results: data.results.map((item): FolderAsset => {
+        results: data.results ? data.results.map((item): FolderAsset => {
 
             if(isFolder(item)) {
                 return {
@@ -33,6 +33,7 @@ export const formatGetFolderContentOutput = (data: GetFolderContentOutput): Sear
                 duration: item.duration ? item.duration.toString() : null
             }
         })
+        : []
     }
     return formattedData
 }
