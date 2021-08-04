@@ -16,7 +16,7 @@ export interface FoldersFilteringState {
     };
     features: {
         paywall: boolean;
-        advertising: boolean;
+        ads: boolean;
         playlists: boolean;
         rewind: boolean;
         recording: boolean;
@@ -33,7 +33,7 @@ export interface FoldersFilteringState {
 
 export const FoldersFiltering = (props: {setSelectedFilter: Function; className?: string}) => {
 
-    var filteringDefault = {
+    var filteringDefault: FoldersFilteringState = {
         status: {
             online: false,
             offline: false,
@@ -42,7 +42,7 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
         },
         features: {
             paywall: false,
-            advertising: false,
+            ads: false,
             playlists: false,
             rewind: false,
             recording: false
@@ -108,8 +108,8 @@ export const FoldersFiltering = (props: {setSelectedFilter: Function; className?
                         <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
                             id='folderFilterPaywall' label="Paywall" labelWeight="reg" />
-                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
-                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
+                        <InputCheckbox className="mb2" defaultChecked={filteringState.features.ads}
+                            onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, ads: !prevState.features.ads } } }) }}
                             id='folderFilterAdvertising' label="Advertising" labelWeight="reg" />
                         <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
                             onChange={() => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}

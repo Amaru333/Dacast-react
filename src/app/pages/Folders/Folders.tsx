@@ -93,7 +93,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             })
 
             if(filters.afterDate || filters.beforedate) {
-                returnedString+= `created-at=${filters.afterDate ? filters.afterDate : ''},${filters.beforedate ? filters.beforedate : ''}&`
+                returnedString+= `created-at=${filters.afterDate ? Math.floor(filters.afterDate as number / 1000) : ''},${filters.beforedate ? Math.floor(filters.beforedate as number / 1000) : ''}&`
             }
         }
 
