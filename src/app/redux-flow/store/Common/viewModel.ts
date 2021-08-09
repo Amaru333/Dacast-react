@@ -17,13 +17,13 @@ export const formatPostBulkActionInput = (data: BulkActionInput): PostBulkAction
             if (item.name) {
                 return {
                     id: item.id,
-                    contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type,
+                    contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type as "vod" | "playlist" | "rendition",
                     name: item.name
                 }
             }
             return {
                 id: item.id,
-                contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type
+                contentType: item.type === 'live' ? 'channel' : item.type === 'expo' ? 'expos' : item.type as "vod" | "playlist" | "rendition"
             }
         })
     }

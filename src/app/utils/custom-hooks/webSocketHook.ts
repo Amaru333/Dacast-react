@@ -1,5 +1,5 @@
 import React from 'react'
-import { axiosClient } from '../services/axios/axiosClient'
+import { dacastSdk } from '../services/axios/axiosClient'
 import { userToken } from '../services/token/tokenService'
 
 export const useWebSocket = () => {
@@ -9,10 +9,10 @@ export const useWebSocket = () => {
 
     React.useEffect(() => {
         const setWebSocketConnection = async () => {
-            axiosClient.get('/websocket-endpoint'
-            ).then(response => {
+            dacastSdk.getWebSocket()
+            .then(response => {
                 const token = userToken.getTokenInfo().token
-                let url: string = response.data.data.endpoint
+                let url: string = response.endpoint
                 let editedUrl: string = 'wss' + url.substring(5)
                 ws.current = new WebSocket(`${editedUrl}?token=${token}`)
                 ws.current.onopen = () => console.log("ws opened")

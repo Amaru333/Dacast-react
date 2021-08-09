@@ -187,3 +187,7 @@ export interface PutContentThemeInput {
     actionWord: '/set' | ''
     payload: ThemeEndpoint
 }
+
+export interface GetWebSocketOutput {
+    endpoint: string
+}
