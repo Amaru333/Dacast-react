@@ -19,5 +19,14 @@ export const CURRENCY = [
     'AED',
     'JMD',
     'ZMW',
-    'SGD'
+    'SGD',
+    'NOK',
+    'YEN',
+    'SEK',
+    'KWD',
+    'MYR',
+    'KSH',
+    'CHF',
+    'TWD',
+    'CNY'
 ]
