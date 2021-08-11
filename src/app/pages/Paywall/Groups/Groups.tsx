@@ -172,7 +172,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
-                    <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
+                    <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoGroupsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>

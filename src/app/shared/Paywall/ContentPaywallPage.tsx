@@ -119,7 +119,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             return props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1).map((promo, key) => {
                 return {data: [
                     <Text key={'promosTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
-                    <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
+                    <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promosTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promosTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>

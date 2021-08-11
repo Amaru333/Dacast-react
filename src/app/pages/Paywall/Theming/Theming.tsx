@@ -109,7 +109,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your paywall.</Text>
                     <div className='flex item-center mt2'>
                         <IconStyle style={{marginRight: 10}}>info_outlined</IconStyle>
-                        <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href={getKnowledgebaseLink("Paywall")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                        <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href={getKnowledgebaseLink("PaywallTheme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                     </div>
                     <Table className='col col-12' id='paywallThemingTable' headerBackgroundColor="gray-10" header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
                 </Card>

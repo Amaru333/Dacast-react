@@ -95,7 +95,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             return props.presetsInfos.promos.promos.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
-                    <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
+                    <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
