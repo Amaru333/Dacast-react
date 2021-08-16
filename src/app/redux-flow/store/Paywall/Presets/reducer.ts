@@ -44,7 +44,15 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                 ...state,
                 presets: {
                     ...state.presets,
-                    prices: state.presets.prices.filter((item) => {return item.id !== action.payload.id})
+                    prices: state.presets.prices.map((item) => {
+                        if(item.id === action.payload.id) {
+                            return {
+                                ...item,
+                                isDeleted: true
+                            }
+                        }
+                        return item
+                    })
                 }
             }
         case ActionTypes.GET_PROMO_PRESETS_LIST :
@@ -85,7 +93,15 @@ const reducer: Reducer<PresetsPageInfos> = (state = presetsInitialState, action:
                 ...state,
                 promos: {
                     ...state.promos,
-                    promos: state.promos.promos.filter((item) => {return item.id !== action.payload.id})
+                    promos: state.promos.promos.map((item) => {
+                        if(item.id === action.payload.id) {
+                            return {
+                                ...item,
+                                isDeleted: true
+                            }
+                        }
+                        return item
+                    })
                 }
             }
         default:

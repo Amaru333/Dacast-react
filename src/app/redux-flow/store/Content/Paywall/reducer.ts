@@ -100,8 +100,15 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        prices: state[action.payload.contentType][action.payload.contentId].prices.filter((item) => {return item.id !== action.payload.data.id})
-    
+                        prices: state[action.payload.contentType][action.payload.contentId].prices.map((item) => {
+                            if(item.id === action.payload.data.id) {
+                                return {
+                                    ...item,
+                                    isDeleted: true
+                                }
+                            }
+                            return item
+                        })
                     }
                 }
             }
@@ -166,7 +173,15 @@ const reducer: Reducer<ContentPaywallState> = (state = {}, action: Action) => {
                     ...state[action.payload.contentType],
                     [action.payload.contentId]: {
                         ...state[action.payload.contentType][action.payload.contentId],
-                        promos: state[action.payload.contentType][action.payload.contentId].promos.filter((item) => {return item.id !== action.payload.promo.id})
+                        promos: state[action.payload.contentType][action.payload.contentId].promos.map((item) => {
+                            if(item.id === action.payload.promo.id) {
+                                return {
+                                    ...item,
+                                    isDeleted: true
+                                }
+                            }
+                            return item
+                        })
                     }
                 }
             }

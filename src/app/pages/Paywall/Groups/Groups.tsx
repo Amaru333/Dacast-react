@@ -17,6 +17,7 @@ import { Divider } from '../../../../shared/MiscStyles';
 import { GroupDetailsStep } from './GroupDetailsStep';
 import { GroupContentStep } from './GroupContentStep';
 import { AccessPaywallGroupsModal } from './AccessPaywallGroupsModal';
+import { Label } from '../../../../components/FormsComponents/Label/Label';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -72,11 +73,18 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const [stepperLoading, setStepperLoading] = React.useState<boolean>(false)
     const [selectedGroupPromo, setSelectedGroupPromo] = React.useState<GroupPromo>(null);
     const [stepperData, setStepperData] = React.useState<GroupStepperData>({firststep: defaultPrice, secondStep: {...props}});
+    const [priceList, setPriceList] = React.useState<GroupPrice[]>(props.groupsInfos.prices.packages || [])
+    const [promoList, setPromoList] = React.useState<GroupPromo[]>(props.groupsInfos.promos.promos ? props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0) : [])
     const groupPriceSteps = [{title: "Group Details", content: GroupDetailsStep}, {title: "Content Selection", content: GroupContentStep}]
 
     React.useEffect(() => {
         setStepperData({...stepperData, secondStep: {...props}})
     }, [props])
+
+    React.useEffect(() => setPriceList(props.groupsInfos.prices.packages), [props.groupsInfos.prices])
+
+    React.useEffect(() => setPromoList(props.groupsInfos.promos.promos ? props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0) : []), [props.groupsInfos.promos])
+
 
     const handlePriceGroupButtonFunction = () => {
         if(props.folderData.requestedContent && props.folderData.requestedContent.results.length > 0){
@@ -108,8 +116,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     }
 
     const groupPricesTableBody = () => {
-        if(props.groupsInfos.prices) {
-            return props.groupsInfos.prices.packages.map((price, key) => {
+        if(priceList) {
+            return priceList.map((price, key) => {
                 return {
                     data: price.prices.length > 0 ? [
                         <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.name}</Text>,
@@ -118,9 +126,12 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.currency : 'Multiple Currencies'}</Text>,
                         <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
                         <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
+                    price.isDeleted ? 
+                        <Label key={'groupPricesTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                        :
                         <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                             <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
+                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price);setPriceList(priceList.map(p => {if(price.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                             <ActionIcon id={"editTooltipPrice" + price.id}>
@@ -136,14 +147,17 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         <span key='emptyspan3'></span>,
                         <span key='emptyspan4'></span>,
                         <span key='emptyspan5'></span>,
+                        price.isDeleted ? 
+                        <Label key={'groupPricesTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                        :
                         <IconContainer className="iconAction" key={'groupPricesTableBodyActionButtons' + key}>
                             <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price)}}>delete</IconStyle>
+                                <IconStyle onClick={() =>  {props.deleteGroupPrice(price);setPriceList(priceList.map(p => {if(price.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                             </ActionIcon>
                             <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                         </IconContainer>
-                    ]
-
+                    ],
+                    isDisabled: price.isDeleted,
                 }
             })
         }
@@ -167,16 +181,19 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     }
 
     const groupPromosTableBody = () => {
-        if(props.groupsInfos.promos) {
-            return props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0).map((promo, key) => {
+        if(promoList) {
+            return promoList.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0).map((promo, key) => {
                 return {data: [
                     <Text key={'promoGroupsTableBodyType' + key} size={14} weight='reg'>{props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0]).length > 0 ? props.groupsInfos.prices.packages.filter(g => g.id === promo.assignedGroupIds[0])[0].name : ''}</Text>,
                     <Text key={'promoGroupsTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
                     <Text key={'promoGroupsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promoGroupsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
+                    promo.isDeleted ? 
+                    <Label key={'promoGroupsTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                    :
                     <IconContainer className="iconAction" key={'promoGroupsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deleteGroupPromo(promo)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteGroupPromo(promo);setPromoList(promoList.map(p => {if(promo.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -184,7 +201,9 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
-                ]}
+                ],
+                isDisabled: promo.isDeleted,
+            }
             })
         }
     }
@@ -217,7 +236,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href={getKnowledgebaseLink('Group Price')} target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
-                <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={!props.groupsInfos.prices || props.groupsInfos.prices.packages.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={!props.groupsInfos.prices || props.groupsInfos.prices.packages.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
+                <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={priceList.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={priceList.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <Divider className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
@@ -227,7 +246,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href={getKnowledgebaseLink('Group Promo')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
-                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={!props.groupsInfos.promos || props.groupsInfos.promos.promos.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={!props.groupsInfos.promos || props.groupsInfos.promos.promos.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
+                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={promoList.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={promoList.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
             </Card>
             <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 {

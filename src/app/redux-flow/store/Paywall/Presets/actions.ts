@@ -59,4 +59,4 @@ export const deletePricePresetAction = applyViewModel(dacastSdk.deletePricePrese
 export const getPromoPresetsInfosAction = applyViewModel(dacastSdk.getPromoPreset, formatGetPromoPresetInput, formatGetPromoPresetOutput, ActionTypes.GET_PROMO_PRESETS_LIST, null, 'Couldn\'t get promo presets list')
 export const createPromoPresetAction = applyViewModel(dacastSdk.postPromoPreset, formatPostPromoPresetInput, formatPostPromoPresetOutput, ActionTypes.CREATE_PROMO_PRESET, 'Promo preset has been created', 'Couldn\'t create promo preset')
 export const savePromoPresetAction = applyViewModel(dacastSdk.putPromoPreset, formatPutPromoPresetInput, null, ActionTypes.SAVE_PROMO_PRESET, 'Promo preset has been saved', 'Couldn\'t save promo preset')
-export const deletePromoPresetAction = applyViewModel(dacastSdk.deletePromoPreset, formatDeletePromoPresetInput, null, ActionTypes.SAVE_PROMO_PRESET, 'Promo preset has been deleted', 'Couldn\'t delete promo preset')
+export const deletePromoPresetAction = applyViewModel(dacastSdk.deletePromoPreset, formatDeletePromoPresetInput, null, ActionTypes.DELETE_PROMO_PRESET, 'Promo preset has been deleted', 'Couldn\'t delete promo preset')

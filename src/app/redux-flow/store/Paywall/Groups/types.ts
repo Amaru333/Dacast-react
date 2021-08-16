@@ -40,6 +40,7 @@ export interface GroupPrice {
     pages: number;
     contents: string[];
     groupSettings?: PriceSettings;
+    isDeleted?: boolean;
 }
 
 export interface GroupPriceContents {
@@ -66,6 +67,7 @@ export interface GroupPromo {
     discountApplied: string;
     assignedContentIds: string[];
     assignedGroupIds: string[];
+    isDeleted?: boolean;
 }
 
 export interface GroupPriceData {

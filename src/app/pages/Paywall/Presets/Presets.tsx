@@ -14,6 +14,7 @@ import { Pagination } from '../../../../components/Pagination/Pagination';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { Label } from '../../../../components/FormsComponents/Label/Label';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -23,6 +24,8 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [selectedPromo, setSelectedPromo] = React.useState<Promo>(null);
     const [pricePresetPaginationInfo, setPricePresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
+    const [pricePresetList, setPricePresetList] = React.useState<Preset[]>(props.presetsInfos.presets && props.presetsInfos.presets.prices ? props.presetsInfos.presets.prices : [])
+    const [promoPresetList, setPromoPresetList] = React.useState<Promo[]>(props.presetsInfos.promos && props.presetsInfos.promos.promos ? props.presetsInfos.promos.promos : [])
 
     React.useEffect(() => {
         if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
@@ -42,6 +45,10 @@ export const PresetsPage = (props: PresetsComponentProps) => {
         }
     }, [promoPresetPaginationInfo])
 
+    React.useEffect(() => setPricePresetList(props.presetsInfos.presets.prices), [props.presetsInfos.presets])
+
+    React.useEffect(() => setPromoPresetList(props.presetsInfos.promos.promos), [props.presetsInfos.promos])
+
     const pricePresetsTableHeader = () => {
         return {data: [
             {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>},
@@ -56,8 +63,8 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const pricePresetsTableBody = () => {
-        if(props.presetsInfos.presets && props.presetsInfos.presets.prices) {
-            return props.presetsInfos.presets.prices.map((preset, key) => {
+        if(pricePresetList) {
+            return pricePresetList.map((preset, key) => {
                 return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.priceType}</Text>,
@@ -65,9 +72,12 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : 'USD'}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence ? preset.settings.recurrence.unit : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
+                    preset.isDeleted ? 
+                    <Label key={'pricePresetsTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                    :
                     <IconContainer className="iconAction" key={'pricePresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltip" + preset.id}>
-                            <IconStyle onClick={() =>  {props.deletePricePreset(preset)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deletePricePreset(preset);setPricePresetList(pricePresetList.map(p => {if(preset.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltip" + preset.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + preset.id}>
@@ -75,7 +85,9 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + preset.id}>Edit</Tooltip>
                     </IconContainer>
-                ]}
+                ],
+                isDisabled: preset.isDeleted
+            }
             })
         }
     }
@@ -91,15 +103,18 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     }
 
     const promoPresetsTableBody = () => {
-        if(props.presetsInfos.promos && props.presetsInfos.promos.promos) {
-            return props.presetsInfos.promos.promos.map((promo, key) => {
+        if(promoPresetList) {
+            return promoPresetList.map((promo, key) => {
                 return {data: [
                     <Text key={'promoPresestTableBodyName' + key} size={14} weight='reg'>{promo.name}</Text>,
                     <Text key={'promoPresetsTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promoPresetsTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
+                    promo.isDeleted ? 
+                    <Label key={'promoPresetsTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                    :
                     <IconContainer className="iconAction" key={'promoPresetsTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deletePromoPreset(promo)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deletePromoPreset(promo);setPromoPresetList(promoPresetList.map(p => {if(promo.id === p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -107,7 +122,9 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
-                ]}
+                ],
+                isDisabled: promo.isDeleted
+            }
             })
         }
     }
