@@ -16,6 +16,7 @@ import { handleRowIconType } from '../../app/shared/Analytics/AnalyticsCommun';
 import { rootNode, FolderTree } from '../../app/utils/services/folder/folderService';
 import { ListContentTitle } from '../../app/pages/Folders/FoldersStyle';
 import { InputSearch } from '../FormsComponents/Input/InputSearch';
+import { SetupSortType } from '../../app/redux-flow/store/Content/Setup/types';
 
 export interface ContentSelectorComponentProps {
     folderData: FoldersInfos;
@@ -31,11 +32,29 @@ export interface ContentSelectorComponentProps {
     showFolders?: boolean;
     openSettings?: Function;
     emptyText?: string;
+    defaultSort?: SetupSortType;
 }
 
-export interface SortSettingsContentSelector { name: string; value: "custom" | "A-to-Z" | "Z-to-A" | "date-desc" | "date-asc" | 'none' }
+export interface SortSettingsContentSelector { name: string; value: SetupSortType | 'none' }
 
 export const ContentSelector = (props: ContentSelectorComponentProps & React.HTMLAttributes<HTMLDivElement>) => {
+
+    const formatSortingName = (sort: SetupSortType) => {
+        switch(sort) {
+            case 'custom':
+                return 'Custom'
+            case 'A-to-Z':
+                return 'Name (A-Z)'
+            case 'Z-to-A':
+                return 'Name (Z-A)'
+            case 'date-asc':
+                return 'Date Created (Newest First)'
+            case 'date-desc':
+                return 'Date Created (Oldest First)'
+            default:
+                return 'Sort'
+        }
+    }
 
 
     const [selectedTab, setSelectedTab] = React.useState<"folder" | "content">(props.type);
@@ -48,7 +67,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const [switchTabOpen, setSwitchTabOpen] = React.useState<boolean>(false);
     const [checkedSelectedItems, setCheckedSelectedItems] = React.useState<(FolderAsset | FolderTreeNode)[]>([]);
     const [selectedFolderId, setSelectedFolderId] = React.useState<string | null>(props.folderId ? props.folderId : null);
-    const [sortSettings, setSortSettings] = React.useState<SortSettingsContentSelector>({ name: 'Sort', value: 'none' });
+    const [sortSettings, setSortSettings] = React.useState<SortSettingsContentSelector>({ name: formatSortingName(props.defaultSort), value: props.defaultSort || 'none'});
     const [dropdownIsOpened, setDropdownIsOpened] = React.useState<boolean>(false);
 
     const sortDropdownRef = React.useRef<HTMLUListElement>(null);
@@ -261,7 +280,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const bulkActions = [
         { name: 'Name (A-Z)', value: 'A-to-Z', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('title', 'asc'))) } },
         { name: 'Name (Z-A)', value: 'Z-to-A', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('title', 'desc'))) } },
-        { name: 'Date Created (Newest First)', value: 'date-asc', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
+        { name: 'Date Created (Newest First)', value: 'date-asc', callback: () => {setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
         { name: 'Date Created (Oldest First)', value: 'date-desc', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'desc'))) } },
         { name: 'Custom', value: 'custom', callback: () => { } },
     ]

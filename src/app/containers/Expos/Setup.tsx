@@ -50,10 +50,10 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
                 title: item.title,
                 thumbnail: item.thumbnailURL,
                 type: item.contentType,
-                createdAt: 0,
+                createdAt: item.createdAt,
                 duration: '',
                 featuresList: {},
-                status: 'online'
+                status: 'Online'
             }
         }) : []
     }
@@ -68,10 +68,11 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
         setSaveLoading(true);
         let newContent = items.map((item: FolderAsset): Content => {
             return {
-                contentType: (item.type === 'channel'|| item.type === 'live') ? 'live' : 'vod',
+                contentType: item.type as 'vod' | 'live',
                 id: removePrefix(item.objectID),
                 title: item.title,
-                thumbnailURL: item.thumbnail
+                thumbnailURL: item.thumbnail,
+                createdAt: 0
             }
         })
         let newData: ContentSetupObject = {...props.contentDataState['expo'][exposId]};
@@ -108,7 +109,8 @@ const ExposSetup = (props: ExposSetupComponentProps) => {
                         selectedItems={selectedItems} 
                         getFolderContent={props.getFolderContent} 
                         title={props.contentDataState['expo'][exposId].title} 
-                        callback={handleSave} 
+                        callback={handleSave}
+                        defaultSort={props.contentDataState['expo'][exposId].sortType}
                     />
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

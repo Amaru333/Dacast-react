@@ -67,10 +67,10 @@ const Setup = (props: SetupComponentProps) => {
                 title: item.title,
                 thumbnail: item.thumbnailURL,
                 type: item.contentType,
-                createdAt: 0,
+                createdAt: item.createdAt,
                 duration: '',
                 featuresList: {},
-                status: 'online'
+                status: 'Online'
             }
         }) : []
     }
@@ -81,10 +81,11 @@ const Setup = (props: SetupComponentProps) => {
         setSaveLoading(true);
         let newContent = items.map((item: FolderAsset): Content => {
             return {
-                contentType: (item.type === 'channel'|| item.type === 'live') ? 'live' : 'vod',
+                contentType: item.type as 'live' | 'vod',
                 title: item.title,
                 thumbnailURL: item.thumbnail,
                 id: removePrefix(item.objectID),
+                createdAt: item.createdAt
             }
         })
         let newData: ContentSetupObject = { ...props.contentDataState['playlist'][playlistId] };
@@ -123,10 +124,11 @@ const Setup = (props: SetupComponentProps) => {
                         getFolderContent={props.getFolderContent}
                         title={props.contentDataState['playlist'][playlistId].title} 
                         callback={handleSave}
-                        showFolders={true} 
+                        showFolders={true}
+                        defaultSort={props.contentDataState['playlist'][playlistId].sortType}
                     />
                     {
-                        previewModalOpen && <PreviewModal contentId={userId + '-playlist-' + playlistId} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
+                        previewModalOpen && <PreviewModal contentType='playlist' contentId={userId + '-playlist-' + playlistId} toggle={setPreviewModalOpen} isOpened={previewModalOpen} />
                     }
                 </div>
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>

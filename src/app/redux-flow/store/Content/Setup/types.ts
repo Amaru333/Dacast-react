@@ -9,6 +9,7 @@ export interface Content {
     title: string;
     thumbnailURL: string;
     id: string
+    createdAt: number
 }
 
 export type ContentSelectorType = 'content' | 'folder';

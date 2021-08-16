@@ -15,7 +15,8 @@ export const formatGetPlaylistSetupOutput = (contentType: ContentType) => (data:
                     contentType: content["content-type"],
                     title: content.title,
                     thumbnailURL: content.thumbnailURL,
-                    id: content["content-type"] === 'vod' ? content["vod-id"] : content["live-channel-id"]
+                    id: content["content-type"] === 'vod' ? content["vod-id"] : content["live-channel-id"],
+                    createdAt: content.creationDate
                 }
             }) : [],
             folderId: data.folderId,
@@ -43,7 +44,8 @@ export const formatPutPlaylistSetupInput = (data: ContentSetupObject): PutPlayli
                     'content-type': content.contentType,
                     title: content.title,
                     thumbnailURL: content.thumbnailURL,
-                    'vod-id': content.id
+                    'vod-id': content.id,
+                    creationDate: content.createdAt
                 }
             }
 
@@ -52,7 +54,8 @@ export const formatPutPlaylistSetupInput = (data: ContentSetupObject): PutPlayli
                     'content-type': content.contentType,
                     title: content.title,
                     thumbnailURL: content.thumbnailURL,
-                    'live-channel-id': content.id
+                    'live-channel-id': content.id,
+                    creationDate: content.createdAt
                 }
             }
 
@@ -60,7 +63,8 @@ export const formatPutPlaylistSetupInput = (data: ContentSetupObject): PutPlayli
                 'content-type': content.contentType,
                 title: content.title,
                 thumbnailURL: content.thumbnailURL,
-                id: content.id
+                id: content.id,
+                creationDate: content.createdAt
             }
 
         })
@@ -88,7 +92,8 @@ export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: Get
                     contentType: content.contentType,
                     title: content.title,
                     thumbnailURL: content.thumbnailUrl,
-                    id: content.id
+                    id: content.id,
+                    createdAt: content.creationDate
                 }
             }),
             folderId: data.folderId,
@@ -99,7 +104,6 @@ export const formatGetExpoSetupOutput = (contentType: ContentType) => (data: Get
         },
         contentType: contentType
     }
-    console.log('view model out', formattedData)
 
     return formattedData
 }

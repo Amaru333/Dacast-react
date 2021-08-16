@@ -39,6 +39,7 @@ export interface PlaylistContentSetup {
     'vod-id'?: string;
     'live-channel-id'?: string;
     id?: string
+    creationDate: number
 }
 
 interface PlaylistSetup {
