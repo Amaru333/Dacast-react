@@ -28,7 +28,7 @@ const defaultPreset: Preset = {
     settings: {
         duration: { value: NaN, unit: 'Hours' },
         recurrence: null,
-        startMethod: 'Upon Purchase',
+        startMethod: 'Available on Purchase',
         timezone: null,
         startDate: 0,
     }
@@ -139,7 +139,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     dropdownTitle='Preset Type'
                     dropdownDefaultSelect={newPricePreset.priceType}
                     list={presetTypeDropdownList}
-                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -181,12 +181,12 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
-                    defaultTs={newPricePreset.settings.startMethod === 'Upon Purchase' ? 0 : newPricePreset.settings.startDate}
+                    defaultTs={newPricePreset.settings.startMethod === 'Available on Purchase' ? 0 : newPricePreset.settings.startDate}
                     timezone={newPricePreset.settings.timezone}
-                    callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
-                    hideOption="Upon Purchase"
+                    callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Available on Purchase' : "Set Date & Time", startDate: ts,  timezone: timezone}}) }
+                    hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle="Content Scheduling"
                     disabled={newPricePreset.priceType === 'Subscription'}
                 />
             </div>

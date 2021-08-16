@@ -82,7 +82,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             {cell: <Text key='pricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='pricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='pricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Text key='pricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
             {cell: <Button key='pricesTableHeaderButton' className='right mr2  sm-show ' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
 
         ]}
@@ -161,7 +161,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
         ]}
     }
 

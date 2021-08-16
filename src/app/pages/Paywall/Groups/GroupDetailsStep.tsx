@@ -50,7 +50,7 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
         <div>
             <div className='col col-12'>
                 <Input className={ClassHalfXsFullMd + 'pr1 mb2'} label='Price Group Name' defaultValue={props.stepperData.firststep.name} onChange={(event) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, name: event.currentTarget.value } })} />
-                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.type} callback={(item: DropdownSingleListItem) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, type: item.title, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : props.stepperData.firststep.groupSettings.startMethod } } })} list={presetTypeDropdownList} />
+                <DropdownSingle id='groupPriceTypeDropdown' className={ClassHalfXsFullMd + 'pl1 mb2'} dropdownTitle='Preset Type' dropdownDefaultSelect={props.stepperData.firststep.groupSettings.type} callback={(item: DropdownSingleListItem) => props.updateStepperData({ ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, type: item.title, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : props.stepperData.firststep.groupSettings.startMethod } } })} list={presetTypeDropdownList} />
             </div>
             <div className="mb2 clearfix">
                 {renderPrices()}
@@ -73,10 +73,10 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
                     fullLineTz
                     showTimezone={true}
                     defaultTs={props.stepperData.firststep.groupSettings.startDate}
-                    callback={(ts: number, timezone: string) =>  props.updateStepperData( { ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Upon Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] }  }  })}
-                    hideOption="Upon Purchase"
+                    callback={(ts: number, timezone: string) =>  props.updateStepperData( { ...props.stepperData, firststep: { ...props.stepperData.firststep, groupSettings: { ...props.stepperData.firststep.groupSettings, startMethod: ts === 0 ? 'Available on Purchase' : "Subscription", startDate: ts, timezone: timezone && timezone.split(' ')[0] }  }  })}
+                    hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle="Content Scheduling"
                 />
             </div>
         </div>

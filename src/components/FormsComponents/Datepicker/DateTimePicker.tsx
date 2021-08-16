@@ -81,7 +81,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                         props.isConvertedToUtc &&
                         <div className='flex px1 mt1'>
                             <IconStyle>info_outlined</IconStyle>
-                            <Text size={14} weight="reg">This will change to Upon Purchase at the scheduled time.</Text>
+                            <Text size={14} weight="reg">This will change to Available on Purchase at the scheduled time.</Text>
                         </div>
                     }
 

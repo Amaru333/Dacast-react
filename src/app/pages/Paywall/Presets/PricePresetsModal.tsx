@@ -26,7 +26,7 @@ const defaultPreset: Preset = {
     settings: {
         duration: {value: NaN, unit: 'Hours'},
         recurrence: null,
-        startMethod: 'Upon Purchase',
+        startMethod: 'Available on Purchase',
         timezone: null,
         startDate: 0,
     }
@@ -91,7 +91,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
                     dropdownDefaultSelect={presetsList.priceType}
-                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
                     list={presetTypeDropdownList} 
                 />
             </div>
@@ -120,12 +120,12 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
-                    defaultTs={presetsList.settings.startMethod === 'Upon Purchase' ? 0 : presetsList.settings.startDate}
+                    defaultTs={presetsList.settings.startMethod === 'Available on Purchase' ? 0 : presetsList.settings.startDate}
                     timezone={presetsList.settings.timezone}
-                    callback={(ts: number, timezone: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
-                    hideOption="Upon Purchase"
+                    callback={(ts: number, timezone: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: ts === 0 ? 'Available on Purchase' : "Set Date & Time", startDate: ts,  timezone: timezone}}) }
+                    hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle="Content Scheduling"
                     disabled={presetsList.priceType === 'Subscription'}
                 />
             </div>

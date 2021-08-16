@@ -21,7 +21,7 @@ export const recurrenceDropdownList = [{title: "Weekly"}, {title: "Monthly"}, {t
 
 export const durationDropdownList = [{title: "Hours"}, {title: "Days"}, {title: "Weeks"}, {title: "Months"}]
 
-export const startMethodDropdownList = [{title: "Upon Purchase"}, {title: "Schedule"}]
+export const startMethodDropdownList = [{title: "Available on Purchase"}, {title: "Set Date & Time"}]
 
 //PROMO
 export const availableStartDropdownList = [{title: "Always"}, {title: "Set Date and Time"}]

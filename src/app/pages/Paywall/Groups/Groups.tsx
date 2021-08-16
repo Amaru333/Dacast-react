@@ -44,7 +44,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         settings: {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
-            startMethod: 'Upon Purchase',
+            startMethod: 'Available on Purchase',
             timezone: null,
             startDate: 0,
             type: 'Pay Per View',
@@ -59,7 +59,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
         groupSettings: {
             duration: {value: NaN, unit: 'Hours'},
             recurrence: {unit: 'Weekly'},
-            startMethod: 'Upon Purchase',
+            startMethod: 'Available on Purchase',
             timezone: null,
             startDate: 0,
             type: 'Pay Per View',
@@ -103,7 +103,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
             {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
 
         ]}

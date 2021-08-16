@@ -56,7 +56,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
             {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
             {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
 
         ]}
