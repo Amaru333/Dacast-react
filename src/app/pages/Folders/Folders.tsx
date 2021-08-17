@@ -29,7 +29,7 @@ import { DeleteFolderModal } from './DeleteFolderModal'
 import { DeleteContentModal } from '../../shared/List/DeleteContentModal'
 import { handleRowIconType } from '../../utils/utils'
 import { Divider } from '../../../shared/MiscStyles'
-import { ContentStatus } from '../../redux-flow/store/Common/types'
+import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { InputSearchStyle } from '../../shared/General/GeneralStyle'
 
@@ -568,7 +568,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
                 {
                     deleteContentModalOpened &&
-                    <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { await foldersTree.moveToFolder([], [assetToDelete], currentFolder.id).then(() => {if(!fetchContent) { setFetchContent(true)}})}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
+                    <DeleteContentModal contentName={assetToDelete.name} deleteContent={async () => { setContentList({...contentList, results: contentList.results.map(r => {if(r.objectID === assetToDelete.id) {return {...r, status: 'Deleted'}} return r})}); await props.deleteContent(assetToDelete.id, assetToDelete.type as ContentType)}} showToast={props.showToast} toggle={setDeleteContentModalOpened}  />
                 }
             </Modal>
             <OnlineBulkForm updateList={setListUpdate} showToast={props.showToast} items={checkedItems} open={bulkOnlineOpen} toggle={setBulkOnlineOpen} />
