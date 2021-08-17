@@ -64,14 +64,16 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                         />
 
                     }
-                    <DateSinglePickerWrapper
-                        datepickerTitle={props.displayTimezoneFirst && 'Start Date'}
-                        minDate={new Date(props.minDate)}
-                        callback={(date: Date) => setDay(Math.floor(date.valueOf() / 1000))}
-                        className={props.displayTimezoneFirst ? 'col col-6 px1 mt2' : colClass}
-                        id={'datePicker' + props.id}
-                        date={day ? new Date(props.defaultTs * 1000) : null}
-                    />
+                    <div className={props.displayTimezoneFirst ? 'col col-6 px1 mt2' : colClass}>
+                        {props.displayTimezoneFirst && <Text style={{lineHeight:'10px'}} size={14} weight='med'>Start Date</Text>}
+                        <DateSinglePickerWrapper
+                            minDate={new Date(props.minDate)}
+                            callback={(date: Date) => setDay(Math.floor(date.valueOf() / 1000))}
+                            id={'datePicker' + props.id}
+                            date={day ? new Date(props.defaultTs * 1000) : null}
+                        />
+                    </div>
+
                     <Input
                         label={props.displayTimezoneFirst && 'Start Time'}
                         type='time'

@@ -91,7 +91,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
         <ContainerStyle className={props.className}>
             {
                 props.dropdownTitle !== '' && 
-                    <DropdownLabel>
+                    <DropdownLabel className='items-end'>
                         <Text size={14} weight="med">{props.dropdownTitle}</Text>
                         {
                             props.tooltip &&
