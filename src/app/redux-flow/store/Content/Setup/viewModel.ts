@@ -49,9 +49,9 @@ export const formatPutPlaylistSetupInput = (data: ContentSetupObject): PutPlayli
                 }
             }
 
-            if(content.contentType === 'live') {
+            if(content.contentType === 'live' || content.contentType === 'channel') {
                 return {
-                    'content-type': content.contentType,
+                    'content-type': 'live',
                     title: content.title,
                     thumbnailURL: content.thumbnailURL,
                     'live-channel-id': content.id,
