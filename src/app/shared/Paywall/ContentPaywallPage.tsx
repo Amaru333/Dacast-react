@@ -96,7 +96,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                     <Text key={'pricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices ? price.prices[0].value : price.price}</Text>,
                     <Text key={'pricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices ? price.prices[0].currency : price.currency}</Text>,
                     <Text key={'pricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.unit : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                    <Text key={'pricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
+                    <Text key={'pricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod === 'Available on Purchase' ? 'On Purchase' : 'Date & Time Set'}</Text>,
                     price.isDeleted ? 
                     <Label key={'pricesTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
                     :

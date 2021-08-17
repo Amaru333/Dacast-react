@@ -125,7 +125,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                         <Text key={'groupPricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.value : 'Multiple Prices'}</Text>,
                         <Text key={'groupPricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices.length === 1 ? price.prices[0].price.currency : 'Multiple Currencies'}</Text>,
                         <Text key={'groupPricesTableBodyDuration' + key} size={14} weight='reg'>{price.groupSettings.recurrence ? price.groupSettings.recurrence.unit : price.groupSettings.duration.value + ' ' + price.groupSettings.duration.unit}</Text>,
-                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod}</Text>,
+                        <Text key={'groupPricesTableBodyMethod' + key} size={14} weight='reg'>{price.groupSettings.startMethod === 'Available on Purchase' ? 'On Purchase' : 'Date & Time Set'}</Text>,
                     price.isDeleted ? 
                         <Label key={'groupPricesTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
                         :

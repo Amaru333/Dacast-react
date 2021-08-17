@@ -77,6 +77,7 @@ export const GroupDetailsStep = (props: { stepperData: GroupStepperData; updateS
                     hideOption="Available on Purchase"
                     id="endDate"
                     dropdownTitle="Content Scheduling"
+                    displayTimezoneFirst
                 />
             </div>
         </div>

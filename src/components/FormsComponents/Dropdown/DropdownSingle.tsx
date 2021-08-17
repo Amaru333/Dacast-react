@@ -97,7 +97,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             props.tooltip &&
                                 <div>
                                     <IconStyle id={props.tooltip}>info_outlined</IconStyle>
-                                    <Tooltip target={props.tooltip}>{props.tooltip}</Tooltip>
+                                    <Tooltip leftPositionValueToZero={props.leftTooltipPosition === true} target={props.tooltip}>{props.tooltip}</Tooltip>
                                 </div>
                         }
                     </DropdownLabel>                

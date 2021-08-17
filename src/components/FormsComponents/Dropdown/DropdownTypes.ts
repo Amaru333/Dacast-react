@@ -24,7 +24,8 @@ interface DropdownCustomProps {
     isInModal?: boolean;
     disabled?: boolean;
     isWhiteBackground?: boolean;
-    tooltip?: string
+    tooltip?: string;
+    leftTooltipPosition?: boolean;
 }
 
 export interface ContinentListType {

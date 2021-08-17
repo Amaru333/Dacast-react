@@ -127,6 +127,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     id="endDate"
                     dropdownTitle="Content Scheduling"
                     disabled={presetsList.priceType === 'Subscription'}
+                    displayTimezoneFirst
                 />
             </div>
             <div className='col col-12 mt3'>

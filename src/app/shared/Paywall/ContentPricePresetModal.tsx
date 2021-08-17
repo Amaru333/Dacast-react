@@ -188,6 +188,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     id="endDate"
                     dropdownTitle="Content Scheduling"
                     disabled={newPricePreset.priceType === 'Subscription'}
+                    displayTimezoneFirst
                 />
             </div>
             <div className='col col-12 mt3'>

@@ -71,7 +71,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                     <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : 0}</Text>,
                     <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : 'USD'}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence ? preset.settings.recurrence.unit : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
-                    <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod}</Text>,
+                    <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod === 'Available on Purchase' ? 'On Purchase' : 'Date & Time Set'}</Text>,
                     preset.isDeleted ? 
                     <Label key={'pricePresetsTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
                     :

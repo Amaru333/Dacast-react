@@ -22,6 +22,7 @@ interface DateTimePickerProps {
     fullLineTz?: boolean;
     dropShowing?: boolean;
     isConvertedToUtc?: boolean;
+    displayTimezoneFirst?: boolean;
 }
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
@@ -45,26 +46,11 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
 
     return (
         <div className="flex flex-wrap items-end col col-12 mxn1">
-            {props.dropShowing && <DropdownSingle disabled={props.disabled} className={colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />}
+            {props.dropShowing && <DropdownSingle disabled={props.disabled} className={props.displayTimezoneFirst ? 'col col-12 px1 sm-col-6' : colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />}
             { (method === "Set Date and Time" || !props.dropShowing) &&
                 <>
-                    <DateSinglePickerWrapper
-                        minDate={new Date(props.minDate)}
-                        callback={(date: Date) => setDay(Math.floor(date.valueOf() / 1000))}
-                        className={colClass}
-                        id={'datePicker' + props.id}
-                        date={day ? new Date(props.defaultTs * 1000) : null}
-                    />
-                    <Input
-                        type='time'
-                        value={time}
-                        onChange={(event) => setTime(event.currentTarget.value)}
-                        className={colClass}
-                        disabled={false}
-                        id={'input' + props.id}
-                    />
                     {
-                        props.showTimezone &&
+                        (props.showTimezone && props.displayTimezoneFirst) &&
                         <DropdownSingle
                             hasSearch
                             id={'timezoneDropdown' + props.id}
@@ -74,6 +60,39 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                             callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])}
                             list={timezoneDropdownList}
                             tooltip={props.isConvertedToUtc ? "The time saved will be converted to Coordinated Universal Time (UTC), UTC +0" : null}
+                            leftTooltipPosition
+                        />
+
+                    }
+                    <DateSinglePickerWrapper
+                        datepickerTitle={props.displayTimezoneFirst && 'Start Date'}
+                        minDate={new Date(props.minDate)}
+                        callback={(date: Date) => setDay(Math.floor(date.valueOf() / 1000))}
+                        className={props.displayTimezoneFirst ? 'col col-6 px1 mt2' : colClass}
+                        id={'datePicker' + props.id}
+                        date={day ? new Date(props.defaultTs * 1000) : null}
+                    />
+                    <Input
+                        label={props.displayTimezoneFirst && 'Start Time'}
+                        type='time'
+                        value={time}
+                        onChange={(event) => setTime(event.currentTarget.value)}
+                        className={(props.displayTimezoneFirst ? 'col col-6 px1 pt2 sm-col-4' : colClass) }
+                        disabled={false}
+                        id={'input' + props.id}
+                    />
+                    {
+                        (props.showTimezone && !props.displayTimezoneFirst) &&
+                        <DropdownSingle
+                            hasSearch
+                            id={'timezoneDropdown' + props.id}
+                            dropdownDefaultSelect={props.timezone}
+                            className={props.fullLineTz ? 'col col-12 px1 sm-col-6' : colClass}
+                            dropdownTitle='Timezone'
+                            callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])}
+                            list={timezoneDropdownList}
+                            tooltip={props.isConvertedToUtc ? "The time saved will be converted to Coordinated Universal Time (UTC), UTC +0" : null}
+                            leftTooltipPosition
                         />
 
                     }
