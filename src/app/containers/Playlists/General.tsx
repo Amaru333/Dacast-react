@@ -126,7 +126,7 @@ const GeneralPlaylist = (props: GeneralComponentProps) => {
                                 </ButtonContainer>
                         }
                         <Prompt when={hasChanged} message='' />
-                    </div>            
+                    </div>
                 )
                 : <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
             }
