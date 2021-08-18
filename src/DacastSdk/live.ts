@@ -38,6 +38,19 @@ export interface GetLiveDetailsOutput {
     watchingStatus: boolean
 }
 
+export type ChannelRegion = 'north-america' | 'asia-pacific' | 'europe'
+
+export interface PostLiveInput {
+    title: string
+    online: boolean
+    region: ChannelRegion
+    renditionCount: number
+}
+
+export interface PostLiveOutput {
+    id: string
+}
+
 export interface PutLiveDetailsInput {
     id: string
     payload: PutLiveDetailsPayload

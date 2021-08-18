@@ -40,3 +40,9 @@ export function isMultiUserPayload(data: PostLoginInput): data is MultiUserSelec
     //@ts-ignore
     return !!data['loginToken']
 }
+
+export interface PostResetPasswordInput {
+    newPassword: string
+    email: string
+    verificationToken: string
+}

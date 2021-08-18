@@ -11,7 +11,7 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
-import { axiosClient, dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { formatGetFolderContentOutput } from '../../../redux-flow/store/Folders/viewModel';
 
 export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
@@ -45,8 +45,9 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
 
     const fetchGroupContents = async (tempArray: string[]) => {
         for(let page = 2; page <= props.stepperData.firststep.pages; page++)
-         await axiosClient.get(`/paywall/prices/groups/${props.stepperData.firststep.id}?page=${page}`).then((response)=> {
-            response.data.data.contents && tempArray.push(...response.data.data.contents)
+         await dacastSdk.getPricePackageContents(`${props.stepperData.firststep.id}?page=${page}`)
+         .then((response)=> {
+            response.contents && tempArray.push(...response.contents)
         })
 
     }

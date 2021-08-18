@@ -2,9 +2,8 @@ import React from 'react';
 import { ApplicationState } from '../../redux-flow/store';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import { Action, AnalyticsDashboardState, GetAnalyticsDashboardOptions, getAnalyticsDashboardAction, getAnalyticsDashboardNewAction, AnalyticsDashboardNewInfo, AnalyticsDashboardDimension, AnalyticsTopContentParams, getAnalyticsTopContentAction, AnalyticsTopContentInfo } from '../../redux-flow/store/Analytics/Dashboard';
-import { DashboardAnalyticsPage } from '../../pages/Analytics/Dashboard';
-import { dateAdd, getCurrentTs } from '../../../utils/services/date/dateService';
+import { Action, getAnalyticsDashboardNewAction, AnalyticsDashboardNewInfo, AnalyticsDashboardDimension, AnalyticsTopContentParams, getAnalyticsTopContentAction, AnalyticsTopContentInfo } from '../../redux-flow/store/Analytics/Dashboard';
+import { dateAdd } from '../../../utils/services/date/dateService';
 import { WidgetElement } from '../Dashboard/WidgetElement';
 import { classItemHalfWidthContainer, classItemQuarterWidthContainer, WidgetHeader } from '../Dashboard/DashboardStyles';
 import { IconStyle } from '../../../shared/Common/Icon';
@@ -23,7 +22,6 @@ import { TabSmall } from '../../../components/Tab/TabSmall';
 import { Pagination } from '../../../components/Pagination/Pagination';
 import { world } from '../../constants/CountriesList';
 import { EmptyAnalytics } from '../../../components/Analytics/EmptyAnalytics';
-import EventHooker from '../../../utils/services/event/eventHooker';
 
 export interface DashboardPageProps {
     dashboardAnalytics: AnalyticsDashboardNewInfo;
