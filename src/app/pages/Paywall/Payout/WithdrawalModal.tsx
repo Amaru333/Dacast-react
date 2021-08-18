@@ -36,13 +36,13 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
     const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
         switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
             case PaymentMethodType.BankAccountUS:
-                return {minRequest: '$100 USD', fees: 'Free*', nbDays: 10}
+                return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
             case PaymentMethodType.BankAccountInternational:
                 return {minRequest: '$250 USD', fees: '$10 USD', nbDays: 15}
             case PaymentMethodType.Check:
                 return {minRequest: '$100 USD', fees: '$10 USD', nbDays: 10}
             case PaymentMethodType.PayPal:
-                return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
+                return {minRequest: '$100 USD', fees: 'Free*', nbDays: 10}
             default:
                 return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
         }
