@@ -9,7 +9,7 @@ import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 const ExpoImage = require('../../../../public/assets/Expo.svg');
 const VodImage = require('../../../../public/assets/Videos.svg');
 const LiveImage = require('../../../../public/assets/Livestream.svg');
-const PlaylistImage = require('../../../../public/assets/PLaylist.svg');
+const PlaylistImage = require('../../../../public/assets/Playlist.svg');
 
 
 
