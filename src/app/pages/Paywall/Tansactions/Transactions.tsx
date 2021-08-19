@@ -140,9 +140,9 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
-                    <td key={'transactionsTableBodyViewerCurrency' + i}>
-                        <Text id='transactionTableCurrency' size={14} weight='reg'>{transaction.currency}</Text>
-                        <Tooltip target="transactionTableCurrency">{CURRENCY.find(c => c.code ===transaction.currency).description}</Tooltip>
+                    <td className='relative' key={'transactionsTableBodyViewerCurrency' + i}>
+                        <Text id={'transactionTableCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>
+                        <Tooltip target={"transactionTableCurrency" + i}>{CURRENCY.find(c => c.code ===transaction.currency).description}</Tooltip>
                     </td>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
                     transaction.credit ? <Label label={transaction.credit.toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
