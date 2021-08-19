@@ -444,7 +444,17 @@ export const ContentListPage = (props: ContentListProps) => {
     }
 
     if(showEmptyState) {
-        return <ContentEmptyState contentType={props.contentType} />
+        return (
+            <>
+                <ContentEmptyState contentType={props.contentType} />
+                {
+                    isTrialVodOrLive() &&
+                    <PlanDetailsCardWrapper>
+                        <PlanDetailsCard type={props.contentType === 'vod' ? 'vod' : 'regular'}/>
+                    </PlanDetailsCardWrapper>
+                }
+            </>
+        )
     }
 
     return (
