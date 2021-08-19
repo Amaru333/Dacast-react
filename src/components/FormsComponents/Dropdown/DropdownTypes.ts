@@ -5,6 +5,7 @@ export interface DropdownSingleListItem {
     title: string
     description?: string
     data?: any
+    featureItem?: boolean
 }
 
 export const dropdownIcons = {
