@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Card } from '../../../components/Card/Card';
-import { Icon } from '@material-ui/core';
+import { Icon } from '../../../components/Icon/Icon';
 
 export const SmallHelpCard = styled(Card)`
 height: 168px;

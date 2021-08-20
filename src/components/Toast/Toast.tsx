@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ToastProps } from './ToastTypes';
 import { Text } from '../Typography/Text';
 import { ToastStyle, IconStyle, ToastCloseButtonStyle } from './ToastStyle';
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../Icon/Icon';
 
 export const Toast = (props: ToastProps) => {
 

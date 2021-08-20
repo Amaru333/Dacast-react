@@ -77,7 +77,6 @@
     "@datadog/browser-rum": "^1.25.2",
     "@datepicker-react/hooks": "^2.0.3",
     "@material-ui/core": "^4.5.1",
-    "@material-ui/icons": "^4.4.3",
     "@recurly/react-recurly": "^1.1.1",
     "@storybook/addon-a11y": "^5.2.3",
     "@storybook/addon-knobs": "^5.3.18",

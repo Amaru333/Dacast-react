@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../Icon/Icon';
 import { ContainerStyle, DropdownList, DropdownItem, DropdownItemText, ButtonContainer} from './DropdownStyle';
 import { dropdownIcons, DropdownButtonProps, DropdownSingleListItem } from './DropdownTypes';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -17,11 +17,11 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
             setSelectedItem(props.dropdownDefaultSelect)
         }
     }, [props.dropdownDefaultSelect])
-    
+
     useOutsideAlerter(dropdownListRef, () => {
         setOpen(!isOpened)
     });
-  
+
     const handleClick = (item: DropdownSingleListItem) => {
         setSelectedItem(item);
         if(props.callback && item.title !== "Select"){
@@ -34,14 +34,14 @@ export const DropdownButton: React.FC<DropdownButtonProps> = (props: DropdownBut
         return (
             props.list && props.list.map((item, key) => {
                 return (
-                    <DropdownItem 
+                    <DropdownItem
                         isSingle
                         style={{display: 'flex'}}
-                        key={props.id + '_' + item.title} 
-                        id={props.id + '_' + item.title} 
+                        key={props.id + '_' + item.title}
+                        id={props.id + '_' + item.title}
                         className={(key === 1 ? 'mt1' : '') + ' items-center'}
-                        isSelected={selectedItem.title === item.title} 
-                        onClick={() => handleClick(item)}> 
+                        isSelected={selectedItem.title === item.title}
+                        onClick={() => handleClick(item)}>
                         <div className='flex'>
                             {
                                 (item.data && item.data.img) &&

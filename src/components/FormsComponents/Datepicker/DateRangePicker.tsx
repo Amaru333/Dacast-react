@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {useDatepicker, START_DATE, UseDatepickerProps, OnDatesChangeProps } from "@datepicker-react/hooks";
 import DatepickerContext from "./DatepickerContext";
 import Month from "./Month";
-import { Icon } from '@material-ui/core';
+import { Icon } from '../../Icon/Icon';
 import {DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle, EndTextStyle} from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -92,7 +92,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
                     endDateStyle: state.endDate
                 }}
             >
-                    
+
                 <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
                     <StartTextStyle isSingle={false} text={state.startDate ? true : false}>
                         <Text size={14} weight='reg' color='gray-1'>
@@ -119,7 +119,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
                         </NavButton>
                     </NavButtonRightStyle>
                     {activeMonths.map(month => (
-                        
+
                         <Month
                             key={`${month.year}-${month.month}`}
                             year={month.year}
@@ -130,7 +130,7 @@ export const DateRangePicker = (props: { start: number, end: number, onDatesChan
                 </MonthContainerStyle>
             </DatepickerContext.Provider>
         </DatepickerStyle>
-     
+
     );
 }
 

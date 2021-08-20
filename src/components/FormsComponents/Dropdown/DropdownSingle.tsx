@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../Icon/Icon';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, DropdownItemText, SearchItem, SearchIconStyle, CloseIconButton, ArrowIconStyle, DropdownDescriptionText, DropdownItemTitleContainer } from './DropdownStyle';
 import { DropdownProps, dropdownIcons, DropdownSingleListItem } from './DropdownTypes';
 import { Text } from '../../Typography/Text';
@@ -50,7 +50,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     React.useEffect(() => filterList(filteringList), [filteringList])
 
     const renderList = () => {
-        
+
         return (
             itemsList.map((item, key) => {
                 return (
@@ -75,11 +75,11 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             <DropdownItemTitleContainer>
                                 <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><Icon fontSize="inherit">check</Icon></div>}
                             </DropdownItemTitleContainer>
-                           
+
                             {
                                 item.description && <DropdownDescriptionText size={12} weight="reg" color="gray-3">{item.description}</DropdownDescriptionText>
                             }
-                            
+
                         </DropdownItem>
                 )
             })
@@ -90,7 +90,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
     return (
         <ContainerStyle className={props.className}>
             {
-                props.dropdownTitle !== '' && 
+                props.dropdownTitle !== '' &&
                     <DropdownLabel>
                         <Text size={14} weight="med">{props.dropdownTitle}</Text>
                         {
@@ -100,7 +100,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                     <Tooltip target={props.tooltip}>{props.tooltip}</Tooltip>
                                 </div>
                         }
-                    </DropdownLabel>                
+                    </DropdownLabel>
             }
             <TitleContainer isWhiteBackground={props.isWhiteBackground} disabled={props.disabled} isNavigation={props.isNavigation} isOpened={isOpened} onClick={() =>  !isOpened && setOpen(true)}>
                 <Title><Text color={props.disabled ? 'gray-5' : 'gray-1'} size={14} weight='reg'>{selectedItem}</Text></Title>

@@ -22,7 +22,7 @@ import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
 
 import ReactDOM from 'react-dom';
-import { Icon } from '@material-ui/core';
+import { Icon } from '../components/Icon/Icon';
 import Login from './containers/Register/Login/Login';
 import { NotFound } from './containers/404page';
 import AddStreamModal from './containers/Navigation/AddStreamModal';

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text } from '../../Typography/Text';
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../Icon/Icon';
 import { InputProps } from './InputTypes';
 import { ContainerStyle, LabelStyle, RelativeContainer, InputStyle, HelpStyle, IndicationLabelStyle, AddonStyle, TextAreaStyle } from './InputStyle';
 import { Tooltip } from '../../Tooltip/Tooltip';
@@ -16,24 +16,24 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
         if(event.target.value.length < 8 && event.target.value.length > 0) {
             var completePart = '00:00:00';
             var returnValue =  event.target.value + completePart.slice(event.target.value.length);
-            props.onChange(returnValue)    
+            props.onChange(returnValue)
         }
     }
 
     const handleValueInput = (event) => {
-        
+
         if(event.target.value.length < 8) {
             var returnValue =  event.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{2})/g, '$1:').trim();
         } else {
             var returnValue = event.target.value;
         }
         if( parseInt(event.target.value.charAt(3)) > 5 ) {
-            returnValue = replaceAt(returnValue, 3, event.target.value.length > 4 ? '0' : '');   
+            returnValue = replaceAt(returnValue, 3, event.target.value.length > 4 ? '0' : '');
         }
         if( parseInt(event.target.value.charAt(6)) > 5 ) {
             returnValue =  replaceAt(returnValue, 6, event.target.value.length > 7 ? '0' : '');
         }
-        props.onChange(returnValue)    
+        props.onChange(returnValue)
     }
 
     const returnTooltip = () => {
@@ -45,7 +45,7 @@ export const Input = React.forwardRef((props: InputProps, ref?: React.RefObject<
                 <div>
                     <IconStyle fontSize="small" id={id}>info_outlined</IconStyle>
                     <Tooltip target={id}>{tooltip}</Tooltip>
-                </div> 
+                </div>
             )
         }
     }
