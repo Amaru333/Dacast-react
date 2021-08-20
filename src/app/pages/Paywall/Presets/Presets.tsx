@@ -68,8 +68,8 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 return {data: [
                     <Text key={'pricePresetsTableBodyName' + key} size={14} weight='reg'>{preset.name}</Text>,
                     <Text key={'pricePresetsTableBodyType' + key} size={14} weight='reg'>{preset.priceType}</Text>,
-                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].value : 0}</Text>,
-                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices ? preset.prices[0].currency : 'USD'}</Text>,
+                    <Text key={'pricePresetsTableBodyPrice' + key} size={14} weight='reg'>{preset.prices.length > 0? 'Multiple Prices' : preset.prices[0].value || 0}</Text>,
+                    <Text key={'pricePresetsTableBodyCurrency' + key} size={14} weight='reg'>{preset.prices.length > 0 ? 'Multiple Currencies' : preset.prices[0].currency || 'USD'}</Text>,
                     <Text key={'pricePresetsTableBodyDuration' + key} size={14} weight='reg'>{preset.settings.recurrence ? preset.settings.recurrence.unit : preset.settings.duration.value + ' ' + preset.settings.duration.unit}</Text>,
                     <Text key={'pricePresetsTableBodyMethod' + key} size={14} weight='reg'>{preset.settings.startMethod === 'Available on Purchase' ? 'On Purchase' : 'Date & Time Set'}</Text>,
                     preset.isDeleted ? 
