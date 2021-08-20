@@ -47,9 +47,9 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                 return 'Name (A-Z)'
             case 'Z-to-A':
                 return 'Name (Z-A)'
-            case 'date-asc':
-                return 'Date Created (Newest First)'
             case 'date-desc':
+                return 'Date Created (Newest First)'
+            case 'date-asc':
                 return 'Date Created (Oldest First)'
             default:
                 return 'Sort'
