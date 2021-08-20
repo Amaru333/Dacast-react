@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Icon } from '@material-ui/core';
+import { Icon } from '../../components/Icon/Icon';
 import { ColorsApp } from '../../styled/types';
 
 export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean; customsize?: number}>`
@@ -8,11 +8,10 @@ export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean
         cursor: not-allowed;
     `}
     ${props => props.customsize && css `
-        font-size: ${props.customsize}px !important;
+        width: ${props.customsize}px !important;
+        height: ${props.customsize}px !important;
     `}
-    
 `
-
 export const IconContainer = styled.div`
     float:right;
     width: max-content;
@@ -54,7 +53,7 @@ export const IconGreyActionsContainer = styled.div<{isFocus?: boolean}>`
             background-color: ${props => props.theme.colors["gray-10"]} ;
         }
     }
-    
+
 `
 export const IconGreyContainer = styled.div<{}>`
     justify-content: center;

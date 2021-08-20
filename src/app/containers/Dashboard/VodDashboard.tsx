@@ -17,7 +17,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
 
     var totalVideos = numberFormatter(props.profile.totalVideos, 'comma');
     var videoPlays = numberFormatter(props.profile.videoPlays ? props.profile.videoPlays : 0, 'comma');
-    
+
     var { rightSide, fullWidth, ...other } = props;
 
     let vodDataFetching = Number.isNaN(props.profile.totalVideos)
@@ -35,7 +35,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                 <WidgetElement placeholderWidget={vodDataFetching} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
-                        <IconStyle id="totalVideosTooltip" className="ml-auto">info_outline</IconStyle>
+                        <IconStyle id="totalVideosTooltip" className="ml-auto">info_outlined</IconStyle>
                         <Tooltip target="totalVideosTooltip">The number of VOD assets in your account</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
@@ -48,7 +48,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> Impressions </Text>
-                                <IconStyle id="impressionsTooltip" className="ml-auto">info_outline</IconStyle>
+                                <IconStyle id="impressionsTooltip" className="ml-auto">info_outlined</IconStyle>
                                 <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
@@ -68,7 +68,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
-                                <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
+                                <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outlined</IconStyle>
                                 <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
@@ -106,7 +106,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         </WidgetElement>
                     </>
                 }
-                
+
             </div>
         </section>
     )

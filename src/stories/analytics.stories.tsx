@@ -18,7 +18,7 @@ storiesOf('Analytics', module)
     //         <WidgetElement className={"col lg-col-6 md-col-6 sm-col-12 col-12 px2 mb3"} >
     //             <WidgetHeader className="flex">
     //                 <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions Exemple</Text>
-    //                 <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
+    //                 <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outlined</IconStyle>
     //                 <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
     //             </WidgetHeader>
     //             <div className="flex minContentDash justify-center items-center mb1">
@@ -104,14 +104,14 @@ storiesOf('Analytics', module)
                         data={[]}
                         infoText="An example of map analytics"
                         title="World Map Analytics">
-                        
-                        <LeafletMap 
+
+                        <LeafletMap
                         markers= {[
                             {  city: 'New York City', position: { latitude:  40.7808, longitude: -73.9772}, consumedMB: 9392 },
                             {  city: 'Annecy', position: { latitude: 45.9, longitude: 6.1167}, consumedMB: 7602 },
                             {  city: 'San Francisco', position: { latitude: 37.6216, longitude:  -122.3929}, consumedMB: 12349 },
-                            {  city: 'Londres', position: { latitude: 51.5073509, longitude:  -0.1277583}, consumedMB: 5402 } 
-                        ]} 
+                            {  city: 'Londres', position: { latitude: 51.5073509, longitude:  -0.1277583}, consumedMB: 5402 }
+                        ]}
                         markerNameTranform={ (element) => element.city+": "+displayBytesForHumans(element.consumedMB) } />
                     </AnalyticsCard>
                 </div>

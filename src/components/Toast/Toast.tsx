@@ -13,7 +13,7 @@ export const Toast = (props: ToastProps) => {
             case "success":
                 return <Icon style={{color: "white"}}>check</Icon>;
             case "information":
-                return <Icon style={{color: "white"}}>info_outline</Icon>;
+                return <Icon style={{color: "white"}}>info_outlined</Icon>;
             case "warning":
                 return <Icon>error_outline</Icon>;
             case "notification":

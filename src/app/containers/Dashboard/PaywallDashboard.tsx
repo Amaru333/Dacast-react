@@ -23,7 +23,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
-                        <IconStyle id="balanceTooltip" className="ml-auto">info_outline</IconStyle>
+                        <IconStyle id="balanceTooltip" className="ml-auto">info_outlined</IconStyle>
                         <Tooltip target="balanceTooltip">Your current paywall balance as of today</Tooltip>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
@@ -33,7 +33,7 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
-                        <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
+                        <IconStyle id="revenueTooltip" className="ml-auto">info_outlined</IconStyle>
                         <Tooltip target="revenueTooltip">The paywall revenue you have earned for the last 30 days</Tooltip>
                     </WidgetHeader>
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
