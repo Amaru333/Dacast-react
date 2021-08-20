@@ -55,7 +55,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
         return props.theme.themes.filter(t => t.themeName === 'default')[0]
     }
-    
+
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(handleDefaultSelectedTheme())
 
     let playerRef = React.useRef<HTMLDivElement>(null)
@@ -160,35 +160,34 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 }
                             </Text>
                         </div>
-            
+
                     </TitleSection>
                     {showAdvancedPanel ?
                         <>
 
 
-                            <Divider className="p1" />
-
-
-                            <DisabledSection settingsEditable={customEnabled && userToken.getPrivilege('privilege-aes')}>
-                                <div className="my2" ><Text size={20} weight='med'>Delivery Method</Text></div>
-                                <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
-                                <RadioButtonContainer className="mt2">
-                                    <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'compatible' }); }} />
-                                    <div>
-                                        <IconStyle id="compatibleDeliveryTooltip">info_outlined</IconStyle>
-                                        <Tooltip leftPositionValueToZero target="compatibleDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatibility</Tooltip>
-                                    </div>
-                                </RadioButtonContainer>
-
-                                <RadioButtonContainer className="mt1">
-                                    <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'secure' }); }} />
-                                    <div>
-                                        <IconStyle id="secureDeliveryTooltip">info_outlined</IconStyle>
-                                        <Tooltip leftPositionValueToZero target="secureDeliveryTooltip">Encrypts playback with AES, which increases security at the cost of compatibility with older devices/browsers/OSs</Tooltip>
-                                    </div>
-                                </RadioButtonContainer>
-
-                            </DisabledSection>
+                            // LS - I believe the new designs have this section appearing in security instead
+                            // <Divider className="p1" />
+                            // <DisabledSection settingsEditable={customEnabled && userToken.getPrivilege('privilege-aes')}>
+                            //     <div className="my2" ><Text size={20} weight='med'>Delivery Method</Text></div>
+                            //     <Text size={14} weight='reg'>Dacast gives you complete control over the delivery method of your videos. Choose the setting that's right for the type of content you have.</Text>
+                            //     <RadioButtonContainer className="mt2">
+                            //         <InputRadio name='delevery-method' value='compatible-delivery' label='Compatible Delivery' defaultChecked={selectedTheme.deliveryMethod === 'compatible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'compatible' }); }} />
+                            //         <div>
+                            //             <IconStyle id="compatibleDeliveryTooltip">info_outlined</IconStyle>
+                            //             <Tooltip leftPositionValueToZero target="compatibleDeliveryTooltip">Attempts to play the content under all circumstances, falling back to insecure methods like Flash if necessary, to increase compatibility</Tooltip>
+                            //         </div>
+                            //     </RadioButtonContainer>
+                            //
+                            //     <RadioButtonContainer className="mt1">
+                            //         <InputRadio name='delevery-method' value='secure-delivery' label='Secure Delivery' defaultChecked={selectedTheme.deliveryMethod === 'secure'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, deliveryMethod: 'secure' }); }} />
+                            //         <div>
+                            //             <IconStyle id="secureDeliveryTooltip">info_outlined</IconStyle>
+                            //             <Tooltip leftPositionValueToZero target="secureDeliveryTooltip">Encrypts playback with AES, which increases security at the cost of compatibility with older devices/browsers/OSs</Tooltip>
+                            //         </div>
+                            //     </RadioButtonContainer>
+                            //
+                            // </DisabledSection>
 
                             <Divider className="p1" />
 
@@ -283,7 +282,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip leftPositionValueToZero target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
                                         </ControlToggleContainer>
                                 }
-                                
+
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Social Sharing' checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
                                     <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
@@ -390,13 +389,13 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Tooltip leftPositionValueToZero target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
-                                    
-            
+
+
                                 </>
                             }
 
                             {
-                                
+
                                 <>
                                     <Divider className="p1" />
                                     {
@@ -419,7 +418,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             <Divider className="p1" />
                                         </>
                                     }
-                                    
+
                                     <DisabledSection settingsEditable={customEnabled}>
                                         <div className="pt25 flex justify-between">
                                             <div><Text size={20} weight='med'>Offline Message</Text></div>

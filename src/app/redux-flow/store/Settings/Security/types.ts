@@ -63,12 +63,14 @@ export interface SecuritySettings {
     domainControl?: DomainControl[];
     selectedDomainControl?: string;
     locked?: boolean;
+    useAES?: boolean;
 }
 
 export const defaultStateSettingsSecurity: SecuritySettings = {
     passwordProtection: {
         password: null
     },
+    useAES: null,
     contentScheduling: {
         startTime: 0,
         startTimezone: null,
@@ -103,6 +105,7 @@ const defaultStateSecuritySettings: SecuritySettings = {
     },
     geoRestriction: [],
     domainControl: [],
+    useAES: null
 }
 
 export const defaultStateContentSecuritySettings: ContentSecuritySettingsState = {};

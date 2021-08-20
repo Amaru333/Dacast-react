@@ -9,7 +9,7 @@ export const formatGetContentSecuritySettingsOutput = (contentType: ContentType)
 
     let geoRestrictionsList: GeoRestriction[] = []
     let domainControlsList: DomainControl[] = []
-    
+
     geoRestrictionsList.push(defaultGeoRestriction)
     if(endpointResponse.geoRestriction) {
         geoRestrictionsList.push(...endpointResponse.geoRestriction)
@@ -34,8 +34,8 @@ export const formatGetContentSecuritySettingsOutput = (contentType: ContentType)
                 password: endpointResponse.passwordProtection.password ? endpointResponse.passwordProtection.password : ""
             },
             selectedDomainControl: endpointResponse.selectedDomainControl ? endpointResponse.selectedDomainControl : null,
-            selectedGeoRestriction: endpointResponse.selectedGeoRestriction ? endpointResponse.selectedGeoRestriction : null
-
+            selectedGeoRestriction: endpointResponse.selectedGeoRestriction ? endpointResponse.selectedGeoRestriction : null,
+            useAES: endpointResponse.useAES ? endpointResponse.useAES : null
         },
         contentId: dataReact,
         contentType: contentType
@@ -57,6 +57,7 @@ export const formatPutContentSecuritySettingsInput = (data: ContentSecuritySetti
             passwordProtection: {
                 password: data.securitySettings.passwordProtection.password ? data.securitySettings.passwordProtection.password : null
             },
+            useAES: data.securitySettings.useAES,
             selectedDomainControl: data.securitySettings.selectedDomainControl === '-1' ? null : data.securitySettings.selectedDomainControl,
             selectedGeoRestriction: data.securitySettings.selectedGeoRestriction === '-1' ? null : data.securitySettings.selectedGeoRestriction,
             locked: data.securitySettings.locked
