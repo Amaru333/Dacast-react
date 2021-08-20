@@ -43,10 +43,10 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
 
     return (
         <>
-            <div className='flex flex-column justify-center items-center center'>
+            <div className='flex flex-column justify-center items-center center mt4 mb4'>
                 <img className="mb2" src={renderInfo().img} />
-                <Text className="mb2" size={40} weight='med' color="black">{renderInfo().title}</Text>
-                <Text className="mb2" size={14} weight='reg' color="black" >{renderInfo().text}</Text>
+                <Text className="mb2" size={24} weight='med' color="black">{renderInfo().title}</Text>
+                <Text className="mb2" size={14} weight='reg' color="gray-3" >{renderInfo().text}</Text>
                 <Button onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="small">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
             </div> 
             { createModalOpen && renderInfo().modal }
