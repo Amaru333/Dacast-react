@@ -280,8 +280,8 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
     const bulkActions = [
         { name: 'Name (A-Z)', value: 'A-to-Z', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('title', 'asc'))) } },
         { name: 'Name (Z-A)', value: 'Z-to-A', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('title', 'desc'))) } },
-        { name: 'Date Created (Newest First)', value: 'date-asc', callback: () => {setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
-        { name: 'Date Created (Oldest First)', value: 'date-desc', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'desc'))) } },
+        { name: 'Date Created (Newest First)', value: 'date-desc', callback: () => {setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'desc'))) } },
+        { name: 'Date Created (Oldest First)', value: 'date-asc', callback: () => { setSelectedItems([...selectedItems].sort(compareValues('createdAt', 'asc'))) } },
         { name: 'Custom', value: 'custom', callback: () => { } },
     ]
 
