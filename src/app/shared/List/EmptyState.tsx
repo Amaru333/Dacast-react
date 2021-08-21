@@ -20,13 +20,13 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
     const renderInfo = () => {
         switch(props.contentType) {
             case 'vod':
-                return {img: VodImage, title: 'Upload your first Video', text: 'Start uploading and managing your videos.'}
+                return {img: VodImage, title: 'Upload your first Video!', text: 'Start uploading and managing your videos.'}
             case 'expo':
-                return {img: ExpoImage, title: 'Create your first Expo', text: 'The immersive video gallery allows you to organize videos and share a collection of videos with your audience.', modal: <AddExpoModal opened={createModalOpen} toggle={setCreateModalOpen} />}
+                return {img: ExpoImage, title: 'Create your first Expo!', text: 'The immersive video gallery allows you to organize videos and share a collection of videos with your audience.', modal: <AddExpoModal opened={createModalOpen} toggle={setCreateModalOpen} />}
             case 'live':
-                return {img: LiveImage, title: 'Create your first Live Stream', text: 'Start streaming and connect with your audience live.', modal: <AddStreamModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
+                return {img: LiveImage, title: 'Create your first Live Stream!', text: 'Start streaming and connect with your audience live.', modal: <AddStreamModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
             case 'playlist':
-                return {img: PlaylistImage, title: 'Create your first Playlist', text: 'Select from your uploaded videos. Share with your audience.', modal: <AddPlaylistModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
+                return {img: PlaylistImage, title: 'Create your first Playlist!', text: 'Select from your uploaded videos. Share with your audience.', modal: <AddPlaylistModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
             default:
                 return null
         }
@@ -43,11 +43,11 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
 
     return (
         <>
-            <div className='flex flex-column justify-center items-center center mt4 mb4'>
-                <img className="mb2" src={renderInfo().img} />
+            <div className='flex flex-column justify-center items-center center my3'>
+                <img className={"mb2" + (props.contentType === 'live' ? ' ml3' : '')} src={renderInfo().img} />
                 <Text className="mb2" size={24} weight='med' color="black">{renderInfo().title}</Text>
                 <Text className="mb2" size={14} weight='reg' color="gray-3" >{renderInfo().text}</Text>
-                <Button onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="small">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
+                <Button className='px3' onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="large">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
             </div> 
             { createModalOpen && renderInfo().modal }
         </>
