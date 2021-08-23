@@ -46,8 +46,8 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
             <div className='flex flex-column justify-center items-center center my3'>
                 <img className={"mb2" + (props.contentType === 'live' ? ' ml3' : '')} src={renderInfo().img} />
                 <Text className="mb2" size={24} weight='med' color="black">{renderInfo().title}</Text>
-                <Text className="mb2" size={14} weight='reg' color="gray-3" >{renderInfo().text}</Text>
-                <Button className='px3' onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="large">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
+                <Text className="mb2" size={16} weight='reg' color="gray-3" >{renderInfo().text}</Text>
+                <Button style={{width: 110}} className='px3' onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="large">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
             </div> 
             { createModalOpen && renderInfo().modal }
         </>
