@@ -58,7 +58,7 @@ This project uses Storybook. You can write new stories in /stories. To launch st
 
 Whenever you want to use data coming from an endpoint the following needs to be done:
 
-Add the endpoint itself in the DacastSdk/sdk file like this 
+Add the endpoint itself in the DacastSdk/sdk file like this
 
 ```
 public getAccounts = async (input: string): Promise<GetAccountsListOutput> => await this.axiosClient.get('/accounts?' + input).then(this.checkExtraData)
@@ -71,17 +71,23 @@ Then use the applyViewModel function in the proper actions.ts file (the one matc
 export const getAccountsAction = applyAdminViewModel(dacastSdk.getAccounts, formatGetAccountsInput, formatGetAccountsOutput, ActionTypes.GET_ACCOUNTS, null,  'User\'s plan couldn\'t be retrieved')
 ```
 
-the 2 formatting functions are under the viewModel file. 
-The formatInput one is to format the data to match the backend types. 
+the 2 formatting functions are under the viewModel file.
+The formatInput one is to format the data to match the backend types.
 The formatOuput one is to format the endpoint data to the types you decided in the frontend (in the types.ts file)
 
-Once this is done add the formatted data to the reducer and you can access it from your page component 
+Once this is done add the formatted data to the reducer and you can access it from your page component
 
+## Adding icons
+
+- Save the icon to `public/assets/icons/icon_name.svg`
+- Edit the file and remove the top `<svg>` tag `width="xx"` and `height="xx"` attributes and add `id="icon"` and `fill="currentColor"`
+- It should look like this: `<svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">`
+- Use `<Icon>icon_name</icon>` (component) or `<IconStyle>icon_name</IconStyle>` wrapper (preferred)
 
 ## External docs
 
 https://basscss.com/
 
-https://material-ui.com/components/material-icons/
+https://fonts.google.com/icons
 
 https://www.styled-components.com/docs
