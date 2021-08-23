@@ -61,7 +61,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                                 id={props.id + '_' + item.title}
                                 isSelected={selectedItem === item.title}
                                 onClick={() => handleClick(item)}>
-                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><Icon fontSize="inherit">check</Icon></div>}
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><IconStyle fontSize="inherit" coloricon="inherit">check</IconStyle></div>}
                             </DropdownItem>
                         </Link>
                         :
@@ -73,7 +73,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
                             isSelected={selectedItem === item.title}
                             onClick={() => handleClick(item)}>
                             <DropdownItemTitleContainer>
-                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><Icon fontSize="inherit">check</Icon></div>}
+                                <DropdownItemText size={14} weight='reg' color={selectedItem === item.title ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText> {selectedItem === item.title && <div><IconStyle fontSize="inherit" coloricon="inherit">check</IconStyle></div>}
                             </DropdownItemTitleContainer>
 
                             {

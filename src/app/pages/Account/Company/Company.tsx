@@ -37,7 +37,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     let history = useHistory();
 
     useKeyboardSubmit( () => handleSubmit(onSubmit) )
-    
+
     let {CompanyPageDetails} = props;
 
     const [uploadedFileUrl, setUploadedFileUrl] = React.useState<string>(props.CompanyPageDetails.logoURL);
@@ -66,7 +66,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     const countryDropdownList = Object.keys(countries).map((item) => {
         let countryItem: DropdownSingleListItem = {
-            title: countries[item].name, 
+            title: countries[item].name,
             data: {code: item}
         }
         return countryItem
@@ -84,7 +84,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
 
     /**  Drag and drop or browse file LOGO SECTION AND FUNCTIN COMMENTED OUT FOR V2 */
 
-    const onSubmit = (data: CompanyPageInfos) => { 
+    const onSubmit = (data: CompanyPageInfos) => {
         setSubmitLoading(true)
         props.saveCompanyPageDetails(selectedCountry ? {...data, country: selectedCountry} : data).then(() => {
             setSubmitLoading(false)
@@ -92,7 +92,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             reset(data)
         }).catch(() => setSubmitLoading(false))
     }
-    
+
     const handleDrop = (file: FileList) => {
         const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg'];
         if(file.length > 0 && acceptedImageTypes.includes(file[0].type)) {
@@ -120,7 +120,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             setErrorMessage('File provided was not an image, please retry')
         }
     }
-    
+
     const handleBrowse = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if(e.target.files && e.target.files.length > 0) {
@@ -135,7 +135,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     }
 
     const handleUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();     
+        e.preventDefault();
     }
 
     React.useEffect(() => {
@@ -169,7 +169,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
         .then(() => setChangeOwnerButtonLoading(false))
         .catch(() => setChangeOwnerButtonLoading(false))
     }
-    
+
     return (
         <CompanyPageContainer>
             <Card className='clearfix p2'>
@@ -177,11 +177,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                 <div className="m1"><Text size={14} weight='reg'>This logo will display on your invoices.</Text></div>
                 <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
-                        { uploadedFileUrl ? 
+                        { uploadedFileUrl ?
                         <>
                             <div className="flex flex-column">
                                 {props.CompanyPageDetails.isUploading && <SpinnerContainer style={{zIndex: 1000}}>
-                                    <LoadingSpinner className='mx-auto' color='violet' size='small' /> 
+                                    <LoadingSpinner className='mx-auto' color='violet' size='small' />
                                 </SpinnerContainer>}
                                 <div style={{width:'100%'}} className=''>
                                     <input type='file' ref={changeCompanyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
@@ -200,12 +200,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
                         <ButtonStyle className='my1'>
                             <input type='file' ref={companyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
-                            <Button onClick={() => {companyLogoBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
+                            <Button onClick={() => {companyLogoBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>
                                 Browse File
                             </Button>
                         </ButtonStyle>
                         </>
-                        } 
+                        }
                     </DragAndDrop>
                 </div>
 
@@ -227,30 +227,30 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 flex p1 clearfix">
                             <AccountIdText className='flex-auto pl1' size={14} weight="reg">{userToken.getUserInfoItem('salesforce-group-id')}</AccountIdText>
-                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(userToken.getUserInfoItem('salesforce-group-id'), 'Account ID copied to clipboard')}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyEmbedTooltip" onClick={() => updateClipboard(userToken.getUserInfoItem('salesforce-group-id'), 'Account ID copied to clipboard')}>file_copy</IconStyle>
                             <Tooltip target="copyEmbedTooltip">Copy to clipboard</Tooltip>
                         </AccountIdContainer>
                     </div>
                     <div className="md-col md-col-12 clearfix">
-                        <Input 
-                            disabled={false} 
+                        <Input
+                            disabled={false}
                             defaultValue={CompanyPageDetails.accountName}
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="accountName" 
-                            label="Contact Name" 
+                            type="text"
+                            className="md-col md-col-6 p1"
+                            id="accountName"
+                            label="Contact Name"
                             placeholder="Account Name"
                             {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
                             onChange={(event) => {setEdited(true); setValue('accountName', event.currentTarget.value)}}
                             help="The name of the primary contact for the account"
                         />
-                        <Input 
+                        <Input
                             disabled={false}
-                            defaultValue={CompanyPageDetails.companyName} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="companyName" 
-                            label="Company Name" 
+                            defaultValue={CompanyPageDetails.companyName}
+                            type="text"
+                            className="md-col md-col-6 p1"
+                            id="companyName"
+                            label="Company Name"
                             placeholder="Company Name"
                             {...handleValidationForm('companyName', errors)}
                             onChange={(event) => {setEdited(true); setValue('companyName', event.currentTarget.value)}}
@@ -259,24 +259,24 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         />
                     </div>
                     <div className="md-col md-col-12" >
-                        <Input 
-                            disabled={false} 
+                        <Input
+                            disabled={false}
                             defaultValue={CompanyPageDetails.contactNumber}
-                            type="tel" 
-                            className="md-col md-col-6 p1" 
-                            id="contactNumber" 
-                            label="Phone Number" 
-                            placeholder="(00) 0000 0000 00" 
+                            type="tel"
+                            className="md-col md-col-6 p1"
+                            id="contactNumber"
+                            label="Phone Number"
+                            placeholder="(00) 0000 0000 00"
                             {...handleValidationForm('contactNumber', errors, 'tel', register)}
                             onChange={(event) => {setEdited(true); setValue('contactNumber', event.currentTarget.value)}}
                         />
-                        <Input 
-                            disabled={false} 
+                        <Input
+                            disabled={false}
                             defaultValue={CompanyPageDetails.companyEmail}
-                            type="email" 
-                            className="md-col md-col-6 p1" 
-                            id="companyEmail" 
-                            label="Email Address" 
+                            type="email"
+                            className="md-col md-col-6 p1"
+                            id="companyEmail"
+                            label="Email Address"
                             placeholder="Email Address"
                             {...handleValidationForm('companyEmail', errors, 'email', register)}
                             onChange={(event) => {setEdited(true); setValue('companyEmail', event.currentTarget.value)}}
@@ -285,23 +285,23 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                     </div>
 
                     <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="md-col md-col-6 p1"
                             id="companyWebsite"
-                            label="Company Website" 
+                            label="Company Website"
                             placeholder="Company Website"
                             {...handleValidationForm('companyWebsite', errors, 'url', register)}
                             onChange={(event) => {setEdited(true); setValue('companyWebsite', event.currentTarget.value)}}
 
                         />
-                        <Input 
-                            disabled={false} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="vatNumber" 
-                            label="VAT Number" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="md-col md-col-6 p1"
+                            id="vatNumber"
+                            label="VAT Number"
                             placeholder="VAT Number"
                             indicationLabel='Optional'
                             name="vatNumber" ref={register()}
@@ -321,7 +321,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                 <div className="col col-12">
                                     <Text size={14} weight='reg'>Only the current Account Owner can change this so if you make someone else the Account Owner, only they can transfer it back to you.</Text>
                                 </div>
-                                <DropdownSingle 
+                                <DropdownSingle
                                     id="accountOwnerDropdown"
                                     className="col col-6 my2"
                                     dropdownTitle=""
@@ -340,81 +340,81 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         <Text color='gray-4' size={12} weight='reg'>Optional</Text>
                     </div>
                     <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="addressLine1" 
-                            label="Address line 1" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="md-col md-col-6 p1"
+                            id="addressLine1"
+                            label="Address line 1"
                             placeholder="Address line 1"
                             name="addressLine1" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('addressLine1', event.currentTarget.value)}}
                         />
 
-                        <Input  
-                            disabled={false} 
-                            type="text" 
-                            className="md-col md-col-6 p1" 
-                            id="addressLine2" 
-                            label="Address line 2" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="md-col md-col-6 p1"
+                            id="addressLine2"
+                            label="Address line 2"
                             placeholder="Address line 2"
-                            name="addressLine2" ref={register()} 
+                            name="addressLine2" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('addressLine2', event.currentTarget.value)}}
 
                         />
                     </div>
                     <div className="md-col md-col-12">
-                        <Input 
-                            disabled={false} 
-                            type="text" 
-                            className="sm-col md-col-3 sm-col-6 p1" 
-                            id="state" 
-                            label="State/Province" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="sm-col md-col-3 sm-col-6 p1"
+                            id="state"
+                            label="State/Province"
                             placeholder="State/Province"
                             name="state" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('state', event.currentTarget.value)}}
                             />
 
-                        <Input 
-                            disabled={false} 
-                            type="text" 
-                            className="sm-col md-col-3 sm-col-6 p1" 
-                            id="town" 
-                            label="Town/City" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="sm-col md-col-3 sm-col-6 p1"
+                            id="town"
+                            label="Town/City"
                             placeholder="Town/City"
                             name="town" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('town', event.currentTarget.value)}}
                             />
 
-                        <Input  
-                            disabled={false} 
-                            type="text" 
-                            className="sm-col md-col-3 sm-col-6 p1" 
-                            id="zipCode" 
-                            label="Zip/Postal Code" 
+                        <Input
+                            disabled={false}
+                            type="text"
+                            className="sm-col md-col-3 sm-col-6 p1"
+                            id="zipCode"
+                            label="Zip/Postal Code"
                             placeholder="Zip/Postal Code"
                             name="zipCode" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('zipCode', event.currentTarget.value)}}
                             />
                         {/* <input type="hidden" name="country" id='country' ref={register()} /> */}
-                        <DropdownSingle hasSearch 
+                        <DropdownSingle hasSearch
                             direction='up'
                             callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.data.code)}}
-                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country] ? countries[props.CompanyPageDetails.country].name : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
-                            id='countryDropdown' dropdownTitle='Country' 
+                            dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country] ? countries[props.CompanyPageDetails.country].name : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1"
+                            id='countryDropdown' dropdownTitle='Country'
                             list={countryDropdownList} />
                     </div>
                 </form>
-            </Card>            
-            { 
+            </Card>
+            {
                 edited &&
-                    <ButtonsArea> 
+                    <ButtonsArea>
                         <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
-                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
+                        <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue'
                             onClick={() => {reset(props.CompanyPageDetails, {errors: true});setEdited(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonsArea>
-            }     
-            <Prompt when={edited} message='' />     
+            }
+            <Prompt when={edited} message='' />
         </CompanyPageContainer>
     )
 }

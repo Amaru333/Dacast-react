@@ -33,7 +33,7 @@ const defaultPreset: Preset = {
 }
 
 export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; toggle: (b: boolean) => void; preset: Preset}) => {
-    
+
     const [presetsList, setPresetsList] = React.useState<Preset>(props.preset ? {...props.preset, settings: {...props.preset.settings, timezone: null}} : defaultPreset)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
@@ -54,15 +54,15 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
 
     const renderPrices = () => {
         return presetsList.prices.map((price, key) => {
-            return( 
+            return(
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
-                        <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
+                        <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} />
                         <DropdownSingle hasSearch className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList }  />
 
                         {
-                            key === presetsList.prices.length - 1 ? 
-                                <div onClick={() => setPresetsList({...presetsList, prices: [...presetsList.prices, {value: NaN, currency: 'USD'}]})} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex items-center xs-justify-center ' + (key === 0 ? 'mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show ' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div> 
+                            key === presetsList.prices.length - 1 ?
+                                <div onClick={() => setPresetsList({...presetsList, prices: [...presetsList.prices, {value: NaN, currency: 'USD'}]})} className={'pointer sm-ml2 col col-2 sm-col-6 px1 flex items-center xs-justify-center ' + (key === 0 ? 'mt3' : '')}><IconStyle style={{borderRadius: 4, backgroundColor:'#284CEB'}}coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show ' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
                                 : <div className={'pointer col col-2 sm-col-6 sm-ml2 px1 flex items-center xs-justify-center ' + (key === 0 ? 'mt3' : '')} ><IconStyle onClick={() => { var newList= presetsList.prices.filter((item, index) => {return index !== key}); setPresetsList({...presetsList, prices: newList})}} >close</IconStyle></div>
                         }
                     </div>
@@ -86,13 +86,13 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
         <div>
             <div className='col col-12 clearfix'>
                 <Input className={ ClassHalfXsFullMd+'pr1 mb2'} label='Preset Name' defaultValue={presetsList.name} onChange={(event) => setPresetsList({...presetsList, name: event.currentTarget.value})} />
-                <DropdownSingle 
-                    id='pricePresetTypeDropdown' 
-                    className={ClassHalfXsFullMd+'pl1 mb2'} 
-                    dropdownTitle='Preset Type' 
+                <DropdownSingle
+                    id='pricePresetTypeDropdown'
+                    className={ClassHalfXsFullMd+'pl1 mb2'}
+                    dropdownTitle='Preset Type'
                     dropdownDefaultSelect={presetsList.priceType}
-                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
-                    list={presetTypeDropdownList} 
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})}
+                    list={presetTypeDropdownList}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -101,11 +101,11 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             <div className='col col-12 sm-col-6 mb2 flex'>
                 {
                     presetsList.priceType === 'Subscription' ?
-                        <DropdownSingle id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={presetsList.settings.recurrence ? presetsList.settings.recurrence.unit : 'Weekly'} 
-                            dropdownTitle='Recurrence' 
+                        <DropdownSingle id='pricePresetRecurrenceDropdown'
+                            dropdownDefaultSelect={presetsList.settings.recurrence ? presetsList.settings.recurrence.unit : 'Weekly'}
+                            dropdownTitle='Recurrence'
                             callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{...presetsList.settings, recurrence: {unit: item.title}}})}
-                            list={recurrenceDropdownList} 
+                            list={recurrenceDropdownList}
                         />
                         :
                         <>

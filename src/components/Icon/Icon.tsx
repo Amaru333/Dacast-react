@@ -12,7 +12,7 @@ const iconPaths = (ctx => {
 export const Icon = (props: IconProps) => {
     const { children, ...other } = props
     return children && iconPaths[children]
-        ? <IconStyle {...other} dangerouslySetInnerHTML={{__html: `<use xlink:href="${iconPaths[children]}#icon"/>`}}></IconStyle>
+        ? <IconStyle data-icon-name={children} {...other} dangerouslySetInnerHTML={{__html: `<use xlink:href="${iconPaths[children]}#icon"/>`}}></IconStyle>
         : null
 }
 

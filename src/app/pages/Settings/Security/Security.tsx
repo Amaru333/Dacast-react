@@ -49,14 +49,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         setSubmitLoading(true);
         props.saveSettingsSecurityOptions(
             {
-                ...securityDetails, 
-                passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null}, 
+                ...securityDetails,
+                passwordProtection: togglePasswordProtectedVideo ? securityDetails.passwordProtection : {password: null},
                 contentScheduling: {
-                    startTime: startTime, 
+                    startTime: startTime,
                     startTimezone: startTimezone,
                     endTime: endTime,
                     endTimezone: endTimezone
-                } 
+                }
             }).then(() => {
                 setSubmitLoading(false);
                 setDisplayformActionButtons(false);
@@ -108,7 +108,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 return {
                     data: [
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
-                        value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
+                        value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>check</IconStyle> : <></>,
                         <IconContainer className="iconAction" key={key.toString() + value.name}>
                             { value.id !== '-1' &&
                                 <>
@@ -119,7 +119,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     <ActionIcon>
                                         <IconStyle id={"geoRestrictionEdit" + key} onClick={(event) => { event.preventDefault(); setSelectedItem(value.id); setGeoRestrictionModalOpened(true) }}>edit</IconStyle>
                                         <Tooltip target={"geoRestrictionEdit" + key}>Edit</Tooltip>
-                                    </ActionIcon>  
+                                    </ActionIcon>
                                 </>
                             }
 
@@ -136,7 +136,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                 return {
                     data: [
                         <Text key={key.toString() + value.name} size={14} weight="reg" color="gray-1">{value.name}</Text>,
-                        value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>checked</IconStyle> : <></>,
+                        value.isDefault ? <IconStyle coloricon='green' key={key.toString() + value.name}>check</IconStyle> : <></>,
                         <IconContainer className="iconAction" key={key.toString() + value.name}>
 
                                 {
@@ -152,14 +152,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                         </ActionIcon>
                                     </>
                                 }
-                               
+
                         </IconContainer>
                     ]
                 }
             })
         }
     }
-    
+
     return (
         <div>
             <Bubble type='info' className='my2'>
@@ -182,7 +182,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     placeholder='Password'
                                     value={securityDetails.passwordProtection.password}
                                     onChange={(event) =>{ handlePasswordChange(event)}}
-                                
+
                                 />
                             </div>
                         }
@@ -193,7 +193,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                         <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
                         <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
                                 <div className='col col-12 mb2 flex items-end'>
-                                    <DateTimePicker 
+                                    <DateTimePicker
                                         dropdownTitle="Available"
                                         id="dateStart"
                                         hideOption="Always"
@@ -204,7 +204,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     />
                                 </div>
                                 <div className='col col-12 mb2 flex items-end'>
-                                    <DateTimePicker 
+                                    <DateTimePicker
                                         dropdownTitle="Until"
                                         id="dateEnd"
                                         minDate={startTime ? startTime : undefined}

@@ -2,7 +2,14 @@ import styled, { css } from 'styled-components';
 import { Icon } from '../../components/Icon/Icon';
 import { ColorsApp } from '../../styled/types';
 
-export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean; customsize?: number}>`
+export const IconFontSizes = {
+    small: '',
+    default: '',
+    large: '2.25rem',
+    inherit: '1em'
+}
+
+export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean; customsize?: number; fontSize?: string}>`
     color: ${props => props.coloricon ? props.theme.colors[props.coloricon] : props.theme.colors['gray-1']};
     ${props => props.disabled && css`
         cursor: not-allowed;
@@ -10,6 +17,10 @@ export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean
     ${props => props.customsize && css `
         width: ${props.customsize}px !important;
         height: ${props.customsize}px !important;
+    `}
+    ${props => props.fontSize && css `
+        width: ${IconFontSizes[props.fontSize] || props.fontSize} !important;
+        height: ${IconFontSizes[props.fontSize] || props.fontSize} !important;
     `}
 `
 export const IconContainer = styled.div`
