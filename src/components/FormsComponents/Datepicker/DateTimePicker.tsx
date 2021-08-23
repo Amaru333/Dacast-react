@@ -46,7 +46,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
 
     return (
         <div className="flex flex-wrap items-end col col-12 mxn1">
-            {props.dropShowing && <DropdownSingle disabled={props.disabled} className={props.displayTimezoneFirst ? 'col col-12 px1 sm-col-6' : colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />}
+            {props.dropShowing && <DropdownSingle disabled={props.disabled} className={props.displayTimezoneFirst ? 'col col-12 pl1 sm-col-6' : colClass} id={'dropdown' + props.id} dropdownTitle={props.dropdownTitle} dropdownDefaultSelect={method} list={list} callback={(item: DropdownSingleListItem) => { setMethod(item.title) }} />}
             { (method === "Set Date and Time" || !props.dropShowing) &&
                 <>
                     {
@@ -55,7 +55,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                             hasSearch
                             id={'timezoneDropdown' + props.id}
                             dropdownDefaultSelect={props.timezone}
-                            className={props.fullLineTz ? 'col col-12 px1 sm-col-6' : colClass}
+                            className={props.fullLineTz ? 'col col-12 pl2 sm-col-6' : colClass}
                             dropdownTitle='Timezone'
                             callback={(item: DropdownSingleListItem) => setTimezone(item.title.split(' ')[0])}
                             list={timezoneDropdownList}
@@ -64,7 +64,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                         />
 
                     }
-                    <div className={props.displayTimezoneFirst ? 'col col-6 px1 mt2' : colClass}>
+                    <div className={props.displayTimezoneFirst ? 'col col-6 mt2 pl1' : colClass}>
                         {props.displayTimezoneFirst && <Text style={{lineHeight:'10px'}} size={14} weight='med'>Start Date</Text>}
                         <DateSinglePickerWrapper
                             minDate={new Date(props.minDate)}
@@ -79,7 +79,7 @@ export const DateTimePicker = (props: DateTimePickerProps) => {
                         type='time'
                         value={time}
                         onChange={(event) => setTime(event.currentTarget.value)}
-                        className={(props.displayTimezoneFirst ? 'col col-6 px1 pt2 sm-col-4' : colClass) }
+                        className={(props.displayTimezoneFirst ? 'col col-6 pl2 pt2 sm-col-4' : colClass) }
                         disabled={false}
                         id={'input' + props.id}
                     />

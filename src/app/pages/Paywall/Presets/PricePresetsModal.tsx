@@ -57,8 +57,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             return( 
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
-                        <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
-                        <DropdownSingle hasSearch className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})} />
+                        <Input type='number' className={"col sm-col-2 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
+                        <DropdownSingle hasSearch className={'col sm-col-4 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})} />
 
                         {
                             key === presetsList.prices.length - 1 ? 
@@ -109,8 +109,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                         />
                         :
                         <>
-                            <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: item.title}}})} dropdownTitle='' list={durationDropdownList} />
+                            <Input className='col col-6 sm-col-4 pr1' label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 sm-col-8 px1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: item.title}}})} dropdownTitle='' list={durationDropdownList} />
                         </>
                 }
 
