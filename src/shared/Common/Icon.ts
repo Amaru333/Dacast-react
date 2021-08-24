@@ -24,12 +24,9 @@ export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean
     `}
 `
 export const IconContainer = styled.div`
-    float:right;
+    float: right;
     width: max-content;
-    display:block;
-    .material-icons{
-        margin-right:16px;
-    }
+    display: block;
 `
 export const IconGreyActionsContainer = styled.div<{isFocus?: boolean}>`
     justify-content: center;
