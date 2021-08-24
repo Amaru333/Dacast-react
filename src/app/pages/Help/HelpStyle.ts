@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Card } from '../../../components/Card/Card';
-import { Icon } from '../../../components/Icon/Icon';
+import { IconStyle } from '../../../shared/Common/Icon';
 
 export const SmallHelpCard = styled(Card)`
 height: 168px;
@@ -10,7 +10,6 @@ padding: 16px;
 export const HelpCardHeader = styled.div`
 display: flex;
 `
-
 
 export const LargeHelpCard = styled(Card)`
     position: relative;
@@ -39,7 +38,6 @@ export const ButtonContainer = styled.div`
     bottom: 24px;
 `
 
-
-export const HelpPageIcon = styled(Icon)`
-filter: invert(33%) sepia(98%) saturate(7488%) hue-rotate(235deg) brightness(99%) contrast(86%);
+export const HelpPageIcon = styled(IconStyle)`
+    color: ${props => props.theme.colors["dark-violet"]};
 `

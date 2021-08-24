@@ -243,7 +243,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             <React.Fragment>
                 <div className="unsavedChangesContainer">
                     <div className="unsavedChangesTitle">
-                        <Icon className="material-icons-outlined" fontSize="large" style={{ color: "red" }}>report_problem</Icon>
+                        <Icon style={{ color: 'red', width: '2.25rem', height: '2.25rem' }}>report_problem_outlined</Icon>
                         <span className="unsavedChangesText-Header">Unsaved Changes</span>
                     </div>
                     <div className="unsavedChangesBody">
