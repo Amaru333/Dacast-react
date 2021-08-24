@@ -132,6 +132,7 @@ export interface GetAccountPlanOutput {
     playlists: PlanSettingEndpoint;
     analytics: PlanSettingEndpoint;
     aes: PlanSettingEndpoint;
+    aesBeta: PlanSettingEndpoint;
     signedKeys: PlanSettingEndpoint;
     api: PlanSettingEndpoint;
     apiBeta: PlanSettingEndpoint;

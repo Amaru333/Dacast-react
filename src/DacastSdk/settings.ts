@@ -135,11 +135,13 @@ export interface GetSecuritySettingsOutput {
     contentScheduling: ContentScheduling | null;
     geoRestriction: GeoRestrictionEndpoint[] | null;
     domainControl: DomainControlEndpoint[] | null;
+    useAES: boolean;
 }
 
 export interface PutSecuritySettingsInput {
     passwordProtection: PasswordProtection;
     contentScheduling: ContentScheduling;
+    useAES: boolean;
 }
 
 export interface ThemeSettings {

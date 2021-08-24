@@ -27,6 +27,7 @@ export interface PlanInfo {
     playlists: PlanSetting;
     analytics: PlanSetting;
     aes: PlanSetting;
+    aesBeta: PlanSetting;
     signedKeys: PlanSetting;
     api: PlanSetting;
     apiBeta: PlanSetting;

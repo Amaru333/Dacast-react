@@ -20,6 +20,7 @@ export const formatGetAccountPlanOutput = (data: GetAccountPlanOutput): PlanInfo
         playlists: data.playlists,
         analytics: data.analytics,
         aes: data.aes,
+        aesBeta: data.aesBeta,
         signedKeys: data.signedKeys,
         api: data.api,
         apiBeta: data.apiBeta,
