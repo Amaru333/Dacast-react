@@ -20,13 +20,13 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
     const renderInfo = () => {
         switch(props.contentType) {
             case 'vod':
-                return {img: VodImage, title: 'Upload your first Video!', text: 'Start uploading and managing your videos.'}
+                return {img: VodImage, title: 'Upload your first Video!', text: <>Start uploading and managing your videos.</>}
             case 'expo':
-                return {img: ExpoImage, title: 'Create your first Expo!', text: 'The immersive video gallery allows you to organize videos and share a collection of videos with your audience.', modal: <AddExpoModal opened={createModalOpen} toggle={setCreateModalOpen} />}
+                return {img: ExpoImage, title: 'Create your first Expo!', text: <>The immersive video gallery allows you to organize videos and share a<br/> collection of videos with your audience.</>, modal: <AddExpoModal opened={createModalOpen} toggle={setCreateModalOpen} />}
             case 'live':
-                return {img: LiveImage, title: 'Create your first Live Stream!', text: 'Start streaming and connect with your audience live.', modal: <AddStreamModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
+                return {img: LiveImage, title: 'Create your first Live Stream!', text: <>Start streaming and connect with your audience live.</>, modal: <AddStreamModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
             case 'playlist':
-                return {img: PlaylistImage, title: 'Create your first Playlist!', text: 'Select from your uploaded videos. Share with your audience.', modal: <AddPlaylistModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
+                return {img: PlaylistImage, title: 'Create your first Playlist!', text: <>Select from your uploaded videos. Share with your audience.</>, modal: <AddPlaylistModal opened={createModalOpen} toggle={() => setCreateModalOpen(!createModalOpen)} />}
             default:
                 return null
         }
