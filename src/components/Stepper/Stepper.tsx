@@ -1,13 +1,11 @@
 import React from 'react';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
 import { Text } from "../Typography/Text";
 import { StepperProps } from './StepperTypes';
-import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperStyle, StepperNextButton } from './StepperStyles';
+import { StepperContainerStyle, StepperContentStyle, StepperFooterStyle, StepperHeaderStyle, StepperNextButton } from './StepperStyles';
 import { Button } from '../FormsComponents/Button/Button';
 import { OverlayStyle } from '../Modal/ModalStyle';
 import {isMobile} from "react-device-detect";
+import { StepperProgress } from './StepperProgress';
 
 export const useStepperFinalStepAction = (buttonId: string, callback: Function) => {
     const finalStepAction = () => {if(document.getElementById(buttonId).innerText !== 'Next') {
@@ -69,17 +67,9 @@ export const CustomStepper = <ExtraProps extends {}>(props: StepperProps & Extra
                 <StepperHeaderStyle>
                     <Text size={24} weight="med">{props.stepperHeader}</Text>
                 </StepperHeaderStyle>
-                <StepperStyle isMobile={isMobile}>
-                    <Stepper activeStep={stepIndex} alternativeLabel>
-                        {props.stepList.map((step) => {
-                            return (
-                                <Step key={step.title}>
-                                    <StepLabel>{step.title}</StepLabel>
-                                </Step>
-                            );
-                        })}
-                    </Stepper>
-                </StepperStyle>
+                <div className="mb25 mt25">
+                    <StepperProgress  stepList={props.stepList} currentStep={stepIndex} />
+                </div>
                 <StepperContentStyle isMobile={isMobile}> 
                     {renderStepperContent(stepIndex, props.stepperData, props.updateStepperData, props.finalFunction)}
                 </StepperContentStyle>
