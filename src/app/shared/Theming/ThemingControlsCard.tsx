@@ -303,7 +303,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <div className='flex justify-between'>
                                         <Text size={14} weight='med'>Overlay Color</Text>
                                         <div>
-                                            <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
+                                            <IconStyle id="overlayColorTooltip">info_outlined</IconStyle>
                                             <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary colour of the player</Tooltip>
                                         </div>
                                     </div>
@@ -313,7 +313,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <div className='flex justify-between'>
                                         <Text size={14} weight='med'>Menu Color</Text>
                                         <div>
-                                            <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
+                                            <IconStyle id="menuColorTooltip">info_outlined</IconStyle>
                                             <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary colour of the player</Tooltip>
                                         </div>
                                     </div>

@@ -15,27 +15,27 @@ export const PlanDetailsCard = (props: PlanDetailsCardProps) => {
             {
                 props.type === 'vod' &&
                 <div className="mb1 flex">
-                    <IconStyle className="mr2" fontSize="default" coloricon="green">check</IconStyle>
+                    <IconStyle className="mr2" coloricon="green">check</IconStyle>
                     <Text size={16}>100 Playbacks per Day</Text>
                 </div>
             }
             <div className="mb1 flex">
-                <IconStyle className="mr2" fontSize="default" coloricon="green">check</IconStyle>
+                <IconStyle className="mr2" coloricon="green">check</IconStyle>
                 <Text size={16}>10 GB of Data</Text>
             </div>
             <div className="mb1 flex">
-                <IconStyle className="mr2" fontSize="default" coloricon="green">check</IconStyle>
+                <IconStyle className="mr2" coloricon="green">check</IconStyle>
                 <Text size={16}>2 GB of Storage</Text>
             </div>
             {
                 props.type === 'regular' &&
                 <>
                     <div className="mb1 flex">
-                        <IconStyle className="mr2" fontSize="default" coloricon="green">check</IconStyle>
+                        <IconStyle className="mr2" coloricon="green">check</IconStyle>
                         <Text size={16}>1 Live Stream Channel</Text>
                     </div>
                     <div className="flex">
-                        <IconStyle className="mr2" fontSize="default" coloricon="green">check</IconStyle>
+                        <IconStyle className="mr2" coloricon="green">check</IconStyle>
                         <Text size={16}>100 Playbacks per Day</Text>
                     </div>
                 </>

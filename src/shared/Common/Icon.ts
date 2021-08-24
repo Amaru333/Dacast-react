@@ -3,8 +3,7 @@ import { Icon } from '../../components/Icon/Icon';
 import { ColorsApp } from '../../styled/types';
 
 export const IconFontSizes = {
-    small: '',
-    default: '',
+    small: '1.25rem',
     large: '2.25rem',
     inherit: '1em'
 }
