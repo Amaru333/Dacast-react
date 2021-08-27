@@ -107,7 +107,8 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
             { from: './public/iframe', to: './public/iframe' },
+            { from: "./public/locales", to: "locales" },
         ], { copyUnmodified: true }
-        )
+        ),
     ]
 }
