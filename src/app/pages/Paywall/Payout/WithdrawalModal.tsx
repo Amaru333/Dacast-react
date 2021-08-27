@@ -91,7 +91,7 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                     <TextContainer className='col col-6 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days**'}</Text></TextContainer>
                 </div>
             </div>
-            <Text className='col col-12 pb1' size={12} weight='reg' color='gray-3'>*PayPal may charge a fee for transfers to non-US PayPal accounts</Text>
+            {props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType === PaymentMethodType.PayPal && <Text className='col col-12 pb1' size={12} weight='reg' color='gray-3'>*PayPal may charge a fee for transfers to non-US PayPal accounts</Text>}
             <Text size={12} weight='reg' color='gray-3'>**Your first payment request will be delayed at least 35 days</Text>
             <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
             <div className='flex col col-12 my2'>
