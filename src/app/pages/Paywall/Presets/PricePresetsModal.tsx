@@ -26,7 +26,7 @@ const defaultPreset: Preset = {
     settings: {
         duration: {value: NaN, unit: 'Hours'},
         recurrence: null,
-        startMethod: 'Upon Purchase',
+        startMethod: 'Available on Purchase',
         timezone: null,
         startDate: 0,
     }
@@ -57,8 +57,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
             return( 
                 <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center '+(key === presetsList.prices.length - 1 ? '' : 'mb2' )}>
                     <div className='col col-12 sm-col-12 clearfix flex'>
-                        <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
-                        <DropdownSingle hasSearch className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList }  />
+                        <Input type='number' className={"col sm-col-2 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'amount')} label={key === 0 ? 'Price' : ''} /> 
+                        <DropdownSingle hasSearch className={'col sm-col-4 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})} />
 
                         {
                             key === presetsList.prices.length - 1 ? 
@@ -91,7 +91,7 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     className={ClassHalfXsFullMd+'pl1 mb2'} 
                     dropdownTitle='Preset Type' 
                     dropdownDefaultSelect={presetsList.priceType}
-                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
+                    callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, priceType: item.title, settings:{...presetsList.settings, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : presetsList.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null}})} 
                     list={presetTypeDropdownList} 
                 />
             </div>
@@ -109,8 +109,8 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                         />
                         :
                         <>
-                            <Input className='col col-6 pr2'  label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
-                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 pr1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: item.title}}})} dropdownTitle='' list={durationDropdownList} />
+                            <Input className='col col-6 sm-col-4 pr1' label='Duration' defaultValue={presetsList.settings.duration.value ? presetsList.settings.duration.value.toString() : ''} onChange={(event) => setPresetsList({...presetsList, settings: {...presetsList.settings, duration: {...presetsList.settings.duration, value: parseInt(event.currentTarget.value)}}})} />
+                            <DropdownSingle id='pricePresetDurationDropdown' className='col col-6 sm-col-8 px1 mt-auto' dropdownDefaultSelect={presetsList.settings.duration.unit} callback={(item: DropdownSingleListItem) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, duration: {...presetsList.settings.duration, unit: item.title}}})} dropdownTitle='' list={durationDropdownList} />
                         </>
                 }
 
@@ -120,13 +120,14 @@ export const PricePresetsModal = (props: {action: (p: Preset) => Promise<void>; 
                     isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
-                    defaultTs={presetsList.settings.startMethod === 'Upon Purchase' ? 0 : presetsList.settings.startDate}
+                    defaultTs={presetsList.settings.startMethod === 'Available on Purchase' ? 0 : presetsList.settings.startDate}
                     timezone={presetsList.settings.timezone}
-                    callback={(ts: number, timezone: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
-                    hideOption="Upon Purchase"
+                    callback={(ts: number, timezone: string) => setPresetsList({...presetsList, settings:{ ...presetsList.settings, startMethod: ts === 0 ? 'Available on Purchase' : "Set Date & Time", startDate: ts,  timezone: timezone}}) }
+                    hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle="Content Scheduling"
                     disabled={presetsList.priceType === 'Subscription'}
+                    displayTimezoneFirst
                 />
             </div>
             <div className='col col-12 mt3'>

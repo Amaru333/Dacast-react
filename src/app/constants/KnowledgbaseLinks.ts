@@ -19,15 +19,15 @@ export const getKnowledgebaseLink = (name: string) => {
         case 'Data':
             return "https://www.dacast.com/support/knowledgebase/" //TBC
         case 'Group Price':
-            return "https://www.dacast.com/support/knowledgebase/" //TBC
+            return "https://www.dacast.com/support/knowledgebase/monetize-video-how-to-create-a-price-and-promo-code-on-dacast/#anchor_3"
         case 'Group Promo':
-            return "https://www.dacast.com/support/knowledgebase/" //TBC
+            return "https://www.dacast.com/support/knowledgebase/monetize-video-how-to-create-a-price-and-promo-code-on-dacast/#anchor_4"
         case 'Price Preset':
-            return "https://www.dacast.com/support/knowledgebase/" //TBC
+            return "https://www.dacast.com/support/knowledgebase/monetize-video-how-to-create-a-price-and-promo-code-on-dacast/#anchor_1"
         case 'Promo Preset':
-            return "https://www.dacast.com/support/knowledgebase/" //TBC
-        case 'Paywall':
-            return "https://www.dacast.com/support/knowledgebase/video-monetization-how-to-use-dacast-paywall/"
+            return "https://www.dacast.com/support/knowledgebase/monetize-video-how-to-create-a-price-and-promo-code-on-dacast/#anchor_2"
+        case 'PaywallTheme':
+            return "https://www.dacast.com/support/knowledgebase/monetize-video-how-to-create-a-price-and-promo-code-on-dacast/#anchor_5"
         case 'Encoding Recipes':
             return "https://www.dacast.com/support/knowledgebase/vod-renditions-bitrates/"
         case 'Ads':

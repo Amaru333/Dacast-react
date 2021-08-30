@@ -36,15 +36,15 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
     const handleMinRequest = (): {minRequest: string, fees: string, nbDays: number} => {
         switch(props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType) {
             case PaymentMethodType.BankAccountUS:
-                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 10}
-            case PaymentMethodType.BankAccountInternational:
-                return {minRequest: '$1,000 USD', fees: '$50 USD', nbDays: 15}
-            case PaymentMethodType.Check:
-                return {minRequest: '$250 USD', fees: 'Free', nbDays: 10}
-            case PaymentMethodType.PayPal:
                 return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
+            case PaymentMethodType.BankAccountInternational:
+                return {minRequest: '$250 USD', fees: '$10 USD', nbDays: 15}
+            case PaymentMethodType.Check:
+                return {minRequest: '$100 USD', fees: '$10 USD', nbDays: 10}
+            case PaymentMethodType.PayPal:
+                return {minRequest: '$100 USD', fees: 'Free*', nbDays: 10}
             default:
-                return {minRequest: '$1,000 USD', fees: '$25 USD', nbDays: 10}
+                return {minRequest: '$100 USD', fees: 'Free', nbDays: 10}
         }
     }
 
@@ -88,11 +88,11 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                 </div>
                 <div className='col col-12 sm-col-7 pr1 mb2'>
                     <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
-                    <TextContainer className='col col-6 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days*'}</Text></TextContainer>
+                    <TextContainer className='col col-6 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days**'}</Text></TextContainer>
                 </div>
             </div>
-
-            <Text size={12} weight='reg' color='gray-3'>*Your first payment request will be delayed at least 35 days</Text>
+            {props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType === PaymentMethodType.PayPal && <Text className='col col-12 pb1' size={12} weight='reg' color='gray-3'>*PayPal may charge a fee for transfers to non-US PayPal accounts</Text>}
+            <Text size={12} weight='reg' color='gray-3'>**Your first payment request will be delayed at least 35 days</Text>
             <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
             <div className='flex col col-12 my2'>
                 <Button disabled={!withdrawalRequest.amount || props.balance < withdrawalRequest.amount} isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>

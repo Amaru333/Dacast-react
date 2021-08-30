@@ -63,7 +63,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
                         unit: capitalizeFirstLetter(price.settings.duration.unit) + 's'
                     }
                     : null,
-                    startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
+                    startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Set Date & Time' : 'Available on Purchase',
                     recurrence: price.settings.recurrence ? {
                         unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                         : price.settings.recurrence.value > 4 ? 'Biannual'
@@ -84,7 +84,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
 
 export const formatPostContentPriceInput = (data: {price: Preset; id: string; contentType: ContentType}): PostContentPriceInput => {
     const userId = userToken.getUserInfoItem('user-id')
-    const dateAvailable = data.price.settings.startMethod === "Upon Purchase" ? "immediately" : new Date(data.price.settings.startDate * 1000).toLocaleString()
+    const dateAvailable = data.price.settings.startMethod === "Available on Purchase" ? "immediately" : new Date(data.price.settings.startDate * 1000).toLocaleString()
 
     let parsedPrice: PostContentPriceInput = null
     if(data.price.priceType === 'Subscription') {
@@ -99,7 +99,7 @@ export const formatPostContentPriceInput = (data: {price: Preset; id: string; co
             }
         }
     } else {
-        if(data.price.settings.startMethod === 'Upon Purchase') {
+        if(data.price.settings.startMethod === 'Available on Purchase') {
             parsedPrice = {
                 contentId: `${userId}-${data.contentType}-${data.id}`,
                 prices: data.price.prices.map((p) => {return {...p, description: `Access starts ${dateAvailable}`}}),
@@ -157,7 +157,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
             }
         }
     } else {
-        if(data.price.settings.startMethod === 'Upon Purchase') {
+        if(data.price.settings.startMethod === 'Available on Purchase') {
             parsedPrice = {
                 id: data.price.id,
                 contentId: `${userId}-${data.contentType}-${data.contentId}`,

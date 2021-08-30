@@ -1,6 +1,7 @@
 import { DropdownSingleListItem } from '../components/FormsComponents/Dropdown/DropdownTypes'
 import { CURRENCY } from '../app/constants/Currencies';
 import timezones from 'compact-timezone-list';
+import { handleCurrencySymbol } from './utils';
 
 export const timezoneDropdownList = timezones.map((item: { offset: string, label: string, tzCode: string }) => {
     let timezoneDropdownItem: DropdownSingleListItem = {title: null}
@@ -8,10 +9,11 @@ export const timezoneDropdownList = timezones.map((item: { offset: string, label
     return timezoneDropdownItem
 })
 
-export const currencyDropdownList = CURRENCY.map((item: string) => {
-    let currencyDropdownItem: DropdownSingleListItem = {title: null}
-    currencyDropdownItem.title = item
-    return currencyDropdownItem
+export const currencyDropdownList = CURRENCY.map((item): DropdownSingleListItem => {
+    return {
+        title: item.code,
+        description: item.description + ' - ' + handleCurrencySymbol(item.code)
+    }
 })
 
 //PRICE PRESETS
@@ -21,7 +23,7 @@ export const recurrenceDropdownList = [{title: "Weekly"}, {title: "Monthly"}, {t
 
 export const durationDropdownList = [{title: "Hours"}, {title: "Days"}, {title: "Weeks"}, {title: "Months"}]
 
-export const startMethodDropdownList = [{title: "Upon Purchase"}, {title: "Schedule"}]
+export const startMethodDropdownList = [{title: "Available on Purchase"}, {title: "Set Date & Time"}]
 
 //PROMO
 export const availableStartDropdownList = [{title: "Always"}, {title: "Set Date and Time"}]

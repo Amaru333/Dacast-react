@@ -14,6 +14,8 @@ import { exportCSVFile } from '../../../../utils/services/csv/csvService';
 import { formatGetPaywallTransactionsCsvInput } from '../../../redux-flow/store/Paywall/Transactions/viewModel';
 import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { CURRENCY } from '../../../constants/Currencies';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -138,7 +140,10 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <Text key={'transactionsTableBodyContentName' + i} size={14} weight='reg'>{transaction.contentName}</Text>,
                     <Text key={'transactionsTableBodyDate' + i} size={14} weight='reg'>{transaction.date}</Text>,
                     <Text key={'transactionsTableBodyPurchaser' + i} size={14} weight='reg'>{transaction.purchaser}</Text>,
-                    <Text key={'transactionsTableBodyViewerCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>,
+                    <td className='relative' key={'transactionsTableBodyViewerCurrency' + i}>
+                        <Text id={'transactionTableCurrency' + i} size={14} weight='reg'>{transaction.currency}</Text>
+                        <Tooltip target={"transactionTableCurrency" + i}>{CURRENCY.find(c => c.code ===transaction.currency).description}</Tooltip>
+                    </td>,
                     <Text key={'transactionsTableBodyPrice' + i} size={14} weight='reg'>{handleCurrencySymbol(transaction.currency) + transaction.price}</Text>,
                     transaction.credit ? <Label label={transaction.credit.toLocaleString()} color='green' backgroundColor='green20' /> : <span></span>,
                     transaction.debit ? <Label label={transaction.debit.toLocaleString()} color='red' backgroundColor='red20' /> : <span></span>,

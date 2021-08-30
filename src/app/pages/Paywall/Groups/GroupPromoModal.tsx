@@ -64,7 +64,7 @@ export const GroupPromoModal = (props: { action: (p: GroupPromo) => Promise<void
         <div>
             <div className="'col col-12 mb2 clearfix">
                 {/* <Input className={ ClassHalfXsFullMd + 'pr2 xs-mb2'} value={groupPromo.name} label='Preset name' onChange={(event) => setGroupPromo({...groupPromo, name: event.currentTarget.value})} /> */}
-                <Input className={ClassHalfXsFullMd + ''} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." onChange={(event) => setGroupPromo({ ...groupPromo, alphanumericCode: event.currentTarget.value })} />
+                <Input className={ClassHalfXsFullMd + ''} disabled={props.groupPromo ? true : false} value={groupPromo.alphanumericCode} label='Alphanumeric Code' tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." onChange={(event) => setGroupPromo({ ...groupPromo, alphanumericCode: event.currentTarget.value })} />
             </div>
             <div className='col col-12 clearfix mb2'>
                 <DropdownSingle

@@ -28,7 +28,7 @@ const defaultPreset: Preset = {
     settings: {
         duration: { value: NaN, unit: 'Hours' },
         recurrence: null,
-        startMethod: 'Upon Purchase',
+        startMethod: 'Available on Purchase',
         timezone: null,
         startDate: 0,
     }
@@ -64,8 +64,8 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 return (
                     <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center ' + (key === newPricePreset.prices.length - 1 ? '' : 'mb2')}>
                         <div className='col sm-col-12 col-12 clearfix flex'>
-                            <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
-                            <DropdownSingle hasSearch className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList}  />
+                            <Input type='number' className={"col sm-col-2 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
+                            <DropdownSingle hasSearch className={'col sm-col-4 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})} />
                             {
                                 key === newPricePreset.prices.length - 1 ?
                                     <div onClick={() => setNewPricePreset({ ...newPricePreset, prices: [...newPricePreset.prices, { value: 0, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex items-center xs-justify-center sm-ml2 ' + (key === 0 ? 'mt3 ' : '')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
@@ -79,8 +79,8 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
             return (
                 <div key='pricePresetPriceSection' className='col col-12 flex items-center mb2'>
                     <div className='col sm-col-12 col-12 clearfix flex'>
-                        <Input className="col sm-col-3 col-5 pr1" value={newPricePreset.price.toString()} onChange={(event) => setNewPricePreset({...newPricePreset, price: parseInt(event.currentTarget.value)})} label='Price' />
-                        <DropdownSingle hasSearch className='col sm-col-3 col-5 pl1 mt-auto' callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, currency: item.title})} id='pricePresetCurrencyDropdown' dropdownTitle='' dropdownDefaultSelect={newPricePreset.currency} list={currencyDropdownList} />
+                        <Input className="col sm-col-2 col-5 pr1" value={newPricePreset.price.toString()} onChange={(event) => setNewPricePreset({...newPricePreset, price: parseInt(event.currentTarget.value)})} label='Price' />
+                        <DropdownSingle hasSearch className='col sm-col-4 col-5 pl1 mt-auto' callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, currency: item.title})} id='pricePresetCurrencyDropdown' dropdownTitle='' dropdownDefaultSelect={newPricePreset.currency} list={currencyDropdownList} />
                     </div>
                 </div>
             )
@@ -115,7 +115,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 <PresetSelectRow className='col col-12 mb2'>
                     <DropdownSingle
                         id='pricePresetSelectDropdown'
-                        className='col col-6'
+                        className='col col-6 pr1'
                         dropdownTitle='Preset'
                         dropdownDefaultSelect='Custom Price'
                         list={props.presetList ? presetDropdownList : []}
@@ -135,11 +135,11 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
 
                 <DropdownSingle
                     id='pricePresetTypeDropdown'
-                    className={'col col-12 sm-col-6 mb2 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
+                    className={'col col-12 sm-col-6 mb2 pr1 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
                     dropdownTitle='Preset Type'
                     dropdownDefaultSelect={newPricePreset.priceType}
                     list={presetTypeDropdownList}
-                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -159,14 +159,14 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                         :
                         <>
                             <Input
-                                className='col col-6 pr1'
+                                className='col col-6 sm-col-4 pr1'
                                 label='Duration'
                                 defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''} 
                                 onChange={(event) => setNewPricePreset({ ...newPricePreset, settings:{ ...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, value: parseInt(event.currentTarget.value) }} })}
                             />
                             <DropdownSingle
                                 id='pricePresetDurationDropdown' 
-                                className='col col-6 pl1 mt-auto' 
+                                className='col col-6 sm-col-8 px1 mt-auto' 
                                 dropdownDefaultSelect={newPricePreset.settings.duration.unit} 
                                 callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: item.title }}})} 
                                 dropdownTitle=''
@@ -181,13 +181,14 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     isConvertedToUtc
                     fullLineTz
                     showTimezone={true}
-                    defaultTs={newPricePreset.settings.startMethod === 'Upon Purchase' ? 0 : newPricePreset.settings.startDate}
+                    defaultTs={newPricePreset.settings.startMethod === 'Available on Purchase' ? 0 : newPricePreset.settings.startDate}
                     timezone={newPricePreset.settings.timezone}
-                    callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
-                    hideOption="Upon Purchase"
+                    callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Available on Purchase' : "Set Date & Time", startDate: ts,  timezone: timezone}}) }
+                    hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle="Content Scheduling"
                     disabled={newPricePreset.priceType === 'Subscription'}
+                    displayTimezoneFirst
                 />
             </div>
             <div className='col col-12 mt3'>

@@ -95,7 +95,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                             }
                             : null,
                             type: price.settings.recurrence ? 'Subscription' : 'Pay Per View',
-                            startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
+                            startMethod: price.settings.startDate > Math.round(Date.now() / 1000) ? 'Set Date & Time' : 'Available on Purchase',
                             recurrence: price.settings.recurrence ? {
                                 unit: price.settings.recurrence.unit === 'week' ? 'Weekly'
                                 : price.settings.recurrence.value > 4 ? 'Biannual'
@@ -114,7 +114,7 @@ export const formatGetPriceGroupOuput = (data: GetPricePackageOutput): GroupPric
                     }
                     : null,
                     type: item.prices[0].settings.recurrence ? 'Subscription' : 'Pay Per View',
-                    startMethod: item.prices[0].settings.startDate > Math.round(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
+                    startMethod: item.prices[0].settings.startDate > Math.round(Date.now() / 1000) ? 'Set Date & Time' : 'Available on Purchase',
                     recurrence: item.prices[0].settings.recurrence ? {
                         unit: item.prices[0].settings.recurrence.unit === 'week' ? 'Weekly'
                         : item.prices[0].settings.recurrence.value > 4 ? 'Biannual'
@@ -149,7 +149,7 @@ export const formatPostPriceGroupInput = (data: GroupPrice): PostPricePackageInp
 
         }
     } else {
-        if(data.groupSettings.startMethod === 'Upon Purchase') {
+        if(data.groupSettings.startMethod === 'Available on Purchase') {
             formattedPrice = {
                 name: data.name,
                 prices: data.prices.map((p) => {let price = p.price; return {...price, description: 'price'}}),
@@ -208,7 +208,7 @@ export const formatPutPriceGroupInput = (data: GroupPrice): PutPricePackageInput
 
         }
     } else {
-        if(data.groupSettings.startMethod === 'Upon Purchase') {
+        if(data.groupSettings.startMethod === 'Available on Purchase') {
             formattedPrice = {
                 id: data.id,
                 name: data.name,

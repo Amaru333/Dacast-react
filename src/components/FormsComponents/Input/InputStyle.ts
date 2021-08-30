@@ -113,6 +113,7 @@ export const InputStyle = styled.input<InputProps>`
     font-size: 14px;
     line-height: 24px;
     color: ${props => props.theme.colors["gray-1"]};
+    min-width: 1px;
     ${props => props.isError && css`
         border-bottom: 2px solid ${props => props.theme.colors["red"]};
         background: ${props => props.theme.colors["red10"]};
@@ -120,6 +121,7 @@ export const InputStyle = styled.input<InputProps>`
     ${props => props.disabled && css`
         background: ${props => props.theme.colors["gray-8"]};
         color: ${props => props.theme.colors["gray-5"]};
+        cursor: not-allowed;
     `}
     ::placeholder{
         font-family: Roboto;

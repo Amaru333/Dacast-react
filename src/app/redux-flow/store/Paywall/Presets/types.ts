@@ -35,6 +35,7 @@ export interface Preset {
     price?: number;
     currency?: string;
     description?: string;
+    isDeleted?: boolean
 }
 
 export interface Promo {
@@ -49,6 +50,7 @@ export interface Promo {
     discountApplied: string;
     assignedContentIds: string[];
     assignedGroupIds: string[];
+    isDeleted?: boolean
 }
 
 export interface PresetsPageInfos {
