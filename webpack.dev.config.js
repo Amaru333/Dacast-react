@@ -107,6 +107,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
             { from: './public/iframe', to: './public/iframe' },
+            { from: './public/ApplePay', to: './public/.well-known'}
         ], { copyUnmodified: true }
         )
     ]
