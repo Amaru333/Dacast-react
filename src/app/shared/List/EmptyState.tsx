@@ -51,7 +51,7 @@ export const ContentEmptyState = (props: {contentType: ContentType}) => {
     return (
         <>
             <div className='flex flex-column justify-center items-center center my3'>
-                <img style={{marginLeft: (props.contentType === 'playlist' || props.contentType === 'live') && 92}} className="mb4" src={renderInfo().img} />
+                <img style={{marginLeft: (props.contentType === 'playlist' || props.contentType === 'live') && (smallScreen ? '1.5rem' : 92)}} className="mb4" src={renderInfo().img} />
                 <Text className="mb2" size={24} weight='med' color="black">{renderInfo().title}</Text>
                 <Text className="mb2" size={16} weight='reg' color="gray-3" >{renderInfo().text}</Text>
                 <Button style={{width: 110}} className='px3' onClick={() => handleActionButtonClick()} typeButton="primary" sizeButton="large">{props.contentType === 'vod' ? 'Upload' : 'Create'}</Button>
