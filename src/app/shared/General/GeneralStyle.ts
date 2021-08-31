@@ -23,11 +23,11 @@ export const LinkBoxLabel = styled.label`
     align-items: center;
 `
 
-export const LinkBox = styled.div<{backgroundColour?: string}>`
+export const LinkBox = styled.div<{backgroundColor?: string}>`
 display: flex;
 height: 40px;
 padding: 0 12px;
-background-color: ${props => props.backgroundColour ? props.backgroundColour : props.theme.colors["gray-10"]};
+background-color: ${props => props.backgroundColor ? props.backgroundColor : props.theme.colors["gray-10"]};
 border: 1px solid ${props => props.theme.colors["gray-7"]};
 align-items: center;
 justify-content: space-between;
@@ -49,14 +49,14 @@ display: flex;
 `
 
 export const ImageContainer = styled.div`
-    flex-grow: 1;  
+    flex-grow: 1;
 `
 
 export const ImageArea = styled.div`
 height: 176px;
 border: 1px dashed ${props => props.theme.colors["gray-7"]};
 display: flex;
-flex-direction: column;  
+flex-direction: column;
 padding-bottom: 41px;
 box-sizing: border-box;
 `
@@ -83,7 +83,7 @@ width: 160px;
 
 export const ButtonContainer = styled.div`
 margin-top: 24px;
-` 
+`
 
 export const ExpandableContainer = styled.div<{ isExpanded: boolean }>`
    display: ${props => props.isExpanded ? "block" : "none"};

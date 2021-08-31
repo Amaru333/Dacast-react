@@ -145,7 +145,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Button Colour</Text>
+                                <Text size={14} weight='med'>Button Color</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -161,7 +161,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text className="mt2" size={14} weight='med'>Button Text Colour</Text>
+                                <Text className="mt2" size={14} weight='med'>Button Text Color</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -181,7 +181,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         <Text className="mt2" size={14} weight='reg'>The Login Screen is shown before the user is allowed to purchase the content.</Text>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Button Colour</Text>
+                                <Text size={14} weight='med'>Button Color</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -199,7 +199,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Primary Colour</Text></ColorPickerLabel>
+                                <Text size={14} weight='med'>Primary Color</Text></ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
                                 defaultColor={selectedTheme.loginScreen.primaryColor}
@@ -216,7 +216,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Header Colour</Text>
+                                <Text size={14} weight='med'>Header Color</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
