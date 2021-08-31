@@ -43,7 +43,7 @@ export function readableBytes(size: number): string {
         return "0";
     }
     var i = Math.floor(Math.log(size) / Math.log(1000));
-    return (size / Math.pow(1000, i) * 1 ).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    return (size / Math.pow(1000, i)).toFixed(2) + ' ' + ['B', 'kB', 'MB', 'GB', 'TB', 'PB'][i];
 }
 
 
