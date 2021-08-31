@@ -19,6 +19,7 @@ import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from 
 import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedModal';
 import EventHooker from '../../../utils/services/event/eventHooker';
 import { userToken } from '../../utils/services/token/tokenService';
+import { useTranslation } from 'react-i18next';
 
 export interface DashboardProps {
     infos: DashboardInfos;
@@ -32,7 +33,7 @@ export interface DashboardProps {
 }
 
 const DashboardTest = (props: DashboardProps) => {
-
+    const { ready } = useTranslation('dashboard', { useSuspense: false });
     React.useEffect(() => {
         props.getDashboardGeneralDetails()
         props.getDashboardLive()
@@ -76,7 +77,7 @@ const DashboardTest = (props: DashboardProps) => {
 
     const renderDashboard = () => {
 
-        if (props.infos.currentPlan && props.infos.currentPlan.displayName !== '30 Day Trial') {
+        if (ready && props.infos.currentPlan && props.infos.currentPlan.displayName !== '30 Day Trial') {
             return (
                 <React.Fragment>
                     <LiveDashboard profile={props.infos.live} />
@@ -105,7 +106,7 @@ const DashboardTest = (props: DashboardProps) => {
             )
         }
 
-        if (props.infos.currentPlan && props.infos.currentPlan.displayName === '30 Day Trial') {
+        if (ready && props.infos.currentPlan && props.infos.currentPlan.displayName === '30 Day Trial') {
             return (
                 <>
                     <TrialAdditionalDashboard />

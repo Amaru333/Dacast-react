@@ -19,12 +19,13 @@ i18n
     backend: {
         loadPath: () => {
             const host = window.location.host;
-            return (host === 'production.ltd' ? '/static/app':'') + '/locales/{{lng}}/{{ns}}.json';
+            return (host === 'production.ltd' ? '/static/app':'/public') + '/locales/{{lng}}/{{ns}}.json';
           },
         },
     lng: "fr",
     fallbackLng: "en",
     load: "languageOnly",
+    defaultNS:['dashboard'],
     debug: true,
     react: {
         wait: true,

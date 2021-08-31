@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
-    const { t, i18n } = useTranslation();
+    const { t, ready } = useTranslation('dashboard', { useSuspense: false });
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
@@ -137,6 +137,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         return null
     }
 
+    if(!ready) {return null}
+
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
@@ -151,7 +153,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             <div className={classContainer}>
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
-                        <Text size={16} weight="med" color="gray-3">{t('Data_Remaining')}</Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard:dashboard_data_remaning_widget_title')}</Text>
                         {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
