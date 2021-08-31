@@ -90,6 +90,7 @@ export interface ProfileDetails {
     phoneNumber: string;
     timezone: string;
     videoUpload: boolean;
+    language: string | null;
 }
 
 export interface PutProfileDetailsInput {

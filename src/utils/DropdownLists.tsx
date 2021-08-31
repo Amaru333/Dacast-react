@@ -34,3 +34,5 @@ export const discountAppliedDropdownList = [{title: "Once"}, {title: "Forever"}]
 export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
 
 export const adPlacementDropdownList = [{title: "Pre-roll"}, {title: "Mid-roll"}, {title: "Post-roll"}]
+
+export const languageDropdownList = [{title: 'English', data: {id: 'en'}}, {title: 'French', data: {id: 'fr'}}]

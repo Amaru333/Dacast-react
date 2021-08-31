@@ -178,9 +178,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_storage_remaining_widget_title')}</Text>
                         <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
-                        <Tooltip target="storageTooltip">Storage consumed include both source file size and sizes of renditions</Tooltip>
+                        <Tooltip target="storageTooltip">{t('dashboard_storage_remaining_widget_description')}</Tooltip>
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>

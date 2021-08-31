@@ -16,10 +16,10 @@ import { Bubble } from '../../../../components/Bubble/Bubble';
 import { IconStyle } from '../../../../shared/Common/Icon';
 import { ProfileComponentProps } from '../../../containers/Account/Profile';
 import { Divider } from '../../../../shared/MiscStyles';
-import { timezoneDropdownList } from '../../../../utils/DropdownLists'
+import { languageDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists'
 import  EventHooker from '../../../../utils/services/event/eventHooker'
 import { guessTimezone } from '../../../../utils/services/date/dateService';
-
+import { useTranslation } from 'react-i18next';
 
 export const ProfilePage = (props: ProfileComponentProps) => {
 
@@ -30,7 +30,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const [newPasswordVisible, setNewPasswordVisible] = React.useState<boolean>(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState<boolean>(false)
     const [changePasswordButtonLoading, SetChangePasswordButtonLoading] = React.useState<boolean>(false)
-
+    const { i18n } = useTranslation('dashboard')
     /** Validation */
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
         reValidateMode: 'onChange',
@@ -142,6 +142,15 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             id='dropdownTimezone'
                             callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
                             list={timezoneDropdownList}
+                        />
+                        <DropdownSingle
+                            className="md-col md-col-6 p1"
+                            hasSearch
+                            dropdownTitle='Language'
+                            dropdownDefaultSelect={props.ProfilePageDetails.language ? props.ProfilePageDetails.language : 'English'}
+                            id='dropdownLanguage'
+                            callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.title) }}
+                            list={languageDropdownList}
                         />
                     </div>
                     <Divider className="p1 mx1" />

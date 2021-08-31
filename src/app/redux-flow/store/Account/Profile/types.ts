@@ -15,6 +15,7 @@ export interface ProfilePageInfos {
     marketing: boolean;
     lowData: boolean;
     videoUpload: boolean;
+    language: string;
 }
 
 export const profileInitialState = {
