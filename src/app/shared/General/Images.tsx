@@ -10,14 +10,14 @@ import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
 
 interface GeneralImagesProps {
-    contentType: ContentType, 
-    localContentDetails: ContentDetails, 
-    contentDetails: ContentDetails, 
-    setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, 
-    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, 
-    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>, 
-    setImageModalTitle: React.Dispatch<React.SetStateAction<string>>, 
-    setSelectedImageName: React.Dispatch<React.SetStateAction<string>>, 
+    contentType: ContentType,
+    localContentDetails: ContentDetails,
+    contentDetails: ContentDetails,
+    setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>,
+    setHasChanged: React.Dispatch<React.SetStateAction<boolean>>,
+    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>,
+    setImageModalTitle: React.Dispatch<React.SetStateAction<string>>,
+    setSelectedImageName: React.Dispatch<React.SetStateAction<string>>,
     setImageModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 
 }
@@ -43,7 +43,7 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                             <div className="mxn2">
                                 <div className='mb1 col col-6 sm-col-3 px2'>
                                     <ColorPickerLabel>
-                                        <Text size={14} weight='med'>Header Colour</Text>
+                                        <Text size={14} weight='med'>Header Color</Text>
                                     </ColorPickerLabel>
                                     <ColorPicker
                                         defaultColor={props.localContentDetails.appearance && props.localContentDetails.appearance.headerColor ? props.localContentDetails.appearance.headerColor : 'white'}
@@ -52,7 +52,7 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                                 </div>
                                 <div className='mb1 col col-6 sm-col-3 px2'>
                                     <ColorPickerLabel>
-                                        <Text size={14} weight='med'>Font Colour</Text>
+                                        <Text size={14} weight='med'>Font Color</Text>
                                     </ColorPickerLabel>
                                     <ColorPicker
                                         defaultColor={props.localContentDetails.appearance && props.localContentDetails.appearance.fontColor ? props.localContentDetails.appearance.fontColor : 'white'}
@@ -88,7 +88,7 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                             </div>
                             <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
                         </ImageContainer>
-                    </> 
+                    </>
                     :
                     <>
                         <div className="thumbnail col col-12">
