@@ -126,7 +126,7 @@ export const formatPostLiveBrandImageUrlInput = (contentId: string): PostUploadU
     let formattedData: PostUploadUrlInput = {
         uploadType: 'player-watermark',
         uploadRequestBody: {
-            channelID: contentId
+            liveID: contentId
         }
     }
     return formattedData

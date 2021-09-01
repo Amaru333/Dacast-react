@@ -6,7 +6,7 @@ export interface PostEncoderKeyOutput {
 }
 
 export interface GetLiveBrandImageUrl {
-    channelID: string
+    liveID: string
 }
 
 export interface GetLiveDetailsOutput {
