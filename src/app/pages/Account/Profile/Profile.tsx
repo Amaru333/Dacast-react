@@ -143,11 +143,12 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
                             list={timezoneDropdownList}
                         />
+                        <input type="hidden" name="language" ref={register()} />
                         <DropdownSingle
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Language'
-                            dropdownDefaultSelect={props.ProfilePageDetails.language ? props.ProfilePageDetails.language : 'English'}
+                            dropdownDefaultSelect={props.ProfilePageDetails.language ? props.ProfilePageDetails.language : languageDropdownList.find( l => l.data.id === i18n.language).title}
                             id='dropdownLanguage'
                             callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.title) }}
                             list={languageDropdownList}

@@ -25,7 +25,8 @@ i18n
     lng: "fr",
     fallbackLng: "en",
     load: "languageOnly",
-    defaultNS:['dashboard'],
+    ns: ['dashboard', 'common'],
+    defaultNS:['dashboard', 'common'],
     debug: true,
     react: {
         wait: true,

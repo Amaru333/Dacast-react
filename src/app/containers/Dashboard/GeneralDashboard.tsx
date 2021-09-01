@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 
 export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
-    const { t, ready } = useTranslation('dashboard', { useSuspense: false });
+    const { t, ready } = useTranslation(['dashboard', 'common'], { useSuspense: false });
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
@@ -145,7 +145,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 {
                     !props.isPlanPage &&
                         <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb2 inline-block"}>
-                            Dashboard
+                            {t('common:common_navigation_bar_menu_item_dashboard')}
                         </Text>
                 }
                 {handleBillingPeriod()}
@@ -178,9 +178,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
-                        <Text size={16} weight="med" color="gray-3">{t('dashboard_storage_remaining_widget_title')}</Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard:dashboard_storage_remaining_widget_title')}</Text>
                         <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
-                        <Tooltip target="storageTooltip">{t('dashboard_storage_remaining_widget_description')}</Tooltip>
+                        <Tooltip target="storageTooltip">{t('dashboard:dashboard_storage_remaining_widget_description')}</Tooltip>
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>

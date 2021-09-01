@@ -127,7 +127,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams',
-        name: 'Live Streams',
+        name: 'common_navigation_bar_menu_item_live_streams',
         isExact: true,
         associatePrivilege: ['privilege-live'],
         iconName: 'videocam',
@@ -189,7 +189,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos',
-        name: 'Videos',
+        name: 'common_navigation_bar_menu_item_videos',
         isExact: true,
         associatePrivilege: ['privilege-vod'],
         iconName: 'play_arrow',
@@ -296,14 +296,14 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/folders',
-        name: 'Folders',
+        name: 'common_navigation_bar_menu_item_folders',
         iconName: 'folder_open',
         associatePrivilege: ['privilege-folders'],
         component: Folders
     },
     {
         path: '/expos',
-        name: 'Expos',
+        name: 'common_navigation_bar_menu_item_expos',
         isExact: true,
         iconName: 'desktop_mac',
         associatePrivilege: ['privilege-expo'],
@@ -311,7 +311,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/playlists',
-        name: 'Playlists',
+        name: 'common_navigation_bar_menu_item_playlists',
         isExact: true,
         iconName: 'playlist_play',
         associatePrivilege: ['privilege-playlists'],
@@ -364,7 +364,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/analytics',
-        name: 'Analytics',
+        name: 'common_navigation_bar_menu_item_analytics',
         iconName: 'bar_chart',
         associatePrivilege: ['privilege-analytics'],
         slug: [
@@ -408,7 +408,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/paywall',
-        name: 'Paywall',
+        name: 'common_navigation_bar_menu_item_paywall',
         iconName: 'attach_money',
         associatePrivilege: ['privilege-paywall'],
         isExact: true,
@@ -458,7 +458,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/settings',
-        name: 'Settings',
+        name: 'common_navigation_bar_menu_item_settings',
         iconName: 'settings',
         component: null,
         associatePrivilege: ['privilege-account-settings'],
@@ -499,7 +499,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/account',
-        name: 'Account',
+        name: 'common_navigation_bar_menu_item_account',
         iconName: 'person',
         component: null,
         slug: [
@@ -571,7 +571,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/',
-        name: 'Dashboard',
+        name: 'common_navigation_bar_menu_item_dashboard',
         iconName: 'dashboard',
         component: DashboardTest,
     },

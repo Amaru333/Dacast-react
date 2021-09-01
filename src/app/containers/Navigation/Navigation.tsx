@@ -31,6 +31,7 @@ import { PlanSummaryWithAdditionalSeats } from "../../pages/Account/Users/Users"
 import { dacastSdk } from "../../utils/services/axios/axiosClient";
 import { PaymentFailedModal } from "../../shared/Billing/PaymentFailedModal";
 import { PaymentSuccessModal } from "../../shared/Billing/PaymentSuccessModal";
+import { useTranslation } from "react-i18next";
 
 const ElementMenu: React.FC<ElementMenuProps> = (props: ElementMenuProps) => {
 
@@ -90,6 +91,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
+    const { t } = useTranslation('common')
 
     const purchaseAddOns = () => {
         setIsLoading(true)
@@ -239,7 +241,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     }
 
     const renderMenu = () => {
-        const sortedRoutes = [props.routes.find(({ name }) => name === 'Dashboard')].concat(props.routes.filter(({ name }) => name !== 'Dashboard'))
+        const sortedRoutes = [props.routes.find(({ name }) => name === 'common_navigation_bar_menu_item_dashboard')].concat(props.routes.filter(({ name }) => name !== 'common_navigation_bar_menu_item_dashboard'))
         return sortedRoutes.map((element, i) => {
             if(!element.notDisplayedInNavigation) {
                 const isLocked = element.slug && !element.slug.filter(item => !item.associatePrivilege || item.associatePrivilege.some(p => userToken.getPrivilege(p))).length
@@ -247,7 +249,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     return  <BreakStyle key={'breakSection'+i} />
                 }
                 else if(element.path === 'title') {
-                    return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{element.name}</SectionTitle> : null
+                    return props.isOpen ? <SectionTitle key={'SectionTitle'+i} size={14} weight="med" color="gray-3">{t(element.name)}</SectionTitle> : null
                 }
                 else if(element.slug && element.slug.filter(item => !item.associatePrivilege || item.associatePrivilege.some(p => userToken.getPrivilege(p))).length) {
                     return (
@@ -263,7 +265,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                 icon={element.iconName!}
                                 arrowIcon={selectedElement === element.path && !toggleSubMenu ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
                             >
-                                {element.name}
+                                {t(element.name)}
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
@@ -299,7 +301,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     return (
                         <Link to={element.path} onClick={() => {handleMenuItemClick(element.path, '')}} key={'MenuElement'+i} >
                             <ElementMenu hasSlugs={false} isMobile={props.isMobile}  isOpen={props.isOpen} active={selectedElement === element.path} icon={element.iconName!} isLocked={isLocked}>
-                                {element.name}
+                                {t(element.name)}
                             </ElementMenu>
                         </Link>
                     )
@@ -315,7 +317,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                     <ImageStyle onClick={() => history.push('/')} className="mx-auto block pointer" src={!props.isOpen && !props.isMobile ? logoSmall : logo} />
                     <BreakStyle />
                     <div>
-                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary" disabled={profileDataisFetching}>{props.isOpen ? "Add ": ""}+{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
+                        <ButtonMenuStyle className="mx-auto" sizeButton="large" onClick={() => setAddDropdownIsOpened(!addDropdownIsOpened)} menuOpen={props.isOpen} typeButton="primary" disabled={profileDataisFetching}>{props.isOpen ? t('common_navigation_bar_add_button_text'): ""}{ buttonLoading && <LoadingSpinner className="ml1" color='white' size={'xs'} />}</ButtonMenuStyle>
                         <DropdownList isSingle isInModal={false} isNavigation={false} displayDropdown={addDropdownIsOpened} ref={addDropdownListRef} hasSearch={true}>
                             {renderAddList()}
                         </DropdownList>
