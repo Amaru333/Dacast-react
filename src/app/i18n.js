@@ -22,7 +22,7 @@ i18n
             return (host === 'production.ltd' ? '/static/app':'/public') + '/locales/{{lng}}/{{ns}}.json';
           },
         },
-    lng: "fr",
+    lng: "en",
     fallbackLng: "en",
     load: "languageOnly",
     ns: ['dashboard', 'common'],
