@@ -171,7 +171,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         }
                     }} />,
                 <Text size={14} weight="reg">{value.name}</Text>,
-                <Text size={14} weight="reg">{value.width}</Text>,
+                <Text size={14} weight="reg">{value.height}</Text>,
                 <Text size={14} weight="reg">{value.size ? (value.size / 1000000).toFixed(1) : null}</Text>,
                 <Text size={14} weight="reg">{value.bitrate ? (value.bitrate / 1000000).toFixed(1) : null}</Text>,
                 (!value.transcodingJobID || !value.size || !value.bitrate || !value.height) ? 

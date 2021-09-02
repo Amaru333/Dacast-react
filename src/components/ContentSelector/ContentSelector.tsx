@@ -118,7 +118,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
         if (checkedFolders.length < 1) return;
         const wait = async () => {
             await props.getFolderContent("status=online,offline,processing&page=1&per-page=100&content-types=channel,vod&folders=" + checkedFolders[0].id, (data) => {
-                setSelectedItems(data.data.results ? data.data.results : []);
+                setSelectedItems(data.results);
                 setSelectedFolderId(checkedFolders[0].id)
             })
         }
@@ -264,7 +264,7 @@ export const ContentSelector = (props: ContentSelectorComponentProps & React.HTM
                     }
 
                     {handleRowIconType(element)}
-                    <ListContentTitle className='pl2' size={14} weight='reg'>{element.title ? element.title : element.name}</ListContentTitle>
+                    <ListContentTitle className='pl2' size={14} weight='reg'>{element.title}</ListContentTitle>
                     {
                         sortSettings.value === "custom" &&
                         <div className="iconAction flex-auto justify-end">

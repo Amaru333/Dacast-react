@@ -11,7 +11,8 @@ import { GroupStepperData } from './Groups';
 import { ArrowButton } from '../../../shared/Common/MiscStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { handleRowIconType } from '../../../shared/Analytics/AnalyticsCommun';
-import { axiosClient } from '../../../utils/services/axios/axiosClient';
+import { dacastSdk } from '../../../utils/services/axios/axiosClient';
+import { formatGetFolderContentOutput } from '../../../redux-flow/store/Folders/viewModel';
 
 export const GroupContentStep = (props: { stepperData: GroupStepperData; updateStepperData: React.Dispatch<React.SetStateAction<GroupStepperData>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
@@ -32,27 +33,21 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     const fetchFolderData = async (tempArray: FolderAsset[]) => {
 
         for(let page = 1; page <= 3; page++) {
-            const DEFAULT_QS = `?status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
+            const DEFAULT_QS = `status=online&page=${page}&per-page=200&content-types=channel,vod,folder,playlist`
 
-            await axiosClient.get('/search/content' + (DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))).then((response) => {
-                let editedResults = response.data.data.results && response.data.data.results.map((item) => {
-                    return {
-                        ...item,
-                        objectID: item.path ? item.objectID : item.objectID.split('_')[1],
-                        title: item.name ? item.name : item.title,
-                        type: item.path ? 'folder' : item.type
-
-                    }
-                })
-                editedResults && tempArray.push(...editedResults)
+            await dacastSdk.getFolderContentList(DEFAULT_QS + (searchString ? `&keyword=${searchString}` : ''))
+            .then((response) => {
+                let editedResults = formatGetFolderContentOutput(response)
+                editedResults && tempArray.push(...editedResults.results)
             })
         }
     }
 
     const fetchGroupContents = async (tempArray: string[]) => {
         for(let page = 2; page <= props.stepperData.firststep.pages; page++)
-         await axiosClient.get(`/paywall/prices/groups/${props.stepperData.firststep.id}?page=${page}`).then((response)=> {
-            response.data.data.contents && tempArray.push(...response.data.data.contents)
+         await dacastSdk.getPricePackageContents(`${props.stepperData.firststep.id}?page=${page}`)
+         .then((response)=> {
+            response.contents && tempArray.push(...response.contents)
         })
 
     }
@@ -78,7 +73,7 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
     React.useEffect(() => {
         if(folderData && !selectedFolder && !searchString) {
             setSelectedItems(folderData.filter((content) => {
-                return groupContents.includes(accountId + '-' + (content.type === 'channel' ? 'live' : content.type) + '-' + content.objectID)
+                return groupContents.includes(accountId + '-' + content.type + '-' + content.objectID)
             }))
         }
     }, [folderData, groupContents])
@@ -148,11 +143,11 @@ export const GroupContentStep = (props: { stepperData: GroupStepperData; updateS
                             />
                         }
                         {handleRowIconType(row)}
-                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.type ? row.title : row.name}</Text>
+                        <Text className="pl2" key={'foldersTableName' + row.objectID} size={14} weight='reg' color='gray-1'>{row.type ? row.title : row.title}</Text>
                         {
                             row.type === "folder" &&
                                 <div className="flex-auto justify-end">
-                                    <IconStyle className="right" onClick={() => handleNavigateToFolder(row.name)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
+                                    <IconStyle className="right" onClick={() => handleNavigateToFolder(row.title)} coloricon='gray-3'>keyboard_arrow_right</IconStyle>
                                 </div>
                         }
                     </ItemSetupRow>

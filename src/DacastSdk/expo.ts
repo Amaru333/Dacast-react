@@ -15,6 +15,14 @@ interface AppearanceEndpoint {
     cover?: {url: string; posterAssetId: string} | {headerColor: string}
 }
 
+export interface PostExpoInput {
+    title: string
+}
+
+export interface PostExpoOutput {
+    id: string
+}
+
 export interface PutExpoDetailsInput {
     id: string
     payload: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { axiosClient } from '../../utils/services/axios/axiosClient';
+import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 export const EmptyTrashModal = (props: {toggle: (b: boolean) => void;showToast: (text: string, size: Size, notificationType: NotificationType) => void; loadContent?: () => void}) => {
 
@@ -9,7 +9,7 @@ export const EmptyTrashModal = (props: {toggle: (b: boolean) => void;showToast: 
 
     const handleSubmit = async () => {
         setButtonLoading(true)
-        await axiosClient.delete('/vods/empty-trash')
+        await dacastSdk.deleteEmptyTrash()
         .then(() => {
             setTimeout(() => {
                 props.loadContent()
