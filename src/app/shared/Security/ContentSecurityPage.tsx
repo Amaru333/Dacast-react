@@ -56,8 +56,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         }
     })
 
-    const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
-    const [endTime, setEndTime] = React.useState<number>(Math.floor( selectedSettings.contentScheduling.endTime / 1000))
+    const [startTime, setStartTime] = React.useState<number>(selectedSettings.contentScheduling.startTime)
+    const [endTime, setEndTime] = React.useState<number>(selectedSettings.contentScheduling.endTime)
     const [startTimezone, setStartTimezone] = React.useState<string>(selectedSettings.contentScheduling.startTimezone)
     const [endTimezone, setEndTimezone] = React.useState<string>(selectedSettings.contentScheduling.endTimezone)
 
