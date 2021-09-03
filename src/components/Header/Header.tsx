@@ -27,6 +27,7 @@ import { NotificationPosition, NotificationType, Size } from "../Toast/ToastType
 import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
 import { ToastLink } from "../Toast/ToastStyle";
 import { getNbDaysForMonth } from "../../utils/services/date/dateService";
+import { useTranslation } from "react-i18next";
 const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
@@ -115,7 +116,7 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
     const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
     const [modalShown, setModalShown] = React.useState<boolean>(false)
-    
+    const { i18n } = useTranslation()
 
     const setTagManager = () => {
         let dataset = {
@@ -193,6 +194,10 @@ const Header = (props: HeaderProps) => {
                     dataLayer: setTagManager()
                     // dataLayerName: 'Uapp'
                 });
+            if(props.ProfileInfo.language && props.ProfileInfo.language !== localStorage.getItem('userLanguagePreference')) {
+                i18n.changeLanguage(props.ProfileInfo.language)
+                localStorage.setItem('userLanguagePreference', props.ProfileInfo.language)
+            }
         }
 
     }, [props.ProfileInfo])

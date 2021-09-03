@@ -9,6 +9,7 @@ export const formatGetProfileDetailsOutput = (data: ProfileDetails): ProfilePage
         passwordLastChanged: data.passwordLastChanged ? tsToLocaleDate(data.passwordLastChanged, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : 'never'
     }
 
+    localStorage.setItem('userLanguage', data.language || 'en')
     userToken.updateUserInfo({'custom:first_name': data.firstName, 'custom:last_name': data.lastName})
     return formattedData
 }

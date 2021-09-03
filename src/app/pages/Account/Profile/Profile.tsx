@@ -86,7 +86,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         mode: 'onBlur'
     })
 
-
+    console.log(languageDropdownList.find( l => l.data.id === i18n.language))
     return (
         <div>
             <Card>
@@ -148,9 +148,9 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             className="md-col md-col-6 p1"
                             hasSearch
                             dropdownTitle='Language'
-                            dropdownDefaultSelect={props.ProfilePageDetails.language ? props.ProfilePageDetails.language : languageDropdownList.find( l => l.data.id === i18n.language).title}
+                            dropdownDefaultSelect={languageDropdownList.find( l => l.data.id === props.ProfilePageDetails.language) ? languageDropdownList.find( l => l.data.id === props.ProfilePageDetails.language).title : languageDropdownList.find( l => l.data.id === i18n.language) ? languageDropdownList.find( l => l.data.id === i18n.language).title : null}
                             id='dropdownLanguage'
-                            callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.title) }}
+                            callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.data.id) }}
                             list={languageDropdownList}
                         />
                     </div>
