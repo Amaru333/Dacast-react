@@ -1,5 +1,5 @@
 import { GetContentSecuritySettingsOutput, PutContentSecuritySettingsInput } from "../../../../../DacastSdk/common"
-import { formatTsToMs } from "../../../../../utils/services/date/dateService"
+import { sanitiseUnixTime } from "../../../../../utils/services/date/dateService"
 import { ContentType } from "../../Common/types"
 import { ContentSecuritySettings, defaultDomainControl, defaultGeoRestriction, DomainControl, GeoRestriction } from "../../Settings/Security"
 
