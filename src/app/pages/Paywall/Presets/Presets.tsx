@@ -45,9 +45,9 @@ export const PresetsPage = (props: PresetsComponentProps) => {
         }
     }, [promoPresetPaginationInfo])
 
-    React.useEffect(() => setPricePresetList(props.presetsInfos.presets.prices), [props.presetsInfos.presets])
+    React.useEffect(() => {if(props.presetsInfos.presets) {setPricePresetList(props.presetsInfos.presets.prices)}}, [props.presetsInfos.presets])
 
-    React.useEffect(() => setPromoPresetList(props.presetsInfos.promos.promos), [props.presetsInfos.promos])
+    React.useEffect(() => {if(props.presetsInfos.promos) {setPromoPresetList(props.presetsInfos.promos.promos)}}, [props.presetsInfos.promos])
 
     const pricePresetsTableHeader = () => {
         return {data: [
