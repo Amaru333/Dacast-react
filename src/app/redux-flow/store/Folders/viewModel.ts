@@ -40,7 +40,7 @@ export const formatGetFolderContentOutput = (data: GetFolderContentOutput): Sear
 
 export const formatPutMoveFolderInput = (data: {foldersIds: string[], movedContent: FolderContent[], oldFolderId?: string}): PutMoveFolderInput => {
     let formattedData: PutMoveFolderInput = {
-        destinationFoldersIds: data.foldersIds.length === 0 ? null : data.foldersIds,
+        destinationFolderIds: data.foldersIds.length === 0 ? null : data.foldersIds,
         oldFolderId: data.oldFolderId || null,
         movedContent: data.movedContent.map(content => {
             if(content.type === 'live') {

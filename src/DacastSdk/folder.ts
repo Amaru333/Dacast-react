@@ -60,7 +60,7 @@ interface MoveFolderAsset {
 }
 
 export interface PutMoveFolderInput {
-    destinationFoldersIds: string[] | null
+    destinationFolderIds: string[] | null
     oldFolderId: string | null
     movedContent: MoveFolderAsset[]
 }
