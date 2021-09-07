@@ -45,6 +45,7 @@ export interface PostLiveInput {
     online: boolean
     region: ChannelRegion
     renditionCount: number
+    china: boolean
 }
 
 export interface PostLiveOutput {

@@ -56,10 +56,16 @@ export interface UserAccountPrivileges {
     rewind: boolean;
 }
 
+interface AdvancedStreaming {
+    enabled: boolean;
+    china: boolean;
+}
+
 export interface StreamSetupOptions {
     title: string;
     rewind?: boolean;
     streamType?: string;
     region: string;
     renditionCount: number;
+    advancedStreaming: AdvancedStreaming
 }
