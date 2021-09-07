@@ -27,7 +27,7 @@ export const formatGetContentSecuritySettingsOutput = (contentType: ContentType)
 
     let formattedData: ContentSecuritySettings & {contentType: ContentType} = {
         securitySettings: {
-            contentScheduling: {...endpointResponse.contentScheduling, startTime: formatTsToMs(endpointResponse.contentScheduling.startTime), endTime: formatTsToMs(endpointResponse.contentScheduling.endTime)},
+            contentScheduling: {...endpointResponse.contentScheduling, startTime: endpointResponse.contentScheduling.startTime ? sanitiseUnixTime(endpointResponse.contentScheduling.startTime) : 0, endTime: endpointResponse.contentScheduling.endTime ? sanitiseUnixTime(endpointResponse.contentScheduling.endTime): 0},
             geoRestriction: geoRestrictionsList,
             domainControl: domainControlsList,
             passwordProtection: {
