@@ -13,7 +13,8 @@ export const DeleteFolderModal = (props: {showToast: (text: string, size: Size, 
             setButtonLoading(false)
             props.toggle(false)            
             props.showToast(`${props.folderName} successfully deleted`, 'fixed', 'success')
-        }).catch(() => {
+        }).catch((error) => {
+            console.error(error)
             setButtonLoading(false)
             props.showToast(`${props.folderName} couldn't be deleted`, 'fixed', 'success')
         })

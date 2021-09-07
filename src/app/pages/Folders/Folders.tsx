@@ -562,7 +562,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
             <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Delete Folder?' toggle={() => setDeleteFolderModalOpened(!deleteFolderModalOpened)} opened={deleteFolderModalOpened} >
                 {
                     deleteFolderModalOpened &&
-                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.fullPath).then(() => {setSelectedFolder('Library');setCurrentFolder(null)})}} />
+                    <DeleteFolderModal showToast={props.showToast} toggle={setDeleteFolderModalOpened} folderName={assetToDelete.name} deleteFolder={async () => {await foldersTree.deleteFolders([assetToDelete.id], assetToDelete.id !== currentFolder.id ? currentFolder.fullPath + assetToDelete.name + "/" : currentFolder.fullPath).then(() => {setSelectedFolder('Library');setCurrentFolder(null)})}} />
                 }
             </Modal>
             <Modal allowNavigation={false} icon={{ name: 'warning', color: 'red' }} hasClose={false} size='small' modalTitle='Move to Trash?' toggle={() => setDeleteContentModalOpened(!deleteContentModalOpened)} opened={deleteContentModalOpened} >
