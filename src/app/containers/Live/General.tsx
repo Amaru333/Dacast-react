@@ -26,6 +26,7 @@ import { Divider } from '../../../shared/MiscStyles';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { ContentUploadType } from '../../../DacastSdk/common';
+import { AdvancedStreaming } from '../../shared/General/AdvancedStreaming';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -102,6 +103,13 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                 />
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralSettings 
+                                    contentDetails={stateContentDetails}
+                                    localContentDetails={contentDetails}
+                                    setLocalContentDetails={setContentDetails}
+                                    setHasChanged={setHasChanged}
+                                />
+                                <Divider className="col col-12 mt3 mr25 mb25" />
+                                <AdvancedStreaming
                                     contentDetails={stateContentDetails}
                                     localContentDetails={contentDetails}
                                     setLocalContentDetails={setContentDetails}

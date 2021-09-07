@@ -70,6 +70,7 @@ export interface LiveDetails {
     streamKeys: string[]
     encoderKey: string
     uploadurl: string
+    china: boolean
 }
 
 export interface PlaylistDetails {
