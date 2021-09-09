@@ -66,24 +66,34 @@ export default function WebRTCPage() {
           </MenuOptions>
         </div>
       </MenuBar>
-      {playing === true ? (
-        <video
-          autoPlay
-          className="media_feed"
-          style={{ padding: "5vh", height: "70vh" }}
-        ></video>
-      ) : (
-        <InactiveContainer>
-          <p>Not playing</p>
-        </InactiveContainer>
-      )}
-      <div className="app_input">
-        {playing ? (
-          <button onClick={stopMedia}>Stop</button>
+      <VideoContainer>
+        <Navigation>
+          <IconStyle
+            style={{ color: "white", marginTop: "7px" }}
+            className="mr1 self-center"
+          >
+            exit_to_app
+          </IconStyle>
+        </Navigation>
+        {playing === true ? (
+          <video
+            autoPlay
+            className="media_feed"
+            style={{ padding: "5vh", height: "70vh" }}
+          ></video>
         ) : (
-          <button onClick={startMedia}>Start</button>
+          <InactiveContainer>
+            <p>Not playing</p>
+          </InactiveContainer>
         )}
-      </div>
+        <div className="app_input">
+          {playing ? (
+            <button onClick={stopMedia}>Stop</button>
+          ) : (
+            <button onClick={startMedia}>Start</button>
+          )}
+        </div>
+      </VideoContainer>
     </RTCContainer>
   );
 }
@@ -104,6 +114,13 @@ export const MenuBar = styled.div<{}>`
   border-right: 1px solid #58606e;
 `;
 
+export const Navigation = styled.div<{}>`
+  background-color: #2b2b2b;
+  width: 100%;
+  height: 40px;
+  text-align: right;
+`;
+
 export const MenuOptions = styled.div<{}>`
   display: flex;
   padding: 10px 0px 10px 20px;
@@ -114,4 +131,8 @@ export const LogoContainer = styled.div<{}>`
   padding: 20px;
   border-bottom: 1px solid #58606e;
   margin-bottom: 10px;
+`;
+
+export const VideoContainer = styled.div<{}>`
+  width: -webkit-fill-available;
 `;
