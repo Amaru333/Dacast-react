@@ -83,7 +83,12 @@ export default function WebRTCPage() {
           ></video>
         ) : (
           <InactiveContainer>
-            <p>Not playing</p>
+            <IconStyle style={{ color: "white", fontSize: "80px" }}>
+              videocam_off
+            </IconStyle>
+            <p style={{ fontSize: "24px" }}>
+              Enable camera and microphone to start recording
+            </p>
           </InactiveContainer>
         )}
         <div className="app_input">
@@ -107,6 +112,9 @@ export const InactiveContainer = styled.div<{}>`
   display: flex;
   height: 75vh;
   color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const MenuBar = styled.div<{}>`
