@@ -7,7 +7,7 @@ const exec = require('child_process').exec
 
 //this is an access token that gives access to the repos.
 //right now this token has been created on dorian's account
-const GithubAccessKey = '874078b983eeb3908a5a5f08cc223fade144e146'
+const GithubAccessKey = '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'
 const CloudFormationStackName = 'dacast-backoffice-terraform-states'
 const CloudFormationStackPath = './deployment/setup/state-bucket.cloudformation.json'
 const CloudFormationStackS3BucketOutputName = 'S3Bucket'
