@@ -232,7 +232,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             callback={
                                                 (item: DropdownSingleListItem) => {
                                                     setEditedSettings(true);
-                                                    setSelectedTheme(item.title === "Custom Theme" ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : item.data)
+                                                    setSelectedTheme(item.data)
                                                 }} />
                                         <Bubble className="mt25" type="info">
                                             {selectedTheme.isCustom ?
