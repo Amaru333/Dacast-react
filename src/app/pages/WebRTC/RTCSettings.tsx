@@ -14,6 +14,7 @@ export default function RTCSettings() {
             fontSize: "20px",
             lineHeight: "24px",
             margin: 0,
+            marginBottom: "30px",
           }}
         >
           Settings
@@ -23,16 +24,22 @@ export default function RTCSettings() {
             <IconStyle style={{ color: "black" }} className="mr1 self-center">
               headset
             </IconStyle>
-            <span className="m0">Audio</span>
+            <span className="m0" style={{ fontSize: "14px" }}>
+              Audio
+            </span>
           </p>
           <p style={{ display: "flex", placeItems: "center" }}>
             <IconStyle style={{ color: "black" }} className="mr1 self-center">
               videocam
             </IconStyle>
-            <span className="m0">Video</span>
+            <span className="m0" style={{ fontSize: "14px" }}>
+              Video
+            </span>
           </p>
         </div>
-        <div>Quick guide for live streaming with Web RTC</div>
+        <div style={{ marginTop: "400px", fontSize: "14px" }}>
+          Quick guide for live streaming with Web RTC
+        </div>
       </SettingMenu>
       <AudioController>
         <div>
@@ -50,20 +57,26 @@ export default function RTCSettings() {
           </p>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{ fontSize: "14px", fontWeight: "500" }}>Microphone</p>
+            <p style={{ fontSize: "16px", fontWeight: "500" }}>Microphone</p>
             <Select>
               <option>Default</option>
               <option>Front Panel</option>
             </Select>
             <Button>Test Mic</Button>
+            <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+              mic
+            </IconStyle>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{ fontSize: "14px", fontWeight: "500" }}>Speaker</p>
+            <p style={{ fontSize: "16px", fontWeight: "500" }}>Speaker</p>
             <Select>
               <option>Default</option>
               <option>Front Panel</option>
             </Select>
             <Button>Test Speakers</Button>
+            <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+              volume_up
+            </IconStyle>
           </div>
         </div>
       </AudioController>
@@ -83,7 +96,6 @@ export const SettingMenu = styled.div<{}>`
   border-right: 1px solid #c8d1e0;
   width: 188px;
   padding: 20px;
-  height: 680px;
 `;
 
 export const AudioController = styled.div<{}>`
