@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { IconStyle } from "../../../shared/Common/Icon";
 
 export default function RTCSettings() {
+  const [activeTab, setActiveTab] = React.useState<string>("audio");
+
+  //   const startMedia = () => {
+  //     navigator.getUserMedia(
+  //       {
+  //         video: true,
+  //         audio: true,
+  //       },
+  //       (stream: any) => {
+  //         let media = document.getElementsByClassName("media_feed")[0];
+  //         if (media) {
+  //           media.srcObject = stream;
+  //         }
+  //       },
+  //       (err: any) => console.log(err)
+  //     );
+  //   };
+
+  navigator.getUserMedia(
+    {
+      video: true,
+      audio: true,
+    },
+    (stream: any) => {
+      let media = document.getElementsByClassName("media_feed")[0];
+      if (media) {
+        media.srcObject = stream;
+      }
+    },
+    (err: any) => console.log(err)
+  );
+
   return (
     <SettingContainer>
       <SettingMenu>
@@ -14,72 +46,131 @@ export default function RTCSettings() {
             fontSize: "20px",
             lineHeight: "24px",
             margin: 0,
-            marginBottom: "30px",
+            marginBottom: "10px",
+            padding: "30px 0px 10px 30px",
           }}
         >
           Settings
         </p>
         <div>
-          <p style={{ display: "flex", placeItems: "center" }}>
+          <Tab
+            style={{
+              backgroundColor: activeTab === "audio" && "#EDF0FE",
+              borderLeft: activeTab === "audio" && "4px solid #284CEB",
+            }}
+            onClick={() => {
+              setActiveTab("audio");
+            }}
+          >
             <IconStyle style={{ color: "black" }} className="mr1 self-center">
               headset
             </IconStyle>
             <span className="m0" style={{ fontSize: "14px" }}>
               Audio
             </span>
-          </p>
-          <p style={{ display: "flex", placeItems: "center" }}>
+          </Tab>
+          <Tab
+            style={{
+              backgroundColor: activeTab === "video" && "#EDF0FE",
+              borderLeft: activeTab === "video" && "4px solid #284CEB",
+            }}
+            onClick={() => {
+              setActiveTab("video");
+            }}
+          >
             <IconStyle style={{ color: "black" }} className="mr1 self-center">
               videocam
             </IconStyle>
             <span className="m0" style={{ fontSize: "14px" }}>
               Video
             </span>
-          </p>
+          </Tab>
         </div>
-        <div style={{ marginTop: "400px", fontSize: "14px" }}>
+        <div
+          style={{
+            marginTop: "400px",
+            fontSize: "14px",
+            padding: "0px 15px 30px 15px",
+            fontWeight: "500",
+          }}
+        >
           Quick guide for live streaming with Web RTC
         </div>
       </SettingMenu>
-      <AudioController>
-        <div>
-          <p
-            style={{
-              fontSize: "14px",
-              lineHeight: "24px",
-              margin: 0,
-              textAlign: "right",
-            }}
-          >
-            <IconStyle style={{ color: "black" }} className="mr1 self-center">
-              close
-            </IconStyle>
-          </p>
+      {activeTab === "audio" ? (
+        <AudioController>
+          <div>
+            <p
+              style={{
+                fontSize: "14px",
+                lineHeight: "24px",
+                margin: 0,
+                textAlign: "right",
+              }}
+            >
+              <IconStyle style={{ color: "black" }} className="mr1 self-center">
+                close
+              </IconStyle>
+            </p>
 
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{ fontSize: "16px", fontWeight: "500" }}>Microphone</p>
-            <Select>
-              <option>Default</option>
-              <option>Front Panel</option>
-            </Select>
-            <Button>Test Mic</Button>
-            <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
-              mic
-            </IconStyle>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p style={{ fontSize: "16px", fontWeight: "500" }}>Microphone</p>
+              <Select>
+                <option>Default</option>
+                <option>Front Panel</option>
+              </Select>
+              <Button>Test Mic</Button>
+              <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+                mic
+              </IconStyle>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p style={{ fontSize: "16px", fontWeight: "500" }}>Speaker</p>
+              <Select>
+                <option>Default</option>
+                <option>Front Panel</option>
+              </Select>
+              <Button>Test Speakers</Button>
+              <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+                volume_up
+              </IconStyle>
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={{ fontSize: "16px", fontWeight: "500" }}>Speaker</p>
-            <Select>
-              <option>Default</option>
-              <option>Front Panel</option>
-            </Select>
-            <Button>Test Speakers</Button>
-            <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
-              volume_up
-            </IconStyle>
+        </AudioController>
+      ) : (
+        <VideoController>
+          <div>
+            <p
+              style={{
+                fontSize: "14px",
+                lineHeight: "24px",
+                margin: 0,
+                textAlign: "right",
+              }}
+            >
+              <IconStyle style={{ color: "black" }} className="mr1 self-center">
+                close
+              </IconStyle>
+            </p>
+            <video
+              autoPlay
+              className="media_feed"
+              style={{
+                margin: "30px",
+                width: "-webkit-fill-available",
+                borderRadius: "8px",
+              }}
+            ></video>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p style={{ fontSize: "16px", fontWeight: "500" }}>Camera</p>
+              <Select>
+                <option>Face Time Built In HD</option>
+                <option>Default</option>
+              </Select>
+            </div>
           </div>
-        </div>
-      </AudioController>
+        </VideoController>
+      )}
     </SettingContainer>
   );
 }
@@ -90,12 +181,13 @@ export const SettingContainer = styled.div<{}>`
   border-radius: 5px;
   margin: 20px;
   width: 680px;
+  width: fit-content;
 `;
 
 export const SettingMenu = styled.div<{}>`
   border-right: 1px solid #c8d1e0;
   width: 188px;
-  padding: 20px;
+  //   padding: 20px;
 `;
 
 export const AudioController = styled.div<{}>`
@@ -123,4 +215,19 @@ export const Select = styled.select<{}>`
   font-size: 14px;
   border-radius: 4px;
   width: fit-content;
+`;
+
+export const Tab = styled.p<{}>`
+  display: flex;
+  place-items: center;
+  margin: 0;
+  padding: 15px;
+  cursor: pointer;
+`;
+
+export const VideoController = styled.div<{}>`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 392px;
 `;
