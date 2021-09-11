@@ -3,9 +3,12 @@ import styled from "styled-components";
 import Logo from "../../../../public/assets/logo_white.png";
 import { IconStyle } from "../../../shared/Common/Icon";
 import { Text } from "../../../components/Typography/Text";
+import RTCSettings from "./RTCSettings";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
+  const [userAudio, setUserAudio] = React.useState<boolean>(true);
+  const [userVideo, setVideo] = React.useState<boolean>(true);
 
   const startMedia = () => {
     setPlaying(true);
@@ -24,6 +27,18 @@ export default function WebRTCPage() {
     );
   };
 
+  const toggleAudio = () => {
+    navigator.getUserMedia({
+      audio: !userAudio,
+    });
+  };
+
+  const toggleVideo = () => {
+    navigator.getUserMedia({
+      audio: !userVideo,
+    });
+  };
+
   const stopMedia = () => {
     setPlaying(false);
     let media = document.getElementsByClassName("media_feed")[0];
@@ -32,74 +47,81 @@ export default function WebRTCPage() {
   };
 
   return (
-    <RTCContainer>
-      <MenuBar>
-        <LogoContainer>
-          <img src={Logo} />
-        </LogoContainer>
-        <div className="flex-col">
-          <MenuOptions>
-            <IconStyle style={{ color: "white" }} className="mr1 self-center">
-              videocam
-            </IconStyle>
-            <Text
-              style={{ color: "white" }}
-              size={14}
-              weight="reg"
-              className="mt0 inline-block"
+    <div>
+      <RTCContainer>
+        <MenuBar>
+          <LogoContainer>
+            <a href="/">
+              <img src={Logo} />
+            </a>
+          </LogoContainer>
+          <div className="flex-col">
+            <MenuOptions>
+              <IconStyle style={{ color: "white" }} className="mr1 self-center">
+                videocam
+              </IconStyle>
+              <Text
+                style={{ color: "white" }}
+                size={14}
+                weight="reg"
+                className="mt0 inline-block"
+              >
+                Stream
+              </Text>
+            </MenuOptions>
+            <MenuOptions>
+              <IconStyle style={{ color: "white" }} className="mr1 self-center">
+                radio_button_checked
+              </IconStyle>
+              <Text
+                style={{ color: "white" }}
+                size={14}
+                weight="reg"
+                className="mt0 inline-block"
+              >
+                Recording
+              </Text>
+            </MenuOptions>
+          </div>
+        </MenuBar>
+        <VideoContainer>
+          <Navigation>
+            <IconStyle
+              style={{ color: "white", marginTop: "7px" }}
+              className="mr1 self-center"
             >
-              Stream
-            </Text>
-          </MenuOptions>
-          <MenuOptions>
-            <IconStyle style={{ color: "white" }} className="mr1 self-center">
-              radio_button_checked
+              exit_to_app
             </IconStyle>
-            <Text
-              style={{ color: "white" }}
-              size={14}
-              weight="reg"
-              className="mt0 inline-block"
-            >
-              Recording
-            </Text>
-          </MenuOptions>
-        </div>
-      </MenuBar>
-      <VideoContainer>
-        <Navigation>
-          <IconStyle
-            style={{ color: "white", marginTop: "7px" }}
-            className="mr1 self-center"
-          >
-            exit_to_app
-          </IconStyle>
-        </Navigation>
-        {playing === true ? (
-          <video
-            autoPlay
-            className="media_feed"
-            style={{ padding: "5vh", height: "70vh" }}
-          ></video>
-        ) : (
-          <InactiveContainer>
-            <IconStyle style={{ color: "white", fontSize: "80px" }}>
-              videocam_off
-            </IconStyle>
-            <p style={{ fontSize: "24px" }}>
-              Enable camera and microphone to start recording
-            </p>
-          </InactiveContainer>
-        )}
-        <div className="app_input">
-          {playing ? (
-            <button onClick={stopMedia}>Stop</button>
+          </Navigation>
+          {playing === true ? (
+            <video
+              autoPlay
+              className="media_feed"
+              style={{ padding: "5vh", height: "70vh" }}
+            ></video>
           ) : (
-            <button onClick={startMedia}>Start</button>
+            <InactiveContainer>
+              <IconStyle style={{ color: "white", fontSize: "80px" }}>
+                videocam_off
+              </IconStyle>
+              <p style={{ fontSize: "24px" }}>
+                Enable camera and microphone to start recording
+              </p>
+            </InactiveContainer>
           )}
-        </div>
-      </VideoContainer>
-    </RTCContainer>
+          <div className="app_input">
+            {playing ? (
+              <button onClick={stopMedia}>Stop</button>
+            ) : (
+              <button onClick={startMedia}>Start</button>
+            )}
+            <button onClick={toggleAudio}>Mute/Unmute</button>
+            <button onClick={toggleVideo}>Turn on/off cam</button>
+          </div>
+        </VideoContainer>
+      </RTCContainer>
+      <RTCSettings />
+    </div>
   );
 }
 
