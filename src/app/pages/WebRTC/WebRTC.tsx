@@ -4,6 +4,7 @@ import Logo from "../../../../public/assets/logo_white.png";
 import { IconStyle } from "../../../shared/Common/Icon";
 import { Text } from "../../../components/Typography/Text";
 import RTCSettings from "./RTCSettings";
+import Controls from "./Controls";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -115,8 +116,7 @@ export default function WebRTCPage() {
             ) : (
               <button onClick={startMedia}>Start</button>
             )}
-            <button onClick={toggleAudio}>Mute/Unmute</button>
-            <button onClick={toggleVideo}>Turn on/off cam</button>
+            <Controls />
           </div>
         </VideoContainer>
       </RTCContainer>
