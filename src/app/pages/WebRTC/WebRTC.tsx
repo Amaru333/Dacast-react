@@ -8,44 +8,62 @@ import Controls from "./Controls";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
+  const [playingAudio, setPlayingAudio] = React.useState<boolean>(false);
   const [userAudio, setUserAudio] = React.useState<boolean>(true);
   const [userVideo, setVideo] = React.useState<boolean>(true);
 
-  const startMedia = () => {
-    setPlaying(true);
-    navigator.getUserMedia(
-      {
-        video: true,
-        audio: true,
-      },
-      (stream: any) => {
-        let media = document.getElementsByClassName("media_feed")[0];
-        if (media) {
-          media.srcObject = stream;
-        }
-      },
-      (err: any) => console.log(err)
-    );
-  };
+  // const startMedia = () => {
+  //   setPlaying(true);
+  //   navigator.getUserMedia(
+  //     {
+  //       video: true,
+  //       // audio: true,
+  //     },
+  //     (stream: any) => {
+  //       let media = document.getElementsByClassName("media_feed")[0];
+  //       if (media) {
+  //         media.srcObject = stream;
+  //       }
+  //     },
+  //     (err: any) => console.log(err)
+  //   );
+  // };
 
-  const toggleAudio = () => {
-    navigator.getUserMedia({
-      audio: !userAudio,
-    });
-  };
+  // const startMediaAudio = () => {
+  //   setPlayingAudio(true);
+  //   navigator.getUserMedia(
+  //     {
+  //       // video: true,
+  //       audio: true,
+  //     },
+  //     (stream: any) => {
+  //       let media = document.getElementsByClassName("media_feed")[0];
+  //       if (media) {
+  //         media.srcObject = stream;
+  //       }
+  //     },
+  //     (err: any) => console.log(err)
+  //   );
+  // };
 
-  const toggleVideo = () => {
-    navigator.getUserMedia({
-      audio: !userVideo,
-    });
-  };
+  // const toggleAudio = () => {
+  //   navigator.getUserMedia({
+  //     audio: !userAudio,
+  //   });
+  // };
 
-  const stopMedia = () => {
-    setPlaying(false);
-    let media = document.getElementsByClassName("media_feed")[0];
-    media.srcObject.getTracks()[0].stop();
-    media.srcObject = null;
-  };
+  // const toggleVideo = () => {
+  //   navigator.getUserMedia({
+  //     audio: !userVideo,
+  //   });
+  // };
+
+  // const stopMedia = () => {
+  //   setPlaying(false);
+  //   let media = document.getElementsByClassName("media_feed")[0];
+  //   media.srcObject.getTracks()[0].stop();
+  //   media.srcObject = null;
+  // };
 
   return (
     <div>
@@ -111,11 +129,16 @@ export default function WebRTCPage() {
             </InactiveContainer>
           )}
           <div className="app_input">
-            {playing ? (
+            {/* {playing ? (
               <button onClick={stopMedia}>Stop</button>
             ) : (
               <button onClick={startMedia}>Start</button>
             )}
+            {playingAudio ? (
+              <button onClick={stopMedia}>Stop Audio</button>
+            ) : (
+              <button onClick={startMediaAudio}>Start Audio</button>
+            )} */}
             <Controls />
           </div>
         </VideoContainer>
