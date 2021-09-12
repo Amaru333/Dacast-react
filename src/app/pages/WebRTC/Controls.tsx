@@ -76,9 +76,9 @@ export default function Controls() {
             </IconStyle>
           </OffButtons>
         )}
-        <IconContainer style={{ padding: "0px", alignSelf: "center" }}>
+        <ButtonContainer style={{ padding: "0px", alignSelf: "center" }}>
           <Button>Leave</Button>
-        </IconContainer>
+        </ButtonContainer>
       </SettingGroup>
       <SettingGroup>
         <IconContainer>
@@ -121,6 +121,11 @@ export const IconContainer = styled.div<{}>`
   display: flex;
   flex-direction: column;
   padding: 5px 15px 5px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1b1c1e;
+  }
 `;
 
 export const ToggleButtons = styled.div<{}>`
@@ -141,8 +146,15 @@ export const ToggleButtons = styled.div<{}>`
   }
 `;
 
+export const ButtonContainer = styled.div<{}>`
+  display: flex;
+  flex-direction: column;
+  padding: 5px 15px 5px 15px;
+  cursor: pointer;
+`;
+
 export const Button = styled.button<{}>`
-  background-color: #d14642;
+  background: #d14642;
   height: 40px;
   width: 116px;
   color: white;
@@ -151,7 +163,7 @@ export const Button = styled.button<{}>`
   cursor: pointer;
 
   &:hover {
-    background-color: #e3908e;
+    background: #e3908e;
   }
 `;
 
