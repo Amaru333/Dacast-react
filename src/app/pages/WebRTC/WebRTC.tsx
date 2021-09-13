@@ -5,6 +5,7 @@ import { IconStyle } from "../../../shared/Common/Icon";
 import { Text } from "../../../components/Typography/Text";
 import RTCSettings from "./RTCSettings";
 import Controls from "./Controls";
+import Participants from "./Participants";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -12,6 +13,9 @@ export default function WebRTCPage() {
   const [userAudio, setUserAudio] = React.useState<boolean>(true);
   const [userVideo, setVideo] = React.useState<boolean>(true);
 
+  const [toggleParticipants, setToggleParticipants] = React.useState<boolean>(
+    false
+  );
   // const startMedia = () => {
   //   setPlaying(true);
   //   navigator.getUserMedia(
@@ -65,6 +69,12 @@ export default function WebRTCPage() {
   //   media.srcObject = null;
   // };
 
+  const memberList = ["test", "abc", "xyz"];
+
+  const handleParticipants = () => {
+    setToggleParticipants(!toggleParticipants);
+  };
+
   return (
     <div>
       <RTCContainer>
@@ -103,6 +113,7 @@ export default function WebRTCPage() {
             </MenuOptions>
           </div>
         </MenuBar>
+
         <VideoContainer>
           <Navigation>
             <IconStyle
@@ -142,7 +153,10 @@ export default function WebRTCPage() {
             <Controls />
           </div>
         </VideoContainer>
+
+        {toggleParticipants && <Participants members={memberList} />}
       </RTCContainer>
+      <button onClick={handleParticipants}>Participants</button>
       <RTCSettings />
     </div>
   );
