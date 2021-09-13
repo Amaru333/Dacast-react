@@ -26,13 +26,9 @@ i18n
     lng: lang,
     fallbackLng: "en",
     load: "languageOnly",
-    ns: ['dashboard', 'common'],
-    defaultNS:['dashboard', 'common'],
+    ns: ['translation'],
+    defaultNS:['translation'],
     debug: true,
-    react: {
-        wait: true,
-        useSuspense: false,
-     },
   });
 
   export default i18n;

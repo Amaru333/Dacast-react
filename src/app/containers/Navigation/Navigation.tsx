@@ -91,7 +91,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
-    const { t } = useTranslation('common')
+    const { t } = useTranslation()
 
     const purchaseAddOns = () => {
         setIsLoading(true)

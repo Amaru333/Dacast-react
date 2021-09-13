@@ -109,7 +109,7 @@ export const ContentListPage = (props: ContentListProps) => {
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [previewedContent, setPreviewedContent] = React.useState<string>(null)
 
-    const { t } = useTranslation('common')
+    const { t } = useTranslation()
 
     const planLimitsValidaorCallbacks = {
         openAddStream: () => setAddStreamModalOpen(true),
@@ -293,7 +293,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 { cell: props.contentType === 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_size')}</Text> },
                 { cell: props.contentType !== 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_views')}</Text> },
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
-                { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_created') + ' ' + t('common_content_list_table_header_date')}</Text>, sort: 'created-at' },
+                { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_date')}</Text>, sort: 'created-at' },
                 { cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_status')}</Text> },
                 { cell: props.contentType === 'expo' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_features')}</Text> },
                 { cell: <div style={{ width: "80px" }} ></div> },

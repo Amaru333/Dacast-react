@@ -30,7 +30,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const [newPasswordVisible, setNewPasswordVisible] = React.useState<boolean>(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState<boolean>(false)
     const [changePasswordButtonLoading, SetChangePasswordButtonLoading] = React.useState<boolean>(false)
-    const { i18n } = useTranslation('dashboard')
+    const { i18n } = useTranslation()
     /** Validation */
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
         reValidateMode: 'onChange',

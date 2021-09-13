@@ -13,7 +13,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
     var totalChannels = numberFormatter(props.profile.totalChannels, 'comma');
     var activeChannels = numberFormatter(props.profile.activeChannels, 'comma');
     var liveViewers = numberFormatter(props.profile.liveViewers, 'comma');
-    const { t } = useTranslation(['dashboard', 'common'])
+    const { t } = useTranslation()
 
     let liveDataFetching = Number.isNaN(props.profile.activeChannels)
 
@@ -22,14 +22,14 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
             <div className="flex items-baseline mb1">
                 <IconStyle className="mr1 self-center">videocam</IconStyle>
                 <Text size={24} weight="reg" className="mt0 inline-block">
-                    {t('common:common_navigation_bar_menu_item_live_streams')}
+                    {t('common_navigation_bar_menu_item_live_streams')}
                 </Text>
             </div>
 
             <div className={classContainer}>
                 <WidgetElement placeholderWidget={liveDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3">{t('dashboard:dashboard_active_channel_widget_title')}</Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_active_channel_widget_title')}</Text>
                     </WidgetHeader>
                     <div className="flex justify-center minContentDash items-center">
                         <Text size={48} weight="reg" color="gray-1"> {activeChannels}<Text size={20} weight="reg" color="gray-4" >/{totalChannels}</Text></Text>
@@ -38,7 +38,7 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
 
                 <WidgetElement placeholderWidget={liveDataFetching} failed={typeof props.profile.liveViewers === "undefined"} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3">{t('dashboard:dashboard_live_viewers_widget_title')}</Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_live_viewers_widget_title')}</Text>
                     </WidgetHeader>
                     <div className="flex justify-center minContentDash items-center">
                         <Text size={48} weight="reg" color="gray-1">{liveViewers}</Text>
@@ -48,15 +48,15 @@ export const LiveDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { pr
                     userToken.getPrivilege('privilege-analytics') &&
                     <WidgetElement placeholderWidget={liveDataFetching} failed={typeof props.profile.topChannels === "undefined"} className={classItemFullWidth}>
                         <WidgetHeader className="flex">
-                            <Text size={16} weight="med" color="gray-3">{t('dashboard:dashboard_top_live_channels_widget_title')}</Text>
+                            <Text size={16} weight="med" color="gray-3">{t('dashboard_top_live_channels_widget_title')}</Text>
                         </WidgetHeader>
                         <div className="flex mb1">
                             <TableListStyle>
                                 <thead>
                                     <tr>
                                         <th className="col-2" ><Text size={14} weight="reg" ><b>#</b></Text></th>
-                                        <th className="col-7"><Text size={14} weight="reg" ><b>{t('dashboard:dashboard_top_live_channels_widget_column_title_1')}</b></Text></th>
-                                        <th className="col-3"><Text size={14} weight="reg" ><b>{t('dashboard:dashboard_top_live_channels_widget_column_title_2')}</b></Text></th>
+                                        <th className="col-7"><Text size={14} weight="reg" ><b>{t('dashboard_top_live_channels_widget_column_title_1')}</b></Text></th>
+                                        <th className="col-3"><Text size={14} weight="reg" ><b>{t('dashboard_top_live_channels_widget_column_title_2')}</b></Text></th>
                                     </tr>
                                 </thead>
                                 <tbody>

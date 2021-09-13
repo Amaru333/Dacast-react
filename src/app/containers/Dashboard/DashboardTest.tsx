@@ -33,7 +33,7 @@ export interface DashboardProps {
 }
 
 const DashboardTest = (props: DashboardProps) => {
-    const { ready } = useTranslation('dashboard', { useSuspense: false });
+    const { ready } = useTranslation('translation', { useSuspense: false });
     React.useEffect(() => {
         props.getDashboardGeneralDetails()
         props.getDashboardLive()

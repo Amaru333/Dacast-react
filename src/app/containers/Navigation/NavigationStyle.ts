@@ -150,7 +150,7 @@ export const SubMenuElement = styled.li<{selected: boolean}>`
     }
 `
 
-export const TextStyle = styled(Text)<{selected: boolean}>`
+export const TextStyle = styled(Text)<{selected: boolean;}>`
     ${props => props.selected && css`
         color: ${props.theme.colors['dark-violet']};
         margin-left: -4px;

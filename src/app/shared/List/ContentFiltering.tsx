@@ -53,7 +53,7 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
     const [filteringState, setFilteringState] = React.useState<FilteringContentState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
-    const { t } = useTranslation('common')
+    const { t } = useTranslation()
 
     const checkActiveFilter = () => {
         var counter = 0;
