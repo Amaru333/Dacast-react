@@ -26,10 +26,8 @@ export const VodTheming = (props: ContentThemingComponentProps) => {
     const [noDataFetched, setNodataFetched] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        if (!props.themeState[vodId]) {
-            props.getContentTheme(vodId, 'vod')
-            .catch(() => setNodataFetched(true))
-        }
+        props.getContentTheme(vodId, 'vod')
+        .catch(() => setNodataFetched(true))
     }, [])
 
     if(noDataFetched) {
