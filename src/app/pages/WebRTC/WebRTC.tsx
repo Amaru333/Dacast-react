@@ -6,6 +6,10 @@ import { Text } from "../../../components/Typography/Text";
 import RTCSettings from "./RTCSettings";
 import Controls from "./Controls";
 import Participants from "./Participants";
+import RecordStream from "./PopUps/RecordStream";
+import ShareScreenPermission from "./PopUps/ShareScreenPermission";
+import LeftStream from "./PopUps/LeftStream";
+import StreamEnded from "./PopUps/StreamEnded";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -182,6 +186,10 @@ export default function WebRTCPage() {
       </RTCContainer>
       <button onClick={handleParticipants}>Participants</button>
       <RTCSettings />
+      <RecordStream />
+      <ShareScreenPermission />
+      <LeftStream />
+      <StreamEnded />
     </div>
   );
 }
