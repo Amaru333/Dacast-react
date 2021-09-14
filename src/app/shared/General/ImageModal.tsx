@@ -9,6 +9,7 @@ import { usePlayer } from '../../utils/services/player/player';
 import { userToken } from '../../utils/services/token/tokenService';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { SubtitleInfo } from '../../redux-flow/store/Content/General/types';
+import { useTranslation } from 'react-i18next';
 
 interface ImageModalProps {
     imageType: string;
@@ -40,6 +41,7 @@ export const ImageModal = (props: ImageModalProps) => {
     let inputBrowseButtonRef = React.useRef<HTMLInputElement>(null)
     let inputBrowseImageModalButtonRef = React.useRef<HTMLInputElement>(null)
     let player = usePlayer(playerRef, accountId + '-' + props.contentType + '-' + props.contentId)
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         if (selectedOption === "frame") {
@@ -140,11 +142,11 @@ export const ImageModal = (props: ImageModalProps) => {
                     <RadioButtonOption className="col col-12 p25" isOpen={selectedOption === "upload"}>
                         <div className="col col-12">
                         <input type='file' ref={inputBrowseButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/gif,image/jpeg,image/png,image/svg" />
-                            <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
+                            <Text className="col col-12" size={14} weight="reg">{t('common_content_general_images_change_splashscreen_modal_info_text')}</Text>
                             <Button onClick={() => {inputBrowseButtonRef.current.click()} } className="mt2" sizeButton="xs" typeButton="secondary">
-                                Upload File
+                                {t('common_button_text_upload_file')}
                             </Button>
-                            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                            <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">{t('common_content_general_images_max_size')}</Text>
                             { logoFile &&
                                 <ThumbnailFile className="col mt1">
                                     <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
@@ -178,11 +180,11 @@ export const ImageModal = (props: ImageModalProps) => {
                 <ModalContent>
                     <div className="col col-12 mt2">
                         <input type='file' ref={inputBrowseImageModalButtonRef} className="pointer" onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButtonImageModal' accept="image/gif,image/jpeg,image/png,image/svg" />
-                        <Text className="col col-12" size={14} weight="reg">{"Upload a file for your "+objectContext}</Text>
+                        <Text className="col col-12" size={14} weight="reg">{t('common_content_general_images_change_splashscreen_modal_info_text')}</Text>
                         <Button onClick={() => {inputBrowseImageModalButtonRef.current.click()} }  className="mt2" sizeButton="xs" typeButton="secondary">
-                            Upload File
+                           {t('common_button_text_upload_file')}
                         </Button>
-                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                        <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">{t('common_content_general_images_max_size')}</Text>
                         { logoFile &&
                             <ThumbnailFile className="col mt1">
                                 <UploadText className="ml2" color="gray-1" size={14} weight="reg">{fileName ? fileName : ''}</UploadText>
@@ -195,8 +197,8 @@ export const ImageModal = (props: ImageModalProps) => {
                 </ModalContent>
             }
             <ModalFooter>
-                <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>Save</Button>
-                <Button onClick={props.toggle} typeButton="secondary">Cancel</Button>
+                <Button isLoading={saveButtonLoading} disabled={isSaveDisabled} onClick={() => handleSubmit()}>{t('common_button_text_save')}</Button>
+                <Button onClick={props.toggle} typeButton="secondary">{t('common_button_text_cancel')}</Button>
             </ModalFooter>
         </Modal>
     )

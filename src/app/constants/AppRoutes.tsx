@@ -126,6 +126,13 @@ export const AppRoutes: Routes[] = [
         component: AccountSelection
     },
     {
+        path: '/',
+        isExact: true,
+        name: 'common_navigation_bar_menu_item_dashboard',
+        iconName: 'dashboard',
+        component: DashboardTest,
+    },
+    {
         path: '/livestreams',
         name: 'common_navigation_bar_menu_item_live_streams',
         isExact: true,
@@ -135,7 +142,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/general',
-        name: 'General',
+        name: 'common_content_tabs_general',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-live'],
@@ -144,7 +151,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/paywall',
-        name: 'Paywall',
+        name: 'common_navigation_bar_menu_item_paywall',
         component: LivePaywall,
         iconName: null,
         isExact: true,
@@ -153,7 +160,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/engagement',
-        name: 'Engagement',
+        name: 'common_content_tabs_engagement',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-live'],
@@ -162,7 +169,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/security',
-        name: 'Security',
+        name: 'common_content_tabs_security',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-live'],
@@ -171,7 +178,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/theme',
-        name: 'Theme',
+        name: 'common_content_tabs_theme',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-live'],
@@ -180,7 +187,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/livestreams/:liveId/analytics',
-        name: 'Analytics',
+        name: 'common_navigation_bar_menu_item_analytics',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-per-content-analytics'],
@@ -197,7 +204,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/general',
-        name: 'General',
+        name: 'common_content_tabs_general',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -215,7 +222,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/paywall',
-        name: 'Paywall',
+        name: 'common_navigation_bar_menu_item_paywall',
         iconName: null,
         isExact: true,
         notDisplayedInNavigation: true,
@@ -224,7 +231,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/engagement',
-        name: 'Engagement',
+        name: 'common_content_tabs_engagement',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -233,7 +240,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/security',
-        name: 'Security',
+        name: 'common_content_tabs_security',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -242,7 +249,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/theme',
-        name: 'Theme',
+        name: 'common_content_tabs_theme',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -260,7 +267,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/analytics',
-        name: 'Analytics',
+        name: 'common_navigation_bar_menu_item_analytics',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-per-content-analytics'],
@@ -269,7 +276,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/expos/:exposId/general',
-        name: 'General',
+        name: 'common_content_tabs_general',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-expo'],
@@ -319,7 +326,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/playlists/:playlistId/general',
-        name: 'General',
+        name: 'common_content_tabs_general',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-playlists'],
@@ -337,7 +344,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/playlists/:playlistId/paywall',
-        name: 'Paywall',
+        name: 'common_navigation_bar_menu_item_paywall',
         component: PlaylistPaywall,
         iconName: null,
         isExact: true,
@@ -346,7 +353,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/playlists/:playlistId/security',
-        name: 'Security',
+        name: 'common_content_tabs_security',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-playlists'],
@@ -355,7 +362,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/playlists/:playlistId/theme',
-        name: 'Theme',
+        name: 'common_content_tabs_theme',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-playlists'],
@@ -568,11 +575,5 @@ export const AppRoutes: Routes[] = [
         isPublic: true,
         notDisplayedInNavigation: true,
         component: NotFound
-    },
-    {
-        path: '/',
-        name: 'common_navigation_bar_menu_item_dashboard',
-        iconName: 'dashboard',
-        component: DashboardTest,
     },
 ];
