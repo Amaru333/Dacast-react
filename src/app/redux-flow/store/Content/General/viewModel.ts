@@ -1,4 +1,4 @@
-import { AssetTypeEndpoint, ContentUploadType, DeleteContentImageAssetIdInput, PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from "../../../../../DacastSdk/common";
+import { AdvancedStreamingToggleInput, AssetTypeEndpoint, ContentUploadType, DeleteContentImageAssetIdInput, PostUploadUrlInput, PostUploadUrlOutput, PutUploadFileInput } from "../../../../../DacastSdk/common";
 import { GetExpoDetailsOutput, PutExpoDetailsInput } from "../../../../../DacastSdk/expo";
 import { GetLiveDetailsOutput, PostEncoderKeyOutput, PutLiveDetailsInput } from "../../../../../DacastSdk/live";
 import { GetPlaylistDetailsOutput, PutPlaylistDetailsInput } from "../../../../../DacastSdk/playlist";
@@ -89,7 +89,10 @@ export const formatGetLiveDetailsOutput = (contentType: ContentType) => (data: G
         streamKeys: data.streamKeys,
         encoderKey: data.encoderKey,
         uploadurl: null,
-        contentType: contentType
+        contentType: contentType,
+        advancedStreaming: data.advancedStreaming,
+        china: data.china,
+        advancedStreamingStatus: data.advancedStreamingStatus as any,
     }
 
     return formattedData
@@ -333,6 +336,14 @@ export const formatDeleteContentImageAssetInput = (data: {id: string; contentId:
     let formattedData: DeleteContentImageAssetIdInput = {
         id: data.contentId,
         targetId: data.id
+    }
+
+    return formattedData
+}
+
+export const formatAdvancedStreamingToggleInput = (data: {id: string}): AdvancedStreamingToggleInput => {
+    let formattedData: AdvancedStreamingToggleInput = {
+        id: data.id
     }
 
     return formattedData

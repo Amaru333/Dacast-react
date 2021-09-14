@@ -88,6 +88,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 // rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
                 renditionCount: renditionCount,
+                enabledAdvancedStreaming: streamSetupOptions.advancedStreaming.enabled,
                 china: streamSetupOptions.advancedStreaming.china
             }
         )

@@ -9,6 +9,7 @@ export enum ActionTypes {
     ADD_CONTENT_SUBTITLE = "@@content_general/ADD_CONTENT_SUBTITLE",
     EDIT_CONTENT_SUBTITLE = "@@content_general/EDIT_CONTENT_SUBTITLE",
     DELETE_CONTENT_SUBTITLE = "@@content_general/DELETE_CONTENT_SUBTITLE",
+    ADVANCED_STREAMING_TOGGLE = "@@content_general/ADVANCED_STREAMING_TOGGLE",
     GET_UPLOAD_URL = "@@content_general/GET_UPLOAD_URL",
     UPLOAD_IMAGE = "@@content_general/UPLOAD_IMAGE",
     UPLOAD_IMAGE_FROM_VIDEO = "@@content_general/UPLOAD_IMAGE_FROM_VIDEO",
@@ -71,6 +72,8 @@ export interface LiveDetails {
     encoderKey: string
     uploadurl: string
     china: boolean
+    advancedStreaming: boolean
+    advancedStreamingStatus: 'starting' | 'running' | 'stopping' | 'stopped' | 'other'
 }
 
 export interface PlaylistDetails {

@@ -36,6 +36,9 @@ export interface GetLiveDetailsOutput {
     provider: string
     streamKeys: string[]
     watchingStatus: boolean
+    advancedStreaming: boolean
+    advancedStreamingStatus: string
+    china: boolean
 }
 
 export type ChannelRegion = 'north-america' | 'asia-pacific' | 'europe'
@@ -45,6 +48,7 @@ export interface PostLiveInput {
     online: boolean
     region: ChannelRegion
     renditionCount: number
+    enabledAdvancedStreaming: boolean
     china: boolean
 }
 

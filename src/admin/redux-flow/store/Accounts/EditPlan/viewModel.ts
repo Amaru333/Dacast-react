@@ -34,6 +34,7 @@ export const formatGetAccountPlanOutput = (data: GetAccountPlanOutput): PlanInfo
         phoneSupport: data.phoneSupport,
         paymentRequest: data.paymentRequest,
         unsecureVod: data.unsecureVod,
+        advancedStreaming: data.advancedStreaming,
         expiresAt: data.expiresAt ? new Date(data.expiresAt * 1000).toISOString().replace('T', ' T') : '',
         multiUserAccess: data.multiUserAccess ? data.multiUserAccess : {
             planValue: false,
