@@ -116,13 +116,37 @@ export default function WebRTCPage() {
 
         <VideoContainer>
           <Navigation>
-            <IconStyle
-              style={{ color: "white", marginTop: "7px" }}
-              className="mr1 self-center"
-            >
-              exit_to_app
-            </IconStyle>
+            <p style={{ marginLeft: "10px" }}>New live stream</p>
+            <div>
+              <IconStyle
+                style={{ color: "white", marginTop: "7px" }}
+                className="mr1 self-center"
+              >
+                exit_to_app
+              </IconStyle>
+            </div>
           </Navigation>
+          <Timer>
+            <p
+              style={{
+                color: "#fff",
+                border: "1px solid #fff",
+                alignSelf: "center",
+                padding: "3px",
+              }}
+            >
+              <span style={{ color: "#D14642" }}>•</span>&nbsp;&nbsp;LIVE
+            </p>
+            <p style={{ color: "#fff", alignSelf: "center" }}>00:00:00</p>
+            <p style={{ color: "#fff", alignSelf: "center" }}>
+              <IconStyle
+                style={{ color: "white", margin: "0" }}
+                className="mr1 self-center"
+              >
+                people
+              </IconStyle>
+            </p>
+          </Timer>
           {playing === true ? (
             <video
               autoPlay
@@ -176,16 +200,28 @@ export const InactiveContainer = styled.div<{}>`
   justify-content: center;
 `;
 
+export const Timer = styled.div<{}>`
+  display: flex;
+  width: 15%;
+  justify-content: space-around;
+`;
+
 export const MenuBar = styled.div<{}>`
   background-color: #2b2b2b;
   border-right: 1px solid #58606e;
 `;
 
 export const Navigation = styled.div<{}>`
+  color: #fff;
+  display: flex;
   background-color: #2b2b2b;
   width: 100%;
   height: 40px;
   text-align: right;
+  align-items: center;
+  padding: 10px 0px 10px 0px;
+  justify-content: space-between;
+  border-bottom: 1px solid #58606e;
 `;
 
 export const MenuOptions = styled.div<{}>`
