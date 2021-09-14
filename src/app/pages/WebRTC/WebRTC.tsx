@@ -10,6 +10,7 @@ import RecordStream from "./PopUps/RecordStream";
 import ShareScreenPermission from "./PopUps/ShareScreenPermission";
 import LeftStream from "./PopUps/LeftStream";
 import StreamEnded from "./PopUps/StreamEnded";
+import ThumbnailPopUp from "./PopUps/ThumbnailPopUp";
 
 export default function WebRTCPage() {
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -190,6 +191,7 @@ export default function WebRTCPage() {
       <ShareScreenPermission />
       <LeftStream />
       <StreamEnded />
+      <ThumbnailPopUp />
     </div>
   );
 }
