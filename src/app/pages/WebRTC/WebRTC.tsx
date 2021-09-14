@@ -185,13 +185,13 @@ export default function WebRTCPage() {
 
         {toggleParticipants && <Participants members={memberList} />}
       </RTCContainer>
-      <button onClick={handleParticipants}>Participants</button>
-      <RTCSettings />
+      {/* <button onClick={handleParticipants}>Participants</button> */}
+      {/* <RTCSettings />
       <RecordStream />
       <ShareScreenPermission />
       <LeftStream />
       <StreamEnded />
-      <ThumbnailPopUp />
+      <ThumbnailPopUp /> */}
     </div>
   );
 }

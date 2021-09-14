@@ -565,12 +565,12 @@ export const AppRoutes: Routes[] = [
     notDisplayedInNavigation: true,
     component: Uploader,
   },
-  {
-    path: "/web-rtc",
-    name: "WebRTC",
-    notDisplayedInNavigation: true,
-    component: WebRTC,
-  },
+  // {
+  //   path: "/web-rtc",
+  //   name: "WebRTC",
+  //   notDisplayedInNavigation: true,
+  //   component: WebRTC,
+  // },
   {
     path: "*",
     name: "404",
