@@ -14,6 +14,7 @@ export const SupportCard = styled(Card)`
 
 export const WidgetHeader = styled.div<{}>`
     margin-bottom: 16px;
+    position: relative;
 `;
 
 export const WidgetHeaderTop = styled.div<{}>`

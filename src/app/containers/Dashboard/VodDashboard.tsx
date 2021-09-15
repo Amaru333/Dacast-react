@@ -35,8 +35,10 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                 <WidgetElement placeholderWidget={vodDataFetching} className={itemClass}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
-                        <IconStyle id="totalVideosTooltip" className="ml-auto">info_outlined</IconStyle>
-                        <Tooltip target="totalVideosTooltip">The number of VOD assets in your account</Tooltip>
+                        <div className="relative ml-auto">
+                            <IconStyle id="totalVideosTooltip">info_outlined</IconStyle>
+                            <Tooltip target="totalVideosTooltip" style={{whiteSpace: 'nowrap'}}>The number of VOD assets in your account</Tooltip>
+                        </div>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">{totalVideos}</Text>
@@ -48,8 +50,10 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> Impressions </Text>
-                                <IconStyle id="impressionsTooltip" className="ml-auto">info_outlined</IconStyle>
-                                <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
+                                <div className="relative ml-auto">
+                                    <IconStyle id="impressionsTooltip" >info_outlined</IconStyle>
+                                    <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
+                                </div>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
                                 <Text size={48} weight="reg" color="gray-1">{props.profile.impressions ? props.profile.impressions : 0}</Text>
@@ -68,8 +72,10 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
                                 <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
-                                <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outlined</IconStyle>
-                                <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
+                                <div className="relative ml-auto">
+                                    <IconStyle id="playrateVsImpressionsTooltip">info_outlined</IconStyle>
+                                    <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
+                                </div>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
                                 <DoughnutChart value={props.profile.impressions? getPercentage(props.profile.videoPlays, props.profile.impressions) : 0}/>
