@@ -48,12 +48,9 @@ export const handleFeatures = (item: FolderAsset | ContentItem , id: string): JS
     if (item.featuresList.advertising) {
         element.push(
             <IconGreyContainer key={'featureIconAdvertising' + id} className="mr1" >
-                <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>
-                    <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <Text size={14} color='gray-3' weight="med">AD</Text>
-                    </div>
-
-                </IconStyle>
+                <div id={"advertisingTooltip" + id} style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <Text size={14} color='gray-3' weight="med">AD</Text>
+                </div>
                 <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
             </IconGreyContainer>)
     }
