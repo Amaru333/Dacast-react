@@ -183,7 +183,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                 </div>
             </ModalContent>
             <ModalFooter className="mt1" >
-                <Button onClick={() => props.toggle(false)}>Close</Button>
+                <Button onClick={() => props.toggle(false)}>{t('common_button_text_close')}</Button>
             </ModalFooter>
         </Modal>
     )

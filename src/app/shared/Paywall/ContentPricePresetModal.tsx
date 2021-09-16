@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { useTranslation } from 'react-i18next';
 
 const pricesList = [
     {
@@ -39,6 +40,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     const presetDropdownList = props.presetList.map((item) => {
         let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
@@ -116,14 +118,14 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     <DropdownSingle
                         id='pricePresetSelectDropdown'
                         className='col col-6'
-                        dropdownTitle='Preset'
-                        dropdownDefaultSelect='Custom Price'
+                        dropdownTitle={t('common_paywall_price_modal_preset_dropdown_title')}
+                        dropdownDefaultSelect={t('common_paywall_price_modal_preset_dropdown_custom_price_option')}
                         list={props.presetList ? presetDropdownList : []}
                         callback={(item: DropdownSingleListItem) => { return setNewPricePreset(item.data); }}
                     />
                     {
                         newPricePreset.id === "custom" &&
-                            <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label='Save as Price Preset' defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
+                            <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label={t('common_paywall_price_modal_save_as_preset_checkbox')} defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
                     }
 
                 </PresetSelectRow>
@@ -136,7 +138,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 <DropdownSingle
                     id='pricePresetTypeDropdown'
                     className={'col col-12 sm-col-6 mb2 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
-                    dropdownTitle='Preset Type'
+                    dropdownTitle={t('common_paywall_price_modal_preset_type_dropdown')}
                     dropdownDefaultSelect={newPricePreset.priceType}
                     list={presetTypeDropdownList}
                     callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
