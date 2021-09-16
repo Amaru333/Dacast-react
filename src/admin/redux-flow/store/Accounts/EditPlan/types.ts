@@ -20,6 +20,7 @@ export interface PlanInfo {
     liveStream: PlanSetting;
     compatibleStreams: PlanSetting;
     chinaStreams: PlanSetting;
+    advancedStreaming: PlanSetting;
     dvr: PlanSetting;
     recording: PlanSetting;
     vod: PlanSetting;

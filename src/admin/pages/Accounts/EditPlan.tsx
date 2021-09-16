@@ -194,6 +194,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.chinaStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.chinaStreams.planValue || props.accountPlan.chinaStreams.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('chinaStreams', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>Advanced Streaming</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.advancedStreaming.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={props.accountPlan.advancedStreaming.planValue || props.accountPlan.advancedStreaming.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('advancedStreaming', value === 'On' ? true : false)} />
+                    </div>
                     <Text className='py1' size={14} weight='med'>Compatible Streams (M3U8)</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.compatibleStreams.planValue ? 'Plan: On' : 'Plan: Off'}</Text>

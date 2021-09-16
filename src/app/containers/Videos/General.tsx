@@ -9,7 +9,7 @@ import { useParams, Prompt } from 'react-router-dom';
 import { VideoTabs } from './VideoTabs';
 import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
-import { getContentDetailsAction, editContentDetailsAction, getUploadUrlAction, uploadFileAction, uploadImageFromVideoAction, deleteFileAction, deleteSubtitleAction, addSubtitleAction, Action } from '../../redux-flow/store/Content/General/actions';
+import { getContentDetailsAction, editContentDetailsAction, getUploadUrlAction, uploadFileAction, uploadImageFromVideoAction, deleteFileAction, deleteSubtitleAction, addSubtitleAction, Action, advancedStreamingToggleAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
@@ -25,20 +25,8 @@ import { Divider } from '../../../shared/MiscStyles';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { ContentUploadType } from '../../../DacastSdk/common';
 
-export interface GeneralComponentProps {
-    contentDetailsState: ContentDetailsState;
-    contentDetails: ContentDetails;
-    getContentDetails: (contentId: string, contentType: ContentType) => Promise<void>
-    saveContentDetails: (data: ContentDetails, contentType: ContentType) => Promise<void>;
-    getUploadUrl: (uploadType: string, contentId: string, extension: string, contentType: ContentType, subtitleInfo?: SubtitleInfo) => Promise<void>;
-    uploadFile: (data: File, uploadUrl: string) => Promise<void>;
-    deleteFile: (contentId: string, targetId: string, uploadType: string, contentType: ContentType) => Promise<void>;
-    showToast: (text: string, size: Size, notificationType: NotificationType) => void;
-    uploadImageFromVideo?: (contentId: string, time: number, imageType: string) => Promise<void>
-    deleteSubtitle?: (contentId: string, targetId: string, contentType: ContentType) => Promise<void>;
-    addSubtitle?: (data: File, uploadUrl: string, subtitleInfo: SubtitleInfo, contentId: string, contentType: ContentType) => Promise<void>;
-    generateEncoderKey?: (liveId: string) => Promise<void>
-}
+export type GeneralComponentProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
 const General = (props: GeneralComponentProps) => {
 
     let { vodId } = useParams<{vodId: string}>()

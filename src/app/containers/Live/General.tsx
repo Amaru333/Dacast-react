@@ -10,7 +10,7 @@ import { Size, NotificationType } from '../../../components/Toast/ToastTypes';
 import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { GeneralComponentProps } from '../Videos/General';
 import { ContentDetails, LiveDetails } from '../../redux-flow/store/Content/General/types';
-import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction, generateEncoderKeyAction } from '../../redux-flow/store/Content/General/actions';
+import { Action, getContentDetailsAction, editContentDetailsAction, deleteFileAction, uploadFileAction, getUploadUrlAction, generateEncoderKeyAction, advancedStreamingToggleAction } from '../../redux-flow/store/Content/General/actions';
 import { ErrorPlaceholder } from '../../../components/Error/ErrorPlaceholder';
 import { Card } from '../../../components/Card/Card';
 import { GeneralDetails } from '../../shared/General/Details';
@@ -26,6 +26,9 @@ import { Divider } from '../../../shared/MiscStyles';
 import { EncoderSettingsModal } from '../../shared/General/EncoderSettingsModal';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { ContentUploadType } from '../../../DacastSdk/common';
+import { AdvancedStreaming } from '../../shared/General/AdvancedStreaming';
+import { dacastSdk } from '../../utils/services/axios/axiosClient';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -107,6 +110,19 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                     setLocalContentDetails={setContentDetails}
                                     setHasChanged={setHasChanged}
                                 />
+                                {contentDetails.advancedStreaming && (
+                                    <>
+                                    <Divider className="col col-12 mt3 mr25 mb25" />
+                                    <AdvancedStreaming
+                                        contentDetails={stateContentDetails}
+                                        localContentDetails={contentDetails}
+                                        setLocalContentDetails={setContentDetails}
+                                        setHasChanged={setHasChanged}
+                                        advancedStreamingToggle={props.advancedStreamingToggle}
+                                        getAdvancedStreamingStatus={() => dacastSdk.getChannelDetails(liveId).then(d => d.advancedStreamingStatus)}
+                                    />
+                                    </>
+                                )}
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralImages 
                                     contentType="live"
@@ -210,6 +226,9 @@ export function mapStateToProps(state: ApplicationState) {
 
 export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, void, Action>) {
     return {
+        advancedStreamingToggle: async (contentId: string) => {
+            await dispatch(advancedStreamingToggleAction({id: contentId}));
+        },
         getContentDetails: async (liveId: string, contentType: ContentType) => {
             await dispatch(getContentDetailsAction(contentType)(liveId));
         },
@@ -221,8 +240,8 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         uploadFile: async (data: File, uploadUrl: string, contentId: string, contentType: ContentType) => {
             await dispatch(uploadFileAction(contentType)({data: data, uploadUrl: uploadUrl, contentId: contentId}))
-         },
-         deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
+        },
+        deleteFile: async (contentId: string, targetId: string, contentType: ContentType, imageType: string) => {
             await dispatch(deleteFileAction(contentType)({contentId: contentId, id: targetId}))
         },
         generateEncoderKey: async (liveId: string) => {

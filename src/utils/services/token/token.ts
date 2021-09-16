@@ -28,10 +28,11 @@ export type MultiAccessPrivilege = "privilege-multi-access"
 export type ApiBetaPrivilege = "privilege-api-beta"
 export type AdminPrivilege = "privilege-admin"
 export type PerContentAnalyticsPrivilege = "privilege-per-content-analytics"
+export type AdvancedStreamingPrivilege = "privilege-advanced-streaming"
 
 export type Privilege = AdverstisingPrivilege | AesPrivilege | AesBetaPrivilege | ApiPrivilege | ChinaPrivilege | DvrPrivilege | EmailCatcherPrivilege | FoldersPrivilege |
 GroupIdPrivilege | LivePrivilege | PaywallPrivilege | PlayerDownloadPrivilege | PlaylistPrivilege | RecordingPrivilege | SignedKeysPrivilege | UnsecureM3u8Privilege |
-VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege | UnsecureM3u8VodPrivilege;
+VodPrivilege | WebDownloadPrivilege | AnalyticsPrivilege | ExposPrivilege | PhoneSupportPrivilege | BillingPrivilege | PaymentRequestPrivilege | AccoutSettingsPrivilege | MultiUserBetaPrivilege | MultiAccessPrivilege | ApiBetaPrivilege | AdminPrivilege | PerContentAnalyticsPrivilege | UnsecureM3u8VodPrivilege | AdvancedStreamingPrivilege;
 
 type ExtraUserInfo = 'user-id' | 'custom:first_name' | 'custom:last_name' | 'email' | 'custom:website' | 'planName' | 'planAmount' | 'companyName'
 

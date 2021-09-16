@@ -110,6 +110,10 @@ export interface DeleteContentImageAssetIdInput {
     targetId: string
 }
 
+export interface AdvancedStreamingToggleInput {
+    id: string
+}
+
 export interface GetContentPaywallInfoOutput {
     introVodId: string
     paywallEnabled: boolean
