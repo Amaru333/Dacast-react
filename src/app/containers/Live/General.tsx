@@ -28,6 +28,7 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 import { ContentUploadType } from '../../../DacastSdk/common';
 import { AdvancedStreaming } from '../../shared/General/AdvancedStreaming';
 import { dacastSdk } from '../../utils/services/axios/axiosClient';
+import { userToken } from '../../utils/services/token/tokenService';
 
 export const LiveGeneral = (props: GeneralComponentProps) => {
 
@@ -109,15 +110,19 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
                                     setLocalContentDetails={setContentDetails}
                                     setHasChanged={setHasChanged}
                                 />
-                                <Divider className="col col-12 mt3 mr25 mb25" />
-                                <AdvancedStreaming
-                                    contentDetails={stateContentDetails}
-                                    localContentDetails={contentDetails}
-                                    setLocalContentDetails={setContentDetails}
-                                    setHasChanged={setHasChanged}
-                                    advancedStreamingToggle={props.advancedStreamingToggle}
-                                    getAdvancedStreamingStatus={() => dacastSdk.getChannelDetails(liveId).then(d => d.advancedStreamingStatus)}
-                                />
+                                {contentDetails.advancedStreaming && (
+                                    <>
+                                    <Divider className="col col-12 mt3 mr25 mb25" />
+                                    <AdvancedStreaming
+                                        contentDetails={stateContentDetails}
+                                        localContentDetails={contentDetails}
+                                        setLocalContentDetails={setContentDetails}
+                                        setHasChanged={setHasChanged}
+                                        advancedStreamingToggle={props.advancedStreamingToggle}
+                                        getAdvancedStreamingStatus={() => dacastSdk.getChannelDetails(liveId).then(d => d.advancedStreamingStatus)}
+                                    />
+                                    </>
+                                )}
                                 <Divider className="col col-12 mt3 mr25 mb25" />
                                 <GeneralImages 
                                     contentType="live"
