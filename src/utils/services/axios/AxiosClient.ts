@@ -169,6 +169,7 @@ export class AxiosClient {
         }).catch((error: any) => {
             if(error.response.data.error.indexOf('Refresh Token has expired') > -1 || error.response.data.error.indexOf('Refresh Token has been revoked') > -1) {
                 EventHooker.dispatch('EVENT_FORCE_LOGOUT', undefined)
+                console.log('error:', error)
             }
             return Promise.reject(error);
         })  
