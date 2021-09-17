@@ -15,7 +15,7 @@ export const currencyDropdownList = CURRENCY.map((item: string) => {
 })
 
 //PRICE PRESETS
-export const presetTypeDropdownList = [{title: "Subscription"}, {title: "Pay Per View"}]
+export const presetTypeDropdownList = [{title: "common_paywall_price_modal_preset_type_subscription_option", data: {id: 'Subscription'}}, {title: 'common_paywall_price_modal_preset_type_pay_per_view_option',data:{ id: "Pay Per View"}}]
 
 export const recurrenceDropdownList = [{title: "Weekly"}, {title: "Monthly"}, {title: "Quarterly"}, {title: "Biannual"}]
 

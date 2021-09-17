@@ -20,7 +20,7 @@ interface DropdownCustomProps {
     ref?: React.Ref<HTMLDivElement>;
     callback?: Function;
     hasSearch?: boolean;
-    dropdownDefaultSelect?: string;
+    dropdownDefaultSelect?: string | DropdownSingleListItem;
     isInModal?: boolean;
     disabled?: boolean;
     isWhiteBackground?: boolean;

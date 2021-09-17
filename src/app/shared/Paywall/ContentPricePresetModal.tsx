@@ -66,11 +66,11 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 return (
                     <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center ' + (key === newPricePreset.prices.length - 1 ? '' : 'mb2')}>
                         <div className='col sm-col-12 col-12 clearfix flex'>
-                            <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
+                            <Input type='number' className={"col sm-col-3 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? t('common_paywall_price_table_header_price') : ''} />
                             <DropdownSingle hasSearch className={'col sm-col-3 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList}  />
                             {
                                 key === newPricePreset.prices.length - 1 ?
-                                    <div onClick={() => setNewPricePreset({ ...newPricePreset, prices: [...newPricePreset.prices, { value: 0, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex items-center xs-justify-center sm-ml2 ' + (key === 0 ? 'mt3 ' : '')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                                    <div onClick={() => setNewPricePreset({ ...newPricePreset, prices: [...newPricePreset.prices, { value: 0, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex items-center xs-justify-center sm-ml2 ' + (key === 0 ? 'mt3 ' : '')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>{t('common_paywall_price_modal_add_price_button_text')}</Text></div>
                                     : <div className={'pointer col col-2 sm-col-6 sm-ml2 px1 flex items-center xs-justify-center' + (key === 0 ? ' mt3 ' : '')} ><IconStyle onClick={() => { var newList = newPricePreset.prices.filter((item, index) => { return index !== key }); setNewPricePreset({ ...newPricePreset, prices: newList }) }} >close</IconStyle></div>
                             }
                         </div>
@@ -139,9 +139,9 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     id='pricePresetTypeDropdown'
                     className={'col col-12 sm-col-6 mb2 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
                     dropdownTitle={t('common_paywall_price_modal_preset_type_dropdown')}
-                    dropdownDefaultSelect={newPricePreset.priceType}
-                    list={presetTypeDropdownList}
-                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    dropdownDefaultSelect={{title: t('common_paywall_price_modal_preset_type_pay_per_view_option'), data: {id: newPricePreset.priceType}}}
+                    list={presetTypeDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.data.id, settings:{...newPricePreset.settings, startMethod: item.data.id === 'Subscription' ? 'Upon Purchase' : newPricePreset.settings.startMethod, recurrence: item.data.id == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.data.id === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -188,7 +188,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Upon Purchase' : "Schedule", startDate: ts,  timezone: timezone}}) }
                     hideOption="Upon Purchase"
                     id="endDate"
-                    dropdownTitle="Start Method"
+                    dropdownTitle={t('common_paywall_price_table_header_start_method')}
                     disabled={newPricePreset.priceType === 'Subscription'}
                 />
             </div>
