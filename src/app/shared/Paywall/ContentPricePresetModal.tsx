@@ -43,10 +43,10 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
     const { t } = useTranslation()
 
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
-        presetDropdownListItem.title = item.name
-        presetDropdownListItem.data = item
-        return presetDropdownListItem
+        return {
+            title: item.name === 'Custom Price' ? t('common_paywall_price_modal_preset_dropdown_custom_price_option') : item.name,
+            data: item
+        }
     })
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
@@ -154,26 +154,26 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                             id='pricePresetRecurrenceDropdown' 
                             dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'} 
                             dropdownTitle='Recurrence'
-                            list={recurrenceDropdownList}
-                            callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: item.title}}})}
+                            list={recurrenceDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                            callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: item.data.id}}})}
 
                         />
                         :
                         <>
                             <Input
                                 className='col col-6 pr1'
-                                label='Duration'
+                                label={t('common_paywall_price_modal_duration_dropdown_title')}
                                 defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''} 
                                 onChange={(event) => setNewPricePreset({ ...newPricePreset, settings:{ ...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, value: parseInt(event.currentTarget.value) }} })}
                             />
                             <DropdownSingle
                                 id='pricePresetDurationDropdown' 
                                 className='col col-6 pl1 mt-auto' 
-                                dropdownDefaultSelect={newPricePreset.settings.duration.unit} 
-                                callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: item.title }}})} 
+                                dropdownDefaultSelect={t(durationDropdownList.find(d => d.data.id === newPricePreset.settings.duration.unit).title)} 
+                                callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: item.data.id }}})} 
                                 dropdownTitle=''
-                                list={durationDropdownList}
-                            />
+                                list={durationDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                                />
                         </>
                 }
 

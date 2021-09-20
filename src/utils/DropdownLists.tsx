@@ -17,11 +17,11 @@ export const currencyDropdownList = CURRENCY.map((item: string) => {
 //PRICE PRESETS
 export const presetTypeDropdownList = [{title: "common_paywall_price_modal_preset_type_subscription_option", data: {id: 'Subscription'}}, {title: 'common_paywall_price_modal_preset_type_pay_per_view_option',data:{ id: "Pay Per View"}}]
 
-export const recurrenceDropdownList = [{title: "Weekly"}, {title: "Monthly"}, {title: "Quarterly"}, {title: "Biannual"}]
+export const recurrenceDropdownList = [{title: "Weekly", data: {id: "Weekly"}}, {title: "Monthly", data: {id: "Monthly"}}, {title: "Quarterly", data: {id: "Quaterly"}}, {title: "Biannual", data: {id: "Biannual"}}]
 
-export const durationDropdownList = [{title: "Hours"}, {title: "Days"}, {title: "Weeks"}, {title: "Months"}]
+export const durationDropdownList = [{title: "common_paywall_price_modal_duration_dropdown_hours_option", data: {id: "Hours"}}, {title: "common_paywall_price_modal_duration_dropdown_days_option", data: {id: "Days"}}, {title: "common_paywall_price_modal_duration_dropdown_weeks_option", data: {id: "Weeks"}}, {title: "common_paywall_price_modal_duration_dropdown_months_option", data: {id: "Months"}}]
 
-export const startMethodDropdownList = [{title: "Upon Purchase"}, {title: "Schedule"}]
+export const startMethodDropdownList = [{title: "common_paywall_price_modal_upon_purchase_dropdown_title", data: {id: "Upon Purchase"}}, {title: "Schedule", data: {id:"Schedule"}}]
 
 //PROMO
 export const availableStartDropdownList = [{title: "Always"}, {title: "Set Date and Time"}]
