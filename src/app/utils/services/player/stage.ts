@@ -4,7 +4,7 @@ enum Stages {
 }
 
 let stage: Stages
-const DevKeywords =  ['singularity']
+const DevKeywords = ['singularity']
 if (DevKeywords.some(keyword => process.env.API_BASE_URL.indexOf(keyword) !== -1)) {
     stage = Stages.Staging
 } else {
