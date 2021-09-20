@@ -22,6 +22,7 @@ import { UpgradePaymentStep } from './UpgradePaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { countries } from 'countries-list';
 import { ContactOwnerModal } from '../Users/ContactOwnerModal';
+import { isStaging } from '../../../utils/services/player/stage';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const env = process.env.NODE_ENV || 'development'
@@ -40,7 +41,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
-    const pricingIframeBaseUrl = env === 'production' ? 'https://unified-pricing.dacast.com' : 'https://singularity-unified-pricing.dacast.com'
+    const pricingIframeBaseUrl = env === 'production' && !isStaging() ? 'https://unified-pricing.dacast.com' : 'https://singularity-unified-pricing.dacast.com'
     const pricingIframeUrl = `${pricingIframeBaseUrl}/index-upgrade.html`
     const [iframeHeight, setIframeHeight] = React.useState<number>(0)
     const [idleSeconds, setIdleSeconds] = React.useState(0)
