@@ -97,7 +97,7 @@ export const DesignPage = (props: DesignComponentProps & { refresh: Function; up
                         isInModal
                         className='col-12 py1 clearfix'
                         dropdownTitle='Featured Content'
-                        defaultSelected={stateContentDetails.featuredContentId ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId).title : null}
+                        defaultSelected={props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId) ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId).title : null}
                         callback={(item: DropdownSingleListItem) => setStateContentDetails({ ...stateContentDetails, featuredContentId: item.data }) }
                         list={assetsDropdownList}
                     />

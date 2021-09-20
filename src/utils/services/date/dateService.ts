@@ -101,3 +101,14 @@ export const formatTsToMs = (ts: number): number => {
     }
     return startTime = ts * 1000
 }
+
+// LS - the time data is inconsistent and may be millisecond or second formatted.
+// To clean it up, we're just taking the first 10 digits of whatever we get.
+// This should work until Saturday, 20th November, 2286
+export const sanitiseUnixTime = (time: number): number => {
+  if(!time) {
+    return 0
+  }
+
+  return parseInt(time.toString().slice(0, 10))
+}

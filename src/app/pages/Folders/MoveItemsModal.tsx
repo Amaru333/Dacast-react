@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContentType, FolderTreeNode } from '../../redux-flow/store/Folders/types';
+import { FolderContent, FolderTreeNode } from '../../redux-flow/store/Folders/types';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { ModalItemFolderRow, MoveFoldersContainer } from './FoldersStyle';
 import { Text } from '../../../components/Typography/Text';
@@ -15,7 +15,7 @@ import { FolderTree } from '../../utils/services/folder/folderService';
 
 interface MoveItemModalProps {
     initialSelectedFolder: string;
-    movedContent: ContentType[];
+    movedContent: FolderContent[];
     showToast: (text: string, size: Size, notificationType: NotificationType) => void; 
     toggle: React.Dispatch<React.SetStateAction<boolean>>; 
     newFolderModalToggle: React.Dispatch<React.SetStateAction<boolean>>; 

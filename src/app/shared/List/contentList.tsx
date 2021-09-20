@@ -41,6 +41,11 @@ import { InputSearchStyle } from '../General/GeneralStyle';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { DashboardInfos } from '../../redux-flow/store/Dashboard/types';
 import { useTranslation } from 'react-i18next';
+import { ContentEmptyState } from './EmptyState';
+import { dacastSdk } from '../../utils/services/axios/axiosClient';
+import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
+import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
+import { formatGetContentListInput } from '../../redux-flow/store/Content/List/viewModel';
 
 interface ContentListProps {
     contentType: ContentType;
@@ -55,6 +60,7 @@ interface ContentListProps {
 
 export const ContentListPage = (props: ContentListProps) => {
 
+    const DEFAULT_QS = 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc'
     let history = useHistory()
 
     let qs = useQuery()
@@ -69,7 +75,7 @@ export const ContentListPage = (props: ContentListProps) => {
             },
             features: {
                 paywall: qs.toString().indexOf('paywall') > -1,
-                advertising: qs.toString().indexOf('advertising') > -1,
+                advertising: qs.toString().indexOf('ads') > -1,
                 playlists: qs.toString().indexOf('playlists') > -1,
                 // recording: qs.toString().indexOf('recording') > -1,
                 // rewind: qs.toString().indexOf('rewind') > -1
@@ -105,9 +111,10 @@ export const ContentListPage = (props: ContentListProps) => {
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
     const [addExpoModalOpen, setAddExpoModalOpen] = React.useState<boolean>(false)
     const [addPlaylistModalOpen, setAddPlaylistModalOpen] = React.useState<boolean>(false)
-    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || 'status=online,offline&page=1&perPage=10&sortBy=created-at-desc')
+    const [qsParams, setQsParams] = React.useState<string>(qs.toString() || DEFAULT_QS)
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [previewedContent, setPreviewedContent] = React.useState<string>(null)
+    const [showEmptyState, setShowEmptyState] = React.useState<boolean>(true)
 
     const { t } = useTranslation()
 
@@ -138,13 +145,35 @@ export const ContentListPage = (props: ContentListProps) => {
             console.log('vod was uploaded!')
         }
         EventHooker.subscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
-
+        if(qs.toString() !== DEFAULT_QS) {
+            switch(props.contentType) {
+                case 'vod':
+                    dacastSdk.getVods(formatGetContentListInput(DEFAULT_QS))
+                    .then((response) => {setShowEmptyState(response.totalResults === 0)})
+                    break
+                case 'live':
+                    dacastSdk.getChannels(formatGetContentListInput(DEFAULT_QS))
+                    .then((response) => {setShowEmptyState(response.totalResults === 0)})
+                    break
+                case 'playlist':
+                    dacastSdk.getPlaylists(formatGetContentListInput(DEFAULT_QS))
+                    .then((response) => {setShowEmptyState(response.totalResults === 0)})
+                    break
+                case 'expo':
+                    dacastSdk.getExpos(formatGetContentListInput(DEFAULT_QS))
+                    .then((response) => {setShowEmptyState(response.totalResults === 0)})
+                    break
+            }
+        }
         return () => {
             EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
         }
     }, [])
 
     React.useEffect(() => {
+        if(showEmptyState && props.items) {
+            setShowEmptyState(props.items.totalResults === 0)
+        }
         setContentList(props.items)
     }, [props.items])
 
@@ -176,7 +205,7 @@ export const ContentListPage = (props: ContentListProps) => {
         if (filters) {
 
             if (filters.features) {
-                returnedString += '&features=' + (filters.features.advertising ? 'advertising' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
+                returnedString += '&features=' + (filters.features.advertising ? 'ads' : '') + (filters.features.paywall ? ',paywall' : '') + (filters.features.playlists ? ',playlists' : '') + (filters.features.recording ? ',recording' : '') + (filters.features.rewind ? ',rewind' : '')
             }
 
             if (filters.status) {
@@ -413,6 +442,14 @@ export const ContentListPage = (props: ContentListProps) => {
         })
     }
 
+    if(!props.items) {
+        return <SpinnerContainer><LoadingSpinner color='violet' size='medium' /></SpinnerContainer>
+    }
+
+    if(showEmptyState) {
+        return <ContentEmptyState contentType={props.contentType} />
+    }
+
     return (
         <>
             <div className={'flex mb2 justify-between ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
@@ -502,7 +539,6 @@ export const ContentListPage = (props: ContentListProps) => {
             }
             <PlanLimitReachedModal allowNavigation type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
         </>
-
     )
 }
 

@@ -56,8 +56,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
         }
     })
 
-    const [startTime, setStartTime] = React.useState<number>(Math.floor(selectedSettings.contentScheduling.startTime/ 1000))
-    const [endTime, setEndTime] = React.useState<number>(Math.floor( selectedSettings.contentScheduling.endTime / 1000))
+    const [startTime, setStartTime] = React.useState<number>(selectedSettings.contentScheduling.startTime)
+    const [endTime, setEndTime] = React.useState<number>(selectedSettings.contentScheduling.endTime)
     const [startTimezone, setStartTimezone] = React.useState<string>(selectedSettings.contentScheduling.startTimezone)
     const [endTimezone, setEndTimezone] = React.useState<string>(selectedSettings.contentScheduling.endTimezone)
 
@@ -98,24 +98,29 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
     const handleSave = () => {
         setButtonLoading(true)
-        props.saveContentSecuritySettings(
-            {
-                passwordProtection: selectedSettings.passwordProtection,
-                contentScheduling: {
-                    startTime: startTime * 1000,
-                    startTimezone: startTimezone,
-                    endTime: endTime * 1000,
-                    endTimezone: endTimezone
-                },
-                useAES: selectedSettings.useAES,
-                selectedGeoRestriction: selectedSettings.selectedGeoRestriction,
-                selectedDomainControl: selectedSettings.selectedDomainControl
+        let securitySettings = {
+            passwordProtection: selectedSettings.passwordProtection,
+            contentScheduling: {
+                startTime: startTime * 1000,
+                startTimezone: startTimezone,
+                endTime: endTime * 1000,
+                endTimezone: endTimezone
             },
-            props.contentId, props.contentType
+            selectedGeoRestriction: selectedSettings.selectedGeoRestriction,
+            selectedDomainControl: selectedSettings.selectedDomainControl
+        }
+
+        if (props.contentType == "vod") {
+          securitySettings.useAES = selectedSettings.useAES
+        }
+
+        props.saveContentSecuritySettings(
+            securitySettings, props.contentId, props.contentType
             ).then(() => {
                 setButtonLoading(false)
                 setHasToggleChanged(false)
-            }).catch(() => setButtonLoading(false))
+            }).catch(() => setButtonLoading(false)
+        )
     }
 
     const handleRevert = () => {
@@ -129,23 +134,27 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     }
 
     const handleUnlockingSettings = () => {
-        props.saveContentSecuritySettings(
-            {
-                passwordProtection: {
-                    password: null
-                },
-                contentScheduling: {
-                    startTime: 0,
-                    startTimezone: null,
-                    endTime: 0,
-                    endTimezone: null
-                },
-                useAES: false,
-                selectedDomainControl: null,
-                selectedGeoRestriction: null,
-                locked: false
+        let defaultSettings = {
+            passwordProtection: {
+                password: null
             },
-            props.contentId, props.contentType
+            contentScheduling: {
+                startTime: 0,
+                startTimezone: null,
+                endTime: 0,
+                endTimezone: null
+            },
+            selectedDomainControl: null,
+            selectedGeoRestriction: null,
+            locked: false
+        }
+
+        if (props.contentType == "vod") {
+          defaultSettings.useAES = false
+        }
+
+        props.saveContentSecuritySettings(
+            defaultSettings, props.contentId, props.contentType
         ).then(() => {
             setSettingsEditable(!settingsEditable)
             setEditSettingsModalOpen(false)
@@ -239,6 +248,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
                     {
                       userToken.getPrivilege('privilege-aes-beta') &&
+                      props.contentType == "vod" &&
                       <div>
                         <Divider className="p1 mb2" />
                         <div className="col col-12">

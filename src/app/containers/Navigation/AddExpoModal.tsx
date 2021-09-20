@@ -6,7 +6,7 @@ import { Modal } from '../../../components/Modal/Modal'
 import { Input } from '../../../components/FormsComponents/Input/Input'
 import { Text } from '../../../components/Typography/Text'
 import { useHistory } from 'react-router'
-import { axiosClient } from '../../utils/services/axios/axiosClient'
+import { dacastSdk } from '../../utils/services/axios/axiosClient'
 import { handleValidationForm } from '../../utils/custom-hooks/formValidationHook'
 import { segmentService } from '../../utils/services/segment/segmentService'
 import { store } from '../..'
@@ -27,20 +27,17 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
 
         setButtonLoading(true)
         
-        return await axiosClient.post('/expos',
-            {
-                title: data.title
-            }
-        ).then((response) => {
+        return await dacastSdk.postExpo({title: data.title})
+        .then((response) => {
             setButtonLoading(false)
             store.dispatch(showToastNotification(`Expo successfully created`, 'fixed', 'success'));
             props.toggle();
             segmentService.track('Expo Created', {
                 action: 'Create Expo',
-                'expo_id': response.data.id,
+                'expo_id': response.id,
                 step: 1,
             })
-            history.push(`/expos/${response.data.id}/setup`)
+            history.push(`/expos/${response.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
             store.dispatch(showToastNotification('Error while creating your expos.', 'fixed', 'error'));

@@ -22,6 +22,7 @@ import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
 import { Divider } from '../../../shared/MiscStyles';
 import { ContentType } from '../../redux-flow/store/Common/types'
 import { useTranslation } from 'react-i18next'
+import { Label } from '../../../components/FormsComponents/Label/Label'
 
 export interface ContentPaywallComponentProps {
     contentId: string;
@@ -58,7 +59,10 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
     const { t } = useTranslation()
+    const [priceList, setPriceList] = React.useState<Preset[]>(props.contentPaywallInfos.prices ? props.contentPaywallInfos.prices.filter(p => p.type === 'individual') : [])
+    const [promoList, setPromoList] = React.useState<Promo[]>(props.contentPaywallInfos.promos ? props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1) : [])
 
+    const associatedGroupPrices = props.contentPaywallInfos.prices ? props.contentPaywallInfos.prices.filter(p => p.type === 'package') : []
     const themeDropdownList = props.theming.themes.map((item) => {
         let themeDropdownListItem: DropdownSingleListItem = {title: null, data: null}
         themeDropdownListItem.title = item.name
@@ -70,30 +74,37 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
         setContentPaywallSettings(props.contentPaywallInfos)
     }, [props.contentPaywallInfos])
 
+    React.useEffect(() => setPriceList(props.contentPaywallInfos.prices ? props.contentPaywallInfos.prices.filter(p => p.type === 'individual') : []), [props.contentPaywallInfos.prices])
+
+    React.useEffect(() => setPromoList(props.contentPaywallInfos.promos ? props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1) : []), [props.contentPaywallInfos.promos])
+
     const pricesTableHeader = () => {
         return {data: [
             {cell: <Text key='pricesTableHeaderType' size={14} weight='med'>Type</Text>},
             {cell: <Text key='pricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
             {cell: <Text key='pricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
             {cell: <Text key='pricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='pricesTableHeaderMethod' size={14} weight='med'>Start Method</Text>},
+            {cell: <Text key='pricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
             {cell: <Button key='pricesTableHeaderButton' className='right mr2  sm-show ' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
 
         ]}
     }
 
     const pricesTableBody = () => {
-        if(props.contentPaywallInfos.prices) {
-            return props.contentPaywallInfos.prices.filter(p => p.type === 'individual').map((price, key) => {
+        if(priceList) {
+            return priceList.map((price, key) => {
                 return {data: [
                     <Text key={'pricesTableBodyType' + key} size={14} weight='reg'>{price.priceType}</Text>,
                     <Text key={'pricesTableBodyPrice' + key} size={14} weight='reg'>{price.prices ? price.prices[0].value : price.price}</Text>,
                     <Text key={'pricesTableBodyCurrency' + key} size={14} weight='reg'>{price.prices ? price.prices[0].currency : price.currency}</Text>,
                     <Text key={'pricesTableBodyDuration' + key} size={14} weight='reg'>{price.settings.recurrence ? price.settings.recurrence.unit : price.settings.duration.value + ' ' + price.settings.duration.unit}</Text>,
-                    <Text key={'pricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod}</Text>,
+                    <Text key={'pricesTableBodyMethod' + key} size={14} weight='reg'>{price.settings.startMethod === 'Available on Purchase' ? 'On Purchase' : 'Date & Time Set'}</Text>,
+                    price.isDeleted ? 
+                    <Label key={'pricesTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                    :
                     <IconContainer className="iconAction" key={'pricesTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPrice" + price.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(price, props.contentId, props.contentType)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPricePreset(price, props.contentId, props.contentType);setPriceList(priceList.map(p => {if(price.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPrice" + price.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltip" + price.id}>
@@ -101,7 +112,9 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltip" + price.id}>Edit</Tooltip>
                     </IconContainer>
-                ]}
+                ],
+                isDisabled: price.isDeleted
+            }
             })
         }
     }
@@ -117,15 +130,18 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     }
 
     const promosTableBody = () => {
-        if(props.contentPaywallInfos.promos) {
-            return props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1).map((promo, key) => {
+        if(promoList) {
+            return promoList.map((promo, key) => {
                 return {data: [
                     <Text key={'promosTableBodyAlphanumericCode' + key} size={14} weight='reg'>{promo.alphanumericCode}</Text>,
-                    <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}</Text>,
+                    <Text key={'promosTableBodyDiscount' + key} size={14} weight='reg'>{promo.discount}%</Text>,
                     <Text key={'promosTableBodyLimit' + key} size={14} weight='reg'>{promo.limit}</Text>,
+                    promo.isDeleted ? 
+                    <Label key={'promosTableBodyActionButtons' + key} backgroundColor="red20" color="red" label='Deleted' />
+                    :
                     <IconContainer className="iconAction" key={'promosTableBodyActionButtons' + key}>
                         <ActionIcon id={"deleteTooltipPromo" + promo.id}>
-                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId, props.contentType)}}>delete</IconStyle>
+                            <IconStyle onClick={() =>  {props.deleteContentPromoPreset(promo, props.contentId, props.contentType);setPromoList(promoList.map(p => {if(promo.id ===p.id) {return {...p, isDeleted: true}} return p}))}}>delete</IconStyle>
                         </ActionIcon>
                         <Tooltip target={"deleteTooltipPromo" + promo.id}>Delete</Tooltip>
                         <ActionIcon id={"editTooltipPromo" + promo.id}>
@@ -133,7 +149,9 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                         </ActionIcon>
                         <Tooltip target={"editTooltipPromo" + promo.id}>Edit</Tooltip>
                     </IconContainer>
-                ]}
+                ],
+                isDisabled: promo.isDeleted
+            }
             })
         }
     }
@@ -150,8 +168,8 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     }
 
     const groupPricesTableBody = () => {
-        if(props.contentPaywallInfos.prices) {
-            return props.contentPaywallInfos.prices.filter(p => p.type === 'package').map((price, key) => {
+        if(associatedGroupPrices) {
+            return associatedGroupPrices.map((price, key) => {
                 return {data: [
                     <Text key={'groupPricesTableBodyName' + key} size={14} weight='reg'>{price.description}</Text>,
                     <Text key={'groupPricesTableBodyType' + key} size={14} weight='reg'>{price.priceType}</Text>,
@@ -222,7 +240,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>{t('common_paywall_price_title')}</Text>
                 <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_price_table_new_price_button_text')}</Button>
-                {props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.filter(p => p.type === 'individual').length > 0 ? 
+                {priceList.length > 0 ? 
                     <Table id='pricesTable' headerBackgroundColor="gray-10" header={pricesTableHeader()} body={pricesTableBody()} />
                     :
                     <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody(t('common_paywall_price_table_table_body_placeholder'))} />
@@ -232,7 +250,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text className="mt1" size={20} weight='med'>{t('common_paywall_promo_title')}</Text>
                 <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>
-                { props.contentPaywallInfos.promos && props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1).length > 0 ?
+                { promoList.length > 0 ?
                     <Table id='promosTable' headerBackgroundColor="gray-10" header={promosTableHeader()} body={promosTableBody()} />
                     :                    
                     <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} body={emptyContentListBody(t('common_paywall_promo_table_table_body_placeholder'))} />
@@ -243,7 +261,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 <Text size={20} weight='med'>{t('common_content_paywall_group_price_title')}</Text>
 
-                { props.contentPaywallInfos.prices && props.contentPaywallInfos.prices.filter(p => p.type === 'package').length > 0 ?
+                { associatedGroupPrices.length > 0 ?
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
                     : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody(t('common_content_paywall_group_price_table_body_placeholder'))} />
                 }

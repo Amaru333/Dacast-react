@@ -34,8 +34,17 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
             return {
                 ...state,
                 prices: {
-                    total: state.prices.total - 1,
-                    packages: state.prices.packages.filter((item) => {return item.id !== action.payload.id})}
+                    total: state.prices.total,
+                    packages: state.prices.packages.map((item) => {
+                        if(item.id === action.payload.id) {
+                            return {
+                                ...item,
+                                isDeleted: true
+                            }
+                        }
+                        return item
+                    })
+                }
             }
         case ActionTypes.GET_GROUP_PROMOS :
             return {
@@ -74,9 +83,17 @@ const reducer: Reducer<GroupsPageInfos> = (state = groupsInitialState, action: A
         case ActionTypes.DELETE_GROUP_PROMO :
             return {
                 ...state,
-                promos: { 
-                    promos: state.promos.promos.filter((item) => {return item.id !== action.payload.id}),
-                    total: state.promos.total - 1
+                promos: {
+                    total: state.promos.total,
+                    promos: state.promos.promos.map((item) => {
+                        if(item.id === action.payload.id) {
+                            return {
+                                ...item,
+                                isDeleted: true
+                            }
+                        }
+                        return item
+                    })
                 }
             }
         default:

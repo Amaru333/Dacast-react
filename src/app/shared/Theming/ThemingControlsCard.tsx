@@ -121,6 +121,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                 let themesListDropdownItem: DropdownSingleListItem = {title: null, data: null}
                 themesListDropdownItem.title = item.themeName
                 themesListDropdownItem.data = item
+                themesListDropdownItem.featureItem = item.isCustom
                 return themesListDropdownItem
             })
         }
@@ -231,7 +232,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             callback={
                                                 (item: DropdownSingleListItem) => {
                                                     setEditedSettings(true);
-                                                    setSelectedTheme(item.title === "Custom Theme" ? { ...defaultTheme, themeName: 'Custom Theme', isCustom: true } : item.data)
+                                                    setSelectedTheme(item.data)
                                                 }} />
                                         <Bubble className="mt25" type="info">
                                             {selectedTheme.isCustom ?
@@ -304,7 +305,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <Text size={14} weight='med'>Overlay Color</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary colour of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary color of the player</Tooltip>
                                         </div>
                                     </div>
                                     <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, customOverlayColor: value }); }} />
@@ -314,7 +315,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         <Text size={14} weight='med'>Menu Color</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary colour of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary color of the player</Tooltip>
                                         </div>
                                     </div>
 

@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { isMobile } from 'react-device-detect';
-import { axiosClient } from '../../utils/services/axios/axiosClient';
+import { axiosClient, dacastSdk } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { Bubble } from '../../../components/Bubble/Bubble';
@@ -19,6 +19,10 @@ import { connect } from 'react-redux';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { guessTimezone } from '../../../utils/services/date/dateService';
 import { store } from '../..'
+import { ChannelRegion } from '../../../DacastSdk/live';
+import { Toggle } from '../../../components/Toggle/toggle';
+import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
+import { userToken } from '../../utils/services/token/tokenService';
 
 const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
@@ -41,7 +45,11 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         rewind: false,
         title: '',
         region: handleLocaleCountry(),
-        renditionCount: renditionCount
+        renditionCount: renditionCount,
+        advancedStreaming: {
+            enabled: false,
+            china: false
+        }
     }
 
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
@@ -57,7 +65,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         props.toggle()
     }
 
-    const handleRegionParse = (region: string): string => {
+    const handleRegionParse = (region: string): ChannelRegion => {
         switch (region) {
             case 'Americas':
                 return 'north-america'
@@ -66,32 +74,35 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
             case 'Europe, Middle East & Africa':
                 return 'europe'
             default:
-                return ''
+                return 'north-america'
         }
     }
 
     const handleCreateLiveStreams = async () => {
         setButtonLoading(true)
 
-        await axiosClient.post('/channels',
+        await dacastSdk.postChannel(
             {
                 title: streamSetupOptions.title,
                 online: true,
                 // rewind: streamSetupOptions.rewind ? true : false,
                 region: handleRegionParse(streamSetupOptions.region),
-                renditionCount: renditionCount
+                renditionCount: renditionCount,
+                enabledAdvancedStreaming: streamSetupOptions.advancedStreaming.enabled,
+                china: streamSetupOptions.advancedStreaming.china
             }
-        ).then((response) => {
+        )
+        .then((response) => {
             setButtonLoading(false)
             store.dispatch(showToastNotification(`${streamSetupOptions.title} created!`, 'fixed', 'success'))
             props.toggle()
             setStreamSetupOptions(defaultStreamSetup)
             segmentService.track('Livestream Created', {
                 action: 'Create Livestream',
-                'channel_id': response.data.data.id,
+                'channel_id': response.id,
                 step: 1,
             })
-            history.push(`/livestreams/${response.data.data.id}/general`)
+            history.push(`/livestreams/${response.id}/general`)
         }).catch((error) => {
             setButtonLoading(false)
             let errorMsg = 'Sorry, the platform is really busy right now. Please try again in 10 minutes.'
@@ -150,6 +161,23 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                         <Tooltip leftPositionValueToZero target={"numberOfRenditionsDropdownTooltip"}>
                             For multi-bitrate streaming, select the number of renditions you will encode and stream to Dacast.
                         </Tooltip>
+                    </div>
+                }
+
+                {
+                    userToken.getPrivilege('privilege-advanced-streaming') &&
+                    <div className='col col-12 mt1 flex relative'>
+                        <Toggle defaultChecked={streamSetupOptions.advancedStreaming.enabled} onChange={() => setStreamSetupOptions({...streamSetupOptions, advancedStreaming: {...streamSetupOptions.advancedStreaming, enabled: !streamSetupOptions.advancedStreaming.enabled}})} id='advancedStreamingToggle' label='Advanced Streaming' />
+                        <IconStyle className='pl2' id="advancedStreamingTooltip">info_outlined</IconStyle>
+                        <Tooltip leftPositionValueToZero target="advancedStreamingTooltip">
+                            Tooltip for the advanced streaming
+                        </Tooltip>
+                        {
+                            (userToken.getPrivilege('privilege-china') && streamSetupOptions.advancedStreaming.enabled) && 
+                            <div className='col col-12 mt1 flex relative'>
+                                <InputCheckbox id='chinaStreamingCheckbox' label='Stream to China' defaultChecked={streamSetupOptions.advancedStreaming.china} onChange={() => setStreamSetupOptions({...streamSetupOptions, advancedStreaming: {...streamSetupOptions.advancedStreaming, china: !streamSetupOptions.advancedStreaming.china}})}/>
+                            </div>
+                        }
                     </div>
                 }
 

@@ -148,6 +148,7 @@ export interface GetAccountPlanOutput {
     multiUserAccessBeta: PlanSettingEndpoint;
     paymentRequest: PlanSettingEndpoint;
     unsecureVod: PlanSettingEndpoint;
+    advancedStreaming: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

@@ -24,6 +24,12 @@ export const ColorPicker = (props: {defaultColor: string; callback?: Function; c
         }
     }, [selectedColor])
 
+    React.useEffect(() => {
+        if(props.defaultColor) {
+            setSelectedColor(props.defaultColor)
+        }
+    }, [props.defaultColor])
+
     return (
         <div>
             <ColorPickerHeader className={props.className } onClick={() => setIsOpened(!isOpened)}>

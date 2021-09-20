@@ -6,7 +6,7 @@ import { Text } from '../../../components/Typography/Text';
 import { showToastNotification } from '../../redux-flow/store/Toasts';
 import { useHistory } from 'react-router';
 import { Input } from '../../../components/FormsComponents/Input/Input';
-import { axiosClient } from '../../utils/services/axios/axiosClient';
+import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { store } from '../..'
@@ -22,20 +22,17 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
     
         setButtonLoading(true)
         
-        return await axiosClient.post('/playlists',
-            {
-                title:playlistTitle
-            }
-        ).then((response) => {
+        return await dacastSdk.postPlaylist({title:playlistTitle})
+        .then((response) => {
             setButtonLoading(false)
             props.toggle()
             segmentService.track('Playlist Created', {
                 action: 'Create Playlist',
-                'playlist_id': response.data.data.id,
+                'playlist_id': response.id,
                 step: 1,
             })  
             store.dispatch(showToastNotification(`Playlist ${playlistTitle} created!`, 'fixed', 'success'))
-            history.push(`/playlists/${response.data.data.id}/setup`)
+            history.push(`/playlists/${response.id}/setup`)
         }).catch((error) => {
             setButtonLoading(false)
             store.dispatch(showToastNotification('Ooops, something went wrong...', 'fixed', 'error'))

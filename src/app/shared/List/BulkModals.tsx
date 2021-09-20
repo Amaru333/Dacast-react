@@ -6,14 +6,14 @@ import { Modal } from '../../../components/Modal/Modal';
 import { ThemeOptions } from '../../redux-flow/store/Settings/Theming';
 import { DropdownSingle } from '../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
-import { ContentType } from '../../redux-flow/store/Folders/types';
+import { BulkActionItem } from '../../redux-flow/store/common/types';
 import { LoadingSpinner } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner';
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes';
 import { bulkActionsService } from '../../redux-flow/store/Common/bulkService';
 import { ContentStatus } from '../../redux-flow/store/Common/types';
 
 interface PropsBulkModal {
-    items?: ContentType[]; 
+    items?: BulkActionItem[]; 
     open: boolean; 
     toggle: (b: boolean) => void;
     updateList?: (data: ContentStatus | 'paywall') => void;
@@ -21,7 +21,7 @@ interface PropsBulkModal {
     isInFolder?: boolean;
 } 
 
-const setBulkItemCount = (items: ContentType[]) => {
+const setBulkItemCount = (items: BulkActionItem[]) => {
     return `${items.length} ${items.length === 1 ? " item" : " items"}`
 }
 
@@ -48,7 +48,7 @@ const DeleteBulkForm = (props: PropsBulkModal) => {
     }
 
     return (
-        <Modal hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
+        <Modal allowNavigation={false} hasClose={false}  icon={ {name: "warning", color: "red"} } toggle={() => props.toggle(!props.open)} modalTitle={"Delete "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div className='flex flex-column'>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Are you sure that you want to delete the " + setBulkItemCount(props.items) + "?" }</Text>
                 {
@@ -111,7 +111,7 @@ const ThemeBulkForm = (props: PropsBulkModal & { themes: ThemeOptions[]; getThem
     }, [props.themes])
 
     return (
-        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items) } size="small" opened={props.open}>
+        <Modal allowNavigation={false} hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items) } size="small" opened={props.open}>
             <div className='col col-12 flex flex-column'>
                 {
                     themesList.length === 0 ?
@@ -166,7 +166,7 @@ const OnlineBulkForm = (props: PropsBulkModal) => {
     }
 
     return (
-        <Modal hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
+        <Modal allowNavigation={false} hasClose={false}  toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Update the Status for " + setBulkItemCount(props.items) + "?"}</Text>
                 <Toggle defaultChecked={online} onChange={(event) => {setOnline(!online)}}label={online ? "Online" : 'Offline'} className="mb3" />
@@ -201,7 +201,7 @@ const PaywallBulkForm = (props: PropsBulkModal) => {
     }
 
     return (
-        <Modal hasClose={false} toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
+        <Modal allowNavigation={false} hasClose={false} toggle={() => props.toggle(!props.open)} modalTitle={"Update "+ setBulkItemCount(props.items)} size="small" opened={props.open}>
             <div>
                 <Text size={14} weight="reg" className='inline-block mb1 mt1' >{"Turn off Paywall Status for "+ setBulkItemCount(props.items) + "?"}</Text>
                 <div className='mt2'>

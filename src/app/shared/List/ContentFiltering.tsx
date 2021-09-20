@@ -23,15 +23,15 @@ export interface FilteringContentState {
         rewind?: boolean;
         recording?: boolean;
     };
-    afterDate?: number | boolean;
-    beforeDate?: number | boolean;
+    afterDate?: number | boolean | null;
+    beforeDate?: number | boolean | null;
     sizeStart?: string;
     sizeEnd?: string;
 }
 
 export const ContentFiltering = (props: {defaultFilters: FilteringContentState; setSelectedFilter: (filters: FilteringContentState) => void, contentType: string}) => {
 
-    var filteringDefault = {
+    var filteringDefault: FilteringContentState = {
         status: {
             online: false,
             offline: false,
@@ -44,8 +44,8 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
             rewind: false,
             recording: false
         },
-        afterDate: false,
-        beforeDate: false,
+        afterDate: null,
+        beforeDate: null,
         sizeStart: '',
         sizeEnd: ''
     }

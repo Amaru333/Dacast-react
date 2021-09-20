@@ -108,6 +108,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: './public/iframe', to: './public/iframe' },
             { from: "./public/locales", to: "locales" },
+            { from: './public/ApplePay', to: './.well-known'}
         ], { copyUnmodified: true }
         ),
     ]

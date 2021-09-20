@@ -2,7 +2,7 @@ import { ActionTypes, ContentDetails, SubtitleInfo, AssetType } from "./types"
 import { applyViewModel } from '../../../../utils/utils'
 import { dacastSdk } from '../../../../utils/services/axios/axiosClient'
 import { ContentType } from "../../Common/types"
-import { fomatPostExpoAssetUploadOutput, fomatPostLiveAssetUploadOutput, fomatPostPlaylistAssetUploadOutput, fomatPostVodAssetUploadOutput, formatDeleteContentImageAssetInput, formatDeleteContentImagesAssetOutput, formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPostEncoderKeyInput, formatPostEncoderKeyOutput, formatPostExpoAssetUploadUrlInput, formatPostLiveAssetUploadUrlInput, formatPostPlaylistAssetUploadUrlInput, formatPostUploadImageFromVideoInput, formatPostVodAssetUploadUrlInput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutSubtitleInput, formatPutSubtitleOutput, formatPutUploadFileOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
+import { fomatPostExpoAssetUploadOutput, fomatPostLiveAssetUploadOutput, fomatPostPlaylistAssetUploadOutput, fomatPostVodAssetUploadOutput, formatAdvancedStreamingToggleInput, formatDeleteContentImageAssetInput, formatDeleteContentImagesAssetOutput, formatGetContentDetailsInput, formatGetExpoDetailsOutput, formatGetLiveDetailsOutput, formatGetPlaylistDetailsOutput, formatGetVideoDetailsOutput, formatPostEncoderKeyInput, formatPostEncoderKeyOutput, formatPostExpoAssetUploadUrlInput, formatPostLiveAssetUploadUrlInput, formatPostPlaylistAssetUploadUrlInput, formatPostUploadImageFromVideoInput, formatPostVodAssetUploadUrlInput, formatPutExpoDetailsInput, formatPutExpoDetailsOutput, formatPutLiveDetailsInput, formatPutLiveDetailsOutput, formatPutPlaylistDetailsInput, formatPutPlaylistDetailsOutput, formatPutSubtitleInput, formatPutSubtitleOutput, formatPutUploadFileOutput, formatPutVideoDetailsInput, formatPutVideoDetailsOutput } from "./viewModel"
 import { formatPutUploadFileInput } from "../../Common/viewModel"
 
 export interface GetContentDetails {
@@ -158,6 +158,9 @@ export const deleteSubtitleAction = (contentType: ContentType) => {
             throw new Error('Error applying content view model')
     }
 }
+
+export const advancedStreamingToggleAction = applyViewModel(dacastSdk.advancedStreamingToggle, formatAdvancedStreamingToggleInput, undefined, ActionTypes.ADVANCED_STREAMING_TOGGLE, 'Toggle stream', 'Couldn\'t toggle stream')
+
 
 
 export type Action = GetContentDetails | EditContentDetails | AddContentSubtitle | EditContentSubtitle | DeleteContentSubtitle | GetUploadUrl | UploadImage | UploadImageFromVideo | DeleteImage | GenerateEncoderKey

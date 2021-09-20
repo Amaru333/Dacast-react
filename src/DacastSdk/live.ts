@@ -6,7 +6,7 @@ export interface PostEncoderKeyOutput {
 }
 
 export interface GetLiveBrandImageUrl {
-    channelID: string
+    liveID: string
 }
 
 export interface GetLiveDetailsOutput {
@@ -36,6 +36,24 @@ export interface GetLiveDetailsOutput {
     provider: string
     streamKeys: string[]
     watchingStatus: boolean
+    advancedStreaming: boolean
+    advancedStreamingStatus: string
+    china: boolean
+}
+
+export type ChannelRegion = 'north-america' | 'asia-pacific' | 'europe'
+
+export interface PostLiveInput {
+    title: string
+    online: boolean
+    region: ChannelRegion
+    renditionCount: number
+    enabledAdvancedStreaming: boolean
+    china: boolean
+}
+
+export interface PostLiveOutput {
+    id: string
 }
 
 export interface PutLiveDetailsInput {

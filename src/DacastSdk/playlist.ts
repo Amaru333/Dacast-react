@@ -16,6 +16,14 @@ export interface GetPlaylistDetailsOutput {
     paywallEnabled: boolean | null
 }
 
+export interface PostPlaylistInput {
+    title: string
+}
+
+export interface PostPlaylistOutput {
+    id: string
+}
+
 export interface PutPlaylistDetailsInput {
     id: string
     payload: PutPlaylistDetailsPayload

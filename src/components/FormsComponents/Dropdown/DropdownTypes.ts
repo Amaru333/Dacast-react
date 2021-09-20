@@ -5,6 +5,7 @@ export interface DropdownSingleListItem {
     title: string
     description?: string
     data?: any
+    featureItem?: boolean
 }
 
 export const dropdownIcons = {
@@ -24,7 +25,8 @@ interface DropdownCustomProps {
     isInModal?: boolean;
     disabled?: boolean;
     isWhiteBackground?: boolean;
-    tooltip?: string
+    tooltip?: string;
+    leftTooltipPosition?: boolean;
 }
 
 export interface ContinentListType {

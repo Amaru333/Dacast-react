@@ -44,7 +44,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
         switch(selectedEncoder.title) {
             case 'Teradek':
                 return baseURL + '/_definst_'
-            case 'Sling Studio': 
+            case 'Sling Studio':
                 const splitURL = baseURL.split('rtmp://')
                 return 'rtmp://' + props.contentDetails.username + ':' + props.contentDetails.password + '@' + splitURL[1]
             default:
@@ -79,14 +79,14 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                     />
                     <EncoderSettingsContainer className="col col-12">
                     <div className="col col-12">
-                       { selectedEncoder.data.primaryPublishURL && 
+                       { selectedEncoder.data.primaryPublishURL &&
                             <LinkBoxContainer className={ClassHalfXsFullMd + " mb2"}>
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{t(selectedEncoder.data.primaryPublishURL)}</Text>
                                     <IconStyle id="primaryPublishURLTooltip">info_outlined</IconStyle>
                                     <Tooltip target="primaryPublishURLTooltip">{t('live_stream_general_encoder_modal_url_field_tooltip')}</Tooltip>
                                 </LinkBoxLabel>
-                                <LinkBox backgroundColour="white">
+                                <LinkBox backgroundColor="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.primaryPublishURL}</LinkText>
                                     <IconStyle className='pointer' onClick={() => {updateClipboard(props.contentDetails.primaryPublishURL, "Copied to clipboard");segmentService.track('Livestream Created', {action: 'Setup Livestream', 'livestream_id': props.contentDetails.id, step: 2}) } }>file_copy</IconStyle>
                                 </LinkBox>
@@ -100,7 +100,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                         <IconStyle id="backupPublishURLTooltip">info_outlined</IconStyle>
                                         <Tooltip target="backupPublishURLTooltip">{t('live_stream_general_encoder_modal_backup_url_field_tooltip')}</Tooltip>
                                     </LinkBoxLabel>
-                                    <LinkBox backgroundColour="white">
+                                    <LinkBox backgroundColor="white">
                                         <LinkText size={14} weight="reg">{formatURL(props.contentDetails.backupPublishURL)}</LinkText>
                                         <IconStyle className='pointer' onClick={() => updateClipboard(formatURL(props.contentDetails.backupPublishURL), "Copied to clipboard")}>file_copy</IconStyle>
                                     </LinkBox>
@@ -113,7 +113,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{t(selectedEncoder.data.username)}</Text>
                                 </LinkBoxLabel>
-                                <LinkBox backgroundColour="white">
+                                <LinkBox backgroundColor="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.username}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.username, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
@@ -125,13 +125,13 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{t(selectedEncoder.data.password)}</Text>
                                 </LinkBoxLabel>
-                                <LinkBox backgroundColour="white">
+                                <LinkBox backgroundColor="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.password}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.password, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>
                             </LinkBoxContainer>
                     }
-                    { selectedEncoder.data.streamKey && 
+                    { selectedEncoder.data.streamKey &&
                         props.contentDetails.streamKeys.map((streamKey, i) => {
                             return(
                                 <LinkBoxContainer key={streamKey} className={ClassHalfXsFullMd + " mb2"}>
@@ -140,7 +140,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                         <IconStyle id={"streamKeyTooltip" + i}>info_outlined</IconStyle>
                                         <Tooltip target={"streamKeyTooltip" + i}>{t('live_stream_general_encoder_modal_stream_key_field_tooltip')}</Tooltip>
                                     </LinkBoxLabel>
-                                    <LinkBox backgroundColour="white">
+                                    <LinkBox backgroundColor="white">
                                         <LinkText size={14} weight="reg">{streamKey}</LinkText>
                                         <IconStyle className='pointer' onClick={() => updateClipboard(streamKey, "Copied to clipboard")}>file_copy</IconStyle>
                                     </LinkBox>
@@ -154,7 +154,7 @@ export const EncoderSettingsModal = (props: {toggle: Dispatch<SetStateAction<boo
                                 <LinkBoxLabel>
                                     <Text size={14} weight="med">{t(selectedEncoder.data.encoderKey)}</Text>
                                 </LinkBoxLabel>
-                                <LinkBox backgroundColour="white">
+                                <LinkBox backgroundColor="white">
                                     <LinkText size={14} weight="reg">{props.contentDetails.encoderKey}</LinkText>
                                     <IconStyle className='pointer' onClick={() => updateClipboard(props.contentDetails.encoderKey, "Copied to clipboard")}>file_copy</IconStyle>
                                 </LinkBox>

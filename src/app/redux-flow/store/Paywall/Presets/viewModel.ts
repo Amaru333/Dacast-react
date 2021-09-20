@@ -106,7 +106,7 @@ export const formatGetPricePresetOuput = (data: GetPricePresetOutput): {prices: 
                         unit: preset.preset.settings.duration.unit.charAt(0).toUpperCase() + preset.preset.settings.duration.unit.slice(1) + 's'
                     }
                     : null,
-                    startMethod: preset.preset.settings.startDate && preset.preset.settings.startDate > Math.floor(Date.now() / 1000) ? 'Schedule' : 'Upon Purchase',
+                    startMethod: preset.preset.settings.startDate && preset.preset.settings.startDate > Math.floor(Date.now() / 1000) ? 'Set Date & Time' : 'Available on Purchase',
                     recurrence: preset.preset.settings.recurrence ? {
                         unit: preset.preset.settings.recurrence.unit === 'week' ? 'Weekly'
                         : preset.preset.settings.recurrence.value > 4 ? 'Biannual'
@@ -141,7 +141,7 @@ export const formatPostPricePresetInput = (data: Preset): PricePresetDetails => 
             }
         }
     } else {
-        if(data.settings.startMethod === 'Upon Purchase') {
+        if(data.settings.startMethod === 'Available on Purchase') {
             formattedData.preset = {
                 prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {
@@ -195,7 +195,7 @@ export const formatPutPricePresetInput = (data: Preset): PricePresetEndpoint => 
             }
         }
     } else {
-        if(data.settings.startMethod === 'Upon Purchase') {
+        if(data.settings.startMethod === 'Available on Purchase') {
             formattedData.preset = {
                 prices: data.prices.map((p) => {return {...p, description: 'price'}}),
                 settings: {

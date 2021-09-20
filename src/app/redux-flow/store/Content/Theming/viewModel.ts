@@ -36,7 +36,34 @@ export const formatGetContentThemesOutput = (contentType: ContentType) => (endpo
 export const formatPostContentCustomThemeInput = (data: {contentId: string, theme: ThemeOptions, contentType: ContentType}): PostContentCustomThemeInput => {
     let formattedData: PostContentCustomThemeInput = {
         contentId: data.contentId,
-        payload: data.theme
+        payload: {
+            themeName: data.theme.themeName,
+            isDefault: data.theme.isDefault,
+            isCustom: data.theme.isCustom,
+            playerControls: data.theme.playerControls,
+            bigPlayButton: data.theme.bigPlayButton,
+            scrubbingThumbnail: data.theme.scrubbingThumbnail,
+            thumbnailPosition: data.theme.thumbnailPosition,
+            isViewerCounterEnabled: data.theme.isViewerCounterEnabled,
+            viewerCounterLimit: data.theme.viewerCounterLimit,
+            downloadButton: data.theme.downloadButton,
+            socialSharing: data.theme.socialSharing,
+            embedCode: data.theme.embedCode,
+            iconsColor:data.theme.iconsColor,
+            customOverlayColor: data.theme.customOverlayColor,
+            customMenuColor: data.theme.customMenuColor,
+            brandTextColor: data.theme.brandTextColor,
+            brandTextBackgroundColor: data.theme.brandTextBackgroundColor,
+            autoplay: data.theme.autoplay,
+            startVideoMuted: data.theme.startVideoMuted,
+            looping: data.theme.looping,
+            continuousPlay: data.theme.continuousPlay,
+            skipVideos: data.theme.skipVideos,
+            offlineMessage: data.theme.offlineMessage,
+            offlineMessagePosition: data.theme.offlineMessagePosition,
+            showFullTimeCode: data.theme.showFullTimeCode,
+            createdDate: data.theme.createdDate || null,
+        }
     }
 
     return formattedData
@@ -58,7 +85,7 @@ export const formatPostContentCustomThemeOutput = (contentType: ContentType) => 
 export const formatPutContentThemeInput = (data: {contentId: string, theme: ThemeOptions, contentType: ContentType}): PutContentThemeInput => {
     let formattedData: PutContentThemeInput = {
         contentId: data.contentId,
-        payload: data.theme,
+        payload: {...data.theme, createdDate: data.theme.createdDate || null},
         actionWord: !data.theme.isCustom ? '/set' : ''
     }
 
