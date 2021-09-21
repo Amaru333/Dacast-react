@@ -180,7 +180,7 @@ const AppPlaceholder = () => {
                         return (
                             <ContainerElementStyle icon={r.iconName} isOpen isLocked={false} isMobile={false}>
                                 <IconStyle className="noTransition flex pr2">{r.iconName}</IconStyle>
-                                <span style={{width: 120, backgroundColor: '#58606E'}}></span>
+                                <span style={{width: 120, backgroundColor: '#C8D1E0'}}></span>
                             </ContainerElementStyle>
                         )
                     })}

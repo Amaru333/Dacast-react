@@ -20,6 +20,7 @@ import { Divider } from '../../../shared/MiscStyles';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import { DisabledSection } from '../Common/MiscStyle';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { useTranslation } from 'react-i18next';
 
 type ThemeContentType = ContentType | 'settings'
 
@@ -39,6 +40,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     const togglePadding = 'py1'
 
     let history = useHistory()
+    const { t } = useTranslation()
 
     const handleDefaultSelectedTheme = (): ThemeOptions => {
         if (props.contentType === 'settings') {
@@ -133,7 +135,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
         })
     }
 
-    const messagePositionDropdownList = [{title: "Top"}, {title: "Middle"}, {title: "Fullscreen"}]
+    const messagePositionDropdownList = [{title: t("common_theme_message_position_dropdown_option_1"), data: {id: "Top"}}, {title: t("common_theme_message_position_dropdown_option_2"), data: {id: "Middle"}}, {title: t("common_theme_message_position_dropdown_option_3"), data: {id: "Fullsreen"}}]
     const thumbnailPositionDropdownList = [{title: "Top"}, {title: "Right"}, {title: "Left"}, {title: "Bottom"}, {title: "Hidden"}]
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
@@ -157,7 +159,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 {
                                     selectedTheme.id === "-1" ?
                                         "New Theme"
-                                        : "Edit Theme"
+                                        : t('common_theme_edit_title')
                                 }
                             </Text>
                         </div>
@@ -238,7 +240,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                             {selectedTheme.isCustom ?
                                                 "Custom Settings override any Theme settings."
                                                 :
-                                                "If you wish to create a new Theme or edit a Theme, go to Theming."
+                                                t('common_content_theme_bubble_info')
                                             }
                                         </Bubble>
                                     </>
@@ -252,70 +254,70 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                             <Divider className="p1" />
 
                             <DisabledSection settingsEditable={customEnabled}>
-                                <div className='py2'><Text size={20} weight='med'>Controls</Text></div>
+                                <div className='py2'><Text size={20} weight='med'>{t('common_theme_controls_toggle_title')}</Text></div>
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Player Controls' checked={selectedTheme.playerControls} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, playerControls: !selectedTheme.playerControls }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_player_controls_toggle_title')} checked={selectedTheme.playerControls} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, playerControls: !selectedTheme.playerControls }); }} />
                                     <IconStyle id="playerControlsTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="playerControlsTooltip">The controls at the bottom of the player</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="playerControlsTooltip">{t('common_theme_player_controls_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Big Play Button' checked={selectedTheme.bigPlayButton === 'visible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, bigPlayButton: selectedTheme.bigPlayButton === 'visible' ? 'hidden' : 'visible' }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_big_play_button_toggle_title')} checked={selectedTheme.bigPlayButton === 'visible'} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, bigPlayButton: selectedTheme.bigPlayButton === 'visible' ? 'hidden' : 'visible' }); }} />
                                     <IconStyle id="bigPlayTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="bigPlayTooltip">The big button in the middle before playback starts</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="bigPlayTooltip">{t('common_theme_big_play_button_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
                                 <ControlToggleContainer>
                                     <Toggle className={togglePadding} label='Show Scrubbing Thumbnail' checked={selectedTheme.scrubbingThumbnail} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, scrubbingThumbnail: !selectedTheme.scrubbingThumbnail }); }} />
                                     <IconStyle id="scrubberThumbnailTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="scrubberThumbnailTooltip">Thumbnails when hovering over the video scrubber (time bar)</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="scrubberThumbnailTooltip">{t('common_theme_miniature_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
 
                                 <Divider className="p1" />
 
 
-                                <div className="py2" ><Text size={20} weight='med'>Actions</Text></div>
+                                <div className="py2" ><Text size={20} weight='med'>{t('common_theme_actions_title')}</Text></div>
 
                                 {
                                     userToken.getPrivilege('privilege-player-download') &&
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Download Button' checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
+                                            <Toggle className={togglePadding} label={t('common_theme_download_button_toggle_title')} checked={selectedTheme.downloadButton} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, downloadButton: !selectedTheme.downloadButton }); }} />
                                             <IconStyle id="downloadButtonTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="downloadButtonTooltip">Whether viewers can download the video</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="downloadButtonTooltip">{t('common_theme_download_button_tooltip')}</Tooltip>
                                         </ControlToggleContainer>
                                 }
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Social Sharing' checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_social_sharing_toggle_title')} checked={selectedTheme.socialSharing} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, socialSharing: !selectedTheme.socialSharing }); }} />
                                     <IconStyle id="socialSharingTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="socialSharingTooltip">Whether viewers can see links to share content on social media</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="socialSharingTooltip">{t('common_theme_social_sharing_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Embed Code' checked={selectedTheme.embedCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, embedCode: !selectedTheme.embedCode }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_embed_code_toggle_title')} checked={selectedTheme.embedCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, embedCode: !selectedTheme.embedCode }); }} />
                                     <Divider className="p1" />
                                     <IconStyle id="embedCodeTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="embedCodeTooltip">Whether viewers can see and copy the embed code for the content</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="embedCodeTooltip">{t('common_theme_embed_code_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
                                 <Divider className="p1" />
 
-                                <div className="py2" ><Text size={20} weight='med'>Appearance</Text></div>
+                                <div className="py2" ><Text size={20} weight='med'>{t('common_theme_appearance_title')}</Text></div>
                                 <div className='relative'>
                                     <div className='flex justify-between'>
-                                        <Text size={14} weight='med'>Overlay Color</Text>
+                                        <Text size={14} weight='med'>{t('common_theme_overlay_color_dropdown_title')}</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary color of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">{t('common_theme_overlay_color_tooltip')}</Tooltip>
                                         </div>
                                     </div>
                                     <ColorPicker defaultColor={selectedTheme.customOverlayColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, customOverlayColor: value }); }} />
                                 </div>
                                 <div className='my2 relative'>
                                     <div className='flex justify-between'>
-                                        <Text size={14} weight='med'>Menu Color</Text>
+                                        <Text size={14} weight='med'>{t('common_theme_menu_color_dropdown_title')}</Text>
                                         <div>
                                             <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary color of the player</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">{t('common_theme_menu_color_tooltip')}</Tooltip>
                                         </div>
                                     </div>
 
@@ -324,24 +326,24 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                 <Divider className="p1" />
 
-                                <div className="py2" ><Text size={20} weight='med'>Behavior</Text></div>
+                                <div className="py2" ><Text size={20} weight='med'>{t('common_theme_behavior_toggle_title')}</Text></div>
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Autoplay' checked={selectedTheme.autoplay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, autoplay: !selectedTheme.autoplay }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_autoplay_toggle_title')} checked={selectedTheme.autoplay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, autoplay: !selectedTheme.autoplay }); }} />
                                     <IconStyle id="autoplayTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="autoplayTooltip">Whether the content starts automatically</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="autoplayTooltip">{t('common_theme_autoplay_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Start Video Muted' checked={selectedTheme.startVideoMuted} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_start_muted_toggle_title')} checked={selectedTheme.startVideoMuted} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, startVideoMuted: !selectedTheme.startVideoMuted }); }} />
                                     <IconStyle id="startMutedTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="startMutedTooltip">Whether the content is muted by default</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="startMutedTooltip">{t('common_theme_start_muted_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label='Looping' checked={selectedTheme.looping} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, looping: !selectedTheme.looping }); }} />
+                                    <Toggle className={togglePadding} label={t('common_theme_looping_toggle_title')} checked={selectedTheme.looping} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, looping: !selectedTheme.looping }); }} />
                                     <IconStyle id="loopingTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="loopingTooltip">Whether the content will start again when it reaches the end</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="loopingTooltip">{t('common_theme_looping_toggle_tooltip')}</Tooltip>
                                 </ControlToggleContainer>
 
                             </DisabledSection>
@@ -353,12 +355,12 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <Divider className="p1" />
 
                                     <DisabledSection settingsEditable={liveEnabled}>
-                                        <div className="py2" ><Text size={20} weight='med'>Live Streams</Text></div>
+                                        <div className="py2" ><Text size={20} weight='med'>{t('common_navigation_bar_menu_item_live_streams')}</Text></div>
 
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='View Counter' checked={selectedTheme.isViewerCounterEnabled} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled }); }} />
+                                            <Toggle className={togglePadding} label={t('common_theme_view_counter_toggle_title')} checked={selectedTheme.isViewerCounterEnabled} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, isViewerCounterEnabled: !selectedTheme.isViewerCounterEnabled }); }} />
                                             <IconStyle id="viewCounterTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="viewCounterTooltip">Whether viewers can see how many people are currently watching</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="viewCounterTooltip">{t('common_theme_view_counter_tooltip')}</Tooltip>
                                         </ControlToggleContainer>
                                         {
                                             selectedTheme.isViewerCounterEnabled &&
@@ -422,16 +424,16 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <DisabledSection settingsEditable={customEnabled}>
                                         <div className="pt25 flex justify-between">
-                                            <div><Text size={20} weight='med'>Offline Message</Text></div>
+                                            <div><Text size={20} weight='med'>{t('common_theme_offline_message_input_title')}</Text></div>
                                             <ControlToggleContainer>
                                                 <IconStyle id="offlineMessageTooltip">info_outlined</IconStyle>
-                                                <Tooltip leftPositionValueToZero target="offlineMessageTooltip">The text to show viewers when the content is not online</Tooltip>
+                                                <Tooltip leftPositionValueToZero target="offlineMessageTooltip">{t('common_theme_offline_message_tooltip')}</Tooltip>
                                             </ControlToggleContainer>
                                         </div>
 
                                         <Input className='my2' value={selectedTheme.offlineMessage} onChange={(event) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessage: event.currentTarget.value }) }} />
 
-                                        <DropdownSingle className="mb2" dropdownTitle='Message Position' id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.title.toLowerCase() }) }} disabled={!customEnabled} />
+                                        <DropdownSingle className="mb2" dropdownTitle={t('common_theme_message_position_dropdown_title')} id='offlineMessagePositionDropdown' list={messagePositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.offlineMessagePosition)} callback={(item: DropdownSingleListItem) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, offlineMessagePosition: item.data.id.toLowerCase() }) }} disabled={!customEnabled} />
                                     </DisabledSection>
 
 
@@ -442,8 +444,8 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                     }
                 </ControlsCard>
                 <div className="mt25">
-                    <Button isLoading={buttonLoading} onClick={() => handleThemeSave()}>{props.actionType}</Button>
-                    <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
+                    <Button isLoading={buttonLoading} onClick={() => handleThemeSave()}>{props.actionType === 'Create' ? t('common_button_text_create') : t('common_button_text_save')}</Button>
+                    <Button typeButton="tertiary" onClick={() => handleCancel()}>{t('common_button_text_cancel')}</Button>
                 </div>
             </div>
             <Prompt when={editedSettings} message='' />

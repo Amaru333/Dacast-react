@@ -6,6 +6,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button';
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../utils/formatUtils';
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { adPlacementDropdownList } from '../../../utils/DropdownLists';
+import { useTranslation } from 'react-i18next';
 
 
 export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, toggle: (b: boolean) => void; selectedAd: number, createAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, saveAd: (data: Ad[], contentId?: string, contentType?: string) => Promise<void>, contentType?: string, contentId?: string}) => {
@@ -19,6 +20,8 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
 
     const [adData, setAdData] = React.useState<Ad>(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
+
     React.useEffect(() => {
         setAdData(props.selectedAd === -1 ? emptyAd : props.localEngagementSettings.adsSettings.ads[props.selectedAd])
     }, [props.selectedAd])
@@ -48,9 +51,9 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
 
     return (
         <div>
-            <Input className='col col-12 mt1' id='adUrl' label='Ad URL' value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
+            <Input className='col col-12 mt1' id='adUrl' label={t('common_engagement_ads_modal_ad_url_title')} value={adData.url} onChange={(event) => setAdData({...adData, url: event.currentTarget.value})} />
             <div className='my1 col col-12 flex'>
-                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle='Ad Placement' callback={(item: DropdownSingleListItem) => setAdData({...adData, type: item.title as AdType})} list={adPlacementDropdownList} dropdownDefaultSelect={adData.type || 'Pre-roll'} /> 
+                <DropdownSingle className='mr1 mt1 col col-6' id='adPlacementDropdown' dropdownTitle={t('common_engagement_ads_modal_ad_placement_dropdown_title')} callback={(item: DropdownSingleListItem) => setAdData({...adData, type: item.data.id as AdType})} list={adPlacementDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})} dropdownDefaultSelect={adData.type || 'Pre-roll'} /> 
                 {
                     adData.type === 'Mid-roll' &&
                         <Input type='video-time' 
@@ -61,8 +64,8 @@ export const NewAdModal = (props: {localEngagementSettings: EngagementInfo, togg
                 }             
             </div>
             <div className='mt2 col col-12'>
-                <Button isLoading={buttonLoading} className='mr2' disabled={adData.url === "" || (adData.type === 'Mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>Save</Button>
-                <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button isLoading={buttonLoading} className='mr2' disabled={adData.url === "" || (adData.type === 'Mid-roll' && !adData.timestamp)} typeButton='primary' sizeButton='large' buttonColor='blue' onClick={() => {defineAdAction()}}>{t('common_button_text_save')}</Button>
+                <Button onClick={() => {props.toggle(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
     )

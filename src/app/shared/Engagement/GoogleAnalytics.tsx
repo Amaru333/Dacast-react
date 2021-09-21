@@ -9,8 +9,10 @@ import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
+    const { t } = useTranslation()
 
     const handleGoogleAnalyticsLockChange = () => {
         if (!props.localEngagementSettings.googleAnalyticsSettings.locked) {
@@ -51,7 +53,7 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
         <Card className="my2">
             <Header className="mb2">
                 <div>
-                    <Text size={20} weight='med'>Google Analytics</Text>
+                    <Text size={20} weight='med'>{t('common_engagement_ga_title')}</Text>
                 </div>
                 {
                     props.contentType &&
@@ -64,14 +66,14 @@ export const EngagementGoogleAnalytics = (props: EngagementComponentProps) => {
                 }
             </Header>
             <DisabledSection settingsEditable={!props.contentType || !props.localEngagementSettings.googleAnalyticsSettings.locked}>
-                <Text size={14} weight='reg' color='gray-3'>Capture video engagment and track data in Google Analytics.</Text>
+                <Text size={14} weight='reg' color='gray-3'>{t('common_engagement_ga_text_1')}</Text>
                 <div className='flex my2'>
                     <IconStyle className="mr1">info_outlined</IconStyle>
-                    <Text size={14} weight='reg' color='gray-3'>Need help with Google Analytics? Visit the <a href={getKnowledgebaseLink("Google Analytics")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight='reg' color='gray-3'><Trans i18nKey='common_engagement_ga_text_2'>Need help with Google Analytics? Visit the <a href={getKnowledgebaseLink("Google Analytics")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
                     <Input
                             className='my1 pr1 col col-8'
-                            label='Google Analytics Tracking ID'
+                            label={t('common_engagement_ga_input_title')}
                             onChange={(event) => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, googleAnalyticsSettings: {...props.localEngagementSettings.googleAnalyticsSettings, trackingID: event.currentTarget.value }}); props.setSettingsEdited(true) }}
                             value={props.localEngagementSettings.googleAnalyticsSettings.trackingID || ""}
                         />

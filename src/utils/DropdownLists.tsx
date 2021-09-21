@@ -30,11 +30,11 @@ export const availableStartDropdownList = [{title: "Always"}, {title: "Set Date 
 
 export const availableEndDropdownList = [{title: "Forever"}, {title: "Set Date and Time"}]
 
-export const discountAppliedDropdownList = [{title: "Once"}, {title: "Forever"}]
+export const discountAppliedDropdownList = [{title: "common_paywall_promo_modal_discount_applied_dropdown_once_option", data: {id: "Once"}}, {title: "common_paywall_promo_modal__available_dropdown_forever_option", data: {id: "Forever"}}]
 
 //ENGAGEMENT
-export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "Top Left"}, {title: "Top Right"}, {title: "Bottom Left"}, {title: "Bottom Right"}]
+export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "common_engagement_brand_image_image_placement_dropdown_option_1", data: {id: "Top Left"}}, {title: "common_engagement_brand_image_image_placement_dropdown_option_2", data: {id: "Top Right"}}, {title: "common_engagement_brand_image_image_placement_dropdown_option_3", data: {id: "Bottom Left"}}, {title: "common_engagement_brand_image_image_placement_dropdown_option_4", data: {id: "Bottom Right"}}]
 
-export const adPlacementDropdownList = [{title: "Pre-roll"}, {title: "Mid-roll"}, {title: "Post-roll"}]
+export const adPlacementDropdownList = [{title: "common_engagement_ads_modal_ad_placement_dropdown_pre_roll_option", data: {id: "Pre-roll"}}, {title: "common_engagement_ads_modal_ad_placement_dropdown_mid_roll_option", data: {id: "Mid-roll"}}, {title: "common_engagement_ads_modal_ad_placement_dropdown_post_roll_option", data: {id: "Post-roll"}}]
 
 export const languageDropdownList = [{title: 'English', data: {id: 'en'}}, {title: 'French', data: {id: 'fr'}}]

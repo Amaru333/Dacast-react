@@ -190,7 +190,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const emptyPromoTableHeader = () => {
         return {data: [
-            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
+            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>}
         ]}
     }
 
@@ -270,19 +270,19 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
             {
                 hasChanged &&
                 <div className='mt2'>
-                    <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                    <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('common_button_text_save')}</Button>
                     <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'fixed', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
                 </div>
             }
 
-            <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit' : 'Create') + ' Price'} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit Price' : t('common_paywall_price_modal_title'))} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
                 {
                     priceModalOpened && <ContentPricePresetsModal fetchContentPrices={props.getContentPrices} contentType={props.contentType} contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
                 }
             </Modal>
-            <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit' : 'Create') + ' Promo'} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit Promo' : t('common_paywall_promo_modal_title'))} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>
                 {
-                    promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? 'Save' : 'Create'} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
+                    promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? t('common_button_text_save') : t("common_button_text_create")} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
                 }
             </Modal>
             <Prompt when={hasChanged} message='' />

@@ -202,9 +202,9 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     sizeButton='large'
                     buttonColor='blue'
                 >
-                {props.preset ? "Save" : "Create"}
+                {props.preset ? t('common_button_text_save') : t("common_button_text_create")}
                 </Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
     )

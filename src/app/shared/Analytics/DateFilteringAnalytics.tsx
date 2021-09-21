@@ -3,6 +3,7 @@ import { Button } from '../../../components/FormsComponents/Button/Button'
 import { presets } from '../../constants/DatepickerPresets'
 import { TimeRangeAnalytics } from '../../redux-flow/store/Content/Analytics/types';
 import { DateRangePicker } from '../../../components/FormsComponents/Datepicker/DateRangePicker';
+import { useTranslation } from 'react-i18next';
 
 interface DateFilteringAnalyticsProps {
     defaultDates: { end: number; start: number }, 
@@ -15,7 +16,7 @@ interface DateFilteringAnalyticsProps {
 export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElement> & DateFilteringAnalyticsProps) => {
 
     var { showPreset, callback, defaultDates, ...other } = props;
-    const [focusedInput, setFocusedInput] = React.useState<any>(null)
+    const { t } = useTranslation()
 
     const renderDatePresets = () => {
         return showPreset ? (
@@ -32,7 +33,7 @@ export const DateFilteringAnalytics = (props: React.HTMLAttributes<HTMLDivElemen
                             focusState={props.selectedPreset === value}
                             onClick={() => { callback({ value: value, endDate: props.defaultDates.end, startDate: props.defaultDates.start })  } }
                         >
-                            {text}
+                            {t(text)}
                         </Button>
                     );
                 })}
