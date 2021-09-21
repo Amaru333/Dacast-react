@@ -213,7 +213,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/chapters',
-        name: 'Chapters',
+        name: 'video_chapters_title',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -258,7 +258,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/videos/:vodId/renditions',
-        name: 'Renditions',
+        name: 'video_renditions_title',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-vod'],
@@ -565,7 +565,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/uploader',
-        name: 'Uploader',
+        name: 'uploader_title',
         notDisplayedInNavigation: true,
         component: Uploader
     },

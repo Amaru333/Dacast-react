@@ -90,7 +90,7 @@ export interface ProfileDetails {
     phoneNumber: string;
     timezone: string;
     videoUpload: boolean;
-    language: string | null;
+    'backoffice-language': string | null;
 }
 
 export interface PutProfileDetailsInput {
@@ -101,6 +101,7 @@ export interface PutProfileDetailsInput {
     phoneNumber: string;
     timezone: string;
     videoUpload: boolean;
+    'backoffice-language': string | null;
 }
 
 export interface PostUserPasswordInput {
