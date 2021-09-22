@@ -49,7 +49,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 <Text size={20} weight="med">{t('common_content_general_details_title')}</Text>
                 { 
                     (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
-                        <Button onClick={() => saveFile(props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
+                        <Button onClick={() => saveFile(props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">{t('video_general_download_button_text')}</Button>
                 }
                 {
                     props.contentType === 'live' &&

@@ -294,7 +294,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/expos/:exposId/design',
-        name: 'Design',
+        name: 'expo_tabs_design',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-expo'],
