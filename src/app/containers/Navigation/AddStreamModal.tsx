@@ -166,15 +166,18 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
                 {
                     userToken.getPrivilege('privilege-advanced-streaming') &&
-                    <div className='col col-12 mt1 flex relative'>
-                        <Toggle defaultChecked={streamSetupOptions.advancedStreaming.enabled} onChange={() => setStreamSetupOptions({...streamSetupOptions, advancedStreaming: {...streamSetupOptions.advancedStreaming, enabled: !streamSetupOptions.advancedStreaming.enabled}})} id='advancedStreamingToggle' label='Advanced Streaming' />
-                        <IconStyle className='pl2' id="advancedStreamingTooltip">info_outlined</IconStyle>
+                    <div className='col col-12 mt1 flex flex-column relative'>
+                        <div className='flex col col-12 relative'>
+                        <Toggle style={{marginTop: 2}} className='col col-7' defaultChecked={streamSetupOptions.advancedStreaming.enabled} onChange={() => setStreamSetupOptions({...streamSetupOptions, advancedStreaming: {...streamSetupOptions.advancedStreaming, enabled: !streamSetupOptions.advancedStreaming.enabled}})} id='advancedStreamingToggle' label='Advanced Streaming' />
+                        <IconStyle id="advancedStreamingTooltip">info_outlined</IconStyle>
                         <Tooltip leftPositionValueToZero target="advancedStreamingTooltip">
                             Tooltip for the advanced streaming
                         </Tooltip>
+                        </div>
+
                         {
                             (userToken.getPrivilege('privilege-china') && streamSetupOptions.advancedStreaming.enabled) && 
-                            <div className='col col-12 mt1 flex relative'>
+                            <div className='col col-12 mt1 ml2 flex relative'>
                                 <InputCheckbox id='chinaStreamingCheckbox' label='Stream to China' defaultChecked={streamSetupOptions.advancedStreaming.china} onChange={() => setStreamSetupOptions({...streamSetupOptions, advancedStreaming: {...streamSetupOptions.advancedStreaming, china: !streamSetupOptions.advancedStreaming.china}})}/>
                             </div>
                         }
