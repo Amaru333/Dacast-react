@@ -33,13 +33,13 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
         const handleOnlineToggle = (contentType: ContentType) => {
             switch (contentType) {
                 case "vod":
-                    return "Video"
+                    return "video online"
                 case "live":
-                    return "Live Stream"
+                    return "common_content_general_online_toggle_title"
                 case "playlist":
-                    return "Playlist"
+                    return "playlist_general_online_toggle_text"
                 case "expo":
-                    return "Expo"
+                    return "expo_general_online_toggle"
             }
         }
 
@@ -60,7 +60,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 className="col col-12 mb2"
                 defaultChecked={props.localContentDetails.online}
                 onChange={() => {props.setLocalContentDetails({ ...props.localContentDetails, online: !props.localContentDetails.online });props.setHasChanged(true)}}
-                label={handleOnlineToggle(props.contentType) + " Online"}
+                label={t(handleOnlineToggle(props.contentType))}
             />
             <div className="col col-12">
                 <Input

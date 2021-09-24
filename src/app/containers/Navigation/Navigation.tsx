@@ -274,7 +274,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                         return (
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
                                                 <div className='flex'>
-                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {t(subMenuElement.name)}</TextStyle>
                                                 </div>
 
                                             </SubMenuElement>
@@ -283,7 +283,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                                         return (
                                             <Link to={ (location) => {if(subMenuElement.path.indexOf('analytics') > -1) {return subMenuElement.path + analyticsQs} return subMenuElement.path}} key={'submenuElement'+i+index} onClick={() => {handleMenuItemClick(element.path, subMenuElement.path)}}  >
                                                 <SubMenuElement selected={selectedSubElement === subMenuElement.path}>
-                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {subMenuElement.name}</TextStyle>
+                                                    <TextStyle selected={selectedSubElement === subMenuElement.path} size={14} weight='reg'> {t(subMenuElement.name)}</TextStyle>
                                                 </SubMenuElement>
                                             </Link>
                                         )

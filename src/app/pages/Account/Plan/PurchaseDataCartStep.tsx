@@ -8,6 +8,7 @@ import { BandWidthProduct, BandwidthProductCurrency, Extras } from '../../../red
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { handleCurrencySymbol } from '../../../../utils/utils';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface PurchaseDataCartStepProps {
     stepperData: Extras;
@@ -21,6 +22,7 @@ interface PurchaseDataCartStepProps {
 export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
 
     const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData.quantity)
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -28,10 +30,10 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
 
     const handleInputError = (dataAmount: number) => {
         if(dataAmount > 99999) {
-            return "Contact us for purchases over 100,000 GB"
+            return t('account_plan_additional_data_high_purchase_text')
         }
         if (dataAmount < 1000) {
-            return "Purchases must be over 1TB"
+            return t('account_plan_modal_min_purchase_text')
         }
 
         return null
@@ -41,7 +43,7 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
         return [
             {
                 data: [
-                    <Text size={14}>Price per GB</Text>,
+                    <Text size={14}>{t('account_plan_modal_table_text')}</Text>,
                     <Text className="right pr2" size={14}>{(dataAmount && dataAmount < 100000) && `${handleCurrencySymbol(props.selectedCurrency.data.id)} ${props.bandwidthProduct[props.stepperData.code].unitPrice[props.selectedCurrency.data.id as BandwidthProductCurrency]}`}</Text>
                 ]
             }
@@ -50,7 +52,7 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
 
     const cartTableFooterElement = () => {
         return [
-            <Text size={14} weight="med">Total Pay Now</Text>,
+            <Text size={14} weight="med">{t('account_plan_modal_pay_now_text')}</Text>,
             <Text className="right pr2" weight="med" size={14}>{(dataAmount && dataAmount < 100000) && `${handleCurrencySymbol(props.selectedCurrency.data.id)} ${(props.stepperData.totalPrice).toFixed(2)}`}</Text>
         ]
     }
@@ -82,7 +84,7 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
                 defaultValue={dataAmount && dataAmount.toString()}
                 type="number"
                 className="col col-6 mb1"
-                label="Amount in Gigabytes (GB)"
+                label={t('account_plan_modal_gb_amount')}
                 isError={dataAmount !== null && (dataAmount > 99999 || dataAmount < 1000)}
                 help={handleInputError(dataAmount)}
                 onChange={(event) => {handleDataPrice(parseInt(event.currentTarget.value))}}
@@ -92,7 +94,7 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
             </div>
             <div className="flex mt1">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                <Text size={14} weight="reg">Need help with purchasing additional data? Visit the <a href={getKnowledgebaseLink("Data")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text size={14} weight="reg"><Trans i18nKey='account_plan_modal_help_text'>Need help with purchasing additional data? Visit the <a href={getKnowledgebaseLink("Data")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
             </div>
         </div>
     )

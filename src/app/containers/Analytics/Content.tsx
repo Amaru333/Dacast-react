@@ -1,5 +1,6 @@
 import { string } from 'prop-types'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { ThunkDispatch } from 'redux-thunk'
 import styled, { css } from 'styled-components'
@@ -44,12 +45,12 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     const [selectedContent, setSelectedContent] = React.useState<{id: string; type: ContentType; title: string} | null>(null)
     const [loading, setLoading] = React.useState<boolean>(false)
     const colTable = currentTab !== 'engagement' ? 'col col-3' : 'col col-4'
+    const { t } = useTranslation()
     const contentAnalyticsDropdownItems = [
-        { title: "Audience", data: "audience" },
+        { title: t('common_analytics_audience_title'), data: "audience" },
         // { title: "Paywall", data: "paywall" },
-        { title: "Engagement", data: "engagement" }
+        { title: t('common_content_tabs_engagement'), data: "engagement" }
     ]
-
 
     React.useEffect(() => {
         props.getAnalyticsContentList({metrics: ['plays', 'impressions'], sortBy: 'impressions'})
@@ -94,6 +95,17 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
         exportCSVFile(props.analyticsContent.contentList.map(item => {return {title: `\"${item.title}\"`, type: item.type === 'vod' ? 'Video' : 'Live Stream', id: item.id, ...Object.keys(item.metrics).reduce((acc, next) => {return {...acc, [next]: item.metrics[next]}}, {})}}), "TopContent", {title: 'Title', type: 'Type', id: 'Id', ...Object.keys(props.analyticsContent.contentList[0].metrics).reduce((acc, next) => {return {...acc, [next]: capitalizeFirstLetter(next)}}, {})});
     }
 
+    const handleMetric = (key: string): string => {
+        switch(key) {
+            case 'plays':
+                return 'common_analytics_plays_title'
+            case 'impressions':
+                return 'dashboard_impressions_widget_title'
+            case 'watchtime':
+                return 'common_analytics_total_watchtime_title'
+        }
+    }
+
     const renderContentList = () => {
         return props.analyticsContent.contentList.map(content => {
             return (
@@ -129,7 +141,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
     return (
         <div className='flex flex-column'>
             <ListContentTitle className='mb2 col col-12'>
-                <Text size={32} className='pb2'>Last 30 Days - </Text>
+                <Text size={32} className='pb2'>{t('common_analytics_time_range_preset_30_days')} - </Text>
                 {selectedContent && <Text size={32} color='dark-violet'>&nbsp;{selectedContent.title}</Text>}
             </ListContentTitle>
             <div className='flex col col-12 mb2'>
@@ -147,7 +159,7 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
                 renderChart()
             }
             <div className='my2 mx-auto'>
-                <Button onClick={() => { exportCsvAnalytics() }} sizeButton='small' buttonColor='blue' typeButton='primary'>Export CSV</Button>
+                <Button onClick={() => { exportCsvAnalytics() }} sizeButton='small' buttonColor='blue' typeButton='primary'>{t('common_button_text_export_csv')}</Button>
             </div>
             <WidgetElement>
                 <WidgetHeader>
@@ -155,11 +167,11 @@ const AnalyticsContent = (props: AnalyticsContentProps) => {
                     <Text size={16} color='gray-3'>(Last 30 Days)</Text>
                 </WidgetHeader>
                     <ContentTableRow className='flex flex-justify border-bottom col col-12 py1'>
-                        <Text weight='med' className={colTable}>Title</Text>
-                        <Text weight='med' className={colTable + ' px4'}>Type</Text>
+                        <Text weight='med' className={colTable}>{t('common_content_list_table_header_title')}</Text>
+                        <Text weight='med' className={colTable + ' px4'}>{t('common_paywall_price_table_header_type')}</Text>
                         {
                             props.analyticsContent.contentList.length > 0 && Object.keys(props.analyticsContent.contentList[0].metrics).map((key: AnalyticsTopContentDimensions) => {
-                                return <Text weight='med' className={colTable}>{capitalizeFirstLetter(key)}</Text>
+                                return <Text weight='med' className={colTable}>{t(handleMetric(key))}</Text>
                             })
                         }
                     </ContentTableRow>

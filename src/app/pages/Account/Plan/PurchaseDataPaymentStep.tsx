@@ -7,6 +7,7 @@ import { BandWidthProduct, BandwidthProductCurrency, BillingPageInfos, Extras } 
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { MultiCurrencyDropdown } from '../../../shared/Billing/MultiCurrencyDropdown';
 import { handleCurrencySymbol } from '../../../../utils/utils';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface PurchaseDataPaymentStepProps {
     stepperData: Extras; 
@@ -25,6 +26,7 @@ interface PurchaseDataPaymentStepProps {
 export const PurchaseDataPaymentStep = (props: PurchaseDataPaymentStepProps) => {
 
     const [termsAndConditionsChecked, setTermsAndConditionsChecked] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         props.setStepValidated(termsAndConditionsChecked)
@@ -32,7 +34,7 @@ export const PurchaseDataPaymentStep = (props: PurchaseDataPaymentStepProps) => 
 
     const paymentTableHeaderElement = () => {
         return {data: [
-            {cell: <Text  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">Total Pay Now</Text>},
+            {cell: <Text  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">{t('account_plan_modal_pay_now_text')}</Text>},
             {cell: <Text className="right mr2"  key={"paymentTablePayNow"} size={14}  weight="med" color="gray-1">{handleCurrencySymbol(props.selectedCurrency.data.id) + (props.stepperData.totalPrice).toFixed(2)}</Text>}
         ]}
     }
@@ -51,13 +53,13 @@ export const PurchaseDataPaymentStep = (props: PurchaseDataPaymentStepProps) => 
             <NewPaymentMethodForm callback={() => {}} actionButton={props.finalFunction} handleThreeDSecureFail={props.handleThreeDSecureFail} billingInfo={props.billingInfo} recurlyFunction={props.purchaseProducts} purchasePlan3Ds={props.purchaseProducts3Ds} stepperData={props.stepperData} />
         
             <div className="mt2 mb1">
-                <Text className="mt2" size={12} weight='reg' color='gray-3'>If you wish to use a different Payment Method, please go to Billing and add a new Payment Method</Text>
+                <Text className="mt2" size={12} weight='reg' color='gray-3'>{t('account_plan_modal_change_payment_info_text')}</Text>
             </div>
             
             <div className='py2 col col-12 flex flex-auto'>
                 <InputCheckbox id={'chekboxTC'} key={'chekboxTC'} onChange={() => setTermsAndConditionsChecked(!termsAndConditionsChecked)} />
                 <div className='col col-11 flex'>
-                    <Text  size={14} weight='reg' color='gray-3'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/">Terms and Conditions.</a></Text>                   
+                    <Text  size={14} weight='reg' color='gray-3'><Trans i18nKey='account_plan_modal_terms_text'>By purchasing this product I acknowledge and accept the <a target="_blank" href="https://www.dacast.com/terms-of-service/">Terms and Conditions.</a></Trans></Text>                   
                 </div>
             </div>
         </div>

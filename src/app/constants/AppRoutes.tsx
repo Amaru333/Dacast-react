@@ -285,7 +285,7 @@ export const AppRoutes: Routes[] = [
     },
     {
         path: '/expos/:exposId/setup',
-        name: 'Setup',
+        name: 'common_content_tabs_setup',
         iconName: null,
         isExact: true,
         associatePrivilege: ['privilege-expo'],
@@ -377,38 +377,38 @@ export const AppRoutes: Routes[] = [
         slug: [
             {
                 path: '/analytics/dashboard',
-                name: 'Dashboard',
+                name: 'common_navigation_bar_menu_item_dashboard',
                 component: DashboardNew,
             },
             {
                 path: '/analytics/data',
-                name: 'Data Usage',
+                name: 'analytics_data_usage_title',
                 component: DataConsumption,
             },
             {
                 path: '/analytics/audience',
-                name: 'Audience',
+                name: 'common_analytics_audience_title',
                 component: Audience,
             },
             {
                 path: '/analytics/content',
-                name: 'Content',
+                name: 'analytics_content_title',
                 component: AnalyticsContent,
             },
             {
                 path: '/analytics/engagement',
-                name: 'Engagement',
+                name: 'common_content_tabs_engagement',
                 component: Engagement,
             },
             {
                 path: '/analytics/paywall',
-                name: 'Paywall',
+                name: 'common_navigation_bar_menu_item_paywall',
                 component: Paywall,
                 associatePrivilege: ['privilege-paywall'],
             },
             {
                 path: '/analytics/real-time',
-                name: 'Real Time',
+                name: 'common_analytics_real_time_title',
                 component: RealTime
             }
         ]
@@ -423,37 +423,37 @@ export const AppRoutes: Routes[] = [
         slug: [
             {
                 path: '/paywall/presets',
-                name: 'Presets',
+                name: 'paywall_presets_title',
                 associatePrivilege: ['privilege-paywall'],
                 component: Presets
             },
             {
                 path: '/paywall/groups',
-                name: 'Groups',
+                name: 'paywall_groups_title',
                 associatePrivilege: ['privilege-paywall'],
                 component: Groups
             },
             {
                 path: '/paywall/transactions',
-                name: 'Transactions',
+                name: 'paywall_transactions_title',
                 associatePrivilege: ['privilege-paywall'],
                 component: Transactions
             },
             {
                 path: '/paywall/withdrawals',
-                name: 'Withdrawals',
+                name: 'paywall_withdrawals_title',
                 component: Payout,
                 associatePrivilege: ['privilege-payment-request']
             },
             {
                 path: '/paywall/theming',
-                name: 'Theming',
+                name: 'paywall_theme_navbar_title',
                 associatePrivilege: ['privilege-paywall'],
                 component: PaywallTheming
             },
             {
                 path: '/paywall/settings',
-                name: 'Settings',
+                name: 'common_navigation_bar_menu_item_settings',
                 associatePrivilege: ['privilege-paywall'],
                 component: PaywallSettings
             }
@@ -472,34 +472,34 @@ export const AppRoutes: Routes[] = [
         slug: [
             {
                 path: '/settings/encoding',
-                name: 'Encoding',
+                name: 'settings_encoding_navbar_title',
                 component: EncodingRecipes
             },
             {
                 path: '/settings/embed',
-                name: 'Embed',
+                name: 'settings_embed_title',
                 component: EmbedSettings
             },
             {
                 path: '/settings/security',
-                name: 'Security',
+                name: 'common_content_tabs_security',
                 component: Security
             },
             {
                 path: '/settings/integrations',
-                name: 'Integrations',
+                name: 'settings_integration_title',
                 component: ApiIntegration,
                 associatePrivilege: ['privilege-api-beta', 'privilege-api']
             },
 
             {
                 path: '/settings/theming',
-                name: 'Theming',
+                name: 'paywall_theme_navbar_title',
                 component: Theming
             },
             {
                 path: '/settings/engagement',
-                name: 'Engagement',
+                name: 'common_content_tabs_engagement',
                 component: SettingsEngagement
             }
         ]
@@ -512,7 +512,7 @@ export const AppRoutes: Routes[] = [
         slug: [
             {
                 path: '/account/plan',
-                name: 'Plan',
+                name: 'account_plan_title',
                 component: Plan,
                 associatePrivilege: ['privilege-billing']
             },

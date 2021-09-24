@@ -28,6 +28,7 @@ import { PurchaseDataPaymentStep } from './PurchaseDataPaymentStep';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { ProductExtraDataCurrencyKey } from '../../../../DacastSdk/account';
 import { PlanDetailsCard } from '../../../shared/Plan/PlanDetailsCard';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface PlanComponentProps {
     billingInfos: BillingPageInfos;
@@ -55,9 +56,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [dataPaymentSuccessOpen, setDataPaymentSuccessOpen] = React.useState<boolean>(false)
     const [dataPaymentFailedOpen, setDataPaymentFailedOpen] = React.useState<boolean>(false)
     const [selectedCurrency, setSelectedCurrency] = React.useState<DropdownSingleListItem>({title: defaultCurrency + ' - ' + handleCurrencySymbol(defaultCurrency), data: {img: defaultCurrency.toLowerCase(), id: defaultCurrency.toLowerCase()}})
+    const { t } = useTranslation()
 
-
-    const purchaseDataStepList = [{title: "Cart", content: PurchaseDataCartStep}, {title: "Payment", content: PurchaseDataPaymentStep}]
+    const purchaseDataStepList = [{title: t('account_plan_modal_cart_step'), content: PurchaseDataCartStep}, {title: t('account_plan_modal_payment_step'), content: PurchaseDataPaymentStep}]
 
     const purchaseProducts = async (recurlyToken: string, callback: Function) => {
         setIsLoading(true);
@@ -211,14 +212,14 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
         <div>
             <GeneralDashboard isPlanPage openOverage={setProtectionModalOpened} profile={props.widgetData.generalInfos} plan={props.billingInfos.currentPlan} overage={props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" ? props.billingInfos.playbackProtection : null} dataButtonFunction={() => setPurchaseDataOpen(true)} />
             <Card>
-                <div className="pb2" ><Text size={20} weight='med' color='gray-1'>Plan Details</Text></div>
+                <div className="pb2" ><Text size={20} weight='med' color='gray-1'>{t('account_plan_details_title')}</Text></div>
                 <Table id="planDetailsTable" headerBackgroundColor="gray-10" className="" header={planDetailsTableHeaderElement()} body={planDetailsTableBodyElement()}></Table>
                {
                    (props.billingInfos.currentPlan && props.billingInfos.currentPlan.displayName !== "Free" && props.billingInfos.currentPlan.displayName !== "30 Day Trial") &&
                     <>
                         <Divider className="py1" />
-                        <div className="py2" ><Text size={20} weight='med' color='gray-1'>Playback Protection</Text></div>
-                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Automatically buy more Data when you run out to ensure your content never stops playing, even if you use all your data.</Text></div>
+                        <div className="py2" ><Text size={20} weight='med' color='gray-1'>{t('account_plan_playback_protection_title')}</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>{t('account_plan_playback_protection_description')}</Text></div>
                             <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable protection</Button>
                             {
                                 (!props.billingInfos.paymentMethod || !playbackProtectionEnabled) ?
@@ -227,10 +228,10 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                             }
 
                             <Divider className="py1" />
-                            <div className="py2" ><Text size={20} weight='med' color='gray-1'>Additional Data</Text></div>
-                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>Manually purchase more data when you run out so that your content can keep playing.</Text></div>
-                            <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>Purchase Data</Button>
-                            <div className="py2" ><Text size={16} weight='med' color='gray-1'>Pricing</Text></div>
+                            <div className="py2" ><Text size={20} weight='med' color='gray-1'>{t('account_plan_additional_data_title')}</Text></div>
+                            <div className="pb2" ><Text size={14} weight='reg' color='gray-3'>{t('account_plan_additional_data_title')}</Text></div>
+                            <Button className="col col-2 mb1" typeButton="secondary" sizeButton="xs" onClick={() => setPurchaseDataOpen(true)}>{t('account_plan_purchase_data_title')}</Button>
+                            <div className="py2" ><Text size={16} weight='med' color='gray-1'>{t('account_plan_additional_data_pricing')}</Text></div>
                             <div className="col col-2 mb2">
                                 <DataPricingTable >
                                     {
@@ -246,7 +247,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                                     }
                                 </DataPricingTable>
                             </div>
-                            <div className="pb2" ><Text size={12} weight='reg' color='gray-3'><a href="/help">Contact us</a> for purchases over 100 TB</Text></div>
+                            <div className="pb2" ><Text size={12} weight='reg' color='gray-3'><Trans i18nKey='account_plan_additional_data_high_purchase_text'><a href="/help">Contact us</a> for purchases over 100 TB</Trans></Text></div>
                     </>
                 }
                 {
@@ -276,7 +277,7 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
                 purchaseDataOpen &&
                 <CustomStepper
                     opened={purchaseDataOpen}
-                    stepperHeader="Purchase Data"
+                    stepperHeader={t('account_plan_purchase_data_title')}
                     stepList={purchaseDataStepList}
                     lastStepButton="Purchase"
                     finalFunction={() => {threeDSecureActive ? purchaseProducts3Ds : purchaseProducts}}

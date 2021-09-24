@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { ColorsApp } from '../../../../styled/types';
 import { WithdrawalRequest, PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { useTranslation } from 'react-i18next';
 
 interface WithdrawalModalProps { 
     paymentList: PaymentMethod[]; 
@@ -25,7 +26,7 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
         transferDate: NaN,
     })
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false) 
-
+    const { t } = useTranslation()
     const paymentMethodDropdownList = props.paymentList.map((item: PaymentMethod) => {
         let paymentMethodDropdownItem: DropdownSingleListItem = {title: null, data: null}
         paymentMethodDropdownItem.title = item.paymentMethodName
@@ -63,14 +64,14 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                 <DropdownSingle
                     className='col xs-no-gutter xs-mb1 col-12 sm-col-8 pr1'
                     id='widthdrawalModalPaymentMethodDropdown'
-                    dropdownTitle='Choose Method'
+                    dropdownTitle={t('paywall_withdrawals_requests_modal_method_dropdown_title')}
                     list={paymentMethodDropdownList}
                     callback={(item: DropdownSingleListItem) => { setwithdrawalRequest({ ...withdrawalRequest, paymentMethodId: item.data.id}) }}
                     dropdownDefaultSelect={props.paymentList[0].paymentMethodName}
                 />
                 <div className='col col-12 flex flex-column'>
                     <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
-                        <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
+                        <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label={t('paywall_withdrawals_requests_modal_amount')} placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
                         <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
                     </div>
                     {(withdrawalRequest.amount && props.balance < withdrawalRequest.amount) ? <Text color='red'>Withdrawal Amount cannot be higher than Available balance (i.e. total paywall balance minus sum of pending requests).</Text> : null}
@@ -79,24 +80,24 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
             </div>
             <div className=' col col-12 flex flex-column'>
                 <div className='col col-12 sm-col-7 pr1'>
-                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Minimum Request</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>{t('paywall_withdrawals_requests_modal_min_request')}</Text></TextContainer>
                     <TextContainer className='col col-6' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().minRequest}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1'>
-                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Fee</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>{t('paywall_withdrawals_requests_modal_fee')}</Text></TextContainer>
                     <TextContainer className='col col-6' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().fees}</Text></TextContainer>
                 </div>
                 <div className='col col-12 sm-col-7 pr1 mb2'>
-                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>Processing Time</Text></TextContainer>
+                    <TextContainer className='col col-6' backgroundColor='gray-10'><Text size={14} weight='med'>{t('paywall_withdrawals_requests_modal_processing_time')}</Text></TextContainer>
                     <TextContainer className='col col-6 ' backgroundColor='white'><Text size={14} weight='reg'>{handleMinRequest().nbDays.toString() + ' Business Days**'}</Text></TextContainer>
                 </div>
             </div>
             {props.paymentList.find(p => p.id === withdrawalRequest.paymentMethodId).paymentMethodType === PaymentMethodType.PayPal && <Text className='col col-12 pb1' size={12} weight='reg' color='gray-3'>*PayPal may charge a fee for transfers to non-US PayPal accounts</Text>}
-            <Text size={12} weight='reg' color='gray-3'>**Your first payment request will be delayed at least 35 days</Text>
-            <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label='Comments' indicationLabel='optional' placeholder='Comments' />
+            <Text size={12} weight='reg' color='gray-3'>*{t('paywall_withdrawals_requests_modal_delay_info_text')}</Text>
+            <Input className='col col-12 my2' type='textarea' id='withdrawalModalCommentsInput' label={t('paywall_withdrawals_requests_modal_comment')} indicationLabel='optional' placeholder={t('paywall_withdrawals_requests_modal_comment')} />
             <div className='flex col col-12 my2'>
-                <Button disabled={!withdrawalRequest.amount || props.balance < withdrawalRequest.amount} isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>Request</Button>
-                <Button onClick={() => props.toggle(false)} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button disabled={!withdrawalRequest.amount || props.balance < withdrawalRequest.amount} isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr1' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('paywall_withdrawals_requests_modal_request_button')}</Button>
+                <Button onClick={() => props.toggle(false)} className='ml1' typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
     )

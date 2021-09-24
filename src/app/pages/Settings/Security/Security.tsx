@@ -17,6 +17,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { Divider } from '../../../../shared/MiscStyles';
 import { ToggleTextInfo } from '../../../shared/Security/SecurityStyle';
 import { DateTimePicker } from '../../../../components/FormsComponents/Datepicker/DateTimePicker';
+import { useTranslation } from 'react-i18next';
 
 export const SecurityPage = (props: SecurityComponentProps) => {
 
@@ -33,7 +34,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
     const [endTime, setEndTime] = React.useState<number>(props.securityDetails.contentScheduling.endTime)
     const [endTimezone, setEndTimezone] = React.useState<string>(props.securityDetails.contentScheduling.endTimezone)
-
+    const { t } = useTranslation()
     React.useEffect(() => {
         if (props.securityDetails !== securityDetails) {
             setDisplayformActionButtons(true)
@@ -96,7 +97,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
         return {
             data: [
                 { cell: <Text className='col col-2' key={"groupTable" + tableType} size={14} weight="med" color="gray-1">Group</Text> },
-                { cell: <Text className='col col-2' key={"DefaultTable" + tableType} size={14} weight="med" color="gray-1">Default</Text> },
+                { cell: <Text className='col col-2' key={"DefaultTable" + tableType} size={14} weight="med" color="gray-1">{t('paywall_theme_default')}</Text> },
                 { cell: <Button className={"right mr2 sm-show"} key={"actionTable" + tableType} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); tableType === 'geoRestriction' ? setGeoRestrictionModalOpened(true) : setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button> }
             ]
         }
@@ -163,14 +164,14 @@ export const SecurityPage = (props: SecurityComponentProps) => {
     return (
         <div>
             <Bubble type='info' className='my2'>
-                These global settings can be overriden by editing a specific piece of content (Video, Live Stream etc.)
+                {t('settings_security_global_info_text')}
             </Bubble>
             <Card>
                 <div id='settingsPageForm'>
-                    <div className="py2" ><Text size={20} weight='med' color='gray-1'>Security</Text></div>
+                    <div className="py2" ><Text size={20} weight='med' color='gray-1'>{t('common_content_tabs_security')}</Text></div>
                     <div className='col col-12 mb2'>
-                        <Toggle id="passwordProtectedVideosToggle" label='Password Protection' onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
-                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing your content. </Text></ToggleTextInfo>
+                        <Toggle id="passwordProtectedVideosToggle" label={t('common_security_password_protection_title')} onChange={() => { handlePasswordProtectedVideoChange() }} defaultChecked={props.securityDetails.passwordProtection.password ? true : false} />
+                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>{t('common_security_password_protection_info_text')}</Text></ToggleTextInfo>
                         {
                             togglePasswordProtectedVideo &&
                             <div className='col col-12 mb1'>
@@ -178,8 +179,8 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                     type='text'
                                     className='col col-4 md-col-3 pr1 mb2'
                                     id='password'
-                                    label='Password'
-                                    placeholder='Password'
+                                    label={t('live_stream_general_encoder_modal_password_field_title')}
+                                    placeholder={t('live_stream_general_encoder_modal_password_field_title')}
                                     value={securityDetails.passwordProtection.password}
                                     onChange={(event) =>{ handlePasswordChange(event)}}
                                 
@@ -190,13 +191,13 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                     <div className='col col-12'>
 
-                        <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
-                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <Text className="col col-12" size={16} weight="med">{t('common_security_content_scheduling_title')}</Text>
+                        <ToggleTextInfo className=""><Text size={14} weight='reg' color='gray-1'>{t('common_security_content_scheduling_info_text')}</Text></ToggleTextInfo>
                                 <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
-                                        dropdownTitle="Available"
+                                        dropdownTitle={t('common_paywall_promo_modal__available_dropdown_title')}
                                         id="dateStart"
-                                        hideOption="Always"
+                                        hideOption={t('common_paywall_promo_modal__available_dropdown_always_option')}
                                         callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setStartTime(ts); setStartTimezone(tz) }}
                                         defaultTs={startTime}
                                         timezone={startTimezone}
@@ -205,10 +206,10 @@ export const SecurityPage = (props: SecurityComponentProps) => {
                                 </div>
                                 <div className='col col-12 mb2 flex items-end'>
                                     <DateTimePicker 
-                                        dropdownTitle="Until"
+                                        dropdownTitle={t('common_paywall_promo_modal__available_dropdown_until_option')}
                                         id="dateEnd"
                                         minDate={startTime ? startTime : undefined}
-                                        hideOption="Forever"
+                                        hideOption={t('common_paywall_promo_modal__available_dropdown_forever_option')}
                                         callback={(ts:number, tz: string) => { setDisplayformActionButtons(true); setEndTime(ts); setEndTimezone(tz) }}
                                         defaultTs={endTime}
                                         timezone={endTimezone}
@@ -220,9 +221,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                 <Divider className="p1" />
 
-                <div className="py2" ><Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text></div>
+                <div className="py2" ><Text size={20} weight='med' color='gray-1'>{t('common_security_geo_restriction_title')}</Text></div>
 
-                <div className="pb1" ><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific countries and regions.</Text></div>
+                <div className="pb1" ><Text size={14} weight='reg' color='gray-1'>{t('common_content_security_geo_restriction_info_text')}</Text></div>
                 <div className="clearfix">
                     <Button className={"left col col-12 xs-show"} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setGeoRestrictionModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>
@@ -231,9 +232,9 @@ export const SecurityPage = (props: SecurityComponentProps) => {
 
                 <Divider className="py1" />
 
-                <div className="py2" ><Text size={20} weight='med' color='gray-1'>Domain Control</Text></div>
+                <div className="py2" ><Text size={20} weight='med' color='gray-1'>{t('common_security_domain_control_title')}</Text></div>
 
-                <div className="pb1"><Text size={14} weight='reg' color='gray-1'>Restrict access to your content to specific websites.</Text></div>
+                <div className="pb1"><Text size={14} weight='reg' color='gray-1'>{t('common_content_security_domain_control_info_text')}</Text></div>
                 <div className="clearfix">
                     <Button className={"col col-12 xs-show "} type="button" onClick={(event) => { event.preventDefault(); setSelectedItem(null); setDomainControlModalOpened(true) }} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Group</Button>
                 </div>
@@ -243,7 +244,7 @@ export const SecurityPage = (props: SecurityComponentProps) => {
             {
                 displayFormActionButtons &&
                 <div>
-                    <Button onClick={() => {onSubmit()}} isLoading={submitLoading} className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                    <Button onClick={() => {onSubmit()}} isLoading={submitLoading} className="my2" typeButton='primary' buttonColor='blue'>{t('common_button_text_save')}</Button>
                     <Button onClick={() => { setDisplayformActionButtons(false);props.saveSettingsSecurityOptions(props.securityDetails) }} type="reset" form="settingsPageForm" className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                 </div>
             }

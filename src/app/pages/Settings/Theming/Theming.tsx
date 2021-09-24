@@ -10,11 +10,13 @@ import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { ThemingControlsCard } from '../../../shared/Theming/ThemingControlsCard';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const ThemingPage = (props: ThemingComponentProps) => {
 
     const [currentPage, setCurrentPage] = React.useState<'list' | 'options'>('list');
     const [selectedTheme, setSelectedTheme] = React.useState<ThemeOptions>(null);
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         setCurrentPage('list')
@@ -37,9 +39,9 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const ThemingList = () => {
         const themingTableHeader = () => {
             return {data: [
-                {cell: <Text key='ThemingTableHeaderName' size={14} weight='med'>Name</Text>},
-                {cell: <Text key='ThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
-                {cell: <Text key='ThemingTableHeaderCreated' size={14} weight='med'>Created Date</Text>},
+                {cell: <Text key='ThemingTableHeaderName' size={14} weight='med'>{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+                {cell: <Text key='ThemingTableHeaderDefault' size={14} weight='med'>{t('paywall_theme_default')}</Text>},
+                {cell: <Text key='ThemingTableHeaderCreated' size={14} weight='med'>{t('settings_integration_api_keys_table_date')}</Text>},
                 {cell: <Button className='right sm-show mr2' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>}
             ]}
         }
@@ -86,11 +88,11 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
         return (
             <Card>
-                <Text className='py2' size={20} weight='med'>Themes</Text>
-                <div className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></div>
+                <Text className='py2' size={20} weight='med'>{t('common_content_tabs_theme')}</Text>
+                <div className='py2'><Text size={14} weight='reg'>{t('settings_theme_global_info')}</Text></div>
                 <div className='my2 flex'>
                     <IconStyle className="mr1">info_outlined</IconStyle> 
-                    <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href={getKnowledgebaseLink("Theme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight='reg'><Trans i18nKey='settings_theme_help_text'>Need help creating a Theme? Visit the <a href={getKnowledgebaseLink("Theme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
                 <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
                 <Table id='themesListTable' headerBackgroundColor="gray-10" header={themingTableHeader()} body={themingTableBody()} />

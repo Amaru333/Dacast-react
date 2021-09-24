@@ -17,6 +17,7 @@ import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { SetStateAction, Dispatch } from 'react';
 import { RecipeSettingsStep } from './RecipeSettingsStep';
 import { RecipePresetStep } from './RecipePresetsStep';
+import { Trans, useTranslation } from 'react-i18next';
 
 export interface EncodingRecipesComponentProps {
     encodingRecipeData: EncodingRecipesData;
@@ -36,8 +37,8 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
     const emptyRecipe: EncodingRecipeItem = {id: "", name: "", isDefault: false, recipePresets: ["HD", "SD", "ULD", "Magic"], watermarkFileID: "", watermarkFilename: '', watermarkPositioningLeft: 0, watermarkPositioningRight: 0}
 
     const recipeOrder: string[] = ["4K", "2K", "FHD", "HD", "SD", "LD", "ULD", "Magic", "DNE"]
-
-    const stepList = [{title: "Settings", content: RecipeSettingsStep}, {title: "Presets", content: RecipePresetStep}]
+    const { t } = useTranslation()
+    const stepList = [{title: t('common_navigation_bar_menu_item_settings'), content: RecipeSettingsStep}, {title: t('paywall_presets_title'), content: RecipePresetStep}]
    
     const [createRecipeStepperOpen, setCreateRecipeStepperOpen] = React.useState<boolean>(false)
     const [selectedRecipe, setSelectedRecipe] = React.useState<EncodingRecipeItem | false>(false);
@@ -61,10 +62,10 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
 
     const recipesHeaderElement = (newRecipe: () => void) => {
         return {data: [
-            {cell: <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">Name</Text>},
-            {cell: <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">Default</Text>},
-            {cell: <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">Renditions</Text>},
-            {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 sm-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>}
+            {cell: <Text key={'encodingRecipesPage_TableNameHeader'} size={14} weight="med">{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+            {cell: <Text key={'encodingRecipesPage_TableDefaultHeader'} size={14} weight="med">{t('paywall_theme_default')}</Text>},
+            {cell: <Text key={'encodingRecipesPage_TableRenditionsHeader'} size={14} weight="med">{t('video_renditions_title')}</Text>},
+            {cell: <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"right mr2 sm-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>{t('settings_encoding_table_create_button')}</Button>}
         ]}
     }
 
@@ -147,21 +148,21 @@ export const EncodingRecipesPage = (props: EncodingRecipesComponentProps) => {
             :
             <Card className="col-12 clearfix p50">
                 <HeaderStyle>
-                    <Text size={20} weight="reg">Encoding Recipes</Text>
+                    <Text size={20} weight="reg">{t('settings_encoding_page_title')}</Text>
                 </HeaderStyle>
-                <Text size={14} weight="reg">Encoding recipes allow you to encode your videos during upload so they can be played immediately.</Text>
+                <Text size={14} weight="reg">{t('settings_encoding_page_description')}</Text>
                 <div className="flex col col-12 mt2 mb25">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help understanding Encoding Recipes? Visit the <a href={getKnowledgebaseLink("Encoding Recipes")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg"><Trans i18nKey='settings_encoding_page_help_text'>Need help understanding Encoding Recipes? Visit the <a href={getKnowledgebaseLink("Encoding Recipes")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
-                <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>Create Recipe</Button>
+                <Button key={'encodingRecipesPage_TableCreateRecipeButtonHeader'} className={"col col-12 xs-show"} typeButton="secondary" sizeButton="xs" onClick={() => newRecipe()}>{t('settings_encoding_table_create_button')}</Button>
                 <RecipesTable isMobile={isMobile} className="col-12" headerBackgroundColor="gray-10" id='encodingRecipeList' header={recipesHeaderElement(newRecipe)} body={recipesBodyElement(editRecipe, setDeleteWarningModalOpen, setDeletedRecipe)} />
                 <CustomStepper
                     opened={createRecipeStepperOpen}
-                    stepperHeader={selectedRecipe === false || !selectedRecipe.id ? "Create Recipe" : "Edit Recipe"}
+                    stepperHeader={selectedRecipe === false || !selectedRecipe.id ? t('settings_encoding_table_create_button') : "Edit Recipe"}
                     stepList={stepList}
                     isLoading={submitLoading}
-                    lastStepButton={selectedRecipe === false || !selectedRecipe.id ? "Create" : "Save"}
+                    lastStepButton={selectedRecipe === false || !selectedRecipe.id ? t('common_button_text_create') : t('common_button_text_save')}
                     functionCancel={() => setCreateRecipeStepperOpen(false)}
                     stepperData={selectedRecipe}
                     updateStepperData={(value: EncodingRecipeItem) => {setSelectedRecipe(value)}}

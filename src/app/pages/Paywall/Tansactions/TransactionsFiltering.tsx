@@ -8,6 +8,7 @@ import { IconStyle } from '../../../../shared/Common/Icon';
 import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { useTranslation } from 'react-i18next';
 
 export interface FilteringTransactionsState {
     type: string;
@@ -22,9 +23,6 @@ export interface FilteringTransactionsState {
 }
 
 export const TransactionsFiltering = (props: {defaultFilters: FilteringTransactionsState; setSelectedFilter: (filters: FilteringTransactionsState) => void}) => {
-
-
-
 
     var filteringDefault: FilteringTransactionsState = {
         type: null,
@@ -41,6 +39,7 @@ export const TransactionsFiltering = (props: {defaultFilters: FilteringTransacti
     const [filteringState, setFilteringState] = React.useState<FilteringTransactionsState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
+    const { t } = useTranslation()
 
     const filterDropdownList = [{title: "Pay Per View"}, {title: "Subscription"}, {title: "External Payment"}, {title: "Special Chargeback"}, {title: "Viewer Refund"}, {title: "Request Payment"}, {title: "Payment With Balance"}]
 

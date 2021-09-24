@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
@@ -39,6 +40,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     const [selectedTheme, setSelectedTheme] = React.useState<PaywallTheme>(newTheme)
     const [selectedTab, setSelectedTab] = React.useState<string>('Splash Screen')
     const [saveButtonLoadng, setSaveButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     let inPlayerPreviewIframeRef = React.useRef<any>(null)
     let inPlayerConnectionPreviewIframeRef = React.useRef<any>(null)
@@ -68,9 +70,9 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
         const paywallThemingTableHeader = () => {
             return {data: [
-                {cell: <Text key='paywallThemingTableHeaderName' size={14} weight='med'>Name</Text>},
-                {cell: <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>Default</Text>},
-                {cell: <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Paywall Theme</Button>}
+                {cell: <Text key='paywallThemingTableHeaderName' size={14} weight='med'>{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+                {cell: <Text key='paywallThemingTableHeaderDefault' size={14} weight='med'>{t('paywall_theme_default')}</Text>},
+                {cell: <Button key='paywallThemingTableHeaderButton' className='right mr2' onClick={() => {setSelectedTheme(newTheme);setCurrentPage('options')}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_theme_new_theme_button')}</Button>}
             ]}
         }
 
@@ -105,11 +107,11 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         return (
             <div>
                 <Card>
-                    <Text size={20} weight='med'>Paywall Theming</Text>
-                    <Text className="mt2" size={14} weight='reg'>Configure the look and feel of your paywall.</Text>
+                    <Text size={20} weight='med'>{t('paywall_theme_page_title')}</Text>
+                    <Text className="mt2" size={14} weight='reg'>{t('paywall_theme_description')}</Text>
                     <div className='flex item-center mt2'>
                         <IconStyle style={{marginRight: 10}}>info_outlined</IconStyle>
-                        <Text size={14} weight='reg'>Need help setting up a Paywall Theme? Visit the <a href={getKnowledgebaseLink("PaywallTheme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                        <Text size={14} weight='reg'><Trans i18nKey='paywall_theme_help_text'>Need help setting up a Paywall Theme? Visit the <a href={getKnowledgebaseLink("PaywallTheme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                     </div>
                     <Table className='col col-12' id='paywallThemingTable' headerBackgroundColor="gray-10" header={paywallThemingTableHeader()} body={paywallThemingTableBody()} />
                 </Card>
@@ -120,11 +122,11 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
     const PaywallThemingInPlayerCustomization = () => {
         const tabsList: Routes[] = [
             {
-                name: 'Splash Screen',
+                name: t('paywall_theme_splashcreen_tab'),
                 path: 'Splash Screen'
             },
             {
-                name: 'Login Screen',
+                name: t('paywall_theme_login_tab'),
                 path: 'Login Screen'
             }
 
@@ -133,19 +135,19 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
         return (
             <div className='col col-12 sm-col-4 pr1'>
                 <Card>
-                    <Text size={20} weight='med'>{selectedTheme.id === '-1' ? "New Paywall Theme" : "Edit Paywall Theme"}</Text>
-                    <Input className='mt2' id='paywalThemeNameInput' label='Theme Name' defaultValue={selectedTheme.name} onChange={(event) => setSelectedTheme({...selectedTheme, name: event.currentTarget.value})} />
-                    <InputCheckbox className='mt1' id='paywallThemeDefaultInput' label='Make Default Theme' defaultChecked={selectedTheme.isDefault} onChange={() => {
+                    <Text size={20} weight='med'>{selectedTheme.id === '-1' ? t('paywall_theme_new_theme_button') : "Edit Paywall Theme"}</Text>
+                    <Input className='mt2' id='paywalThemeNameInput' label={t('paywall_theme_theme_name_input')} defaultValue={selectedTheme.name} onChange={(event) => setSelectedTheme({...selectedTheme, name: event.currentTarget.value})} />
+                    <InputCheckbox className='mt1' id='paywallThemeDefaultInput' label={t('paywall_theme_make_default_checkbox')} defaultChecked={selectedTheme.isDefault} onChange={() => {
                         setSelectedTheme({...selectedTheme, isDefault: !selectedTheme.isDefault})
 
                     }} />
                     <Divider className='mt3 mb2' />
                     <Tab className='col col-12 my1' orientation='horizontal' list={tabsList} callback={setSelectedTab} />
                     <div className={selectedTab !== 'Splash Screen' ? 'hide' : 'mt2'}>
-                        <Text className="mt2" size={14} weight='reg'>The Splash Screen is shown when the viewer first sees the paywall.</Text>
+                        <Text className="mt2" size={14} weight='reg'>{t('paywall_theme_splashcreen_decription')}</Text>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Button Color</Text>
+                                <Text size={14} weight='med'>{t('paywall_theme_button_color_title')}</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -161,7 +163,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                         </div>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text className="mt2" size={14} weight='med'>Button Text Color</Text>
+                                <Text className="mt2" size={14} weight='med'>{t('paywall_theme_button_text_color_title')}</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -178,10 +180,10 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
 
                     </div>
                     <div className={selectedTab === 'Splash Screen' ? 'hide' : 'mt2'}>
-                        <Text className="mt2" size={14} weight='reg'>The Login Screen is shown before the user is allowed to purchase the content.</Text>
+                        <Text className="mt2" size={14} weight='reg'>{t('paywall_theme_login_description')}</Text>
                         <div className="mt2">
                             <ColorPickerLabel>
-                                <Text size={14} weight='med'>Button Color</Text>
+                                <Text size={14} weight='med'>{t('paywall_theme_button_color_title')}</Text>
                             </ColorPickerLabel>
                             <ColorPicker
                                 className='mb1'
@@ -248,8 +250,8 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
                     </div>
                 </Card>
                 <div className='flex mt2'>
-                    <Button isLoading={saveButtonLoadng} className='mr2' disabled={selectedTheme.name === ''} onClick={() => {handleSave();setSaveButtonLoading(true)}} sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>
-                    <Button onClick={() => setCurrentPage('list')} sizeButton='large' typeButton='tertiary' buttonColor='blue'>Cancel</Button>
+                    <Button isLoading={saveButtonLoadng} className='mr2' disabled={selectedTheme.name === ''} onClick={() => {handleSave();setSaveButtonLoading(true)}} sizeButton='large' typeButton='primary' buttonColor='blue'>{t('common_button_text_save')}</Button>
+                    <Button onClick={() => setCurrentPage('list')} sizeButton='large' typeButton='tertiary' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
                 </div>
             </div>
 

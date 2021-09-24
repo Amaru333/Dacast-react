@@ -136,7 +136,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
     }
 
     const messagePositionDropdownList = [{title: t("common_theme_message_position_dropdown_option_1"), data: {id: "Top"}}, {title: t("common_theme_message_position_dropdown_option_2"), data: {id: "Middle"}}, {title: t("common_theme_message_position_dropdown_option_3"), data: {id: "Fullsreen"}}]
-    const thumbnailPositionDropdownList = [{title: "Top"}, {title: "Right"}, {title: "Left"}, {title: "Bottom"}, {title: "Hidden"}]
+    const thumbnailPositionDropdownList = [{title: t('common_theme_message_position_dropdown_option_1'), data: {id: "Top"}}, {title: t("playlist_theme_thumbnail_position_option_1"), data: {id: 'Right'}}, {title: t('playlist_theme_thumbnail_position_option_2'), data: {id: "Left"}}, {title: t('playlist_theme_thumbnail_position_option_3'), data: {id: "Bottom"}}, {title: t('playlist_theme_thumbnail_position_option_4'), data: {id: "Hidden"}}]
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
 
@@ -377,19 +377,19 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                     <Divider className="p1" />
 
                                     <DisabledSection settingsEditable={playlistEnabled}>
-                                        <div className="py2" ><Text size={20} weight='med'>Playlists</Text></div>
-                                        <DropdownSingle className="mb2" dropdownTitle='Thumbnail Position' id='thumbnailPositionDropdown' list={thumbnailPositionDropdownList} dropdownDefaultSelect={capitalizeFirstLetter(selectedTheme.thumbnailPosition)} callback={(item: DropdownSingleListItem) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: item.title }); } }} tooltip="The position of the links to other content in the Playlist" />
+                                        <div className="py2" ><Text size={20} weight='med'>{t('')}</Text></div>
+                                        <DropdownSingle className="mb2" dropdownTitle={t('playlist_theme_thumbnail_position_title')} id='thumbnailPositionDropdown' list={thumbnailPositionDropdownList} dropdownDefaultSelect={thumbnailPositionDropdownList.find(f => f.data.id === selectedTheme.thumbnailPosition) ? thumbnailPositionDropdownList.find(f => f.data.id === selectedTheme.thumbnailPosition).title : thumbnailPositionDropdownList[0].title} callback={(item: DropdownSingleListItem) => { { setSelectedTheme({ ...selectedTheme, thumbnailPosition: item.data.id }); } }} tooltip={t('playlist_theme_thumbnail_position_text')} />
 
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Continuous Play' checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
+                                            <Toggle className={togglePadding} label={t('playlist_theme_continuous_play_title')} checked={selectedTheme.continuousPlay} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, continuousPlay: !selectedTheme.continuousPlay }); }} />
                                             <IconStyle id="continuousPlayTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="continuousPlayTooltip">Whether the next piece of content will start automatically when the current one finishes</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="continuousPlayTooltip">{t('playlist_theme_continuous_play_info_text')}</Tooltip>
                                         </ControlToggleContainer>
 
                                         <ControlToggleContainer>
-                                            <Toggle className={togglePadding} label='Skip Content' checked={selectedTheme.skipVideos} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, skipVideos: !selectedTheme.skipVideos }); }} />
+                                            <Toggle className={togglePadding} label={t('playlist_theme_skip_content_title')} checked={selectedTheme.skipVideos} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, skipVideos: !selectedTheme.skipVideos }); }} />
                                             <IconStyle id="skipVideosTooltip">info_outlined</IconStyle>
-                                            <Tooltip leftPositionValueToZero target="skipVideosTooltip">Whether thumbnails are displayed, allowing viewers to skip from one video to another</Tooltip>
+                                            <Tooltip leftPositionValueToZero target="skipVideosTooltip">{t('playlist_theme_skip_content_info_text')}</Tooltip>
                                         </ControlToggleContainer>
                                     </DisabledSection>
 
@@ -405,7 +405,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                         (props.contentType === 'vod' || props.contentType === 'settings') &&
                                         <>
                                             <DisabledSection settingsEditable={customEnabled}>
-                                                <div className="py2" ><Text size={20} weight='med'>Videos</Text></div>
+                                                <div className="py2" ><Text size={20} weight='med'>{t('common_navigation_bar_menu_item_videos')}</Text></div>
 
                                                 <ControlToggleContainer>
                                                     <Toggle className={togglePadding} label='Show Full Timecode' checked={selectedTheme.showFullTimeCode} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, showFullTimeCode: !selectedTheme.showFullTimeCode }); }} />

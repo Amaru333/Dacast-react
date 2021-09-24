@@ -10,6 +10,7 @@ import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { store } from '../..'
+import { Trans, useTranslation } from 'react-i18next';
 
 export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean }) => {
 
@@ -17,6 +18,7 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
 
     const [playlistTitle, setPlaylistTitle] = React.useState<string>('')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     const handleCreatePlaylist = async () => {
     
@@ -41,20 +43,20 @@ export const AddPlaylistModal = (props: { toggle: () => void; opened: boolean })
 
 
     return (
-        <Modal size="small" modalTitle="Create Playlist" toggle={props.toggle} opened={props.opened} hasClose={false}>
+        <Modal size="small" modalTitle={t('playlist_create_modal_title')} toggle={props.toggle} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <div className='col col-12 flex mb2 relative'> 
-                    <Input id='playlistModalInput' className='col col-12' defaultValue={playlistTitle} onChange={(event) => {setPlaylistTitle(event.currentTarget.value)}} label='Title' />
+                    <Input id='playlistModalInput' className='col col-12' defaultValue={playlistTitle} onChange={(event) => {setPlaylistTitle(event.currentTarget.value)}} label={t('common_content_list_table_header_title')} />
 
                 </div>
                 <div className="flex mt2 col col-12">
                     <IconStyle style={{ marginRight: "10px" }}>info_outlined</IconStyle>
-                    <Text size={14} weight="reg">Need help creating a Playlist? Visit the <a href={getKnowledgebaseLink("Playlist")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight="reg"><Trans i18nKey='playlist_create_modal_help_text'>Need help creating a Playlist? Visit the <a href={getKnowledgebaseLink("Playlist")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => handleCreatePlaylist()} disabled={playlistTitle.length === 0} typeButton="primary" >Create</Button>
-                <Button typeButton="tertiary" onClick={() => props.toggle()}>Cancel</Button>
+                <Button isLoading={buttonLoading} onClick={() => handleCreatePlaylist()} disabled={playlistTitle.length === 0} typeButton="primary" >{t('common_button_text_create')}</Button>
+                <Button typeButton="tertiary" onClick={() => props.toggle()}>{t('common_button_text_cancel')}</Button>
             </ModalFooter>
         </Modal>
     )

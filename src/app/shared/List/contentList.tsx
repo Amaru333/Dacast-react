@@ -486,11 +486,11 @@ export const ContentListPage = (props: ContentListProps) => {
                     }
                     {
                         props.contentType === "playlist" &&
-                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : 'Create Playlist' }</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : t('playlist_create_modal_title') }</Button>
                     }
                     {
                         props.contentType === 'expo' &&
-                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.infos}>{ isMobile ? 'Create' : 'Create Expo' }</Button>
+                        <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.infos}>{ isMobile ? 'Create' : t('expo_create_expo_modal_button') }</Button>
                     }
                 </div>
 

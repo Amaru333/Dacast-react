@@ -9,6 +9,7 @@ import { Button } from '../../../../components/FormsComponents/Button/Button';
 import { InputProps } from '../../../../components/FormsComponents/Input/InputTypes';
 import { EmbedSettingsComponentProps } from '../../../containers/Settings/EmbedSettings';
 import { Prompt } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
 
@@ -19,7 +20,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
     }
     const [inputOptions, setInputOptions] = React.useState<EmbedSettingsOptionType>(Object.keys(props.embedSettingsOption).length === 0  ? defaultEmbedSettings : props.embedSettingsOption);
     const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
-
+    const { t } = useTranslation()
     let inputRef = React.useRef<HTMLInputElement>(null)
 
     const submitInputs = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -47,25 +48,25 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
         <React.Fragment>
             <form>
                 <Card>
-                    <header><Text size={20} weight="med">Embed Size</Text></header>
+                    <header><Text size={20} weight="med">{t('settings_embed_size_title')}</Text></header>
                     <br />
                     <div>
                         <Text size={14} weight="reg">
-                            Choose how you wish to embed your videos.
+                            {t('settings_embed_size_description')}
                         </Text>
                     </div>
                     <br />
                     <div>
-                        <InputRadio name="embed-size" value="responsive" label="Responsive (Recommended)" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, scaling: "responsive" })} defaultChecked={inputOptions.scaling === "responsive"} />
+                        <InputRadio name="embed-size" value="responsive" label={t('settings_embed_size_responsive_title')} labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, scaling: "responsive" })} defaultChecked={inputOptions.scaling === "responsive"} />
                         <RadioText>
                             <Text size={14} weight="reg">
-                                Your videos will automatically resize to fit their container.
+                                {t('settings_embed_size_responsive_description')}
                             </Text>
                         </RadioText>
-                        <InputRadio name="embed-size" value="fixed" label="Fixed" labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, scaling: "fixed" })} defaultChecked={inputOptions.scaling === "fixed"} />
+                        <InputRadio name="embed-size" value="fixed" label={t('settings_embed_size_fixed_title')} labelSize={16} labelWeight="med" onChange={() => setInputOptions({ ...inputOptions, scaling: "fixed" })} defaultChecked={inputOptions.scaling === "fixed"} />
                         <RadioText>
                             <Text size={14} weight="reg">
-                                Videos will default to a fixed width with their height determined automatically based on aspect ratio.
+                                {t('settings_embed_size_fixed_description')}
                             </Text>
                         </RadioText>
                         <WidthInput isDisplayed={inputOptions.scaling === 'fixed'} ref={inputRef} isError={checkInputError()} onChange={event => setInputOptions({ ...inputOptions, size: parseInt(event.currentTarget.value) })} defaultValue={inputOptions.size.toString()} id="width" label="Fixed Width (px)" type="number" help="How wide your embeds will be" />
@@ -75,7 +76,7 @@ export const EmbedSettingsPage = (props: EmbedSettingsComponentProps) => {
                 {
                     Object.entries(inputOptions).toString() === Object.entries(props.embedSettingsOption).toString() ? null :
                         <ButtonContainer>
-                            <ButtonStyle disabled={inputOptions.scaling === 'fixed' && Number.isNaN(inputOptions.size) } isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>Save</ButtonStyle>
+                            <ButtonStyle disabled={inputOptions.scaling === 'fixed' && Number.isNaN(inputOptions.size) } isLoading={submitLoading} typeButton="primary" onClick={submitInputs}>{t('common_button_text_save')}</ButtonStyle>
                             <ButtonStyle onClick={() => {setInputOptions(Object.keys(props.embedSettingsOption).length === 0 && props.embedSettingsOption.constructor === Object ? defaultEmbedSettings : props.embedSettingsOption)}} typeButton="tertiary">Discard</ButtonStyle>
                         </ButtonContainer>}
             </form>

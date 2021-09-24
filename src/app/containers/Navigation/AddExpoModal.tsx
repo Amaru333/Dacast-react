@@ -11,6 +11,7 @@ import { handleValidationForm } from '../../utils/custom-hooks/formValidationHoo
 import { segmentService } from '../../utils/services/segment/segmentService'
 import { store } from '../..'
 import { showToastNotification } from '../../redux-flow/store/Toasts'
+import { Trans, useTranslation } from 'react-i18next'
 
 export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
 
@@ -21,7 +22,7 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
         mode: 'onBlur'
     })
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-
+    const { t } = useTranslation()
 
     const onSubmit = async (data: {title: string}) => {
 
@@ -44,15 +45,15 @@ export const AddExpoModal = (props: {toggle: Function, opened: boolean}) => {
         })
     }
     return (
-        <Modal modalTitle="Create Expo" toggle={() => props.toggle()} size="small" opened={props.opened} >
+        <Modal modalTitle={t('expo_create_expo_modal_button')} toggle={() => props.toggle()} size="small" opened={props.opened} >
             <form onSubmit={handleSubmit(onSubmit)} >
-                <Input {...handleValidationForm('title', errors)} ref={register({ required: "Required"})} id="title" type="text" className="col col-12 clearfix mb2" label="Title" placeholder=""  />
+                <Input {...handleValidationForm('title', errors)} ref={register({ required: "Required"})} id="title" type="text" className="col col-12 clearfix mb2" label={t('common_content_list_table_header_title')} placeholder=""  />
                 <div className="mb2 col col-12 clearfix">
                     <IconStyle className="mr1 left" >info_outlined</IconStyle>
-                    <Text className={"grid"} size={14} weight="reg" color="gray-1" >Need help creating an Expo? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/expo-video-portal/">Knowledge Base</a></Text>
+                    <Text className={"grid"} size={14} weight="reg" color="gray-1" ><Trans i18nKey='expo_create_expo_modal_help_text'>Need help creating an Expo? Visit the <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/support/knowledgebase/expo-video-portal/">Knowledge Base</a></Trans></Text>
                 </div>
-                <Button isLoading={buttonLoading} type="submit" sizeButton="large" typeButton="primary" buttonColor="blue" >Create</Button>
-                <Button sizeButton="large" onClick={()=> props.toggle()} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                <Button isLoading={buttonLoading} type="submit" sizeButton="large" typeButton="primary" buttonColor="blue" >{t('common_button_text_create')}</Button>
+                <Button sizeButton="large" onClick={()=> props.toggle()} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >{t('common_button_text_cancel')}</Button>
             </form>
         </Modal>
     )
