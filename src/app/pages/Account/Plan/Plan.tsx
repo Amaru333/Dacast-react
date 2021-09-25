@@ -147,10 +147,10 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
 
     const protectionTableHeaderElement = () => {
         return playbackProtectionEnabled ? {data: [
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Enabled</Text>},
-            {cell: <Text  key={"protectionTableAmount"} size={14}  weight="med" color="gray-1">Amount</Text>},
-            {cell: <Text  key={"protectionTablePrice"} size={14}  weight="med" color="gray-1">Price</Text>},
-            {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setDisableProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Disable Protection </Button>}
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">{t('account_plan_playback_protection_enabled')}</Text>},
+            {cell: <Text  key={"protectionTableAmount"} size={14}  weight="med" color="gray-1">{t('account_plan_playback_protection_amount')}</Text>},
+            {cell: <Text  key={"protectionTablePrice"} size={14}  weight="med" color="gray-1">{t('common_paywall_price_table_header_price')}</Text>},
+            {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setDisableProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">{t('account_plan_playback_protection_disable_button')} </Button>}
         ]} : {data: [
             {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"protectionTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setProtectionModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Enable Protection</Button>}
         ]}
@@ -176,11 +176,11 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const planDetailsTableHeaderElement = () => {
         return {data:[
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Plan Type</Text>},
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Payment</Text>},
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">{t('account_plan_modal_payment_step')}</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Recurring</Text>},
             {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Next Bill</Text>},
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Status</Text>},
-            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">Paywall Balance</Text>}
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">{t('common_content_list_table_header_status')}</Text>},
+            {cell: <Text  key={"protectionTableEnabled"} size={14}  weight="med" color="gray-1">{t('account_plan_table_header_recurring')}</Text>}
         ]}
     }
 

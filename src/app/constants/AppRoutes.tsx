@@ -523,24 +523,24 @@ export const AppRoutes: Routes[] = [
             },
             {
                 path: '/account/profile',
-                name: 'Profile',
+                name: 'account_profile_title',
                 component: Profile
             },
             {
                 path: '/account/company',
-                name: 'Company',
+                name: 'account_company_title',
                 component: Company,
                 associatePrivilege: ['privilege-account-settings']
             },
             {
                 path: '/account/users',
-                name: 'Users',
+                name: 'account_users_title',
                 component: Users,
                 associatePrivilege: ['privilege-multi-access-beta', 'privilege-multi-access']
             },
             {
                 path: '/account/billing',
-                name: 'Billing',
+                name: 'account_billing_title',
                 component: Billing,
                 associatePrivilege: ['privilege-billing']
             },
@@ -551,7 +551,7 @@ export const AppRoutes: Routes[] = [
             // },
             {
                 path: '/account/invoices',
-                name: 'Invoices',
+                name: 'account_invoices_title',
                 component: Invoices,
                 associatePrivilege: ['privilege-billing']
             }

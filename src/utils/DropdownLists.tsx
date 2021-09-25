@@ -37,4 +37,4 @@ export const imagePlacementDropdownList: DropdownSingleListItem[] = [{title: "co
 
 export const adPlacementDropdownList = [{title: "common_engagement_ads_modal_ad_placement_dropdown_pre_roll_option", data: {id: "Pre-roll"}}, {title: "common_engagement_ads_modal_ad_placement_dropdown_mid_roll_option", data: {id: "Mid-roll"}}, {title: "common_engagement_ads_modal_ad_placement_dropdown_post_roll_option", data: {id: "Post-roll"}}]
 
-export const languageDropdownList = [{title: 'English', data: {id: 'en'}}, {title: 'French', data: {id: 'fr'}}]
+export const languageDropdownList = [{title: 'English', data: {id: 'en'}}, {title: 'French', data: {id: 'fr'}}, {title: 'Spanish', data: {id: 'es'}}, {title: 'Portuguese', data: {id: 'pt'}}, {title: 'Italian', data: {id: 'it'}}, {title: 'German', data: {id: 'de'}}]

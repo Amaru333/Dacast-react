@@ -19,7 +19,7 @@ import { Divider } from '../../../../shared/MiscStyles';
 import { languageDropdownList, timezoneDropdownList } from '../../../../utils/DropdownLists'
 import  EventHooker from '../../../../utils/services/event/eventHooker'
 import { guessTimezone } from '../../../../utils/services/date/dateService';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const ProfilePage = (props: ProfileComponentProps) => {
 
@@ -30,7 +30,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
     const [newPasswordVisible, setNewPasswordVisible] = React.useState<boolean>(false)
     const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState<boolean>(false)
     const [changePasswordButtonLoading, SetChangePasswordButtonLoading] = React.useState<boolean>(false)
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
     /** Validation */
     const { register, handleSubmit, errors, setValue, reset, formState, getValues } = useForm({
         reValidateMode: 'onChange',
@@ -91,22 +91,22 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         <div>
             <Card>
                 <form id='profilePageForm' onSubmit={handleSubmit(onSubmit)} >
-                    <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
+                    <div className="mx1 my2"><Text size={20} weight='med'>{t('common_content_general_details_title')}</Text></div>
                     <div className="md-col md-col-12">
                         <Input
                             type="text"
                             className="md-col md-col-6 px1 pb1"
                             id="firstName"
-                            label="First Name"
-                            placeholder="First Name"
+                            label={t('account_profile_first_name_title')}
+                            placeholder={t('account_profile_first_name_title')}
                             {...handleValidationForm('firstName', errors)} ref={register({ required: "Required" })}
                         />
                         <AvatarInputContainer className="md-col md-col-6 px1 pb1">
                             <Input
                                 className="col col-11"
                                 id="lastName"
-                                label="Last Name"
-                                placeholder="Last Name"
+                                label={t('account_profile_last_name_title')}
+                                placeholder={t('account_profile_last_name_title')}
                                 {...handleValidationForm('lastName', errors)} ref={register({ required: "Required" })}
                             />
                             <Avatar className="col col-1 ml1 mt3" size='large' name={props.ProfilePageDetails.firstName + ' ' + props.ProfilePageDetails.lastName} />
@@ -117,7 +117,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         <Input
                             className="md-col md-col-6 p1"
                             id="phoneNumber"
-                            label="Phone Number"
+                            label={t('account_profile_phone_title')}
                             placeholder="(00) 0000 0000 00"
                             {...handleValidationForm('phoneNumber', errors, 'tel', register)}
 
@@ -127,8 +127,8 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             type="email"
                             className="md-col md-col-6 p1"
                             id="newEmail"
-                            label="Email Address"
-                            placeholder="Email Address"
+                            label={t('account_profile_email_title')}
+                            placeholder={t('account_profile_email_title')}
                             {...handleValidationForm('newEmail', errors, 'email', register)}
                         />
                     </div>
@@ -137,7 +137,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                         <DropdownSingle
                             className="md-col md-col-6 p1"
                             hasSearch
-                            dropdownTitle='Timezone'
+                            dropdownTitle={t('common_datetime_picker_timezone_title')}
                             dropdownDefaultSelect={props.ProfilePageDetails.timezone ? props.ProfilePageDetails.timezone : guessTimezone()}
                             id='dropdownTimezone'
                             callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
@@ -156,34 +156,34 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                     </div>
                     <Divider className="p1 mx1" />
 
-                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Change Password</Text></div>
+                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>{t('account_profile_change_password_title')}</Text></div>
 
-                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'>Password last changed: {props.ProfilePageDetails.passwordLastChanged}</Text></p>
+                    <p className="mx1 my0"><Text size={12} weight='reg' color='gray-3'><Trans i18nKey='account_profile_las_changed_text'>Password last changed: {{date: props.ProfilePageDetails.passwordLastChanged}}</Trans></Text></p>
 
-                    <p className="mx1"><Text size={14} weight='reg' color='gray-3'>For best security practices you should update your password every 6 months.</Text></p>
+                    <p className="mx1"><Text size={14} weight='reg' color='gray-3'>{t('account_profile_password_best_practices')}</Text></p>
 
-                    <Button className="m1" sizeButton='xs' onClick={(event) => { event.preventDefault(); setPasswordModalToggle(true) }} typeButton='secondary' buttonColor='blue'><Text size={12} weight='reg' color='dark-violet'>Change password</Text></Button>
+                    <Button className="m1" sizeButton='xs' onClick={(event) => { event.preventDefault(); setPasswordModalToggle(true) }} typeButton='secondary' buttonColor='blue'><Text size={12} weight='reg' color='dark-violet'>{t('account_profile_change_password_title')}</Text></Button>
 
                     <Divider className="p1 mx1" />
 
-                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>Email Notifications</Text></div>
+                    <div className="px1 pt25 pb2" ><Text size={20} weight='med' color='gray-1'>{t('account_profile_email_notifications_toggle')}</Text></div>
 
                     <ToggleContainer>
                         <Toggle name="marketing" refForwarded={register()}  
-                            id="marketingToggle" label='Marketing' defaultChecked={props.ProfilePageDetails.marketing}  />
-                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>Turn off if you do not want to receive promotional marketing emails.</Text></ToggleTextInfo>
+                            id="marketingToggle" label={t('account_profile_marketing_toggle')} defaultChecked={props.ProfilePageDetails.marketing}  />
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>{t('account_profile_marketing_description')}</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
                         <Toggle name="lowData" refForwarded={register()} 
-                            id="lowData" label='Low Data' defaultChecked={props.ProfilePageDetails.lowData} />
-                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when the your remaining Data falls below 10%.</Text></ToggleTextInfo>
+                            id="lowData" label={t('account_profile_low_data_toggle')} defaultChecked={props.ProfilePageDetails.lowData} />
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>{t('account_profile_low_data_description')}</Text></ToggleTextInfo>
                     </ToggleContainer>
 
                     <ToggleContainer className="mt25">
                         <Toggle name="videoUpload" refForwarded={register()} 
-                            id="uploadToggle" label='Video Uploaded' defaultChecked={props.ProfilePageDetails.videoUpload} />
-                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>An email will be sent when an uploaded video’s encoding has completed.</Text></ToggleTextInfo>
+                            id="uploadToggle" label={t('account_profile_video_upload_toggle')} defaultChecked={props.ProfilePageDetails.videoUpload} />
+                        <ToggleTextInfo className="mt1"><Text size={14} weight='reg' color='gray-3'>{t('account_profile_video_upload_description')}</Text></ToggleTextInfo>
                     </ToggleContainer>
                 </form>
 
@@ -191,7 +191,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
             {
                 dirty &&
                     <div>
-                        <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button isLoading={submitLoading} type="submit" form="profilePageForm"  className="my2" typeButton='primary' buttonColor='blue'>{t('common_button_text_save')}</Button>
                         <Button type='reset' form="profilePageForm" onClick={() => { reset(props.ProfilePageDetails, {errors: true}); props.showDiscardToast("Changes have been discarded", 'fixed', "success") }} className="m2" typeButton='tertiary' buttonColor='blue'>Discard</Button>
                     </div>
             }

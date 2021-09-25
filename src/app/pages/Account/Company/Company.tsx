@@ -23,6 +23,7 @@ import { Divider } from '../../../../shared/MiscStyles';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { User } from '../../../redux-flow/store/Account/Users/types';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { useTranslation } from 'react-i18next';
 
 export const CompanyPage = (props: CompanyComponentProps) => {
 
@@ -49,7 +50,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     const [selectedCountry, setSelectedCountry] = React.useState<string>(null)
     const [newOwner, setNewOwner] = React.useState<User>(null)
     const [changeOwnerButtonLoading, setChangeOwnerButtonLoading] = React.useState<boolean>(false)
-
+    const { t } = useTranslation()
+    
     const getUserRole = () => {
         if(!props.multiUserDetails || !props.multiUserDetails.users) {
             return false
@@ -173,8 +175,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
     return (
         <CompanyPageContainer>
             <Card className='clearfix p2'>
-                <div className="m1" ><Text size={20} weight='med'>Logo</Text></div>
-                <div className="m1"><Text size={14} weight='reg'>This logo will display on your invoices.</Text></div>
+                <div className="m1" ><Text size={20} weight='med'>{t('account_company_logo_title')}</Text></div>
+                <div className="m1"><Text size={14} weight='reg'>{t('account_company_logo_description')}</Text></div>
                 <div className="lg-col lg-col-12 mb1">
                     <DragAndDrop hasError={errorMessage.length > 0} className="lg-col lg-col-6 mx1 flex flex-column" handleDrop={handleDrop}>
                         { uploadedFileUrl ? 
@@ -187,7 +189,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                     <input type='file' ref={changeCompanyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='changeButton' />
                                     <Button className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue' onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleDelete(e)}>Delete</Button>
                                     <Button onClick={() => {changeCompanyLogoBrowseButtonRef.current.click()} } className="clearfix right my1 mr1" sizeButton='xs' typeButton='secondary'  buttonColor='blue'>
-                                        Change
+                                        {t('common_button_text_change')}
                                     </Button>
                                 </div>
                                 <ImageStyle src={uploadedFileUrl}></ImageStyle>
@@ -196,12 +198,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             :
                         <>
                         <IconStyle className='pt3 center mx-auto' customsize={40} coloricon='dark-violet'>cloud_upload</IconStyle>
-                        <div className='center'><Text   size={14} weight='med' color='gray-1'>Drag and drop files here</Text></div>
-                        <div className='center'><Text size={12} weight='reg' color='gray-3'>or </Text></div>
+                        <div className='center'><Text   size={14} weight='med' color='gray-1'>{t('common_engagement_brand_image_drag_and_drop_instruction')}</Text></div>
+                        <div className='center'><Text size={12} weight='reg' color='gray-3'>{t('common_engagement_brand_image_drag_and_drop_info_text_2')}</Text></div>
                         <ButtonStyle className='my1'>
                             <input type='file' ref={companyLogoBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' />
                             <Button onClick={() => {companyLogoBrowseButtonRef.current.click()} } style={{marginBottom:26}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>    
-                                Browse File
+                                {t('common_button_text_browse')}
                             </Button>
                         </ButtonStyle>
                         </>
@@ -215,15 +217,15 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             <Text size={10} weight='reg' color='red'>{errorMessage}</Text>
                         </div>
                 }
-                <div className="mb25 ml1" ><Text size={10} weight='reg' color='gray-3'>240px max width and ratio of 4:1 image formats: JPG, PNG, SVG, GIF</Text></div>
+                <div className="mb25 ml1" ><Text size={10} weight='reg' color='gray-3'>{t('account_company_logo_dimesions')}</Text></div>
 
                 <Divider className="p1 mx1" />
 
                 <form id='companyPageForm' onSubmit={handleSubmit(onSubmit)}>
-                    <div className="mx1 my2"><Text size={20} weight='med'>Details</Text></div>
+                    <div className="mx1 my2"><Text size={20} weight='med'>{t('common_content_general_details_title')}</Text></div>
                     <div className="col col-12 flex flex-column">
                         <AccountIdLabel>
-                            <Text size={14} weight="med">User ID</Text>
+                            <Text size={14} weight="med">{t('account_company_user_id_title')}</Text>
                         </AccountIdLabel>
                         <AccountIdContainer className="col col-12 lg-col-3 sm-col-4 flex p1 clearfix">
                             <AccountIdText className='flex-auto pl1' size={14} weight="reg">{userToken.getUserInfoItem('salesforce-group-id')}</AccountIdText>
@@ -238,11 +240,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="accountName" 
-                            label="Contact Name" 
-                            placeholder="Account Name"
+                            label={t('account_company_contact_name_title')}
+                            placeholder={t('account_company_contact_name_title')}
                             {...handleValidationForm('accountName', errors)} ref={register({ required: "Required"})}
                             onChange={(event) => {setEdited(true); setValue('accountName', event.currentTarget.value)}}
-                            help="The name of the primary contact for the account"
+                            help={t('account_company_contact_name_description')}
                         />
                         <Input 
                             disabled={false}
@@ -250,12 +252,12 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="companyName" 
-                            label="Company Name" 
-                            placeholder="Company Name"
+                            label={t('account_company_company_name_title')}
+                            placeholder={t('account_company_company_name_title')}
                             {...handleValidationForm('companyName', errors)}
                             onChange={(event) => {setEdited(true); setValue('companyName', event.currentTarget.value)}}
                             name="companyName" ref={register()}
-                            help="The legal business name for use on invoices, etc."
+                            help={t('account_company_company_name_description')}
                         />
                     </div>
                     <div className="md-col md-col-12" >
@@ -265,7 +267,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="tel" 
                             className="md-col md-col-6 p1" 
                             id="contactNumber" 
-                            label="Phone Number" 
+                            label={t('account_profile_phone_title')}
                             placeholder="(00) 0000 0000 00" 
                             {...handleValidationForm('contactNumber', errors, 'tel', register)}
                             onChange={(event) => {setEdited(true); setValue('contactNumber', event.currentTarget.value)}}
@@ -276,8 +278,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="email" 
                             className="md-col md-col-6 p1" 
                             id="companyEmail" 
-                            label="Email Address" 
-                            placeholder="Email Address"
+                            label={t('account_profile_email_title')}
+                            placeholder={t('account_profile_email_title')}
                             {...handleValidationForm('companyEmail', errors, 'email', register)}
                             onChange={(event) => {setEdited(true); setValue('companyEmail', event.currentTarget.value)}}
 
@@ -290,8 +292,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="companyWebsite"
-                            label="Company Website" 
-                            placeholder="Company Website"
+                            label={t('account_company_company_website_title')}
+                            placeholder={t('account_company_company_website_title')}
                             {...handleValidationForm('companyWebsite', errors, 'url', register)}
                             onChange={(event) => {setEdited(true); setValue('companyWebsite', event.currentTarget.value)}}
 
@@ -301,9 +303,9 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="vatNumber" 
-                            label="VAT Number" 
-                            placeholder="VAT Number"
-                            indicationLabel='Optional'
+                            label={t('account_company_vat_number_title')}
+                            placeholder={t('account_company_vat_number_title')}
+                            indicationLabel={t('common_input_text_optional')}
                             name="vatNumber" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('vatNumber', event.currentTarget.value)}}
                         />
@@ -315,11 +317,11 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                         isUserAccountOwner &&
                         <React.Fragment>
                             <div className="px1 pt2 pb1" >
-                                <Text size={20} weight='med'>Account Owner</Text>
+                                <Text size={20} weight='med'>{t('account_company_owner_title')}</Text>
                             </div>
                             <div className="md-col md-col-12 mx1">
                                 <div className="col col-12">
-                                    <Text size={14} weight='reg'>Only the current Account Owner can change this so if you make someone else the Account Owner, only they can transfer it back to you.</Text>
+                                    <Text size={14} weight='reg'>{t('account_company_owner_description')}</Text>
                                 </div>
                                 <DropdownSingle 
                                     id="accountOwnerDropdown"
@@ -329,15 +331,15 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                                     callback={(value: DropdownSingleListItem) => setNewOwner(value.data as User)}
                                     dropdownDefaultSelect={createAccountOwnerList() && createAccountOwnerList().length && createAccountOwnerList().find(user => user.data.role === "Owner") ? createAccountOwnerList().find(user => user.data.role === "Owner").title : null}
                                 />
-                                <Button className='ml2 mt2' type='button' isLoading={changeOwnerButtonLoading} onClick={() => handleOwnerChange()} sizeButton='small' buttonColor='blue' typeButton='primary'>Change Owner</Button>
+                                <Button className='ml2 mt2' type='button' isLoading={changeOwnerButtonLoading} onClick={() => handleOwnerChange()} sizeButton='small' buttonColor='blue' typeButton='primary'>{t('account_company_change_owner_button')}</Button>
                             </div>
                             <Divider className="p1 mx1" />
                         </React.Fragment>
                     }
 
                     <div className="px1 pt2 pb1" >
-                        <Text size={20} weight='med'>Address</Text>
-                        <Text color='gray-4' size={12} weight='reg'>Optional</Text>
+                        <Text size={20} weight='med'>{t('live_stream_general_encoder_modal_address_field_title')}</Text>
+                        <Text color='gray-4' size={12} weight='reg'>{t('common_input_text_optional')}</Text>
                     </div>
                     <div className="md-col md-col-12">
                         <Input 
@@ -345,8 +347,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine1" 
-                            label="Address line 1" 
-                            placeholder="Address line 1"
+                            label={t('live_stream_general_encoder_modal_address_field_title')}
+                            placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                             name="addressLine1" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('addressLine1', event.currentTarget.value)}}
                         />
@@ -356,8 +358,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="md-col md-col-6 p1" 
                             id="addressLine2" 
-                            label="Address line 2" 
-                            placeholder="Address line 2"
+                            label={t('paywall_withdrawals_payment_method_form_adress_2')}
+                            placeholder={t('paywall_withdrawals_payment_method_form_adress_2')}
                             name="addressLine2" ref={register()} 
                             onChange={(event) => {setEdited(true); setValue('addressLine2', event.currentTarget.value)}}
 
@@ -369,8 +371,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="state" 
-                            label="State/Province" 
-                            placeholder="State/Province"
+                            label={t('paywall_withdrawals_payment_method_form_state')}
+                            placeholder={t('paywall_withdrawals_payment_method_form_state')}
                             name="state" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('state', event.currentTarget.value)}}
                             />
@@ -380,8 +382,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="town" 
-                            label="Town/City" 
-                            placeholder="Town/City"
+                            label={t('paywall_withdrawals_payment_method_form_town')}
+                            placeholder={t('paywall_withdrawals_payment_method_form_town')}
                             name="town" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('town', event.currentTarget.value)}}
                             />
@@ -391,8 +393,8 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             type="text" 
                             className="sm-col md-col-3 sm-col-6 p1" 
                             id="zipCode" 
-                            label="Zip/Postal Code" 
-                            placeholder="Zip/Postal Code"
+                            label={t('paywall_withdrawals_payment_method_form_zip')}
+                            placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                             name="zipCode" ref={register()}
                             onChange={(event) => {setEdited(true); setValue('zipCode', event.currentTarget.value)}}
                             />
@@ -401,7 +403,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
                             direction='up'
                             callback={(item: DropdownSingleListItem) => {setEdited(true);setSelectedCountry(item.data.code)}}
                             dropdownDefaultSelect={!props.CompanyPageDetails.country ? "" : countries[props.CompanyPageDetails.country] ? countries[props.CompanyPageDetails.country].name : props.CompanyPageDetails.country} className="sm-col md-col-3 sm-col-6 p1" 
-                            id='countryDropdown' dropdownTitle='Country' 
+                            id='countryDropdown' dropdownTitle={t('common_analytics_table_header_country')}
                             list={countryDropdownList} />
                     </div>
                 </form>
@@ -409,7 +411,7 @@ export const CompanyPage = (props: CompanyComponentProps) => {
             { 
                 edited &&
                     <ButtonsArea> 
-                        <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>Save</Button>
+                        <Button type='submit' isLoading={submitLoading} form='companyPageForm' className="my2" typeButton='primary' buttonColor='blue'>{t('common_button_text_save')}</Button>
                         <Button type='reset' form='companyPageForm' className="m2" typeButton='tertiary' buttonColor='blue' 
                             onClick={() => {reset(props.CompanyPageDetails, {errors: true});setEdited(false);props.showToast("Changes have been discarded", 'fixed', "success")}}>Discard</Button>
                     </ButtonsArea>

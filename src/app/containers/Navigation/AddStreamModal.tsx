@@ -23,12 +23,14 @@ import { ChannelRegion } from '../../../DacastSdk/live';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { userToken } from '../../utils/services/token/tokenService';
+import { Trans, useTranslation } from 'react-i18next';
 
 const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
     let history = useHistory()
 
     const localeTimezone: string = guessTimezone()
+    const { t } = useTranslation()
 
     const handleLocaleCountry = (): string => {
         if (localeTimezone.toLowerCase().indexOf('asia') > -1 || localeTimezone.toLowerCase().indexOf('australia') > -1) {
@@ -55,7 +57,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
-    const regionDropdownList = [{title: "Australia & Asia Pacific"}, {title: "Europe, Middle East & Africa"}, {title: "Americas"}]
+    const regionDropdownList = [{title: t('live_stream_create_modal_region_dropdown_option_1'), data: {id: 'Australia & Asia Pacific'}}, {title: t('live_stream_create_modal_region_dropdown_option_2'), data: {id: "Europe, Middle East & Africa"}}, {title: t('live_stream_create_modal_region_dropdown_option_3'), data: {id: "Americas"}}]
     const numberOfRenditionsList = [{title: "1 Rendition", data: 1}, {title: "2 Renditions", data: 2}, {title: "3 Renditions", data: 3}, {title: "4 Renditions", data: 4}, {title: "5 Renditions", data: 5}]
 
     const [errorMessage, setErrorMessage] = React.useState<string>(null)
@@ -119,38 +121,40 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
 
     return (
-        <Modal size="small" modalTitle="Create Live Stream" toggle={props.toggle} className={'x-visible'} opened={props.opened} hasClose={false}>
+        <Modal size="small" modalTitle={t('common_content_list_create_live_stream_button_text')} toggle={props.toggle} className={'x-visible'} opened={props.opened} hasClose={false}>
             <ModalContent>
                 <Bubble className="mt1" type="info">
+                    <Trans i18nKey='live_stream_create_modal_help_text'>
                     Need help creating a Live Stream? Visit the <a href={getKnowledgebaseLink('Live')} target="_blank" rel="noopener noreferrer">Knowledge Base</a>
+                    </Trans>
                 </Bubble>
                 <Input
-                    placeholder="My Live Stream"
+                    placeholder={t('live_stream_create_modal_title')}
                     id='liveStreamModalInput'
                     className='col col-12 mt1'
                     value={streamSetupOptions.title}
                     onChange={(event) => { setStreamSetupOptions({ ...streamSetupOptions, title: event.currentTarget.value }) }}
-                    label='Title'
+                    label={t('common_content_list_table_header_title')}
                 />
                 <div className='col col-12 mt1 flex relative' >
                     <DropdownSingle
-                        dropdownTitle='Source Region'
+                        dropdownTitle={t('live_stream_create_modal_region_dropdown_title')}
                         className='col col-12'
                         id='channelRegionTypeDropdown'
-                        dropdownDefaultSelect={streamSetupOptions.region}
+                        dropdownDefaultSelect={regionDropdownList.find(f => f.data.id === streamSetupOptions.region).title}
                         list={regionDropdownList}
-                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.title})}
+                        callback={(item: DropdownSingleListItem) => setStreamSetupOptions({...streamSetupOptions, region: item.data.id})}
                     />
                     <IconStyle className='absolute top-0 right-0' id="channelRegionTypeTooltip">info_outlined</IconStyle>
                     <Tooltip leftPositionValueToZero target={"channelRegionTypeTooltip"}>
-                        The region your stream will broadcast from. Select the one closest to your encoder for best performance.
+                        {t('live_stream_create_modal_region_dropdown_tooltip_text')}
                     </Tooltip>
                 </div>
                 {
                     !(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') &&
                     <div className='col col-12 mt1 flex relative' >
                         <DropdownSingle
-                            dropdownTitle='Number of Renditions'
+                            dropdownTitle={t('live_stream_create_modal_renditions_dropdown_title')}
                             className='col col-12'
                             id='numberOfRenditionsDropdown'
                             dropdownDefaultSelect="1 Rendition"
@@ -199,8 +203,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
 
             </ModalContent>
             <ModalFooter>
-                <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >Create</Button>
-                <Button typeButton="tertiary" onClick={() => handleCancel()}>Cancel</Button>
+                <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >{t('common_button_text_create')}</Button>
+                <Button typeButton="tertiary" onClick={() => handleCancel()}>{t('common_button_text_cancel')}</Button>
             </ModalFooter>
         </Modal>
     )
