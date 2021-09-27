@@ -9,7 +9,6 @@ import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { DashboardGeneral } from '../../redux-flow/store/Dashboard';
 import { useHistory } from 'react-router';
-import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
@@ -17,7 +16,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { useTranslation } from 'react-i18next';
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
+export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
     const { t, ready } = useTranslation('translation', { useSuspense: false });
     let history = useHistory()
@@ -56,6 +55,21 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             step: -1
         })
         history.push('/account/upgrade')
+    }
+
+    const handleButtonToPurchase = (percentage: number) => {
+        if(percentage <= 25 ) {
+            return (
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button></Text>
+            )
+        }
+        if(userToken.getPrivilege('privilege-billing')) {
+            return (
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor={percentage <= 25 ? "red" : "lightBlue"} sizeButton="xs" onClick={() => props.isPlanPage ? props.dataButtonFunction() : history.push('/account/plan#purchase-data')}>{t('account_plan_buy_more_button')}</Button></Text>
+            )
+        }
+
+        return null
     }
 
     const renderUpgradeText = () => {
@@ -154,7 +168,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3">{t('dashboard_data_remaning_widget_title')}</Text>
-                        {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
+                        {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage)}
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
