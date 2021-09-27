@@ -1,11 +1,7 @@
 import React from 'react';
-import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Button } from '../../../components/FormsComponents/Button/Button';
-import { AddExpoModal } from '../../containers/Navigation/AddExpoModal';
 import { ContentType } from '../../redux-flow/store/Common/types';
-import AddStreamModal from '../../containers/Navigation/AddStreamModal';
-import { AddPlaylistModal } from '../../containers/Navigation/AddPlaylistModal';
 import { useMedia } from '../../../utils/utils';
 const ExpoImage = require('../../../../public/assets/Expo.svg');
 const VodImage = require('../../../../public/assets/Videos.svg');
