@@ -45,6 +45,7 @@ import { IconStyle } from "../shared/Common/Icon";
 import { HeaderStyle } from "../components/Header/HeaderStyle";
 import { WidgetElement } from "./containers/Dashboard/WidgetElement";
 import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from "./containers/Dashboard/DashboardStyles";
+import eventHooker from "../utils/services/event/eventHooker";
 const logo = require('../../public/assets/logo.png');
 
 // Any additional component props go here.
@@ -307,12 +308,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     <div className="unsavedChangesBody">
                         <span className="unsavedChangesText-Body">Are you sure that you want to leave this page?</span>
                         <div className="mt2">
-                            <span className="unsavedChangesText-Body-Bold">{props.message ? props.message : "Please note any unsaved changes will be lost."}</span>
+                            <span className="unsavedChangesText-Body-Bold">{props.message && props.message.indexOf('revert_to_lang') === -1 ? props.message : "Please note any unsaved changes will be lost."}</span>
                         </div>
                     </div>
                     <div className="unsavedChangesFooter mt3">
                         <button onClick={() => props.callback(false)} className="unsavedChangesStayButton">Stay</button>
-                        <button onClick={() => props.callback(true)} className="unsavedChangesLeaveButton">Leave</button>
+                        <button onClick={() => {props.callback(true); if(props.message && props.message.indexOf('revert_to_lang') > -1) eventHooker.dispatch('EVENT_REVERT_LANGUAGE', props.message.split(':')[1])}} className="unsavedChangesLeaveButton">Leave</button>
                     </div>
                 </div>
                 <div className="unsavedChangesOverlay"></div>

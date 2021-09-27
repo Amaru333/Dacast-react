@@ -45,11 +45,18 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         reset(data)
     }
 
+    const handleRevertLanguage = (lang: string) => {
+        i18n.changeLanguage(lang)
+    }
+
     React.useEffect(() => {
         EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', handleSubmitCleanup)
+        EventHooker.subscribe('EVENT_REVERT_LANGUAGE', handleRevertLanguage)
 
         return () => {
             EventHooker.unsubscribe('EVENT_FORCE_TOKEN_REFRESH', handleSubmitCleanup)
+            EventHooker.unsubscribe('EVENT_REVERT_LANGUAGE', handleRevertLanguage)
+
         }
     }, [])
 
@@ -86,7 +93,6 @@ export const ProfilePage = (props: ProfileComponentProps) => {
         mode: 'onBlur'
     })
 
-    console.log(languageDropdownList.find( l => l.data.id === i18n.language))
     return (
         <div>
             <Card>
@@ -254,7 +260,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 }
             </Modal>
             {/* Will do real prompt when connected to endpoint */}
-            <Prompt when={dirty} message='' />
+            <Prompt when={dirty} message={`revert_to_lang:${props.ProfilePageDetails.language || 'en'}`} />
         </div>
     )
 }
