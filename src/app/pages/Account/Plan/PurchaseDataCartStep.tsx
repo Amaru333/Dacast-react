@@ -20,7 +20,7 @@ interface PurchaseDataCartStepProps {
 
 export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
 
-    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData.quantity)
+    const [dataAmount, setDataAmount] = React.useState<number>(props.stepperData.quantity || 1000)
 
     React.useEffect(() => {
         props.setStepValidated(dataAmount && dataAmount < 100000 && dataAmount > 999)
@@ -31,7 +31,7 @@ export const PurchaseDataCartStep = (props: PurchaseDataCartStepProps) => {
             return "Contact us for purchases over 100,000 GB"
         }
         if (dataAmount < 1000) {
-            return "Purchases must be over 1TB"
+            return "Purchases must be over 1,000 GB"
         }
 
         return null

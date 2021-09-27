@@ -45,9 +45,9 @@ export const PlanPage = (props: PlanComponentProps & {plan: DashboardPayingPlan}
     const [disableProtectionModalOpened, setDisableProtectionModalOpened] = React.useState<boolean>(false)
     const [purchaseDataOpen, setPurchaseDataOpen] = React.useState<boolean>(false)
     const [purchaseDataStepperData, setPurchaseDataStepperData] = React.useState<Extras>({
-        code: null,
-        quantity: null,
-        totalPrice: null,
+        code: 'eventBw1to4TB',
+        quantity: 1000,
+        totalPrice: 250,
         currency: defaultCurrency
     })
     const [threeDSecureActive, setThreeDSecureActive] = React.useState<boolean>(false)
