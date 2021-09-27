@@ -10,7 +10,8 @@ export const formatGetContentThemesOutput = (contentType: ContentType) => (endpo
         ...endpointResponse.themes.filter(t => t.themeName === 'Standard')[0],
         deliveryMethod: 'compatible' as DeliveryMethod,
         regionSettings: 'standard' as RegionSetting,
-        createdDate: endpointResponse.themes.filter(t => t.themeName === 'Standard')[0].createdDate
+        createdDate: endpointResponse.themes.filter(t => t.themeName === 'Standard')[0].createdDate,
+        iconsColor: endpointResponse.themes.filter(t => t.themeName === 'Standard')[0].playerButtonsColor
     } || defaultTheme
     
     let formattedData: ContentTheme & {contentType: ContentType} = {
@@ -23,7 +24,8 @@ export const formatGetContentThemesOutput = (contentType: ContentType) => (endpo
                     ...theme,
                     deliveryMethod: 'compatible',
                     regionSettings: 'standard',
-                    createdDate: theme.createdDate
+                    createdDate: theme.createdDate,
+                    iconsColor: theme.playerButtonsColor
                 }
             })
         ],
@@ -49,7 +51,7 @@ export const formatPostContentCustomThemeInput = (data: {contentId: string, them
             downloadButton: data.theme.downloadButton,
             socialSharing: data.theme.socialSharing,
             embedCode: data.theme.embedCode,
-            iconsColor:data.theme.iconsColor,
+            playerButtonsColor: data.theme.iconsColor,
             customOverlayColor: data.theme.customOverlayColor,
             customMenuColor: data.theme.customMenuColor,
             brandTextColor: data.theme.brandTextColor,
@@ -85,7 +87,7 @@ export const formatPostContentCustomThemeOutput = (contentType: ContentType) => 
 export const formatPutContentThemeInput = (data: {contentId: string, theme: ThemeOptions, contentType: ContentType}): PutContentThemeInput => {
     let formattedData: PutContentThemeInput = {
         contentId: data.contentId,
-        payload: {...data.theme, createdDate: data.theme.createdDate || null},
+        payload: {...data.theme, createdDate: data.theme.createdDate || null, playerButtonsColor: data.theme.iconsColor},
         actionWord: !data.theme.isCustom ? '/set' : ''
     }
 

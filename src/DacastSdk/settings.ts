@@ -157,8 +157,11 @@ export interface ThemeSettings {
     downloadButton: boolean;
     socialSharing: boolean;
     embedCode: boolean;
+    playerButtonsColor: string;
     customOverlayColor: string;
     customMenuColor: string;
+    brandTextColor: string;
+    brandTextBackgroundColor: string;
     autoplay: boolean;
     startVideoMuted: boolean;
     looping: boolean;

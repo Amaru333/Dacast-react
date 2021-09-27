@@ -135,6 +135,7 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
     const messagePositionDropdownList = [{title: "Top"}, {title: "Middle"}, {title: "Fullscreen"}]
     const thumbnailPositionDropdownList = [{title: "Top"}, {title: "Right"}, {title: "Left"}, {title: "Bottom"}, {title: "Hidden"}]
+    const playerButtonsColorList = [{title: "Black (#000000)", data: "#000000"}, {title: "White (#ffffff)", data: "#ffffff"}]
 
     const [showAdvancedPanel, setShowAdvancedPanel] = React.useState<boolean>(false)
 
@@ -321,6 +322,44 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
 
                                     <ColorPicker defaultColor={selectedTheme.customMenuColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, customMenuColor: value }); }} />
                                 </div>
+                                <div className='my2 relative'>
+                                    <div className='flex justify-between'>
+                                        <Text size={14} weight='med'>Player Buttons Color</Text>
+                                        <div>
+                                            <IconStyle fontSize="default" id="buttonsColorTooltip">info_outlined</IconStyle>
+                                            <Tooltip leftPositionValueToZero target="buttonsColorTooltip">The color of the control buttons of the player</Tooltip>
+                                        </div>
+                                    </div>
+                                    <DropdownSingle dropdownTitle='' dropdownDefaultSelect={playerButtonsColorList.find(f => f.data === selectedTheme.iconsColor) ? playerButtonsColorList.find(f => f.data === selectedTheme.iconsColor).title : playerButtonsColorList[1].title} id='playerButtonsColorPick' list={playerButtonsColorList} callback={(item: DropdownSingleListItem) => { { setSelectedTheme({ ...selectedTheme, iconsColor: item.data }); } }}  />
+
+                                    {/* <ColorPicker defaultColor={selectedTheme.iconsColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, iconsColor: value }); }} /> */}
+                                </div>
+
+                                <Divider className="p1" />
+
+                                <div className="py2" ><Text size={20} weight='med'>Brand Text</Text></div>
+                                <div className='relative'>
+                                    <div className='flex justify-between'>
+                                        <Text size={14} weight='med'>Text Color</Text>
+                                        {/* <div>
+                                            <IconStyle fontSize="default" id="overlayColorTooltip">info_outlined</IconStyle>
+                                            <Tooltip leftPositionValueToZero target="overlayColorTooltip">The primary colour of the player</Tooltip>
+                                        </div> */}
+                                    </div>
+                                    <ColorPicker defaultColor={selectedTheme.brandTextColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, brandTextColor: value }); }} />
+                                </div>
+                                <div className='my2 relative'>
+                                    <div className='flex justify-between'>
+                                        <Text size={14} weight='med'>Background</Text>
+                                        {/* <div>
+                                            <IconStyle fontSize="default" id="menuColorTooltip">info_outlined</IconStyle>
+                                            <Tooltip leftPositionValueToZero target="menuColorTooltip">The secondary colour of the player</Tooltip>
+                                        </div> */}
+                                    </div>
+                                    <ColorPicker  disabled={!selectedTheme.brandTextBackgroundColor} defaultColor={selectedTheme.brandTextBackgroundColor} callback={(value: string) => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, brandTextBackgroundColor: value }); }} />
+                                    <InputCheckbox className='mt2' id="disableBackgroundBrandTextCheckbox" label='No Background' checked={!selectedTheme.brandTextBackgroundColor} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, brandTextBackgroundColor: selectedTheme.brandTextBackgroundColor ? null : "#ffffff" }); }} />
+                                </div>
+
 
                                 <Divider className="p1" />
 

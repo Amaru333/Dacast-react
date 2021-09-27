@@ -1,3 +1,4 @@
+import { date } from '@storybook/addon-knobs';
 import { GetThemeSettingsOutput, ThemeEndpoint, ThemeId, ThemeSettings } from '../../../../../DacastSdk/settings';
 import { defaultTheme, DeliveryMethod, RegionSetting, ThemeOptions, ThemesData } from './types';
 
@@ -6,7 +7,8 @@ export const formatGetThemesOutput = (data: GetThemeSettingsOutput): ThemesData 
         ...data.themes.filter(t => t.themeName === 'Standard')[0],
         deliveryMethod: 'compatible' as DeliveryMethod,
         regionSettings: 'standard' as RegionSetting,
-        createdDate: data.themes.filter(t => t.themeName === 'Standard')[0].createdDate
+        createdDate: data.themes.filter(t => t.themeName === 'Standard')[0].createdDate,
+        iconsColor: data.themes.filter(t => t.themeName === 'Standard')[0].playerButtonsColor
     } || defaultTheme
 
     let formattedData: ThemesData = {
@@ -17,7 +19,8 @@ export const formatGetThemesOutput = (data: GetThemeSettingsOutput): ThemesData 
                 ...theme,
                 deliveryMethod: 'compatible',
                 regionSettings: 'standard',
-                createdDate: theme.createdDate
+                createdDate: theme.createdDate,
+                iconsColor: theme.playerButtonsColor
             }
         })]
     }
@@ -40,6 +43,9 @@ export const formatPostThemeInput = (data: ThemeOptions): ThemeSettings => {
         socialSharing: data.socialSharing,
         embedCode: data.embedCode,
         customOverlayColor: data.customOverlayColor,
+        brandTextBackgroundColor: data.brandTextBackgroundColor,
+        brandTextColor: data.brandTextColor,
+        playerButtonsColor: data.iconsColor,
         customMenuColor: data.customMenuColor,
         autoplay: data.autoplay,
         startVideoMuted: data.startVideoMuted,
@@ -65,6 +71,38 @@ export const formatPostThemeOutput = (endpointResponse: ThemeId, dataReact: Them
     return formattedData
 }
 
-export const formatPutThemeInput = (data: ThemeOptions): ThemeEndpoint => data
+export const formatPutThemeInput = (data: ThemeOptions): ThemeEndpoint => {
+    let formattedData: ThemeEndpoint ={
+        id: data.id,
+        themeName: data.themeName,
+        isDefault: data.isDefault,
+        isCustom: data.isCustom,
+        playerControls: data.playerControls,
+        bigPlayButton: data.bigPlayButton,
+        scrubbingThumbnail: data.scrubbingThumbnail,
+        thumbnailPosition: data.thumbnailPosition,
+        isViewerCounterEnabled: data.isViewerCounterEnabled,
+        viewerCounterLimit: data.viewerCounterLimit,
+        downloadButton: data.downloadButton,
+        socialSharing: data.socialSharing,
+        embedCode: data.embedCode,
+        customOverlayColor: data.customOverlayColor,
+        brandTextBackgroundColor: data.brandTextBackgroundColor,
+        brandTextColor: data.brandTextColor,
+        playerButtonsColor: data.iconsColor,
+        customMenuColor: data.customMenuColor,
+        autoplay: data.autoplay,
+        startVideoMuted: data.startVideoMuted,
+        looping: data.looping,
+        continuousPlay: data.continuousPlay,
+        skipVideos: data.skipVideos,
+        offlineMessage: data.offlineMessage,
+        offlineMessagePosition: data.offlineMessagePosition,
+        showFullTimeCode: data.showFullTimeCode,
+        createdDate: Math.floor(Date.now() / 1000)
+    }
+
+    return formattedData
+}
 
 export const formatDeleteThemeInput = (data: ThemeOptions): string => data.id

@@ -23,9 +23,12 @@ export interface ThemeOptions {
     isViewerCounterEnabled: boolean;
     viewerCounterLimit: number;
     downloadButton: boolean;
+    iconsColor: string;
     socialSharing: boolean;
     embedCode: boolean;
     customOverlayColor: string;
+    brandTextBackgroundColor: string;
+    brandTextColor: string;
     customMenuColor: string;
     autoplay: boolean;
     startVideoMuted: boolean;
@@ -83,6 +86,9 @@ export const defaultTheme: ThemeOptions = {
     socialSharing: false,
     embedCode: false,
     customOverlayColor: '#000000',
+    brandTextBackgroundColor: '#000000',
+    brandTextColor: '#ffffff',
+    iconsColor: "#000000",
     customMenuColor: '#ffffff',
     autoplay: false,
     startVideoMuted: false,
