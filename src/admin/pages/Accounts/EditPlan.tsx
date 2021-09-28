@@ -223,7 +223,7 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.aesBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.aesBeta.planValue || props.accountPlan.aesBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aesBeta', value === 'On' ? true : false)} />
                     </div>
-                    <Text className='py1' size={14} weight='med'>VOD Direct Download</Text>
+                    <Text className='py1' size={14} weight='med'>Direct VOD Download</Text>
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.directVodDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.directVodDownload.planValue || props.accountPlan.directVodDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('directVodDownload', value === 'On' ? true : false)} />
