@@ -107,12 +107,12 @@ export const PlanLimitReachedModal  = (props: PlanLimitReachedModalProps) => {
             case 'end_of_trial':
             case 'more_data_needed':
             case 'more_data_needed_trial':
-                return true
-            case 'limit_reached':
-            case 'more_storage_needed_trial':
             case 'upgrade_now_video':
             case 'upgrade_now_stream':
             case 'upgrade_now_expo':
+                return true
+            case 'limit_reached':
+            case 'more_storage_needed_trial':
             case 'livestream_limit_reached_trial':
             case 'feature_not_included':
             case 'feature_not_included_starter_paywall':
