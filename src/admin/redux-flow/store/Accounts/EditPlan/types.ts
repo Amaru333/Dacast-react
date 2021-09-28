@@ -44,6 +44,8 @@ export interface PlanInfo {
     multiUserAccessBeta: PlanSetting;
     paymentRequest: PlanSetting;
     unsecureVod: PlanSetting;
+    directVodDownload: PlanSetting;
+    inlineVodPlayback: PlanSetting;
 }
 
 export interface PlanInfoPut {

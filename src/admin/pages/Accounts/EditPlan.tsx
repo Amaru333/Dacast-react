@@ -58,7 +58,6 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <Text className='pt25' size={16} weight='med'>Current Plan</Text>
                     <div style={{border: ' 1px dashed #C8D1E0'}} className='mb2 col col-3 flex items-center p1'>
                         <Text className='flex-auto' size={14}>{props.accountPlan.name}</Text>
-                        <Button className='' sizeButton='xs' typeButton='secondary' buttonColor='blue'>Switch</Button>
                     </div>
                     {
                         props.accountPlan.name === 'Free' &&
@@ -223,6 +222,16 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                     <div className='flex items-center my1'>
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.aesBeta.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.aesBeta.planValue || props.accountPlan.aesBeta.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('aesBeta', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>VOD Direct Download</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.directVodDownload.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.directVodDownload.planValue || props.accountPlan.directVodDownload.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('directVodDownload', value === 'On' ? true : false)} />
+                    </div>
+                    <Text className='py1' size={14} weight='med'>Inline VOD Playback</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.inlineVodPlayback.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.inlineVodPlayback.planValue || props.accountPlan.inlineVodPlayback.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('inlineVodPlayback', value === 'On' ? true : false)} />
                     </div>
                 </Card>
                 <div className='flex mt2'>
