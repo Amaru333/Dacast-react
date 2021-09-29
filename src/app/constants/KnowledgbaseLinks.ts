@@ -48,6 +48,8 @@ export const getKnowledgebaseLink = (name: string) => {
             return "https://www.dacast.com/support/knowledgebase/how-do-i-stream-using-vidblasterx/"
         case "vMix":
             return "https://www.dacast.com/support/knowledgebase/video-guide-how-to-live-stream-with-vmix/"
+        case "withdrawals":
+            return "https://www.dacast.com/support/knowledgebase/how-can-i-make-a-payment-request-in-the-new-back-office/"
         default:
             return "https://www.dacast.com/support/knowledgebase/"
     }

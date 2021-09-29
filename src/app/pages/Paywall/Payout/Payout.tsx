@@ -14,6 +14,7 @@ import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { PaymentMethod } from '../../../redux-flow/store/Paywall/Payout';
 import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { Divider } from '../../../../shared/MiscStyles';
+import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
@@ -164,8 +165,8 @@ export const PayoutPage = (props: PayoutComponentProps) => {
                 }
                 <Divider className='mt2 mb1' />
                 <Text className='pt2' size={20} weight='reg'>Withdrawal Requests</Text>
-                <div className='mt2 my1'>
-                    <Text className='pr1' size={14} weight='reg'>Request a withdrawal from your available paywall balance (i.e. total paywall balance minus sum of pending requests).</Text>
+                <div className='mt2 my1 flex'>
+                    <Text className='pr1 flex-auto' size={14} weight='reg'>Request a withdrawal from your available paywall balance. Withdrawal fees depend on the withdrawal method. <a rel="noopener noreferrer" target="_blank" href={getKnowledgebaseLink('withdrawals')}>Learn more</a>.</Text>
                     <Text size={14} weight='med'>Available: ${displayedBalance}</Text>
                 </div>
                 {props.payoutInfos.paymentMethods &&
