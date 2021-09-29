@@ -157,7 +157,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             dropdownDefaultSelect={languageDropdownList.find( l => l.data.id === props.ProfilePageDetails.language) ? languageDropdownList.find( l => l.data.id === props.ProfilePageDetails.language).title : languageDropdownList.find( l => l.data.id === i18n.language) ? languageDropdownList.find( l => l.data.id === i18n.language).title : null}
                             id='dropdownLanguage'
                             callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.data.id) }}
-                            list={languageDropdownList}
+                            list={languageDropdownList.sort((a, b) => {if(a.title.toUpperCase() < b.title.toUpperCase()){ return -1} return 1})}
                         />
                     </div>
                     <Divider className="p1 mx1" />
