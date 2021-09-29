@@ -179,7 +179,8 @@ export const SettingContainer = styled.div<{}>`
   display: flex;
   background-color: #fff;
   border-radius: 5px;
-  margin: 20px;
+  margin: auto;
+  margin-top: 100px;
   width: 680px;
   width: fit-content;
 `;
