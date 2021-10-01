@@ -45,7 +45,8 @@ export const formatPutContentPaywallInfoOutput = (contentType: ContentType) => (
 }
 
 export const formatGetContentPricesInput = (data: {id: string; contentType: ContentType}): string => {
-    let returnedString: string = userToken.getUserInfoItem('user-id') + '-' + data.contentType + '-' + data.id
+    let userId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
+    let returnedString: string = userId + '-' + data.contentType + '-' + data.id
     return returnedString
 }
 
@@ -83,7 +84,7 @@ export const formatGetContentPricesOutput = (endpointResponse: GetContentPricesO
 }
 
 export const formatPostContentPriceInput = (data: {price: Preset; id: string; contentType: ContentType}): PostContentPriceInput => {
-    const userId = userToken.getUserInfoItem('user-id')
+    const userId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     const dateAvailable = data.price.settings.startMethod === "Available on Purchase" ? "immediately" : new Date(data.price.settings.startDate * 1000).toLocaleString()
 
     let parsedPrice: PostContentPriceInput = null
@@ -142,7 +143,7 @@ export const formatPostContentPriceOutput = (endpointResponse: PostContentPriceO
 }
 
 export const formatPutContentPriceInput = (data: {price: Preset; contentId: string; contentType: ContentType}): PutContentPriceInput => {
-    const userId = userToken.getUserInfoItem('user-id')
+    const userId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     let parsedPrice: PutContentPriceInput = null
     if(data.price.priceType === 'Subscription') {
         parsedPrice = {
@@ -190,7 +191,7 @@ export const formatPutContentPriceInput = (data: {price: Preset; contentId: stri
 }
 
 export const formatDeleteContentPriceInput = (data: {price: Preset; contentId: string; contentType: ContentType}): DeleteContentPriceInput => {
-    const userId = userToken.getUserInfoItem('user-id')
+    const userId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
 
     let formattedData: DeleteContentPriceInput = {
         id: data.price.id,
