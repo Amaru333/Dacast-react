@@ -181,7 +181,7 @@ export const EngagementBrandImage = (props: EngagementComponentProps) => {
                             <div className="mb25" ><Text size={10} weight='reg' color='gray-3'>2 MB max file size, image formats: JPG, PNG, SVG, GIF </Text></div>
                         </div>
                         <div className="sm-col sm-col-6 col-12">
-                            <DropdownSingle className="sm-col sm-col-4 col-12 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={imagePlacementDropdownList} dropdownDefaultSelect={props.localEngagementSettings.brandImageSettings.brandImagePosition || 'Top Right'}
+                            <DropdownSingle className="sm-col sm-col-4 col-12 pr2" id="brandImagePlacementDropdown" dropdownTitle="Image Placement" list={imagePlacementDropdownList} dropdownDefaultSelect={props.localEngagementSettings.brandImageSettings.brandImagePosition || 'Bottom Right'}
                             callback={(item: DropdownSingleListItem) => {props.setLocalEngagementSettings({...props.localEngagementSettings, brandImageSettings: {...props.localEngagementSettings.brandImageSettings, brandImagePosition: item.title }});props.setSettingsEdited(true)}}
                             />
                             <div className={isMobile ? "col col-12 flex pr2 pt2" : ''}>
