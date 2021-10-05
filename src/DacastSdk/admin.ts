@@ -149,6 +149,8 @@ export interface GetAccountPlanOutput {
     paymentRequest: PlanSettingEndpoint;
     unsecureVod: PlanSettingEndpoint;
     advancedStreaming: PlanSettingEndpoint;
+    directVodDownload: PlanSettingEndpoint;
+    inlineVodPlayback: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {
