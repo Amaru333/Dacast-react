@@ -8,6 +8,7 @@ import { showToastNotification } from '../../redux-flow/store/Toasts/actions';
 import { ContentListPage } from '../../shared/List/contentList';
 import { ContentListProps } from '../Videos/VideosList';
 import { Action, getContentListAction, deleteContentAction } from '../../redux-flow/store/Content/List/actions';
+import { getDashboardLiveAction } from '../../redux-flow/store/Dashboard/actions';
 
 export const LiveList = (props: ContentListProps) => {
 
@@ -19,6 +20,7 @@ export const LiveList = (props: ContentListProps) => {
         deleteContentList={props.deleteContentList}
         getThemesList={props.getThemesList}
         showToast={props.showToast}
+        getDashboardLive={props.getDashboardLive}
         infos={props.infos}
     />
 }
@@ -44,7 +46,10 @@ export function mapDispatchToProps(dispatch: ThunkDispatch<ApplicationState, voi
         },
         showToast: (text: string, size: Size, notificationType: NotificationType) => {
             dispatch(showToastNotification(text, size, notificationType))
-        }
+        },
+        getDashboardLive: async () => {
+            await dispatch(getDashboardLiveAction(undefined));
+        },
     };
 }
 

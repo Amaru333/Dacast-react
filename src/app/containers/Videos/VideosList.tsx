@@ -19,6 +19,7 @@ export interface ContentListProps {
     deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    getDashboardLive: () => Promise<void>;
 }
 
 const VideosList = (props: ContentListProps) => {
