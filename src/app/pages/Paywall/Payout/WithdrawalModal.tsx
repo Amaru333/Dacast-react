@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { ColorsApp } from '../../../../styled/types';
 import { WithdrawalRequest, PaymentMethod, PaymentMethodType } from '../../../redux-flow/store/Paywall/Payout';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { Tooltip } from '../../../../components/Tooltip/Tooltip';
+import { IconStyle } from '../../../../shared/Common/Icon';
 
 interface WithdrawalModalProps { 
     paymentList: PaymentMethod[]; 
@@ -71,7 +73,11 @@ export const WithdrawalModal = (props: WithdrawalModalProps) => {
                 <div className='col col-12 flex flex-column'>
                     <div className='flex items-center col xs-no-gutter col-12 mt2 mb1'>
                         <Input isError={withdrawalRequest.amount && props.balance < withdrawalRequest.amount} className='sm-col-5 mr2' id='withdrawalModalAmountInput' label='Withdrawal Amount (USD)' placeholder='1000' onChange={(event) => setwithdrawalRequest({ ...withdrawalRequest, amount: parseFloat(event.currentTarget.value) })} />
-                        <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
+                        <div className='relative flex items-center'>
+                            <Text className='pt25' size={14} weight='med'>Available: ${props.balance}</Text>
+                            <IconStyle className='pt25 pl1' fontSize="small" id='availableBalanceTooltip' coloricon='gray-3'>info_outlined</IconStyle>
+                            <Tooltip style={{width: 260, top: -25}} target='availableBalanceTooltip'>Available balance = total balance - fees - pending withdrawal requests (if any)</Tooltip>
+                        </div>
                     </div>
                     {(withdrawalRequest.amount && props.balance < withdrawalRequest.amount) ? <Text color='red'>Withdrawal Amount cannot be higher than Available balance (i.e. total paywall balance minus sum of pending requests).</Text> : null}
                 </div>
