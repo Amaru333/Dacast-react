@@ -29,6 +29,7 @@ i18n
     ns: ['translation'],
     defaultNS:['translation'],
     debug: true,
+    interpolation: {escapeValue: false}
   });
 
   export default i18n;

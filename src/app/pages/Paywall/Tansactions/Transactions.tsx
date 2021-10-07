@@ -125,7 +125,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                 {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>{t('settings_integration_api_keys_table_date')}</Text>, sort: 'Created Date'},
                 {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>{t('paywall_transactions_table_header_purchaser')}</Text>},
                 {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>{t('common_paywall_price_table_header_currency')}</Text>},
-                {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_pric')}</Text>},
+                {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_price')}</Text>},
                 {cell: <Text key='transactionsTableHeaderCredit' size={14} weight='med'>{t('paywall_transactions_table_header_credit')}</Text>},
                 {cell: <Text key='transactionsTableHeaderDebit' size={14} weight='med'>{t('paywall_transactions_table_header_debit')}</Text>},
             ],

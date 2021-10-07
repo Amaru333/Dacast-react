@@ -40,7 +40,7 @@ import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedM
 import { InputSearchStyle } from '../General/GeneralStyle';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { DashboardInfos } from '../../redux-flow/store/Dashboard/types';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { ContentEmptyState } from './EmptyState';
 import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -363,7 +363,7 @@ export const ContentListPage = (props: ContentListProps) => {
 
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold pointer">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div><Trans i18nKey='common_free_trial_limitation_button_text'>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold pointer">Upgrade Now</a></Trans></div>} />
         )
     }
 

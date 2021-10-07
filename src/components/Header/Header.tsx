@@ -27,7 +27,7 @@ import { NotificationPosition, NotificationType, Size } from "../Toast/ToastType
 import { hideAllToastsAction, showToastNotification } from "../../app/redux-flow/store/Toasts/actions";
 import { ToastLink } from "../Toast/ToastStyle";
 import { getNbDaysForMonth } from "../../utils/services/date/dateService";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 const logoSmallWhite = require('../../../public/assets/logo_small_white.svg');
 
 export interface HeaderProps {
@@ -116,7 +116,7 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
     const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
     const [modalShown, setModalShown] = React.useState<boolean>(false)
-    const { i18n } = useTranslation()
+    const { i18n, t } = useTranslation()
 
     const setTagManager = () => {
         let dataset = {
@@ -202,7 +202,7 @@ const Header = (props: HeaderProps) => {
 
     }, [props.ProfileInfo])
 
-    const userOptionsList = ["Personal Profile", "Company Profile", "Log Out"]
+    const userOptionsList = [{title: t('common_header_user_dropdown_profile_page_option'), data: "Personal Profile"}, {title: t('common_header_user_dropdown_company_page_option'), data: "Company Profile"}, {title: t('common_header_user_dropdown_log_out_option'), data: "Log Out"}]
 
     useOutsideAlerter(userOptionsDropdownListRef, () => {
         setUserOptionsDropdownOpen(!userOptionsDropdownOpen)
@@ -244,16 +244,16 @@ const Header = (props: HeaderProps) => {
 
     const renderAddList = () => {
         return (
-            userOptionsList.map((name) => {
+            userOptionsList.map((item) => {
                 return (
                     <DropdownItem
                         isSingle
-                        key={name}
-                        id={name}
+                        key={item.data}
+                        id={item.data}
                         className="mt1"
-                        isSelected={selectedUserOptionDropdownItem === name}
-                        onClick={() => handleClick(name)}>
-                        <DropdownItemText size={14} weight='reg' color={selectedUserOptionDropdownItem === name ? 'dark-violet' : 'gray-1'}>{name}</DropdownItemText>
+                        isSelected={selectedUserOptionDropdownItem === item.data}
+                        onClick={() => handleClick(item.data)}>
+                        <DropdownItemText size={14} weight='reg' color={selectedUserOptionDropdownItem === item.data ? 'dark-violet' : 'gray-1'}>{item.title}</DropdownItemText>
                     </DropdownItem>
                 )
             })
@@ -285,7 +285,7 @@ const Header = (props: HeaderProps) => {
             }
             return (
                 <TrialUpgradeButton className="mr2">
-                    <img className="mr2" height="24" src={logoSmallWhite} /><span>Gain access to more premium features. <a onClick={() => handleUpgradeClick({ trial: true })}>Upgrade Now</a></span>
+                    <img className="mr2" height="24" src={logoSmallWhite} /><span><Trans i18nKey='common_header_free_trial_upgrade_button_text'>Gain access to more premium features. <a onClick={() => handleUpgradeClick({ trial: true })}>Upgrade Now</a></Trans></span>
                 </TrialUpgradeButton>
             )
         }

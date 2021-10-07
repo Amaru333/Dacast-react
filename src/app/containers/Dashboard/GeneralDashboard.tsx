@@ -14,7 +14,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService';
 import { segmentService } from '../../utils/services/segment/segmentService';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
@@ -74,14 +74,14 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
 
     const renderUpgradeText = () => {
         if(props.plan.trialExpiresIn > 7) {
-            return <span><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
+            return <span><Trans i18nKey='dashboard_free_trial_thirty_day_trial_widget_description_3'><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</Trans></span>
         }
         
         if(props.plan.trialExpiresIn > 0) {
-            return <span>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></span>
+            return <span><Trans i18nKey='dashboard_free_trial_almost_expired_thirty_day_trial_widget_description_2'>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></Trans></span>
         }
 
-        return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
+        return <span><Trans i18nKey='dashboard_free_trial_expired_thirty_day_trial_widget_description_2'>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</Trans></span>
     }
 
     const renderDaysRemaining = () => {
@@ -94,7 +94,9 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
         }
         return (
             <Text className="mb15 mt1" size={20} weight="reg" color="white">
+                <Trans i18nKey='dashboard_free_trial_expired_thirty_day_trial_widget_description_1'>
                 Your trial has ended, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-2 text-semibold'>Upgrade Now</a>
+                </Trans>
             </Text>
         )
     }

@@ -167,10 +167,10 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-const AppPlaceholder = () => {
+const AppPlaceholder = (props: {currentNavWidth: string}) => {
     return (
         <div className="noTransition">
-            <ContainerStyle className="noTransition" id='scrollbarWrapper' isOpen menuLocked >
+            <ContainerStyle className="noTransition" id='scrollbarWrapper' isOpen menuLocked navWidth={props.currentNavWidth} isMobile={isMobile} >
                 <ImageStyle className="mx-auto block pointer" src={logo} />
                 <BreakStyle />
                 <div>
@@ -190,6 +190,8 @@ const AppPlaceholder = () => {
             </ContainerStyle>
             <FullContent isLocked={false} isMobile={false} navBarWidth="235px" isOpen>
                 <HeaderStyle userType='user'>
+                </HeaderStyle>
+
                     <Content isMobile={false}>
                     <React.Fragment>
                         <section id="live" className="col lg-col-6 sm-col-12 pr2">
@@ -210,7 +212,6 @@ const AppPlaceholder = () => {
                         </section>
                     </React.Fragment>
                     </Content>
-                </HeaderStyle>
             </FullContent>
         </div>
     )
@@ -265,7 +266,7 @@ const AppContent = (props: { routes: any }) => {
             <Toasts />
             { userToken.isLoggedIn() ?
                 <>
-                <React.Suspense fallback={<AppPlaceholder />}>
+                <React.Suspense fallback={<AppPlaceholder currentNavWidth={currentNavWidth} />}>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
 
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}

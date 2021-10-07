@@ -11,20 +11,21 @@ import styled from 'styled-components';
 import AddStreamModal from '../Navigation/AddStreamModal';
 import { userToken } from '../../utils/services/token/tokenService';
 import { getKnowledgebaseLink } from '../../constants/KnowledgbaseLinks';
-import { link } from 'fs';
+import { useTranslation } from 'react-i18next';
 const faqIcon = require('../../../../public/assets/support-faq.png');
 const supportIcon = require('../../../../public/assets/support-widget.png');
 
 interface ItemTodo { isChecked: boolean; name: string; href: string, isProfile?: boolean }
 
 
-export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElement>) => {
+export const TrialAdditionalDashboard = () => {
 
     const [supportWidgetOpen, setSupportWidgetOpen] = React.useState<boolean>(true)
     const [trialFAQWidgetOpen, setTrialFAQWidgetOpen] = React.useState<boolean>(true)
     const [addStreamModalOpen, setAddStreamModalOpen] = React.useState<boolean>(false)
 
     let history = useHistory()
+    const { t } = useTranslation()
 
     const todoProfileItems: ItemTodo[] = [
         {
@@ -56,37 +57,37 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
     const todoItems: ItemTodo[] = [
         {
             isChecked: false,
-            name: "How to start streaming with OBS",
+            name: t('dashboard_free_trial_tutorial_widget_row_1'),
             href: getKnowledgebaseLink("OBS")
 
         },
         {
             isChecked: false,
-            name: "How to start streaming with Wirecast",
+            name: t('dashboard_free_trial_tutorial_widget_row_2'),
             href: getKnowledgebaseLink("Wirecast")
 
         },
         {
             isChecked: false,
-            name: "How to upload a Video",
+            name: t('dashboard_free_trial_tutorial_widget_row_3'),
             href: getKnowledgebaseLink("Upload")
 
         },
         {
             isChecked: false,
-            name: "How to embed on your website",
+            name: t('dashboard_free_trial_tutorial_widget_row_4'),
             href: getKnowledgebaseLink("Embed")
 
         },
         {
             isChecked: false,
-            name: "How to customize the player theme",
+            name: t('dashboard_free_trial_tutorial_widget_row_5'),
             href: getKnowledgebaseLink("Theme")
 
         },
         {
             isChecked: false,
-            name: "How to add security to your video: password protection, geo and referencing",
+            name: t('dashboard_free_trial_tutorial_widget_row_6'),
             href: getKnowledgebaseLink("Security")
 
         }
@@ -106,8 +107,8 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
 
                 <WidgetElement className={classItemHalfWidthContainer}>
                     <WidgetHeader style={{justifyContent: 'space-between'}} className="flex">
-                        <Text size={16} weight="med" color="gray-1"> Tutorials </Text>
-                        <Button onClick={() => window.open(getKnowledgebaseLink("Default"), '_blank')} sizeButton="xs" typeButton="secondary">See More</Button>
+                        <Text size={16} weight="med" color="gray-1"> {t('dashboard_free_trial_tutorial_widget_title')} </Text>
+                        <Button onClick={() => window.open(getKnowledgebaseLink("Default"), '_blank')} sizeButton="xs" typeButton="secondary">{t('dashboard_free_trial_tutorial_widget_button_text')}</Button>
                     </WidgetHeader>
                     <div className="flex mb1">
                         <TodoList items={todoItems} />
@@ -117,14 +118,14 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     <div className={classItemFullWidthContainer}>
                         <SupportCard className="dashboardCard col col-12">
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-1"> 24/7 Support </Text>
+                                <Text size={16} weight="med" color="gray-1">{t('dashboard_free_trial_support_widget_title')}</Text>
                                 <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setSupportWidgetOpen(false)}>close</IconStyle>
                             </WidgetHeader>
                             <div className=" flex row justify-between flex-start ">
-                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Need some help getting started?</Text><br />
+                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">{t('dashboard_free_trial_support_widget_description')}</Text><br />
                                 <img src={supportIcon} />
                             </div>
-                            <Button onClick={() => history.push('/help')} className="col col-4" sizeButton="xs" typeButton="secondary">Get Help</Button>
+                            <Button onClick={() => history.push('/help')} className="col col-4" sizeButton="xs" typeButton="secondary">{t('dashboard_free_trial_support_widget_button_text')}</Button>
                         </SupportCard>
                     </div>
                 }
@@ -132,14 +133,14 @@ export const TrialAdditionalDashboard = (props: React.HTMLAttributes<HTMLDivElem
                     trialFAQWidgetOpen &&
                         <WidgetElement className={classItemFullWidthContainer}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-1"> Trial FAQ </Text>
+                                <Text size={16} weight="med" color="gray-1">{t('dashboard_free_trial_faq_widget_title')}</Text>
                                 <IconStyle fontSize="small" coloricon='gray-3' className="ml-auto" onClick={() => setTrialFAQWidgetOpen(false)}>close</IconStyle>
                             </WidgetHeader>
                             <div className="justify-between flex row flex-start">
-                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">Have some questions relating to the free trial?</Text><br />
+                                <Text size={12} weight="reg" color="gray-1" className="inline-block mb2">{t('dashboard_free_trial_faq_widget_description')}</Text><br />
                                 <img src={faqIcon} />
                             </div>
-                            <Button className="col col-4" sizeButton="xs" typeButton="secondary" onClick={() => window.open("https://www.dacast.com/support/faq/")} >Visit FAQ</Button>
+                            <Button className="col col-4" sizeButton="xs" typeButton="secondary" onClick={() => window.open("https://www.dacast.com/support/faq/")} >{t('dashboard_free_trial_faq_widget_button_text')}</Button>
                         </WidgetElement>
                 }
 
