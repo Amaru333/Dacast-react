@@ -55,6 +55,7 @@ interface ContentListProps {
     deleteContentList: (contentId: string) => Promise<void>;
     getThemesList: () => Promise<void>;
     showToast: (text: string, size: Size, notificationType: NotificationType) => void;
+    getDashboardLive: () => Promise<void>;
 }
 
 export const ContentListPage = (props: ContentListProps) => {
@@ -164,6 +165,12 @@ export const ContentListPage = (props: ContentListProps) => {
         }
         return () => {
             EventHooker.unsubscribe('EVENT_VOD_UPLOADED', vodUploadedHandler)
+        }
+    }, [])
+
+    React.useEffect(() => {
+        if(props.contentType === 'live' && props.getDashboardLive) {
+            props.getDashboardLive()
         }
     }, [])
 

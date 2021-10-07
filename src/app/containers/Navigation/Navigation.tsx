@@ -267,7 +267,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                             </ElementMenu>
 
                             <SubMenu isOpen={element.path === selectedElement && props.isOpen && !toggleSubMenu}>
-                                {element.slug.filter(item => ((item.associatePrivilege ? item.associatePrivilege.some(p => userToken.getPrivilege(p)) : true) || isLocked) && !item.notDisplayedInNavigation).map((subMenuElement, index) => { 
+                                {element.slug.filter(item => ((item.associatePrivilege ? item.associatePrivilege.some(p => userToken.getPrivilege(p)) : true) || isLocked) && !item.notDisplayedInNavigation).map((subMenuElement, index) => {
                                     if(subMenuElement.name === "Users" && props.billingInfo && props.billingInfo.currentPlan && props.billingInfo.currentPlan.nbSeats === 1){
                                         return (
                                             <SubMenuElement onClick={() => setUpgradeMultiUserModalOpen(true)} selected={selectedSubElement === subMenuElement.path}>
@@ -351,9 +351,9 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
                 <MultiUserUpgradeModal openBuySeatsStepper={openBuySeatsStepper} toggle={setUpgradeMultiUserModalOpen} />
             </Modal>
 
-            <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} />
+            <PlanLimitReachedModal type={planLimitReachedModalType} toggle={() => setPlanLimitReachedModalOpen(false)} opened={PlanLimitReachedModalOpen === true} allowNavigation={true} />
             {
-                paymentSuccessfulModalOpened && 
+                paymentSuccessfulModalOpened &&
                 <PaymentSuccessModal toggle={() => setPaymentSuccessfulModalOpened(!paymentSuccessfulModalOpened)} opened={paymentSuccessfulModalOpened}>
                     <Text size={14}>You bought {planDetails.seatToPurchase} additional seats.</Text>
                 </PaymentSuccessModal>
@@ -362,7 +362,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
             <PaymentFailedModal toggle={() => setPaymentDeclinedModalOpened(!paymentDeclinedModalOpened)} opened={paymentDeclinedModalOpened}>
                 <Text size={14}>Your payment was declined.</Text>
             </PaymentFailedModal>
-        
+
         </>
     )
 }
