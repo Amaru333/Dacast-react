@@ -93,7 +93,7 @@ export const PromoPresetsModal = (props: {action: (p: Promo) => Promise<void>; t
                         tooltip={"The time saved will be converted to Coordinated Universal Time (UTC), UTC +0"}
                     />
                 }
-               <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={t(discountAppliedDropdownList.find(f => f.data.id === promoPreset.discountApplied).title)} className={ClassHalfXsFullMd} dropdownTitle={t('common_paywall_promo_modal_discount_applied_dropdown_title')} callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, discountApplied: item.title})} list={discountAppliedDropdownList} />
+               <DropdownSingle id='promoPresetDiscountAppliedDropdown' dropdownDefaultSelect={t(discountAppliedDropdownList.find(f => f.data.id === promoPreset.discountApplied) ? discountAppliedDropdownList.find(f => f.data.id === promoPreset.discountApplied).title : discountAppliedDropdownList.find(f => f.data.id === 'Once').title)} className={ClassHalfXsFullMd} dropdownTitle={t('common_paywall_promo_modal_discount_applied_dropdown_title')} callback={(item: DropdownSingleListItem) => setPromoPreset({...promoPreset, discountApplied: item.title})} list={discountAppliedDropdownList} />
             </div>
             <div className='col col-12 mt1'>
                 <Button isLoading={buttonLoading} disabled={!promoPreset.name || Number.isNaN(promoPreset.discount) || Number.isNaN(promoPreset.limit)} onClick={() => {handleSubmit()}} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('common_button_text_create')}</Button>

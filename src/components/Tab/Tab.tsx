@@ -50,7 +50,7 @@ export const Tab = (props: TabProps) => {
 
     const renderTabs = () => {
         return mobile && !props.callback ?
-            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? list.filter(route => route.path === location.pathname)[0].name : ''} ref={dropdownRef} id={'navigationDropdown'} list={list.map(item => {return {title: t(item.name)}})} isNavigation dropdownTitle="" />
+            <DropdownSingle className='col col-12' dropdownDefaultSelect={list.filter(route => { return route.path === location.pathname.toLowerCase()}).length >= 1 ? t(list.filter(route => route.path === location.pathname)[0].name) : ''} ref={dropdownRef} id={'navigationDropdown'} list={list.map(item => {return {title: t(item.name)}})} isNavigation dropdownTitle="" />
             : !mobile && !props.callback ?
                 list.map((tab, i) => {
                     return (
