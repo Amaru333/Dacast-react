@@ -74,7 +74,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                 <Text key={'paypalTablePaypalType'} size={14}  weight="reg" color="gray-1">PayPal</Text>,
                 <Text key={'paypalTable' + props.billingInfos.paymentMethod.billingID} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.billingID}</Text>,
                 <Text key={'paypalTable' + props.billingInfos.paymentMethod.email} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.email}</Text>,
-                <IconStyle key={'paypalTableActiveField'} coloricon='green' >checked</IconStyle>,
+                <IconStyle key={'paypalTableActiveField'} coloricon='green' >check</IconStyle>,
                 <span key={'paypalTableBodyEmptyCell'}></span>
             ]}]
         }
@@ -89,7 +89,7 @@ export const BillingPage = (props: BillingContainerProps) => {
             {cell: <Text  key={"creditCardTableExpiry"} size={14}  weight="med" color="gray-1">Expiry</Text>},
             {cell: <Text  key={"creditCardTableActive"} size={14}  weight="med" color="gray-1">Active</Text>},
             {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>}
-        ]} 
+        ]}
             : {data: [
                 {cell: <Button className={"right mr2 "+ (smScreen ? 'hide' : '')} key={"creditCardTableActionButton"} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Update Payment Method</Button>}
 
@@ -104,7 +104,7 @@ export const BillingPage = (props: BillingContainerProps) => {
                 <Text key={'creditCardTable' + props.billingInfos.paymentMethod.firstName} size={14}  weight="reg" color="gray-1">{props.billingInfos.paymentMethod.firstName} {props.billingInfos.paymentMethod.lastName}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.paymentMethod.lastFour} size={14}  weight="reg" color="gray-1">xxxx-xxxx-xxxx-{props.billingInfos.paymentMethod.lastFour}</Text>,
                 <Text key={'creditCardTable' + props.billingInfos.paymentMethod.expiryMonth} size={14}  weight="reg" color="gray-1">{("0" + props.billingInfos.paymentMethod.expiryMonth).slice(-2) + '/' + props.billingInfos.paymentMethod.expiryYear}</Text>,
-                <IconStyle key={'creditCardTableActive'} coloricon='green'>checked</IconStyle>,
+                <IconStyle key={'creditCardTableActive'} coloricon='green'>check</IconStyle>,
                 <span key={'creditCardTableBodyEmptyCell'}></span>
             ]}
             ]
@@ -122,21 +122,21 @@ export const BillingPage = (props: BillingContainerProps) => {
                 </div>
                 <Button className={"left "+ (smScreen ? '' : 'hide')} type="button" onClick={(event) => {event.preventDefault();setPaymentMethodModalOpened(true)}} sizeButton="xs" typeButton="secondary" buttonColor="blue">Add Payment Method</Button>
                 {
-                    props.billingInfos.paymentMethod.type === "paypal" ? 
+                    props.billingInfos.paymentMethod.type === "paypal" ?
                         <Table contentLoading={contentLoading} className="col-12" headerBackgroundColor="gray-10" id="paypalTable" header={paypalTableHeaderElement()} body={paypalBodyElement()} />
 
-                        : props.billingInfos.paymentMethod.type === "card" ?                
+                        : props.billingInfos.paymentMethod.type === "card" ?
                             <Table contentLoading={contentLoading} className="col-12" headerBackgroundColor="gray-10" id="creditCardTable" header={creditCardTableHeaderElement()} body={creditCardBodyElement()} />
-                            : 
+                            :
                             <Table className="col-12" headerBackgroundColor="gray-10" id="paymentMethodTable" header={creditCardTableHeaderElement()} body={emptyContentListBody('Add a Payment Method so you can purchase Plans, Allowances and Enable Playback Protection')} />
                 }
             </Card>
             <RecurlyProvider publicKey={process.env.RECURLY_TOKEN}>
                 <Elements>
-                    <Modal 
-                        hasClose={false} 
-                        modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'} 
-                        toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large' 
+                    <Modal
+                        hasClose={false}
+                        modalTitle={(props.billingInfos.paymentMethod ? 'Edit' : 'Add')  + ' Payment Method'}
+                        toggle={() => setPaymentMethodModalOpened(!paymentMethodModalOpened)} size='large'
                         opened={paymentMethodModalOpened}>
                         <PaymentMethodModal billingInfo={billingInfo} callback={() => {}} actionButton={() => {}} toggle={setPaymentMethodModalOpened} isUpdate purchase3DS={savePaymentMethod3DS} savePaymentMethod={savePaymentMethod} />
                     </Modal>

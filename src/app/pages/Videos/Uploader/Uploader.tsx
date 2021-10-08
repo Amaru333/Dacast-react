@@ -3,7 +3,7 @@ import { DragAndDrop } from '../../../../components/DragAndDrop/DragAndDrop';
 import { Button } from '../../../../components/FormsComponents/Button/Button';
 import styled from 'styled-components';
 import { Text } from '../../../../components/Typography/Text';
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../../../components/Icon/Icon';
 import { UploaderItemProps, UploaderItem } from './UploaderItem';
 import { UploadObject } from '../../../utils/services/uploader/uploaderService';
 import { Prompt } from 'react-router'
@@ -357,7 +357,7 @@ export const ImageStyle = styled.img<{}>`
 `
 
 export const BigIcon = styled(Icon)`
-    font-size: 98px !important; 
+    font-size: 98px !important;
     display: block;
     margin: 0 auto;
     padding-top: 32px;

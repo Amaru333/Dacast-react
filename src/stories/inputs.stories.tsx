@@ -5,7 +5,6 @@ import {InputCheckbox} from '../components/FormsComponents/Input/InputCheckbox';
 import styled from 'styled-components';
 import "../scss/style.scss";
 import { InputRadio } from '../components/FormsComponents/Input/InputRadio';
-import { InputSlider } from '../components/FormsComponents/Input/InputSlider';
 import { InputTags } from '../components/FormsComponents/Input/InputTags';
 import { Text } from '../components/Typography/Text';
 import { action } from '@storybook/addon-actions';
@@ -74,14 +73,6 @@ storiesOf('Inputs', module)
             </StorybookInputContainerStyle>
         </React.Fragment>
             
-    ))
-
-    .add('Slider input', () => (
-        <React.Fragment>
-            <StorybookInputContainerStyle>
-                 <InputSlider callback={action('Callback trigger')} id="testSlider" min={0} max={150} value={[30, 100]}/>
-            </StorybookInputContainerStyle>
-        </React.Fragment>
     ))
 
     .add('Tags input', () => (

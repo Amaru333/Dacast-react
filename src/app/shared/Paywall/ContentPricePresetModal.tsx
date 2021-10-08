@@ -93,8 +93,8 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
 
         let savedPrice = {...newPricePreset, settings: {...newPricePreset.settings}}
 
-        if (savePreset) { 
-            props.savePresetGlobally(savedPrice) 
+        if (savePreset) {
+            props.savePresetGlobally(savedPrice)
         }
         props.action(savedPrice, props.contentId, props.contentType)
         .then(() => {
@@ -110,7 +110,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
 
     return (
         <div>
-           { 
+           {
                 !props.preset &&
                 <PresetSelectRow className='col col-12 mb2'>
                     <DropdownSingle
@@ -149,8 +149,8 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 {
                     newPricePreset.priceType === 'Subscription' ?
                         <DropdownSingle
-                            id='pricePresetRecurrenceDropdown' 
-                            dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'} 
+                            id='pricePresetRecurrenceDropdown'
+                            dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'}
                             dropdownTitle='Recurrence'
                             list={recurrenceDropdownList}
                             callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: item.title}}})}
@@ -161,7 +161,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                             <Input
                                 className='col col-6 sm-col-4 pr1'
                                 label='Duration'
-                                defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''} 
+                                defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''}
                                 onChange={(event) => setNewPricePreset({ ...newPricePreset, settings:{ ...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, value: parseInt(event.currentTarget.value) }} })}
                             />
                             <DropdownSingle

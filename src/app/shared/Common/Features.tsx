@@ -8,7 +8,7 @@ import { Text } from '../../../components/Typography/Text'
 export interface FeaturesList {
     paywall?: boolean;
     recording?: boolean;
-    playlist?: boolean;  
+    playlist?: boolean;
     rewind?: boolean;
     advertising?: boolean;
     folder?: boolean;
@@ -34,7 +34,7 @@ export const handleFeatures = (item: FolderAsset | ContentItem , id: string): JS
     if (item.featuresList.playlist) {
         element.push(
             <IconGreyContainer key={'featureIconPlaylist' + id} className="mr1" >
-                <IconStyle className="material-icons-outlined" fontSize="small" id={"playlistTooltip" + id} coloricon='gray-3'>video_library_outlined</IconStyle>
+                <IconStyle fontSize="small" id={"playlistTooltip" + id} coloricon='gray-3'>video_library_outlined</IconStyle>
                 <Tooltip target={"playlistTooltip" + id}>Playlists</Tooltip>
             </IconGreyContainer>)
     }
@@ -48,12 +48,9 @@ export const handleFeatures = (item: FolderAsset | ContentItem , id: string): JS
     if (item.featuresList.advertising) {
         element.push(
             <IconGreyContainer key={'featureIconAdvertising' + id} className="mr1" >
-                <IconStyle id={"advertisingTooltip" + id} coloricon='gray-3'>
-                    <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
-                        <Text size={14} color='gray-3' weight="med">AD</Text>
-                    </div>
-                    
-                </IconStyle>
+                <div id={"advertisingTooltip" + id} style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <Text size={14} color='gray-3' weight="med">AD</Text>
+                </div>
                 <Tooltip target={"advertisingTooltip" + id}>Advertising</Tooltip>
             </IconGreyContainer>)
     }

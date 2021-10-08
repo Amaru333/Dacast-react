@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../Icon/Icon';
 import { InputCheckbox} from '../Input/InputCheckbox';
 import { ContainerStyle, DropdownLabel, TitleContainer, Title, DropdownList, DropdownItem, BorderItem, ButtonIconStyle, ContinentContainer, CountryContainer, SearchItem, SearchIconStyle, CloseIconButton, SelectAllItem, ArrowIconStyle } from './DropdownStyle';
 import { dropdownIcons, ContinentListType, DropdownCountriesProps} from './DropdownTypes';
@@ -26,9 +26,9 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             let returnedString: string[] = []
             Object.keys(checkedContinents).map((continent) => {
                 if(checkedContinents[continent].checked === 'checked') {
-                    returnedString.push(...Object.keys(countries).map((country) => { 
-                        
-                        if(countries[country].continent === checkedContinents[continent].key){ 
+                    returnedString.push(...Object.keys(countries).map((country) => {
+
+                        if(countries[country].continent === checkedContinents[continent].key){
                             return country
                         }
                         return
@@ -94,7 +94,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                 setSelectAllState('checked')
             }
             else {
-                setSelectAllState('undeterminate')  
+                setSelectAllState('undeterminate')
             }
         }
 
@@ -120,12 +120,12 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         initCountriesList = Object.keys(initCountriesList).reduce((reduced, continent) => {
             if(props.list.includes(continent)) {
                 return {
-                    ...reduced, 
+                    ...reduced,
                     [continent]: {
                         ...initCountriesList[continent],
                         countries: Object.keys(countries).reduce((reduced, country) => {
                             if(continents[countries[country].continent] === continent) {
-                                return {        
+                                return {
                                     ...reduced, [countries[country].name]: {isChecked: true, isFiltered: false, key: country}
                                 }
                             }
@@ -139,13 +139,13 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             else {
                 let counter = 0
                 let currentContinent = {
-                    ...reduced, 
+                    ...reduced,
                     [continent] : {
                         ...initCountriesList[continent],
                         countries: Object.keys(countries).reduce((reduced, country) => {
                             if(continents[countries[country].continent] === continent) {
                                 if(props.list.includes(country)) {counter++}
-                                return {        
+                                return {
                                     ...reduced, [countries[country].name]: {isChecked: props.list.includes(country), isFiltered: false, key: country}
                                 }
                             }
@@ -164,7 +164,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
         handleTitle();
         handleSelectAllState();
     }, [props.list])
-    
+
     React.useEffect(() => {
         handleTitle();
         handleSelectAllState();
@@ -202,7 +202,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                         }
                         else if(!key.toLowerCase().includes(filteringString.toLowerCase()) && filteringString.toLowerCase() === continent.toLowerCase()){
                             return {...reduced, [key]: {...checkedContinents[continent].countries[key], isFiltered: false}}
-                        } 
+                        }
                         else {
                             return {...reduced, [key]: {...checkedContinents[continent].countries[key]}}
                         }
@@ -210,7 +210,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                     , checked: checkedContinents[continent].checked
                 }
                 continents[continent].checked = handleContinentState(continent, continents)
-    
+
             })
             setCheckedContinents({...continents})
         }
@@ -223,14 +223,14 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
 
     const handleContinentCheckboxChange = (continent: string) => {
 
-        if(checkedContinents[continent].checked === 'unchecked' || checkedContinents[continent].checked === 'undeterminate') { 
+        if(checkedContinents[continent].checked === 'unchecked' || checkedContinents[continent].checked === 'undeterminate') {
             let changingContinent = checkedContinents[continent];
             changingContinent = {...changingContinent, countries: {...Object.keys(checkedContinents[continent].countries).reduce((reduced, key) => {
                 if(!checkedContinents[continent].countries[key].isFiltered) {
                     return {...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: true}}
                 }
                 else {
-                    return {...reduced, [key]: {...checkedContinents[continent].countries[key]}} 
+                    return {...reduced, [key]: {...checkedContinents[continent].countries[key]}}
                 }
             }, {})}, checked: 'checked'}
             setCheckedContinents( {...checkedContinents, [continent]: changingContinent} )
@@ -242,9 +242,9 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                     return {...reduced, [key]: {...checkedContinents[continent].countries[key], isChecked: false}}
                 }
                 else {
-                    return {...reduced, [key]: {...checkedContinents[continent].countries[key]}} 
+                    return {...reduced, [key]: {...checkedContinents[continent].countries[key]}}
                 }
-                
+
             }, {})}, checked: 'unchecked'}
             setCheckedContinents( {...checkedContinents, [continent]: changingContinent} )
         }
@@ -272,13 +272,13 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             return (
                 Object.keys(checkedContinents).map((continent, key) => {
                     return (
-                        <React.Fragment key={"countryDropdown"+ key.toString()}>  
+                        <React.Fragment key={"countryDropdown"+ key.toString()}>
                             {key === 0 ?
                                 <>
-                                <SearchItem 
-                                    key={props.id + key.toString() + '_search'} 
-                                    id={props.id + '_search'} 
-                                > 
+                                <SearchItem
+                                    key={props.id + key.toString() + '_search'}
+                                    id={props.id + '_search'}
+                                >
                                     <SearchIconStyle>
                                         <Icon>search</Icon>
                                     </SearchIconStyle>
@@ -294,18 +294,18 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                     {
                                         filteringList.length > 0 ?
                                             <CloseIconButton onClick={() => setFilteringList('')}><Icon>close</Icon></CloseIconButton>
-                                            : 
+                                            :
                                             null
                                     }
                                 </SearchItem>
-                                    <SelectAllItem isSingle={false} key={key.toString()+"selectAllcountries"} isSelected={false}> 
-                                        <InputCheckbox 
-                                            id={props.id + '_SelectAll'} 
+                                    <SelectAllItem isSingle={false} key={key.toString()+"selectAllcountries"} isSelected={false}>
+                                        <InputCheckbox
+                                            id={props.id + '_SelectAll'}
                                             label={"Select All"}
                                             labelWeight="med"
                                             indeterminate={selectAllState === 'undeterminate'}
                                             defaultChecked={selectAllState === 'checked'}
-                                            onChange={() => handleSelectAllChange()}/> 
+                                            onChange={() => handleSelectAllChange()}/>
                                     </SelectAllItem>
                                     <BorderItem key={key.toString()+"borderItem"} />
                                 </>
@@ -316,32 +316,32 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                         <ButtonIconStyle onClick={() => setToggleContinent({...toggleContinent, [continent]: !toggleContinent[continent]})}>
                                             <Icon>{toggleContinent[continent] ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}</Icon>
                                         </ButtonIconStyle>
-                                        <InputCheckbox 
-                                            id={props.id + '_' + continent} 
+                                        <InputCheckbox
+                                            id={props.id + '_' + continent}
                                             label={continent}
                                             labelWeight="reg"
                                             indeterminate={checkedContinents[continent].checked === 'undeterminate'}
                                             defaultChecked={checkedContinents[continent].checked === 'checked'}
-                                            onChange={() => handleContinentCheckboxChange(continent)}/> 
-                                    </div> 
+                                            onChange={() => handleContinentCheckboxChange(continent)}/>
+                                    </div>
                                 </DropdownItem>
                             }
                             {
                                 Object.keys(checkedContinents[continent].countries).map((country, key) => {
-                                        
+
                                     return (
                                         <CountryContainer isDisplayed={toggleContinent[continent]} key={props.id + '_' + continent + '_' + country + key.toString()}>
-                                            { 
+                                            {
                                                 !checkedContinents[continent].countries[country].isFiltered ?
-                                                    <DropdownItem style={{paddingLeft:'3rem'}}  isSingle={false}  isSelected={false}  > 
-                                                        <InputCheckbox 
-                                                            id={props.id + '_' + continent + '_' + country} 
+                                                    <DropdownItem style={{paddingLeft:'3rem'}}  isSingle={false}  isSelected={false}  >
+                                                        <InputCheckbox
+                                                            id={props.id + '_' + continent + '_' + country}
                                                             label={country}
                                                             labelWeight="reg"
                                                             defaultChecked={checkedContinents[continent].countries[country].isChecked}
-                                                            onChange={() => handleCheckboxCountryChange(continent, country)}/> 
+                                                            onChange={() => handleCheckboxCountryChange(continent, country)}/>
                                                     </DropdownItem>
-                                                    : 
+                                                    :
                                                     null
 
                                             }
@@ -352,7 +352,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
                                 })
                             }
                         </React.Fragment>
-                    )                
+                    )
                 })
             )
         }
@@ -360,7 +360,7 @@ export const DropdownCountries: React.FC<DropdownCountriesProps> = (props: Dropd
             return null
         }
     }
-    
+
     return (
         <ContainerStyle>
             <DropdownLabel><Text size={14} weight="med">{props.dropdownTitle}</Text></DropdownLabel>

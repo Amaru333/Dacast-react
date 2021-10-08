@@ -35,7 +35,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     const privilegeApi = userToken.getPrivilege('privilege-api') || userToken.getPrivilege('privilege-api-beta');
     const privilegeLive = userToken.getPrivilege('privilege-live');
     const privilegeVod = userToken.getPrivilege('privilege-vod');
-    
+
     //** Api Keys states */
     const [postApiKeyModalOpened, setPostApiKeyModalOpened] = React.useState<boolean>(false);
     const [putApiKeyModalOpened, setPutApiKeyModalOpened] = React.useState<boolean>(false);
@@ -237,7 +237,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
         <>
             <Card className='clearfix col-12'>
 
-                { privilegeApi && 
+                { privilegeApi &&
                     <React.Fragment>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
                         <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
@@ -251,7 +251,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     </React.Fragment>
                 }
                 {/* {
-                    privilegeApi && 
+                    privilegeApi &&
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Webhook Settings</Text>
                         <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Send an HTTP request to the URL specified when a video is uploaded. The request body contains information about the video in XML format.</Text>
@@ -265,7 +265,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     </>
                 } */}
                 {/* {
-                    privilegeLive && 
+                    privilegeLive &&
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >Encoder Keys</Text>
                         <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be pasted into the settings of some video encoders to automatically authenticate your list of Dacast live channels.</Text>
@@ -279,7 +279,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
                     </>
                 } */}
                 {/* {
-                    privilegeVod && 
+                    privilegeVod &&
                     <>
                         <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >S3 Upload Keys</Text>
                             <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >These keys can be used to upload files to an Amazon S3 (Simple Storage Service) bucket that will then be automatically uploaded to your Dacast account.</Text>
@@ -344,7 +344,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             {selectedEditApiKey &&
                 <Modal allowNavigation={false} modalTitle="Edit API Key" toggle={() => setPutApiKeyModalOpened(!putApiKeyModalOpened)} size="small" opened={putApiKeyModalOpened} >
                     <ApiKeysForm action={props.updateApiKey} item={selectedEditApiKey} toggle={setPutApiKeyModalOpened} />
-                </Modal> 
+                </Modal>
             }
             {/* <Modal allowNavigation={false} className="x-visible" modalTitle="New Encoding Key" toggle={() => setPostEncoderKeyModalOpened(!postEncoderKeyModalOpened)} size="small" opened={postEncoderKeyModalOpened} >
                 <EncoderKeysForm toggle={setPostEncoderKeyModalOpened} />
@@ -352,7 +352,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             {selectedEditEncoderKey &&
                 <Modal allowNavigation={false} modalTitle="Edit Encoding Key" toggle={() => setPutEncoderKeyModalOpened(!putEncoderKeyModalOpened)} size="small" opened={putEncoderKeyModalOpened} >
                     <EncoderKeysForm item={selectedEditEncoderKey} toggle={setPutEncoderKeyModalOpened} />
-                </Modal> 
+                </Modal>
             }
             <Modal allowNavigation={false} modalTitle="Webhook" toggle={() => setPostWebHooksModalOpened(!postWebHooksModalOpened)} size="small" opened={postWebHooksModalOpened} >
                 <WebHooksForm toggle={setPostWebHooksModalOpened} />
@@ -360,7 +360,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             {selectedEditWebHooks &&
                 <Modal allowNavigation={false} modalTitle="Edit Webhook" toggle={() => setPutWebHooksModalOpened(!putWebHooksModalOpened)} size="small" opened={putWebHooksModalOpened} >
                     <WebHooksForm item={selectedEditWebHooks} toggle={setPutWebHooksModalOpened} />
-                </Modal> 
+                </Modal>
             }
             <Modal allowNavigation={false} modalTitle="New S3 Key" toggle={() => setPostS3KeysModalOpened(!postS3KeysModalOpened)} size="small" opened={postS3KeysModalOpened} >
                 <S3KeysForm toggle={setPostS3KeysModalOpened} />
@@ -379,14 +379,13 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 export const HrStyle = styled.hr<{}>`
     height: 1px;
     border: none;
-    margin: 32px 0 24px 0;    
+    margin: 32px 0 24px 0;
     background-color:  ${props => props.theme.colors["gray-7"]};
 `;
 
 export const IconContainer = styled.div`
-    float:right;
-    .material-icons{
-        margin-right:16px;
+    float: right;
+    svg {
         color:  ${props => props.theme.colors["gray-1"]};
     }
 `

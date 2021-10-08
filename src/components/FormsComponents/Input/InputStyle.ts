@@ -22,7 +22,7 @@ export const RelativeContainer = styled.div`
 export const IconStyle = styled.div<{disabled: boolean}>`
     position: absolute;
     right: 12px;
-    top: 8px;    
+    top: 8px;
     color: ${props => props.disabled ? props.theme.colors["gray-6"] : props.theme.colors["gray-3"]};
 `;
 
@@ -55,7 +55,7 @@ export const AddonStyle = styled.div<{suffix: boolean}>`
     display: flex;
     align-items: center;
     padding: 0.375rem 0.75rem;
-    width:auto; 
+    width:auto;
     box-sizing: border-box;
 `
 
@@ -164,26 +164,30 @@ export const CheckBoxStyle = styled.div<{defaultChecked: boolean | undefined; di
     width: 16px;
     cursor: pointer;
     margin-right: 8px;
-    ${props => ((props.defaultChecked !== false) && 
-                ((!props.checkbox.current && props.defaultChecked) 
-                    || 
+    ${props => ((props.defaultChecked !== false) &&
+                ((!props.checkbox.current && props.defaultChecked)
+                    ||
                 (props.checkbox.current && (props.checkbox.current.checked || props.defaultChecked) )))  && css`
-        &:after{
-            font-family: Material Icons;
-            content: "check";
-            color: ${props.theme.colors["white"]};
-        }
         border: none;
         background: ${props.theme.colors["violet"]};
+        &:after{
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' fill='white'/%3E%3C/svg%3E%0A");
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
     `}
     ${props => (props.indeterminate) && css`
-        &:after{
-            font-family: Material Icons;
-            content: "remove";
-            color: ${props.theme.colors["white"]};
-        }
         border: none;
         background: ${props.theme.colors["violet"]};
+        &:after{
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M19 13H5v-2h14v2z' fill='white'/%3E%3C/svg%3E%0A");
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
     `}
     ${props => ((props.disabled) || (props.checkbox.current && props.checkbox.current.disabled)) && css`
         opacity: 0.5;
@@ -205,7 +209,7 @@ export const InputRadioStyle = styled.input<{checked: boolean | undefined; disab
   white-space: nowrap;
 
     & + ${RadioLabelStyle} {
-        
+
         &::before {
             content: '';
             cursor: pointer;
@@ -220,7 +224,7 @@ export const InputRadioStyle = styled.input<{checked: boolean | undefined; disab
             border-radius: 100%;
             text-align: center;
             transition: all .1s ease-out;
-        }  
+        }
 
         ${props => (props.disabled) && css `
              cursor: auto;

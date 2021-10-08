@@ -29,7 +29,7 @@ export const ContainerElementStyle = styled.div<ElementMenuProps>`
         border-left: 4px solid ${props.theme.colors["dark-violet"]} ;
         `}
 
-        span{
+        span, svg {
             color: ${props.theme.colors["dark-violet"]};
             font-weight: 500;
         }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {useDatepicker, START_DATE, UseDatepickerProps, OnDatesChangeProps } from "@datepicker-react/hooks";
 import DatepickerContext from "./DatepickerContext";
 import Month from "./Month";
-import { Icon } from '@material-ui/core';
+import { Icon } from '../../Icon/Icon';
 import {DatepickerContainer, DatepickerStyle, BoxStyle, MonthContainerStyle, NavButtonStyle, NavButtonLeftStyle, NavButtonRightStyle, IconStyle, StartTextStyle} from './DatePickerStyle';
 import { Text } from '../../Typography/Text';
 import { useOutsideAlerter } from '../../../utils/utils';
@@ -95,7 +95,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                         isSingle: state.endDate === state.startDate
                     }}
                 >
-                    
+
                     <BoxStyle isSelected={isOpened} onClick={() => setIsOpened(!isOpened)}>
                         <StartTextStyle isSingle text={state.startDate ? true : false}>
                             <Text size={14} weight='reg' color='gray-5'>
@@ -116,7 +116,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
                             </NavButton>
                         </NavButtonRightStyle>
                         {activeMonths.map(month => (
-                        
+
                             <Month
                                 key={`${month.year}-${month.month}`}
                                 year={month.year}
@@ -130,7 +130,7 @@ export const  DateSinglePicker = (props: DatePickerProps) => {
             </DatepickerStyle>
         </DatepickerContainer>
 
-     
+
     );
 }
 

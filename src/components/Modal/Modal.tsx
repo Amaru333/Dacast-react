@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text } from "../Typography/Text";
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../Icon/Icon';
 import { ModalProps } from './ModalTypes';
 import { ModalContainerStyle, ModalTitleStyle, ModalCloseButtonStyle, OverlayStyle, ModalBodyStyle, ModalFooterStyle } from './ModalStyle';
 import {isMobile} from "react-device-detect";

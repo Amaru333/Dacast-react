@@ -36,47 +36,7 @@ export const StepperContainerStyle = styled.div<{opened: boolean; isMobile: bool
         top: 45%;
     }
 `
-export const StepperStyle = styled.div<{isMobile: boolean}>`
 
-    & .MuiStepper-root {
-        ${props => props.isMobile && css `
-            padding: 24px 0;
-        `}
-    }
-    
-    & .MuiStepConnector-lineHorizontal {
-        border-top-width: 4px;
-        border-radius: 4px;
-        border-color: ${props => props.theme.colors["gray-7"]}
-    }
-
-    & .MuiStepConnector-active, .MuiStepConnector-completed  {
-        & > * { 
-            border-color: ${props => props.theme.colors["violet"]};
-        }
-    }
-
-    & .MuiStepIcon-root {
-        color: ${props => props.theme.colors["gray-7"]}
-    }
-
-    & .MuiStepIcon-root.MuiStepIcon-active, .MuiStepIcon-root.MuiStepIcon-completed {
-        color: ${props => props.theme.colors["violet"]}
-    }
-
-    & .MuiTypography-body2 {
-        font-size: 12px;
-        line-height: 16px;
-    }
-
-    & .MuiStepLabel-label.MuiStepLabel-alternativeLabel{
-        margin-top: 8px;
-    }
-
-    & .MuiStepLabel-label.MuiStepLabel-completed{
-        color: ${props => props.theme.colors["gray-7"]}
-    }
-`
 export const StepperContentStyle = styled.div<{isMobile: boolean}>`
     ${props => props.isMobile && css`
         overflow: auto;
@@ -102,4 +62,64 @@ export const StepperNextButton = styled(Button)`
     background: ${props => props.theme.colors["violet"]};
     outline: none;
   };
+`
+
+export const StepperProgressContainer = styled.div`
+    /* position: absolute;
+    top: 15px; */
+    width: 100%;
+    z-index: 9;
+`
+
+export const StepperProgressWrapper = styled.div`
+    width: 70%;
+    position: relative;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+`
+
+export const EmptyProgressBar = styled.div`
+    position: absolute;
+    height: 4px;
+    top: 13px;
+    z-index: -2;
+    background: ${props => props.theme.colors["gray-7"]};
+    width: 100%;
+`
+
+export const StepperProgressBar = styled.div<{progress: number}>`
+    position: absolute;
+    height: 4px;
+    top: 13px;
+    z-index: -1;
+    background: ${props => props.theme.colors["violet"]};
+    width: ${props => props.progress + "%"};
+`
+
+export const StepTitle = styled.div<{isCurrentStep: boolean}>`
+    text-align: center;
+    font-size: 12px;
+    font-weight: ${props => props.isCurrentStep ? "500" : "400"};
+    color: ${props => props.isCurrentStep ? props.theme.colors["black"] : props.theme.colors["gray-5"]};
+    align-items: center;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-width: 48px;
+`
+
+export const StepTitleNumber = styled.div<{isFutureStep: boolean}>`
+    background: ${props => props.isFutureStep ? props.theme.colors["gray-7"] : props.theme.colors["violet"]};
+    height: 24px;
+    width: 24px;
+    margin: 0 auto 8px;
+    border: 3px solid #fff;
+    border-radius: 100%;
+    color: white;
+    font-size: 12px;
+    line-height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

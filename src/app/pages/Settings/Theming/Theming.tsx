@@ -23,7 +23,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
     const ThemingOptions = () => {
         return (
             <ThemingControlsCard
-                theme={{themes: [selectedTheme], contentId:null, contentThemeId: null}} 
+                theme={{themes: [selectedTheme], contentId:null, contentThemeId: null}}
                 saveTheme={props.saveTheme}
                 createTheme={props.createTheme}
                 cancelFunction={() => {setCurrentPage('list');setSelectedTheme(null)}}
@@ -49,21 +49,21 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 return ( theme.themeName === "Standard" ?
                     {data: [
                         <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>check</IconStyle> : <></>,
                         <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'></Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
                                 <IconStyle id={"copyTooltip" + key} onClick={(event) => { event.preventDefault();props.createTheme({...theme, isDefault: false, themeName: theme.themeName + ' copy'})}} >filter_none_outlined</IconStyle>
                                 <Tooltip target={"copyTooltip" + key}>Copy</Tooltip>
                             </ActionIcon>
-                            
+
                         </IconContainer>
-    
+
                     ]}
-                    :            
+                    :
                     {data: [
                         <Text key={'ThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.themeName}</Text>,
-                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                        theme.isDefault ? <IconStyle coloricon='green' key={'ThemingTableBodyDefaultCell' + key.toString()}>check</IconStyle> : <></>,
                         <Text key={'ThemingTableBodyCreatedCell' + key.toString()} size={14} weight='reg'>{tsToLocaleDate(theme.createdDate, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"})}</Text>,
                         <IconContainer className="iconAction" key={'ThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
@@ -77,7 +77,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                             <ActionIcon>
                                 <IconStyle id={"editTooltip" + key} onClick={(event) => { event.preventDefault(); setSelectedTheme(props.themingList.themes.filter((item) => {return item.id === theme.id })[0]); setCurrentPage('options') }}>edit</IconStyle>
                                 <Tooltip target={"editTooltip" + key}>Edit</Tooltip>
-                            </ActionIcon>                      
+                            </ActionIcon>
                         </IconContainer>
 
                     ]}
@@ -89,7 +89,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
                 <Text className='py2' size={20} weight='med'>Themes</Text>
                 <div className='py2'><Text size={14} weight='reg'>Themes specify how your video player will look and behave for Live Streams, Videos and Playlists.</Text></div>
                 <div className='my2 flex'>
-                    <IconStyle className="mr1">info_outlined</IconStyle> 
+                    <IconStyle className="mr1">info_outlined</IconStyle>
                     <Text size={14} weight='reg'>Need help creating a Theme? Visit the <a href={getKnowledgebaseLink("Theme")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
                 </div>
                 <Button className='xs-show col col-12' onClick={() => {setSelectedTheme(defaultTheme);setCurrentPage('options')}} sizeButton='xs' typeButton='secondary' buttonColor='blue'>New Theme</Button>
@@ -100,7 +100,7 @@ export const ThemingPage = (props: ThemingComponentProps) => {
 
     return (
         <div>
-            {   
+            {
                 currentPage === 'list' ?
                     ThemingList()
                     : ThemingOptions()

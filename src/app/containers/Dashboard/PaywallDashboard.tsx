@@ -23,8 +23,10 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Balance </Text>
-                        <IconStyle id="balanceTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="balanceTooltip">Your current paywall balance as of today</Tooltip>
+                        <div className="relative ml-auto">
+                            <IconStyle id="balanceTooltip">info_outlined</IconStyle>
+                            <Tooltip target="balanceTooltip" style={{whiteSpace: 'nowrap'}}>Your current paywall balance as of today</Tooltip>
+                        </div>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${props.profile.balance.toLocaleString()}</Text>
@@ -33,8 +35,10 @@ export const PaywallDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={paywallDataFetching} className={classItemHalfWidthContainer}>
                     <WidgetHeader className="flex">
                         <Text size={16} weight="med" color="gray-3"> Revenue </Text>
-                        <IconStyle id="revenueTooltip" className="ml-auto">info_outline</IconStyle>
-                        <Tooltip target="revenueTooltip">The paywall revenue you have earned for the last 30 days</Tooltip>
+                        <div className="relative ml-auto">
+                            <IconStyle id="revenueTooltip">info_outlined</IconStyle>
+                            <Tooltip target="revenueTooltip" style={{whiteSpace: 'nowrap'}}>The paywall revenue you have earned for the last 30 days</Tooltip>
+                        </div>
                     </WidgetHeader>
                     <div className="flex flex-column minContentDash justify-center items-center mb1">
                         <Text size={48} weight="reg" color="gray-1">${props.profile.revenue ? props.profile.revenue.toLocaleString() : '0'}</Text>

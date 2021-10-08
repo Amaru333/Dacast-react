@@ -60,7 +60,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         if(props.plan.trialExpiresIn > 7) {
             return <span><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
         }
-        
+
         if(props.plan.trialExpiresIn > 0) {
             return <span>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></span>
         }
@@ -113,7 +113,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                             props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
                         }
                         {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>}
-                    </WidgetElement> 
+                    </WidgetElement>
                 )
             }
             return (
@@ -127,7 +127,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     }
                     <Text>Please <a href='/help'><Text color='light-blue' weight='med'>contact us</Text></a> or <a href='/upgrade'><Text color='light-blue' weight='med'>upgrade</Text></a>in order to renew your plan.</Text>
                     {/* {props.plan.price && <Text size={32} weight="reg" color="gray-1">{handleCurrencySymbol(props.plan.currency) + props.plan.price}</Text>} */}
-                </WidgetElement> 
+                </WidgetElement>
 
             )
         }
@@ -175,8 +175,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
-                        <IconStyle className="ml1" id="storageTooltip">info_outlined</IconStyle>
-                        <Tooltip target="storageTooltip">Storage consumed include both source file size and sizes of renditions</Tooltip>
+                        <div className="relative ml1">
+                            <IconStyle id="storageTooltip">info_outlined</IconStyle>
+                            <Tooltip target="storageTooltip" style={{whiteSpace: 'nowrap'}}>Storage consumed include both source file size and sizes of renditions</Tooltip>
+                        </div>
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> { (storage.left < 0 ? '-' : '') + readableBytes(Math.abs(storage.left))}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(storage.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(storage.percentage) ? 0 : storage.percentage}%</Text>

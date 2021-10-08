@@ -1,5 +1,5 @@
 import * as React from "react"
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../components/Icon/Icon';
 import { HeaderStyle, IconContainerStyle, HeaderIconStyle, UserOptionsDropdownList, VerticalDivider, HeaderAvatar, BreadcrumbContainer, UpgradeButton, TrialUpgradeButton } from './HeaderStyle';
 import { ApplicationState } from '../../app/redux-flow/store';
 import { connect } from 'react-redux';
@@ -115,7 +115,7 @@ const Header = (props: HeaderProps) => {
     const [avatarLastName, setAvatarLastName] = React.useState<string>(null)
     const [cardExpiredModalOpened, setCardExpiredModalOpened] = React.useState<boolean>(false)
     const [modalShown, setModalShown] = React.useState<boolean>(false)
-    
+
 
     const setTagManager = () => {
         let dataset = {
@@ -154,7 +154,7 @@ const Header = (props: HeaderProps) => {
     }
 
     React.useEffect(() => {
-        
+
         if(!props.ProfileInfo) {
             props.getProfilePageDetails()
         }

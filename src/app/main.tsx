@@ -22,7 +22,7 @@ import { userToken } from './utils/services/token/tokenService';
 import Toasts from './containers/Others/Toasts';
 
 import ReactDOM from 'react-dom';
-import { Icon } from '@material-ui/core';
+import { Icon } from '../components/Icon/Icon';
 import Login from './containers/Register/Login/Login';
 import { NotFound } from './containers/404page';
 import AddStreamModal from './containers/Navigation/AddStreamModal';
@@ -243,7 +243,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
             <React.Fragment>
                 <div className="unsavedChangesContainer">
                     <div className="unsavedChangesTitle">
-                        <Icon className="material-icons-outlined" fontSize="large" style={{ color: "red" }}>report_problem</Icon>
+                        <Icon style={{ color: 'red', width: '2.25rem', height: '2.25rem' }}>report_problem_outlined</Icon>
                         <span className="unsavedChangesText-Header">Unsaved Changes</span>
                     </div>
                     <div className="unsavedChangesBody">

@@ -78,7 +78,7 @@ export const PaywallThemingPage = (props: PaywallThemingComponentProps) => {
             return props.paywallThemes.themes && props.paywallThemes.themes.map((theme, key) => {
                 return {data: [
                     <Text key={'paywallThemingTableBodyNameCell' + key.toString()} size={14} weight='reg'>{theme.name}</Text>,
-                    theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>checked</IconStyle> : <></>,
+                    theme.isDefault ? <IconStyle coloricon='green' key={'paywallThemingTableBodyDefaultCell' + key.toString()}>check</IconStyle> : <></>,
                         <IconContainer className="iconAction" key={'paywallThemingTableBodyButtonsCell' + key.toString()}>
                             <ActionIcon>
                                 <IconStyle id={"copyTooltip" + key} onClick={() => props.createPaywallTheme({...theme, isDefault: false, name: `${theme.name} Copy`})}>file_copy</IconStyle>

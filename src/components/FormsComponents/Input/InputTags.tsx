@@ -2,7 +2,7 @@ import * as React from "react";
 import { ContainerStyle, LabelStyle, IconStyle, HelpStyle, TagsContainer, TagsInputStyle, TagListStyle, TagStyle, TagTextStyle, TagButtonStyle, TagsWrapper, TagsTooltipStyle, TagTextContainer } from './InputStyle';
 import { Text } from '../../Typography/Text';
 import { TagProps } from './InputTypes';
-import Icon from '@material-ui/core/Icon';
+import { Icon } from '../../Icon/Icon';
 import { Tooltip } from '../../Tooltip/Tooltip';
 
 export const InputTags = (props: TagProps) => {
@@ -43,7 +43,7 @@ export const InputTags = (props: TagProps) => {
         }
     }
 
-    
+
 
     var { label, icon, help, isError, className, noBorder, style, ...other } = props;
 
@@ -62,12 +62,12 @@ export const InputTags = (props: TagProps) => {
                                     <TagsTooltipStyle>{tag}</TagsTooltipStyle>
                                 </Tooltip>
                                 {
-                                    !props.disabled && 
-                                    <TagButtonStyle 
+                                    !props.disabled &&
+                                    <TagButtonStyle
                                         onClick={() => removeTag(i)} type="button">X
                                     </TagButtonStyle>
                                 }
-                                
+
                             </TagStyle>
                         ))}
                         {

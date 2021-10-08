@@ -72,7 +72,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{`${expoBaseUrl}?id=${props.contentDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkExpoTooltip" onClick={() => {updateClipboard(`${expoBaseUrl}?id=${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkExpoTooltip" onClick={() => {updateClipboard(`${expoBaseUrl}?id=${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')}}>file_copy</IconStyle>
                             <Tooltip target="copyShareExpoLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -88,7 +88,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                             <LinkText size={14} weight="reg">
                                 {`<script id="${accountId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${accountId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`}
                             </LinkText>
-                            <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => {updateClipboard(`<script id="${accountId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${accountId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied');handleShareLinkClick('js') } }>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyJSEmbedTooltip" onClick={() => {updateClipboard(`<script id="${accountId}-${props.contentType}-${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" src="https://player.dacast.com/js/player.js?contentId=${accountId}-${props.contentType}-${props.contentDetails.id}"  class="dacast-video"></script>`, 'JavaScript Embed Code Copied');handleShareLinkClick('js') } }>file_copy</IconStyle>
                             <Tooltip target="copyJSEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -100,7 +100,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                             <LinkText size={14} weight="reg">
                             {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
                             </LinkText>
-                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => {updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied');handleShareLinkClick('iframe')}}>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => {updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied');handleShareLinkClick('iframe')}}>file_copy</IconStyle>
                             <Tooltip target="copyIframeEmbedTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>
@@ -110,7 +110,7 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => {updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')} }>file_copy_outlined</IconStyle>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => {updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')} }>file_copy</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">Copy to clipboard</Tooltip>
                         </LinkBox>
                     </div>

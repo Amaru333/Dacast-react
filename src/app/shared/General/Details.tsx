@@ -45,8 +45,8 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
         <div className="col col-12">
             <header className="flex justify-between mb2">
                 <Text size={20} weight="med">Details</Text>
-                { 
-                    (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') && 
+                {
+                    (userToken.getPrivilege('privilege-web-download') && props.contentType === 'vod') &&
                         <Button onClick={() => saveFile(props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">Download</Button>
                 }
                 {
@@ -69,18 +69,18 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                     help={(!props.localContentDetails.title || props.localContentDetails.title.length === 0) && "Required"}
                     onChange={event => {props.setLocalContentDetails({...props.localContentDetails, title: event.currentTarget.value });props.setHasChanged(true)}}
                 />
-                {   
+                {
                     props.contentType !== "expo" &&
                         <InputTags
                             className={ClassHalfXsFullMd + "mb2"}
                             label="Folders"
                             disabled
                             greyBackground
-                            defaultTags={props.contentDetails.folders} 
+                            defaultTags={props.contentDetails.folders}
                         />
                 }
             </div>
-            
+
             <Input
                 className={ClassHalfXsFullMd + "pr2 mb2"}
                 type="textarea"
@@ -94,7 +94,7 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                 </LinkBoxLabel>
                 <LinkBox>
                     <LinkText size={14} weight="reg">{accountId + '-' + props.contentType + '-' + props.contentDetails.id}</LinkText>
-                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(accountId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy_outlined</IconStyle>
+                    <IconStyle className='pointer' id="copyContentIdTooltip" onClick={() => updateClipboard(accountId + '-' + props.contentType + '-' + props.contentDetails.id, 'Content ID Copied')}>file_copy</IconStyle>
                     <Tooltip target="copyContentIdTooltip">Copy to clipboard</Tooltip>
                 </LinkBox>
             </div>
