@@ -11,6 +11,7 @@ import { tsToLocaleDate } from '../../../../utils/formatUtils';
 import { axiosClient } from '../../../utils/services/axios/axiosClient';
 import { capitalizeFirstLetter, handleCurrencySymbol, useQuery } from '../../../../utils/utils';
 import { Link, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const InvoicesPage = (props: InvoicesComponentProps) => {
 
@@ -36,6 +37,7 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 20})
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringInvoicesState>(formatFilters())
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     const formatFiltersToQueryString = (filters: FilteringInvoicesState, pagination: {page: number; nbResults: number}, sortValue: string) => {
         let returnedString= `page=${pagination.page}&perPage=${pagination.nbResults}`
@@ -106,10 +108,10 @@ export const InvoicesPage = (props: InvoicesComponentProps) => {
     const invoicesTableHeader = () => {
         return {
             data: [
-                {cell: <Text key='invoicesTableHeaderRef' size={14} weight='med' color='gray-1'>Ref</Text>},
-                {cell: <Text key='invoicesTableHeaderDate' size={14} weight='med' color='gray-1'>Created Date</Text>, sort: 'Created Date'},
-                {cell: <Text key='invoicesTableHeaderTotal' size={14} weight='med' color='gray-1'>Total</Text>},
-                {cell: <Text key='invoicesTableHeaderStatus' size={14} weight='med' color='gray-1'>Status</Text>},
+                {cell: <Text key='invoicesTableHeaderRef' size={14} weight='med' color='gray-1'>{t('account_invoices_table_header_ref')}</Text>},
+                {cell: <Text key='invoicesTableHeaderDate' size={14} weight='med' color='gray-1'>{t('settings_integration_api_keys_table_date')}</Text>, sort: 'Created Date'},
+                {cell: <Text key='invoicesTableHeaderTotal' size={14} weight='med' color='gray-1'>{t('account_invoices_table_header_total')}</Text>},
+                {cell: <Text key='invoicesTableHeaderStatus' size={14} weight='med' color='gray-1'>{t('common_content_list_table_header_status')}</Text>},
                 {cell: <span key='invoicesTableEmptyCell'></span>}
             ], 
             defaultSort: 'Created Date',

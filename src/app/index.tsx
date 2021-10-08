@@ -8,7 +8,7 @@ import { globalDefaultState } from "./redux-flow/store";
 import "react-table/react-table.css";
 import { datadogRum } from '@datadog/browser-rum';
 import { userToken } from './utils/services/token/tokenService';
-
+import './i18n';
 
 const initialState = globalDefaultState;
 export const store = configureStore(initialState);

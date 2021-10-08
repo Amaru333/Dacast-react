@@ -7,10 +7,12 @@ import { DateTimeValue, LiveDetails } from '../../redux-flow/store/Content/Gener
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { Modal } from '../../../components/Modal/Modal';
 import { Button } from '../../../components/FormsComponents/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 
 export const GeneralSettings = (props: {localContentDetails: LiveDetails, setLocalContentDetails: React.Dispatch<React.SetStateAction<LiveDetails>>, contentDetails: LiveDetails, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>}) => {
 
+    const { t } = useTranslation()
     const initTimestampValues = (ts: number, timezone: string): DateTimeValue => {
         timezone = timezone ? timezone : null;
         return { date: ts > 0 ? ts : Math.round(new Date().getTime() /1000), timezone: timezone }
@@ -41,26 +43,26 @@ export const GeneralSettings = (props: {localContentDetails: LiveDetails, setLoc
 
     return (
         <div className="settings col col-12">
-                    <Text className="col col-12 mb25" size={20} weight="med">Settings</Text>
+                    <Text className="col col-12 mb25" size={20} weight="med">{t('common_navigation_bar_menu_item_settings')}</Text>
                     <div className="col col-12">
                         {
                             userToken.getPrivilege('privilege-recording') &&
                             <div className="mb2">
-                                <Toggle label="Live Stream Recording" defaultChecked={props.localContentDetails.recording} onChange={handleLiveRecordingButtonClick}></Toggle>
+                                <Toggle label={t('live_stream_general_live_recording_title')} defaultChecked={props.localContentDetails.recording} onChange={handleLiveRecordingButtonClick}></Toggle>
                                 <ToggleTextInfo className="mt1">
-                                    <Text size={14} weight='reg' color='gray-1'>8 continuous hours recording limit at a time. Live Stream recording turns off after 7 days and can be turned on again.</Text>
+                                    <Text size={14} weight='reg' color='gray-1'>{t('live_stream_general_live_recording_info_text')}</Text>
                                 </ToggleTextInfo>
                             </div>
                         }
 
                         <div className="mb2 clearfix">
                             <Toggle
-                                label="Live Stream Start Countdown"
+                                label={t('live_stream_general_countdown_title')}
                                 onChange={() => { setLiveStreamCountdownToggle(!liveStreamCountdownToggle);props.setHasChanged(true) }}
                                 defaultChecked={liveStreamCountdownToggle}
                             ></Toggle>
                             <ToggleTextInfo className="mt1">
-                                <Text size={14} weight='reg' color='gray-1'>Note that a Paywall can stop this from being displayed.</Text>
+                                <Text size={14} weight='reg' color='gray-1'>{t('live_stream_general_countdown_limitation_message')}</Text>
                             </ToggleTextInfo>
                             {
                                 liveStreamCountdownToggle &&
@@ -101,9 +103,9 @@ export const GeneralSettings = (props: {localContentDetails: LiveDetails, setLoc
                     </div>
                     <Modal size='small' allowNavigation={false} icon={{name: "error_outline", color: "blue-2"}} modalTitle='Live Stream Recording' toggle={() => setLiveStreamRecordingModalOpened(false)} opened={liveStreamRecordingModalOpened}>
                         <div className='flex flex-column'>
-                            <Text>Live recording is a great feature. However, this action can sometimes be unreliable due to many factors beyond our control (e.g. your internet connection), the industry best practices recommend to also setup local recording through your encoder.</Text>
+                            <Text>{t('live_stream_general_live_recording_limitation_message')}</Text>
                             <div className='mt2'>
-                                <Button className='col col-3' onClick={() => setLiveStreamRecordingModalOpened(false)} typeButton='primary' sizeButton='large' buttonColor='lightBlue'>Okay</Button>
+                                <Button className='col col-3' onClick={() => setLiveStreamRecordingModalOpened(false)} typeButton='primary' sizeButton='large' buttonColor='lightBlue'>{t('live_stream_general_live_recording_modal_button_text')}</Button>
                             </div>
                         </div>
                     </Modal>

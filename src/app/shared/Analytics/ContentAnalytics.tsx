@@ -12,6 +12,7 @@ import { WatchDurationAnalytics } from './AnalyticsType/WatchDurationAnalytics';
 import { DateFilteringAnalytics } from './DateFilteringAnalytics';
 import { RealTimeDropdown } from './RealTimeDropdown';
 import { dateAdd } from '../../../utils/services/date/dateService';
+import { useTranslation } from 'react-i18next';
 
 export interface ContentAnalyticsProps {
     contentId: string,
@@ -41,7 +42,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     const [loading, setLoading] = React.useState<boolean>(false)
 
     const loaded = React.useRef(false);
-
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         if(loaded.current) {
@@ -122,11 +123,11 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
     }
 
     const contentAnalyticsDropdownItems = [
-        { title: "Audience", data: "audience" },
+        { title: t("common_analytics_audience_title"), data: "audience" },
         // { title: "Watch Duration", data: "watch-duration" },
         { title: "Paywall", data: "paywall" },
         { title: "Engagement", data: "engagement" },
-        ...(props.contentType === "live" ? [{ title: "Real Time", data: "real-time" }] : [])
+        ...(props.contentType === "live" ? [{ title: t("common_analytics_real_time_title"), data: "real-time" }] : [])
     ]
 
 
@@ -139,7 +140,7 @@ export const ContentAnalytics = (props: ContentAnalyticsProps) => {
                     id='content-analytics-dropdown'
                     list={contentAnalyticsDropdownItems}
                     dropdownTitle=""
-                    dropdownDefaultSelect={contentAnalyticsDropdownItems.find(f => f.data === currentTab) ? contentAnalyticsDropdownItems.find(f => f.data === currentTab).title : 'Audience'}
+                    dropdownDefaultSelect={contentAnalyticsDropdownItems.find(f => f.data === currentTab) ? contentAnalyticsDropdownItems.find(f => f.data === currentTab).title : contentAnalyticsDropdownItems[0].title}
                     callback={(item: DropdownSingleListItem) => { setCurrentTab(item.data);setAnalyticsQsParams({key: 'metric', value: item.data.toLowerCase()}) }}
                 />
                 {handleExtraSettings()}

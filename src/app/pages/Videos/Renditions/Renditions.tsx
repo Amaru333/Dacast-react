@@ -16,6 +16,7 @@ import { ContentType } from '../../../redux-flow/store/Common/types';
 import { RecipePreset } from '../../../redux-flow/store/Settings/EncodingRecipes/EncodingRecipesTypes';
 import { Bubble } from '../../../../components/Bubble/Bubble';
 import EventHooker from '../../../../utils/services/event/eventHooker';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string; contentType: ContentType}) => {
 
@@ -40,6 +41,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     const [uploadError, setUploadError] = React.useState<string>(null)
     // the data from the WS to know when the processing renditions are completed
     // let wsData = useWebSocket()
+    const { t } = useTranslation()
 
     let replaceSourceFileBrowseButtonRef = React.useRef<HTMLInputElement>(null)
 
@@ -107,9 +109,9 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     }} 
                 />
             },
-            {cell: <Text size={14} weight="med">Rendition</Text>},
-            {cell: <Text size={14} weight="med">Size (px)</Text>},
-            {cell: <Text size={14} weight="med">Bitrate Cap (Mbps)</Text>}
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_rendition')}</Text>},
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_size')}</Text>},
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_bitrate')}</Text>}
         ]}
     }
 
@@ -149,11 +151,11 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         setSelectedEncodedRendition([])
                     }
                 }} />},
-            {cell: <Text size={14} weight="med">Rendition</Text>},
-            {cell: <Text size={14} weight="med">Size (px)</Text>},
-            {cell: <Text size={14} weight="med">Size (Mb)</Text>},
-            {cell: <Text size={14} weight="med">Bitrate (Mbps)</Text>},
-            {cell: <Text size={14} weight="med">Status</Text>}
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_rendition')}</Text>},
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_size')}</Text>},
+            {cell: <Text size={14} weight="med">{t('common_content_list_table_header_size')} (Mb)</Text>},
+            {cell: <Text size={14} weight="med">{t('video_renditions_table_header_bitrate')}</Text>},
+            {cell: <Text size={14} weight="med">{t('common_content_list_table_header_status')}</Text>}
         ]}
     }
 
@@ -177,7 +179,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 (!value.transcodingJobID || !value.size || !value.bitrate || !value.height) ? 
                     <Label color={"gray-1"} backgroundColor={"gray-9"} label="Processing" />
                     :
-                    <Label color={"green"} backgroundColor={"green20"} label="Encoded" />
+                    <Label color={"green"} backgroundColor={"green20"} label={t('video_renditions_table_encoded')} />
             ]}
         })
     }
@@ -255,14 +257,14 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
     return (
         <React.Fragment>
             <div className="col col-12">
-                <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>Replace Source File</Button>
+                <Button className="right mb2" sizeButton="xs" typeButton="secondary" onClick={() => setReplaceSourceModalOpen(true)}>{t('video_renditions_replace_file_button')}</Button>
             </div>
             <div>
-                <Text size={14} weight="reg">Add or delete transcoding options from your file. Please note that adding bitrates to your file requires encoding and also extra storage space.</Text>
+                <Text size={14} weight="reg">{t('video_renditions_description')}</Text>
             </div>
             <div className="flex mt1 mb2">
                 <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                <Text  size={14} weight="reg">Need help understanding Renditions? Visit the <a href={getKnowledgebaseLink('Encoding Recipes')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                <Text  size={14} weight="reg"><Trans i18nKey='video_renditions_help_text'>Need help understanding Renditions? Visit the <a href={getKnowledgebaseLink('Encoding Recipes')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
             </div>
             {
                 isLegacyVideo && 
@@ -276,7 +278,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         <Text size={24} weight="reg">{props.renditions.videoInfo ? (props.renditions.videoInfo.fileSize / 1000000).toFixed(2) : ''} MB</Text>
                     </div>
                     <div className="mt1">
-                        <Text color="gray-4" size={14} weight="reg">Source File Size</Text>
+                        <Text color="gray-4" size={14} weight="reg">{t('video_renditions_header_source_file_size')}</Text>
                     </div>
                 </RenditionsWidget>
                 <RenditionsWidget>
@@ -284,7 +286,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         <Text size={24} weight="reg">{props.renditions.videoInfo ? (props.renditions.videoInfo.videoBitrateBytePerSec / 1000000).toFixed(0): ''} Mbps</Text>
                     </div>
                     <div className="mt1">
-                        <Text color="gray-4" size={14} weight="reg">Source File Bitrate</Text>
+                        <Text color="gray-4" size={14} weight="reg">{t('video_renditions_header_source_file_bitrate')}</Text>
                     </div>
                 </RenditionsWidget>
                 <RenditionsWidget>
@@ -292,7 +294,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                         <Text size={24} weight="reg">{(props.renditions.storageRemaining / 1000000000).toFixed(2)} GB</Text>
                     </div>
                     <div className="mt1">
-                        <Text color="gray-4" size={14} weight="reg">Storage Remaining</Text>
+                        <Text color="gray-4" size={14} weight="reg">{t('dashboard_storage_remaining_widget_title')}</Text>
                     </div>
                 </RenditionsWidget>
             </div>
@@ -300,7 +302,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
             <div className="renditionsContainer mt25 col col-12">
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">
-                        <Text size={20} weight="med">Not Encoded</Text>
+                        <Text size={20} weight="med">{t('video_renditions_table_not_encoded')}</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
                         <Table hasContainer id="notEncodedRenditionsTable" headerBackgroundColor="white" header={notEncodedRenditionsTableHeader()} body={notEncodedRenditionsTableBody()} /> 
@@ -316,7 +318,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                 </ButtonContainer>
                 <div className="notEncodedTableContainer col col-5">
                     <div className="mb1">
-                        <Text size={20} weight="med">Encoded</Text>
+                        <Text size={20} weight="med">{t('video_renditions_table_encoded')}</Text>
                     </div>
                     <RenditionsTable className="notEncodedTable ">
                         <Table hasContainer id="EncodedRenditionsTable" headerBackgroundColor="white" header={EncodedRenditionsTableHeader()} body={EncodedRenditionsTableBody()} /> 
@@ -328,7 +330,7 @@ export const VodRenditionsPage = (props: VodRenditionsProps & {contentId: string
                     <Text size={14} weight="reg">Are you sure you want to encode the selected renditions? If so, click <strong>Encode</strong> and encoding will be processed in the background.</Text> 
                 </ModalContent>
                 <ModalFooter>
-                    <Button onClick={() => {encodeRenditions();setEncodeRenditionsModalOpen(false)}}>Encode</Button>
+                    <Button onClick={() => {encodeRenditions();setEncodeRenditionsModalOpen(false)}}>{t('video_renditions_encode_button')}</Button>
                     <Button typeButton="tertiary" onClick={() => setEncodeRenditionsModalOpen(false)}>Cancel</Button>  
                 </ModalFooter>
             </Modal>

@@ -40,6 +40,7 @@ import PlanLimitReachedModal from '../../containers/Navigation/PlanLimitReachedM
 import { InputSearchStyle } from '../General/GeneralStyle';
 import { segmentService } from '../../utils/services/segment/segmentService';
 import { DashboardInfos } from '../../redux-flow/store/Dashboard/types';
+import { Trans, useTranslation } from 'react-i18next';
 import { ContentEmptyState } from './EmptyState';
 import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { SpinnerContainer } from '../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinnerStyle';
@@ -115,6 +116,8 @@ export const ContentListPage = (props: ContentListProps) => {
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const [previewedContent, setPreviewedContent] = React.useState<string>(null)
     const [showEmptyState, setShowEmptyState] = React.useState<boolean>(true)
+
+    const { t } = useTranslation()
 
     const planLimitsValidaorCallbacks = {
         openAddStream: () => setAddStreamModalOpen(true),
@@ -287,11 +290,11 @@ export const ContentListPage = (props: ContentListProps) => {
     })
 
     const bulkActions = [
-        { name: 'Online/Offline', function: setBulkOnlineOpen, hideForContent: [] },
-        { name: 'Paywall Off', function: setBulkPaywallOpen, hideForContent: ['expo'] },
-        { name: 'Change Theme', function: setBulkThemeOpen, hideForContent: ['expo'] },
-        { name: 'Move To', function: setMoveItemsModalOpened, hideForContent: ['expo'] },
-        { name: 'Delete', function: setBulkDeleteOpen, hideForContent: [] },
+        { name: t('common_content_list_bulk_action_online_option'), function: setBulkOnlineOpen, hideForContent: [] },
+        { name: t('common_content_list_bulk_action_paywall_option'), function: setBulkPaywallOpen, hideForContent: ['expo'] },
+        { name: t('common_content_list_bulk_action_theme_option'), function: setBulkThemeOpen, hideForContent: ['expo'] },
+        { name: t('common_content_list_bulk_action_move_option'), function: setMoveItemsModalOpened, hideForContent: ['expo'] },
+        { name: t('common_content_list_bulk_action_delete_option'), function: setBulkDeleteOpen, hideForContent: [] },
     ]
 
     const handleURLName = (contentType: ContentType) => {
@@ -322,13 +325,13 @@ export const ContentListPage = (props: ContentListProps) => {
                         }} />
                 },
                 // {cell: <></>},
-                { cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">Title</Text>, sort: 'title' },
-                { cell: props.contentType === 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Size</Text> },
-                { cell: props.contentType !== 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">Views</Text> },
+                { cell: <Text key="namecontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_title')}</Text>, sort: 'title' },
+                { cell: props.contentType === 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_size')}</Text> },
+                { cell: props.contentType !== 'expo' ? undefined : <Text key="sizecontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_views')}</Text> },
                 // NOT V1 {cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Views</Text>},
-                { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">Created Date</Text>, sort: 'created-at' },
-                { cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">Status</Text> },
-                { cell: props.contentType === 'expo' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">Features</Text> },
+                { cell: <Text key="viewscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_date')}</Text>, sort: 'created-at' },
+                { cell: <Text key="statuscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_status')}</Text> },
+                { cell: props.contentType === 'expo' ? undefined : <Text key="statuscontentList" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_features')}</Text> },
                 { cell: <div style={{ width: "80px" }} ></div> },
             ].filter(x => x.cell !== undefined),
             defaultSort: 'created-at',
@@ -367,7 +370,7 @@ export const ContentListPage = (props: ContentListProps) => {
 
     const renderLimitedTrialFeatures = () => {
         return (
-            <Label backgroundColor="yellow20" color="gray-1" label={<div>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold pointer">Upgrade Now</a></div>} />
+            <Label backgroundColor="yellow20" color="gray-1" label={<div><Trans i18nKey='common_free_trial_limitation_button_text'>Limited Trial, <a onClick={handleUpgradeClick} className="text-semibold pointer">Upgrade Now</a></Trans></div>} />
         )
     }
 
@@ -471,7 +474,7 @@ export const ContentListPage = (props: ContentListProps) => {
                 : <>
                     <div className={'flex mb2 justify-between ' + (isMobile ? 'flex-col' : 'flex-row items-center')}>
                         <InputSearchStyle
-                            placeholder="Search by Title..."
+                            placeholder={t('common_content_list_search_placeholder')} 
                             callback={(value: string) => { setSearchString(value); formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value) }}
                             isSearching={searchString !== null && searchString !== ''}
                             value={searchString}
@@ -484,7 +487,7 @@ export const ContentListPage = (props: ContentListProps) => {
                                 props.contentType !== 'expo' &&
                                 <>
                                     <div className={'relative ' + (isMobile ? 'mr2 flex-1 flex' : '')}>
-                                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="secondary" >{ isMobile ? 'Actions' : 'Bulk Actions' }</Button>
+                                        <Button onClick={() => { setDropdownIsOpened(!dropdownIsOpened) }} disabled={selectedContent.length === 0} buttonColor="gray" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="secondary" >{ isMobile ? 'Actions' : t('common_content_list_bulk_action_button_text') }</Button>
                                         <DropdownList ref={bulkDropdownRef} hasSearch={false} style={{ width: 167, left: 16 }} isSingle isInModal={false} isNavigation={false} displayDropdown={dropdownIsOpened} >
                                             {renderList()}
                                         </DropdownList>
@@ -499,15 +502,15 @@ export const ContentListPage = (props: ContentListProps) => {
                             }
                             {
                                 props.contentType === "live" &&
-                                <Button onClick={handleCreateStreamClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.infos}>{ isMobile ? 'Create' : 'Create Live Stream' }</Button>
+                                <Button onClick={handleCreateStreamClick} buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" disabled={!props.infos}>{ isMobile ? 'Create' : t('common_content_list_create_live_stream_button_text') }</Button>
                             }
                             {
                                 props.contentType === "playlist" &&
-                                <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : 'Create Playlist' }</Button>
+                                <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={() => setAddPlaylistModalOpen(true)} >{ isMobile ? 'Create' : t('playlist_create_modal_title') }</Button>
                             }
                             {
                                 props.contentType === 'expo' &&
-                                <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.infos}>{ isMobile ? 'Create' : 'Create Expo' }</Button>
+                                <Button buttonColor="blue" className={'relative ml2 ' + (isMobile ? 'flex-1' : '')} sizeButton="small" typeButton="primary" onClick={handleCreateExpoClick} disabled={!props.infos}>{ isMobile ? 'Create' : t('expo_create_expo_modal_button') }</Button>
                             }
                         </div>
 

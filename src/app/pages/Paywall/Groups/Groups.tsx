@@ -18,6 +18,7 @@ import { GroupDetailsStep } from './GroupDetailsStep';
 import { GroupContentStep } from './GroupContentStep';
 import { AccessPaywallGroupsModal } from './AccessPaywallGroupsModal';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface GroupStepperSecondStepProps {
     folderData: FoldersInfos;
@@ -65,6 +66,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
             type: 'Pay Per View',
         }
     }
+    const { t } = useTranslation()
+
     const [groupPricesStepperOpened, setGroupPricesStepperOpened] = React.useState<boolean>(false);
     const [groupPromosModalOpened, setGroupPromosModalOpened] = React.useState<boolean>(false);
     const [accessPaywallGroupsModalOpened, setAccessPaywallGroupsModalOpened] = React.useState<boolean>(false)
@@ -75,7 +78,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const [stepperData, setStepperData] = React.useState<GroupStepperData>({firststep: defaultPrice, secondStep: {...props}});
     const [priceList, setPriceList] = React.useState<GroupPrice[]>(props.groupsInfos.prices.packages || [])
     const [promoList, setPromoList] = React.useState<GroupPromo[]>(props.groupsInfos.promos.promos ? props.groupsInfos.promos.promos.filter(p => p.assignedContentIds.length === 0 && p.assignedGroupIds.length > 0) : [])
-    const groupPriceSteps = [{title: "Group Details", content: GroupDetailsStep}, {title: "Content Selection", content: GroupContentStep}]
+    const groupPriceSteps = [{title: t('paywall_groups_price_modal_label_step_1'), content: GroupDetailsStep}, {title: t('paywall_groups_price_modal_label_step_2'), content: GroupContentStep}]
 
     React.useEffect(() => {
         setStepperData({...stepperData, secondStep: {...props}})
@@ -98,13 +101,13 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPricesTableHeader = () => {
         return {data: [
-            {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='groupPricesTableHeaderType' size={14} weight='med'>Type</Text>},
-            {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
-            {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
-            {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderType' size={14} weight='med'>{t('common_paywall_price_table_header_type')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_price')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>{t('common_paywall_price_table_header_currency')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>{t('common_paywall_price_table_header_duration')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>{t('common_security_content_scheduling_title')}</Text>},
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => {setStepperData({...stepperData, firststep: defaultPrice});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_price_table_create_button')}</Button>}
 
         ]}
     }
@@ -165,18 +168,18 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const groupPromosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoGroupsTableHeaderAssociatedGroupPrice' size={14} weight='med'>Associated Group Price</Text>},
-            {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>Code</Text>},
-            {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
-            {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
+            {cell: <Text key='promoGroupsTableHeaderAssociatedGroupPrice' size={14} weight='med'>{t('paywall_groups_promo_table_associated_group_price')}</Text>},
+            {cell: <Text key='promoGroupsTableHeaderCode' size={14} weight='med'>{t('common_paywall_promo_modal_alphanumericode_title')}</Text>},
+            {cell: <Text key='promoGroupsTableHeaderDiscount' size={14} weight='med'>{t('common_paywall_promo_table_header_discount')}</Text>},
+            {cell: <Text key='promoGroupsTableHeaderLimit' size={14} weight='med'>{t('common_paywall_promo_table_header_limit')}</Text>},
+            {cell: <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>}
 
         ]}
     }
 
     const emptyGroupPromoTableHeader = () => {
         return {data: [
-            {cell: props.groupsInfos.prices.packages.length > 0 && <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>}
+            {cell: props.groupsInfos.prices.packages.length > 0 && <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>}
         ]}
     }
 
@@ -229,26 +232,26 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     return (
         <div>
             <Card>
-                <Text size={20} weight='med'>Price Groups</Text>
-                <Text className="mt2" size={14} weight='reg' color='gray-3'>Group content into a single Price Group that can be purchased together.</Text>
+                <Text size={20} weight='med'>{t('paywall_groups_price_title')}</Text>
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>{t('paywall_groups_price_description')}</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Price ? Visit the <a href={getKnowledgebaseLink('Group Price')} target="_blank" rel="noopener noreferrer">Knowledge Base</a> </Text>
+                    <Text size={14} weight='reg' color='gray-3'><Trans i18nKey='paywall_groups_price_help_text'>Need help setting up a Group Price ? Visit the <a href={getKnowledgebaseLink('Group Price')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
-                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>
+                <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_price_table_create_button')}</Button>
                 <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={priceList.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={priceList.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
                 <Divider className='my2' />
 
-                <Text className="mt1" size={20} weight='med'>Promo Groups</Text>
-                <Text className="mt2" size={14} weight='reg' color='gray-3'>Allow a promo to be used to purchase content in a Price Group.</Text>
+                <Text className="mt1" size={20} weight='med'>{t('paywall_groups_promo_title')}</Text>
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>{t('paywall_groups_promo_description')}</Text>
                 <div className="flex col col-12 mt2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text size={14} weight='reg' color='gray-3'>Need help setting up a Group Promo? Visit the <a href={getKnowledgebaseLink('Group Promo')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text size={14} weight='reg' color='gray-3'><Trans i18nKey='paywall_groups_promo_help_text'>Need help setting up a Group Promo? Visit the <a href={getKnowledgebaseLink('Group Promo')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
-                <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Group</Button>
+                <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>
                 <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={promoList.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={promoList.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
             </Card>
-            <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : 'Create Promo Group'} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : t('paywall_groups_promo_table_create_button')} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 {
                     groupPromosModalOpened && <GroupPromoModal action={selectedGroupPromo ? props.saveGroupPromo : props.createGroupPromo} groupPromo={selectedGroupPromo} toggle={setGroupPromosModalOpened} groupList={props.groupsInfos.prices.packages} />
 
@@ -262,9 +265,9 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                 groupPricesStepperOpened &&
                 <CustomStepper
                     opened={groupPricesStepperOpened}
-                    stepperHeader={selectedGroupPrice ? 'Edit Price Group' : 'Create Price Group'}
+                    stepperHeader={selectedGroupPrice ? 'Edit Price Group' : t('paywall_groups_price_table_create_button')}
                     stepList={groupPriceSteps}
-                    lastStepButton={selectedGroupPrice ? "Save" : "Create"}
+                    lastStepButton={selectedGroupPrice ? t('common_button_text_save') : t('common_button_text_create')}
                     stepperData={stepperData}
                     widthSecondStep={60}
                     isLoading={stepperLoading}

@@ -17,6 +17,7 @@ import { ToastContainer } from '../../../../components/Toast/ToastStyle';
 import EventHooker from '../../../../utils/services/event/eventHooker';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
 import { segmentService } from '../../../utils/services/segment/segmentService';
+import { useTranslation } from 'react-i18next';
 
 
 export const UploaderPage = (props: UploaderProps) => {
@@ -34,6 +35,7 @@ export const UploaderPage = (props: UploaderProps) => {
     const [uploadFileQueue, setUploadFileQueue] = React.useState<UploadObject[]>([])
     const [selectedRecipe, setSelectedRecipe] = React.useState<string>(props.encodingRecipe.recipes.find(r => r.isDefault).id)
     let videoUploadBrowseButtonRef = React.useRef<HTMLInputElement>(null)
+    const { t } = useTranslation()
 
     const encodingRecipeList = Object.values(props.encodingRecipe.recipes).map((item) => {
         return {
@@ -264,7 +266,7 @@ export const UploaderPage = (props: UploaderProps) => {
                     <DropdownSingle
                         style={{ background: "#fff" }}
                         className='col col-5 mr1 pb2 '
-                        dropdownTitle='Encoding Recipe'
+                        dropdownTitle={t('common_encoding_recipe_title')}
                         dropdownDefaultSelect={defaultRecipe ? defaultRecipe.name : ""}
                         list={encodingRecipeList}
                         isWhiteBackground={true}
@@ -272,7 +274,7 @@ export const UploaderPage = (props: UploaderProps) => {
                         callback={(item: DropdownSingleListItem) => { setSelectedRecipe(item.data.id) }}
                     />
                     <IconStyle id="tooltipUploaderEncoding" className="inline-block mt1" coloricon="gray-3">info_outlined</IconStyle>
-                    <Tooltip target="tooltipUploaderEncoding">Use our Standard Recipe, or go to Encoding to create your own Encoding Recipes</Tooltip>
+                    <Tooltip target="tooltipUploaderEncoding">{t('uploader_encoding_recipe_tooltip')}</Tooltip>
                 </div>
                 {/* <div className="col col-4 flex items-center justify-end">
                     <Button sizeButton="small" typeButton="secondary" color="blue" onClick={() => history.push("/settings/integrations")}> FTP/S3 Uploader </Button>
@@ -285,11 +287,11 @@ export const UploaderPage = (props: UploaderProps) => {
             />
             <DragAndDrop hasError={false} className="lg-col lg-col-12 bg-w" handleDrop={handleDrop}>
                 <BigIcon>cloud_upload</BigIcon>
-                <div className='center'><Text size={14} weight='med' color='gray-1'>Drag and drop to upload or</Text></div>
+                <div className='center'><Text size={14} weight='med' color='gray-1'>{t('uploader_drag_and_drop_instruction')}</Text></div>
                 <ButtonStyle className='my1'>
                     <input type='file' accept='video/mp4, video/mov' ref={videoUploadBrowseButtonRef} multiple onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{ display: 'none' }} id='browseButton' />
                     <Button onClick={() => { videoUploadBrowseButtonRef.current.click() }} style={{ marginBottom: 26 }} sizeButton='xs' typeButton='primary' buttonColor='blue'>
-                        Browse Files
+                        {t('common_button_text_browse')}
                     </Button>
                 </ButtonStyle>
             </DragAndDrop>

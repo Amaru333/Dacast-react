@@ -19,6 +19,7 @@ import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/D
 import { DisabledSection } from '../Common/MiscStyle';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { userToken } from '../../utils/services/token/tokenService';
+import { Trans, useTranslation } from 'react-i18next';
 
 interface ContentSecurityComponentProps {
     contentType: ContentType
@@ -41,17 +42,18 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
     const [revertSettingsModalOpen, setRevertSettingsModalOpen] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [toggleAESEncryptionVideo, setToggleAESEncryptionVideo] = React.useState<boolean>(props.contentSecuritySettings.securitySettings.useAES)
+    const { t } = useTranslation()
 
     const geoRestrictionDropdownList = props.globalSecuritySettings.geoRestriction.map((item): DropdownSingleListItem => {
         return {
-            title: item.name,
+            title: item.name === 'All Countries' ? t('common_security_geo_restriction_all_countries_option') : item.name,
             data: item
         }
     })
 
     const domainControlDropdownList = props.globalSecuritySettings.domainControl.map((item): DropdownSingleListItem => {
         return {
-            title: item.name,
+            title: item.name === 'All Referrers' ? t('common_security_domain_control_all_referrers_option') : item.name,
             data: item
         }
     })
@@ -180,7 +182,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
             <Card>
                 <Header className="pb25">
                     <div>
-                        <Text size={20} weight='med' color='gray-1'>Security</Text>
+                        <Text size={20} weight='med' color='gray-1'>{t('common_content_tabs_security')}</Text>
                     </div>
                     <IconStyle className='pointer' id="unlockSecurityTooltip" onClick={settingsEditable? () => setRevertSettingsModalOpen(true) : () => setEditSettingsModalOpen(true)}>
                         { settingsEditable ?
@@ -196,11 +198,11 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     <div className='col col-12 mb2'>
                         <Toggle
                             id="passwordProtectedVideosToggle"
-                            label='Password Protection'
+                            label={t('common_security_password_protection_title')}
                             onChange={() => {handlePasswordProtectedVideoChange()}} defaultChecked={togglePasswordProtectedVideo}
                         />
                         <ToggleTextInfo>
-                            <Text size={14} weight='reg' color='gray-1'>Viewers must enter a password before viewing the content.</Text>
+                            <Text size={14} weight='reg' color='gray-1'>{t('common_security_password_protection_info_text')}</Text>
                         </ToggleTextInfo>
                         { togglePasswordProtectedVideo &&
                             <div className='col col-12'>
@@ -218,8 +220,8 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                             </div>}
                     </div>
                     <div className='col col-12 clearfix'>
-                        <Text className="col col-12" size={16} weight="med">Content Scheduling</Text>
-                        <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>The content will only be available between the times/dates you provide.</Text></ToggleTextInfo>
+                        <Text className="col col-12" size={16} weight="med">{t('common_security_content_scheduling_title')}</Text>
+                        <ToggleTextInfo><Text size={14} weight='reg' color='gray-1'>{t('common_security_content_scheduling_info_text')}</Text></ToggleTextInfo>
                         <div className='col col-12 mb2 flex items-end'>
                             <DateTimePicker
                                 dropdownTitle="Available"
@@ -281,19 +283,19 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
                     <div className="col col-12">
                         <div className="pt25" >
-                            <Text size={20} weight='med' color='gray-1'>Geo-Restriction</Text>
+                            <Text size={20} weight='med' color='gray-1'>{t('common_security_geo_restriction_title')}</Text>
                         </div>
 
                         <div className="pt2" >
-                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Text>
+                            <Text size={14} weight='reg' color='gray-1'><Trans i18nKey='common_content_security_geo_restriction_info_text'>Restrict access to specific locations worldwide. Manage your Geo-Restriction Groups in your <a href="/settings/security">Security Settings</a>.</Trans></Text>
                         </div>
 
                         <DropdownSingle
                             className='col col-12 md-col-3 my2 mr1'
                             id="availableEnd"
-                            dropdownTitle="Select Geo-Restriction Group"
+                            dropdownTitle={t('common_content_security_geo_restriction_dropdown_title')}
                             list={geoRestrictionDropdownList}
-                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name : props.globalSecuritySettings.geoRestriction.filter(f => f.isDefault)[0].name}
+                            dropdownDefaultSelect={props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction).length > 0 ? t(props.globalSecuritySettings.geoRestriction.filter(f => f.id === selectedSettings.selectedGeoRestriction)[0].name) : geoRestrictionDropdownList.filter(f => f.data.isDefault)[0].title}
                             callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedGeoRestriction: item.data.id})}}
                         />
                     </div>
@@ -302,19 +304,19 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
 
                     <div>
                         <div className="pt25" >
-                            <Text size={20} weight='med' color='gray-1'>Domain Control</Text>
+                            <Text size={20} weight='med' color='gray-1'>{t('common_security_domain_control_title')}</Text>
                         </div>
 
                         <div className="pt2" >
-                            <Text size={14} weight='reg' color='gray-1'>Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Text>
+                            <Text size={14} weight='reg' color='gray-1'><Trans i18nKey='common_content_security_domain_control_info_text' >Restrict access to specific domain names on the internet. Manage your Domain Control Groups in your <a href="/settings/security">Security Settings</a>.</Trans></Text>
                         </div>
                         <div className="col col-12 py2">
                             <DropdownSingle
                                 className="col col-12 md-col-3"
                                 id="availableEnd"
-                                dropdownTitle="Select Domain Control Group"
+                                dropdownTitle={t('common_content_security_domain_control_dropdown_title')}
                                 list={domainControlDropdownList}
-                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : props.globalSecuritySettings.domainControl.filter(f => f.isDefault)[0].name}
+                                dropdownDefaultSelect={props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl).length > 0 ? props.globalSecuritySettings.domainControl.filter(f => f.id === selectedSettings.selectedDomainControl)[0].name : domainControlDropdownList.filter(f => f.data.isDefault)[0].title}
                                 callback={(item: DropdownSingleListItem) => {setHasToggleChanged(true);setSelectedSettings({...selectedSettings, selectedDomainControl: item.data.id})}}
                             />
                         </div>

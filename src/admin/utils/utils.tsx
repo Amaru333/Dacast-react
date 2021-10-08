@@ -10,7 +10,7 @@ import { isMultiUserToken } from "../../DacastSdk/session";
 
 export const makeRoute = (name: string, path?: string, component?: any): Routes => {
     return {
-        path: path,
+        path: path || name,
         name: name,
         component: component
     }

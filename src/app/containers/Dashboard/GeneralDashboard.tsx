@@ -9,15 +9,16 @@ import { readableBytes, tsToLocaleDate } from '../../../utils/formatUtils';
 import { IconStyle } from '../../../shared/Common/Icon';
 import { DashboardGeneral } from '../../redux-flow/store/Dashboard';
 import { useHistory } from 'react-router';
-import { handleButtonToPurchase } from '../../shared/Widgets/Widgets';
 import { PlanSummary } from '../../redux-flow/store/Account/Plan';
 import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { handleCurrencySymbol } from '../../../utils/utils'
 import { userToken } from '../../utils/services/token/tokenService';
 import { segmentService } from '../../utils/services/segment/segmentService';
+import { Trans, useTranslation } from 'react-i18next';
 
-export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
+export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { enabled: boolean; amount: number }; openOverage?: (b: boolean) => void; profile: DashboardGeneral; isPlanPage?: boolean; dataButtonFunction?: () => void}) => {
 
+    const { t, ready } = useTranslation('translation', { useSuspense: false });
     let history = useHistory()
     let smallScreen = useMedia('(max-width: 40em)')
     let date = new Date(), y = date.getFullYear(), m = date.getMonth()
@@ -56,16 +57,31 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         history.push('/account/upgrade')
     }
 
+    const handleButtonToPurchase = (percentage: number) => {
+        if(percentage <= 25 ) {
+            return (
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button></Text>
+            )
+        }
+        if(userToken.getPrivilege('privilege-billing')) {
+            return (
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor={percentage <= 25 ? "red" : "lightBlue"} sizeButton="xs" onClick={() => props.isPlanPage ? props.dataButtonFunction() : history.push('/account/plan#purchase-data')}>{t('account_plan_buy_more_button')}</Button></Text>
+            )
+        }
+
+        return null
+    }
+
     const renderUpgradeText = () => {
         if(props.plan.trialExpiresIn > 7) {
-            return <span><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</span>
+            return <span><Trans i18nKey='dashboard_free_trial_thirty_day_trial_widget_description_3'><a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade</a> to enable all features</Trans></span>
         }
 
         if(props.plan.trialExpiresIn > 0) {
-            return <span>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></span>
+            return <span><Trans i18nKey='dashboard_free_trial_almost_expired_thirty_day_trial_widget_description_2'>Your free trial is about to end, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-260 text-semibold'>Upgrade Now</a></Trans></span>
         }
 
-        return <span>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</span>
+        return <span><Trans i18nKey='dashboard_free_trial_expired_thirty_day_trial_widget_description_2'>Or <a href='/help' className='a-blue-260 text-semibold'>Contact Us</a> in order to request more testing</Trans></span>
     }
 
     const renderDaysRemaining = () => {
@@ -78,7 +94,9 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         }
         return (
             <Text className="mb15 mt1" size={20} weight="reg" color="white">
+                <Trans i18nKey='dashboard_free_trial_expired_thirty_day_trial_widget_description_1'>
                 Your trial has ended, <a onClick={() => handleUpgradeClick({ type: 'text' })} className='a-blue-2 text-semibold'>Upgrade Now</a>
+                </Trans>
             </Text>
         )
     }
@@ -93,7 +111,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer} backgroundColor="gray-1">
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="white"> 30 Day Trial </Text>
-                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => handleUpgradeClick({ type: 'button' })}>Upgrade </Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => handleUpgradeClick({ type: 'button' })}>{t('common_button_upgrade_text')}</Button>
                     </WidgetHeaderTop>
                     {renderDaysRemaining()}
                     <Text size={14} weight="reg" color="white">{renderUpgradeText()}</Text>
@@ -107,7 +125,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                     <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                         <WidgetHeaderTop className="flex">
                             <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                            <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                            <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button>
                         </WidgetHeaderTop>
                         {
                             props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
@@ -120,7 +138,7 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button>
                     </WidgetHeaderTop>
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Your current plan expires {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
@@ -135,13 +153,15 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
         return null
     }
 
+    if(!ready) {return null}
+
     return (
         <section className="col col-12">
             <div className={smallScreen ? 'flex flex-column mb1' : "flex items-baseline mb1"}>
                 {
                     !props.isPlanPage &&
                         <Text size={24} weight="reg" className={smallScreen ? 'mb1' : "mt0 mb2 inline-block"}>
-                            Dashboard
+                            {t('common_navigation_bar_menu_item_dashboard')}
                         </Text>
                 }
                 {handleBillingPeriod()}
@@ -149,8 +169,8 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
             <div className={classContainer}>
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
-                        <Text size={16} weight="med" color="gray-3">Data Remaining</Text>
-                        {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage, "Data", props.isPlanPage, props.dataButtonFunction)}
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_data_remaning_widget_title')}</Text>
+                        {(props.plan && props.plan.displayName !== "Free" && props.plan.displayName !== "30 Day Trial") && handleButtonToPurchase(bandwidth.percentage)}
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">
                         <Text size={32} weight="reg" color="gray-1"> {(bandwidth.left < 0 ? '-' : '') + readableBytes(Math.abs(bandwidth.left) )}</Text><Text size={16} weight="reg" color="gray-4" >/{readableBytes(bandwidth.limit)}</Text><Text className="ml-auto" size={20} weight="med" color="gray-1" >{isNaN(bandwidth.percentage) ? 0 : bandwidth.percentage}%</Text>
@@ -174,10 +194,10 @@ export const GeneralDashboard = (props: React.HTMLAttributes<HTMLDivElement> & {
 
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItem}>
                     <WidgetHeaderTop className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Storage Remaining </Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_storage_remaining_widget_title')}</Text>
                         <div className="relative ml1">
                             <IconStyle id="storageTooltip">info_outlined</IconStyle>
-                            <Tooltip target="storageTooltip" style={{whiteSpace: 'nowrap'}}>Storage consumed include both source file size and sizes of renditions</Tooltip>
+                            <Tooltip target="storageTooltip">{t('dashboard_storage_remaining_widget_description')}</Tooltip>
                         </div>
                     </WidgetHeaderTop>
                     <div className="flex flex-wrap items-baseline mb1">

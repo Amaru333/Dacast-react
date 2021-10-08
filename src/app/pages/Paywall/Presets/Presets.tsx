@@ -15,6 +15,7 @@ import { getKnowledgebaseLink } from '../../../constants/KnowledgbaseLinks';
 import { Divider } from '../../../../shared/MiscStyles';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { Label } from '../../../../components/FormsComponents/Label/Label';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const PresetsPage = (props: PresetsComponentProps) => {
 
@@ -26,6 +27,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const [promoPresetPaginationInfo, setPromoPresetPaginationInfo] = React.useState<{page: number; nbResults: number}>({page:1,nbResults:10})
     const [pricePresetList, setPricePresetList] = React.useState<Preset[]>(props.presetsInfos.presets && props.presetsInfos.presets.prices ? props.presetsInfos.presets.prices : [])
     const [promoPresetList, setPromoPresetList] = React.useState<Promo[]>(props.presetsInfos.promos && props.presetsInfos.promos.promos ? props.presetsInfos.promos.promos : [])
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         if (props.associatePrivilege.some(p => userToken.isUnauthorized(p))) {
@@ -51,13 +53,13 @@ export const PresetsPage = (props: PresetsComponentProps) => {
 
     const pricePresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='pricePresetsTableHeaderType' size={14} weight='med'>Type</Text>},
-            {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>Price</Text>},
-            {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
-            {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
+            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+            {cell: <Text key='pricePresetsTableHeaderType' size={14} weight='med'>{t('common_paywall_price_table_header_type')}</Text>},
+            {cell: <Text key='pricePresetsTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_price')}</Text>},
+            {cell: <Text key='pricePresetsTableHeaderCurrency' size={14} weight='med'>{t('common_paywall_price_table_header_currency')}</Text>},
+            {cell: <Text key='pricePresetsTableHeaderDuration' size={14} weight='med'>{t('common_paywall_price_table_header_duration')}</Text>},
+            {cell: <Text key='pricePresetsTableHeaderMethod' size={14} weight='med'>{t('common_security_content_scheduling_title')}</Text>},
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_presets_price_table_create_button')}</Button>}
 
         ]}
     }
@@ -94,10 +96,10 @@ export const PresetsPage = (props: PresetsComponentProps) => {
 
     const promoPresetsTableHeader = () => {
         return {data: [
-            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
-            {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
+            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>{t('dashboard_top_live_channels_widget_column_title_1')}</Text>},
+            {cell: <Text key='promoPresetsTableHeaderDiscount' size={14} weight='med'>{t('common_paywall_promo_table_header_discount')}</Text>},
+            {cell: <Text key='promoPresetsTableHeaderLimit' size={14} weight='med'>{t('common_paywall_promo_table_header_limit')}</Text>},
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_modal_title')}</Button>}
 
         ]}
     }
@@ -154,13 +156,13 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     return (
         <div>
             <Card>
-                <Text size={20} weight='med'>Price Presets</Text>
-                <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
+                <Text size={20} weight='med'>{t('paywall_presets_price_table_title')}</Text>
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>{t('paywall_presets_price_table_description')}</Text>
                 <div className="flex col col-12 mt2 xs-mb2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help setting up a Price Preset? Visit the <a href={getKnowledgebaseLink('Price Preset')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg"><Trans i18nKey='paywall_presets_price_table_help_text'>Need help setting up a Price Preset? Visit the <a href={getKnowledgebaseLink('Price Preset')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
-                <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>
+                <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_presets_price_table_create_button')}</Button>
                 {!props.presetsInfos.presets || props.presetsInfos.presets.totalItems === 0 ?
                     <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
                     :
@@ -172,11 +174,11 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 }
                 <Divider className='my2' />
 
-                <Text className="mt1" size={20} weight='med'>Promo Presets</Text>
-                <Text className="mt2" size={14} weight='reg' color='gray-3'>Presets allow you to apply a set of prices to your content in one action.</Text>
+                <Text className="mt1" size={20} weight='med'>{t('paywall_presets_promo_table_title')}</Text>
+                <Text className="mt2" size={14} weight='reg' color='gray-3'>{t('paywall_presets_price_table_description')}</Text>
                 <div className="flex col col-12 mt2 xs-mb2">
                     <IconStyle style={{marginRight: "10px"}}>info_outlined</IconStyle>
-                    <Text  size={14} weight="reg">Need help setting up a Promo Preset? Visit the <a href={getKnowledgebaseLink("Promo Preset")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Text>
+                    <Text  size={14} weight="reg"><Trans i18nKey='paywall_presets_promo_table_help_text'>Need help setting up a Promo Preset? Visit the <a href={getKnowledgebaseLink("Promo Preset")} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
                 { !props.presetsInfos.promos || props.presetsInfos.promos.totalItems === 0 ?

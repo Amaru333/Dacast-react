@@ -32,6 +32,7 @@ import { Divider } from '../../../shared/MiscStyles'
 import { ContentStatus, ContentType } from '../../redux-flow/store/Common/types'
 import { DropdownSingleListItem } from '../../../components/FormsComponents/Dropdown/DropdownTypes'
 import { InputSearchStyle } from '../../shared/General/GeneralStyle'
+import { useTranslation } from 'react-i18next'
 
 export const FoldersPage = (props: FoldersComponentProps) => {
 
@@ -69,7 +70,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
     const bulkActionsDropdownListRef = React.useRef<HTMLUListElement>(null);
 
     let foldersTree = new FolderTree(setFoldersTree, setCurrentFolder)
-
+    const { t } = useTranslation()
 
     useOutsideAlerter(bulkActionsDropdownListRef, () => {
         setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened)
@@ -246,11 +247,11 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                         }
                     />
                 },
-                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>Title</Text>, sort: 'title' },
-                { cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>Duration</Text> },
-                { cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>Created Date</Text>, sort: 'created-at' },
-                { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>Status</Text> },
-                { cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>Features</Text> },
+                { cell: <Text key='tableHeaderNameCell' size={14} weight='med'>{t('common_content_list_table_header_title')}</Text>, sort: 'title' },
+                { cell: <Text key='tableHeaderDurationCell' size={14} weight='med'>{t('common_paywall_price_modal_duration_dropdown_title')}</Text> },
+                { cell: <Text key='tableHeaderCreatedCell' size={14} weight='med'>{t('common_content_list_table_header_date')}</Text>, sort: 'created-at' },
+                { cell: <Text key='tableHeaderStatusCell' size={14} weight='med'>{t('common_content_list_table_header_status')}</Text> },
+                { cell: <Text key='tableHeaderFeaturesCell' size={14} weight='med'>{t('common_content_list_table_header_features')}</Text> },
                 { cell: <span key='tableHeaderEmptyCell2'></span> }
             ],
             defaultSort: 'created-at',
@@ -438,7 +439,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             <div className={'flex items-center'}>
                                 <IconStyle onClick={() => setFoldersTreeHidden(!foldersTreeHidden)}>{foldersTreeHidden ? 'arrow_forward' : 'arrow_back'}</IconStyle>
                                 <Button className='ml2' onClick={() => {setNewFolderModalOpened(true);setNewFolderModalAction('New Folder')}} sizeButton='small' typeButton='secondary' buttonColor='gray'>
-                                    New Folder
+                                    {t('folders_new_folder_button')}
                                 </Button>
                             </div>
                             <div className={(foldersTreeHidden ? '' : 'pl3 ') + 'col col-6 flex-auto items-center'}>
@@ -451,7 +452,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                     />
                                     <SeparatorHeader className={(currentFolder && currentFolder.fullPath.split('/').length > 1 ? ' ' : 'hide ') + "mx2 sm-show inline-block"} />
                                     <InputSearchStyle 
-                                        placeholder="Search by Title..." 
+                                        placeholder={t('common_content_list_search_placeholder')}
                                         callback={(value: string) => {setSearchString(value); if(!fetchContent) { setFetchContent(true)}}}
                                         isSearching={searchString !== null && searchString !== ''}
                                         value={searchString}
@@ -468,7 +469,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                                             <Text className=" ml2" color="gray-3" weight="med" size={12} >{checkedItems.length} {checkedItems.length === 1 ? "Item" : "Items"}</Text>
                                         }
                                         <div className='relative'>
-                                            <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : "Bulk Actions"}</Button>
+                                            <Button onClick={() => { setBulkActionsDropdownIsOpened(!bulkActionsDropdownIsOpened) }} disabled={checkedItems.length === 0} buttonColor="gray" className="relative  ml2" sizeButton="small" typeButton="secondary" >{smallScreen ? "Actions" : t('common_content_list_bulk_action_button_text')}</Button>
 
                                             <DropdownList  hasSearch={false} style={{width: 167, left: 16}} ref={bulkActionsDropdownListRef} isSingle isInModal={false} isNavigation={false} displayDropdown={bulkActionsDropdownIsOpened} >
                                                 {renderList()}
@@ -488,12 +489,12 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                     <div className='mb2 col col-12 clearfix xs-show'>
                         <div className='col flex items-center mb2 col-12'>
                             <IconStyle coloricon='gray-3'>search</IconStyle>
-                            <InputTags oneTag noBorder={true} placeholder="Search by Title..." style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}}  />
+                            <InputTags oneTag noBorder={true} placeholder={t('common_content_list_search_placeholder')} style={{ display: "inline-block" }} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]); if(!fetchContent) { setFetchContent(true)}}}  />
                         </div>
                         <div className='col-12 col mb2 clearfix'>
                             <div className='col-3 col pr1'>
                                 <Button className="col-12" onClick={() => setFoldersTreeHidden(false)} sizeButton='small' typeButton='secondary' buttonColor='blue'>
-                                    Folders
+                                    {t('common_navigation_bar_menu_item_folders')}
                                 </Button>
                             </div>
                             <div className="col-3 col pr1 ">
@@ -509,7 +510,7 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                             </div>
                             <div className='col-3 col '>
                                 <Button className="col-12" onClick={() => setNewFolderModalOpened(true)} sizeButton='small' typeButton='primary' buttonColor='blue'>
-                                    Create
+                                    {t('common_button_text_create')}
                                 </Button>
                             </div>
                         </div>
@@ -528,13 +529,13 @@ export const FoldersPage = (props: FoldersComponentProps) => {
                 <FoldersTreeSection foldersTreeHidden={foldersTreeHidden} smallScreen={smallScreen} className={!smallScreen ? 'col col-2 mr2' : 'absolute'}>
                     <IconStyle onClick={() => setFoldersTreeHidden(true)} coloricon="gray-1" className="right xs-show ml1 mb1" >close</IconStyle>
                     <FolderRow isSelected={selectedFolder === 'Library'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Library");setCurrentFolder(null)}}>
-                        <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>Library</Text>
+                        <Text size={14} weight='reg' color={selectedFolder === 'Library' ? 'dark-violet' : 'gray-1'}>{t('folders_static_folder_library')}</Text>
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Unsorted'} className=' ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Unsorted");setCurrentFolder(null)}}>
-                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>Unsorted</Text>
+                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Unsorted' ? 'dark-violet' : 'gray-1'}>{t('folders_static_folder_unsorted')}</Text>
                     </FolderRow>
                     <FolderRow isSelected={selectedFolder === 'Trash'} className='ml2 p1 flex items-center' onClick={() => {setSelectedFolder("Trash");setCurrentFolder(null)}}>
-                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>Trash</Text>
+                        <Text className='flex-auto' size={14} weight='reg' color={selectedFolder === 'Trash' ? 'dark-violet' : 'gray-1'}>{t('folders_static_folder_trash')}</Text>
                     </FolderRow>
                     <Divider />
                     {renderNode(folderTree)}

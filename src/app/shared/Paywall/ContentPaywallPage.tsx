@@ -21,6 +21,7 @@ import { userToken } from '../../utils/services/token/tokenService'
 import { NotificationType, Size } from '../../../components/Toast/ToastTypes'
 import { Divider } from '../../../shared/MiscStyles';
 import { ContentType } from '../../redux-flow/store/Common/types'
+import { useTranslation } from 'react-i18next'
 import { Label } from '../../../components/FormsComponents/Label/Label'
 
 export interface ContentPaywallComponentProps {
@@ -57,6 +58,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const [contentPaywallSettings, setContentPaywallSettings] = React.useState<ContentPaywallPageInfos>(props.contentPaywallInfos);
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [hasChanged, setHasChanged] = React.useState<boolean>(false)
+    const { t } = useTranslation()
     const [priceList, setPriceList] = React.useState<Preset[]>(props.contentPaywallInfos.prices ? props.contentPaywallInfos.prices.filter(p => p.type === 'individual') : [])
     const [promoList, setPromoList] = React.useState<Promo[]>(props.contentPaywallInfos.promos ? props.contentPaywallInfos.promos.filter(p => p.assignedContentIds.indexOf(`${accountId}-${props.contentType}-${props.contentId}`) !== -1) : [])
 
@@ -119,10 +121,10 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const promosTableHeader = () => {
         return {data: [
-            {cell: <Text key='promosTableHeaderCode' size={14} weight='med'>Code</Text>},
-            {cell: <Text key='promosTableHeaderDiscount' size={14} weight='med'>Discount</Text>},
-            {cell: <Text key='promosTableHeaderLimit' size={14} weight='med'>Limit</Text>},
-            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2  sm-show '  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
+            {cell: <Text key='promosTableHeaderCode' size={14} weight='med'>{t('common_paywall_promo_table_header_code')}</Text>},
+            {cell: <Text key='promosTableHeaderDiscount' size={14} weight='med'>{t('common_paywall_promo_table_header_discount')}</Text>},
+            {cell: <Text key='promosTableHeaderLimit' size={14} weight='med'>{t('common_paywall_promo_table_header_limit')}</Text>},
+            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2  sm-show '  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>}
 
         ]}
     }
@@ -157,11 +159,11 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     const groupPricesTableHeader = () => {
         return {data: [
             {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>Name</Text>},
-            {cell: <Text key='groupPricesTableHeaderType' size={14} weight='med'>Type</Text>},
-            {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>Price</Text>},
-            {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>Currency</Text>},
-            {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>Duration/Recurrence</Text>},
-            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>Content Scheduling</Text>},
+            {cell: <Text key='groupPricesTableHeaderType' size={14} weight='med'>{t('common_paywall_price_table_header_type')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_price')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderCurrency' size={14} weight='med'>{t('common_paywall_price_table_header_currency')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderDuration' size={14} weight='med'>{t('common_paywall_price_table_header_duration')}</Text>},
+            {cell: <Text key='groupPricesTableHeaderMethod' size={14} weight='med'>{t('common_paywall_price_table_header_start_method')}</Text>},
         ]}
     }
 
@@ -182,13 +184,13 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const emptyPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='pricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>}
+            {cell: <Button key='pricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_price_table_new_price_button_text')}</Button>}
         ]}
     }
 
     const emptyPromoTableHeader = () => {
         return {data: [
-            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>}
+            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>}
         ]}
     }
 
@@ -214,73 +216,73 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
     return (
         <div>
             <Card>
-                <Text size={20} weight='med'>Settings</Text>
-                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => {setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled});setHasChanged(true)}} className='mt2' label='Paywall Enabled' />
-                <Text size={14}>Quickly enable or disable the paywall for this content.</Text>
+                <Text size={20} weight='med'>{t('common_navigation_bar_menu_item_settings')}</Text>
+                <Toggle id='vodPaywallEnabledToggle' defaultChecked={contentPaywallSettings.paywallEnabled} onChange={() => {setContentPaywallSettings({...contentPaywallSettings, paywallEnabled: !contentPaywallSettings.paywallEnabled});setHasChanged(true)}} className='mt2' label={t('common_content_paywall_toggle_text')} />
+                <Text size={14}>{t('common_content_paywall_toggle_description')}</Text>
                 
                 <DropdownSingle 
                     id='vodPaywallThemesDropdown'
                     className='col col-12 sm-col-3 my2'
-                    dropdownTitle='Paywall Theme'
-                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : 'Standard'}
+                    dropdownTitle={t('common_content_paywall_theme_dropdown_title')}
+                    dropdownDefaultSelect={props.contentPaywallInfos.selectedTheme ? props.theming.themes.filter(f => f.id === props.contentPaywallInfos.selectedTheme)[0].name : t('common_theme_standard_text')}
                     list={themeDropdownList}
                     callback={(item: DropdownSingleListItem) => {setContentPaywallSettings({...contentPaywallSettings, selectedTheme: item.data.id});setHasChanged(true)}}
                 />
                 <div className='flex items-center'>
-                    <Text size={16} weight='med'>Intro Video ID</Text>
+                    <Text size={16} weight='med'>{t('common_content_paywall_intro_vod_id_title')}</Text>
                     <IconStyle className='pl1' id='videoIntroTooltip'>info_outlined</IconStyle>
                     <Tooltip target='videoIntroTooltip'>Preview video must not have a paywall or password applied.</Tooltip>
                 </div>
-                <Text size={14}>This video will play before the content is purchased. Provide the Content ID, which can be found in the General tab of your Video on Demand asset.</Text>
-                <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder='Video ID' onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value});setHasChanged(true)}} />
-                        
+                <Text size={14}>{t('common_content_paywall_intro_vod_id_text')}</Text>
+                <Input id='VodPaywallIntroVideoIdInput' defaultValue={props.contentPaywallInfos.introVodId} className='col col-12 sm-col-3 my2' placeholder={t('common_content_paywall_intro_vod_id_input_placeholder')} onChange={(event) => {setContentPaywallSettings({...contentPaywallSettings, introVodId: event.currentTarget.value});setHasChanged(true)}} />
+
                 <Divider className='my2' />
 
-                <Text size={20} weight='med'>Prices</Text>
-                <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Price</Button>
+                <Text size={20} weight='med'>{t('common_paywall_price_title')}</Text>
+                <Button className='right mt2 xs-show col col-12' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_price_table_new_price_button_text')}</Button>
                 {priceList.length > 0 ? 
                     <Table id='pricesTable' headerBackgroundColor="gray-10" header={pricesTableHeader()} body={pricesTableBody()} />
                     :
-                    <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody('You have no Prices')} />
+                    <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody(t('common_paywall_price_table_table_body_placeholder'))} />
 
                 }
                 <Divider className='my2' />
 
-                <Text className="mt1" size={20} weight='med'>Promos</Text>
-                <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>New Promo</Button>
+                <Text className="mt1" size={20} weight='med'>{t('common_paywall_promo_title')}</Text>
+                <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>
                 { promoList.length > 0 ?
                     <Table id='promosTable' headerBackgroundColor="gray-10" header={promosTableHeader()} body={promosTableBody()} />
-                    :
-                    <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} body={emptyContentListBody('You have no Promos')} />
+                    :                    
+                    <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} body={emptyContentListBody(t('common_paywall_promo_table_table_body_placeholder'))} />
 
                 }
 
                 <Divider className='my2' />
 
-                <Text size={20} weight='med'>Associated Group Prices</Text>
+                <Text size={20} weight='med'>{t('common_content_paywall_group_price_title')}</Text>
 
                 { associatedGroupPrices.length > 0 ?
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
-                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody('No associated group prices')} />
+                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody(t('common_content_paywall_group_price_table_body_placeholder'))} />
                 }
                    
             </Card>
             {
                 hasChanged &&
                 <div className='mt2'>
-                    <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
+                    <Button isLoading={buttonLoading} onClick={() => handleSubmit()} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('common_button_text_save')}</Button>
                     <Button onClick={() => {setContentPaywallSettings(props.contentPaywallInfos);props.showToast("Changes have been discarded", 'fixed', "success");setHasChanged(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Discard</Button>
                 </div>
             }
 
-            <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit' : 'Create') + ' Price'} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={(selectedPrice ? 'Edit Price' : t('common_paywall_price_modal_title'))} opened={priceModalOpened} toggle={() => setPriceModalOpened(false)}>
                 {
                     priceModalOpened && <ContentPricePresetsModal fetchContentPrices={props.getContentPrices} contentType={props.contentType} contentId={props.contentId} action={ selectedPrice ? props.saveContentPricePreset : props.createContentPricePreset} preset={selectedPrice} toggle={setPriceModalOpened} presetList={props.customPricePresetList} savePresetGlobally={props.createPricePreset} />
                 }
             </Modal>
-            <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit' : 'Create') + ' Promo'} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>
+            <Modal hasClose={false} modalTitle={(selectedPromo ? 'Edit Promo' : t('common_paywall_promo_modal_title'))} opened={promoModalOpened} toggle={() => setPromoModalOpened(false)}>
                 {
-                    promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? 'Save' : 'Create'} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
+                    promoModalOpened && <ContentPromoPresetsModal actionButton={selectedPromo ? t('common_button_text_save') : t("common_button_text_create")} contentType={props.contentType} action={selectedPromo ? props.saveContentPromoPreset : props.createContentPromoPreset} contentId={props.contentId} promo={selectedPromo} toggle={setPromoModalOpened} presetList={props.customPromoPresetList} savePresetGlobally={props.createPromoPreset} />
                 }
             </Modal>
             <Prompt when={hasChanged} message='' />

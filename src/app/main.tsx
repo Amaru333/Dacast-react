@@ -40,6 +40,13 @@ import { Content, FullContent } from "../shared/Content";
 import DashboardTest from "./containers/Dashboard/DashboardTest";
 import { Privilege } from "../utils/services/token/token";
 import { getCompanyPageDetailsAction } from "./redux-flow/store/Account/Company/actions";
+import { BreakStyle, ButtonMenuStyle, ContainerElementStyle, ContainerStyle, ImageStyle, SectionStyle } from "./containers/Navigation/NavigationStyle";
+import { IconStyle } from "../shared/Common/Icon";
+import { HeaderStyle } from "../components/Header/HeaderStyle";
+import { WidgetElement } from "./containers/Dashboard/WidgetElement";
+import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from "./containers/Dashboard/DashboardStyles";
+import eventHooker from "../utils/services/event/eventHooker";
+const logo = require('../../public/assets/logo.png');
 
 // Any additional component props go here.
 interface MainProps {
@@ -160,6 +167,56 @@ class ErrorBoundary extends React.Component {
     }
 }
 
+const AppPlaceholder = (props: {currentNavWidth: string}) => {
+    return (
+        <div className="noTransition">
+            <ContainerStyle className="noTransition" id='scrollbarWrapper' isOpen menuLocked navWidth={props.currentNavWidth} isMobile={isMobile} >
+                <ImageStyle className="mx-auto block pointer" src={logo} />
+                <BreakStyle />
+                <div>
+                    <ButtonMenuStyle menuOpen className="mx-auto" sizeButton="large" typeButton="primary" disabled>+</ButtonMenuStyle>
+                </div>
+                <SectionStyle>
+                    {AppRoutes.filter(f => f.iconName).map(r => {
+                        return (
+                            <ContainerElementStyle icon={r.iconName} isOpen isLocked={false} isMobile={false}>
+                                <IconStyle className="noTransition flex pr2">{r.iconName}</IconStyle>
+                                <span style={{width: 120, backgroundColor: '#C8D1E0'}}></span>
+                            </ContainerElementStyle>
+                        )
+                    })}
+                </SectionStyle>
+                <IconStyle className="ml-auto mt-auto mr2 mb2" >arrow_back</IconStyle>
+            </ContainerStyle>
+            <FullContent isLocked={false} isMobile={false} navBarWidth="235px" isOpen>
+                <HeaderStyle userType='user'>
+                </HeaderStyle>
+
+                    <Content isMobile={false}>
+                    <React.Fragment>
+                        <section id="live" className="col lg-col-6 sm-col-12 pr2">
+                            <div className={classContainer}>
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemFullWidth} />
+                            </div>
+                        </section>
+                        <section id="vod" className="right border-box lg-col-6 sm-col-12 pl2">
+                            <div className={classContainer}>
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemHalfWidthContainer} />
+                                <WidgetElement placeholderWidget className={classItemFullWidth} />
+                            </div>
+                        </section>
+                    </React.Fragment>
+                    </Content>
+            </FullContent>
+        </div>
+    )
+}
+
 // Create an intersection type of the component props and our Redux props.
 const AppContent = (props: { routes: any }) => {
     let location = useLocation()
@@ -209,7 +266,9 @@ const AppContent = (props: { routes: any }) => {
             <Toasts />
             { userToken.isLoggedIn() ?
                 <>
+                <React.Suspense fallback={<AppPlaceholder currentNavWidth={currentNavWidth} />}>
                     <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+
                     { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
                     <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
                     <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
@@ -221,6 +280,7 @@ const AppContent = (props: { routes: any }) => {
                             {props.routes}
                         </Switch>
                     </FullContent>
+                    </React.Suspense>
                 </>
                 :
                 <>
@@ -249,12 +309,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     <div className="unsavedChangesBody">
                         <span className="unsavedChangesText-Body">Are you sure that you want to leave this page?</span>
                         <div className="mt2">
-                            <span className="unsavedChangesText-Body-Bold">{props.message ? props.message : "Please note any unsaved changes will be lost."}</span>
+                            <span className="unsavedChangesText-Body-Bold">{props.message && props.message.indexOf('revert_to_lang') === -1 ? props.message : "Please note any unsaved changes will be lost."}</span>
                         </div>
                     </div>
                     <div className="unsavedChangesFooter mt3">
                         <button onClick={() => props.callback(false)} className="unsavedChangesStayButton">Stay</button>
-                        <button onClick={() => props.callback(true)} className="unsavedChangesLeaveButton">Leave</button>
+                        <button onClick={() => {props.callback(true); if(props.message && props.message.indexOf('revert_to_lang') > -1) eventHooker.dispatch('EVENT_REVERT_LANGUAGE', props.message.split(':')[1])}} className="unsavedChangesLeaveButton">Leave</button>
                     </div>
                 </div>
                 <div className="unsavedChangesOverlay"></div>

@@ -13,7 +13,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
 
     const [isOpened, setOpen] = React.useState<boolean>(false);
     const dropdownListRef = React.useRef<HTMLUListElement>(null);
-    const [selectedItem, setSelectedItem] = React.useState<string>(props.defaultSelected ? props.defaultSelected : 'Select');
+    const [selectedItem, setSelectedItem] = React.useState<string>(props.dropdownDefaultSelect && props.dropdownDefaultSelect.title ? props.dropdownDefaultSelect.title : props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select");
     const [itemsList, setItemsList] = React.useState<DropdownSingleListItem[]>(null);
     const [filteringList, setFilteringList] = React.useState<string>('');
 
@@ -29,7 +29,7 @@ export const DropdownSingle: React.FC<DropdownProps> = (props: DropdownProps) =>
 
     React.useEffect(() => {
         if (selectedItem === 'x' || props.dropdownDefaultSelect) {
-            setSelectedItem(props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
+            setSelectedItem(props.dropdownDefaultSelect && props.dropdownDefaultSelect.title ? props.dropdownDefaultSelect.title : props.dropdownDefaultSelect ? props.dropdownDefaultSelect : "Select")
         }
     }, [props.dropdownDefaultSelect])
 

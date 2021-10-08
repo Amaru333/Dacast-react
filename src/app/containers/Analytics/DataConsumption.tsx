@@ -19,6 +19,7 @@ import { DateFilteringAnalytics } from '../../shared/Analytics/DateFilteringAnal
 import { HeaderDataConsumptionTime } from '../../shared/Analytics/TableHeaders'
 import { Routes } from '../Navigation/NavigationTypes'
 import { Text } from '../../../components/Typography/Text'
+import { useTranslation } from 'react-i18next'
 
 interface AccountAnalyticsDataProps {
     dataConsumption: AccountAnalyticsDataState
@@ -31,7 +32,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
 
     const [timeRangePick, setTimeRangePick] = React.useState<{timeRange: TimeRangeAccountAnalytics, custom: { start: number; end: number } }>({timeRange: timeRange ? timeRange as TimeRangeAccountAnalytics : 'LAST_WEEK', custom: { end: parseInt(endDate) || new Date().getTime(), start: parseInt(startDate) || dateAdd(new Date, 'week', -1).getTime()}})
     const [loading, setLoading] = React.useState<boolean>(false)
-
+    const { t } = useTranslation()
     const loaded = React.useRef(false);
 
     React.useEffect(() => {
@@ -80,7 +81,7 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
     }
 
     let tabs = {
-        "Time": { name: 'Time', content: returnDataConsumptionPerTimeAnalytics, table: {data: props.dataConsumption.data ? props.dataConsumption.data.time.table : [], header: HeaderDataConsumptionTime} },
+        "Time": { name: 'Time', content: returnDataConsumptionPerTimeAnalytics, table: {data: props.dataConsumption.data ? props.dataConsumption.data.time.table : [], header: [{ Header: t('common_content_list_table_header_date'), accessor: 'label'}, { Header: t('analytics_data_usage_title') + ' (GB)', accessor: 'data'}]}},
         // "Device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data.device.table.map((el, i) => {return {data: watchDurationPerDevice.values[i], label: el.label}}), header: handleDynamiceHeader(HeaderWatchDevice, watchDurationPerDevice.unitShort)}},
         // "Location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data.location.table.map((el, i) => {return {data: formatTimeValue([el.data]).values[0], label: el.label}}), header: handleDynamiceHeader(HeaderWatchLocation, watchDurationPerLocationData.unitShort)}  },
     }
@@ -120,19 +121,19 @@ const DataConsumption = (props: AccountAnalyticsDataProps) => {
             <AnalyticsCardStyle>
                 <AnalyticsCardHeader className='mb1 items-center'>
                     <div className="flex items-center">
-                        <Text className='pr2' size={16} weight="med" color="gray-1">Data Usage</Text>
+                        <Text className='pr2' size={16} weight="med" color="gray-1">{t('analytics_data_usage_title')}</Text>
                         {loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
                 </AnalyticsCardHeader>
                 <div className='mb2'>
-                    <Text weight='med' size={16}>Total Consumption: </Text>
+                    <Text weight='med' size={16}>{t('analytics_data_usage_consumption_title')} </Text>
                     <Text weight='med' size={16} color='dark-violet'>{totalMetric + ' GB'}</Text>
                 </div>
                 <AnalyticsCardBody className='col col-12 mx-auto' table={true}>
                     {tabs[selectedTab].content()}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
-                <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>Export CSV</Button>
+                <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>{t('common_button_text_export_csv')}</Button>
                 <TableAnalyticsStyled
                     className="striped highlight mr-auto ml-auto mt2"
                     data={tabs[selectedTab].table.data}

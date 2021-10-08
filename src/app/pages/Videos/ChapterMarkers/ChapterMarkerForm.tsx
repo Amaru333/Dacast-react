@@ -4,12 +4,14 @@ import { Button } from '../../../../components/FormsComponents/Button/Button'
 import { ChapterMarker } from '../../../redux-flow/store/Content/Chapters/types'
 import { dataToTimeVideo, inputTimeVideoToTs } from '../../../../utils/formatUtils'
 import { ContentType } from '../../../redux-flow/store/Common/types'
+import { useTranslation } from 'react-i18next'
 
 export const ChapterMarkerForm = (props: {contentId: string; contentType: ContentType; item: ChapterMarker; chapters: ChapterMarker[]; toggle: (b: boolean) => void; submit: (contentId: string, contentType: ContentType, chapterMarkers: ChapterMarker[]) => Promise<void>;}) => {
 
     const [chapterMarker, setChapterMarker] = React.useState<ChapterMarker>(null)
     const [enableSubmit, setEnableSubmit] = React.useState<boolean>(props.item.text.length > 0)
     const [createButtonLoading, setCreateButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     React.useEffect(() => {
         setChapterMarker(props.item);
@@ -56,8 +58,8 @@ export const ChapterMarkerForm = (props: {contentId: string; contentType: Conten
                     id='chapterMarkername'
                     type='text'
                     className='col col-12 pb1'
-                    label='Title'
-                    placeholder='Title'
+                    label={t('common_content_list_table_header_title')}
+                    placeholder={t('common_content_list_table_header_title')}
                 />
 
                 <Input 
@@ -68,11 +70,11 @@ export const ChapterMarkerForm = (props: {contentId: string; contentType: Conten
                     type='video-time'
                     placeholder='hh:mm:ss'
                     className='col col-12 pb1'
-                    label='Start Time'
+                    label={t('video_chapters_add_chapter_modal_start_time_input')}
                 />
                 <div className='col col-12 py1'>
-                    <Button isLoading={createButtonLoading} sizeButton="large" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.text.length > 0 ? "Save" : "Create"}</Button>
-                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+                    <Button isLoading={createButtonLoading} sizeButton="large" disabled={!enableSubmit} typeButton="primary" buttonColor="blue" >{props.item.text.length > 0 ? t('common_button_text_save') : t('common_button_text_create')}</Button>
+                    <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >{t('common_button_text_cancel')}</Button>
                 </div>
             </form>
     )

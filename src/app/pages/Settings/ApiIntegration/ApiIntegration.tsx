@@ -19,6 +19,7 @@ import { Prompt } from 'react-router';
 import { updateClipboard } from '../../../utils/utils';
 import { LinkBoxLabel, LinkBox } from '../../../shared/General/GeneralStyle';
 import { userToken } from '../../../utils/services/token/tokenService';
+import { Trans, useTranslation } from "react-i18next";
 
 export interface ApiIntegrationProps {
     infos: ApiIntegrationPageInfos;
@@ -31,7 +32,7 @@ export interface ApiIntegrationProps {
 
 
 export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
-
+    const { t } = useTranslation()
     const privilegeApi = userToken.getPrivilege('privilege-api') || userToken.getPrivilege('privilege-api-beta');
     const privilegeLive = userToken.getPrivilege('privilege-live');
     const privilegeVod = userToken.getPrivilege('privilege-vod');
@@ -119,11 +120,11 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
     const apiKeyHeaderElement = () => {
         return {
             data: [
-                { cell: <Text key="nameArrayApiKeys" size={14} weight="med" color="gray-1">Name</Text> },
-                { cell: <Text key="tokenArrayApiKeys" size={14} weight="med" color="gray-1">API Key</Text> },
+                { cell: <Text key="nameArrayApiKeys" size={14} weight="med" color="gray-1">{t('dashboard_top_live_channels_widget_column_title_1')}</Text> },
+                { cell: <Text key="tokenArrayApiKeys" size={14} weight="med" color="gray-1">{t('settings_integration_api_keys_title')}</Text> },
                 // { cell: <Text key="typeArrayApiKeys" size={14} weight="med" color="gray-1">Type</Text> },
-                { cell: <Text key="createdArrayApiKeys" size={14} weight="med" color="gray-1">Created Date</Text> },
-                { cell: <Button key="actionArrayApiKeys" className={"right mr2 " + (smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button> }
+                { cell: <Text key="createdArrayApiKeys" size={14} weight="med" color="gray-1">{t('settings_integration_api_keys_table_date')}</Text> },
+                { cell: <Button key="actionArrayApiKeys" className={"right mr2 " + (smScreen ? 'hide' : '')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>{t('settings_integration_api_keys_table_new_key_button')}</Button> }
             ]
         }
     }
@@ -239,13 +240,13 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
 
                 { privilegeApi &&
                     <React.Fragment>
-                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >API Keys</Text>
-                        <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >Prior to using or testing the API, you have to generate an API key. Please click the button below to generate a key attached to your account. This key will authenticate your api requests on the Dacast platform.</Text>
+                        <Text className="col-12 inline-block mb2" size={20} weight="med" color="gray-1" >{t('settings_integration_api_keys_title')}</Text>
+                        <Text className={"inline-block mb2"} size={14} weight="reg" color="gray-1" >{t('settings_integration_api_keys_description')}</Text>
                         <div className={"flex " + (smScreen ? 'mb2' : 'mb25')}>
                             <IconStyle className="mr1" >info_outlined</IconStyle>
-                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" >Our API documentation is publicly available <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/video-api-documentation/">here</a>.</Text>
+                            <Text className={"inline-block"} size={14} weight="reg" color="gray-1" ><Trans i18nKey='settings_integration_api_keys_doc'>Our API documentation is publicly available <a rel="noopener noreferrer" target="_blank" href="https://www.dacast.com/video-api-documentation/">here</a>.</Trans></Text>
                         </div>
-                        <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>New API Key</Button>
+                        <Button className={(smScreen ? '' : 'hide')} sizeButton="xs" typeButton="secondary" buttonColor="blue" onClick={() => setPostApiKeyModalOpened(true)}>{t('settings_integration_api_keys_table_new_key_button')}</Button>
                         <Table className="col-12" id="apiKeysTable" headerBackgroundColor="gray-10" header={apiKeyHeaderElement()} body={apiKeyBodyElement()} />
                         {/* <HrStyle /> */}
                     </React.Fragment>
@@ -336,7 +337,7 @@ export const ApiIntegrationPage = (props: ApiIntegrationProps) => {
             </ButtonContainer> */}
             {
                 postApiKeyModalOpened &&
-                <Modal allowNavigation={false} modalTitle="New API Key" toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
+                <Modal allowNavigation={false} modalTitle={t('settings_integration_api_keys_table_new_key_button')} toggle={() => setPostApiKeyModalOpened(!postApiKeyModalOpened)} size="small" opened={postApiKeyModalOpened} >
                     <ApiKeysForm action={props.createApiKey} toggle={setPostApiKeyModalOpened} />
                 </Modal>
             }

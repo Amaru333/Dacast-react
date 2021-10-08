@@ -30,6 +30,7 @@ import EventHooker from '../../../../utils/services/event/eventHooker';
 import { ContactOwnerModal } from './ContactOwnerModal';
 import { InputSearch } from '../../../../components/FormsComponents/Input/InputSearch';
 import { InputSearchStyle } from '../../../shared/General/GeneralStyle';
+import { Trans, useTranslation } from 'react-i18next';
 
 export type PlanSummaryWithAdditionalSeats = PlanSummary & {termsAndConditions: boolean; seatToPurchase: number; proRatedPrice: number}
 
@@ -55,6 +56,7 @@ export const UsersPage = (props: UsersComponentProps) => {
     const refreshEvery = 5000
     let fastRefreshUntil = 0
     let timeoutId: NodeJS.Timeout | null = null
+    const { t } = useTranslation()
     const changeSeatsStepList = [{title: "Cart", content: ChangeSeatsCartStep}, {title: "Payment", content: ChangeSeatsPaymentStep}]
 
     React.useEffect(() => {
@@ -185,10 +187,10 @@ export const UsersPage = (props: UsersComponentProps) => {
     const usersHeaderElement = () => {
         return {
             data: [
-                {cell: <Text style={{marginLeft: 56}} key="nameUsers" size={14} weight="med" color="gray-1">Name</Text>, sort: 'name'},
-                {cell: <Text key="emailUsers" size={14} weight="med" color="gray-1">Email</Text>, sort: 'email'},
-                {cell: <Text key="roleUsers" size={14} weight="med" color="gray-1">Role</Text>, sort: 'role'},
-                {cell: <Text key="statusUsers" size={14} weight="med" color="gray-1">Status</Text>, sort: 'status'},
+                {cell: <Text style={{marginLeft: 56}} key="nameUsers" size={14} weight="med" color="gray-1">{t('dashboard_top_live_channels_widget_column_title_1')}</Text>, sort: 'name'},
+                {cell: <Text key="emailUsers" size={14} weight="med" color="gray-1">{t('account_profile_email_title')}</Text>, sort: 'email'},
+                {cell: <Text key="roleUsers" size={14} weight="med" color="gray-1">{t('account_users_role_title')}</Text>, sort: 'role'},
+                {cell: <Text key="statusUsers" size={14} weight="med" color="gray-1">{t('common_content_list_table_header_status')}</Text>, sort: 'status'},
                 { cell: <div></div> }
             ],
             sortCallback: (value: string) => setUsersTableSort(value),
@@ -260,21 +262,21 @@ export const UsersPage = (props: UsersComponentProps) => {
             <div className="flex items-center mb2">
                 <div className="flex-auto flex items-center">
                     <InputSearchStyle 
-                        placeholder="Search by name or email" 
+                        placeholder={t('account_users_search_placeholder')}
                         callback={(value: string) => setUsersTableKeyword(value)}
                         isSearching={usersTableKeyword !== null && usersTableKeyword !== ''}
                         value={usersTableKeyword}
                     />
                 </div>
                 <div className="flex items-center relative">
-                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={handleAddMoreSeatsClick} size={14} color="dark-violet">Buy more seats</Text>
+                    <Text style={{textDecoration: 'underline', cursor:'pointer'}} onClick={handleAddMoreSeatsClick} size={14} color="dark-violet">{t('account_users_buy_more_seats_link')}</Text>
                     <SeparatorHeader className="mx1 inline-block" />
-                    <Text color="gray-3">{props.multiUserDetails.occupiedSeats} out of {props.multiUserDetails.maxSeats} seat{props.multiUserDetails.maxSeats > 1 && 's'} used</Text>
-                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getPrivilege('privilege-multi-access') ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>Add User</Button>
+                    <Text color="gray-3"><Trans i18nKey='account_users_seats_used_text'>{{seatsUsed: props.multiUserDetails.occupiedSeats}} out of {{totalSeats: props.multiUserDetails.maxSeats}} seats used</Trans></Text>
+                    <Button disabled={emptySeats <= 0} sizeButton="small" className="ml2" onClick={() => {userToken.getPrivilege('privilege-multi-access') ? setUserModalOpen(true) : setUpgradeMultiUserModalOpen(true)}}>{t('account_users_add_user_button')}</Button>
                 </div>
             </div>
             <Table className='tableOverflow' customClassName=' tableOverflow' id="usersTable" header={usersHeaderElement()} body={usersBodyElement()} headerBackgroundColor="white" noScrollY></Table>
-            <Text className="relative right" size={12} color="gray-3">{emptySeats} Seat{emptySeats > 1 && 's'} Available</Text>
+            <Text className="relative right" size={12} color="gray-3"><Trans i18nKey='account_users_seats_available_text'>{{availableSeats: emptySeats}} Seats Available</Trans></Text>
             {
                 changeSeatsStepperOpen &&
                 <CustomStepper

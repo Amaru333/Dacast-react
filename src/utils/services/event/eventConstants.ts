@@ -22,7 +22,8 @@ const EventDefinitions = [
     defineEvent('EVENT_COMPANY_PAGE_EDITED', {} as unknown),
     defineEvent('EVENT_LOG_IN_SUCCESS', {} as unknown),
     defineEvent('ADDITIONAL_SEATS_PURCHASED', {} as unknown),
-    defineEvent('EVENT_FORWARD_ANALYTICS_DIMENSIONS', {} as unknown)
+    defineEvent('EVENT_FORWARD_ANALYTICS_DIMENSIONS', {} as unknown),
+    defineEvent('EVENT_REVERT_LANGUAGE', {} as unknown)
 ]
 export const Events = EventDefinitions.map(event => event[0])
 export type EventArgs = Reduce<MapToObj<(typeof EventDefinitions)[0]>>

@@ -7,7 +7,7 @@ import { userToken } from '../../utils/services/token/tokenService';
 export const ExposTabs = (props: {exposId: string}) => {
 
     const handleExposSubRoutes = () => {
-        return AppRoutes.filter((route) => route.path.indexOf('expo') > -1 && route.name !== 'Expos' && (route.associatePrivilege ? route.associatePrivilege.some(p => userToken.getPrivilege(p)) : true ) ).map((route) => {
+        return AppRoutes.filter((route) => route.path.indexOf('expo') > -1 && route.name !== 'common_navigation_bar_menu_item_expos' && (route.associatePrivilege ? route.associatePrivilege.some(p => userToken.getPrivilege(p)) : true ) ).map((route) => {
             return {
                 ...route, path: '/expos/' + props.exposId + '/' + route.path.split('/')[route.path.split('/').length -1]
             }

@@ -143,3 +143,56 @@ export const setAnalyticsQsParams = (qsParam: {key: string, value: string}, newS
         EventHooker.dispatch('EVENT_FORWARD_ANALYTICS_DIMENSIONS', qs)
     }
 }
+
+export const translateAnalyticsMetricText = (text: string): string => {
+    switch(text) {
+        case 'Time': 
+            return 'common_analytics_metric_time'
+        case 'Device':
+            return 'common_analytics_metric_device'
+        case 'Location':
+            return 'common_analytics_metric_location'
+        case 'Country':
+            return 'common_analytics_table_header_country'
+        case 'Date':
+            return 'common_content_list_table_header_date'
+        case 'Plays': 
+            return'common_analytics_plays_title'
+        case 'Impressions':
+            return 'dashboard_impressions_widget_title'
+        case 'Plays by time':
+            return 'common_analytics_plays_by_time_title'
+        case 'Plays by device':
+            return 'common_analytics_plays_by_device_title'
+        case 'Plays by location':
+            return 'common_analytics_plays_by_location_title'
+        case 'Impressions by time':
+            return 'common_analytics_impressions_by_time_title'
+        case 'Impressions by device':
+            return 'common_analytics_impressions_by_device_title'
+        case 'Impressions by location':
+            return 'common_analytics_impressions_by_location_title'
+        case 'Total Plays':
+            return 'common_analytics_total_plays_title'
+        case 'Total Impressions':
+            return 'common_analytics_total_impressions_title'
+        case 'Sales':
+            return 'common_analytics_sales_title'
+        case 'Revenue':
+            return 'common_analytics_revenue_title'
+        case 'Sales by time':
+            return 'common_analytics_sales_by_time_title'
+        case 'Revenue by time':
+            return 'common_analytics_revenue_by_time_title'
+        case 'Sales by location':
+            return 'common_analytics_sales_by_location_title'
+        case 'Revenue by location': 
+            return 'common_analytics_revenue_by_location_title'
+        case 'Total Sales':
+            return 'common_analytics_total_sales_title'
+        case 'Total Revenue':
+            return 'common_analytics_total_revenue_title'
+        default:
+            return null
+    }
+}

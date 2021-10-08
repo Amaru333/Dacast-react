@@ -8,8 +8,10 @@ import { DisabledSection } from '../Common/MiscStyle';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { Toggle } from '../../../components/Toggle/toggle';
 import { EngagementComponentProps } from '../../redux-flow/store/Content/Engagement/types';
+import { useTranslation } from 'react-i18next';
 
 export const EngagementBrandText = (props: EngagementComponentProps) => {
+    const { t } = useTranslation()
 
     const handleBrandTextLockChange = () => {
         if (!props.localEngagementSettings.brandTextSettings.locked) {
@@ -55,7 +57,7 @@ export const EngagementBrandText = (props: EngagementComponentProps) => {
         <Card className='my2'>
                 <Header className="mb2">
                     <div>
-                        <Text size={20} weight='med'>Brand Text</Text>
+                        <Text size={20} weight='med'>{t('common_engagement_brand_text_title')}</Text>
                     </div>
                     {   props.contentType &&
                         <>
@@ -72,18 +74,18 @@ export const EngagementBrandText = (props: EngagementComponentProps) => {
                     <div className='flex'>
                         <Input
                             disabled={props.localEngagementSettings.brandTextSettings.isBrandTextAsTitle} className='my2 pr1 col col-8'
-                            label='Brand Text'
+                            label={t('common_engagement_brand_text_title')}
                             onChange={(event) => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandTextSettings: {...props.localEngagementSettings.brandTextSettings, brandText: event.currentTarget.value }}); props.setSettingsEdited(true) }}
                             value={props.localEngagementSettings.brandTextSettings.brandText || ""}
                         />
                         <Input
                             className='my2 pl1 col col-4'
-                            label='Brand Text Link'
+                            label={t('common_engagement_brand_text_text_link_input_title')}
                             value={props.localEngagementSettings.brandTextSettings.brandTextLink || ""}
-                            tooltip='Enter a URL starting with "https://".'
+                            tooltip={t('common_engagement_brand_text_text_link_tooltip')}
                             onChange={(event) => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandTextSettings: {...props.localEngagementSettings.brandTextSettings, brandTextLink: event.currentTarget.value }}); props.setSettingsEdited(true) }} />
                     </div>
-                    <Toggle className='' label='Use content title as Brand Text' defaultChecked={props.localEngagementSettings.brandTextSettings.isBrandTextAsTitle} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandTextSettings: {...props.localEngagementSettings.brandTextSettings, isBrandTextAsTitle: !props.localEngagementSettings.brandTextSettings.isBrandTextAsTitle }}); props.setSettingsEdited(true) }} />
+                    <Toggle className='' label={t('common_engagement_brand_text_brand_text_as_title_toggle')} defaultChecked={props.localEngagementSettings.brandTextSettings.isBrandTextAsTitle} onChange={() => { props.setLocalEngagementSettings({ ...props.localEngagementSettings, brandTextSettings: {...props.localEngagementSettings.brandTextSettings, isBrandTextAsTitle: !props.localEngagementSettings.brandTextSettings.isBrandTextAsTitle }}); props.setSettingsEdited(true) }} />
                 </DisabledSection>
             </Card>
     )

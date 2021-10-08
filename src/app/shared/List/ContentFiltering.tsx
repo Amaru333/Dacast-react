@@ -8,6 +8,7 @@ import { IconStyle } from '../../../shared/Common/Icon';
 import { Text } from '../../../components/Typography/Text';
 import { Input } from '../../../components/FormsComponents/Input/Input';
 import { userToken } from '../../utils/services/token/tokenService';
+import { useTranslation } from 'react-i18next';
 
 export interface FilteringContentState {
     status: {
@@ -52,6 +53,7 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
     const [filteringState, setFilteringState] = React.useState<FilteringContentState>(props.defaultFilters);
     const [activeFilter, setActiveFilter] = React.useState<number>(0);
     const [openFilters, setOpenFilters] = React.useState<boolean>(false);
+    const { t } = useTranslation()
 
     const checkActiveFilter = () => {
         var counter = 0;
@@ -79,7 +81,7 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
         <>
             <div className="clearfix">
                 <Button buttonColor="gray" className="relative right" onClick={() => setOpenFilters(!openFilters)} sizeButton="small" typeButton="secondary" >
-                    Filter
+                    {t('common_content_list_filter_button_text')}
                     {
                         activeFilter > 0 &&
                             <Badge color="dark-violet" style={{ top: "-8px" }} number={activeFilter} className="absolute" />
@@ -88,15 +90,15 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
             </div>
             <Filtering isOpen={openFilters} >
                 <div>
-                    <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >Filters</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
+                    <div className="flex mb25" ><Text size={24} weight="med" color="gray-1" >{t('common_content_list_filter_title')}</Text><IconStyle className="ml-auto pointer" onClick={() => setOpenFilters(false)} >close</IconStyle></div>
                     <div className="mb3" id="contentFilterStatus">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Status</Text>
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >{t('common_content_list_table_header_status')}</Text>
                         <InputCheckbox className="mb2" defaultChecked={filteringState.status.online}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, online: !prevState.status.online } } }) }}
-                            id='contentFilterOnline' label="Online" labelWeight="reg" />
+                            id='contentFilterOnline' label={t('common_content_list_content_status_online')} labelWeight="reg" />
                         <InputCheckbox className="mb2" defaultChecked={filteringState.status.offline}
                             onChange={(e) => { setFilteringState(prevState => { return { ...prevState, status: { ...prevState.status, offline: !prevState.status.offline } } }) }}
-                            id='contentFilterOffline' label="Offline" labelWeight="reg" />
+                            id='contentFilterOffline' label={t('common_content_list_content_status_offline')} labelWeight="reg" />
                         {
                             props.contentType === "videos" &&
                                 <InputCheckbox className="mb2" defaultChecked={filteringState.status.processing}
@@ -107,16 +109,16 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     {
                         props.contentType != 'expo' && 
                         <div className="mb3" id="contentFilterFeatures">
-                            <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Features</Text>
+                            <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >{t('common_content_list_table_header_features')}</Text>
                             {userToken.getPrivilege('privilege-paywall') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.paywall}
                                 onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, paywall: !prevState.features.paywall } } }) }}
-                                id='contentFilterPaywall' label="Paywall" labelWeight="reg" />}
+                                id='contentFilterPaywall' label={t('common_navigation_bar_menu_item_paywall')} labelWeight="reg" />}
                             {userToken.getPrivilege('privilege-advertising') &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.advertising}
                                 onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, advertising: !prevState.features.advertising } } }) }}
-                                id='contentFilterAdvertising' label="Advertising" labelWeight="reg" />}
+                                id='contentFilterAdvertising' label={t('common_content_list_filter_advertising')} labelWeight="reg" />}
                             {(userToken.getPrivilege('privilege-playlists') && props.contentType !== "playlists") &&  <InputCheckbox className="mb2" defaultChecked={filteringState.features.playlists}
                                 onChange={(e) => { setFilteringState(prevState => { return { ...prevState, features: { ...prevState.features, playlists: !prevState.features.playlists } } }) }}
-                                id='contentFilterPlaylists' label="Playlists" labelWeight="reg" />}
+                                id='contentFilterPlaylists' label={t('common_navigation_bar_menu_item_playlists')} labelWeight="reg" />}
                             {
                                 props.contentType === "livestreams" &&
                                     <InputCheckbox className="mb2" defaultChecked={filteringState.features.rewind}
@@ -130,17 +132,17 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                     }
                     
                     <div className="mb3" id="contentFilterAfter">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created After</Text>
-                        <DateSinglePickerWrapper id='startDate' date={!filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { console.log('callback');setFilteringState(prevState => { return { ...prevState, afterDate: Math.round(date.getTime()/ 1000)  } }) }} />
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >{t('common_content_list_filter_created_after')}</Text>
+                        <DateSinglePickerWrapper id='startDate' date={isNaN(filteringState.afterDate as number) || !filteringState.afterDate ?  null : new Date(filteringState.afterDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, afterDate: Math.round(date.getTime()/ 1000)  } }) }} />
                     </div>
                     <div className="mb3" id="contentFilterBefore">
-                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Created Before</Text>
+                        <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >{t('common_content_list_filter_created_before')}</Text>
                         <DateSinglePickerWrapper id='endDate' date={isNaN(filteringState.beforeDate as number)  || !filteringState.beforeDate ? null: new Date(filteringState.beforeDate as number)} allowOustsideDate callback={(date: Date) => { setFilteringState(prevState => { return { ...prevState, beforeDate: Math.round(date.getTime()/ 1000)  } }) }} />
                     </div>
                     {
                         props.contentType === "vod" && 
                             <div className="mb3" id="contentFilterSize">
-                            <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >Size</Text>
+                            <Text className="mb2 inline-block" size={16} weight="med" color="gray-1" >{t('common_content_list_table_header_size')}</Text>
                                 <div className="mxn2 clearfix">
                                     <Input className="col col-6 px2" label="Min (MB)" type="number" min='0' value={filteringState.sizeStart} onChange={(event) => {handleNumberInputChange(event, 'sizeStart')}} />
                                     <Input className="col col-6 px2" label="Max (MB)" type="number" min='0' value={filteringState.sizeEnd} onChange={(event) => {handleNumberInputChange(event, 'sizeEnd')}} />
@@ -150,10 +152,10 @@ export const ContentFiltering = (props: {defaultFilters: FilteringContentState; 
                 </div>
                 <div className="flex" id="contentFilterbuttons">
                     <Button onClick={() => { setOpenFilters(false); props.setSelectedFilter(filteringState) }} className="mr1" typeButton="primary">
-                        Apply
+                        {t('common_content_list_filter_apply_button_text')}
                     </Button>
                     <Button onClick={() => { setFilteringState(filteringDefault); props.setSelectedFilter(null) }} typeButton="tertiary">
-                        Reset
+                        {t('common_content_list_filter_reset_button_text')}
                     </Button>
                 </div>
             </Filtering>

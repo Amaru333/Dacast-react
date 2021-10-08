@@ -9,6 +9,7 @@ import { IconStyle } from '../../../shared/Common/Icon'
 import { DoughnutChart } from '../../../components/Analytics/DoughnutChart/DoughnutChart';
 import { DashboardVod } from '../../redux-flow/store/Dashboard/types';
 import { userToken } from '../../utils/services/token/tokenService';
+import { useTranslation } from 'react-i18next';
 
 const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth: boolean; rightSide: boolean } & { profile: DashboardVod }) => {
 
@@ -21,23 +22,24 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
     var { rightSide, fullWidth, ...other } = props;
 
     let vodDataFetching = Number.isNaN(props.profile.totalVideos)
+    const { t } = useTranslation()
 
     return (
         <section {...other} className={classTopContainer}>
             <div className="flex items-baseline mb1">
                 <IconStyle className="mr1 self-center">play_arrow</IconStyle>
                 <Text size={24} weight="reg" className="mt0 inline-block">
-                    Videos
+                    {t('common_navigation_bar_menu_item_videos')}
                 </Text>
             </div>
 
             <div className={classContainer}>
                 <WidgetElement placeholderWidget={vodDataFetching} className={itemClass}>
                     <WidgetHeader className="flex">
-                        <Text size={16} weight="med" color="gray-3"> Total Videos </Text>
+                        <Text size={16} weight="med" color="gray-3">{t('dashboard_number_of_videos_widget_title')}</Text>
                         <div className="relative ml-auto">
-                            <IconStyle id="totalVideosTooltip">info_outlined</IconStyle>
-                            <Tooltip target="totalVideosTooltip" style={{whiteSpace: 'nowrap'}}>The number of VOD assets in your account</Tooltip>
+                            <IconStyle id="totalVideosTooltip">info_outline</IconStyle>
+                            <Tooltip target="totalVideosTooltip" style={{whiteSpace: 'nowrap'}}>{t('dashboard_number_of_videos_widget_description')}</Tooltip>
                         </div>
                     </WidgetHeader>
                     <div className="flex minContentDash justify-center items-center mb1">
@@ -49,10 +51,10 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                     <>
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> Impressions </Text>
+                                <Text size={16} weight="med" color="gray-3">{t('dashboard_impressions_widget_title')}</Text>
                                 <div className="relative ml-auto">
-                                    <IconStyle id="impressionsTooltip" >info_outlined</IconStyle>
-                                    <Tooltip target="impressionsTooltip">An "Impression" is seeing a video, even if you don't click play</Tooltip>
+                                    <IconStyle id="impressionsTooltip">info_outline</IconStyle>
+                                    <Tooltip target="impressionsTooltip">{t('dashboard_impressions_widget_description')}</Tooltip>
                                 </div>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
@@ -62,7 +64,7 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
 
                         <WidgetElement placeholderWidget={vodDataFetching}  failed={typeof props.profile.videoPlays === "undefined"} className={itemClass}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> Video Plays </Text>
+                                <Text size={16} weight="med" color="gray-3">{t('dashboard_video_plays_widget_title')}</Text>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
                                 <Text size={48} weight="reg" color="gray-1">{videoPlays}</Text>
@@ -71,10 +73,10 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
 
                         <WidgetElement placeholderWidget={vodDataFetching} failed={typeof props.profile.impressions === "undefined" || typeof props.profile.videoPlays === "undefined"}  className={itemClass}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> Play Rate vs Impressions </Text>
+                                <Text size={16} weight="med" color="gray-3">{t('dashboard_play_rate_vs_impressions_widget_title')}</Text>
                                 <div className="relative ml-auto">
-                                    <IconStyle id="playrateVsImpressionsTooltip">info_outlined</IconStyle>
-                                    <Tooltip target="playrateVsImpressionsTooltip">The proportion of people who click play</Tooltip>
+                                    <IconStyle id="playrateVsImpressionsTooltip" className="ml-auto">info_outline</IconStyle>
+                                    <Tooltip target="playrateVsImpressionsTooltip">{t('dashboard_play_rate_vs_impressions_widget_description')}</Tooltip>
                                 </div>
                             </WidgetHeader>
                             <div className="flex minContentDash justify-center items-center mb1">
@@ -83,15 +85,15 @@ const VodDashboard = (props: React.HTMLAttributes<HTMLDivElement> & { fullWidth:
                         </WidgetElement>
                         <WidgetElement placeholderWidget={vodDataFetching} failed={!props.profile.topVideos} className={classItemFullWidth}>
                             <WidgetHeader className="flex">
-                                <Text size={16} weight="med" color="gray-3"> Top Videos </Text>
+                                <Text size={16} weight="med" color="gray-3">{t('dashboard_top_videos_widget_title')}</Text>
                             </WidgetHeader>
                             <div className="flex mb1">
                                 <TableListStyle>
                                     <thead>
                                         <tr>
                                             <th className="col-2" ><Text size={14} weight="reg" ><b>#</b></Text></th>
-                                            <th className="col-7"><Text size={14} weight="reg" ><b>Name</b></Text></th>
-                                            <th className="col-3"><Text size={14} weight="reg" ><b>Viewers</b></Text></th>
+                                            <th className="col-7"><Text size={14} weight="reg" ><b>{t('dashboard_top_live_channels_widget_column_title_1')}</b></Text></th>
+                                            <th className="col-3"><Text size={14} weight="reg" ><b>{t('dashboard_top_live_channels_widget_column_title_2')}</b></Text></th>
                                         </tr>
                                     </thead>
                                     <tbody>

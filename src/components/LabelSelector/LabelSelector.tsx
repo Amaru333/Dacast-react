@@ -2,21 +2,26 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { Text } from '../Typography/Text'
 
+interface LabelItem {
+    title: string
+    data: string
+}
+
 interface LabelSelectorProps {
-    labels: string[]
+    labels: LabelItem[]
     callback: React.Dispatch<React.SetStateAction<string>>
     defaultSelectedLabel?: string
 }
 
 export const LabelSelector = (props: LabelSelectorProps & React.HTMLAttributes<HTMLDivElement>) => {
 
-    const [selectedLabel, setSelectedLabel] = React.useState<string>(props.defaultSelectedLabel || props.labels[0])
+    const [selectedLabel, setSelectedLabel] = React.useState<string>(props.defaultSelectedLabel || props.labels[0].data)
 
     React.useEffect(() => props.callback(selectedLabel), [selectedLabel])
 
     const renderLabels = () => {
         return props.labels && props.labels.map(label => {
-                return <SelectedLabel className='mx1' onClick={() => setSelectedLabel(label)} selected={label === selectedLabel} color={label === selectedLabel ? 'dark-violet' : 'gray-4'} weight='reg' size={16}>{label}</SelectedLabel>
+                return <SelectedLabel className='mx1' onClick={() => setSelectedLabel(label.data)} selected={label.data  === selectedLabel} color={label.data === selectedLabel ? 'dark-violet' : 'gray-4'} weight='reg' size={16}>{label.title}</SelectedLabel>
         })
     }
 

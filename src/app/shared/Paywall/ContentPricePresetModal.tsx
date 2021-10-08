@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { currencyDropdownList, presetTypeDropdownList, recurrenceDropdownList, durationDropdownList, startMethodDropdownList, timezoneDropdownList } from '../../../utils/DropdownLists';
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { useTranslation } from 'react-i18next';
 
 const pricesList = [
     {
@@ -39,12 +40,13 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
     const [newPricePreset, setNewPricePreset] = React.useState<Preset>(props.preset ? props.preset : defaultPreset);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = {title: null, data: null}
-        presetDropdownListItem.title = item.name
-        presetDropdownListItem.data = item
-        return presetDropdownListItem
+        return {
+            title: item.name === 'Custom Price' ? t('common_paywall_price_modal_preset_dropdown_custom_price_option') : item.name,
+            data: item
+        }
     })
 
     const handlePriceChange = (value: string, key: number, inputChange: string) => {
@@ -64,11 +66,11 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 return (
                     <div key={'pricePresetPriceSection' + key} className={'col col-12 flex items-center ' + (key === newPricePreset.prices.length - 1 ? '' : 'mb2')}>
                         <div className='col sm-col-12 col-12 clearfix flex'>
-                            <Input type='number' className={"col sm-col-2 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? 'Price' : ''} />
-                            <DropdownSingle hasSearch className={'col sm-col-4 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})} />
+                            <Input type='number' className={"col sm-col-2 col-5 pr1"} value={price.value > 0 ? price.value.toString() : ''} onChange={(event) => handlePriceChange(event.currentTarget.value, key, 'value')} label={key === 0 ? t('common_paywall_price_table_header_price') : ''} />
+                            <DropdownSingle hasSearch className={'col sm-col-4 col-5 pl1 ' + (key === 0 ? 'mt-auto' : '')} callback={(item: DropdownSingleListItem) => handlePriceChange(item.title, key, 'currency')} id={'pricePresetCurrencyDropdown' + key} dropdownTitle='' dropdownDefaultSelect={price.currency} list={currencyDropdownList.map(item => {if(item.title === price.currency) {return {...item, featureItem: true}} return item})}  />
                             {
                                 key === newPricePreset.prices.length - 1 ?
-                                    <div onClick={() => setNewPricePreset({ ...newPricePreset, prices: [...newPricePreset.prices, { value: 0, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex items-center xs-justify-center sm-ml2 ' + (key === 0 ? 'mt3 ' : '')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>Add Another Price</Text></div>
+                                    <div onClick={() => setNewPricePreset({ ...newPricePreset, prices: [...newPricePreset.prices, { value: 0, currency: 'USD' }] })} className={'pointer col col-2 sm-col-6 px1 flex items-center xs-justify-center sm-ml2 ' + (key === 0 ? 'mt3 ' : '')}><IconStyle style={{ borderRadius: 4, backgroundColor: '#284CEB' }} coloricon='white'>add_box</IconStyle><Text className='pl1 sm-show' size={14} color='dark-violet' weight='med'>{t('common_paywall_price_modal_add_price_button_text')}</Text></div>
                                     : <div className={'pointer col col-2 sm-col-6 sm-ml2 px1 flex items-center xs-justify-center' + (key === 0 ? ' mt3 ' : '')} ><IconStyle onClick={() => { var newList = newPricePreset.prices.filter((item, index) => { return index !== key }); setNewPricePreset({ ...newPricePreset, prices: newList }) }} >close</IconStyle></div>
                             }
                         </div>
@@ -116,14 +118,14 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     <DropdownSingle
                         id='pricePresetSelectDropdown'
                         className='col col-6 pr1'
-                        dropdownTitle='Preset'
-                        dropdownDefaultSelect='Custom Price'
+                        dropdownTitle={t('common_paywall_price_modal_preset_dropdown_title')}
+                        dropdownDefaultSelect={t('common_paywall_price_modal_preset_dropdown_custom_price_option')}
                         list={props.presetList ? presetDropdownList : []}
                         callback={(item: DropdownSingleListItem) => { return setNewPricePreset(item.data); }}
                     />
                     {
                         newPricePreset.id === "custom" &&
-                            <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label='Save as Price Preset' defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
+                            <InputCheckbox className="ml2 mt-auto" id='pricePresetSaveCheckbox' label={t('common_paywall_price_modal_save_as_preset_checkbox')} defaultChecked={savePreset} onChange={() => setSavePreset(!savePreset)} />
                     }
 
                 </PresetSelectRow>
@@ -136,10 +138,10 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                 <DropdownSingle
                     id='pricePresetTypeDropdown'
                     className={'col col-12 sm-col-6 mb2 pr1 ' + (savePreset && newPricePreset.id === 'custom' ? 'sm-pl1' : '')}
-                    dropdownTitle='Preset Type'
-                    dropdownDefaultSelect={newPricePreset.priceType}
-                    list={presetTypeDropdownList}
-                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.title, settings:{...newPricePreset.settings, startMethod: item.title === 'Subscription' ? 'Available on Purchase' : newPricePreset.settings.startMethod, recurrence: item.title == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.title === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
+                    dropdownTitle={t('common_paywall_price_modal_preset_type_dropdown')}
+                    dropdownDefaultSelect={{title: t('common_paywall_price_modal_preset_type_pay_per_view_option'), data: {id: newPricePreset.priceType}}}
+                    list={presetTypeDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                    callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, priceType: item.data.id, settings:{...newPricePreset.settings, startMethod: item.data.id === 'Subscription' ? 'Available on Purchase' : newPricePreset.settings.startMethod, recurrence: item.data.id == 'Pay Per View' ? null: {unit: 'Weekly'}, duration: item.data.id === 'Pay Per View' ? {value: NaN, unit: 'Hours'} : null }})}
                 />
             </div>
             <div className="mb2 clearfix">
@@ -152,26 +154,26 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                             id='pricePresetRecurrenceDropdown'
                             dropdownDefaultSelect={newPricePreset.settings.recurrence ? newPricePreset.settings.recurrence.unit : 'Weekly'}
                             dropdownTitle='Recurrence'
-                            list={recurrenceDropdownList}
-                            callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: item.title}}})}
+                            list={recurrenceDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                            callback={(item: DropdownSingleListItem) => setNewPricePreset({...newPricePreset, settings:{...newPricePreset.settings, recurrence: {unit: item.data.id}}})}
 
                         />
                         :
                         <>
                             <Input
                                 className='col col-6 sm-col-4 pr1'
-                                label='Duration'
-                                defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''}
+                                label={t('common_paywall_price_modal_duration_dropdown_title')}
+                                defaultValue={newPricePreset.settings.duration.value ? newPricePreset.settings.duration.value.toString() : ''} 
                                 onChange={(event) => setNewPricePreset({ ...newPricePreset, settings:{ ...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, value: parseInt(event.currentTarget.value) }} })}
                             />
                             <DropdownSingle
                                 id='pricePresetDurationDropdown' 
                                 className='col col-6 sm-col-8 px1 mt-auto' 
-                                dropdownDefaultSelect={newPricePreset.settings.duration.unit} 
-                                callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: item.title }}})} 
+                                dropdownDefaultSelect={t(durationDropdownList.find(d => d.data.id === newPricePreset.settings.duration.unit).title)} 
+                                callback={(item: DropdownSingleListItem) => setNewPricePreset({ ...newPricePreset, settings:{...newPricePreset.settings, duration: { ...newPricePreset.settings.duration, unit: item.data.id }}})} 
                                 dropdownTitle=''
-                                list={durationDropdownList}
-                            />
+                                list={durationDropdownList.map(i => {return {title: t(i.title), data: {...i.data}}})}
+                                />
                         </>
                 }
 
@@ -186,7 +188,7 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     callback={(ts: number, timezone: string) => setNewPricePreset({...newPricePreset, settings:{ ...newPricePreset.settings, startMethod: ts === 0 ? 'Available on Purchase' : "Set Date & Time", startDate: ts,  timezone: timezone}}) }
                     hideOption="Available on Purchase"
                     id="endDate"
-                    dropdownTitle="Content Scheduling"
+                    dropdownTitle={t('common_paywall_price_table_header_start_method')}
                     disabled={newPricePreset.priceType === 'Subscription'}
                     displayTimezoneFirst
                 />
@@ -200,9 +202,9 @@ export const ContentPricePresetsModal = (props: {contentType: ContentType; conte
                     sizeButton='large'
                     buttonColor='blue'
                 >
-                {props.preset ? "Save" : "Create"}
+                {props.preset ? t('common_button_text_save') : t("common_button_text_create")}
                 </Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
     )

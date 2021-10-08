@@ -8,6 +8,7 @@ import { Tooltip } from '../../../components/Tooltip/Tooltip';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ContentDetails } from '../../redux-flow/store/Content/General/types';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { useTranslation } from 'react-i18next';
 
 interface GeneralImagesProps {
     contentType: ContentType,
@@ -27,7 +28,8 @@ export const GeneralImages = (props: GeneralImagesProps) => {
     let headerEnable = posterEnable;
     let splashScreenEnable = props.contentDetails.splashscreen && Object.keys(props.contentDetails.splashscreen).length !== 0;
     let thumbnailEnable = props.contentDetails.thumbnail && Object.keys(props.contentDetails.thumbnail).length !== 0;
-
+    const { t } = useTranslation()
+    
     const handleImageDelete = (imageType: string) => {
         props.deleteFile(props.contentDetails.id, props.contentType === 'expo' ? props.contentDetails[imageType].assetId : props.contentDetails[imageType].targetID, props.contentType, imageType)
     }
@@ -92,14 +94,14 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                     :
                     <>
                         <div className="thumbnail col col-12">
-                            <Text className="col col-12" size={20} weight="med">Images</Text>
-                            <Text className="col col-12 pt1" size={14} weight="reg">{props.contentType === 'expo' ? "How your Expo looks when seen by your viewers." : "Upload image assets for your content."}</Text>
+                            <Text className="col col-12" size={20} weight="med">{t('common_content_general_images_title')}</Text>
+                            <Text className="col col-12 pt1" size={14} weight="reg">{props.contentType === 'expo' ? "How your Expo looks when seen by your viewers." : t('common_content_general_images_info_text')}</Text>
                             <ImagesContainer className="col col-12 pt2">
                                 <ImageContainer className="mr2 xs-mr0 xs-mb25">
                                     <div className="flex flex-center">
-                                        <Text size={16} weight="med" className="mr1">Splashscreen</Text>
+                                        <Text size={16} weight="med" className="mr1">{t('common_content_general_images_splashscreen_title')}</Text>
                                         <IconStyle id="splashscreenTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="splashscreenTooltip">Displayed before playback and when your content is offline</Tooltip>
+                                        <Tooltip target="splashscreenTooltip">{t('common_content_general_images_splashscreen_text')}</Tooltip>
                                     </div>
                                     <ImageArea className="mt2">
                                         <ButtonSection>
@@ -112,19 +114,19 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                                                 onClick={() => { props.setImageModalTitle("Change Splashscreen"); props.setSelectedImageName(props.contentDetails.splashscreen.url); props.setImageModalOpen(true) }}>
                                                 {
                                                     splashScreenEnable ?
-                                                        "Change" : "Add"
+                                                        t('common_button_text_change') : t('common_button_text_add')
                                                 }
                                             </Button>
                                         </ButtonSection>
                                         {splashScreenEnable && <ImageSection> <SelectedImage src={props.contentDetails.splashscreen.url} /></ImageSection>}
                                     </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3">Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                                    <Text size={10} weight="reg" color="gray-3">{t('common_content_general_images_splashscreen_dimensions')}</Text>
                                 </ImageContainer>
                                 <ImageContainer className="mr2 xs-mb25 xs-mr0">
                                     <div className="flex flex-center">
-                                        <Text size={16} weight="med" className="mr1">Thumbnail</Text>
+                                        <Text size={16} weight="med" className="mr1">{t('common_content_general_images_thumbnail_title')}</Text>
                                         <IconStyle id="thumbnailTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="thumbnailTooltip">A small image used in Playlists</Tooltip>
+                                        <Tooltip target="thumbnailTooltip">{t('common_content_general_images_thumbnail_info_text')}</Tooltip>
                                     </div>
                                     <ImageArea className="mt2">
                                         <ButtonSection>
@@ -135,19 +137,19 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                                             <Button sizeButton="xs" className="clearfix right m1" typeButton="secondary" onClick={() => { props.setImageModalTitle("Change Thumbnail"); props.setSelectedImageName(props.contentDetails.thumbnail.url); props.setImageModalOpen(true) }}>
                                                 {
                                                     thumbnailEnable ?
-                                                        "Change" : "Add"
+                                                        t('common_button_text_change') :t('common_button_text_add')
                                                 }
                                             </Button>
                                         </ButtonSection>
                                         {thumbnailEnable && <ImageSection> <SelectedImage src={props.contentDetails.thumbnail.url} /></ImageSection>}
                                     </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3">Always 160px x 90px, formats: JPG, PNG, SVG, GIF</Text>
+                                    <Text size={10} weight="reg" color="gray-3">{t('common_content_general_images_thumbnail_dimensions')}</Text>
                                 </ImageContainer>
                                 <ImageContainer className="">
                                     <div className="flex flex-center">
-                                        <Text className="mr1" size={16} weight="med">Poster</Text>
+                                        <Text className="mr1" size={16} weight="med">{t('common_content_general_images_poster_title')}</Text>
                                         <IconStyle id="posterTooltip">info_outlined</IconStyle>
-                                        <Tooltip target="posterTooltip">A large image that you can use for any purpose</Tooltip>
+                                        <Tooltip target="posterTooltip">{t('common_content_general_images_poster_info_text')}</Tooltip>
                                     </div>
                                     <ImageArea className="mt2">
                                         <ButtonSection>
@@ -159,13 +161,13 @@ export const GeneralImages = (props: GeneralImagesProps) => {
                                             <Button sizeButton="xs" className="clearfix right my1 mr1" typeButton="secondary" onClick={() => { props.setImageModalTitle("Change Poster"); props.setSelectedImageName(props.contentDetails.poster.url); props.setImageModalOpen(true) }}>
                                                 {
                                                     posterEnable ?
-                                                        "Change" : "Add"
+                                                    t('common_button_text_change') :t('common_button_text_add')
                                                 }
                                             </Button>
                                         </ButtonSection>
                                         {posterEnable && <ImageSection> <img height='auto' width="160px" src={props.contentDetails.poster.url} /></ImageSection>}
                                     </ImageArea>
-                                    <Text size={10} weight="reg" color="gray-3"> Minimum 480px x 480px, formats: JPG, PNG, SVG, GIF</Text>
+                                    <Text size={10} weight="reg" color="gray-3">{t('common_content_general_images_splashscreen_dimensions')}</Text>
                                 </ImageContainer>
 
 

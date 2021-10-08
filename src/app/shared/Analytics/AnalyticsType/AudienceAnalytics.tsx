@@ -15,6 +15,7 @@ import { Text } from '../../../../components/Typography/Text'
 import { capitalizeFirstLetter } from '../../../../utils/utils'
 import { SmallTabItem } from '../../../../components/Tab/TabTypes'
 import { TabSmall } from '../../../../components/Tab/TabSmall'
+import { useTranslation } from 'react-i18next'
 
 export interface AudienceAnalyticsProps {
     data: AudienceAnalyticsState
@@ -26,16 +27,17 @@ export interface AudienceAnalyticsProps {
 export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
 
     const {defaultMetric, defaultFormat} = getAnalyticsQsParams()
+    const { t } = useTranslation()
 
-    const MetricsList = ['Plays', 'Impressions']
-    const [selectedMetric, setSelectedMetric] = React.useState<'Plays' | 'Impressions'>(defaultMetric && defaultMetric.sudMetric && MetricsList.indexOf(capitalizeFirstLetter(defaultMetric.sudMetric)) > -1 ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Plays' | 'Impressions' : 'Plays')
+    const MetricsList = [{title: t('common_analytics_plays_title'), data: 'Plays'}, {title: t('dashboard_impressions_widget_title'), data: 'Impressions'}]
+    const [selectedMetric, setSelectedMetric] = React.useState<'Plays' | 'Impressions'>(defaultMetric && defaultMetric.sudMetric && MetricsList.find( f => f.data === capitalizeFirstLetter(defaultMetric.sudMetric)) ? capitalizeFirstLetter(defaultMetric.sudMetric) as 'Plays' | 'Impressions' : 'Plays')
 
     const returnTimeAnalytics = () => {
         return (
             <LineChart
                 title={null}
                 options={{ fill: true, curve: 0, rightYAxes: false }}
-                lines={[ { data: props.data[selectedMetric.toLowerCase() as AudienceKeys].time.data, label: selectedMetric, color: selectedMetric === 'Plays' ? ThemeAnalyticsColors.blue : ThemeAnalyticsColors.yellow }]}
+                lines={[ { data: props.data[selectedMetric.toLowerCase() as AudienceKeys].time.data, label: t(`common_analytics_${selectedMetric.toLowerCase()}_title`), color: selectedMetric === 'Plays' ? ThemeAnalyticsColors.blue : ThemeAnalyticsColors.yellow }]}
                 labels={props.data[selectedMetric.toLowerCase() as AudienceKeys].time.labels} />
         )
     }
@@ -45,7 +47,7 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
             <BarChart
                 type="vertical"
                 title={selectedMetric + " by Device"}
-                dataSets={[ { data: props.data[selectedMetric.toLowerCase() as AudienceKeys].device.data, label: selectedMetric, color: selectedMetric === 'Plays' ? ThemeAnalyticsColors.blue : ThemeAnalyticsColors.yellow }]}
+                dataSets={[ { data: props.data[selectedMetric.toLowerCase() as AudienceKeys].device.data, label: t(`common_analytics_${selectedMetric.toLowerCase()}_title`), color: selectedMetric === 'Plays' ? ThemeAnalyticsColors.blue : ThemeAnalyticsColors.yellow }]}
                 labels={props.data[selectedMetric.toLowerCase() as AudienceKeys].device.labels} />
         )
     }
@@ -59,12 +61,12 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
     }
 
     let tabs = {
-        "time": { name: 'Time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].time.table, header: [{Header: 'Date', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}]} },
-        "device": { name: 'Device', content: returnDeviceAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].device.table, header: [{Header: 'Device', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}]} },
-        "location": { name: 'Location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].location.table, header: [{Header: 'Country', accessor: 'label'}, {Header: selectedMetric, accessor: 'data'}] } },
+        "time": { name: 'common_analytics_metric_time', content: returnTimeAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].time.table, header: [{Header: t('common_content_list_table_header_date'), accessor: 'label'}, {Header: t(`common_analytics_${selectedMetric.toLowerCase()}_title`), accessor: 'data'}]} },
+        "device": { name: 'common_analytics_metric_device', content: returnDeviceAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].device.table, header: [{Header: t('common_analytics_metric_device'), accessor: 'label'}, {Header: t(`common_analytics_${selectedMetric.toLowerCase()}_title`), accessor: 'data'}]} },
+        "location": { name: 'common_analytics_metric_location', content: returnLocationAnalytics, table: {data: props.data[selectedMetric.toLowerCase() as AudienceKeys].location.table, header: [{Header: t('common_analytics_table_header_country'), accessor: 'label'}, {Header: t(`common_analytics_${selectedMetric.toLowerCase()}_title`), accessor: 'data'}] } },
     }
 
-    const tabsList: SmallTabItem[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { title: tabs[value].name} });
+    const tabsList: SmallTabItem[] = Object.keys(tabs).map((value: 'time' | 'device' | 'location') => { return { title: t(tabs[value].name), data: value} });
     const [selectedTab, setSelectedTab] = React.useState<'time' | 'device' | 'location'>(defaultFormat ? defaultFormat as 'time' | 'device' | 'location' : 'time')
     let totalMetric = selectedTab === 'location' ? props.data[selectedMetric.toLowerCase() as AudienceKeys].location.data.reduce((acc, next) => acc + next.value[0], 0) : props.data[selectedMetric.toLowerCase() as AudienceKeys][selectedTab.toLowerCase() as 'time' | 'device'].data.reduce((acc, next) => acc + next, 0)
 
@@ -81,23 +83,23 @@ export const AudienceAnalytics = (props: AudienceAnalyticsProps) => {
             <AnalyticsCardStyle>
                 <AnalyticsCardHeader className='mb1 items-center'>
                     <div className="flex items-center">
-                        <Text className='pr2' size={16} weight="med" color="gray-1">{selectedMetric + " by " + selectedTab}</Text>
+                        <Text className='pr2' size={16} weight="med" color="gray-1">{t(`common_analytics_${selectedMetric.toLowerCase()}_by_${selectedTab}_title`)}</Text>
                         {props.loading && <LoadingSpinner color='violet' size='xs' />}
                     </div>
-                    <TabSmall defaultTabSelected={Object.keys(tabs).find(f => f === selectedTab) ? tabs[selectedTab].name : null} list={tabsList} callback={(value: SmallTabItem) => {setSelectedTab(value.title.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: value.title.toLowerCase()})}} />
+                    <TabSmall defaultTabSelected={tabsList.find(f => f.data === selectedTab) ? tabsList.find(f => f.data === selectedTab).data : null} list={tabsList} callback={(value: SmallTabItem) => {setSelectedTab(value.data.toLowerCase() as 'time' | 'device' | 'location');setAnalyticsQsParams({key: 'format', value: value.data.toLowerCase()})}} />
                 </AnalyticsCardHeader>
                 <div>
-                    <Text weight='med' size={16}>Total {selectedMetric + ': ' }</Text>
+                    <Text weight='med' size={16}>{t(`common_analytics_total_${selectedMetric.toLowerCase()}_title`) + ': ' }</Text>
                     <Text weight='med' size={16} color='dark-violet'>{totalMetric}</Text>
                 </div>
                 <AnalyticsCardBody className='col col-12 mx-auto' table={props.showTable}>
-                    <LabelSelector defaultSelectedLabel={selectedMetric} className='mb2 center' labels={MetricsList} callback={(label: 'Plays' | 'Impressions') => {setSelectedMetric(label);setAnalyticsQsParams({key: 'metric', value: label.toLowerCase()})}} />
+                    <LabelSelector defaultSelectedLabel={MetricsList.find( f => f.data === selectedMetric).data} className='mb2 center' labels={MetricsList} callback={(label: 'Plays' | 'Impressions') => {setSelectedMetric(label);setAnalyticsQsParams({key: 'metric', value: label.toLowerCase()})}} />
                     {tabs[selectedTab].content()}
                 </AnalyticsCardBody>
             </AnalyticsCardStyle>
             { props.showTable && 
                 <>
-                    <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>Export CSV</Button>
+                    <Button sizeButton="small" className="mt2 block mr-auto ml-auto" typeButton="primary" onClick={() => exportCsvAnalytics()}>{t('common_button_text_export_csv')}</Button>
                     <TableAnalyticsStyled
                         className="striped highlight mr-auto ml-auto mt2"
                         data={tabs[selectedTab].table.data}

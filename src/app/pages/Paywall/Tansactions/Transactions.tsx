@@ -16,6 +16,7 @@ import { dacastSdk } from '../../../utils/services/axios/axiosClient';
 import { userToken } from '../../../utils/services/token/tokenService';
 import { Tooltip } from '../../../../components/Tooltip/Tooltip';
 import { CURRENCY } from '../../../constants/Currencies';
+import { useTranslation } from 'react-i18next';
 
 export const TransactionsPage = (props: TransactionsComponentProps) => {
 
@@ -45,6 +46,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     const [paginationInfo, setPaginationInfo] = React.useState<{page: number; nbResults: number}>({page: parseInt(qs.get('page')) || 1, nbResults: parseInt(qs.get('perPage')) || 20})
     const [selectedFilters, setSelectedFilter] = React.useState<FilteringTransactionsState>(formatFilters())
     const [fetchContent, setFetchContent] = React.useState<boolean>(false)
+    const { t } = useTranslation()
 
     const formatFiltersToQueryString = (filters: FilteringTransactionsState, pagination: {page: number; nbResults: number}, sortValue: string, keyword: string, ) => {
         let returnedString= `page=${pagination.page}&perPage=${pagination.nbResults}`
@@ -118,14 +120,14 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
     const transactionsTableHeader = () => {
         return {
             data: [
-                {cell: <Text key='transactionsTableHeaderType' size={14} weight='med'>Type</Text>},
-                {cell: <Text key='transactionsTableHeaderContentName' size={14} weight='med'>Content Name</Text>},
-                {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>Created Date</Text>, sort: 'Created Date'},
-                {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>Purchaser</Text>},
-                {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>Currency</Text>},
-                {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>Price</Text>},
-                {cell: <Text key='transactionsTableHeaderCredit' size={14} weight='med'>Credit</Text>},
-                {cell: <Text key='transactionsTableHeaderDebit' size={14} weight='med'>Debit</Text>},
+                {cell: <Text key='transactionsTableHeaderType' size={14} weight='med'>{t('common_paywall_price_table_header_type')}</Text>},
+                {cell: <Text key='transactionsTableHeaderContentName' size={14} weight='med'>{t('paywall_transactions_table_header_content_name')}</Text>},
+                {cell: <Text key='transactionsTableHeaderDate' size={14} weight='med'>{t('settings_integration_api_keys_table_date')}</Text>, sort: 'Created Date'},
+                {cell: <Text key='transactionsTableHeaderPurchaser' size={14} weight='med'>{t('paywall_transactions_table_header_purchaser')}</Text>},
+                {cell: <Text key='transactionsTableHeaderViewerCurrency' size={14} weight='med'>{t('common_paywall_price_table_header_currency')}</Text>},
+                {cell: <Text key='transactionsTableHeaderPrice' size={14} weight='med'>{t('common_paywall_price_table_header_price')}</Text>},
+                {cell: <Text key='transactionsTableHeaderCredit' size={14} weight='med'>{t('paywall_transactions_table_header_credit')}</Text>},
+                {cell: <Text key='transactionsTableHeaderDebit' size={14} weight='med'>{t('paywall_transactions_table_header_debit')}</Text>},
             ],
             defaultSort: 'Created Date',
             sortCallback: (value: string) => {setSort(value); formatFiltersToQueryString(selectedFilters, paginationInfo, value, searchString)}
@@ -166,7 +168,7 @@ export const TransactionsPage = (props: TransactionsComponentProps) => {
                     <IconStyle coloricon='gray-3'>search</IconStyle>
                     <InputTags oneTag noBorder={true} placeholder="Search..." style={{display: "inline-block"}} defaultTags={searchString ? [searchString] : []} callback={(value: string[]) => {setSearchString(value[0]);formatFiltersToQueryString(selectedFilters, paginationInfo, sort, value[0])}}   />
                 </div>
-                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray' onClick={handleExportClick}>Export </Button>
+                <Button className=' mr2 right' sizeButton='small' typeButton='secondary' buttonColor='gray' onClick={handleExportClick}>{t('paywall_transactions_export_button')}</Button>
                 <TransactionsFiltering defaultFilters={selectedFilters} setSelectedFilter={(filters) => {setSelectedFilter(filters);formatFiltersToQueryString(filters, paginationInfo, sort, searchString)}} />
             </div>
 

@@ -6,9 +6,11 @@ import { ProfilePageInfos } from './types'
 export const formatGetProfileDetailsOutput = (data: ProfileDetails): ProfilePageInfos => {
     let formattedData: ProfilePageInfos = {
         ...data,
-        passwordLastChanged: data.passwordLastChanged ? tsToLocaleDate(data.passwordLastChanged, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : 'never'
+        passwordLastChanged: data.passwordLastChanged ? tsToLocaleDate(data.passwordLastChanged, {year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}) : 'never',
+        language: data['backoffice-language']
     }
 
+    localStorage.setItem('userLanguage', data['backoffice-language'] || 'en')
     userToken.updateUserInfo({'custom:first_name': data.firstName, 'custom:last_name': data.lastName})
     return formattedData
 }
@@ -21,7 +23,8 @@ export const formatPutProfileDetailsInput = (data: ProfilePageInfos): PutProfile
         marketing: data.marketing,
         phoneNumber: data.phoneNumber,
         timezone: data.timezone,
-        videoUpload: data.videoUpload
+        videoUpload: data.videoUpload,
+        'backoffice-language': data.language
     }
 
     userToken.updateUserInfo({'custom:first_name': data.firstName, 'custom:last_name': data.lastName})

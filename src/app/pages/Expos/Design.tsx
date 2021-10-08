@@ -12,10 +12,12 @@ import { DesignComponentProps } from '../../containers/Expos/Design';
 import { ExposThemingState } from '../../redux-flow/store/Content/General/types';
 import { Button } from '../../../components/FormsComponents/Button/Button';
 import { ImageAreaExpo } from './ImageAreaExpo';
+import { useTranslation } from 'react-i18next';
 
 export const DesignPage = (props: DesignComponentProps & { refresh: Function; uploadUrl: string; designState: ExposThemingState; exposId: string, save: (data: ExposThemingState) => Promise<void>}) => {
     const [stateContentDetails, setStateContentDetails] = React.useState<ExposThemingState>(props.designState)
-
+    const { t } = useTranslation()
+    
     const assetsDropdownList = props.contentDataState['expo'][props.exposId].contentList.map((item): DropdownSingleListItem => {
         return {
             title: item.title,
@@ -38,20 +40,20 @@ export const DesignPage = (props: DesignComponentProps & { refresh: Function; up
         <div className='col col-12 md-col-4'>
             <ControlsCard>
                 <TitleSection className="justify-center mb1">
-                    <Text size={20} weight='med'> Appearance </Text>
+                    <Text size={20} weight='med'> {t('common_theme_appearance_title')} </Text>
                 </TitleSection>
                 <Text className="mb2 inline-block" size={14} weight='reg'>
-                    Customize the look of your expo
+                    {t('expo_design_info_text')}
                 </Text>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Dark Mode' defaultChecked={stateContentDetails.darkModeEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, darkModeEnable: !stateContentDetails.darkModeEnable }) }} />
+                    <Toggle label={t('expo_design_dark_mode_toggle_text')} defaultChecked={stateContentDetails.darkModeEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, darkModeEnable: !stateContentDetails.darkModeEnable }) }} />
                     <IconStyle id="darkModeTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="darkModeTooltip">Change design to a dark theme.</Tooltip>
+                    <Tooltip  target="darkModeTooltip">{t('expo_design_dark_mode_description')}</Tooltip>
                 </ControlToggleContainer>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Cover' defaultChecked={stateContentDetails.coverBackgroundEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, coverBackgroundEnable: !stateContentDetails.coverBackgroundEnable }) } }/>
+                    <Toggle label={t('expo_design_cover_title')} defaultChecked={stateContentDetails.coverBackgroundEnable} onChange={() => { setStateContentDetails({ ...stateContentDetails, coverBackgroundEnable: !stateContentDetails.coverBackgroundEnable }) } }/>
                     <IconStyle id="coverBackgroundTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="coverBackgroundTooltip">Show a header image or color.</Tooltip>
+                    <Tooltip  target="coverBackgroundTooltip">{t('expo_design_cover_info_text')}</Tooltip>
                 </ControlToggleContainer>
                 {
                     stateContentDetails.coverBackgroundEnable && 
@@ -78,17 +80,17 @@ export const DesignPage = (props: DesignComponentProps & { refresh: Function; up
                 
                 <Divider className="pt1 pb1 col-12" />
                 <TitleSection className="justify-center mb1 mt2">
-                    <Text size={20} weight='med'> Content Layout </Text>
+                    <Text size={20} weight='med'>{t('expo_design_content_layout_toggle_title')}</Text>
                 </TitleSection>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Content Descriptions' defaultChecked={stateContentDetails.contentDescriptions} onChange={() => setStateContentDetails({...stateContentDetails, contentDescriptions: !stateContentDetails.contentDescriptions})} />
+                    <Toggle label={t('expo_design_contents_description_toggle_title')} defaultChecked={stateContentDetails.contentDescriptions} onChange={() => setStateContentDetails({...stateContentDetails, contentDescriptions: !stateContentDetails.contentDescriptions})} />
                     <IconStyle id="contentDescriptionTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="contentDescriptionTooltip">Show the descriptions of all content.</Tooltip>
+                    <Tooltip  target="contentDescriptionTooltip">{t('expo_design_contents_description_info_text')}</Tooltip>
                 </ControlToggleContainer>
                 <ControlToggleContainer className='pt1 pb1'>
-                    <Toggle label='Featured Content' defaultChecked={stateContentDetails.featuredContentEnable} onChange={() => setStateContentDetails({ ...stateContentDetails, featuredContentEnable: !stateContentDetails.featuredContentEnable })} />
+                    <Toggle label={t('expo_design_featured_content_title')} defaultChecked={stateContentDetails.featuredContentEnable} onChange={() => setStateContentDetails({ ...stateContentDetails, featuredContentEnable: !stateContentDetails.featuredContentEnable })} />
                     <IconStyle id="featuredContentTooltip">info_outlined</IconStyle>
-                    <Tooltip  target="featuredContentTooltip">Fix one piece of content at the top.</Tooltip>
+                    <Tooltip  target="featuredContentTooltip">{t('expo_design_featured_content_info_text')}</Tooltip>
                 </ControlToggleContainer>
                 {
                     stateContentDetails.featuredContentEnable && 
@@ -96,7 +98,7 @@ export const DesignPage = (props: DesignComponentProps & { refresh: Function; up
                         id='assetsDropdown'
                         isInModal
                         className='col-12 py1 clearfix'
-                        dropdownTitle='Featured Content'
+                        dropdownTitle={t('expo_design_featured_content_title')}
                         defaultSelected={props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId) ? props.contentDataState['expo'][props.exposId].contentList.find(item => item.id === stateContentDetails.featuredContentId).title : null}
                         callback={(item: DropdownSingleListItem) => setStateContentDetails({ ...stateContentDetails, featuredContentId: item.data }) }
                         list={assetsDropdownList}
@@ -105,8 +107,8 @@ export const DesignPage = (props: DesignComponentProps & { refresh: Function; up
                 
             </ControlsCard>
             <div className='col mt25 flex'>
-                <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => props.save(stateContentDetails)} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('common_button_text_save')}</Button>
+                <Button onClick={() => {}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
         

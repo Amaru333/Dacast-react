@@ -10,13 +10,14 @@ import { SpinnerContainer } from "../../../../components/FormsComponents/Progres
 import { LoadingSpinner } from "../../../../components/FormsComponents/Progress/LoadingSpinner/LoadingSpinner";
 import { UploadText } from "../../../shared/General/ImageModal";
 import { IconStyle } from '../../../../shared/Common/Icon';
+import { useTranslation } from "react-i18next";
 
 export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; updateStepperData: React.Dispatch<React.SetStateAction<EncodingRecipeItem>>; setStepValidated: React.Dispatch<React.SetStateAction<boolean>>; getUploadUrl: () => Promise<void>; uploadWatermark: (data: File, uploadWatermarkUrl: string) => Promise<void>; deleteWatermark: (data: EncodingRecipeItem) => Promise<void>; encodingRecipeData: EncodingRecipesData}) => {
 
     React.useEffect(() => {
         if (props.stepperData) { props.setStepValidated(props.stepperData.name.length > 0 && !uploadButtonLoading) }
     })
-
+    const { t } = useTranslation()
     const [watermarkFileFile, setWatermarkFile] = React.useState<File>(null);
     const [uploadButtonLoading, setUploadButtonLoading] = React.useState<boolean>(false)
     let watermarkBrowseButtonRef = React.useRef<HTMLInputElement>(null)
@@ -57,13 +58,13 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
         <div className="block clearfix">
             <RecipeNameRow isMobile={isMobile} className="col col-12 mb1">
 
-                <Input className="col md-col-6 col-12 pr2" value={props.stepperData ? props.stepperData.name : ""} required label="Recipe Name" onChange={(event) => {
+                <Input className="col md-col-6 col-12 pr2" value={props.stepperData ? props.stepperData.name : ""} required label={t('settings_encoding_modal_recipe_name')} onChange={(event) => {
                     event.preventDefault();
                     props.updateStepperData({ ...props.stepperData, ["name"]: event.currentTarget.value });
                     props.setStepValidated(event.currentTarget.value.length > 0)
                 }
                 } />
-                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-col-6 col-12 pt3" defaultChecked={props.stepperData.isDefault}  id="defaultRecipe" label="Save as default Recipe"
+                <DefaultRecipeCheckbox isMobile={isMobile} className="col sm-col-6 col-12 pt3" defaultChecked={props.stepperData.isDefault}  id="defaultRecipe" label={t('settings_encoding_modal_save_as_default')}
                     onChange={(event) => {
                         props.updateStepperData({ ...props.stepperData, ["isDefault"]: event.currentTarget.checked })
                     }
@@ -71,12 +72,12 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
             </RecipeNameRow>
             <div className="col mt2 col-12">
                 <input type='file' ref={watermarkBrowseButtonRef} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleBrowse(e)} style={{display:'none'}} id='browseButton' accept="image/png, image/jpeg" />
-                <Text className="col col-12" size={16} weight="med" >Watermark</Text>
-                <Text className="col col-12 mt1" size={14} weight="reg">Add a watermark to videos to help prevent plagiarism</Text>
+                <Text className="col col-12" size={16} weight="med" >{t('settings_encoding_modal_watermark_title')}</Text>
+                <Text className="col col-12 mt1" size={14} weight="reg">{t('settings_encoding_modal_watermark_description')}</Text>
                 <Button onClick={() => {watermarkBrowseButtonRef.current.click()} } isLoading={uploadButtonLoading} className=" mt2" sizeButton="xs" typeButton="secondary">
-                    Upload File  
+                    {t('common_button_text_upload_file')}
                 </Button>
-                <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">Max file size is 1MB</Text>
+                <Text className="col col-12 mt1" size={10} weight="reg" color="gray-5">{t('common_content_general_images_max_size')}</Text>
                 {props.stepperData.watermarkFilename &&
                     <div>
                         {props.stepperData.isUploading ? <SpinnerContainer style={{zIndex: 1000}}>
@@ -92,14 +93,14 @@ export const RecipeSettingsStep = (props: {stepperData: EncodingRecipeItem; upda
                         
                         <Text className="col col-12 mt3" size={16} weight="med">Positioning</Text>
                         <div className="flex flex-end col col-12">
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label="Left"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningLeft ? props.stepperData.watermarkPositioningLeft.toString() : "10"} className="col lg-col-3 col-6 pr1" required label={t('playlist_theme_thumbnail_position_option_2')}
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningLeft"]: parseInt(event.currentTarget.value) })
                                 }
                                 }
                             />
-                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label="Right"
+                            <Input suffix={<Text weight="med" size={14} color="gray-3">px</Text>} disabled={!props.stepperData.watermarkFilename} defaultValue={props.stepperData.watermarkFilename && props.stepperData.watermarkPositioningRight ? props.stepperData.watermarkPositioningRight.toString() : "10"} className="col lg-col-3 col-6 pl1" required label={t('playlist_theme_thumbnail_position_option_1')}
                                 onChange={(event) => {
                                     event.preventDefault();
                                     props.updateStepperData({ ...props.stepperData, ["watermarkPositioningRight"]: parseInt(event.currentTarget.value) })

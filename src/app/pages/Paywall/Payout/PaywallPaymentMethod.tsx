@@ -11,6 +11,7 @@ import { Divider } from '../../../../shared/MiscStyles';
 import { useForm } from 'react-hook-form';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { DropdownSingleListItem } from '../../../../components/FormsComponents/Dropdown/DropdownTypes';
+import { useTranslation } from 'react-i18next';
 
 export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; addPaymentMethodRequest: (data: PaymentMethod) => Promise<void>, selectedPaymentMethod: PaymentMethod}) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>(props.selectedPaymentMethod ? props.selectedPaymentMethod.paymentMethodType : "Bank Account (US)");
@@ -18,8 +19,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
     const [paymentMethodRecipientType, setPaymentMethodRecipientType] = React.useState<'Business' | 'Personal'>(props.selectedPaymentMethod && props.selectedPaymentMethod.recipientType === 'Personal' ? 'Personal' : 'Business')
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
     const [accountType, setAccountType] = React.useState<AccountType>(props.selectedPaymentMethod && props.selectedPaymentMethod.accountType ? props.selectedPaymentMethod.accountType : 'Checking');
+    const { t } = useTranslation()
 
-    const payoutTypeDropdownList = [{title: "Bank Account (US)"}, {title: "Bank Account (International)"}, {title: "Check"}, {title: "PayPal"}]
+    const payoutTypeDropdownList = [{title: t('paywall_withdrawals_payment_method_form_bank_account_us'), data: {id: "Bank Account (US)"}}, {title: t('paywall_withdrawals_payment_method_form_bank_account_inter'), data: {id: "Bank Account (International)"}}, {title: t('paywall_withdrawals_payment_method_form_check'), data: {id: "Check"}}, {title: t('paywall_withdrawals_payment_method_form_paypal'), data: {id: "PayPal"}}]
 
     const { register, handleSubmit, errors, setValue, reset, formState } = useForm({
         reValidateMode: 'onChange',
@@ -51,18 +53,18 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
         })
     }
 
-    const accountTypesList: {title: AccountType}[] = [
-        {title: "Checking"},
-        {title: "Savings"}
+    const accountTypesList: DropdownSingleListItem[] = [
+        {title: t('paywall_withdrawals_payment_method_form_checking'), data: {id: "Checking"}},
+        {title: t('paywall_withdrawals_payment_method_form_saving'), data: {id: "Savings"}}
     ]
 
     const tabsList: Routes[] = [
         {
-            name: "Business",
+            name: t('paywall_withdrawals_payment_method_form_business'),
             path: 'Business'
         },
         {
-            name: 'Personal',
+            name: t('paywall_withdrawals_payment_method_form_personal'),
             path: 'Personal'
         }
 
@@ -74,10 +76,10 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 isInModal
                 className='col col-12 sm-col-4 pl1 xs-no-gutter'
                 id='accountType' 
-                dropdownTitle='Account Type' 
+                dropdownTitle={t('paywall_withdrawals_payment_method_form_account_type')}
                 list={accountTypesList} 
-                callback={(item: DropdownSingleListItem) => {setAccountType(item.title as AccountType)}}
-                dropdownDefaultSelect={accountType}
+                callback={(item: DropdownSingleListItem) => {setAccountType(item.data.id as AccountType)}}
+                dropdownDefaultSelect={accountTypesList.find(f => f.data.id ===accountType).title}
             />
         )
     }
@@ -85,9 +87,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
     return (
         <div>
             <Card>
-                <Text size={20} weight='reg'>New Withdrawal Method</Text>
+                <Text size={20} weight='reg'>{t('paywall_withdrawals_payment_method_new_method_button')}</Text>
                 <div className="mt2">
-                    <Text size={14} weight='reg'>Please Select which method you would like to add</Text>
+                    <Text size={14} weight='reg'>{t('paywall_withdrawals_payment_method_form_dropdown_info_text')}</Text>
                 </div>
                 <div className='mt2'>
                     <div className='col sm-col-3 col-12 pr1 clearfix xs-no-gutter mb2'>
@@ -95,27 +97,27 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             className="mb1" 
                             id='paymentMethodName' 
                             defaultValue={paymentMethodData ? paymentMethodData.paymentMethodName : ''} 
-                            label='Name' 
-                            placeholder='Payout Method Name' 
+                            label={t('dashboard_top_live_channels_widget_column_title_1')}
+                            placeholder={t('paywall_withdrawals_payment_method_form_payment_method_name_title')}
                             {...handleValidationForm('paymentMethodName', errors)}
                             ref={register({ required: "Required"})}
                             onChange={(event) =>  handleChange('paymentMethodName', event.currentTarget.value)} 
                         />
-                        <Text size={12} weight="reg">If you have multiple payout methods of the same type, this name will help you </Text>
+                        <Text size={12} weight="reg">{t('paywall_withdrawals_payment_method_form_payment_method_name_text')}</Text>
                     </div>
                     <DropdownSingle 
                         isInModal
                         className='col sm-col-3 col-12 px1 xs-mb2 clearfix xs-no-gutter'
                         id='paywallNewPaymentDropdown' 
-                        dropdownTitle='Payout Type' 
+                        dropdownTitle={t('paywall_withdrawals_payment_method_table_header_payout_type')}
                         list={payoutTypeDropdownList} 
-                        callback={(item: DropdownSingleListItem) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(item.title)}}
-                        dropdownDefaultSelect={selectedPaymentMethod}
+                        callback={(item: DropdownSingleListItem) => {reset(paymentMethodData, {errors: true});setSelectedPaymentMethod(item.data.id)}}
+                        dropdownDefaultSelect={payoutTypeDropdownList.find( f => f.data.id === selectedPaymentMethod).title}
                     />
                     {
                         (selectedPaymentMethod === PaymentMethodType.BankAccountUS || selectedPaymentMethod === PaymentMethodType.BankAccountInternational) &&
                             <div style={{marginTop: 2}} className="col col-4 pl1 xs-no-gutter">
-                                <Tab className='col col-12' tabDefaultValue={paymentMethodRecipientType === 'Business' ? 0 : 1} orientation='horizontal' list={tabsList} callback={(value: string) => setPaymentMethodRecipientType(value as 'Business' | 'Personal')} label="Recipient Type" />
+                                <Tab className='col col-12' tabDefaultValue={paymentMethodRecipientType === 'Business' ? 0 : 1} orientation='horizontal' list={tabsList} callback={(value: string) => {console.log(value);setPaymentMethodRecipientType(value as 'Business' | 'Personal')}} label={t('paywall_withdrawals_payment_method_form_recipient_type')} />
                             </div>
                     }   
                 </div>
@@ -125,14 +127,14 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
 
                {selectedPaymentMethod === PaymentMethodType.BankAccountUS &&
                 <div className='flex flex-column'>
-                <Text size={20} weight='reg'>Account Details</Text>
+                <Text size={20} weight='reg'>{t('paywall_withdrawals_payment_method_form_account_details')}</Text>
                  <div className='col col-12 sm-col-11 my2'>
                     <Input 
                         className='col col-12 sm-col-4 pr1 xs-no-gutter xs-mb2' 
                         id='accountNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.accountNumber : ''} 
-                        label='Account Number' 
-                        placeholder='Account Number' 
+                        label={t('paywall_withdrawals_payment_method_form_account_number')}
+                        placeholder={t('paywall_withdrawals_payment_method_form_account_number')}
                         {...handleValidationForm('accountNumberUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('accountNumberUS', event.currentTarget.value)} 
@@ -141,8 +143,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col col-12 sm-col-4 pl1 pr1 xs-no-gutter xs-mb2' 
                         id='routingNumberUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.routingNumber : ''} 
-                        label='Routing Number' 
-                        placeholder='Routing Number' 
+                        label={t('paywall_withdrawals_payment_method_form_routing_numbef')}
+                        placeholder={t('paywall_withdrawals_payment_method_form_routing_numbef')}
                         {...handleValidationForm('routingNumberUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('routingNumberUS', event.currentTarget.value)}    
@@ -197,8 +199,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col col-12 sm-col-7 xs-no-gutter xs-mb2 pr1' 
                         id='addressUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.address : ''} 
-                        label='Address' 
-                        placeholder='Address' 
+                        label={t('live_stream_general_encoder_modal_address_field_title')}
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         {...handleValidationForm('addressUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('addressUS', event.currentTarget.value)} 
@@ -207,9 +209,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col col-12 sm-col-5 xs-no-gutter pl1' 
                         id='address2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
-                        label='Address Line 2' 
-                        indicationLabel='Optional' 
-                        placeholder='Address' 
+                        label={t('paywall_withdrawals_payment_method_form_adress_2')}
+                        indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         ref={register()}
                         onChange={(event) =>  handleChange('address2US', event.currentTarget.value)}  
                     />
@@ -218,9 +220,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-4 pr1 xs-mb2' 
                         id='townUS' 
-                        label='City' 
+                        label={t('paywall_withdrawals_payment_method_form_city')}
                         defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
-                        placeholder='City' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_city')}
                         {...handleValidationForm('townUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('townUS', event.currentTarget.value)}  
@@ -228,9 +230,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-4 px1' 
                         id='stateUS' 
-                        label='State/Province' 
+                        label={t('paywall_withdrawals_payment_method_form_state')}
                         defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
-                        placeholder='State/Province' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_state')}
                         {...handleValidationForm('stateUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('stateUS', event.currentTarget.value)}  
@@ -239,8 +241,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col col-12 sm-col-4 xs-no-gutter pl1 mb2' 
                         id='zipCodeUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.zipCode : ''} 
-                        label='Zip/Postal Code' 
-                        placeholder='Zip/Postal Code' 
+                        label={t('paywall_withdrawals_payment_method_form_zip')}
+                        placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                         {...handleValidationForm('zipCodeUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('zipCodeUS', event.currentTarget.value)}  
@@ -248,14 +250,14 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 </div>
     
                 <Divider className='mb2' />
-                <Text size={20} weight='reg'>Bank Details</Text>
+                <Text size={20} weight='reg'>{t('paywall_withdrawals_payment_method_form_bank_details')}</Text>
                 <div className='col col-12 my2'>
                     <Input 
                         className='col col-12 sm-col-4' 
                         id='bankNameUS' 
-                        label='Bank Name' 
+                        label={t('paywall_withdrawals_payment_method_form_bank_name')}
                         defaultValue={paymentMethodData ? paymentMethodData.bankName : ''} 
-                        placeholder='Bank Name' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_bank_name')}
                         {...handleValidationForm('bankNameUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('bankNameUS', event.currentTarget.value)}  
@@ -266,8 +268,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
                         id='bankAddressUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankAddress : ''} International
-                        label='Address' 
-                        placeholder='Address' 
+                        label={t('live_stream_general_encoder_modal_address_field_title')}
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         {...handleValidationForm('bankAddressUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('bankAddressUS', event.currentTarget.value)}  
@@ -276,9 +278,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
                         id='bankAddress2US' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
-                        label='Address Line 2' 
-                        indicationLabel='Optional' 
-                        placeholder='Address' 
+                        label={t('paywall_withdrawals_payment_method_form_adress_2')}
+                        indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         ref={register()}
                         onChange={(event) =>  handleChange('bankAddress2US', event.currentTarget.value)} 
                     />
@@ -287,9 +289,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-4 pr1' 
                         id='bankStateUS' 
-                        label='State/Province' 
+                        label={t('paywall_withdrawals_payment_method_form_state')}
                         defaultValue={paymentMethodData ? paymentMethodData.bankState : ''} 
-                        placeholder='State/Province' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_state')}
                         {...handleValidationForm('bankStateUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('bankStateUS', event.currentTarget.value)}  
@@ -297,9 +299,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-4 px1 xs-mb2' 
                         id='bankTownUS'   
-                        label='Town/City' 
+                        label={t('paywall_withdrawals_payment_method_form_town')}
                         defaultValue={paymentMethodData ? paymentMethodData.bankTown : ''} 
-                        placeholder='Town/City' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_town')}
                         {...handleValidationForm('bankTownUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('bankTownUS', event.currentTarget.value)}  
@@ -308,8 +310,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         className='col col-12 sm-col-4 xs-no-gutter pl1' 
                         id='bankZipCodeUS' 
                         defaultValue={paymentMethodData ? paymentMethodData.bankZipCode : ''} 
-                        label='Zip/Postal Code' 
-                        placeholder='Zip/Postal Code' 
+                        label={t('paywall_withdrawals_payment_method_form_zip')}
+                        placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                         {...handleValidationForm('bankZipCodeUS', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('bankZipCodeUS', event.currentTarget.value)}  
@@ -390,8 +392,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
                                 id='addressInternational' 
                                 defaultValue={paymentMethodData ? paymentMethodData.address : ''} 
-                                label='Address' 
-                                placeholder='Address' 
+                                label={t('live_stream_general_encoder_modal_address_field_title')}
+                                placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                                 {...handleValidationForm('addressInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('addressInternational', event.currentTarget.value)} 
@@ -400,9 +402,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
                                 id='address2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
-                                label='Address Line 2' 
-                                indicationLabel='Optional' 
-                                placeholder='Address' 
+                                label={t('paywall_withdrawals_payment_method_form_adress_2')}
+                                indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
+                                placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                                 ref={register()}                            
                                 onChange={(event) => handleChange('address2International', event.currentTarget.value)}
                             />
@@ -411,9 +413,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col xs-no-gutter col-12 sm-col-3 xs-mb2 pr1' 
                                 id='stateInternational' 
-                                label='State/Province' 
+                                label={t('paywall_withdrawals_payment_method_form_state')}
                                 defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
-                                placeholder='State/Province' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_state')}
                                 {...handleValidationForm('stateInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('stateInternational', event.currentTarget.value)} 
@@ -421,9 +423,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1 xs-mb2' 
                                 id='townInternational' 
-                                label='Town/City' 
+                                label={t('paywall_withdrawals_payment_method_form_town')}
                                 defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
-                                placeholder='Town/City' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_town')}
                                 {...handleValidationForm('townInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('townInternational', event.currentTarget.value)} 
@@ -431,9 +433,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col col-6 sm-col-3 sm-pr1 pl1' 
                                 id='zipCodeInternational' 
-                                label='Zip/Postal Code' 
+                                label={t('paywall_withdrawals_payment_method_form_zip')}
                                 defaultValue={paymentMethodData ? paymentMethodData.zipCode : ''} 
-                                placeholder='Zip/Postal Code' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                                 {...handleValidationForm('zipCodeInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('zipCodeInternational', event.currentTarget.value)} 
@@ -451,7 +453,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         </div>
             
                         <Divider className='my2' />
-                        <Text size={20} weight='reg'>Bank Details</Text>
+                        <Text size={20} weight='reg'>{t('paywall_withdrawals_payment_method_form_bank_details')}</Text>
                         <div className='col col-12 my2'>
                             <Input 
                                 className='col col-12 sm-col-4' 
@@ -469,8 +471,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 className='col xs-no-gutter col-12 sm-col-7 xs-mb2 pr1' 
                                 id='bankAddressInternational' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankAddress : ''} 
-                                label='Address' 
-                                placeholder='Address' 
+                                label={t('live_stream_general_encoder_modal_address_field_title')}
+                                placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                                 {...handleValidationForm('bankAddressInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('bankAddressInternational', event.currentTarget.value)}   
@@ -479,9 +481,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                                 className='col xs-no-gutter col-12 sm-col-5 pl1' 
                                 id='bankAddress2International' 
                                 defaultValue={paymentMethodData ? paymentMethodData.bankAddress2 : ''} 
-                                label='Address Line 2' 
-                                indicationLabel='Optional' 
-                                placeholder='Address' 
+                                label={t('paywall_withdrawals_payment_method_form_adress_2')}
+                                indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
+                                placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                                 ref={register()}                            
                                 onChange={(event) => handleChange('bankAddress2International', event.currentTarget.value)}   
                             />
@@ -490,9 +492,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col col-6 sm-col-3 pr1' 
                                 id='bankStateInternational' 
-                                label='State/Province'
+                                label={t('paywall_withdrawals_payment_method_form_state')}
                                 defaultValue={paymentMethodData ? paymentMethodData.bankState : ''} 
-                                placeholder='State/Province' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_state')}
                                 {...handleValidationForm('bankStateInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('bankStateInternational', event.currentTarget.value)}
@@ -500,9 +502,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col col-6 sm-col-3 sm-pr1 pl1 sx-mb2' 
                                 id='bankTownInternational' 
-                                label='Town/City' 
+                                label={t('paywall_withdrawals_payment_method_form_town')}
                                 defaultValue={paymentMethodData ? paymentMethodData.bankTown : ''} 
-                                placeholder='Town/City' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_town')}
                                 {...handleValidationForm('bankTownInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('bankTownInternational', event.currentTarget.value)} 
@@ -510,9 +512,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                             <Input 
                                 className='col col-6 sm-col-3 sm-pl1 pr1' 
                                 id='bankZipCodeInternational' 
-                                label='Zip/Postal Code' 
+                                label={t('paywall_withdrawals_payment_method_form_zip')}
                                 defaultValue={paymentMethodData ? paymentMethodData.bankZipCode : ''} 
-                                placeholder='Zip/Postal Code' 
+                                placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                                 {...handleValidationForm('bankZipCodeInternational', errors)}
                                 ref={register({ required: "Required"})}
                                 onChange={(event) =>  handleChange('bankZipCodeInternational', event.currentTarget.value)} 
@@ -550,7 +552,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         id='companyName' 
                         label='Company Name' 
                         defaultValue={paymentMethodData ? paymentMethodData.companyName : ''} 
-                        indicationLabel='Optional' 
+                        indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
                         placeholder='Company Name' 
                         ref={register()}                            
                         onChange={(event) => handleChange('companyName', event.currentTarget.value)}      
@@ -562,7 +564,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         id='checkAddress' 
                         label='Street Address' 
                         defaultValue={paymentMethodData ? paymentMethodData.address : ''} 
-                        placeholder='Address' 
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         {...handleValidationForm('checkAddress', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('checkAddress', event.currentTarget.value)}  
@@ -570,10 +572,10 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-5 pl1' 
                         id='checkAddressLine2' 
-                        label='Address Line 2'
+                        label={t('paywall_withdrawals_payment_method_form_adress_2')}
                         defaultValue={paymentMethodData ? paymentMethodData.address2 : ''} 
-                        indicationLabel='Optional' 
-                        placeholder='Address' 
+                        indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
+                        placeholder={t('live_stream_general_encoder_modal_address_field_title')}
                         ref={register()}                            
                         onChange={(event) => handleChange('checkAddressLine2', event.currentTarget.value)} 
                     />
@@ -582,9 +584,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col xs-no-gutter col-12 sm-col-2 pr1 xs-mb2' 
                         id='checkState' 
-                        label='State/Province' 
+                        label={t('paywall_withdrawals_payment_method_form_state')}
                         defaultValue={paymentMethodData ? paymentMethodData.state : ''} 
-                        placeholder='State/Province' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_state')}
                         {...handleValidationForm('checkState', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('checkState', event.currentTarget.value)}                    
@@ -592,9 +594,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-2 sm-pl1 pr1' 
                         id='checkTown' 
-                        label='Town/City' 
+                        label={t('paywall_withdrawals_payment_method_form_town')}
                         defaultValue={paymentMethodData ? paymentMethodData.town : ''} 
-                        placeholder='Town/City' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_town')}
                         {...handleValidationForm('checkTown', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('checkTown', event.currentTarget.value)}                     
@@ -602,9 +604,9 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                     <Input 
                         className='col col-6 sm-col-2 sm-pr1 pl1 xs-mb2' 
                         id='checkZipCode' 
-                        label='Zip/Postal Code' 
+                        label={t('paywall_withdrawals_payment_method_form_zip')}
                         defaultValue={paymentMethodData ? paymentMethodData.zipCode : ''} 
-                        placeholder='Zip/Postal Code' 
+                        placeholder={t('paywall_withdrawals_payment_method_form_zip')}
                         {...handleValidationForm('checkZipCode', errors)}
                         ref={register({ required: "Required"})}
                         onChange={(event) =>  handleChange('checkZipCode', event.currentTarget.value)}                     
@@ -640,7 +642,7 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                         <div className='col col-12 mb2'>
                             <Input 
                                 type="textarea" 
-                                indicationLabel="Optional" 
+                                indicationLabel={t('paywall_withdrawals_payment_method_form_optional')}
                                 className='col col-4 pr1' 
                                 defaultValue={paymentMethodData ? paymentMethodData.comments : ''} 
                                 id='comments' 
@@ -655,8 +657,8 @@ export const PaywallPaymentMethod = (props: {displayPage: (b: boolean) => void; 
                 </form>
             </Card> 
             <div className='my2'>
-                <Button type='submit' form='paymentMethodForm' isLoading={buttonLoading} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>Save</Button>
-                <Button onClick={() => {props.displayPage(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button type='submit' form='paymentMethodForm' isLoading={buttonLoading} className='mr2' typeButton='primary' sizeButton='large' buttonColor='blue'>{t('common_button_text_save')}</Button>
+                <Button onClick={() => {props.displayPage(false)}} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
 

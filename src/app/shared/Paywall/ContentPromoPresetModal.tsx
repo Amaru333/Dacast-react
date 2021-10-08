@@ -13,6 +13,7 @@ import { timezoneDropdownList, discountAppliedDropdownList } from '../../../util
 import { DateTimePicker } from '../../../components/FormsComponents/Datepicker/DateTimePicker';
 import { tsToUtc } from '../../../utils/services/date/dateService';
 import { ContentType } from '../../redux-flow/store/Common/types';
+import { useTranslation } from 'react-i18next';
 
 const defaultPromo: Promo = {
     id: 'custom',
@@ -32,18 +33,16 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
 
     const [newPromoPreset, setNewPromoPreset] = React.useState<Promo>(props.promo ? props.promo : defaultPromo);
     const [savePreset, setSavePreset] = React.useState<boolean>(false)
-
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-
     const [startDate, setStartDate] = React.useState<number>(newPromoPreset.startDate);
     const [endDate, setEndDate] = React.useState<number>(newPromoPreset.endDate);
-
+    const { t } = useTranslation()
 
     const presetDropdownList = props.presetList.map((item) => {
-        let presetDropdownListItem: DropdownSingleListItem = { title: null, data: null }
-        presetDropdownListItem.title = item.name
-        presetDropdownListItem.data = item
-        return presetDropdownListItem
+        return {
+            title: item.name === 'Custom Promo' ? t('common_paywall_promo_modal_preset_dropdown_custom_promo_option') : item.name,
+            data: item
+        }
     })
 
 
@@ -79,14 +78,14 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                 <DropdownSingle
                     id='pricePresetSelectDropdown'
                     className='col col-6'
-                    dropdownTitle='Preset'
-                    dropdownDefaultSelect='Custom Promo'
+                    dropdownTitle={t('common_paywall_price_modal_preset_dropdown_title')}
+                    dropdownDefaultSelect={t('common_paywall_promo_modal_preset_dropdown_custom_promo_option')}
                     list={props.presetList ? presetDropdownList : []}
                     callback={(item: DropdownSingleListItem) => { return setNewPromoPreset({ ...item.data, alphanumericCode: '' }) }}
                 />
                 {
                     newPromoPreset.id === "custom" &&
-                    <InputCheckbox defaultChecked={savePreset} className="ml2 mt25" id='pricePresetSaveCheckbox' label='Save as Promo Preset' onChange={() => setSavePreset(!savePreset)} />
+                    <InputCheckbox defaultChecked={savePreset} className="ml2 mt25" id='pricePresetSaveCheckbox' label={t('common_paywall_promo_modal_save_as_preset_checkbox')} onChange={() => setSavePreset(!savePreset)} />
                 }
 
             </PresetSelectRow>
@@ -95,10 +94,10 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                     <Input className='col mb2 col-12 sm-col-6 sm-pr1' value={newPromoPreset.name} label='Preset name' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, name: event.currentTarget.value })} />
                 }
 
-                <Input className={'col col-12 sm-col-6 mb2 ' + (savePreset ? 'sm-pl1' : '')} disabled={props.actionButton === 'Save'} value={newPromoPreset.alphanumericCode} label='Alphanumeric Code' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, alphanumericCode: event.currentTarget.value })} tooltip="Minimum 5 characters. You can use both letters and numerals. Every code must be unique." />
+                <Input className={'col col-12 sm-col-6 mb2 ' + (savePreset ? 'sm-pl1' : '')} disabled={props.actionButton === 'Save'} value={newPromoPreset.alphanumericCode} label={t('common_paywall_promo_modal_alphanumericode_title')} onChange={(event) => setNewPromoPreset({ ...newPromoPreset, alphanumericCode: event.currentTarget.value })} tooltip={t('common_paywall_promo_modal_alphanumericode_tooltip_text')} />
             </div>
             <div className='col col-12 mb2'>
-                <Input className='col sm-col-3 col-6 pr1 xs-mb2' value={newPromoPreset.discount ? newPromoPreset.discount.toString() : ''} label='Discount' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, discount: parseInt(event.currentTarget.value) })} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
+                <Input className='col sm-col-3 col-6 pr1 xs-mb2' value={newPromoPreset.discount ? newPromoPreset.discount.toString() : ''} label={t('common_paywall_promo_table_header_discount')} onChange={(event) => setNewPromoPreset({ ...newPromoPreset, discount: parseInt(event.currentTarget.value) })} suffix={<Text weight="med" size={14} color="gray-3">%</Text>} />
                 <Input className='col sm-col-3 col-6 px1' value={newPromoPreset.limit ? newPromoPreset.limit.toString() : ''} label='Limit' onChange={(event) => setNewPromoPreset({ ...newPromoPreset, limit: parseInt(event.currentTarget.value) })} />
             </div>
             <div className='col col-12 mb2 flex items-end'>
@@ -106,9 +105,9 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                     fullLineTz
                     defaultTs={startDate}
                     callback={(ts: number) => setStartDate(ts)}
-                    hideOption="Always"
+                    hideOption={t('common_paywall_promo_modal__available_dropdown_always_option')}
                     id="startDate"
-                    dropdownTitle="Available"
+                    dropdownTitle={t('common_paywall_promo_modal__available_dropdown_title')}
                 />
             </div>
             <div className='col col-12 mb2 flex items-end'>
@@ -117,9 +116,9 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                     minDate={startDate}
                     defaultTs={endDate}
                     callback={(ts: number) => setEndDate(ts)}
-                    hideOption="Forever"
+                    hideOption={t('common_paywall_promo_modal__available_dropdown_forever_option')}
                     id="endDate"
-                    dropdownTitle="Until"
+                    dropdownTitle={t('common_paywall_promo_modal__available_dropdown_until_option')}
                 />
             </div>
 
@@ -136,7 +135,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 
-                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={newPromoPreset.discountApplied} className={ClassHalfXsFullMd} dropdownTitle='Discount Applied' callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.title })} list={discountAppliedDropdownList} />
+                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={t(discountAppliedDropdownList.find(f => f.data.id === newPromoPreset.discountApplied).title)} className={ClassHalfXsFullMd} dropdownTitle={t('common_paywall_promo_modal_discount_applied_dropdown_title')} callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.data.id })} list={discountAppliedDropdownList.map(p => {return {title: t(p.title), data: {...p.data}}})} />
             </div>
             <div className='col col-12 mb2'>
                 <Button
@@ -146,7 +145,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                     className='mr2'
                     typeButton='primary'
                     sizeButton='large' buttonColor='blue'>{props.actionButton}</Button>
-                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>Cancel</Button>
+                <Button onClick={() => props.toggle(false)} typeButton='tertiary' sizeButton='large' buttonColor='blue'>{t('common_button_text_cancel')}</Button>
             </div>
         </div>
 

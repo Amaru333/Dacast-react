@@ -7,12 +7,13 @@ import { Text } from '../../../../components/Typography/Text';
 import { DropdownSingle } from '../../../../components/FormsComponents/Dropdown/DropdownSingle';
 import { handleValidationForm } from '../../../utils/custom-hooks/formValidationHook';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: React.Dispatch<React.SetStateAction<boolean>>; action: (apiKey: ApiKeyItem) => Promise<void>}) => {
 
     const [apiKey, setApiKey] = React.useState<ApiKeyItem>(props.item || {label: '', clientId: null, type: 'rw', authToken: null, created: 0})
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
-
+    const { t } = useTranslation()
     const handleActionClick = () => { 
         setButtonLoading(true)
         props.action(apiKey)
@@ -26,15 +27,15 @@ const ApiKeysForm = (props: {item?: ApiKeyItem; toggle: React.Dispatch<React.Set
     return (
         <div>
             <Input defaultValue={apiKey.label}  
-                id="encoder" className="col col-12 mb2" label="Name" placeholder="Name" onChange={(event) => setApiKey({...apiKey, label: event.currentTarget.value})}  />
+                id="encoder" className="col col-12 mb2" label={t('dashboard_top_live_channels_widget_column_title_1')} placeholder={t('dashboard_top_live_channels_widget_column_title_1')} onChange={(event) => setApiKey({...apiKey, label: event.currentTarget.value})}  />
             {/* <Text size={14} weight="med" className='inline-block mb1' >Access Type</Text>
             <div className="mb3">
                 <InputRadio defaultChecked={apiKey.type == 'rw'} className="col col-6" value="rw" name="type" label="Read-Write"></InputRadio>
                 <InputRadio defaultChecked={apiKey.type == 'ro'} className="col col-6" value="ro" name="type" label="Read-Only"></InputRadio>
                 <div className="clearfix"></div>
             </div> */}
-            <Button isLoading={buttonLoading} onClick={handleActionClick} sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? "Save" : "Generate"}</Button>
-            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >Cancel</Button>
+            <Button isLoading={buttonLoading} onClick={handleActionClick} sizeButton="large" typeButton="primary" buttonColor="blue" >{props.item? t('common_button_text_save') : t('common_button_text_generate')}</Button>
+            <Button sizeButton="large" onClick={()=> props.toggle(false)} type="button" className="ml2" typeButton="tertiary" buttonColor="blue" >{t('common_button_text_cancel')}</Button>
         </div>
     )
 
