@@ -280,7 +280,7 @@ const Header = (props: HeaderProps) => {
         if(props.billingInfo.currentPlan && props.billingInfo.currentPlan.displayName === "30 Day Trial") {
             if (props.isMobile) {
                 <UpgradeButton onClick={() => handleUpgradeClick({ trial: true })} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
-                    Upgrade
+                    {t('common_button_upgrade_text')}
                 </UpgradeButton>
             }
             return (
@@ -291,7 +291,7 @@ const Header = (props: HeaderProps) => {
         }
         return (
             <UpgradeButton onClick={() => handleUpgradeClick()} className="mr2" sizeButton="small" typeButton="primary" buttonColor="lightBlue">
-                Upgrade
+                {t('common_button_upgrade_text')}
             </UpgradeButton>
         )
     }

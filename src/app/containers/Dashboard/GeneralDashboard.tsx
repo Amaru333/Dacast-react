@@ -60,7 +60,7 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
     const handleButtonToPurchase = (percentage: number) => {
         if(percentage <= 25 ) {
             return (
-                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button></Text>
+                <Text className="ml-auto" size={12} weight="med" color="dark-violet"> <Button buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button></Text>
             )
         }
         if(userToken.getPrivilege('privilege-billing')) {
@@ -111,7 +111,7 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer} backgroundColor="gray-1">
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="white"> 30 Day Trial </Text>
-                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => handleUpgradeClick({ type: 'button' })}>Upgrade </Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => handleUpgradeClick({ type: 'button' })}>{t('common_button_upgrade_text')}</Button>
                     </WidgetHeaderTop>
                     {renderDaysRemaining()}
                     <Text size={14} weight="reg" color="white">{renderUpgradeText()}</Text>
@@ -125,7 +125,7 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
                     <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                         <WidgetHeaderTop className="flex">
                             <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                            <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                            <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button>
                         </WidgetHeaderTop>
                         {
                             props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Next Bill due {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>
@@ -138,7 +138,7 @@ export const GeneralDashboard = (props: {plan: PlanSummary | null; overage?: { e
                 <WidgetElement placeholderWidget={allowanceDataFetching} className={classItemThirdWidthContainer}>
                     <WidgetHeaderTop className="flex">
                         <Text size={16} weight="med" color="gray-3"> {props.plan.displayName} </Text>
-                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>Upgrade</Button>
+                        <Button className="ml-auto" typeButton='primary' buttonColor="lightBlue" sizeButton="xs" onClick={() => history.push('/account/upgrade')}>{t('common_button_upgrade_text')}</Button>
                     </WidgetHeaderTop>
                     {
                         props.plan.periodEndsAt && <><Text className="inline-block mb1" size={14} weight="reg" color="gray-1">Your current plan expires {tsToLocaleDate(props.plan.periodEndsAt)}</Text><br /></>

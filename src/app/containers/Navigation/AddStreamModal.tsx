@@ -197,7 +197,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                         {errorMessage}
                         {
                             errorMessage && errorMessage.indexOf('1 channel') !== -1 &&
-                            <a href='/account/upgrade'>&nbsp;Upgrade</a>
+                            <a href='/account/upgrade'>&nbsp;{t('common_button_upgrade_text')}</a>
                         }
                     </Bubble>
 

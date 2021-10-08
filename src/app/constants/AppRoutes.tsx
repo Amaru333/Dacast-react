@@ -518,7 +518,7 @@ export const AppRoutes: Routes[] = [
             },
             {
                 path: '/account/upgrade',
-                name: 'Upgrade',
+                name: 'common_button_upgrade_text',
                 component: UpgradeContainer
             },
             {
