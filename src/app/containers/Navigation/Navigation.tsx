@@ -130,7 +130,7 @@ const MainMenu: React.FC<MainMenuProps> = (props: MainMenuProps) => {
     } = usePlanLimitsValidator(props.infos, planLimitsValidaorCallbacks)
 
     React.useEffect(() => {
-        if(!props.billingInfo) {
+        if(!props.billingInfo && userToken.getPrivilege('privilege-billing')) {
             props.getBillingPageInfos()
         }
         props.getDashboardDetails().then(() => setProfileDataIsFetching(false))
