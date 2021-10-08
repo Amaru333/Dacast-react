@@ -149,7 +149,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             callback={(item: DropdownSingleListItem) => { setValue('timezone', item.title) }}
                             list={timezoneDropdownList}
                         />
-                        <input type="hidden" name="language" ref={register()} />
+                        {/* <input type="hidden" name="language" ref={register()} />
                         <DropdownSingle
                             className="md-col md-col-6 p1"
                             hasSearch
@@ -158,7 +158,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                             id='dropdownLanguage'
                             callback={(item: DropdownSingleListItem) => { i18n.changeLanguage(item.data.id); setValue('language', item.data.id) }}
                             list={languageDropdownList.sort((a, b) => {if(a.title.toUpperCase() < b.title.toUpperCase()){ return -1} return 1})}
-                        />
+                        /> */}
                     </div>
                     <Divider className="p1 mx1" />
 
@@ -260,7 +260,7 @@ export const ProfilePage = (props: ProfileComponentProps) => {
                 }
             </Modal>
             {/* Will do real prompt when connected to endpoint */}
-            <Prompt when={dirty} message={`revert_to_lang:${props.ProfilePageDetails.language || 'en'}`} />
+            <Prompt when={dirty} message={''} />
         </div>
     )
 }
