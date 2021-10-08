@@ -380,9 +380,9 @@ export const ThemingControlsCard = (props: ControlCardThemingComponentProps) => 
                                 </ControlToggleContainer>
 
                                 <ControlToggleContainer>
-                                    <Toggle className={togglePadding} label={t('common_theme_looping_toggle_title')} checked={selectedTheme.looping} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, looping: !selectedTheme.looping }); }} />
+                                    <Toggle className={togglePadding} label={'Looping'} checked={selectedTheme.looping} onChange={() => { setEditedSettings(true); setSelectedTheme({ ...selectedTheme, looping: !selectedTheme.looping }); }} />
                                     <IconStyle id="loopingTooltip">info_outlined</IconStyle>
-                                    <Tooltip leftPositionValueToZero target="loopingTooltip">{t('common_theme_looping_toggle_tooltip')}</Tooltip>
+                                    <Tooltip leftPositionValueToZero target="loopingTooltip">{t('common_theme_looping_toggle_title')}</Tooltip>
                                 </ControlToggleContainer>
 
                             </DisabledSection>
