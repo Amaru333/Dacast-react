@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
+import { world } from "../../../../constants/CountriesList";
 import { Action } from "./actions";
 import { ActionTypes, AnalyticsRealTimeInitialState, AnalyticsRealTimeState } from "./types";
-import { CountriesDetail } from '../../../../constants/CountriesDetails';
 
 const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeInitialState, action: Action) => {
     switch (action.type) {
@@ -38,12 +38,12 @@ const reducer: Reducer<AnalyticsRealTimeState> = (state = AnalyticsRealTimeIniti
                     playsPerLocation: {
                         data: Object.entries(action.payload.data.playtimePerCountry).map(item => {
                         //data: Object.entries(country).map(item => {
-                            const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === item[0]);
+                            const assosiatedCountry = world.features.find(element => element.id === item[0]);
                             return {
-                                city: assosiatedCountry ? assosiatedCountry["\"Country\""] : "Unknown",
+                                city: assosiatedCountry ? assosiatedCountry.properties.name : "Unknown",
                                 position:{
-                                    latitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Latitude(average)\""]) : 0,
-                                    longitude: assosiatedCountry ? parseInt(assosiatedCountry["\"Longitude(average)\""]) : 0
+                                    latitude: 0,
+                                    longitude: 0
                                 },
                                 consumedMB: item[1]
                             }
