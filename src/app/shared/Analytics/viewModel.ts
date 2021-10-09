@@ -1,7 +1,7 @@
 import { DimensionItemType, GetAnalyticsOutput, GetContentAnalyticsResultItemOutput } from "../../../DacastSdk/analytics";
 import { formatTimeValue, tsToLocaleDate } from "../../../utils/formatUtils";
 import { dateAdd } from "../../../utils/services/date/dateService";
-import { CountriesDetail } from "../../constants/CountriesDetails";
+import { world } from "../../constants/CountriesList";
 import { AccountAnalyticsData } from "../../redux-flow/store/Analytics/Data/types";
 import { AccountAnalyticsParameters, AnalyticsAccountDimensions } from "../../redux-flow/store/Analytics/types";
 import { AnalyticsDimensions, AnalyticsMetricInfo, AudienceAnalyticsState, ContentAnalyticsParameters, RealTimeAnalyticsState, SalesAnalyticsState, TimeRangeAnalytics, WatchAnalyticsState } from "../../redux-flow/store/Content/Analytics/types";
@@ -203,14 +203,14 @@ export const formatRealTimeResults = (response: GetContentAnalyticsResultItemOut
             default:
                 if (metric.data.length && formattedData.playsByLocation) {
                     metric.data.forEach(data => {
-                        const assosiatedCountry = CountriesDetail.find(element => element["\"Alpha-2code\""] === data.dimension_type.value);
+                        const assosiatedCountry = world.features.find(element => element.id === data.dimension_type.value);
                         if (assosiatedCountry) {
                             formattedData.playsByLocation = {
                                 data: [...(formattedData.playsByLocation ? formattedData.playsByLocation.data : []), {
                                     city: data.dimension_type.type,
                                     position: {
-                                        latitude: parseInt(assosiatedCountry["\"Latitude(average)\""]),
-                                        longitude: parseInt(assosiatedCountry["\"Longitude(average)\""])
+                                        latitude: 0,
+                                        longitude: 0
                                     },
                                     value: [data.dimension_sum]
                                 }],
@@ -321,7 +321,7 @@ export const formatMetricResult = (response: GetAnalyticsOutput, input: ContentA
                     case 'COUNTRY':
                         if (data.dimension_type.value !== 'Unknown') {
                             let index = formattedData.location.data.findIndex(obj => obj.city === data.dimension_type.value);
-                            let indexTable = formattedData.location.table.findIndex(obj => CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string) && CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)['"Country"'] === obj.label ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value as string)["\"Country\""] : 'Unknown');
+                            let indexTable = formattedData.location.table.findIndex(obj => world.features.find(e => e.id === data.dimension_type.value as string) && world.features.find(e => e.id === data.dimension_type.value as string).properties.name === obj.label ? world.features.find(e => e.id === data.dimension_type.value as string).properties.name : 'Unknown');
                             if(index === -1 ) {
                                 formattedData.location = {
                                     data: [...(formattedData.location ? formattedData.location.data : []),
@@ -335,7 +335,7 @@ export const formatMetricResult = (response: GetAnalyticsOutput, input: ContentA
                                         label: [metricToFilter === 'WATCHTIME' ? formatTimeValue([data.dimension_sum]).unitLong : metricToFilter.toLowerCase()]
                                     }
                                     ],
-                                    table: [...(formattedData.location.table ? formattedData.location.table : []), { label: CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value) ? CountriesDetail.find(e => e["\"Alpha-3code\""] === data.dimension_type.value)["\"Country\""] : 'Unknown', data: data.dimension_sum }  ]
+                                    table: [...(formattedData.location.table ? formattedData.location.table : []), { label: world.features.find(e => e.id === data.dimension_type.value) ? world.features.find(e => e.id === data.dimension_type.value).properties.name : 'Unknown', data: data.dimension_sum }  ]
                                 }
                             } else {
                                 formattedData.location.data[index].value.push(data.dimension_sum)
