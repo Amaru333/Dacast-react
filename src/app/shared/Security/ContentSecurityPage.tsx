@@ -249,7 +249,7 @@ export const ContentSecurityPage = (props: ContentSecurityComponentProps) => {
                     </div>
 
                     {
-                      userToken.getPrivilege('privilege-aes-beta') &&
+                      userToken.getPrivilege('privilege-aes') &&
                       props.contentType == "vod" &&
                       <div>
                         <Divider className="p1 mb2" />
