@@ -5,7 +5,7 @@ import { ContentItem, SearchResult } from './types';
 
 export const formatGetContentListInput = (qs: string): string => {
     if(!qs) {
-        return 'status=online,offline&page=1&per-page=10'
+        return 'status=online,offline&page=1&per-page=10&sort-by=created-at-desc'
     }
 
     let objectFromQs = Object.fromEntries(new URLSearchParams(qs))
