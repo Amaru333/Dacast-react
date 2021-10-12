@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { DropdownSingle } from "../../../components/FormsComponents/Dropdown/DropdownSingle";
 import { IconStyle } from "../../../shared/Common/Icon";
 
 export default function RTCSettings() {
@@ -114,22 +115,28 @@ export default function RTCSettings() {
             </p>
 
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <p style={{ fontSize: "16px", fontWeight: "500" }}>Microphone</p>
-              <Select>
-                <option>Default</option>
-                <option>Front Panel</option>
-              </Select>
+              <DropdownSingle
+                id="Microphone"
+                list={[
+                  { title: "Default", data: "default" },
+                  { title: "Front Panel", data: "front_panel" },
+                ]}
+                dropdownTitle={"Microphone"}
+              />
               <Button>Test Mic</Button>
               <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
                 mic
               </IconStyle>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <p style={{ fontSize: "16px", fontWeight: "500" }}>Speaker</p>
-              <Select>
-                <option>Default</option>
-                <option>Front Panel</option>
-              </Select>
+              <DropdownSingle
+                id="Speaker"
+                list={[
+                  { title: "Default", data: "default" },
+                  { title: "Front Panel", data: "front_panel" },
+                ]}
+                dropdownTitle={"Speaker"}
+              />
               <Button>Test Speakers</Button>
               <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
                 volume_up

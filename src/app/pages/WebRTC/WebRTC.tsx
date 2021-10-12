@@ -4,16 +4,12 @@ import Logo from "../../../../public/assets/logo_white.png";
 import { IconStyle } from "../../../shared/Common/Icon";
 import { Text } from "../../../components/Typography/Text";
 import RTCSettings from "./RTCSettings";
-import Participants from "./Participants";
-import RecordStream from "./PopUps/RecordStream";
-import ShareScreenPermission from "./PopUps/ShareScreenPermission";
-import LeftStream from "./PopUps/LeftStream";
-import StreamEnded from "./PopUps/StreamEnded";
-import ThumbnailPopUp from "./PopUps/ThumbnailPopUp";
 import ParticipantBlock from "./ParticipantBlock";
 import { Modal } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 export default function WebRTCPage() {
+  const history = useHistory();
   const [playing, setPlaying] = React.useState<boolean>(false);
 
   const [toggleMute, setToggleMute] = React.useState<boolean>(false);
@@ -118,8 +114,11 @@ export default function WebRTCPage() {
             <p style={{ marginLeft: "10px" }}>New live stream</p>
             <div>
               <IconStyle
-                style={{ color: "white", marginTop: "7px" }}
+                style={{ color: "white", marginTop: "7px", cursor: "pointer" }}
                 className="mr1 self-center"
+                onClick={() => {
+                  history.push("/");
+                }}
               >
                 exit_to_app
               </IconStyle>
@@ -308,7 +307,13 @@ export default function WebRTCPage() {
             You left the stream
           </p>
           <div>
-            <PrimaryButton>Close</PrimaryButton>
+            <PrimaryButton
+              onClick={() => {
+                history.push("/");
+              }}
+            >
+              Close
+            </PrimaryButton>
             <SecondaryButton onClick={closeLeaveStreamPopUp}>
               Rejoin Stream
             </SecondaryButton>
@@ -509,7 +514,7 @@ export const PopupContainer = styled.div<{}>`
   background-color: #fff;
   color: "black";
   border-radius: 4px;
-  padding: 40px;
+  padding: 10px 40px 10px 40px;
   font-weight: 500px;
   margin: auto;
   margin-top: 100px;
