@@ -16,9 +16,9 @@ export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails, con
 
     let m3u8Privilege = props.contentType === 'live' ? userToken.getPrivilege('privilege-unsecure-m3u8') : userToken.getPrivilege('privilege-unsecure-m3u8-vod');
     const advancedLinksOptions = [
-        { id: "thumbnail", label: "common_content_general_images_thumbnail_title", enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
-        { id: "splashscreen", label: "common_content_general_images_splashscreen_title", enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
-        { id: "poster", label: "common_content_general_images_poster_title", enabled: true, link: props.contentDetails.poster ? props.contentDetails.poster.url : '' },
+        { id: "thumbnail", label: t("common_content_general_images_thumbnail_title"), enabled: true, link: props.contentDetails.thumbnail ? props.contentDetails.thumbnail.url : '' },
+        { id: "splashscreen", label: t("common_content_general_images_splashscreen_title"), enabled: true, link: props.contentDetails.splashscreen ? props.contentDetails.splashscreen.url : '' },
+        { id: "poster", label: t("common_content_general_images_poster_title"), enabled: true, link: props.contentDetails.poster ? props.contentDetails.poster.url : '' },
         { id: "m3u8", label: "M3U8", enabled: m3u8Privilege && props.contentDetails.unsecureM3u8Url, link: props.contentDetails.unsecureM3u8Url ? props.contentDetails.unsecureM3u8Url : "" }
     ]
 
@@ -37,7 +37,7 @@ export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails, con
                                     <div key={item.id} className='flex flex-column col col-6 mt2'>
                                         <LinkBoxContainer>
                                             <LinkBoxLabel>
-                                                <Text size={14} weight="med">{t('item.label')}</Text>
+                                                <Text size={14} weight="med">{item.label}</Text>
                                             </LinkBoxLabel>
                                             <LinkBox>
                                                 <LinkText size={14}>
@@ -55,7 +55,7 @@ export const GeneralAdvancedLinks = (props: {contentDetails: ContentDetails, con
                             return (
                                 <LinkBoxContainer key={item.id} className="col col-6 mt2">
                                     <LinkBoxLabel>
-                                        <Text size={14} weight="med">{t('item.label')}</Text>
+                                        <Text size={14} weight="med">{item.label}</Text>
                                     </LinkBoxLabel>
                                     <LinkBox>
                                         <LinkText size={14}>
