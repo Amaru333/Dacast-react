@@ -14,11 +14,12 @@ import { ContentType } from '../../redux-flow/store/Common/types';
 import { useTranslation } from 'react-i18next';
 
 export const GeneralSharing = (props: {contentDetails: ContentDetails, contentType: ContentType}) => {
-
     const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     const expoBaseUrl = isProduction() ? 'https://dacastexpo.com' : 'https://singularity-expo.dacast.com'
     const [previewModalOpen, setPreviewModalOpen] = React.useState<boolean>(false)
     const { t } = useTranslation()
+    //@ts-ignore
+    const baseIframeUrl = props.contentDetails.cname || process.env.BASE_IFRAME_URL
     const handleShareLinkClick = (sharingString: string) => {
         switch(props.contentType) {
             case 'expo':
@@ -99,9 +100,9 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                         </LinkBoxLabel>
                         <LinkBox>
                             <LinkText size={14} weight="reg">
-                            {`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
+                            {`<iframe src="https://${baseIframeUrl}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`}
                             </LinkText>
-                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => {updateClipboard(`<iframe src="https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied');handleShareLinkClick('iframe')}}>file_copy</IconStyle>
+                            <IconStyle className='pointer' id="copyIframeEmbedTooltip" onClick={() => {updateClipboard(`<iframe src="https://${baseIframeUrl}/${props.contentType}/${accountId}/${props.contentDetails.id}" width="${props.contentDetails.embedScaling === "responsive" ? "100%" : props.contentDetails.embedSize}" height="100%" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>`, 'Iframe Embed Code Copied');handleShareLinkClick('iframe')}}>file_copy</IconStyle>
                             <Tooltip target="copyIframeEmbedTooltip">{t('common_tooltip_copy_to_clipboard_message')}</Tooltip>
                         </LinkBox>
                     </div>
@@ -110,8 +111,8 @@ export const GeneralSharing = (props: {contentDetails: ContentDetails, contentTy
                             <Text size={14} weight="med">{t('common_content_general_share_link_title')}</Text>
                         </LinkBoxLabel>
                         <LinkBox>
-                            <LinkText size={14} weight="reg">{`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}`}</LinkText>
-                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => {updateClipboard(`https://${process.env.BASE_IFRAME_URL}/${props.contentType}/${accountId}/${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')} }>file_copy</IconStyle>
+                            <LinkText size={14} weight="reg">{`https://${baseIframeUrl}/${props.contentType}/${accountId}/${props.contentDetails.id}`}</LinkText>
+                            <IconStyle className='pointer' id="copyShareLinkTooltip" onClick={() => {updateClipboard(`https://${baseIframeUrl}/${props.contentType}/${accountId}/${props.contentDetails.id}`, 'Share Link Copied');handleShareLinkClick('link')} }>file_copy</IconStyle>
                             <Tooltip target="copyShareLinkTooltip">{t('common_tooltip_copy_to_clipboard_message')}</Tooltip>
                         </LinkBox>
                     </div>

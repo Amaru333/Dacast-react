@@ -37,7 +37,8 @@ export const formatGetVideoDetailsOutput = (contentType: ContentType) => (data: 
         poster: formatAssetType(data.poster),
         subtitles: data.subtitles,
         uploadurl: null,
-        contentType: contentType
+        contentType: contentType,
+        cname: data.cname,
     }
 
     return formattedData
@@ -93,6 +94,7 @@ export const formatGetLiveDetailsOutput = (contentType: ContentType) => (data: G
         advancedStreaming: data.advancedStreaming,
         china: data.china,
         advancedStreamingStatus: data.advancedStreamingStatus as any,
+        cname: data.cname,
     }
 
     return formattedData
@@ -136,7 +138,8 @@ export const formatGetPlaylistDetailsOutput = (contentType: ContentType) => (dat
         thumbnail: formatAssetType(data.thumbnail),
         poster: formatAssetType(data.poster),
         uploadurl: null,
-        contentType: contentType
+        contentType: contentType,
+        cname: data.cname,
     }
 
     return formattedData

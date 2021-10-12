@@ -46,6 +46,7 @@ export interface VodDetails {
     uploadurl: string;
     tempSubtitleFileId?: string;
     unsecureM3u8Url: string;
+    cname?: string;
 }
 
 export interface LiveDetails {
@@ -74,6 +75,7 @@ export interface LiveDetails {
     china: boolean
     advancedStreaming: boolean
     advancedStreamingStatus: 'starting' | 'running' | 'stopping' | 'stopped' | 'other'
+    cname?: string;
 }
 
 export interface PlaylistDetails {
@@ -89,6 +91,7 @@ export interface PlaylistDetails {
     splashscreen: AssetType
     thumbnail: AssetType
     uploadurl: string
+    cname?: string;
 }
 
 export interface ExpoDetails {

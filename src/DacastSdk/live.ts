@@ -39,6 +39,7 @@ export interface GetLiveDetailsOutput {
     advancedStreaming: boolean
     advancedStreamingStatus: string
     china: boolean
+    cname?: string
 }
 
 export type ChannelRegion = 'north-america' | 'asia-pacific' | 'europe'

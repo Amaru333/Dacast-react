@@ -14,6 +14,7 @@ export interface GetPlaylistDetailsOutput {
     splashscreen: AssetTypeEndpoint
     thumbnail: AssetTypeEndpoint
     paywallEnabled: boolean | null
+    cname?: string
 }
 
 export interface PostPlaylistInput {
