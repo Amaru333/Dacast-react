@@ -233,6 +233,11 @@ export const EditPlanPage = (props: EditPlanComponentProps & {accountId: string}
                         <Text className='pr2' size={14} weight='reg'>{props.accountPlan.inlineVodPlayback.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
                         <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.inlineVodPlayback.planValue || props.accountPlan.inlineVodPlayback.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('inlineVodPlayback', value === 'On' ? true : false)} />
                     </div>
+                    <Text className='py1' size={14} weight='med'>New Player</Text>
+                    <div className='flex items-center my1'>
+                        <Text className='pr2' size={14} weight='reg'>{props.accountPlan.newPlayer.planValue ? 'Plan: On' : 'Plan: Off'}</Text>
+                        <Tab className='my1 col col-12' orientation='horizontal' list={[makeRoute('On'), makeRoute('Off')]} tabDefaultValue={!!props.accountPlan.newPlayer.planValue || props.accountPlan.newPlayer.userValue ? 0 : 1} callback={(value: string) => handleKeyChange('newPlayer', value === 'On' ? true : false)} />
+                    </div>
                 </Card>
                 <div className='flex mt2'>
                     <Button onClick={() => setOpenConfirmationModal(true)} className='mr2' sizeButton='large' typeButton='primary' buttonColor='blue'>Save</Button>

@@ -151,6 +151,7 @@ export interface GetAccountPlanOutput {
     advancedStreaming: PlanSettingEndpoint;
     directVodDownload: PlanSettingEndpoint;
     inlineVodPlayback: PlanSettingEndpoint;
+    newPlayer: PlanSettingEndpoint;
 }
 
 export interface PutAccountPlanInput {

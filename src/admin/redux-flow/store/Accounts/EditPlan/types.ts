@@ -46,6 +46,7 @@ export interface PlanInfo {
     unsecureVod: PlanSetting;
     directVodDownload: PlanSetting;
     inlineVodPlayback: PlanSetting;
+    newPlayer: PlanSetting;
 }
 
 export interface PlanInfoPut {
