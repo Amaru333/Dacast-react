@@ -134,14 +134,14 @@ export const PresetsPage = (props: PresetsComponentProps) => {
     const emptyPricePresetTableHeader = () => {
         return {data: [
             {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>{t('common_paywall_price_table_table_body_placeholder')}</Text>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('paywall_presets_price_table_create_button')}</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
             {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>{t('common_paywall_promo_table_table_body_placeholder')}</Text>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_modal_title')}</Button>}
         ]}
     }
 

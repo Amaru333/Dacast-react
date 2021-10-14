@@ -245,7 +245,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 {priceList.length > 0 ? 
                     <Table id='pricesTable' headerBackgroundColor="gray-10" header={pricesTableHeader()} body={pricesTableBody()} />
                     :
-                    <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} body={emptyContentListBody(t('common_paywall_price_table_table_body_placeholder'))} />
+                    <Table id='pricesEmptyTable' headerBackgroundColor="gray-10" header={emptyPriceTableHeader()} />
 
                 }
                 <Divider className='my2' />
@@ -254,7 +254,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>
                 { promoList.length > 0 ?
                     <Table id='promosTable' headerBackgroundColor="gray-10" header={promosTableHeader()} body={promosTableBody()} />
-                    :
+                    :                    
                     <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} />
 
                 }
@@ -265,7 +265,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 { associatedGroupPrices.length > 0 ?
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
-                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} />
+                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody(t('common_content_paywall_group_price_table_body_placeholder'))} />
                 }
                    
             </Card>

@@ -115,7 +115,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
     const emptyGroupPriceTableHeader = () => {
         return {data: [
             {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>{t('common_paywall_price_table_table_body_placeholder')}</Text>},
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => handlePriceGroupButtonFunction()} typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => handlePriceGroupButtonFunction()} typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_price_table_create_button')}</Button>}
         ]}
     }
 
