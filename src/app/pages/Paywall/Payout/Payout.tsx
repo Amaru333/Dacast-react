@@ -19,7 +19,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 export const PayoutPage = (props: PayoutComponentProps) => {
 
-    const displayedBalance: number = props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount > 0 ? props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount : 0
+    const displayedBalance: number = props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount > 0 ? (props.payoutInfos.paywallBalance - props.payoutInfos.maxWithdrawalRequestAmount).toFixed(2) : 0
     const [displayPaymentMethodRequest, setDisplayPaymentMethodRequest] = React.useState<boolean>(false)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentMethod>(null)
     const [deletePaymentMethodWarningModalOpened, setDeletePaymentMethodWarningModalOpened] = React.useState<boolean>(false)
