@@ -178,9 +178,6 @@ const AdminContent = () => {
             <Login />
           </Route>
         )}
-        <Route exact path="/webrtc">
-          <WebRTC />
-        </Route>
         {returnRouter(AdminRoutes)}
       </Switch>
     </div>

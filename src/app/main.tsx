@@ -238,71 +238,98 @@ const AppContent = (props: { routes: any }) => {
     }
   }, [addStreamModalOpen, addPlaylistModalOpen]);
 
+  const isFullScreen = window.location.pathname === "/web-rtc" ? true : false;
+  console.log(isFullScreen);
+
   return (
     <>
-      <Toasts />
+      {/* <Toasts /> */}
       {userToken.isLoggedIn() ? (
         <>
-          <MainMenu
-            openExpoCreate={() => setAddExpoModalOpen(true)}
-            openAddStream={() => {
-              setAddStreamModalOpen(true);
-            }}
-            openPlaylist={() => {
-              setAddPlaylistModalOpen(true);
-            }}
-            menuLocked={menuLocked}
-            onMouseEnter={() => menuHoverOpen()}
-            onMouseLeave={() => menuHoverClose()}
-            navWidth={currentNavWidth}
-            isMobile={isMobile}
-            isOpen={isOpen}
-            setMenuLocked={setMenuLocked}
-            setOpen={setOpen}
-            className="navigation"
-            history={history}
-            routes={AppRoutes}
-          />
+          {!isFullScreen && (
+            <MainMenu
+              openExpoCreate={() => setAddExpoModalOpen(true)}
+              openAddStream={() => {
+                setAddStreamModalOpen(true);
+              }}
+              openPlaylist={() => {
+                setAddPlaylistModalOpen(true);
+              }}
+              menuLocked={menuLocked}
+              onMouseEnter={() => menuHoverOpen()}
+              onMouseLeave={() => menuHoverClose()}
+              navWidth={currentNavWidth}
+              isMobile={isMobile}
+              isOpen={isOpen}
+              setMenuLocked={setMenuLocked}
+              setOpen={setOpen}
+              className="navigation"
+              history={history}
+              routes={AppRoutes}
+            />
+          )}
           {addStreamModalOpen && (
             <AddStreamModal
               toggle={() => setAddStreamModalOpen(false)}
               opened={addStreamModalOpen === true}
             />
           )}
-          <AddPlaylistModal
-            toggle={() => setAddPlaylistModalOpen(false)}
-            opened={addPlaylistModalOpen === true}
-          />
-          <AddExpoModal
-            toggle={() => setAddExpoModalOpen(false)}
-            opened={addExpoModalOpen === true}
-          />
+          {!isFullScreen && (
+            <>
+              <AddPlaylistModal
+                toggle={() => setAddPlaylistModalOpen(false)}
+                opened={addPlaylistModalOpen === true}
+              />
+              <AddExpoModal
+                toggle={() => setAddExpoModalOpen(false)}
+                opened={addExpoModalOpen === true}
+              />
+            </>
+          )}
+          {!isFullScreen ? (
+            <>
+              <FullContent
+                isLocked={menuLocked}
+                isMobile={isMobile}
+                navBarWidth={currentNavWidth}
+                isOpen={isOpen}
+              >
+                <Header
+                  isOpen={isOpen}
+                  setOpen={setOpen}
+                  isMobile={isMobile || mobileWidth}
+                />
 
-          <FullContent
-            isLocked={menuLocked}
-            isMobile={isMobile}
-            navBarWidth={currentNavWidth}
-            isOpen={isOpen}
-          >
-            <Header
-              isOpen={isOpen}
-              setOpen={setOpen}
-              isMobile={isMobile || mobileWidth}
-            />
-            <Switch>
-              <PrivateRoute key="/" component={DashboardTest} exact path="/" />
-              {props.routes}
-            </Switch>
-          </FullContent>
+                <Switch>
+                  <PrivateRoute
+                    key="/"
+                    component={DashboardTest}
+                    exact
+                    path="/"
+                  />
+                  {props.routes}
+                </Switch>
+              </FullContent>
+            </>
+          ) : (
+            <>
+              <Switch>
+                <PrivateRoute
+                  key="/"
+                  component={DashboardTest}
+                  exact
+                  path="/"
+                />
+                {props.routes}
+              </Switch>
+            </>
+          )}
         </>
       ) : (
         <>
           <Switch>
             <Route exact key="/" path="/">
               <Login />
-            </Route>
-            <Route exact key="/web-rtc" path="/web-rtc">
-              <WebRTC />
             </Route>
             {props.routes}
           </Switch>

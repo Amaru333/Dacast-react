@@ -61,7 +61,7 @@ export default function WebRTCPage() {
   };
 
   return (
-    <div>
+    <div style={{ height: "100vh", padding: "0", margin: "0" }}>
       <RTCContainer>
         <MenuBar>
           <LogoContainer>
