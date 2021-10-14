@@ -114,7 +114,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const emptyGroupPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => handlePriceGroupButtonFunction()} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
+            {cell: <Text key='groupPricesTableHeaderName' size={14} weight='med'>{t('common_paywall_price_table_table_body_placeholder')}</Text>},
+            {cell: <Button key='groupPricesTableHeaderButton' className='right mr2 sm-show' onClick={() => handlePriceGroupButtonFunction()} typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Price Group</Button>}
         ]}
     }
 
@@ -179,7 +180,8 @@ export const GroupsPage = (props: GroupsComponentProps) => {
 
     const emptyGroupPromoTableHeader = () => {
         return {data: [
-            {cell: props.groupsInfos.prices.packages.length > 0 && <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>}
+            {cell: <Text key='groupPromosTableHeaderName' size={14} weight='med'>{t('common_paywall_promo_table_table_body_placeholder')}</Text>},
+            {cell: props.groupsInfos.prices.packages.length > 0 && <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='right mr2 sm-show'  typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>}
         ]}
     }
 
@@ -239,7 +241,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'><Trans i18nKey='paywall_groups_price_help_text'>Need help setting up a Group Price ? Visit the <a href={getKnowledgebaseLink('Group Price')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
                 <Button key='groupPricesTableHeaderButton' className='xs-show mt2 col col-12' onClick={() => {setStepperData({firststep: defaultPrice, secondStep: {...props}});setSelectedGroupPrice(null);setGroupPricesStepperOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_price_table_create_button')}</Button>
-                <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={priceList.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={priceList.length > 0 ? groupPricesTableBody() : emptyContentListBody('You have no Price Groups')} />
+                <Table id='groupPricessTable' contentLoading={isLoading} headerBackgroundColor="gray-10" header={priceList.length > 0 ? groupPricesTableHeader() : emptyGroupPriceTableHeader()} body={groupPricesTableBody()} />
                 <Divider className='my2' />
 
                 <Text className="mt1" size={20} weight='med'>{t('paywall_groups_promo_title')}</Text>
@@ -249,7 +251,7 @@ export const GroupsPage = (props: GroupsComponentProps) => {
                     <Text size={14} weight='reg' color='gray-3'><Trans i18nKey='paywall_groups_promo_help_text'>Need help setting up a Group Promo? Visit the <a href={getKnowledgebaseLink('Group Promo')} target="_blank" rel="noopener noreferrer">Knowledge Base</a></Trans></Text>
                 </div>
                 <Button key='promoGroupsTableHeaderButton' onClick={() => {setSelectedGroupPromo(null);setGroupPromosModalOpened(true)}} className='xs-show mt2 col col-12'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_groups_promo_table_create_button')}</Button>
-                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={promoList.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={promoList.length > 0 ?groupPromosTableBody() : emptyContentListBody('You must create a Price Group before you can create a Promo Group')} />
+                <Table id='groupPromosTable' headerBackgroundColor="gray-10" header={promoList.length > 0 ? groupPromosTableHeader() : emptyGroupPromoTableHeader()} body={groupPromosTableBody()} />
             </Card>
             <Modal hasClose={false} modalTitle={selectedGroupPromo ? 'Edit Promo Group' : t('paywall_groups_promo_table_create_button')} opened={groupPromosModalOpened} toggle={() => setGroupPromosModalOpened(false)}>
                 {

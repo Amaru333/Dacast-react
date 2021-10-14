@@ -184,13 +184,15 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
     const emptyPriceTableHeader = () => {
         return {data: [
-            {cell: <Button key='pricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_price_table_new_price_button_text')}</Button>}
+            {cell: <Text key='pricesTableHeaderType' size={14} weight='med'>{t('common_paywall_price_table_table_body_placeholder')}</Text>},
+            {cell: <Button key='pricesTableHeaderButton' className='right mr2' onClick={() => {setSelectedPrice(null);setPriceModalOpened(true)}} typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_price_table_new_price_button_text')}</Button>}
         ]}
     }
 
     const emptyPromoTableHeader = () => {
         return {data: [
-            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>}
+            {cell: <Text key='promosTableHeaderType' size={14} weight='med'>{t('common_paywall_promo_table_table_body_placeholder')}</Text>},
+            {cell: <Button key='promosTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right mr2' typeButton='primary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>}
         ]}
     }
 
@@ -252,8 +254,8 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
                 <Button onClick={() => {setSelectedPromo(null);setPromoModalOpened(true)}} className='right xs-show mt2'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('common_paywall_promo_table_new_promo_button_text')}</Button>
                 { promoList.length > 0 ?
                     <Table id='promosTable' headerBackgroundColor="gray-10" header={promosTableHeader()} body={promosTableBody()} />
-                    :                    
-                    <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} body={emptyContentListBody(t('common_paywall_promo_table_table_body_placeholder'))} />
+                    :
+                    <Table id='promosEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoTableHeader()} />
 
                 }
 
@@ -263,7 +265,7 @@ export const ContentPaywallPage = (props: ContentPaywallComponentProps) => {
 
                 { associatedGroupPrices.length > 0 ?
                     <Table id='groupPricesTable' headerBackgroundColor="gray-10" header={groupPricesTableHeader()} body={groupPricesTableBody()} />
-                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} body={emptyContentListBody(t('common_content_paywall_group_price_table_body_placeholder'))} />
+                    : <Table id='associatedGroupPricesEmptyTable' headerBackgroundColor="gray-10" header={emptyGroupPriceTableHeader()} />
                 }
                    
             </Card>

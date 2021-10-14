@@ -133,15 +133,15 @@ export const PresetsPage = (props: PresetsComponentProps) => {
 
     const emptyPricePresetTableHeader = () => {
         return {data: [
-            {cell: <span key={"emptyPricePresetTableHeader"}></span>},
-            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
+            {cell: <Text key='pricePresetsTableHeaderName' size={14} weight='med'>{t('common_paywall_price_table_table_body_placeholder')}</Text>},
+            {cell: <Button key='pricePresetsTableHeaderButton' className='right mr2 sm-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Price Preset</Button>}
         ]}
     }
 
     const emptyPromoPresetTableHeader = () => {
         return {data: [
-            {cell: <span key={"emptyPromoPresetTableHeader"}></span>},
-            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
+            {cell: <Text key='promoPresetsTableHeaderName' size={14} weight='med'>{t('common_paywall_promo_table_table_body_placeholder')}</Text>},
+            {cell: <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='right mr2 sm-show'  typeButton='primary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>}
         ]}
     }
 
@@ -164,7 +164,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 </div>
                 <Button key='pricePresetsTableHeaderButton' className='col col-12 xs-show' onClick={() => {setSelectedPreset(null);setPricePresetsModalOpened(true)}} typeButton='secondary' sizeButton='xs' buttonColor='blue'>{t('paywall_presets_price_table_create_button')}</Button>
                 {!props.presetsInfos.presets || props.presetsInfos.presets.totalItems === 0 ?
-                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} body={emptyPresetTableBody('You have no Price Presets')} />
+                    <Table id='pricePresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPricePresetTableHeader()} />
                     :
                     <>
                         <Table id='pricePresetsTable' headerBackgroundColor="gray-10" header={pricePresetsTableHeader()} body={pricePresetsTableBody()} />
@@ -182,7 +182,7 @@ export const PresetsPage = (props: PresetsComponentProps) => {
                 </div>
                 <Button key='promoPresetsTableHeaderButton' onClick={() => {setSelectedPromo(null);setPromoPresetsModalOpened(true)}} className='xs-show'  typeButton='secondary' sizeButton='xs' buttonColor='blue'>Create Promo Preset</Button>
                 { !props.presetsInfos.promos || props.presetsInfos.promos.totalItems === 0 ?
-                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} body={emptyPresetTableBody('You have no Promo Presets')} />
+                    <Table id='promoPresetsEmptyTable' headerBackgroundColor="gray-10" header={emptyPromoPresetTableHeader()} />
                     :
                     <>
                         <Table id='promoPresetsTable' headerBackgroundColor="gray-10" header={promoPresetsTableHeader()} body={promoPresetsTableBody()} />
