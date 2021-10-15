@@ -179,7 +179,7 @@ const AppPlaceholder = (props: {currentNavWidth: string}) => {
                 <SectionStyle>
                     {AppRoutes.filter(f => f.iconName).map(r => {
                         return (
-                            <ContainerElementStyle icon={r.iconName} isOpen isLocked={false} isMobile={false}>
+                            <ContainerElementStyle className='my1' key={r.name} icon={r.iconName} isOpen isLocked={false} isMobile={false}>
                                 <IconStyle className="noTransition flex pr2">{r.iconName}</IconStyle>
                                 <span style={{width: 120, backgroundColor: '#C8D1E0'}}></span>
                             </ContainerElementStyle>
@@ -280,7 +280,7 @@ const AppContent = (props: { routes: any }) => {
                             {props.routes}
                         </Switch>
                     </FullContent>
-                    </React.Suspense>
+                </React.Suspense>
                 </>
                 :
                 <>
