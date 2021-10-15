@@ -58,7 +58,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                 ...newPromoPreset,
                 startDate: tsToUtc(startDate, newPromoPreset.timezone, new Date(startDate * 1000)),
                 endDate: tsToUtc(endDate, newPromoPreset.timezone, new Date(endDate * 1000)),
-                discountApplied: newPromoPreset.discountApplied.toLowerCase(),
+                discountApplied: newPromoPreset.discountApplied,
                 assignedContentIds: [`${accountId}-${props.contentType}-${props.contentId}`],
                 assignedGroupIds: [],
                 name: null,
@@ -135,7 +135,7 @@ export const ContentPromoPresetsModal = (props: { contentType: ContentType; cont
                         callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, timezone: item.title.split(' ')[0] })} list={timezoneDropdownList} />
                 }
 
-                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={t(discountAppliedDropdownList.find(f => f.data.id === newPromoPreset.discountApplied).title)} className={ClassHalfXsFullMd} dropdownTitle={t('common_paywall_promo_modal_discount_applied_dropdown_title')} callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.data.id })} list={discountAppliedDropdownList.map(p => {return {title: t(p.title), data: {...p.data}}})} />
+                <DropdownSingle id='newPromoPresetDiscountAppliedDropdown' dropdownDefaultSelect={t(discountAppliedDropdownList.find(f => f.data.id === newPromoPreset.discountApplied) ? discountAppliedDropdownList.find(f => f.data.id === newPromoPreset.discountApplied).title : discountAppliedDropdownList.find(f => f.data.id === 'Once').title)} className={ClassHalfXsFullMd} dropdownTitle={t('common_paywall_promo_modal_discount_applied_dropdown_title')} callback={(item: DropdownSingleListItem) => setNewPromoPreset({ ...newPromoPreset, discountApplied: item.data.id })} list={discountAppliedDropdownList.map(p => {return {title: t(p.title), data: {...p.data}}})} />
             </div>
             <div className='col col-12 mb2'>
                 <Button

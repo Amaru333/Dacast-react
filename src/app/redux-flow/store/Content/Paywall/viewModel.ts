@@ -230,7 +230,7 @@ export const formatPostContentPromoInput = (data: {promo: Promo; contentId: stri
         alphanumericCode: data.promo.alphanumericCode,
         discount: data.promo.discount,
         limit: data.promo.limit,
-        discountApplied: data.promo.discountApplied,
+        discountApplied: data.promo.discountApplied.toLowerCase(),
         assignedContentIds: data.promo.assignedContentIds,
         assignedGroupIds: []
     }
@@ -265,7 +265,7 @@ export const formatPutContentPromoInput = (data: {promo: Promo; contentId: strin
         alphanumericCode: data.promo.alphanumericCode,
         discount: data.promo.discount,
         limit: data.promo.limit,
-        discountApplied: data.promo.discountApplied,
+        discountApplied: data.promo.discountApplied.toLowerCase(),
         assignedContentIds: data.promo.assignedContentIds,
         assignedGroupIds: []
     }
