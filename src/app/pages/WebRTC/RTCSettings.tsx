@@ -3,25 +3,8 @@ import styled from "styled-components";
 import { DropdownSingle } from "../../../components/FormsComponents/Dropdown/DropdownSingle";
 import { IconStyle } from "../../../shared/Common/Icon";
 
-export default function RTCSettings() {
+export default function RTCSettings(props) {
   const [activeTab, setActiveTab] = React.useState<string>("audio");
-
-  //   const startMedia = () => {
-  //     navigator.getUserMedia(
-  //       {
-  //         video: true,
-  //         audio: true,
-  //       },
-  //       (stream: any) => {
-  //         let media = document.getElementsByClassName("media_feed")[0];
-  //         if (media) {
-  //           media.srcObject = stream;
-  //         }
-  //       },
-  //       (err: any) => console.log(err)
-  //     );
-  //   };
-
   navigator.getUserMedia(
     {
       video: true,
@@ -35,6 +18,8 @@ export default function RTCSettings() {
     },
     (err: any) => console.log(err)
   );
+
+  const [testMic, setTestMic] = React.useState<boolean>(false);
 
   return (
     <SettingContainer>
@@ -109,7 +94,11 @@ export default function RTCSettings() {
                 textAlign: "right",
               }}
             >
-              <IconStyle style={{ color: "black" }} className="mr1 self-center">
+              <IconStyle
+                style={{ color: "black", cursor: "pointer" }}
+                className="mr1 self-center"
+                onClick={props.onClose}
+              >
                 close
               </IconStyle>
             </p>
@@ -123,7 +112,14 @@ export default function RTCSettings() {
                 ]}
                 dropdownTitle={"Microphone"}
               />
-              <Button>Test Mic</Button>
+              <Button onClick={() => setTestMic(!testMic)}>Test Mic</Button>
+              {testMic && (
+                <video
+                  autoPlay
+                  style={{ visibility: "hidden", height: "0px", width: "0px" }}
+                  className="media_feed"
+                ></video>
+              )}
               <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
                 mic
               </IconStyle>
@@ -155,7 +151,11 @@ export default function RTCSettings() {
                 textAlign: "right",
               }}
             >
-              <IconStyle style={{ color: "black" }} className="mr1 self-center">
+              <IconStyle
+                style={{ color: "black", cursor: "pointer" }}
+                className="mr1 self-center"
+                onClick={props.onClose}
+              >
                 close
               </IconStyle>
             </p>
@@ -169,11 +169,17 @@ export default function RTCSettings() {
               }}
             ></video>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <p style={{ fontSize: "16px", fontWeight: "500" }}>Camera</p>
-              <Select>
-                <option>Face Time Built In HD</option>
-                <option>Default</option>
-              </Select>
+              <DropdownSingle
+                id="Camera"
+                list={[
+                  { title: "Default", data: "default" },
+                  {
+                    title: "Face Time Built In HD",
+                    data: "face_time_built_in_hd",
+                  },
+                ]}
+                dropdownTitle={"Camera"}
+              />
             </div>
           </div>
         </VideoController>

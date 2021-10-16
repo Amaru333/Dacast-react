@@ -243,7 +243,7 @@ const AppContent = (props: { routes: any }) => {
 
   return (
     <>
-      {/* <Toasts /> */}
+      <Toasts />
       {userToken.isLoggedIn() ? (
         <>
           {!isFullScreen && (

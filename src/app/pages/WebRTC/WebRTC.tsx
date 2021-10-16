@@ -282,8 +282,8 @@ export default function WebRTCPage() {
           </>
         )}
       </RTCContainer>
-      <Modal open={settingsOpen} onClose={handleSettingsOpen}>
-        <RTCSettings />
+      <Modal open={settingsOpen}>
+        <RTCSettings onClose={handleSettingsOpen} />
       </Modal>
       <Modal open={recordLiveStreamPopUp} onClose={closeRecordLiveStreamPopUp}>
         <PopupContainer>
@@ -301,7 +301,7 @@ export default function WebRTCPage() {
           </div>
         </PopupContainer>
       </Modal>
-      <Modal open={leaveStreamPopUp} onClose={closeLeaveStreamPopUp}>
+      <Modal open={leaveStreamPopUp}>
         <PopupContainer style={{ height: "152px" }}>
           <p style={{ fontSize: "24px", margin: "20px 0px 40px 0px" }}>
             You left the stream
@@ -320,10 +320,7 @@ export default function WebRTCPage() {
           </div>
         </PopupContainer>
       </Modal>
-      <Modal
-        open={screenSharePermissionPopUp}
-        onClose={closeScreenSharePermissionPopUp}
-      >
+      <Modal open={screenSharePermissionPopUp}>
         <PopupContainer>
           <p style={{ fontSize: "24px", margin: "50px 0px 0px 0px" }}>
             Allow app.dacast.com to

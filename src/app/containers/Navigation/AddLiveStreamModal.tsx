@@ -6,6 +6,7 @@ import { Input } from "../../../components/FormsComponents/Input/Input";
 import { getKnowledgebaseLink } from "../../constants/KnowledgbaseLinks";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { DropdownSingle } from "../../../components/FormsComponents/Dropdown/DropdownSingle";
 
 export default function AddLiveStreamModal(props: {
   toggle: () => void;
@@ -35,6 +36,21 @@ export default function AddLiveStreamModal(props: {
           className="col col-12 mt1"
           label="Title"
           style={{ marginBottom: "20px" }}
+        />
+        <DropdownSingle
+          id="Source Region"
+          list={[
+            { title: "Americas", data: "americas" },
+            {
+              title: "Austrilia and Asia Pacific",
+              data: "austrilia_and_asia_pacific",
+            },
+            {
+              title: "Europe, Middle East & Africa",
+              data: "europe_middle_east_africa",
+            },
+          ]}
+          dropdownTitle={"Source Region"}
         />
         <Button
           onClick={() => {
