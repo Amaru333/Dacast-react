@@ -214,7 +214,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handlePricingIframeEvents = event => {
-        if (env === 'production' && event.origin !== pricingIframeBaseUrl) {
+        if (env === 'production' && event.origin !== pricingIframeUrl) {
             return
         }
         try {
