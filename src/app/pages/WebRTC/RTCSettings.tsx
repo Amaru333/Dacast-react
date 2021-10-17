@@ -5,6 +5,8 @@ import { IconStyle } from "../../../shared/Common/Icon";
 
 export default function RTCSettings(props) {
   const [activeTab, setActiveTab] = React.useState<string>("audio");
+  const [recording, setRecording] = React.useState<boolean>(false);
+  const [playing, setPlaying] = React.useState<boolean>(false);
   navigator.getUserMedia(
     {
       video: true,
@@ -112,7 +114,23 @@ export default function RTCSettings(props) {
                 ]}
                 dropdownTitle={"Microphone"}
               />
-              <Button onClick={() => setTestMic(!testMic)}>Test Mic</Button>
+              {recording === false && playing === false ? (
+                <Button
+                  onClick={() => {
+                    setTestMic(!testMic);
+                    setRecording(true);
+                  }}
+                >
+                  Test Mic
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => setRecording(false)}
+                  style={{ background: "#B6C2F8" }}
+                >
+                  Recording
+                </Button>
+              )}
               {testMic && (
                 <video
                   autoPlay

@@ -14,6 +14,7 @@ export default function WebRTCPage() {
 
   const [toggleMute, setToggleMute] = React.useState<boolean>(false);
   const [toggleCam, setToggleCam] = React.useState<boolean>(false);
+  const [startSession, setStartSession] = React.useState<boolean>(false);
 
   const [settingsOpen, setSettingsOpen] = React.useState<boolean>(false);
   const handleSettingsOpen = () => {
@@ -228,13 +229,24 @@ export default function WebRTCPage() {
                 <ButtonContainer
                   style={{ padding: "0px", alignSelf: "center" }}
                 >
-                  <Button
-                    onClick={() => {
-                      setLeaveStreamPopUp(true);
-                    }}
-                  >
-                    Leave
-                  </Button>
+                  {startSession === true ? (
+                    <Button
+                      onClick={() => {
+                        setLeaveStreamPopUp(true);
+                      }}
+                    >
+                      Leave
+                    </Button>
+                  ) : (
+                    <Button
+                      style={{ background: "#4967EE" }}
+                      onClick={() => {
+                        setStartSession(true);
+                      }}
+                    >
+                      Start
+                    </Button>
+                  )}
                 </ButtonContainer>
               </SettingGroup>
               <SettingGroup>

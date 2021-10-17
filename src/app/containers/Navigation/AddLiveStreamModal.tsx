@@ -29,7 +29,6 @@ export default function AddLiveStreamModal(props: {
             Knowledge Base
           </a>
         </Bubble>
-
         <Input
           placeholder="My Live Stream"
           id="liveStreamModalInput"
@@ -37,6 +36,17 @@ export default function AddLiveStreamModal(props: {
           label="Title"
           style={{ marginBottom: "20px" }}
         />
+        <p
+          style={{
+            fontSize: "14px",
+            fontFamily: "Roboto",
+            color: "#222F3E",
+            fontWeight: "500",
+            margin: "0px",
+          }}
+        >
+          Source Region
+        </p>
         <DropdownSingle
           id="Source Region"
           list={[
@@ -50,8 +60,8 @@ export default function AddLiveStreamModal(props: {
               data: "europe_middle_east_africa",
             },
           ]}
-          dropdownTitle={"Source Region"}
         />
+        <br />
         <Button
           onClick={() => {
             history.push(`/livestreams/test/general`);

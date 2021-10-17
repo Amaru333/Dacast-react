@@ -239,7 +239,6 @@ const AppContent = (props: { routes: any }) => {
   }, [addStreamModalOpen, addPlaylistModalOpen]);
 
   const isFullScreen = window.location.pathname === "/web-rtc" ? true : false;
-  console.log(isFullScreen);
 
   return (
     <>
