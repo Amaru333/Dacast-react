@@ -7,6 +7,9 @@ export default function RTCSettings(props) {
   const [activeTab, setActiveTab] = React.useState<string>("audio");
   const [recording, setRecording] = React.useState<boolean>(false);
   const [playing, setPlaying] = React.useState<boolean>(false);
+  const [micIntensity, setMicIntensity] = React.useState(8);
+  const [speakerIntensity, setSpeakerIntensity] = React.useState(0);
+
   navigator.getUserMedia(
     {
       video: true,
@@ -124,12 +127,25 @@ export default function RTCSettings(props) {
                   Test Mic
                 </Button>
               ) : (
-                <Button
-                  onClick={() => setRecording(false)}
-                  style={{ background: "#B6C2F8" }}
-                >
-                  Recording
-                </Button>
+                <div style={{ display: "flex" }}>
+                  <Button
+                    onClick={() => setRecording(false)}
+                    style={{ background: "#B6C2F8" }}
+                  >
+                    Recording
+                  </Button>
+                  <p
+                    style={{
+                      color: "#284CEB",
+                      fontFamily: "Roboto",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      margin: "30px 0px 0px 10px",
+                    }}
+                  >
+                    Speak into your microphone
+                  </p>
+                </div>
               )}
               {testMic && (
                 <video
@@ -138,9 +154,17 @@ export default function RTCSettings(props) {
                   className="media_feed"
                 ></video>
               )}
-              <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
-                mic
-              </IconStyle>
+              <div style={{ display: "flex" }}>
+                <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+                  mic
+                </IconStyle>
+                {[...Array(micIntensity)].map((e, i) => (
+                  <GreenBar key={i} />
+                ))}
+                {[...Array(15 - micIntensity)].map((e, i) => (
+                  <GrayBar key={i} />
+                ))}
+              </div>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <DropdownSingle
@@ -152,9 +176,17 @@ export default function RTCSettings(props) {
                 dropdownTitle={"Speaker"}
               />
               <Button>Test Speakers</Button>
-              <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
-                volume_up
-              </IconStyle>
+              <div style={{ display: "flex" }}>
+                <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
+                  volume_up
+                </IconStyle>
+                {[...Array(speakerIntensity)].map((e, i) => (
+                  <GreenBar key={i} />
+                ))}
+                {[...Array(15 - speakerIntensity)].map((e, i) => (
+                  <GrayBar key={i} />
+                ))}
+              </div>
             </div>
           </div>
         </AudioController>
@@ -262,4 +294,26 @@ export const VideoController = styled.div<{}>`
   display: flex;
   flex-direction: column;
   width: 392px;
+`;
+
+export const GreenBar = styled.div<{}>`
+  width: 10px;
+  height: 24px;
+  radius: 2px;
+  background-color: #1e874b;
+  border-radius: 2px;
+  margin-right: 7px;
+  align-self: center;
+  margin-bottom: 20px;
+`;
+
+export const GrayBar = styled.div<{}>`
+  width: 10px;
+  height: 24px;
+  radius: 2px;
+  background-color: #dde3ed;
+  border-radius: 2px;
+  margin-right: 7px;
+  align-self: center;
+  margin-bottom: 20px;
 `;
