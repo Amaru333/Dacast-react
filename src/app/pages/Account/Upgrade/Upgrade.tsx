@@ -41,8 +41,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const [contactOwnerModalOpened, setContactOwnerModalOpened] = React.useState<boolean>(false)
     const history = useHistory()
     const pricingIframeRef = React.useRef(null)
-    const pricingIframeBaseUrl = env === 'production' && !isStaging() ? 'https://unified-pricing.dacast.com' : 'https://singularity-unified-pricing.dacast.com'
-    const pricingIframeUrl = `${pricingIframeBaseUrl}/index-upgrade.html`
+    const pricingIframeUrl = env === 'production' && !isStaging() ? 'https://unified-pricing.dacast.com' : 'https://singularity-unified-pricing.dacast.com'
     const [iframeHeight, setIframeHeight] = React.useState<number>(0)
     const [idleSeconds, setIdleSeconds] = React.useState(0)
     const [upgradeToastShown, setUpgradeToastShown] = React.useState(false)
@@ -215,7 +214,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     }
 
     const handlePricingIframeEvents = event => {
-        if (env === 'production' && event.origin !== pricingIframeBaseUrl) {
+        if (env === 'production' && event.origin !== pricingIframeUrl) {
             return
         }
         try {
