@@ -26,7 +26,7 @@ import { isStaging } from '../../../utils/services/player/stage';
 
 export const UpgradePage = (props: UpgradeContainerProps) => {
     const env = process.env.NODE_ENV || 'development'
-    const displayCalculator = !!getUrlParam('calculator')
+    const displayCalculator = getUrlParam('calculator') ? true : false
     const defaultCurrency: string = localStorage.getItem('currency') ? localStorage.getItem('currency') : (props.companyInfo && props.companyInfo.country && countries[props.companyInfo.country]) ? countries[props.companyInfo.country].currency : 'USD'
     const defaultCurrentPlan = Object.values(props.planDetails).find(plan => plan.isActive)
     const upgradeStepList = [{title: 'Features', content: UpgradeFeaturesStep}, {title: 'Cart', content: UpgradeCartStep}, {title: 'Payment', content: UpgradePaymentStep}];
@@ -167,7 +167,7 @@ export const UpgradePage = (props: UpgradeContainerProps) => {
     const sendIframeOptions = () => {
         const options = {
             currentPlan: currentPlan && currentPlan.toLowerCase(),
-            selectedCurrency: selectedCurrency && selectedCurrency.data.id,
+            selectedCurrency: selectedCurrency ? selectedCurrency.data.id : 'usd',
             displayCalculator: displayCalculator,
             isUpgradePage: true
         }
