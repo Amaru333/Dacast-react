@@ -47,6 +47,7 @@ import { WidgetElement } from "./containers/Dashboard/WidgetElement";
 import { classContainer, classItemFullWidth, classItemHalfWidthContainer } from "./containers/Dashboard/DashboardStyles";
 import eventHooker from "../utils/services/event/eventHooker";
 const logo = require('../../public/assets/logo.png');
+import WebRTC from "./containers/WebRTC/WebRTC";
 
 // Any additional component props go here.
 interface MainProps {
@@ -59,27 +60,27 @@ let fastRefreshUntil = 0
 let timeoutId: NodeJS.Timeout | null = null
 const timeoutFunc = () => {
     store.dispatch(getContentListAction('vod')(null) as any)
-    if(new Date().getTime() < fastRefreshUntil) {
+    if (new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
 }
 
 const companyLogoTimeoutFunc = () => {
     store.dispatch(getCompanyPageDetailsAction(undefined))
-    if(new Date().getTime() < fastRefreshUntil) {
+    if (new Date().getTime() < fastRefreshUntil) {
         timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 }
 
 EventHooker.subscribe('EVENT_VOD_UPLOADED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) {
+    if (timeoutId === null) {
         timeoutId = setTimeout(timeoutFunc, refreshEvery)
     }
 })
 
 EventHooker.subscribe('EVENT_FORCE_LOGOUT', () => {
-    store.dispatch({type: 'USER_LOGOUT'})
+    store.dispatch({ type: 'USER_LOGOUT' })
     userToken.resetUserInfo()
     location.reload()
 })
@@ -90,15 +91,22 @@ EventHooker.subscribe('EVENT_FORCE_TOKEN_REFRESH', () => {
 
 EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
     fastRefreshUntil = new Date().getTime() + refreshSpan
-    if(timeoutId === null) {
+    if (timeoutId === null) {
         timeoutId = setTimeout(companyLogoTimeoutFunc, refreshEvery)
     }
 })
 
-export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege[]}) => {
+export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege[] }) => {
     let mobileWidth = useMedia('(max-width:780px');
+    const [livestreaming, setLiveStreaming] = React.useState<boolean>(window.location.pathname === "/livestreaming");
 
-    if (userToken.isLoggedIn()) {
+    if (livestreaming) {
+        return (
+            <Route exact key="/livestreaming" path="/livestreaming">
+                <WebRTC />
+            </Route>
+        )
+    } else if (userToken.isLoggedIn()) {
         return (
             <Route
                 path={props.path}
@@ -116,7 +124,7 @@ export const PrivateRoute = (props: { key: string; component: any; path: string;
         return <Redirect to={{
             pathname: "/login",
             state: { from: location }
-          }}  />;
+        }} />;
     }
 }
 
@@ -167,7 +175,7 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-const AppPlaceholder = (props: {currentNavWidth: string}) => {
+const AppPlaceholder = (props: { currentNavWidth: string }) => {
     return (
         <div className="noTransition">
             <ContainerStyle className="noTransition" id='scrollbarWrapper' isOpen menuLocked navWidth={props.currentNavWidth} isMobile={isMobile} >
@@ -181,7 +189,7 @@ const AppPlaceholder = (props: {currentNavWidth: string}) => {
                         return (
                             <ContainerElementStyle className='my1' key={r.name} icon={r.iconName} isOpen isLocked={false} isMobile={false}>
                                 <IconStyle className="noTransition flex pr2">{r.iconName}</IconStyle>
-                                <span style={{width: 120, backgroundColor: '#C8D1E0'}}></span>
+                                <span style={{ width: 120, backgroundColor: '#C8D1E0' }}></span>
                             </ContainerElementStyle>
                         )
                     })}
@@ -192,7 +200,7 @@ const AppPlaceholder = (props: {currentNavWidth: string}) => {
                 <HeaderStyle userType='user'>
                 </HeaderStyle>
 
-                    <Content isMobile={false}>
+                <Content isMobile={false}>
                     <React.Fragment>
                         <section id="live" className="col lg-col-6 sm-col-12 pr2">
                             <div className={classContainer}>
@@ -211,7 +219,7 @@ const AppPlaceholder = (props: {currentNavWidth: string}) => {
                             </div>
                         </section>
                     </React.Fragment>
-                    </Content>
+                </Content>
             </FullContent>
         </div>
     )
@@ -264,23 +272,23 @@ const AppContent = (props: { routes: any }) => {
     return (
         <>
             <Toasts />
-            { userToken.isLoggedIn() ?
+            {userToken.isLoggedIn() ?
                 <>
-                <React.Suspense fallback={<AppPlaceholder currentNavWidth={currentNavWidth} />}>
-                    <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
+                    <React.Suspense fallback={<AppPlaceholder currentNavWidth={currentNavWidth} />}>
+                        <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
 
-                    { addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
-                    <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
-                    <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
+                        {addStreamModalOpen && <AddStreamModal toggle={() => setAddStreamModalOpen(false)} opened={addStreamModalOpen === true} />}
+                        <AddPlaylistModal toggle={() => setAddPlaylistModalOpen(false)} opened={addPlaylistModalOpen === true} />
+                        <AddExpoModal toggle={() => setAddExpoModalOpen(false)} opened={addExpoModalOpen === true} />
 
-                    <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
-                        <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
-                        <Switch>
-                            <PrivateRoute key='/' component={DashboardTest} exact path='/' />
-                            {props.routes}
-                        </Switch>
-                    </FullContent>
-                </React.Suspense>
+                        <FullContent isLocked={menuLocked} isMobile={isMobile} navBarWidth={currentNavWidth} isOpen={isOpen}>
+                            <Header isOpen={isOpen} setOpen={setOpen} isMobile={isMobile || mobileWidth} />
+                            <Switch>
+                                <PrivateRoute key='/' component={DashboardTest} exact path='/' />
+                                {props.routes}
+                            </Switch>
+                        </FullContent>
+                    </React.Suspense>
                 </>
                 :
                 <>
@@ -314,7 +322,7 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
                     </div>
                     <div className="unsavedChangesFooter mt3">
                         <button onClick={() => props.callback(false)} className="unsavedChangesStayButton">Stay</button>
-                        <button onClick={() => {props.callback(true); if(props.message && props.message.indexOf('revert_to_lang') > -1) eventHooker.dispatch('EVENT_REVERT_LANGUAGE', props.message.split(':')[1])}} className="unsavedChangesLeaveButton">Leave</button>
+                        <button onClick={() => { props.callback(true); if (props.message && props.message.indexOf('revert_to_lang') > -1) eventHooker.dispatch('EVENT_REVERT_LANGUAGE', props.message.split(':')[1]) }} className="unsavedChangesLeaveButton">Leave</button>
                     </div>
                 </div>
                 <div className="unsavedChangesOverlay"></div>
@@ -337,12 +345,12 @@ const Main: React.FC<MainProps> = ({ store }: MainProps) => {
         return (
             props.map((route: Routes, i: number) => {
                 const routeIsLocked = userToken.isLoggedIn() && route.slug && !route.slug.filter(item => !item.associatePrivilege || userToken.getPrivilege(item.associatePrivilege)).length
-                if(route.name === 'impersonate') {
+                if (route.name === 'impersonate') {
                     return <Route key={route.path} path={route.path}><route.component /></Route>;
                 }
                 if (route.isPublic) {
                     if (userToken.isLoggedIn()) {
-                        if(
+                        if (
                             route.path !== '*' ||
                             ['/dashboard', '/dashboard/'].includes(location.pathname) ||
                             ['#!/dashboard', '#!/dashboard?', '#!/dashboard/', '#!/dashboard/?'].includes(location.hash)

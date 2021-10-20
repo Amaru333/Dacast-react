@@ -37,10 +37,10 @@ import VodSecurity from '../containers/Videos/Security';
 import VodEngagement from '../containers/Videos/Engagement';
 import Chapters from '../containers/Videos/Chapters';
 import VodPaywall from '../containers/Videos/Paywall';
-import LiveGeneral  from '../containers/Live/General';
-import LiveEngagement  from '../containers/Live/Engagement';
+import LiveGeneral from '../containers/Live/General';
+import LiveEngagement from '../containers/Live/Engagement';
 import LiveSecurity from '../containers/Live/Security';
-import LiveTheming  from '../containers/Live/Theming';
+import LiveTheming from '../containers/Live/Theming';
 import LivePaywall from '../containers/Live/Paywall';
 import LiveAnalytics from '../containers/Live/Analytics';
 import VodAnalytics from '../containers/Videos/Analytics';
@@ -66,60 +66,60 @@ import DataConsumption from '../containers/Analytics/DataConsumption';
 import DashboardNew from '../containers/Analytics/DashboardNew';
 import AnalyticsContent from '../containers/Analytics/Content';
 import AccountSelection from '../containers/Register/AccountSelection';
-
+import WebRTC from "../containers/WebRTC/WebRTC";
 
 export const AppRoutes: Routes[] = [
     {
-        path:'/login',
+        path: '/login',
         name: 'login',
         isPublic: true,
         notDisplayedInNavigation: true,
         component: Login
     },
     {
-        path:'/impersonate',
+        path: '/impersonate',
         name: 'impersonate',
         isPublic: true,
         notDisplayedInNavigation: true,
         component: Impersonate
     },
     {
-        path:'/confirm-email',
+        path: '/confirm-email',
         name: 'confirm-email',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ConfirmEmail
     },
     {
-        path:'/account-activated',
+        path: '/account-activated',
         name: 'account-activated',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ActivatedAccount
     },
     {
-        path:'/forgot-password',
+        path: '/forgot-password',
         name: 'forgot-password',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ForgotPassword
     },
     {
-        path:'/reset-password',
+        path: '/reset-password',
         name: 'reset-password',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ChangePassword
     },
     {
-        path:'/forgot-password-email',
+        path: '/forgot-password-email',
         name: 'forgot-password-email',
         notDisplayedInNavigation: true,
         isPublic: true,
         component: ForgotPasswordEmail
     },
     {
-        path:'/selectAccount',
+        path: '/selectAccount',
         name: 'selectAccount',
         notDisplayedInNavigation: true,
         isPublic: true,
@@ -558,6 +558,12 @@ export const AppRoutes: Routes[] = [
         ]
     },
     {
+        path: "/livestreaming",
+        name: "WebRTC",
+        notDisplayedInNavigation: true,
+        component: WebRTC,
+    },
+    {
         path: '/help',
         name: 'Help',
         notDisplayedInNavigation: true,
@@ -570,7 +576,7 @@ export const AppRoutes: Routes[] = [
         component: Uploader
     },
     {
-        path:'*',
+        path: '*',
         name: '404',
         isPublic: true,
         notDisplayedInNavigation: true,
