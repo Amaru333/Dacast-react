@@ -24,6 +24,7 @@ import { Toggle } from '../../../components/Toggle/toggle';
 import { InputCheckbox } from '../../../components/FormsComponents/Input/InputCheckbox';
 import { userToken } from '../../utils/services/token/tokenService';
 import { Trans, useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 
 const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInfo: BillingPageInfos }) => {
 
@@ -51,11 +52,13 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         advancedStreaming: {
             enabled: false,
             china: false
-        }
+        },
+        isWebRtc: false
     }
 
     const [streamSetupOptions, setStreamSetupOptions] = React.useState<StreamSetupOptions>(defaultStreamSetup)
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
+    const [streamMode, setStreamMode] = React.useState<'webrtc' | 'rtmp' | undefined>(undefined)
 
     const regionDropdownList = [{title: t('live_stream_create_modal_region_dropdown_option_1'), data: {id: 'Australia & Asia Pacific'}}, {title: t('live_stream_create_modal_region_dropdown_option_2'), data: {id: "Europe, Middle East & Africa"}}, {title: t('live_stream_create_modal_region_dropdown_option_3'), data: {id: "Americas"}}]
     const numberOfRenditionsList = [{title: "1 Rendition", data: 1}, {title: "2 Renditions", data: 2}, {title: "3 Renditions", data: 3}, {title: "4 Renditions", data: 4}, {title: "5 Renditions", data: 5}]
@@ -91,7 +94,8 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 region: handleRegionParse(streamSetupOptions.region),
                 renditionCount: renditionCount,
                 enabledAdvancedStreaming: streamSetupOptions.advancedStreaming.enabled,
-                china: streamSetupOptions.advancedStreaming.china
+                china: streamSetupOptions.advancedStreaming.china,
+                isWebRtc: streamMode === 'webrtc'
             }
         )
         .then((response) => {
@@ -119,9 +123,36 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
         })
     }
 
+    const liveStreamMode = () => {
+        return (
+            <>
+            <p>Select method of streaming</p>
+            <OptionContainer>
+              <ShadowBox className='mx1' onClick={() => setStreamMode('rtmp')}>
+                <IconStyle
+                  style={{ color: "#222F3E", fontSize: "30px" }}
+                  className="mb2 self-center"
+                >
+                  videocam
+                </IconStyle>
+                <b>Use Encoder</b>
+                <p>Setup required</p>
+              </ShadowBox>
+              <ShadowBox className='mx1' onClick={() => setStreamMode('webrtc')}>
+                <IconStyle style={{ color: "#222F3E", fontSize: "30px" }} className="mb2 self-center">
+                  desktop_windows
+                </IconStyle>
+                <b>Use Webcam</b>
+                <p>No setup required</p>
+              </ShadowBox>
+            </OptionContainer>
+            </>
+        )
+    }
 
-    return (
-        <Modal size="small" modalTitle={t('common_content_list_create_live_stream_button_text')} toggle={props.toggle} className={'x-visible'} opened={props.opened} hasClose={false}>
+    const liveStreamOptions = () => {
+        return (
+            <>
             <ModalContent>
                 <Bubble className="mt1" type="info">
                     <Trans i18nKey='live_stream_create_modal_help_text'>
@@ -151,7 +182,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                     </Tooltip>
                 </div>
                 {
-                    !(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') &&
+                    (!(props.billingInfo && props.billingInfo.currentPlan.displayName === '30 Day Trial') && streamMode === 'rtmp') &&
                     <div className='col col-12 mt1 flex relative' >
                         <DropdownSingle
                             dropdownTitle={t('live_stream_create_modal_renditions_dropdown_title')}
@@ -209,6 +240,18 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
                 <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >{t('common_button_text_create')}</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>{t('common_button_text_cancel')}</Button>
             </ModalFooter>
+            </>
+        )
+    }
+
+
+    return (
+        <Modal hasClose size="small" modalTitle={t('common_content_list_create_live_stream_button_text')} toggle={props.toggle} className={'x-visible'} opened={props.opened}>
+            {
+                !streamMode ?
+                    liveStreamMode()
+                : liveStreamOptions()
+            }
         </Modal>
     )
 }
@@ -220,3 +263,24 @@ export function mapStateToProps(state: ApplicationState) {
 }
 
 export default connect(mapStateToProps, null)(AddStreamModal);
+
+const ShadowBox = styled.div<{}>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  width: 130px;
+  border-radius: 8px;
+  cursor: pointer
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  &:hover {
+    background-color: #edf0fe;
+  }
+`;
+
+const OptionContainer = styled.div<{}>`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+`;
+

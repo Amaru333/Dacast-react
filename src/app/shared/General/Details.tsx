@@ -13,12 +13,14 @@ import { userToken } from '../../utils/services/token/tokenService';
 import { dacastSdk } from '../../utils/services/axios/axiosClient';
 import { ContentType } from '../../redux-flow/store/Common/types';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 
 export const GeneralDetails = (props: {contentDetails: ContentDetails, localContentDetails: ContentDetails, contentType: ContentType, setHasChanged: React.Dispatch<React.SetStateAction<boolean>>, setLocalContentDetails: React.Dispatch<React.SetStateAction<ContentDetails>>, setEncoderModalOpen?: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
     const accountId = userToken.getUserInfoItem('parent-id') || userToken.getUserInfoItem('user-id')
     const { t } = useTranslation()
-
+    const history = useHistory()
+    
     function saveFile(filename: string) {
         dacastSdk.getDownloadVodUrl(props.contentDetails.id)
         .then((response) => {
@@ -52,8 +54,12 @@ export const GeneralDetails = (props: {contentDetails: ContentDetails, localCont
                         <Button onClick={() => saveFile(props.localContentDetails.title)} sizeButton="xs" typeButton="secondary">{t('video_general_download_button_text')}</Button>
                 }
                 {
-                    props.contentType === 'live' &&
+                    (props.contentType === 'live' && !props.contentDetails.isWebRtc) &&
                         <Button onClick={() => props.setEncoderModalOpen(true)} sizeButton="xs" typeButton="secondary" >{t('live_stream_general_encoder_modal_title')}</Button>
+                }
+                {
+                    (props.contentType === 'live' && props.contentDetails.isWebRtc) &&
+                        <Button onClick={() => {history.push(`/livestreaming?contentId=${props.contentDetails.id}`)}} sizeButton="small" typeButton="primary" >Go Live</Button>
                 }
             </header>
             <Toggle

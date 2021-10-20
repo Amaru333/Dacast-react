@@ -299,7 +299,7 @@ export default function RTCSettings(props) {
               <Button>Test Speakers</Button>
               <div style={{ display: "flex" }}>
                 <IconStyle style={{ color: "black" }} className="mr1 mt2 mb3">
-                  volume_up
+                  volume
                 </IconStyle>
                 {[...Array(speakerIntensity)].map((e, i) => (
                   <GreenBar key={i} />

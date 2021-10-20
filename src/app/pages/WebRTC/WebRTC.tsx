@@ -11,6 +11,8 @@ import { useHistory } from "react-router-dom";
 import { useNetwork } from "../../utils/custom-hooks/networkNavigatorHook";
 import { Toast } from "../../../components/Toast/Toast";
 import { ToastContainer } from "../../../components/Toast/ToastStyle";
+import { getUrlParam } from "../../../utils/utils";
+import { dacastSdk } from "../../utils/services/axios/axiosClient";
 
 let navigator: any = window.navigator;
 let previewStream: any;
@@ -21,6 +23,7 @@ let streamId = "2e70242133d44b5c8bce4d771b5bf522_4500";
 
 export default function WebRTCPage() {
 
+  const contentId = getUrlParam('contentId')
   let isOnline = useNetwork();
   const history = useHistory();
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -30,7 +33,7 @@ export default function WebRTCPage() {
   const [toggleCam, setToggleCam] = React.useState<boolean>(true);
   const [toggleScreen, setToggleScreen] = React.useState<boolean>(false);
   const [startSession, setStartSession] = React.useState<boolean>(false);
-
+  const [webRtcSettings, setWebRtcSetting] = React.useState<any>(null);
   const [settingsOpen, setSettingsOpen] = React.useState<boolean>(false);
   const handleSettingsOpen = () => {
     setSettingsOpen(false);
@@ -60,6 +63,15 @@ export default function WebRTCPage() {
   const handleParticipants = () => {
     setToggleParticipants(!toggleParticipants);
   };
+
+  React.useEffect(() => {
+    const fetch = async () => {
+      let result = await dacastSdk.getWebRtcSettings(contentId)
+      setWebRtcSetting(result)
+      console.log(result)
+    }
+    fetch()
+  }, [])
 
   React.useEffect(() => {
     if (webRTCAdaptor) {
@@ -253,7 +265,7 @@ export default function WebRTCPage() {
                   style={{ color: "white" }}
                   className="mr1 self-center"
                 >
-                  radio_button_checked
+                  record
                 </IconStyle>
                 <Text
                   style={{ color: "white" }}

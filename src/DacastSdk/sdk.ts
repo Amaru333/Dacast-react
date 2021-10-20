@@ -9,7 +9,7 @@ var qs = require('qs');
 import { EmbedSettings, GetEncodingRecipesOutput, GetEncodingRecipePresetsOutput, EncodingRecipeDetails, EncodingRecipeId, EncodingRecipe, EngagementSettingsEndpoint, PutAdInput, GeoRestrictionDetails, GeoRestrictionId, GeoRestrictionEndpoint, DomainControlId, DomainControlDetails, DomainControlEndpoint, GetSecuritySettingsOutput, PutSecuritySettingsInput, GetThemeSettingsOutput, ThemeSettings, ThemeId, ThemeEndpoint, GetApiKeysOutput, PostApiKeyInput, PostApiKeyOutput, PatchApiKeyInput, PatchApiKeyOutput, PostRegenerateApiKeyOutput } from './settings'
 import { isProduction } from '../app/utils/services/player/stage'
 import { GetAccountAllowancesOutput, GetAccountDetailsOutput, GetAccountPlanOutput, GetAccountsListOutput, GetAccountsTransactionsOutput, GetAccountsWithdrawalsOutput, GetJobsListOutput, GetMigratedUsersListOutput, GetMigrationJobDetailsOutput, GetPirateInfoOutput, GetWithdrawalDetailsOutput, PostAccountAllowancesInput, PostAccountTransactionInput, PostImpersonateAccountInput, PostImpersonateAccountOutput, PostStartMigrationJobInput, PostSwitchOverUsersInput, PutAccountDetailsInput, PutAccountPlanInput, PutExtendTrialInput, PutWithdrawalDetailsInput } from './admin'
-import { GetLiveDetailsOutput, PostEncoderKeyOutput, PostLiveInput, PostLiveOutput, PutLiveDetailsInput } from './live'
+import { GetLiveDetailsOutput, PostEncoderKeyOutput, PostLiveInput, PostLiveOutput, PutLiveDetailsInput, WebRtcSettings } from './live'
 import { GetDashboardGeneralInfoOutput, GetDashboardInfoOutput, GetDashboardLiveOutput, GetDashboardPaywallOutput, GetDashboardVodOutput } from './dashboard'
 import { GetDownloadVodUrlOuput, GetVideoDetailsOutput, GetVodChapterMarkersOutput, GetVodRenditionsOutput, PostUploadImageFromVideoInput, PutVideoDetailsInput, PutVodChapterMarkersInput } from './video'
 import { GetPlaylistDetailsOutput, GetPlaylistSetupOutput, PostPlaylistInput, PostPlaylistOutput, PutPlaylistDetailsInput, PutPlaylistSetupInput } from './playlist'
@@ -210,14 +210,66 @@ export class DacastSdk {
     public putExpoSetup = async (input: PutExpoSetupInput): Promise<void> => await this.axiosClient.put('/expos/' + input.id + '/setup', input.payload)
 
     public getChannels = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/channels?' + input).then(this.checkExtraData)
-    public postChannel = async (input: PostLiveInput): Promise<PostLiveOutput> => await this.axiosClient.post('/channels', input).then(this.checkExtraData)
+    public postChannel = async (input: PostLiveInput): Promise<PostLiveOutput> => {
+        if(input.isWebRtc) {
+            return Promise.resolve({id: '123-456-789'})
+        }
+        await this.axiosClient.post('/channels', 
+            { 
+                title: input.title,
+                online: input.online,
+                region: input.region,
+                renditionCount: input.renditionCount,
+                enabledAdvancedStreaming: input.enabledAdvancedStreaming,
+                china: input.china
+            })
+            .then(this.checkExtraData)
+    
+    }
     public deleteChannel = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input)
     public getChannelEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/channels/' + input + '/settings/engagement').then(this.checkExtraData)
     public putChannelEngagementSettings = async (input: PutContentEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement', input)
     public putChannelLockEngagementSettings = async (input: PutContentLockEngagementSettingsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/' + input.section + '/' + input.action)
     public putChannelAds = async (input: PutContentAdsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id + '/settings/engagement/ads', input.data)
     public deleteChannelBrandImage = async (input: string): Promise<void> => await this.axiosClient.delete('/channels/' + input + '/settings/engagement/brand-image')
-    public getChannelDetails = async (input: string): Promise<GetLiveDetailsOutput> => await this.axiosClient.get('/channels/' + input).then(this.checkExtraData)
+    public getChannelDetails = async (input: string): Promise<GetLiveDetailsOutput> => {
+        if(input === '123-456-789' || input === 'test') {
+            return Promise.resolve({
+                id: '123-456-789',
+                title: 'web RTC test',
+                description: 'test setup for web RTC stream',
+                online: true,
+                folder: false,
+                folders: [],
+                primaryPublishURL: 'rtmp://bfd383de-bd8a-4b8e-a66f-5332a32c97e4.dacastmmd.pri.lldns.net/dacastmmd', 
+                backupPublishURL: 'rtmp://bfd383de-bd8a-4b8e-a66f-5332a32c97e4.dacastmmd.pri.lldns.net/dacastmmd',
+                streamKeys: ['2e70242133d44b5c8bce4d771b5bf522_4500'],
+                recording: false,
+                username: '790163040',
+                password: '12b5f26ed330aedb',
+                shareLink: 'https://iframe.dacast.com/live/e2bec0ab-2c34-ce7c-b88b-570080e666ad/61d41249-af6f-2c4e-e7a4-605e9a5b3198',
+                provider: 'limelight',
+                watchingStatus: false,
+                advancedStreaming: false,
+                advancedStreamingStatus: null,
+                china: false,
+                countdown: {startTime: null},
+                embedScaling: 'responsive',
+                embedSize: 0,
+                embedType: 'iframe',
+                encoderKey: null,
+                splashscreen : {},
+                poster: {},
+                thumbnail: {},
+                unsecureM3u8Url: null,
+                paywallEnabled: false,
+                recordingStatus: '',
+                rewind: false,
+                isWebRtc: true
+            })
+        }
+        await this.axiosClient.get('/channels/' + input).then(this.checkExtraData)
+    }
     public putChannelDetails = async (input: PutLiveDetailsInput): Promise<void> => await this.axiosClient.put('/channels/' + input.id, input.payload)
     public deleteChannelImageAsset = async (input: DeleteContentImageAssetIdInput): Promise<void> => await this.axiosClient.delete(`/channels/${input.id}/targets/${input.targetId}`)
     public getChannelPaywallInfo = async (input: string): Promise<GetContentPaywallInfoOutput> => await this.axiosClient.get('/channels/' + input + '/paywall').then(this.checkExtraData)
@@ -228,7 +280,17 @@ export class DacastSdk {
     public getChannelThemes = async (input: string): Promise<GetContentThemeOutput> => await this.axiosClient.get('/channels/' + input + '/settings/themes').then(this.checkExtraData)
     public postChannelCustomTheme = async (input: PostContentCustomThemeInput): Promise<ThemeId> => await this.axiosClient.post('/channels/' + input.contentId + '/settings/themes', input.payload).then(this.checkExtraData)
     public putChannelCustomTheme = async (input: PutContentThemeInput): Promise<void> => await this.axiosClient.put('/channels/' + input.contentId + '/settings/themes/' + input.payload.id + input.actionWord, input.payload)
-
+    public getWebRtcSettings = async (input: string): Promise<WebRtcSettings> => {
+        return Promise.resolve({
+            primaryPublishURL: 'rtmp://bfd383de-bd8a-4b8e-a66f-5332a32c97e4.dacastmmd.pri.lldns.net/dacastmmd', 
+            backupPublishURL: 'rtmp://bfd383de-bd8a-4b8e-a66f-5332a32c97e4.dacastmmd.pri.lldns.net/dacastmmd',
+            streamKeys: ['2e70242133d44b5c8bce4d771b5bf522_4500'],
+            recording: false,
+            username: '790163040',
+            password: '12b5f26ed330aedb',
+            shareLink: 'https://iframe.dacast.com/live/e2bec0ab-2c34-ce7c-b88b-570080e666ad/61d41249-af6f-2c4e-e7a4-605e9a5b3198',
+        })
+    }
     public getVods = async (input: string): Promise<GetSearchContentOutput> => await this.axiosClient.get('/vods?' + input).then(this.checkExtraData)
     public deleteVod = async (input: string): Promise<void> => await this.axiosClient.delete('/vods/' + input)
     public getVodEngagementSettings = async (input: string): Promise<EngagementSettingsEndpoint> => await this.axiosClient.get('/vods/' + input + '/settings/engagement').then(this.checkExtraData)

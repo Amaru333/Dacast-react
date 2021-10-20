@@ -95,6 +95,7 @@ export const formatGetLiveDetailsOutput = (contentType: ContentType) => (data: G
         china: data.china,
         advancedStreamingStatus: data.advancedStreamingStatus as any,
         cname: data.cname,
+        isWebRtc: data.isWebRtc
     }
 
     return formattedData

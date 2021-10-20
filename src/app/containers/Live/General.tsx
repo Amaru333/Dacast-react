@@ -46,6 +46,7 @@ export const LiveGeneral = (props: GeneralComponentProps) => {
     const [buttonLoading, setButtonLoading] = React.useState<boolean>(false)
 
     React.useEffect(() => {
+        console.log('liveId:', liveId)
         props.getContentDetails(liveId, 'live')
         .catch(() => setNodataFetched(true))
 

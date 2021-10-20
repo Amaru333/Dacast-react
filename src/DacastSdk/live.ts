@@ -40,6 +40,7 @@ export interface GetLiveDetailsOutput {
     advancedStreamingStatus: string
     china: boolean
     cname?: string
+    isWebRtc?: boolean
 }
 
 export type ChannelRegion = 'north-america' | 'asia-pacific' | 'europe'
@@ -51,6 +52,7 @@ export interface PostLiveInput {
     renditionCount: number
     enabledAdvancedStreaming: boolean
     china: boolean
+    isWebRtc?: boolean
 }
 
 export interface PostLiveOutput {
@@ -74,4 +76,14 @@ interface PutLiveDetailsPayload {
 export interface GetLiveAssetUploadUrl {
     extension: string
     liveID: string
+}
+
+export interface WebRtcSettings {
+    primaryPublishURL: string
+    backupPublishURL: string
+    streamKeys: string[]
+    recording: boolean
+    username: string
+    password: string
+    shareLink: string
 }

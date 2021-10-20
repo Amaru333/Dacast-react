@@ -76,6 +76,7 @@ export interface LiveDetails {
     advancedStreaming: boolean
     advancedStreamingStatus: 'starting' | 'running' | 'stopping' | 'stopped' | 'other'
     cname?: string;
+    isWebRtc?: boolean;
 }
 
 export interface PlaylistDetails {

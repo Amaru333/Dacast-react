@@ -67,5 +67,6 @@ export interface StreamSetupOptions {
     streamType?: string;
     region: string;
     renditionCount: number;
-    advancedStreaming: AdvancedStreaming
+    advancedStreaming: AdvancedStreaming;
+    isWebRtc: boolean;
 }
