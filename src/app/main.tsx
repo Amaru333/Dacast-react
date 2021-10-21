@@ -98,14 +98,9 @@ EventHooker.subscribe('EVENT_COMPANY_PAGE_EDITED', () => {
 
 export const PrivateRoute = (props: { key: string; component: any; path: string; exact?: boolean; associatePrivilege?: Privilege[] }) => {
     let mobileWidth = useMedia('(max-width:780px');
-    const [livestreaming, setLiveStreaming] = React.useState<boolean>(window.location.pathname === "/livestreaming");
 
-    if (livestreaming) {
-        return (
-            <Route exact key="/livestreaming" path="/livestreaming">
-                <WebRTC />
-            </Route>
-        )
+    if (window.location.pathname === "/livestreaming") {
+        return
     } else if (userToken.isLoggedIn()) {
         return (
             <Route
@@ -274,6 +269,16 @@ const AppContent = (props: { routes: any }) => {
             <Toasts />
             {userToken.isLoggedIn() ?
                 <>
+                {
+                    window.location.pathname === "/livestreaming" ?
+                    <>
+                    <Switch>
+                        <Route exact key="/livestreaming" path="/livestreaming">
+                            <WebRTC />
+                        </Route>
+                    </Switch>
+                    </> 
+                    :
                     <React.Suspense fallback={<AppPlaceholder currentNavWidth={currentNavWidth} />}>
                         <MainMenu openExpoCreate={() => setAddExpoModalOpen(true)} openAddStream={() => { setAddStreamModalOpen(true); }} openPlaylist={() => { setAddPlaylistModalOpen(true) }} menuLocked={menuLocked} onMouseEnter={() => menuHoverOpen()} onMouseLeave={() => menuHoverClose()} navWidth={currentNavWidth} isMobile={isMobile} isOpen={isOpen} setMenuLocked={setMenuLocked} setOpen={setOpen} className="navigation" history={history} routes={AppRoutes} />
 
@@ -289,6 +294,7 @@ const AppContent = (props: { routes: any }) => {
                             </Switch>
                         </FullContent>
                     </React.Suspense>
+                }
                 </>
                 :
                 <>
