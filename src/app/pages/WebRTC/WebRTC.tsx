@@ -19,7 +19,7 @@ let previewStream: any;
 let webRTCAdaptor: any;
 let autoRepublishIntervalJob: any;
 let autoRepublishEnabled: any;
-let streamId = "2e70242133d44b5c8bce4d771b5bf522_4500";
+let sessionTimer: any;
 
 export default function WebRTCPage() {
 
@@ -33,7 +33,8 @@ export default function WebRTCPage() {
   const [toggleCam, setToggleCam] = React.useState<boolean>(true);
   const [toggleScreen, setToggleScreen] = React.useState<boolean>(false);
   const [startSession, setStartSession] = React.useState<boolean>(false);
-  const [webRtcSettings, setWebRtcSetting] = React.useState<any>(null);
+  const [webRtcSettings, setWebRtcSetting] = React.useState<any>({});
+  const [sessionTime, setSessionTime] = React.useState<any>("00:00:00");
   const [settingsOpen, setSettingsOpen] = React.useState<boolean>(false);
   const handleSettingsOpen = () => {
     setSettingsOpen(false);
@@ -66,9 +67,10 @@ export default function WebRTCPage() {
 
   React.useEffect(() => {
     const fetch = async () => {
-      let result = await dacastSdk.getWebRtcSettings(contentId)
+      let result = await dacastSdk.getWebRtcSettings(contentId);
+      result.duration = 0;
       setWebRtcSetting(result)
-      console.log(result)
+      console.log("WebRTC settings :: ", result)
     }
     fetch()
   }, [])
@@ -96,9 +98,9 @@ export default function WebRTCPage() {
   React.useEffect(() => {
     if (webRTCAdaptor) {
       if (toggleScreen) {
-        webRTCAdaptor.switchDesktopCapture(streamId);
+        webRTCAdaptor.switchDesktopCapture(webRtcSettings.streamId);
       } else {
-        webRTCAdaptor.switchVideoCameraCapture(streamId);
+        webRTCAdaptor.switchVideoCameraCapture(webRtcSettings.streamId);
         setToggleCam(true);
       }
     }
@@ -144,19 +146,33 @@ export default function WebRTCPage() {
     }, (err: any) => console.log(err)
     );
   }
+  const timeToString = (seconds: any) => {
+    var hours: any = Math.floor(seconds / 3600);
+    var minutes: any = Math.floor((seconds - hours * 3600) / 60);
+    var seconds: any = seconds - hours * 3600 - minutes * 60;
 
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return hours + ":" + minutes + ":" + seconds;
+  };
   const checkAndRepublishIfRequired = () => {
-    var iceState = webRTCAdaptor.iceConnectionState(streamId);
+    var iceState = webRTCAdaptor.iceConnectionState(webRtcSettings.streamId);
     console.log("Ice state checked = " + iceState);
 
     if (iceState == null || iceState == "failed" || iceState == "disconnected") {
-      webRTCAdaptor.stop(streamId);
-      webRTCAdaptor.closePeerConnection(streamId);
+      webRTCAdaptor.stop(webRtcSettings.streamId);
+      webRTCAdaptor.closePeerConnection(webRtcSettings.streamId);
       webRTCAdaptor.closeWebSocket();
       initStreaming();
     }
   }
-
   const initStreaming = () => {
     if (previewStream) {
       previewStream.getTracks().forEach((track: any) => track.stop());
@@ -186,24 +202,30 @@ export default function WebRTCPage() {
     if (localStorage.getItem("activeMicId")) {
       mediaConstraints.audio = { deviceId: localStorage.getItem("activeMicId") };
     }
-    let websocketURL = "wss://ovh36.antmedia.io:5443/WebRTCAppEE/websocket?rtmpForward=false";
     webRTCAdaptor = new WebRTCAdaptor({
-      websocket_url: websocketURL,
+      websocket_url: webRtcSettings.socketUrl,
       mediaConstraints: mediaConstraints,
       peerconnection_config: pc_config,
       sdp_constraints: sdpConstraints,
       localVideoId: "localVideo",
       debug: false,
-      bandwidth: 1500,
+      bandwidth: webRtcSettings.bitrate,
       dataChannelEnabled: false,
       callback: (info: any, obj: any) => {
+        console.log("WebRTCAdaptor :: info : ", info);
         if (info == "initialized") {
-          webRTCAdaptor.publish(streamId, null);
+          webRTCAdaptor.publish(webRtcSettings.streamId, null);
         } else if (info == "publish_started") {
           if (autoRepublishEnabled && autoRepublishIntervalJob == null) {
             autoRepublishIntervalJob = setInterval(() => {
               checkAndRepublishIfRequired();
             }, 3000);
+          }
+          if (!sessionTimer) {
+            sessionTimer = setInterval(() => {
+              webRtcSettings.duration++;
+              setSessionTime(timeToString(webRtcSettings.duration));
+            }, 1000);
           }
         } else if (info == "publish_finished") {
         } else if (info == "browser_screen_share_supported") {
@@ -215,6 +237,7 @@ export default function WebRTCPage() {
         }
       },
       callbackError: function (error: any, message: any) {
+        console.log("WebRTCAdaptor :: error : ", error, message);
       }
     });
   }
@@ -224,11 +247,20 @@ export default function WebRTCPage() {
         clearInterval(autoRepublishIntervalJob);
         autoRepublishIntervalJob = null;
       }
-      webRTCAdaptor.stop(streamId);
+      webRTCAdaptor.stop(webRtcSettings.streamId);
       startPreview();
       setStartSession(false);
       setLeaveStreamPopUp(false);
+      if (sessionTimer) {
+        clearInterval(sessionTimer);
+        webRtcSettings.duration = 0;
+        setSessionTime("00:00:00");
+        sessionTimer = null;
+      }
     }
+  }
+  const shareLink = () => {
+    window.open(webRtcSettings.shareLink, "_blank")
   }
 
   return (
@@ -282,7 +314,7 @@ export default function WebRTCPage() {
 
         <VideoContainer>
           <Navigation>
-            <p style={{ marginLeft: "10px" }}>New live stream</p>
+            <p style={{ marginLeft: "10px" }}>{webRtcSettings.title}</p>
             <div>
               <IconStyle
                 style={{ color: "white", marginTop: "7px", cursor: "pointer" }}
@@ -306,15 +338,15 @@ export default function WebRTCPage() {
             >
               <span style={{ color: "#D14642" }}>•</span>&nbsp;&nbsp;LIVE
             </p>
-            <p style={{ color: "#fff", alignSelf: "center" }}>00:00:00</p>
-            <p style={{ color: "#fff", alignSelf: "center" }}>
+            <p style={{ color: "#fff", alignSelf: "center" }}>{sessionTime}</p>
+            {/* <p style={{ color: "#fff", alignSelf: "center" }}>
               <IconStyle
                 style={{ color: "white", margin: "0" }}
                 className="mr1 self-center"
               >
                 people
               </IconStyle>
-            </p>
+            </p> */}
           </Timer>
           {playing === true ? (
             <div style={{ textAlign: "center" }}>
@@ -342,16 +374,18 @@ export default function WebRTCPage() {
           <div className="app_input">
             <ControlsContainer>
               <SettingGroup>
-                <IconContainer>
+                <IconContainer
+                  onClick={() => { shareLink() }}
+                >
                   <IconStyle
                     style={{ color: "white", margin: "0px 0px 8px 0px" }}
                     className="mr1 self-center"
                   >
-                    insert_link
+                    file_copy_outlined
                   </IconStyle>
                   <span style={{ fontSize: "12px" }}>Share Link</span>
                 </IconContainer>
-                <div onClick={handleParticipants}>
+                {/* <div onClick={handleParticipants}>
                   <IconContainer>
                     <IconStyle
                       style={{ color: "white", margin: "0px 0px 8px 0px" }}
@@ -362,7 +396,7 @@ export default function WebRTCPage() {
 
                     <span style={{ fontSize: "12px" }}>Participants</span>
                   </IconContainer>
-                </div>
+                </div> */}
               </SettingGroup>
               <SettingGroup>
                 {toggleMic === true ? (

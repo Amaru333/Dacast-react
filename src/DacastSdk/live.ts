@@ -15,7 +15,7 @@ export interface GetLiveDetailsOutput {
     title: string
     description: string
     folders: string[]
-    countdown: {startTime: number | null}
+    countdown: { startTime: number | null }
     embedScaling: EmbedScalingEndpoint
     embedSize: number
     embedType: EmbedTypeEndpoint
@@ -68,7 +68,7 @@ interface PutLiveDetailsPayload {
     title: string
     description: string
     online: boolean
-    countdown: {startTime: number | null}
+    countdown: { startTime: number | null }
     recording: boolean
     rewind?: boolean
 }
@@ -79,11 +79,11 @@ export interface GetLiveAssetUploadUrl {
 }
 
 export interface WebRtcSettings {
-    primaryPublishURL: string
-    backupPublishURL: string
-    streamKeys: string[]
-    recording: boolean
-    username: string
-    password: string
+    id: string
+    title: string
+    description: string
+    socketUrl: string
+    streamId: string
+    bitrate: number
     shareLink: string
 }

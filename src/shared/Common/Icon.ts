@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Icon } from '../../components/Icon/Icon';
+// import { Icon } from '@material-ui/core';
 import { ColorsApp } from '../../styled/types';
 
 export const IconFontSizes = {
@@ -8,16 +9,16 @@ export const IconFontSizes = {
     inherit: '1em'
 }
 
-export const IconStyle = styled(Icon)<{coloricon?: ColorsApp; disabled?: boolean; customsize?: number; fontSize?: string}>`
+export const IconStyle = styled(Icon) <{ coloricon?: ColorsApp; disabled?: boolean; customsize?: number; fontSize?: string }>`
     color: ${props => props.coloricon ? props.theme.colors[props.coloricon] : props.theme.colors['gray-1']};
     ${props => props.disabled && css`
         cursor: not-allowed;
     `}
-    ${props => props.customsize && css `
+    ${props => props.customsize && css`
         width: ${props.customsize}px !important;
         height: ${props.customsize}px !important;
     `}
-    ${props => props.fontSize && css `
+    ${props => props.fontSize && css`
         width: ${IconFontSizes[props.fontSize] || props.fontSize} !important;
         height: ${IconFontSizes[props.fontSize] || props.fontSize} !important;
     `}
@@ -27,7 +28,7 @@ export const IconContainer = styled.div`
     width: max-content;
     display: block;
 `
-export const IconGreyActionsContainer = styled.div<{isFocus?: boolean}>`
+export const IconGreyActionsContainer = styled.div<{ isFocus?: boolean }>`
     justify-content: center;
     position: relative;
     z-index: 1;
