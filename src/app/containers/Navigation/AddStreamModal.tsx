@@ -238,6 +238,7 @@ const AddStreamModal = (props: { toggle: () => void; opened: boolean; billingInf
             </ModalContent>
             <ModalFooter>
                 <Button isLoading={buttonLoading} onClick={() => { handleCreateLiveStreams() }} typeButton="primary" >{t('common_button_text_create')}</Button>
+                <Button onClick={() => { setStreamMode(undefined) }} typeButton="secondary" >Back</Button>
                 <Button typeButton="tertiary" onClick={() => handleCancel()}>{t('common_button_text_cancel')}</Button>
             </ModalFooter>
             </>
