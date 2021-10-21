@@ -78,7 +78,7 @@ export interface GetLiveAssetUploadUrl {
     liveID: string
 }
 
-export interface WebRtcSettings {
+export interface GetWebrtcDetailsOutput {
     id: string
     title: string
     description: string
