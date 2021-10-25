@@ -6,7 +6,7 @@ import { Text } from "../../../components/Typography/Text";
 import RTCSettings from "./RTCSettings";
 import ParticipantBlock from "./ParticipantBlock";
 import { Modal } from "@material-ui/core";
-import WebRTCAdaptor from '../../../utils/webrtc/adaptor';
+import WebRTCAdaptor from "../../../utils/webrtc/adaptor";
 import { useHistory } from "react-router-dom";
 import { useNetwork } from "../../utils/custom-hooks/networkNavigatorHook";
 import { Toast } from "../../../components/Toast/Toast";
@@ -22,13 +22,14 @@ let autoRepublishEnabled: any;
 let sessionTimer: any;
 
 export default function WebRTCPage() {
-
-  const contentId = getUrlParam('contentId')
+  const contentId = getUrlParam("contentId");
   let isOnline = useNetwork();
   const history = useHistory();
   const [playing, setPlaying] = React.useState<boolean>(false);
 
-  const [permissionDenied, setPermissionDenied] = React.useState<boolean>(false);
+  const [permissionDenied, setPermissionDenied] = React.useState<boolean>(
+    false
+  );
   const [toggleMic, setToggleMic] = React.useState<boolean>(true);
   const [toggleCam, setToggleCam] = React.useState<boolean>(true);
   const [toggleScreen, setToggleScreen] = React.useState<boolean>(false);
@@ -41,23 +42,39 @@ export default function WebRTCPage() {
     setPlaying(true);
   };
 
-  const [recordLiveStreamPopUp, setRecordLiveStreamPopUp] = React.useState<boolean>(false);
+  const [recordLiveStreamPopUp, setRecordLiveStreamPopUp] = React.useState<
+    boolean
+  >(false);
   const closeRecordLiveStreamPopUp = () => {
     setRecordLiveStreamPopUp(false);
   };
 
-  const [leaveStreamPopUp, setLeaveStreamPopUp] = React.useState<boolean>(false);
+  const [leaveStreamPopUp, setLeaveStreamPopUp] = React.useState<boolean>(
+    false
+  );
   const closeLeaveStreamPopUp = () => {
     setLeaveStreamPopUp(false);
   };
 
-  const [screenSharePermissionPopUp, setScreenSharePermissionPopUp] = React.useState<boolean>(false);
+  const [
+    screenSharePermissionPopUp,
+    setScreenSharePermissionPopUp,
+  ] = React.useState<boolean>(false);
   const closeScreenSharePermissionPopUp = () => {
     // setScreenSharePermissionPopUp(false);
   };
 
+  const [recordStreamPopUp, setRecordStreamPopUp] = React.useState<boolean>(
+    false
+  );
 
-  const [toggleParticipants, setToggleParticipants] = React.useState<boolean>(false);
+  const closeRecordStreamPopUp = () => {
+    setRecordStreamPopUp(false);
+  };
+
+  const [toggleParticipants, setToggleParticipants] = React.useState<boolean>(
+    false
+  );
 
   const memberList: any = [];
 
@@ -69,11 +86,11 @@ export default function WebRTCPage() {
     const fetch = async () => {
       let result = await dacastSdk.getWebRtcSettings(contentId);
       result.duration = 0;
-      setWebRtcSetting(result)
-      console.log("WebRTC settings :: ", result)
-    }
-    fetch()
-  }, [])
+      setWebRtcSetting(result);
+      console.log("WebRTC settings :: ", result);
+    };
+    fetch();
+  }, []);
 
   React.useEffect(() => {
     if (webRTCAdaptor) {
@@ -119,33 +136,45 @@ export default function WebRTCPage() {
   }, [playing]);
 
   const checkForCameraMic = () => {
-    if (localStorage.getItem("activeCameraId") && localStorage.getItem("activeMicId")) {
+    if (
+      localStorage.getItem("activeCameraId") &&
+      localStorage.getItem("activeMicId")
+    ) {
       setPlaying(true);
     } else {
-      navigator.getUserMedia({
-        audio: true,
-        video: true,
-      }, (stream: any) => {
-        stream.getTracks().forEach((track: any) => track.stop());
-        setSettingsOpen(true);
-      }, (err: any) => {
-        setPermissionDenied(true);
-      });
+      navigator.getUserMedia(
+        {
+          audio: true,
+          video: true,
+        },
+        (stream: any) => {
+          stream.getTracks().forEach((track: any) => track.stop());
+          setSettingsOpen(true);
+        },
+        (err: any) => {
+          setPermissionDenied(true);
+        }
+      );
     }
-  }
+  };
   const startPreview = () => {
-    navigator.getUserMedia({
-      audio: false,
-      video: localStorage.getItem("activeCameraId") ? { deviceId: localStorage.getItem("activeCameraId") } : true,
-    }, (stream: any) => {
-      let media: any = document.getElementById("localVideo");
-      if (media) {
-        media.srcObject = previewStream = stream;
-        media.muted = true;
-      }
-    }, (err: any) => console.log(err)
+    navigator.getUserMedia(
+      {
+        audio: false,
+        video: localStorage.getItem("activeCameraId")
+          ? { deviceId: localStorage.getItem("activeCameraId") }
+          : true,
+      },
+      (stream: any) => {
+        let media: any = document.getElementById("localVideo");
+        if (media) {
+          media.srcObject = previewStream = stream;
+          media.muted = true;
+        }
+      },
+      (err: any) => console.log(err)
     );
-  }
+  };
   const timeToString = (seconds: any) => {
     var hours: any = Math.floor(seconds / 3600);
     var minutes: any = Math.floor((seconds - hours * 3600) / 60);
@@ -166,22 +195,28 @@ export default function WebRTCPage() {
     var iceState = webRTCAdaptor.iceConnectionState(webRtcSettings.streamId);
     console.log("Ice state checked = " + iceState);
 
-    if (iceState == null || iceState == "failed" || iceState == "disconnected") {
+    if (
+      iceState == null ||
+      iceState == "failed" ||
+      iceState == "disconnected"
+    ) {
       webRTCAdaptor.stop(webRtcSettings.streamId);
       webRTCAdaptor.closePeerConnection(webRtcSettings.streamId);
       webRTCAdaptor.closeWebSocket();
       initStreaming();
     }
-  }
+  };
   const initStreaming = () => {
     if (previewStream) {
       previewStream.getTracks().forEach((track: any) => track.stop());
       previewStream = null;
     }
     var pc_config = {
-      iceServers: [{
-        'urls': 'stun:stun1.l.google.com:19302'
-      },],
+      iceServers: [
+        {
+          urls: "stun:stun1.l.google.com:19302",
+        },
+      ],
     };
 
     var sdpConstraints = {
@@ -200,7 +235,9 @@ export default function WebRTCPage() {
       mediaConstraints.video.deviceId = localStorage.getItem("activeCameraId");
     }
     if (localStorage.getItem("activeMicId")) {
-      mediaConstraints.audio = { deviceId: localStorage.getItem("activeMicId") };
+      mediaConstraints.audio = {
+        deviceId: localStorage.getItem("activeMicId"),
+      };
     }
     webRTCAdaptor = new WebRTCAdaptor({
       websocket_url: webRtcSettings.socketUrl,
@@ -236,11 +273,11 @@ export default function WebRTCPage() {
           checkAndRepublishIfRequired();
         }
       },
-      callbackError: function (error: any, message: any) {
+      callbackError: function(error: any, message: any) {
         console.log("WebRTCAdaptor :: error : ", error, message);
-      }
+      },
     });
-  }
+  };
   const stopStreaming = () => {
     if (webRTCAdaptor) {
       if (autoRepublishIntervalJob != null) {
@@ -258,10 +295,10 @@ export default function WebRTCPage() {
         sessionTimer = null;
       }
     }
-  }
+  };
   const shareLink = () => {
-    window.open(webRtcSettings.shareLink, "_blank")
-  }
+    window.open(webRtcSettings.shareLink, "_blank");
+  };
 
   return (
     <div style={{ height: "100vh", padding: "0", margin: "0" }}>
@@ -357,6 +394,20 @@ export default function WebRTCPage() {
                 className="media_feed"
                 style={{ height: "calc(100vh - 190px)" }}
               ></video>
+              {toggleScreen && (
+                <video
+                  autoPlay
+                  muted
+                  id="localVideo"
+                  className="media_feed"
+                  style={{
+                    width: "200px",
+                    position: "absolute",
+                    right: "100px",
+                    top: "100px",
+                  }}
+                ></video>
+              )}
             </div>
           ) : (
             <InactiveContainer>
@@ -366,26 +417,31 @@ export default function WebRTCPage() {
               <p style={{ fontSize: "24px" }}>
                 Enable camera and microphone to start streaming
               </p>
-              {permissionDenied && <p style={{ fontSize: "24px" }}>
-                Please go to your computer settings to enable
-              </p>}
+              {permissionDenied && (
+                <p style={{ fontSize: "24px", margin: "10px 0 0 0" }}>
+                  Please go to your computer settings to enable
+                </p>
+              )}
             </InactiveContainer>
           )}
-          <div className="app_input">
-            <ControlsContainer>
-              <SettingGroup>
-                <IconContainer
-                  onClick={() => { shareLink() }}
-                >
-                  <IconStyle
-                    style={{ color: "white", margin: "0px 0px 8px 0px" }}
-                    className="mr1 self-center"
+          {!permissionDenied && (
+            <div className="app_input">
+              <ControlsContainer>
+                <SettingGroup>
+                  <IconContainer
+                    onClick={() => {
+                      shareLink();
+                    }}
                   >
-                    file_copy_outlined
-                  </IconStyle>
-                  <span style={{ fontSize: "12px" }}>Share Link</span>
-                </IconContainer>
-                {/* <div onClick={handleParticipants}>
+                    <IconStyle
+                      style={{ color: "white", margin: "0px 0px 8px 0px" }}
+                      className="mr1 self-center"
+                    >
+                      file_copy_outlined
+                    </IconStyle>
+                    <span style={{ fontSize: "12px" }}>Share Link</span>
+                  </IconContainer>
+                  {/* <div onClick={handleParticipants}>
                   <IconContainer>
                     <IconStyle
                       style={{ color: "white", margin: "0px 0px 8px 0px" }}
@@ -397,100 +453,118 @@ export default function WebRTCPage() {
                     <span style={{ fontSize: "12px" }}>Participants</span>
                   </IconContainer>
                 </div> */}
-              </SettingGroup>
-              <SettingGroup>
-                {toggleMic === true ? (
-                  <ToggleButtons onClick={() => { setToggleMic(!toggleMic) }}>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 0px 0px" }}
-                      className="mr1 self-center"
-                    >
-                      mic
-                    </IconStyle>
-                  </ToggleButtons>
-                ) : (
-                  <OffButtons onClick={() => { setToggleMic(!toggleMic) }}>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 0px 0px" }}
-                      className="mr1 self-center"
-                    >
-                      mic_off
-                    </IconStyle>
-                  </OffButtons>
-                )}
-                {toggleCam === true ? (
-                  <ToggleButtons onClick={() => { setToggleCam(!toggleCam) }}>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 0px 0px" }}
-                      className="mr1 self-center"
-                    >
-                      videocam
-                    </IconStyle>
-                  </ToggleButtons>
-                ) : (
-                  <OffButtons onClick={() => { setToggleCam(!toggleCam) }}>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 0px 0px" }}
-                      className="mr1 self-center"
-                    >
-                      videocam_off
-                    </IconStyle>
-                  </OffButtons>
-                )}
-                <ButtonContainer
-                  style={{ padding: "0px", alignSelf: "center" }}
-                >
-                  {startSession === true ? (
-                    <Button
+                </SettingGroup>
+                <SettingGroup>
+                  {toggleMic === true ? (
+                    <ToggleButtons
                       onClick={() => {
-                        setLeaveStreamPopUp(true);
+                        setToggleMic(!toggleMic);
                       }}
                     >
-                      Leave
-                    </Button>
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 0px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        mic
+                      </IconStyle>
+                    </ToggleButtons>
                   ) : (
-                    <Button
-                      style={{ background: "#4967EE" }}
+                    <OffButtons
                       onClick={() => {
-                        setStartSession(true);
-                        initStreaming();
+                        setToggleMic(!toggleMic);
                       }}
                     >
-                      Start
-                    </Button>
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 0px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        mic_off
+                      </IconStyle>
+                    </OffButtons>
                   )}
-                </ButtonContainer>
-              </SettingGroup>
-              <SettingGroup>
-                <div onClick={() => setToggleScreen(!toggleScreen)}>
-                  <IconContainer>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 8px 0px" }}
-                      className="mr1 self-center"
+                  {toggleCam === true ? (
+                    <ToggleButtons
+                      onClick={() => {
+                        setToggleCam(!toggleCam);
+                      }}
                     >
-                      present_to_all
-                    </IconStyle>
-                    <span style={{ fontSize: "12px" }}>Share Screen</span>
-                  </IconContainer>
-                </div>
-                <div
-                  onClick={() => {
-                    setSettingsOpen(true);
-                  }}
-                >
-                  <IconContainer>
-                    <IconStyle
-                      style={{ color: "white", margin: "0px 0px 8px 0px" }}
-                      className="mr1 self-center"
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 0px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        videocam
+                      </IconStyle>
+                    </ToggleButtons>
+                  ) : (
+                    <OffButtons
+                      onClick={() => {
+                        setToggleCam(!toggleCam);
+                      }}
                     >
-                      settings
-                    </IconStyle>
-                    <span style={{ fontSize: "12px" }}>Settings</span>
-                  </IconContainer>
-                </div>
-              </SettingGroup>
-            </ControlsContainer>
-          </div>
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 0px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        videocam_off
+                      </IconStyle>
+                    </OffButtons>
+                  )}
+                  <ButtonContainer
+                    style={{ padding: "0px", alignSelf: "center" }}
+                  >
+                    {startSession === true ? (
+                      <Button
+                        onClick={() => {
+                          setLeaveStreamPopUp(true);
+                        }}
+                      >
+                        Leave
+                      </Button>
+                    ) : (
+                      <Button
+                        style={{ background: "#4967EE" }}
+                        onClick={() => {
+                          setRecordStreamPopUp(true);
+                          // setStartSession(true);
+                          // initStreaming();
+                        }}
+                      >
+                        Start
+                      </Button>
+                    )}
+                  </ButtonContainer>
+                </SettingGroup>
+                <SettingGroup>
+                  <div onClick={() => setToggleScreen(!toggleScreen)}>
+                    <IconContainer>
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 8px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        present_to_all
+                      </IconStyle>
+                      <span style={{ fontSize: "12px" }}>Share Screen</span>
+                    </IconContainer>
+                  </div>
+                  <div
+                    onClick={() => {
+                      setSettingsOpen(true);
+                    }}
+                  >
+                    <IconContainer>
+                      <IconStyle
+                        style={{ color: "white", margin: "0px 0px 8px 0px" }}
+                        className="mr1 self-center"
+                      >
+                        settings
+                      </IconStyle>
+                      <span style={{ fontSize: "12px" }}>Settings</span>
+                    </IconContainer>
+                  </div>
+                </SettingGroup>
+              </ControlsContainer>
+            </div>
+          )}
         </VideoContainer>
 
         {toggleParticipants && (
@@ -544,6 +618,38 @@ export default function WebRTCPage() {
           </div>
         </PopupContainer>
       </Modal>
+
+      <Modal open={recordStreamPopUp}>
+        <PopupContainer style={{ height: "240px" }}>
+          <p style={{ fontSize: "24px", margin: "20px 0px 40px 0px" }}>
+            Record Live Stream
+          </p>
+          <p style={{ fontSize: "14px", margin: "20px 0px 20px 0px" }}>
+            Do you want to record your livestream?
+          </p>
+          <p style={{ fontSize: "14px", margin: "20px 0px 40px 0px" }}>
+            <b>Note, you can edit your recording in your Video tab later</b>
+          </p>
+          <div>
+            <PrimaryButton
+              onClick={() => {
+                setStartSession(true);
+                initStreaming();
+                setRecordStreamPopUp(false);
+              }}
+            >
+              Yes
+            </PrimaryButton>
+            <SecondaryButton
+              onClick={closeRecordStreamPopUp}
+              style={{ width: "fit-content" }}
+            >
+              Continue without Recording
+            </SecondaryButton>
+          </div>
+        </PopupContainer>
+      </Modal>
+
       <Modal open={screenSharePermissionPopUp}>
         <PopupContainer>
           <p style={{ fontSize: "24px", margin: "50px 0px 0px 0px" }}>
